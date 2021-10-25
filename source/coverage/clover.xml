@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1635143764642" clover="3.2.0">
+  <project timestamp="1635143764642" name="All files">
+    <metrics statements="31" coveredstatements="17" conditionals="8" coveredconditionals="1" methods="12" coveredmethods="4" elements="51" coveredelements="22" complexity="0" loc="31" ncloc="31" packages="1" files="1" classes="1"/>
+    <file name="stack.ts" path="/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/stack.ts">
+      <metrics statements="31" coveredstatements="17" conditionals="8" coveredconditionals="1" methods="12" coveredmethods="4"/>
+      <line num="1" count="1" type="stmt"/>
+      <line num="2" count="1" type="stmt"/>
+      <line num="3" count="1" type="stmt"/>
+      <line num="4" count="1" type="stmt"/>
+      <line num="6" count="1" type="stmt"/>
+      <line num="7" count="1" type="stmt"/>
+      <line num="9" count="0" type="stmt"/>
+      <line num="10" count="0" type="stmt"/>
+      <line num="12" count="0" type="stmt"/>
+      <line num="13" count="0" type="stmt"/>
+      <line num="14" count="0" type="cond" truecount="0" falsecount="4"/>
+      <line num="16" count="0" type="stmt"/>
+      <line num="19" count="0" type="cond" truecount="0" falsecount="1"/>
+      <line num="20" count="0" type="stmt"/>
+      <line num="21" count="0" type="stmt"/>
+      <line num="24" count="0" type="cond" truecount="0" falsecount="2"/>
+      <line num="25" count="0" type="stmt"/>
+      <line num="28" count="0" type="stmt"/>
+      <line num="29" count="0" type="stmt"/>
+      <line num="35" count="1" type="stmt"/>
+      <line num="36" count="1" type="stmt"/>
+      <line num="37" count="1" type="stmt"/>
+      <line num="38" count="2" type="stmt"/>
+      <line num="42" count="1" type="stmt"/>
+      <line num="43" count="1" type="stmt"/>
+      <line num="51" count="1" type="stmt"/>
+      <line num="53" count="1" type="stmt"/>
+      <line num="55" count="1" type="stmt"/>
+      <line num="57" count="1" type="stmt"/>
+      <line num="66" count="1" type="stmt"/>
+      <line num="87" count="0" type="stmt"/>
+    </file>
+  </project>
+</coverage>
