@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+sudo -u ec2-user -i <<EOS
+TMPDIR=$(mktemp -d)
+cd "$TMPDIR"
+
+aws s3 cp s3://braketnotebookcdk-notebooklccs3bucketb3089b50-1w1epzvg1km1k/notebook/braket-notebook-lcc.zip braket-notebook-lcc.zip
+unzip braket-notebook-lcc.zip
+./install.sh
+
+nohup rm -fr "$TMPDIR" &
+EOS
+
+exit 0

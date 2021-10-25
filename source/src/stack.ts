@@ -1,6 +1,14 @@
 import * as path from 'path';
+import * as cdk from '@aws-cdk/core';
 import * as ec2 from '@aws-cdk/aws-ec2';
 import * as lambda from '@aws-cdk/aws-lambda';
+import * as s3 from '@aws-cdk/aws-s3';
+import * as iam from '@aws-cdk/aws-iam'
+import {
+  CfnNotebookInstanceLifecycleConfig,
+  CfnNotebookInstance
+} from '@aws-cdk/aws-sagemaker';
+
 import {
   Construct,
   Stack,
@@ -10,6 +18,11 @@ import {
   CfnParameterProps,
   Aws
 } from '@aws-cdk/core';
+
+import {
+  readFileSync
+} from 'fs';
+
 
 export class SolutionStack extends Stack {
   private _paramGroup: {
@@ -120,14 +133,125 @@ export class MyStack extends SolutionStack {
       handler: 'index.handler',
       layers: [layer],
     });
-  
-    // code for QC
+  }
+}
 
-  
+export class QCLifeScienceStack extends SolutionStack {
 
-    
+  // Methods //////////////////////////
 
+  createNotebookIamRole(): iam.Role {
 
+    const role = new iam.Role(this, 'gcr-qc-notebook-role', {
+      assumedBy: new iam.ServicePrincipal('sagemaker.amazonaws.com'),
+    });
+
+    role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonBraketFullAccess'))
+    role.addToPolicy(new iam.PolicyStatement({
+      resources: [
+        'arn:aws:s3:::amazon-braket-*',
+        'arn:aws:s3:::braketnotebookcdk-*'
+      ],
+      actions: [
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:ListBucket"
+      ]
+    }));
+
+    role.addToPolicy(new iam.PolicyStatement({
+      resources: [
+        `arn:aws:logs:*:${this.account}:log-group:/aws/sagemaker/*`
+      ],
+      actions: [
+        "logs:CreateLogStream",
+        "logs:DescribeLogStreams",
+        "logs:PutLogEvents",
+        "logs:CreateLogGroup"
+      ]
+    }));
+
+    role.addToPolicy(new iam.PolicyStatement({
+      resources: [
+        '*'
+      ],
+      actions: [
+        "braket:*"
+      ]
+    }));
+    return role;
+  }
+
+  // constructor 
+
+  constructor(scope: Construct, id: string, props: StackProps = {}) {
+    super(scope, id, props);
+    this.setDescription('(SO8029) CDK for GCR solution: Quantum Computing in HCLS');
+
+    const INSTANCE_TYPE = 'ml.m5.4xlarge'
+    const CODE_REPO = 'https://github.com/amliuyong/aws-gcr-qc-life-science-public.git'
+
+    // const vpc = new ec2.Vpc(this, 'VPC');
+
+    const instanceTypeParam = new cdk.CfnParameter(this, "NotebookInstanceType", {
+      type: "String",
+      default: INSTANCE_TYPE,
+      description: "Sagemaker notebook instance type"
+    });
+
+    const gitHubParam = new cdk.CfnParameter(this, "GitHubRepo", {
+      type: "String",
+      default: CODE_REPO,
+      description: "Public GitHub repository"
+    });
+
+    const s3bucket = new s3.Bucket(this, 'amazon-braket', {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      bucketName: `amazon-braket-gcrqc-${this.account}-${this.region}`,
+      autoDeleteObjects: true
+    });
+
+    const role = this.createNotebookIamRole()
+
+    const onStartContent = readFileSync(`${__dirname}/resources/onStart.template`, 'utf-8')
+
+    const base64Encode = (str: string): string => Buffer.from(str, 'binary').toString('base64');
+    const onStartContentBase64 = base64Encode(onStartContent)
+
+    const installBraketSdK = new CfnNotebookInstanceLifecycleConfig(this, 'install-braket-sdk', {
+      onStart: [{
+        "content": onStartContentBase64
+      }]
+    });
+
+    const notebookInstnce = new CfnNotebookInstance(this, 'GCRQCLifeScience', {
+      instanceType: instanceTypeParam.valueAsString,
+      roleArn: role.roleArn,
+      rootAccess: 'Enabled',
+      lifecycleConfigName: installBraketSdK.attrNotebookInstanceLifecycleConfigName,
+      defaultCodeRepository: gitHubParam.valueAsString,
+      volumeSizeInGb: 50,
+
+    });
+
+    // Output //////////////////////////
+
+    new cdk.CfnOutput(this, "notebookName", {
+      value: notebookInstnce.attrNotebookInstanceName,
+      description: "Notebook name"
+    });
+
+    new cdk.CfnOutput(this, "bucketName", {
+      value: s3bucket.bucketName,
+      description: "S3 bucket name"
+    });
+
+    const notebookUrl = `https://console.aws.amazon.com/sagemaker/home?region=${this.region}#/notebook-instances/openNotebook/${notebookInstnce.attrNotebookInstanceName}?view=classic`
+
+    new cdk.CfnOutput(this, "notebookUrl", {
+      value: notebookUrl,
+      description: "Notebook URL"
+    });
 
   }
 }

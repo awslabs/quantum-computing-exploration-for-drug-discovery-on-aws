@@ -16,7 +16,7 @@
     "destroy": "cdk destroy"
   },
   "devDependencies": {
-    "@types/jest": "^26.0.24",
+    "@types/jest": "^27.0.0",
     "@types/node": "^14.17.7",
     "@typescript-eslint/eslint-plugin": "^4.29.0",
     "@typescript-eslint/parser": "^4.29.0",
@@ -40,6 +40,7 @@
     "@aws-cdk/aws-lambda": "^1.116.0",
     "@aws-cdk/aws-s3": "^1.116.0",
     "@aws-cdk/core": "^1.116.0",
+    "@aws-cdk/aws-sagemaker": "^1.116.0",
     "cdk-bootstrapless-synthesizer": "^0.7.2"
   },
   "bundledDependencies": [],
