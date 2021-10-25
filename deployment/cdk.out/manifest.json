@@ -1,0 +1,1005 @@
+{
+  "version": "13.0.0",
+  "artifacts": {
+    "Tree": {
+      "type": "cdk:tree",
+      "properties": {
+        "file": "tree.json"
+      }
+    },
+    "MyStack.assets": {
+      "type": "cdk:asset-manifest",
+      "properties": {
+        "file": "MyStack.assets.json"
+      }
+    },
+    "MyStack": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "MyStack.template.json",
+        "validateOnSynth": false,
+        "stackTemplateAssetObjectUrl": "s3://cdk-080766874269-${AWS::Region}/MyStack.template.json",
+        "additionalDependencies": [
+          "MyStack.assets"
+        ]
+      },
+      "dependencies": [
+        "MyStack.assets"
+      ],
+      "metadata": {
+        "/MyStack/VPC/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCB9E5F0B4",
+            "trace": [
+              "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:710:21)",
+              "new MyStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/stack.ts:55:16)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:7:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/MyStack/VPC/PublicSubnet1/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCPublicSubnet1SubnetB4246D30",
+            "trace": [
+              "new Subnet (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:997:20)",
+              "new PublicSubnet (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1153:5)",
+              "/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:882:32",
+              "Array.forEach (<anonymous>)",
+              "Vpc.createSubnetResources (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:864:28)",
+              "Vpc.createSubnets (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:859:12)",
+              "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:739:10)",
+              "new MyStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/stack.ts:55:16)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:7:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/MyStack/VPC/PublicSubnet1/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCPublicSubnet1RouteTableFEE4B781",
+            "trace": [
+              "new Subnet (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1015:19)",
+              "new PublicSubnet (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1153:5)",
+              "/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:882:32",
+              "Array.forEach (<anonymous>)",
+              "Vpc.createSubnetResources (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:864:28)",
+              "Vpc.createSubnets (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:859:12)",
+              "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:739:10)",
+              "new MyStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/stack.ts:55:16)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:7:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/MyStack/VPC/PublicSubnet1/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCPublicSubnet1RouteTableAssociation0B0896DC",
+            "trace": [
+              "new Subnet (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1021:5)",
+              "new PublicSubnet (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1153:5)",
+              "/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:882:32",
+              "Array.forEach (<anonymous>)",
+              "Vpc.createSubnetResources (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:864:28)",
+              "Vpc.createSubnets (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:859:12)",
+              "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:739:10)",
+              "new MyStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/stack.ts:55:16)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:7:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/MyStack/VPC/PublicSubnet1/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCPublicSubnet1DefaultRoute91CEF279",
+            "trace": [
+              "PublicSubnet.addDefaultInternetRoute (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1031:19)",
+              "/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:758:22",
+              "Array.forEach (<anonymous>)",
+              "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:757:46)",
+              "new MyStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/stack.ts:55:16)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:7:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/MyStack/VPC/PublicSubnet1/EIP": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCPublicSubnet1EIP6AD938E8",
+            "trace": [
+              "PublicSubnet.addNatGateway (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1161:21)",
+              "NatGatewayProvider.configureNat (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/nat.ts:108:27)",
+              "Vpc.createNatGateways (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:834:14)",
+              "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:764:14)",
+              "new MyStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/stack.ts:55:16)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:7:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/MyStack/VPC/PublicSubnet1/NATGateway": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCPublicSubnet1NATGatewayE0556630",
+            "trace": [
+              "PublicSubnet.addNatGateway (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1159:17)",
+              "NatGatewayProvider.configureNat (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/nat.ts:108:27)",
+              "Vpc.createNatGateways (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:834:14)",
+              "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:764:14)",
+              "new MyStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/stack.ts:55:16)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:7:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/MyStack/VPC/PublicSubnet2/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCPublicSubnet2Subnet74179F39",
+            "trace": [
+              "new Subnet (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:997:20)",
+              "new PublicSubnet (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1153:5)",
+              "/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:882:32",
+              "Array.forEach (<anonymous>)",
+              "Vpc.createSubnetResources (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:864:28)",
+              "Vpc.createSubnets (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:859:12)",
+              "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:739:10)",
+              "new MyStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/stack.ts:55:16)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:7:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/MyStack/VPC/PublicSubnet2/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCPublicSubnet2RouteTable6F1A15F1",
+            "trace": [
+              "new Subnet (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1015:19)",
+              "new PublicSubnet (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1153:5)",
+              "/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:882:32",
+              "Array.forEach (<anonymous>)",
+              "Vpc.createSubnetResources (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:864:28)",
+              "Vpc.createSubnets (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:859:12)",
+              "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:739:10)",
+              "new MyStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/stack.ts:55:16)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:7:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/MyStack/VPC/PublicSubnet2/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCPublicSubnet2RouteTableAssociation5A808732",
+            "trace": [
+              "new Subnet (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1021:5)",
+              "new PublicSubnet (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1153:5)",
+              "/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:882:32",
+              "Array.forEach (<anonymous>)",
+              "Vpc.createSubnetResources (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:864:28)",
+              "Vpc.createSubnets (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:859:12)",
+              "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:739:10)",
+              "new MyStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/stack.ts:55:16)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:7:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/MyStack/VPC/PublicSubnet2/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCPublicSubnet2DefaultRouteB7481BBA",
+            "trace": [
+              "PublicSubnet.addDefaultInternetRoute (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1031:19)",
+              "/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:758:22",
+              "Array.forEach (<anonymous>)",
+              "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:757:46)",
+              "new MyStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/stack.ts:55:16)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:7:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/MyStack/VPC/PublicSubnet2/EIP": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCPublicSubnet2EIP4947BC00",
+            "trace": [
+              "PublicSubnet.addNatGateway (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1161:21)",
+              "NatGatewayProvider.configureNat (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/nat.ts:108:27)",
+              "Vpc.createNatGateways (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:834:14)",
+              "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:764:14)",
+              "new MyStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/stack.ts:55:16)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:7:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/MyStack/VPC/PublicSubnet2/NATGateway": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCPublicSubnet2NATGateway3C070193",
+            "trace": [
+              "PublicSubnet.addNatGateway (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1159:17)",
+              "NatGatewayProvider.configureNat (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/nat.ts:108:27)",
+              "Vpc.createNatGateways (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:834:14)",
+              "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:764:14)",
+              "new MyStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/stack.ts:55:16)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:7:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/MyStack/VPC/PrivateSubnet1/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCPrivateSubnet1Subnet8BCA10E0",
+            "trace": [
+              "new Subnet (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:997:20)",
+              "new PrivateSubnet (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1185:5)",
+              "/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:887:33",
+              "Array.forEach (<anonymous>)",
+              "Vpc.createSubnetResources (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:864:28)",
+              "Vpc.createSubnets (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:859:12)",
+              "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:739:10)",
+              "new MyStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/stack.ts:55:16)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:7:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/MyStack/VPC/PrivateSubnet1/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCPrivateSubnet1RouteTableBE8A6027",
+            "trace": [
+              "new Subnet (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1015:19)",
+              "new PrivateSubnet (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1185:5)",
+              "/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:887:33",
+              "Array.forEach (<anonymous>)",
+              "Vpc.createSubnetResources (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:864:28)",
+              "Vpc.createSubnets (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:859:12)",
+              "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:739:10)",
+              "new MyStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/stack.ts:55:16)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:7:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/MyStack/VPC/PrivateSubnet1/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCPrivateSubnet1RouteTableAssociation347902D1",
+            "trace": [
+              "new Subnet (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1021:5)",
+              "new PrivateSubnet (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1185:5)",
+              "/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:887:33",
+              "Array.forEach (<anonymous>)",
+              "Vpc.createSubnetResources (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:864:28)",
+              "Vpc.createSubnets (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:859:12)",
+              "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:739:10)",
+              "new MyStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/stack.ts:55:16)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:7:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/MyStack/VPC/PrivateSubnet1/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCPrivateSubnet1DefaultRouteAE1D6490",
+            "trace": [
+              "PrivateSubnet.addRoute (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1063:19)",
+              "NatGatewayProvider.configureSubnet (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/nat.ts:125:12)",
+              "NatGatewayProvider.configureNat (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/nat.ts:118:12)",
+              "Vpc.createNatGateways (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:834:14)",
+              "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:764:14)",
+              "new MyStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/stack.ts:55:16)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:7:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/MyStack/VPC/PrivateSubnet2/Subnet": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCPrivateSubnet2SubnetCFCDAA7A",
+            "trace": [
+              "new Subnet (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:997:20)",
+              "new PrivateSubnet (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1185:5)",
+              "/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:887:33",
+              "Array.forEach (<anonymous>)",
+              "Vpc.createSubnetResources (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:864:28)",
+              "Vpc.createSubnets (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:859:12)",
+              "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:739:10)",
+              "new MyStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/stack.ts:55:16)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:7:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/MyStack/VPC/PrivateSubnet2/RouteTable": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCPrivateSubnet2RouteTable0A19E10E",
+            "trace": [
+              "new Subnet (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1015:19)",
+              "new PrivateSubnet (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1185:5)",
+              "/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:887:33",
+              "Array.forEach (<anonymous>)",
+              "Vpc.createSubnetResources (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:864:28)",
+              "Vpc.createSubnets (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:859:12)",
+              "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:739:10)",
+              "new MyStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/stack.ts:55:16)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:7:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/MyStack/VPC/PrivateSubnet2/RouteTableAssociation": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCPrivateSubnet2RouteTableAssociation0C73D413",
+            "trace": [
+              "new Subnet (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1021:5)",
+              "new PrivateSubnet (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1185:5)",
+              "/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:887:33",
+              "Array.forEach (<anonymous>)",
+              "Vpc.createSubnetResources (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:864:28)",
+              "Vpc.createSubnets (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:859:12)",
+              "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:739:10)",
+              "new MyStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/stack.ts:55:16)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:7:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/MyStack/VPC/PrivateSubnet2/DefaultRoute": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCPrivateSubnet2DefaultRouteF4F5CFD2",
+            "trace": [
+              "PrivateSubnet.addRoute (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:1063:19)",
+              "NatGatewayProvider.configureSubnet (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/nat.ts:125:12)",
+              "NatGatewayProvider.configureNat (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/nat.ts:118:12)",
+              "Vpc.createNatGateways (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:834:14)",
+              "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:764:14)",
+              "new MyStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/stack.ts:55:16)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:7:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/MyStack/VPC/IGW": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCIGWB7E252D3",
+            "trace": [
+              "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:746:19)",
+              "new MyStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/stack.ts:55:16)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:7:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/MyStack/VPC/VPCGW": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "VPCVPCGW99B986DC",
+            "trace": [
+              "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:752:19)",
+              "new MyStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/stack.ts:55:16)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:7:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/MyStack/Instance/InstanceSecurityGroup/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InstanceInstanceSecurityGroupF0E2D5BE",
+            "trace": [
+              "new SecurityGroup (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/security-group.ts:289:26)",
+              "new Instance (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/instance.ts:146:28)",
+              "new MyStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/stack.ts:57:5)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:7:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/MyStack/Instance/InstanceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InstanceInstanceRoleE9785DE5",
+            "trace": [
+              "new Role (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-iam/lib/role.ts:199:18)",
+              "new Instance (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/instance.ts:155:31)",
+              "new MyStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/stack.ts:57:5)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:7:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/MyStack/Instance/InstanceProfile": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InstanceInstanceProfileAB5AEF02",
+            "trace": [
+              "new Instance (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/instance.ts:160:24)",
+              "new MyStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/stack.ts:57:5)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:7:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/MyStack/Instance/AmiMap": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InstanceAmiMap051BFFE2",
+            "trace": [
+              "MyImage.getImage (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/stack.ts:42:20)",
+              "new Instance (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/instance.ts:165:44)",
+              "new MyStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/stack.ts:57:5)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:7:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/MyStack/Instance/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "InstanceC1063A87",
+            "trace": [
+              "new Instance (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/instance.ts:195:21)",
+              "new MyStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/stack.ts:57:5)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:7:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/MyStack/MyLayer/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyLayer38944FA5",
+            "trace": [
+              "new LayerVersion (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-lambda/lib/layers.ts:128:39)",
+              "new MyStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/stack.ts:66:19)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:7:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/MyStack/MyHandler/ServiceRole/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyHandlerServiceRoleFFA06653",
+            "trace": [
+              "new Role (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-iam/lib/role.ts:199:18)",
+              "new Function (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-lambda/lib/function.ts:307:31)",
+              "new MyStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/stack.ts:87:5)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:7:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/MyStack/MyHandler/Resource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "MyHandler6B74D312",
+            "trace": [
+              "new Function (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-lambda/lib/function.ts:369:35)",
+              "new MyStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/stack.ts:87:5)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:7:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/MyStack/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata",
+            "trace": [
+              "new MetadataResource (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/private/metadata-resource.ts:22:24)",
+              "/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/private/synthesis.ts:166:5",
+              "visit (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/private/synthesis.ts:231:5)",
+              "visit (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/private/synthesis.ts:227:5)",
+              "injectMetadataResources (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/private/synthesis.ts:157:3)",
+              "Object.synthesize (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/private/synthesis.ts:18:3)",
+              "App.synth (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/stage.ts:94:23)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:9:5)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/MyStack/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable",
+            "trace": [
+              "new MetadataResource (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/private/metadata-resource.ts:31:27)",
+              "/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/private/synthesis.ts:166:5",
+              "visit (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/private/synthesis.ts:231:5)",
+              "visit (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/private/synthesis.ts:227:5)",
+              "injectMetadataResources (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/private/synthesis.ts:157:3)",
+              "Object.synthesize (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/private/synthesis.ts:18:3)",
+              "App.synth (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/stage.ts:94:23)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:9:5)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ]
+      },
+      "displayName": "MyStack"
+    }
+  }
+}

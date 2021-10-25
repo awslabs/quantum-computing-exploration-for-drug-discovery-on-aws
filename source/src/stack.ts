@@ -1,45 +1,75 @@
 import * as path from 'path';
 import * as ec2 from '@aws-cdk/aws-ec2';
 import * as lambda from '@aws-cdk/aws-lambda';
-import { Construct, Stack, StackProps, CfnMapping, CfnParameter, CfnParameterProps, Aws } from '@aws-cdk/core';
+import {
+  Construct,
+  Stack,
+  StackProps,
+  CfnMapping,
+  CfnParameter,
+  CfnParameterProps,
+  Aws
+} from '@aws-cdk/core';
 
 export class SolutionStack extends Stack {
-  private _paramGroup: { [grpname: string]: CfnParameter[]} = {}
+  private _paramGroup: {
+    [grpname: string]: CfnParameter[]
+  } = {}
 
-  protected setDescription(description: string) { this.templateOptions.description = description; }
-  protected newParam(id: string, props?: CfnParameterProps): CfnParameter { return new CfnParameter(this, id, props); }
-  protected addGroupParam(props: { [key: string]: CfnParameter[]}): void {
+  protected setDescription(description: string) {
+    this.templateOptions.description = description;
+  }
+  protected newParam(id: string, props ? : CfnParameterProps): CfnParameter {
+    return new CfnParameter(this, id, props);
+  }
+  protected addGroupParam(props: {
+    [key: string]: CfnParameter[]
+  }): void {
     for (const key of Object.keys(props)) {
       const params = props[key];
-      this._paramGroup[key] = params.concat(this._paramGroup[key] ?? []);
+      this._paramGroup[key] = params.concat(this._paramGroup[key] ? ? []);
     }
     this._setParamGroups();
   }
   private _setParamGroups(): void {
-    if (!this.templateOptions.metadata) { this.templateOptions.metadata = {}; }
+    if (!this.templateOptions.metadata) {
+      this.templateOptions.metadata = {};
+    }
     const mkgrp = (label: string, params: CfnParameter[]) => {
       return {
-        Label: { default: label },
+        Label: {
+          default: label
+        },
         Parameters: params.map(p => {
           return p ? p.logicalId : '';
         }).filter(id => id),
       };
     };
     this.templateOptions.metadata['AWS::CloudFormation::Interface'] = {
-      ParameterGroups: Object.keys(this._paramGroup).map(key => mkgrp(key, this._paramGroup[key]) ),
+      ParameterGroups: Object.keys(this._paramGroup).map(key => mkgrp(key, this._paramGroup[key])),
     };
   }
 }
 
 class MyImage implements ec2.IMachineImage {
-  private mapping: { [k1: string]: { [k2: string]: any } } = {};
-  constructor(readonly amiMap: { [region: string]: string }) {
+  private mapping: {
+    [k1: string]: {
+      [k2: string]: any
+    }
+  } = {};
+  constructor(readonly amiMap: {
+    [region: string]: string
+  }) {
     for (const [region, ami] of Object.entries(amiMap)) {
-      this.mapping[region] = { ami };
+      this.mapping[region] = {
+        ami
+      };
     }
   }
   public getImage(parent: Construct): ec2.MachineImageConfig {
-    const amiMap = new CfnMapping(parent, 'AmiMap', { mapping: this.mapping });
+    const amiMap = new CfnMapping(parent, 'AmiMap', {
+      mapping: this.mapping
+    });
     return {
       imageId: amiMap.findInMap(Aws.REGION, 'ami'),
       userData: ec2.UserData.forLinux(),
@@ -52,7 +82,7 @@ export class MyStack extends SolutionStack {
   constructor(scope: Construct, id: string, props: StackProps = {}) {
     super(scope, id, props);
 
-    const vpc= new ec2.Vpc(this, 'VPC');
+    const vpc = new ec2.Vpc(this, 'VPC');
 
     new ec2.Instance(this, 'Instance', {
       vpc,
@@ -90,5 +120,14 @@ export class MyStack extends SolutionStack {
       handler: 'index.handler',
       layers: [layer],
     });
+  
+    // code for QC
+
+  
+
+    
+
+
+
   }
 }

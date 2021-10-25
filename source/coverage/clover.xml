@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1635143764642" clover="3.2.0">
-  <project timestamp="1635143764642" name="All files">
-    <metrics statements="31" coveredstatements="17" conditionals="8" coveredconditionals="1" methods="12" coveredmethods="4" elements="51" coveredelements="22" complexity="0" loc="31" ncloc="31" packages="1" files="1" classes="1"/>
+<coverage generated="1635149692525" clover="3.2.0">
+  <project timestamp="1635149692525" name="All files">
+    <metrics statements="31" coveredstatements="18" conditionals="8" coveredconditionals="1" methods="12" coveredmethods="4" elements="51" coveredelements="23" complexity="0" loc="31" ncloc="31" packages="1" files="1" classes="1"/>
     <file name="stack.ts" path="/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/stack.ts">
-      <metrics statements="31" coveredstatements="17" conditionals="8" coveredconditionals="1" methods="12" coveredmethods="4"/>
+      <metrics statements="31" coveredstatements="18" conditionals="8" coveredconditionals="1" methods="12" coveredmethods="4"/>
       <line num="1" count="1" type="stmt"/>
       <line num="2" count="1" type="stmt"/>
       <line num="3" count="1" type="stmt"/>
@@ -34,7 +34,7 @@
       <line num="55" count="1" type="stmt"/>
       <line num="57" count="1" type="stmt"/>
       <line num="66" count="1" type="stmt"/>
-      <line num="87" count="0" type="stmt"/>
+      <line num="87" count="1" type="stmt"/>
     </file>
   </project>
 </coverage>

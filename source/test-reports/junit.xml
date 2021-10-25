@@ -1,18 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuites name="jest tests" tests="1" failures="1" errors="0" time="8.515">
-  <testsuite name="undefined" errors="0" failures="1" skipped="0" timestamp="2021-10-25T06:35:56" time="8.39" tests="1">
-    <testcase classname=" Snapshot" name=" Snapshot" time="4.87">
-      <failure>Error: Failed to bundle asset test/MyLayer/Code/Stage, bundle output is located at /private/var/folders/nf/84njry257j96mb17dp1k6xr4ns0kp7/T/cdk.outZJ9m27/asset.ed0039ce1464f5fe3b3e767aa85cc570837f7ec31beb592d971c75db4f3050fe-error: Error: docker exited with status 125
-    at AssetStaging.bundle (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/asset-staging.ts:398:13)
-    at AssetStaging.stageByBundling (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/asset-staging.ts:246:10)
-    at stageThisAsset (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/asset-staging.ts:137:35)
-    at Cache.obtain (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/private/cache.ts:24:13)
-    at new AssetStaging (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/asset-staging.ts:162:44)
-    at new Asset (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-s3-assets/lib/asset.ts:68:21)
-    at AssetCode.bind (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-lambda/lib/code.ts:180:20)
-    at new LayerVersion (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-lambda/lib/layers.ts:120:29)
-    at new MyStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/stack.ts:66:19)
-    at Object.&lt;anonymous&gt; (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/test/main.test.ts:7:17)</failure>
+<testsuites name="jest tests" tests="1" failures="0" errors="0" time="123.007">
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2021-10-25T08:12:49" time="122.827" tests="1">
+    <testcase classname=" Snapshot" name=" Snapshot" time="119.205">
     </testcase>
   </testsuite>
 </testsuites>

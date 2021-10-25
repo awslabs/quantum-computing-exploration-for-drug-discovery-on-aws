@@ -1,0 +1,44 @@
+{
+  "version": "13.0.0",
+  "files": {
+    "ed0039ce1464f5fe3b3e767aa85cc570837f7ec31beb592d971c75db4f3050fe": {
+      "source": {
+        "path": "asset.ed0039ce1464f5fe3b3e767aa85cc570837f7ec31beb592d971c75db4f3050fe",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "us-east-1": {
+          "bucketName": "cdk-080766874269-us-east-1",
+          "objectKey": "SO8029: Quantum Computing in HCLS/latest/ed0039ce1464f5fe3b3e767aa85cc570837f7ec31beb592d971c75db4f3050fe.zip",
+          "region": "us-east-1"
+        }
+      }
+    },
+    "c8ffddbe3e327bdd704b2c819d8bd3e96f670f41609a1a78b38cf8eceb9a1a55": {
+      "source": {
+        "path": "asset.c8ffddbe3e327bdd704b2c819d8bd3e96f670f41609a1a78b38cf8eceb9a1a55",
+        "packaging": "zip"
+      },
+      "destinations": {
+        "us-east-1": {
+          "bucketName": "cdk-080766874269-us-east-1",
+          "objectKey": "SO8029: Quantum Computing in HCLS/latest/c8ffddbe3e327bdd704b2c819d8bd3e96f670f41609a1a78b38cf8eceb9a1a55.zip",
+          "region": "us-east-1"
+        }
+      }
+    },
+    "MyStack.template.json": {
+      "source": {
+        "path": "MyStack.template.json",
+        "packaging": "file"
+      },
+      "destinations": {
+        "current_account-current_region": {
+          "bucketName": "cdk-080766874269",
+          "objectKey": "SO8029: Quantum Computing in HCLS/latest/MyStack.template.json"
+        }
+      }
+    }
+  },
+  "dockerImages": {}
+}
