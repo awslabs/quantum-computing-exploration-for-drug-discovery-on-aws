@@ -4,6 +4,10 @@ import * as ec2 from '@aws-cdk/aws-ec2';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as s3 from '@aws-cdk/aws-s3';
 import * as iam from '@aws-cdk/aws-iam'
+import * as batch from '@aws-cdk/aws-batch'
+import * as ecs from '@aws-cdk/aws-ecs'
+import * as sfn from '@aws-cdk/aws-stepfunctions';
+import * as tasks from '@aws-cdk/aws-stepfunctions-tasks';
 import {
   CfnNotebookInstanceLifecycleConfig,
   CfnNotebookInstance
@@ -24,6 +28,7 @@ import {
 } from 'fs';
 
 
+
 export class SolutionStack extends Stack {
   private _paramGroup: {
     [grpname: string]: CfnParameter[]
@@ -40,7 +45,7 @@ export class SolutionStack extends Stack {
   }): void {
     for (const key of Object.keys(props)) {
       const params = props[key];
-      this._paramGroup[key] = params.concat(this._paramGroup[key] ? ? []);
+      this._paramGroup[key] = params.concat(this._paramGroup[key] ? this._paramGroup[key] : []);
     }
     this._setParamGroups();
   }
@@ -140,7 +145,7 @@ export class QCLifeScienceStack extends SolutionStack {
 
   // Methods //////////////////////////
 
-  createNotebookIamRole(): iam.Role {
+  private createNotebookIamRole(): iam.Role {
 
     const role = new iam.Role(this, 'gcr-qc-notebook-role', {
       assumedBy: new iam.ServicePrincipal('sagemaker.amazonaws.com'),
@@ -150,7 +155,8 @@ export class QCLifeScienceStack extends SolutionStack {
     role.addToPolicy(new iam.PolicyStatement({
       resources: [
         'arn:aws:s3:::amazon-braket-*',
-        'arn:aws:s3:::braketnotebookcdk-*'
+        'arn:aws:s3:::braketnotebookcdk-*',
+        'arn:aws:s3:::qcstack*'
       ],
       actions: [
         "s3:GetObject",
@@ -191,8 +197,6 @@ export class QCLifeScienceStack extends SolutionStack {
     const INSTANCE_TYPE = 'ml.m5.4xlarge'
     const CODE_REPO = 'https://github.com/amliuyong/aws-gcr-qc-life-science-public.git'
 
-    // const vpc = new ec2.Vpc(this, 'VPC');
-
     const instanceTypeParam = new cdk.CfnParameter(this, "NotebookInstanceType", {
       type: "String",
       default: INSTANCE_TYPE,
@@ -207,7 +211,7 @@ export class QCLifeScienceStack extends SolutionStack {
 
     const s3bucket = new s3.Bucket(this, 'amazon-braket', {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
-      bucketName: `amazon-braket-gcrqc-${this.account}-${this.region}`,
+      bucketName: `amazon-braket-${this.stackName.toLowerCase()}-${this.account}-${this.region}`,
       autoDeleteObjects: true
     });
 
@@ -233,7 +237,6 @@ export class QCLifeScienceStack extends SolutionStack {
       volumeSizeInGb: 50,
 
     });
-
     // Output //////////////////////////
 
     new cdk.CfnOutput(this, "notebookName", {
@@ -253,5 +256,173 @@ export class QCLifeScienceStack extends SolutionStack {
       description: "Notebook URL"
     });
 
+
+    // BATCH  //////////////////////////
+    const vpc = new ec2.Vpc(this, 'VPC');
+    const batchEnvironment = new batch.ComputeEnvironment(this, 'Batch-Compute-Env', {
+      computeResources: {
+        type: batch.ComputeResourceType.FARGATE,
+        vpc
+      }
+    });
+
+    const jobQueue = new batch.JobQueue(this, 'JobQueue', {
+      computeEnvironments: [{
+        computeEnvironment: batchEnvironment,
+        order: 1,
+      }, ],
+    });
+
+    const Advantage_system1 = 'arn:aws:braket:::device/qpu/d-wave/Advantage_system1'
+    const vcpus = 4
+    const maxMemoryInGB = 9
+
+    const jobDef = this.createBatchJobDef(1, 4, Advantage_system1, vcpus,
+      maxMemoryInGB, s3bucket.bucketName)
+
+    new cdk.CfnOutput(this, "batchJobDef", {
+      value: jobDef.jobDefinitionName,
+      description: "Batch Job Definition Name"
+    });
+
+    new cdk.CfnOutput(this, "jobQueue", {
+      value: jobQueue.jobQueueName,
+      description: "Batch Job Queue Name"
+    });
+
+    // step functions
+    const vcpusMemValues = [
+      [1, 2],
+      [2, 4],
+      [4, 8]
+    ];
+    const mValues = [2, 4];
+    const dValues = [4];
+    const deviceArns = [
+      'arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6',
+      'arn:aws:braket:::device/qpu/d-wave/Advantage_system1'
+    ]
+
+    const taskList = [];
+
+    for (let m of mValues) {
+      for (let d of dValues) {
+        for (let deviceArn of deviceArns) {
+          const deviceName = deviceArn.split('/').pop();
+          for (let [vcpus, memory] of vcpusMemValues) {
+            const jobName = `M${m}-D${d}-${deviceName}-Vcpus${vcpus}-Mem${memory}`
+            const batchTask = new tasks.BatchSubmitJob(this, `${jobName}`, {
+              jobDefinitionArn: jobDef.jobDefinitionArn,
+              jobName,
+              jobQueueArn: jobQueue.jobQueueArn,
+              containerOverrides: {
+                command: ['--M', `${m}`, '--D', `${d}`, '--device-arn',
+                  deviceArn, '--aws-region', this.region, '--instance-type', `vcpus-${vcpus}-mem-${memory}`,
+                  '--s3-bucket', s3bucket.bucketName
+                ],
+                memory: cdk.Size.gibibytes(memory),
+                vcpus
+              },
+              integrationPattern: sfn.IntegrationPattern.RUN_JOB
+
+            });
+            taskList.push(batchTask);
+          }
+        }
+      }
+    }
+
+    const firstTask = taskList.shift();
+    const secondTask = taskList.shift();
+    let definition = null;
+    if (firstTask && secondTask) {
+      definition = firstTask.next(secondTask);
+      for (let stepFuncTask of taskList) {
+        definition = definition.next(stepFuncTask)
+      }
+    }
+
+    if (definition) {
+      const stateMachine = new sfn.StateMachine(this, 'StateMachine', {
+        definition,
+        timeout: cdk.Duration.hours(2),
+      });
+
+      new cdk.CfnOutput(this, "stateMachine", {
+        value: stateMachine.stateMachineName,
+        description: "state MachineName"
+      });
+    }
+
   }
+
+  private createBatchJobDef(m: number, d: number, device: string, vcpus: number, maxMemoryInGB: number, bucketName: string): batch.JobDefinition {
+    return new batch.JobDefinition(this, 'batch-job-def', {
+      platformCapabilities: [batch.PlatformCapabilities.FARGATE],
+      container: {
+        image: ecs.ContainerImage.fromAsset('./src/batch-experiment'),
+        command: ['--M', `${m}`, '--D', `${d}`, '--device-arn',
+          device, '--aws-region', this.region, '--instance-type', `vcpus-${vcpus}-mem-${maxMemoryInGB}`,
+          '--s3-bucket', bucketName
+        ],
+        vcpus,
+        memoryLimitMiB: maxMemoryInGB * 1024,
+        executionRole: this.createBatchJobExecutionRole('executionRole'),
+        jobRole: this.createBatchJobExecutionRole('jobRole'),
+        //privileged: true
+      },
+      timeout: cdk.Duration.seconds(3600 * 2),
+      retryAttempts: 1
+    });
+  }
+
+  private createBatchJobExecutionRole(roleName: string): iam.Role {
+    const role = new iam.Role(this, roleName, {
+      assumedBy: new iam.ServicePrincipal('ecs-tasks.amazonaws.com'),
+    });
+
+    role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonBraketFullAccess'))
+    role.addToPolicy(new iam.PolicyStatement({
+      resources: [
+        'arn:aws:s3:::amazon-braket-*',
+        'arn:aws:s3:::braketnotebookcdk-*',
+        'arn:aws:s3:::qcstack*'
+      ],
+      actions: [
+        "s3:GetObject",
+        "s3:PutObject",
+        "s3:ListBucket"
+      ]
+    }));
+
+    role.addToPolicy(new iam.PolicyStatement({
+      resources: [
+        `arn:aws:logs:*:${this.account}:log-group:/aws/batch/*`
+      ],
+      actions: [
+        "logs:CreateLogStream",
+        "logs:DescribeLogStreams",
+        "logs:PutLogEvents",
+        "logs:CreateLogGroup"
+      ]
+    }));
+
+    role.addToPolicy(new iam.PolicyStatement({
+      resources: [
+        '*'
+      ],
+      actions: [
+        "braket:*",
+        "ecr:*",
+        "s3:*"
+      ]
+    }));
+
+    return role
+  }
+
+
+
+
+
 }

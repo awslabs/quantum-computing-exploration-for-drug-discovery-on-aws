@@ -5,12 +5,16 @@ import {
   BootstraplessStackSynthesizer
 } from 'cdk-bootstrapless-synthesizer';
 import {
-  MyStack
+  QCLifeScienceStack
 } from './stack';
 
 const app = new App();
 
-new MyStack(app, 'MyStack', {
+// new MyStack(app, 'MyStack', {
+//   synthesizer: newSynthesizer()
+// });
+
+new QCLifeScienceStack(app, "QCStack", {
   synthesizer: newSynthesizer()
 });
 
