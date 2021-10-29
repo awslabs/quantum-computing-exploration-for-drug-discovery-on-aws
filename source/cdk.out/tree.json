@@ -242,6 +242,40 @@
                   "fqn": "@aws-cdk/core.Construct",
                   "version": "1.129.0"
                 }
+              },
+              "c528704b2cac3dd8a479661a28123a8ecb9aaf0f81c9616c1f467b2c23adb094": {
+                "id": "c528704b2cac3dd8a479661a28123a8ecb9aaf0f81c9616c1f467b2c23adb094",
+                "path": "QCStack/AssetParameters/c528704b2cac3dd8a479661a28123a8ecb9aaf0f81c9616c1f467b2c23adb094",
+                "children": {
+                  "S3Bucket": {
+                    "id": "S3Bucket",
+                    "path": "QCStack/AssetParameters/c528704b2cac3dd8a479661a28123a8ecb9aaf0f81c9616c1f467b2c23adb094/S3Bucket",
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/core.CfnParameter",
+                      "version": "1.129.0"
+                    }
+                  },
+                  "S3VersionKey": {
+                    "id": "S3VersionKey",
+                    "path": "QCStack/AssetParameters/c528704b2cac3dd8a479661a28123a8ecb9aaf0f81c9616c1f467b2c23adb094/S3VersionKey",
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/core.CfnParameter",
+                      "version": "1.129.0"
+                    }
+                  },
+                  "ArtifactHash": {
+                    "id": "ArtifactHash",
+                    "path": "QCStack/AssetParameters/c528704b2cac3dd8a479661a28123a8ecb9aaf0f81c9616c1f467b2c23adb094/ArtifactHash",
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/core.CfnParameter",
+                      "version": "1.129.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/core.Construct",
+                  "version": "1.129.0"
+                }
               }
             },
             "constructInfo": {
@@ -443,6 +477,291 @@
             "path": "QCStack/notebookUrl",
             "constructInfo": {
               "fqn": "@aws-cdk/core.CfnOutput",
+              "version": "1.129.0"
+            }
+          },
+          "executionRole": {
+            "id": "executionRole",
+            "path": "QCStack/executionRole",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "QCStack/executionRole/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                  "aws:cdk:cloudformation:props": {
+                    "assumeRolePolicyDocument": {
+                      "Statement": [
+                        {
+                          "Action": "sts:AssumeRole",
+                          "Effect": "Allow",
+                          "Principal": {
+                            "Service": "ecs-tasks.amazonaws.com"
+                          }
+                        }
+                      ],
+                      "Version": "2012-10-17"
+                    },
+                    "managedPolicyArns": [
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "arn:",
+                            {
+                              "Ref": "AWS::Partition"
+                            },
+                            ":iam::aws:policy/AmazonBraketFullAccess"
+                          ]
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-iam.CfnRole",
+                  "version": "1.129.0"
+                }
+              },
+              "DefaultPolicy": {
+                "id": "DefaultPolicy",
+                "path": "QCStack/executionRole/DefaultPolicy",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "QCStack/executionRole/DefaultPolicy/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                      "aws:cdk:cloudformation:props": {
+                        "policyDocument": {
+                          "Statement": [
+                            {
+                              "Action": [
+                                "s3:GetObject",
+                                "s3:PutObject",
+                                "s3:ListBucket"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": [
+                                "arn:aws:s3:::amazon-braket-*",
+                                "arn:aws:s3:::braketnotebookcdk-*",
+                                "arn:aws:s3:::qcstack*"
+                              ]
+                            },
+                            {
+                              "Action": [
+                                "logs:CreateLogStream",
+                                "logs:DescribeLogStreams",
+                                "logs:PutLogEvents",
+                                "logs:CreateLogGroup"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": {
+                                "Fn::Join": [
+                                  "",
+                                  [
+                                    "arn:aws:logs:*:",
+                                    {
+                                      "Ref": "AWS::AccountId"
+                                    },
+                                    ":log-group:/aws/batch/*"
+                                  ]
+                                ]
+                              }
+                            },
+                            {
+                              "Action": [
+                                "braket:*",
+                                "ecr:*",
+                                "s3:*"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": "*"
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "policyName": "executionRoleDefaultPolicy90A5691A",
+                        "roles": [
+                          {
+                            "Ref": "executionRole2F5D1D4F"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-iam.CfnPolicy",
+                      "version": "1.129.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-iam.Policy",
+                  "version": "1.129.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-iam.Role",
+              "version": "1.129.0"
+            }
+          },
+          "jobRole": {
+            "id": "jobRole",
+            "path": "QCStack/jobRole",
+            "children": {
+              "Resource": {
+                "id": "Resource",
+                "path": "QCStack/jobRole/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                  "aws:cdk:cloudformation:props": {
+                    "assumeRolePolicyDocument": {
+                      "Statement": [
+                        {
+                          "Action": "sts:AssumeRole",
+                          "Effect": "Allow",
+                          "Principal": {
+                            "Service": "ecs-tasks.amazonaws.com"
+                          }
+                        }
+                      ],
+                      "Version": "2012-10-17"
+                    },
+                    "managedPolicyArns": [
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "arn:",
+                            {
+                              "Ref": "AWS::Partition"
+                            },
+                            ":iam::aws:policy/AmazonBraketFullAccess"
+                          ]
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-iam.CfnRole",
+                  "version": "1.129.0"
+                }
+              },
+              "DefaultPolicy": {
+                "id": "DefaultPolicy",
+                "path": "QCStack/jobRole/DefaultPolicy",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "QCStack/jobRole/DefaultPolicy/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                      "aws:cdk:cloudformation:props": {
+                        "policyDocument": {
+                          "Statement": [
+                            {
+                              "Action": [
+                                "s3:GetObject",
+                                "s3:PutObject",
+                                "s3:ListBucket"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": [
+                                "arn:aws:s3:::amazon-braket-*",
+                                "arn:aws:s3:::braketnotebookcdk-*",
+                                "arn:aws:s3:::qcstack*"
+                              ]
+                            },
+                            {
+                              "Action": [
+                                "logs:CreateLogStream",
+                                "logs:DescribeLogStreams",
+                                "logs:PutLogEvents",
+                                "logs:CreateLogGroup"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": {
+                                "Fn::Join": [
+                                  "",
+                                  [
+                                    "arn:aws:logs:*:",
+                                    {
+                                      "Ref": "AWS::AccountId"
+                                    },
+                                    ":log-group:/aws/batch/*"
+                                  ]
+                                ]
+                              }
+                            },
+                            {
+                              "Action": [
+                                "braket:*",
+                                "ecr:*",
+                                "s3:*"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": "*"
+                            },
+                            {
+                              "Action": [
+                                "ecr:BatchCheckLayerAvailability",
+                                "ecr:GetDownloadUrlForLayer",
+                                "ecr:BatchGetImage"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": {
+                                "Fn::Join": [
+                                  "",
+                                  [
+                                    "arn:",
+                                    {
+                                      "Ref": "AWS::Partition"
+                                    },
+                                    ":ecr:",
+                                    {
+                                      "Ref": "AWS::Region"
+                                    },
+                                    ":",
+                                    {
+                                      "Ref": "AWS::AccountId"
+                                    },
+                                    ":repository/aws-cdk/assets"
+                                  ]
+                                ]
+                              }
+                            },
+                            {
+                              "Action": "ecr:GetAuthorizationToken",
+                              "Effect": "Allow",
+                              "Resource": "*"
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "policyName": "jobRoleDefaultPolicy0F8702BD",
+                        "roles": [
+                          {
+                            "Ref": "jobRoleA2173686"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-iam.CfnPolicy",
+                      "version": "1.129.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-iam.Policy",
+                  "version": "1.129.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-iam.Role",
               "version": "1.129.0"
             }
           },
@@ -1127,6 +1446,83 @@
                   "version": "1.129.0"
                 }
               },
+              "Ecs-Instance-Role": {
+                "id": "Ecs-Instance-Role",
+                "path": "QCStack/Batch-Compute-Env/Ecs-Instance-Role",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "QCStack/Batch-Compute-Env/Ecs-Instance-Role/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                      "aws:cdk:cloudformation:props": {
+                        "assumeRolePolicyDocument": {
+                          "Statement": [
+                            {
+                              "Action": "sts:AssumeRole",
+                              "Effect": "Allow",
+                              "Principal": {
+                                "Service": {
+                                  "Fn::Join": [
+                                    "",
+                                    [
+                                      "ec2.",
+                                      {
+                                        "Ref": "AWS::URLSuffix"
+                                      }
+                                    ]
+                                  ]
+                                }
+                              }
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "managedPolicyArns": [
+                          {
+                            "Fn::Join": [
+                              "",
+                              [
+                                "arn:",
+                                {
+                                  "Ref": "AWS::Partition"
+                                },
+                                ":iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role"
+                              ]
+                            ]
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-iam.CfnRole",
+                      "version": "1.129.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-iam.Role",
+                  "version": "1.129.0"
+                }
+              },
+              "Instance-Profile": {
+                "id": "Instance-Profile",
+                "path": "QCStack/Batch-Compute-Env/Instance-Profile",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::IAM::InstanceProfile",
+                  "aws:cdk:cloudformation:props": {
+                    "roles": [
+                      {
+                        "Ref": "BatchComputeEnvEcsInstanceRoleD6AAF672"
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-iam.CfnInstanceProfile",
+                  "version": "1.129.0"
+                }
+              },
               "Resource-Service-Instance-Role": {
                 "id": "Resource-Service-Instance-Role",
                 "path": "QCStack/Batch-Compute-Env/Resource-Service-Instance-Role",
@@ -1201,7 +1597,21 @@
                           "Ref": "VPCPrivateSubnet2SubnetCFCDAA7A"
                         }
                       ],
-                      "type": "FARGATE"
+                      "type": "EC2",
+                      "allocationStrategy": "BEST_FIT",
+                      "instanceRole": {
+                        "Fn::GetAtt": [
+                          "BatchComputeEnvInstanceProfileED642DDB",
+                          "Arn"
+                        ]
+                      },
+                      "instanceTypes": [
+                        "c5.large",
+                        "c5.xlarge",
+                        "c5.2xlarge",
+                        "c5.4xlarge"
+                      ],
+                      "minvCpus": 0
                     },
                     "serviceRole": {
                       "Fn::GetAtt": [
@@ -1256,306 +1666,21 @@
               "version": "1.129.0"
             }
           },
-          "executionRole": {
-            "id": "executionRole",
-            "path": "QCStack/executionRole",
-            "children": {
-              "Resource": {
-                "id": "Resource",
-                "path": "QCStack/executionRole/Resource",
-                "attributes": {
-                  "aws:cdk:cloudformation:type": "AWS::IAM::Role",
-                  "aws:cdk:cloudformation:props": {
-                    "assumeRolePolicyDocument": {
-                      "Statement": [
-                        {
-                          "Action": "sts:AssumeRole",
-                          "Effect": "Allow",
-                          "Principal": {
-                            "Service": "ecs-tasks.amazonaws.com"
-                          }
-                        }
-                      ],
-                      "Version": "2012-10-17"
-                    },
-                    "managedPolicyArns": [
-                      {
-                        "Fn::Join": [
-                          "",
-                          [
-                            "arn:",
-                            {
-                              "Ref": "AWS::Partition"
-                            },
-                            ":iam::aws:policy/AmazonBraketFullAccess"
-                          ]
-                        ]
-                      }
-                    ]
-                  }
-                },
-                "constructInfo": {
-                  "fqn": "@aws-cdk/aws-iam.CfnRole",
-                  "version": "1.129.0"
-                }
-              },
-              "DefaultPolicy": {
-                "id": "DefaultPolicy",
-                "path": "QCStack/executionRole/DefaultPolicy",
-                "children": {
-                  "Resource": {
-                    "id": "Resource",
-                    "path": "QCStack/executionRole/DefaultPolicy/Resource",
-                    "attributes": {
-                      "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
-                      "aws:cdk:cloudformation:props": {
-                        "policyDocument": {
-                          "Statement": [
-                            {
-                              "Action": [
-                                "s3:GetObject",
-                                "s3:PutObject",
-                                "s3:ListBucket"
-                              ],
-                              "Effect": "Allow",
-                              "Resource": [
-                                "arn:aws:s3:::amazon-braket-*",
-                                "arn:aws:s3:::braketnotebookcdk-*",
-                                "arn:aws:s3:::qcstack*"
-                              ]
-                            },
-                            {
-                              "Action": [
-                                "logs:CreateLogStream",
-                                "logs:DescribeLogStreams",
-                                "logs:PutLogEvents",
-                                "logs:CreateLogGroup"
-                              ],
-                              "Effect": "Allow",
-                              "Resource": {
-                                "Fn::Join": [
-                                  "",
-                                  [
-                                    "arn:aws:logs:*:",
-                                    {
-                                      "Ref": "AWS::AccountId"
-                                    },
-                                    ":log-group:/aws/batch/*"
-                                  ]
-                                ]
-                              }
-                            },
-                            {
-                              "Action": [
-                                "braket:*",
-                                "ecr:*",
-                                "s3:*"
-                              ],
-                              "Effect": "Allow",
-                              "Resource": "*"
-                            }
-                          ],
-                          "Version": "2012-10-17"
-                        },
-                        "policyName": "executionRoleDefaultPolicy90A5691A",
-                        "roles": [
-                          {
-                            "Ref": "executionRole2F5D1D4F"
-                          }
-                        ]
-                      }
-                    },
-                    "constructInfo": {
-                      "fqn": "@aws-cdk/aws-iam.CfnPolicy",
-                      "version": "1.129.0"
-                    }
-                  }
-                },
-                "constructInfo": {
-                  "fqn": "@aws-cdk/aws-iam.Policy",
-                  "version": "1.129.0"
-                }
-              }
-            },
-            "constructInfo": {
-              "fqn": "@aws-cdk/aws-iam.Role",
-              "version": "1.129.0"
-            }
-          },
-          "jobRole": {
-            "id": "jobRole",
-            "path": "QCStack/jobRole",
-            "children": {
-              "Resource": {
-                "id": "Resource",
-                "path": "QCStack/jobRole/Resource",
-                "attributes": {
-                  "aws:cdk:cloudformation:type": "AWS::IAM::Role",
-                  "aws:cdk:cloudformation:props": {
-                    "assumeRolePolicyDocument": {
-                      "Statement": [
-                        {
-                          "Action": "sts:AssumeRole",
-                          "Effect": "Allow",
-                          "Principal": {
-                            "Service": "ecs-tasks.amazonaws.com"
-                          }
-                        }
-                      ],
-                      "Version": "2012-10-17"
-                    },
-                    "managedPolicyArns": [
-                      {
-                        "Fn::Join": [
-                          "",
-                          [
-                            "arn:",
-                            {
-                              "Ref": "AWS::Partition"
-                            },
-                            ":iam::aws:policy/AmazonBraketFullAccess"
-                          ]
-                        ]
-                      }
-                    ]
-                  }
-                },
-                "constructInfo": {
-                  "fqn": "@aws-cdk/aws-iam.CfnRole",
-                  "version": "1.129.0"
-                }
-              },
-              "DefaultPolicy": {
-                "id": "DefaultPolicy",
-                "path": "QCStack/jobRole/DefaultPolicy",
-                "children": {
-                  "Resource": {
-                    "id": "Resource",
-                    "path": "QCStack/jobRole/DefaultPolicy/Resource",
-                    "attributes": {
-                      "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
-                      "aws:cdk:cloudformation:props": {
-                        "policyDocument": {
-                          "Statement": [
-                            {
-                              "Action": [
-                                "s3:GetObject",
-                                "s3:PutObject",
-                                "s3:ListBucket"
-                              ],
-                              "Effect": "Allow",
-                              "Resource": [
-                                "arn:aws:s3:::amazon-braket-*",
-                                "arn:aws:s3:::braketnotebookcdk-*",
-                                "arn:aws:s3:::qcstack*"
-                              ]
-                            },
-                            {
-                              "Action": [
-                                "logs:CreateLogStream",
-                                "logs:DescribeLogStreams",
-                                "logs:PutLogEvents",
-                                "logs:CreateLogGroup"
-                              ],
-                              "Effect": "Allow",
-                              "Resource": {
-                                "Fn::Join": [
-                                  "",
-                                  [
-                                    "arn:aws:logs:*:",
-                                    {
-                                      "Ref": "AWS::AccountId"
-                                    },
-                                    ":log-group:/aws/batch/*"
-                                  ]
-                                ]
-                              }
-                            },
-                            {
-                              "Action": [
-                                "braket:*",
-                                "ecr:*",
-                                "s3:*"
-                              ],
-                              "Effect": "Allow",
-                              "Resource": "*"
-                            },
-                            {
-                              "Action": [
-                                "ecr:BatchCheckLayerAvailability",
-                                "ecr:GetDownloadUrlForLayer",
-                                "ecr:BatchGetImage"
-                              ],
-                              "Effect": "Allow",
-                              "Resource": {
-                                "Fn::Join": [
-                                  "",
-                                  [
-                                    "arn:",
-                                    {
-                                      "Ref": "AWS::Partition"
-                                    },
-                                    ":ecr:",
-                                    {
-                                      "Ref": "AWS::Region"
-                                    },
-                                    ":",
-                                    {
-                                      "Ref": "AWS::AccountId"
-                                    },
-                                    ":repository/aws-cdk/assets"
-                                  ]
-                                ]
-                              }
-                            },
-                            {
-                              "Action": "ecr:GetAuthorizationToken",
-                              "Effect": "Allow",
-                              "Resource": "*"
-                            }
-                          ],
-                          "Version": "2012-10-17"
-                        },
-                        "policyName": "jobRoleDefaultPolicy0F8702BD",
-                        "roles": [
-                          {
-                            "Ref": "jobRoleA2173686"
-                          }
-                        ]
-                      }
-                    },
-                    "constructInfo": {
-                      "fqn": "@aws-cdk/aws-iam.CfnPolicy",
-                      "version": "1.129.0"
-                    }
-                  }
-                },
-                "constructInfo": {
-                  "fqn": "@aws-cdk/aws-iam.Policy",
-                  "version": "1.129.0"
-                }
-              }
-            },
-            "constructInfo": {
-              "fqn": "@aws-cdk/aws-iam.Role",
-              "version": "1.129.0"
-            }
-          },
-          "batch-job-def": {
-            "id": "batch-job-def",
-            "path": "QCStack/batch-job-def",
+          "QCJob_vCpus2_Mem2G": {
+            "id": "QCJob_vCpus2_Mem2G",
+            "path": "QCStack/QCJob_vCpus2_Mem2G",
             "children": {
               "Resource-Batch-Job-Container-Definition": {
                 "id": "Resource-Batch-Job-Container-Definition",
-                "path": "QCStack/batch-job-def/Resource-Batch-Job-Container-Definition",
+                "path": "QCStack/QCJob_vCpus2_Mem2G/Resource-Batch-Job-Container-Definition",
                 "children": {
                   "AssetImage": {
                     "id": "AssetImage",
-                    "path": "QCStack/batch-job-def/Resource-Batch-Job-Container-Definition/AssetImage",
+                    "path": "QCStack/QCJob_vCpus2_Mem2G/Resource-Batch-Job-Container-Definition/AssetImage",
                     "children": {
                       "Staging": {
                         "id": "Staging",
-                        "path": "QCStack/batch-job-def/Resource-Batch-Job-Container-Definition/AssetImage/Staging",
+                        "path": "QCStack/QCJob_vCpus2_Mem2G/Resource-Batch-Job-Container-Definition/AssetImage/Staging",
                         "constructInfo": {
                           "fqn": "@aws-cdk/core.AssetStaging",
                           "version": "1.129.0"
@@ -1563,7 +1688,7 @@
                       },
                       "Repository": {
                         "id": "Repository",
-                        "path": "QCStack/batch-job-def/Resource-Batch-Job-Container-Definition/AssetImage/Repository",
+                        "path": "QCStack/QCJob_vCpus2_Mem2G/Resource-Batch-Job-Container-Definition/AssetImage/Repository",
                         "constructInfo": {
                           "fqn": "@aws-cdk/aws-ecr.RepositoryBase",
                           "version": "1.129.0"
@@ -1583,11 +1708,11 @@
               },
               "AssetImage": {
                 "id": "AssetImage",
-                "path": "QCStack/batch-job-def/AssetImage",
+                "path": "QCStack/QCJob_vCpus2_Mem2G/AssetImage",
                 "children": {
                   "Staging": {
                     "id": "Staging",
-                    "path": "QCStack/batch-job-def/AssetImage/Staging",
+                    "path": "QCStack/QCJob_vCpus2_Mem2G/AssetImage/Staging",
                     "constructInfo": {
                       "fqn": "@aws-cdk/core.AssetStaging",
                       "version": "1.129.0"
@@ -1595,7 +1720,7 @@
                   },
                   "Repository": {
                     "id": "Repository",
-                    "path": "QCStack/batch-job-def/AssetImage/Repository",
+                    "path": "QCStack/QCJob_vCpus2_Mem2G/AssetImage/Repository",
                     "constructInfo": {
                       "fqn": "@aws-cdk/aws-ecr.RepositoryBase",
                       "version": "1.129.0"
@@ -1609,7 +1734,7 @@
               },
               "Resource": {
                 "id": "Resource",
-                "path": "QCStack/batch-job-def/Resource",
+                "path": "QCStack/QCJob_vCpus2_Mem2G/Resource",
                 "attributes": {
                   "aws:cdk:cloudformation:type": "AWS::Batch::JobDefinition",
                   "aws:cdk:cloudformation:props": {
@@ -1627,7 +1752,7 @@
                           "Ref": "AWS::Region"
                         },
                         "--instance-type",
-                        "vcpus-4-mem-9",
+                        "vCpus2_Mem_2G",
                         "--s3-bucket",
                         {
                           "Ref": "amazonbraketC6E30921"
@@ -1664,21 +1789,21 @@
                           "Arn"
                         ]
                       },
-                      "privileged": false,
+                      "privileged": true,
                       "readonlyRootFilesystem": false,
                       "resourceRequirements": [
                         {
                           "type": "VCPU",
-                          "value": "4"
+                          "value": "2"
                         },
                         {
                           "type": "MEMORY",
-                          "value": "9216"
+                          "value": "2048"
                         }
                       ]
                     },
                     "platformCapabilities": [
-                      "FARGATE"
+                      "EC2"
                     ],
                     "retryStrategy": {
                       "attempts": 1
@@ -1699,11 +1824,477 @@
               "version": "1.129.0"
             }
           },
-          "batchJobDef": {
-            "id": "batchJobDef",
-            "path": "QCStack/batchJobDef",
+          "QCJob_vCpus4_Mem4G": {
+            "id": "QCJob_vCpus4_Mem4G",
+            "path": "QCStack/QCJob_vCpus4_Mem4G",
+            "children": {
+              "Resource-Batch-Job-Container-Definition": {
+                "id": "Resource-Batch-Job-Container-Definition",
+                "path": "QCStack/QCJob_vCpus4_Mem4G/Resource-Batch-Job-Container-Definition",
+                "children": {
+                  "AssetImage": {
+                    "id": "AssetImage",
+                    "path": "QCStack/QCJob_vCpus4_Mem4G/Resource-Batch-Job-Container-Definition/AssetImage",
+                    "children": {
+                      "Staging": {
+                        "id": "Staging",
+                        "path": "QCStack/QCJob_vCpus4_Mem4G/Resource-Batch-Job-Container-Definition/AssetImage/Staging",
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/core.AssetStaging",
+                          "version": "1.129.0"
+                        }
+                      },
+                      "Repository": {
+                        "id": "Repository",
+                        "path": "QCStack/QCJob_vCpus4_Mem4G/Resource-Batch-Job-Container-Definition/AssetImage/Repository",
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-ecr.RepositoryBase",
+                          "version": "1.129.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-ecr-assets.DockerImageAsset",
+                      "version": "1.129.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-ecs.ContainerDefinition",
+                  "version": "1.129.0"
+                }
+              },
+              "AssetImage": {
+                "id": "AssetImage",
+                "path": "QCStack/QCJob_vCpus4_Mem4G/AssetImage",
+                "children": {
+                  "Staging": {
+                    "id": "Staging",
+                    "path": "QCStack/QCJob_vCpus4_Mem4G/AssetImage/Staging",
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/core.AssetStaging",
+                      "version": "1.129.0"
+                    }
+                  },
+                  "Repository": {
+                    "id": "Repository",
+                    "path": "QCStack/QCJob_vCpus4_Mem4G/AssetImage/Repository",
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-ecr.RepositoryBase",
+                      "version": "1.129.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-ecr-assets.DockerImageAsset",
+                  "version": "1.129.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "QCStack/QCJob_vCpus4_Mem4G/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Batch::JobDefinition",
+                  "aws:cdk:cloudformation:props": {
+                    "type": "container",
+                    "containerProperties": {
+                      "command": [
+                        "--M",
+                        "1",
+                        "--D",
+                        "4",
+                        "--device-arn",
+                        "arn:aws:braket:::device/qpu/d-wave/Advantage_system1",
+                        "--aws-region",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        "--instance-type",
+                        "vCpus4_Mem_4G",
+                        "--s3-bucket",
+                        {
+                          "Ref": "amazonbraketC6E30921"
+                        }
+                      ],
+                      "image": {
+                        "Fn::Join": [
+                          "",
+                          [
+                            {
+                              "Ref": "AWS::AccountId"
+                            },
+                            ".dkr.ecr.",
+                            {
+                              "Ref": "AWS::Region"
+                            },
+                            ".",
+                            {
+                              "Ref": "AWS::URLSuffix"
+                            },
+                            "/aws-cdk/assets:7b0dd823ad958a65d3e80ecc8078d67f1d1ac36420e29c65ef027f03853a6ae2"
+                          ]
+                        ]
+                      },
+                      "jobRoleArn": {
+                        "Fn::GetAtt": [
+                          "jobRoleA2173686",
+                          "Arn"
+                        ]
+                      },
+                      "executionRoleArn": {
+                        "Fn::GetAtt": [
+                          "executionRole2F5D1D4F",
+                          "Arn"
+                        ]
+                      },
+                      "privileged": true,
+                      "readonlyRootFilesystem": false,
+                      "resourceRequirements": [
+                        {
+                          "type": "VCPU",
+                          "value": "4"
+                        },
+                        {
+                          "type": "MEMORY",
+                          "value": "4096"
+                        }
+                      ]
+                    },
+                    "platformCapabilities": [
+                      "EC2"
+                    ],
+                    "retryStrategy": {
+                      "attempts": 1
+                    },
+                    "timeout": {
+                      "attemptDurationSeconds": 7200
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-batch.CfnJobDefinition",
+                  "version": "1.129.0"
+                }
+              }
+            },
             "constructInfo": {
-              "fqn": "@aws-cdk/core.CfnOutput",
+              "fqn": "@aws-cdk/aws-batch.JobDefinition",
+              "version": "1.129.0"
+            }
+          },
+          "QCJob_vCpus8_Mem8G": {
+            "id": "QCJob_vCpus8_Mem8G",
+            "path": "QCStack/QCJob_vCpus8_Mem8G",
+            "children": {
+              "Resource-Batch-Job-Container-Definition": {
+                "id": "Resource-Batch-Job-Container-Definition",
+                "path": "QCStack/QCJob_vCpus8_Mem8G/Resource-Batch-Job-Container-Definition",
+                "children": {
+                  "AssetImage": {
+                    "id": "AssetImage",
+                    "path": "QCStack/QCJob_vCpus8_Mem8G/Resource-Batch-Job-Container-Definition/AssetImage",
+                    "children": {
+                      "Staging": {
+                        "id": "Staging",
+                        "path": "QCStack/QCJob_vCpus8_Mem8G/Resource-Batch-Job-Container-Definition/AssetImage/Staging",
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/core.AssetStaging",
+                          "version": "1.129.0"
+                        }
+                      },
+                      "Repository": {
+                        "id": "Repository",
+                        "path": "QCStack/QCJob_vCpus8_Mem8G/Resource-Batch-Job-Container-Definition/AssetImage/Repository",
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-ecr.RepositoryBase",
+                          "version": "1.129.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-ecr-assets.DockerImageAsset",
+                      "version": "1.129.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-ecs.ContainerDefinition",
+                  "version": "1.129.0"
+                }
+              },
+              "AssetImage": {
+                "id": "AssetImage",
+                "path": "QCStack/QCJob_vCpus8_Mem8G/AssetImage",
+                "children": {
+                  "Staging": {
+                    "id": "Staging",
+                    "path": "QCStack/QCJob_vCpus8_Mem8G/AssetImage/Staging",
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/core.AssetStaging",
+                      "version": "1.129.0"
+                    }
+                  },
+                  "Repository": {
+                    "id": "Repository",
+                    "path": "QCStack/QCJob_vCpus8_Mem8G/AssetImage/Repository",
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-ecr.RepositoryBase",
+                      "version": "1.129.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-ecr-assets.DockerImageAsset",
+                  "version": "1.129.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "QCStack/QCJob_vCpus8_Mem8G/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Batch::JobDefinition",
+                  "aws:cdk:cloudformation:props": {
+                    "type": "container",
+                    "containerProperties": {
+                      "command": [
+                        "--M",
+                        "1",
+                        "--D",
+                        "4",
+                        "--device-arn",
+                        "arn:aws:braket:::device/qpu/d-wave/Advantage_system1",
+                        "--aws-region",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        "--instance-type",
+                        "vCpus8_Mem_8G",
+                        "--s3-bucket",
+                        {
+                          "Ref": "amazonbraketC6E30921"
+                        }
+                      ],
+                      "image": {
+                        "Fn::Join": [
+                          "",
+                          [
+                            {
+                              "Ref": "AWS::AccountId"
+                            },
+                            ".dkr.ecr.",
+                            {
+                              "Ref": "AWS::Region"
+                            },
+                            ".",
+                            {
+                              "Ref": "AWS::URLSuffix"
+                            },
+                            "/aws-cdk/assets:7b0dd823ad958a65d3e80ecc8078d67f1d1ac36420e29c65ef027f03853a6ae2"
+                          ]
+                        ]
+                      },
+                      "jobRoleArn": {
+                        "Fn::GetAtt": [
+                          "jobRoleA2173686",
+                          "Arn"
+                        ]
+                      },
+                      "executionRoleArn": {
+                        "Fn::GetAtt": [
+                          "executionRole2F5D1D4F",
+                          "Arn"
+                        ]
+                      },
+                      "privileged": true,
+                      "readonlyRootFilesystem": false,
+                      "resourceRequirements": [
+                        {
+                          "type": "VCPU",
+                          "value": "8"
+                        },
+                        {
+                          "type": "MEMORY",
+                          "value": "8192"
+                        }
+                      ]
+                    },
+                    "platformCapabilities": [
+                      "EC2"
+                    ],
+                    "retryStrategy": {
+                      "attempts": 1
+                    },
+                    "timeout": {
+                      "attemptDurationSeconds": 7200
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-batch.CfnJobDefinition",
+                  "version": "1.129.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-batch.JobDefinition",
+              "version": "1.129.0"
+            }
+          },
+          "QCJob_vCpus16_Mem16G": {
+            "id": "QCJob_vCpus16_Mem16G",
+            "path": "QCStack/QCJob_vCpus16_Mem16G",
+            "children": {
+              "Resource-Batch-Job-Container-Definition": {
+                "id": "Resource-Batch-Job-Container-Definition",
+                "path": "QCStack/QCJob_vCpus16_Mem16G/Resource-Batch-Job-Container-Definition",
+                "children": {
+                  "AssetImage": {
+                    "id": "AssetImage",
+                    "path": "QCStack/QCJob_vCpus16_Mem16G/Resource-Batch-Job-Container-Definition/AssetImage",
+                    "children": {
+                      "Staging": {
+                        "id": "Staging",
+                        "path": "QCStack/QCJob_vCpus16_Mem16G/Resource-Batch-Job-Container-Definition/AssetImage/Staging",
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/core.AssetStaging",
+                          "version": "1.129.0"
+                        }
+                      },
+                      "Repository": {
+                        "id": "Repository",
+                        "path": "QCStack/QCJob_vCpus16_Mem16G/Resource-Batch-Job-Container-Definition/AssetImage/Repository",
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/aws-ecr.RepositoryBase",
+                          "version": "1.129.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-ecr-assets.DockerImageAsset",
+                      "version": "1.129.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-ecs.ContainerDefinition",
+                  "version": "1.129.0"
+                }
+              },
+              "AssetImage": {
+                "id": "AssetImage",
+                "path": "QCStack/QCJob_vCpus16_Mem16G/AssetImage",
+                "children": {
+                  "Staging": {
+                    "id": "Staging",
+                    "path": "QCStack/QCJob_vCpus16_Mem16G/AssetImage/Staging",
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/core.AssetStaging",
+                      "version": "1.129.0"
+                    }
+                  },
+                  "Repository": {
+                    "id": "Repository",
+                    "path": "QCStack/QCJob_vCpus16_Mem16G/AssetImage/Repository",
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-ecr.RepositoryBase",
+                      "version": "1.129.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-ecr-assets.DockerImageAsset",
+                  "version": "1.129.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "QCStack/QCJob_vCpus16_Mem16G/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Batch::JobDefinition",
+                  "aws:cdk:cloudformation:props": {
+                    "type": "container",
+                    "containerProperties": {
+                      "command": [
+                        "--M",
+                        "1",
+                        "--D",
+                        "4",
+                        "--device-arn",
+                        "arn:aws:braket:::device/qpu/d-wave/Advantage_system1",
+                        "--aws-region",
+                        {
+                          "Ref": "AWS::Region"
+                        },
+                        "--instance-type",
+                        "vCpus16_Mem_16G",
+                        "--s3-bucket",
+                        {
+                          "Ref": "amazonbraketC6E30921"
+                        }
+                      ],
+                      "image": {
+                        "Fn::Join": [
+                          "",
+                          [
+                            {
+                              "Ref": "AWS::AccountId"
+                            },
+                            ".dkr.ecr.",
+                            {
+                              "Ref": "AWS::Region"
+                            },
+                            ".",
+                            {
+                              "Ref": "AWS::URLSuffix"
+                            },
+                            "/aws-cdk/assets:7b0dd823ad958a65d3e80ecc8078d67f1d1ac36420e29c65ef027f03853a6ae2"
+                          ]
+                        ]
+                      },
+                      "jobRoleArn": {
+                        "Fn::GetAtt": [
+                          "jobRoleA2173686",
+                          "Arn"
+                        ]
+                      },
+                      "executionRoleArn": {
+                        "Fn::GetAtt": [
+                          "executionRole2F5D1D4F",
+                          "Arn"
+                        ]
+                      },
+                      "privileged": true,
+                      "readonlyRootFilesystem": false,
+                      "resourceRequirements": [
+                        {
+                          "type": "VCPU",
+                          "value": "16"
+                        },
+                        {
+                          "type": "MEMORY",
+                          "value": "16384"
+                        }
+                      ]
+                    },
+                    "platformCapabilities": [
+                      "EC2"
+                    ],
+                    "retryStrategy": {
+                      "attempts": 1
+                    },
+                    "timeout": {
+                      "attemptDurationSeconds": 7200
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-batch.CfnJobDefinition",
+                  "version": "1.129.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-batch.JobDefinition",
               "version": "1.129.0"
             }
           },
@@ -1715,113 +2306,647 @@
               "version": "1.129.0"
             }
           },
-          "M2-D4-DW_2000Q_6-Vcpus1-Mem2": {
-            "id": "M2-D4-DW_2000Q_6-Vcpus1-Mem2",
-            "path": "QCStack/M2-D4-DW_2000Q_6-Vcpus1-Mem2",
+          "M1-D4-DW_2000Q_6-vCpus2_Mem_2G": {
+            "id": "M1-D4-DW_2000Q_6-vCpus2_Mem_2G",
+            "path": "QCStack/M1-D4-DW_2000Q_6-vCpus2_Mem_2G",
             "constructInfo": {
               "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
               "version": "1.129.0"
             }
           },
-          "M2-D4-DW_2000Q_6-Vcpus2-Mem4": {
-            "id": "M2-D4-DW_2000Q_6-Vcpus2-Mem4",
-            "path": "QCStack/M2-D4-DW_2000Q_6-Vcpus2-Mem4",
+          "M1-D4-DW_2000Q_6-vCpus4_Mem_4G": {
+            "id": "M1-D4-DW_2000Q_6-vCpus4_Mem_4G",
+            "path": "QCStack/M1-D4-DW_2000Q_6-vCpus4_Mem_4G",
             "constructInfo": {
               "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
               "version": "1.129.0"
             }
           },
-          "M2-D4-DW_2000Q_6-Vcpus4-Mem9": {
-            "id": "M2-D4-DW_2000Q_6-Vcpus4-Mem9",
-            "path": "QCStack/M2-D4-DW_2000Q_6-Vcpus4-Mem9",
+          "M1-D4-DW_2000Q_6-vCpus8_Mem_8G": {
+            "id": "M1-D4-DW_2000Q_6-vCpus8_Mem_8G",
+            "path": "QCStack/M1-D4-DW_2000Q_6-vCpus8_Mem_8G",
             "constructInfo": {
               "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
               "version": "1.129.0"
             }
           },
-          "M2-D4-Advantage_system1-Vcpus1-Mem2": {
-            "id": "M2-D4-Advantage_system1-Vcpus1-Mem2",
-            "path": "QCStack/M2-D4-Advantage_system1-Vcpus1-Mem2",
+          "M1-D4-DW_2000Q_6-vCpus16_Mem_16G": {
+            "id": "M1-D4-DW_2000Q_6-vCpus16_Mem_16G",
+            "path": "QCStack/M1-D4-DW_2000Q_6-vCpus16_Mem_16G",
             "constructInfo": {
               "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
               "version": "1.129.0"
             }
           },
-          "M2-D4-Advantage_system1-Vcpus2-Mem4": {
-            "id": "M2-D4-Advantage_system1-Vcpus2-Mem4",
-            "path": "QCStack/M2-D4-Advantage_system1-Vcpus2-Mem4",
+          "M1-D4-Advantage_system1-vCpus2_Mem_2G": {
+            "id": "M1-D4-Advantage_system1-vCpus2_Mem_2G",
+            "path": "QCStack/M1-D4-Advantage_system1-vCpus2_Mem_2G",
             "constructInfo": {
               "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
               "version": "1.129.0"
             }
           },
-          "M2-D4-Advantage_system1-Vcpus4-Mem9": {
-            "id": "M2-D4-Advantage_system1-Vcpus4-Mem9",
-            "path": "QCStack/M2-D4-Advantage_system1-Vcpus4-Mem9",
+          "M1-D4-Advantage_system1-vCpus4_Mem_4G": {
+            "id": "M1-D4-Advantage_system1-vCpus4_Mem_4G",
+            "path": "QCStack/M1-D4-Advantage_system1-vCpus4_Mem_4G",
             "constructInfo": {
               "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
               "version": "1.129.0"
             }
           },
-          "M4-D4-DW_2000Q_6-Vcpus1-Mem2": {
-            "id": "M4-D4-DW_2000Q_6-Vcpus1-Mem2",
-            "path": "QCStack/M4-D4-DW_2000Q_6-Vcpus1-Mem2",
+          "M1-D4-Advantage_system1-vCpus8_Mem_8G": {
+            "id": "M1-D4-Advantage_system1-vCpus8_Mem_8G",
+            "path": "QCStack/M1-D4-Advantage_system1-vCpus8_Mem_8G",
             "constructInfo": {
               "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
               "version": "1.129.0"
             }
           },
-          "M4-D4-DW_2000Q_6-Vcpus2-Mem4": {
-            "id": "M4-D4-DW_2000Q_6-Vcpus2-Mem4",
-            "path": "QCStack/M4-D4-DW_2000Q_6-Vcpus2-Mem4",
+          "M1-D4-Advantage_system1-vCpus16_Mem_16G": {
+            "id": "M1-D4-Advantage_system1-vCpus16_Mem_16G",
+            "path": "QCStack/M1-D4-Advantage_system1-vCpus16_Mem_16G",
             "constructInfo": {
               "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
               "version": "1.129.0"
             }
           },
-          "M4-D4-DW_2000Q_6-Vcpus4-Mem9": {
-            "id": "M4-D4-DW_2000Q_6-Vcpus4-Mem9",
-            "path": "QCStack/M4-D4-DW_2000Q_6-Vcpus4-Mem9",
+          "M1-D4-Advantage_system4-vCpus2_Mem_2G": {
+            "id": "M1-D4-Advantage_system4-vCpus2_Mem_2G",
+            "path": "QCStack/M1-D4-Advantage_system4-vCpus2_Mem_2G",
             "constructInfo": {
               "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
               "version": "1.129.0"
             }
           },
-          "M4-D4-Advantage_system1-Vcpus1-Mem2": {
-            "id": "M4-D4-Advantage_system1-Vcpus1-Mem2",
-            "path": "QCStack/M4-D4-Advantage_system1-Vcpus1-Mem2",
+          "M1-D4-Advantage_system4-vCpus4_Mem_4G": {
+            "id": "M1-D4-Advantage_system4-vCpus4_Mem_4G",
+            "path": "QCStack/M1-D4-Advantage_system4-vCpus4_Mem_4G",
             "constructInfo": {
               "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
               "version": "1.129.0"
             }
           },
-          "M4-D4-Advantage_system1-Vcpus2-Mem4": {
-            "id": "M4-D4-Advantage_system1-Vcpus2-Mem4",
-            "path": "QCStack/M4-D4-Advantage_system1-Vcpus2-Mem4",
+          "M1-D4-Advantage_system4-vCpus8_Mem_8G": {
+            "id": "M1-D4-Advantage_system4-vCpus8_Mem_8G",
+            "path": "QCStack/M1-D4-Advantage_system4-vCpus8_Mem_8G",
             "constructInfo": {
               "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
               "version": "1.129.0"
             }
           },
-          "M4-D4-Advantage_system1-Vcpus4-Mem9": {
-            "id": "M4-D4-Advantage_system1-Vcpus4-Mem9",
-            "path": "QCStack/M4-D4-Advantage_system1-Vcpus4-Mem9",
+          "M1-D4-Advantage_system4-vCpus16_Mem_16G": {
+            "id": "M1-D4-Advantage_system4-vCpus16_Mem_16G",
+            "path": "QCStack/M1-D4-Advantage_system4-vCpus16_Mem_16G",
             "constructInfo": {
               "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
               "version": "1.129.0"
             }
           },
-          "StateMachine": {
-            "id": "StateMachine",
-            "path": "QCStack/StateMachine",
+          "M2-D4-DW_2000Q_6-vCpus2_Mem_2G": {
+            "id": "M2-D4-DW_2000Q_6-vCpus2_Mem_2G",
+            "path": "QCStack/M2-D4-DW_2000Q_6-vCpus2_Mem_2G",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
+              "version": "1.129.0"
+            }
+          },
+          "M2-D4-DW_2000Q_6-vCpus4_Mem_4G": {
+            "id": "M2-D4-DW_2000Q_6-vCpus4_Mem_4G",
+            "path": "QCStack/M2-D4-DW_2000Q_6-vCpus4_Mem_4G",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
+              "version": "1.129.0"
+            }
+          },
+          "M2-D4-DW_2000Q_6-vCpus8_Mem_8G": {
+            "id": "M2-D4-DW_2000Q_6-vCpus8_Mem_8G",
+            "path": "QCStack/M2-D4-DW_2000Q_6-vCpus8_Mem_8G",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
+              "version": "1.129.0"
+            }
+          },
+          "M2-D4-DW_2000Q_6-vCpus16_Mem_16G": {
+            "id": "M2-D4-DW_2000Q_6-vCpus16_Mem_16G",
+            "path": "QCStack/M2-D4-DW_2000Q_6-vCpus16_Mem_16G",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
+              "version": "1.129.0"
+            }
+          },
+          "M2-D4-Advantage_system1-vCpus2_Mem_2G": {
+            "id": "M2-D4-Advantage_system1-vCpus2_Mem_2G",
+            "path": "QCStack/M2-D4-Advantage_system1-vCpus2_Mem_2G",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
+              "version": "1.129.0"
+            }
+          },
+          "M2-D4-Advantage_system1-vCpus4_Mem_4G": {
+            "id": "M2-D4-Advantage_system1-vCpus4_Mem_4G",
+            "path": "QCStack/M2-D4-Advantage_system1-vCpus4_Mem_4G",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
+              "version": "1.129.0"
+            }
+          },
+          "M2-D4-Advantage_system1-vCpus8_Mem_8G": {
+            "id": "M2-D4-Advantage_system1-vCpus8_Mem_8G",
+            "path": "QCStack/M2-D4-Advantage_system1-vCpus8_Mem_8G",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
+              "version": "1.129.0"
+            }
+          },
+          "M2-D4-Advantage_system1-vCpus16_Mem_16G": {
+            "id": "M2-D4-Advantage_system1-vCpus16_Mem_16G",
+            "path": "QCStack/M2-D4-Advantage_system1-vCpus16_Mem_16G",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
+              "version": "1.129.0"
+            }
+          },
+          "M2-D4-Advantage_system4-vCpus2_Mem_2G": {
+            "id": "M2-D4-Advantage_system4-vCpus2_Mem_2G",
+            "path": "QCStack/M2-D4-Advantage_system4-vCpus2_Mem_2G",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
+              "version": "1.129.0"
+            }
+          },
+          "M2-D4-Advantage_system4-vCpus4_Mem_4G": {
+            "id": "M2-D4-Advantage_system4-vCpus4_Mem_4G",
+            "path": "QCStack/M2-D4-Advantage_system4-vCpus4_Mem_4G",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
+              "version": "1.129.0"
+            }
+          },
+          "M2-D4-Advantage_system4-vCpus8_Mem_8G": {
+            "id": "M2-D4-Advantage_system4-vCpus8_Mem_8G",
+            "path": "QCStack/M2-D4-Advantage_system4-vCpus8_Mem_8G",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
+              "version": "1.129.0"
+            }
+          },
+          "M2-D4-Advantage_system4-vCpus16_Mem_16G": {
+            "id": "M2-D4-Advantage_system4-vCpus16_Mem_16G",
+            "path": "QCStack/M2-D4-Advantage_system4-vCpus16_Mem_16G",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
+              "version": "1.129.0"
+            }
+          },
+          "M3-D4-DW_2000Q_6-vCpus2_Mem_2G": {
+            "id": "M3-D4-DW_2000Q_6-vCpus2_Mem_2G",
+            "path": "QCStack/M3-D4-DW_2000Q_6-vCpus2_Mem_2G",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
+              "version": "1.129.0"
+            }
+          },
+          "M3-D4-DW_2000Q_6-vCpus4_Mem_4G": {
+            "id": "M3-D4-DW_2000Q_6-vCpus4_Mem_4G",
+            "path": "QCStack/M3-D4-DW_2000Q_6-vCpus4_Mem_4G",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
+              "version": "1.129.0"
+            }
+          },
+          "M3-D4-DW_2000Q_6-vCpus8_Mem_8G": {
+            "id": "M3-D4-DW_2000Q_6-vCpus8_Mem_8G",
+            "path": "QCStack/M3-D4-DW_2000Q_6-vCpus8_Mem_8G",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
+              "version": "1.129.0"
+            }
+          },
+          "M3-D4-DW_2000Q_6-vCpus16_Mem_16G": {
+            "id": "M3-D4-DW_2000Q_6-vCpus16_Mem_16G",
+            "path": "QCStack/M3-D4-DW_2000Q_6-vCpus16_Mem_16G",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
+              "version": "1.129.0"
+            }
+          },
+          "M3-D4-Advantage_system1-vCpus2_Mem_2G": {
+            "id": "M3-D4-Advantage_system1-vCpus2_Mem_2G",
+            "path": "QCStack/M3-D4-Advantage_system1-vCpus2_Mem_2G",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
+              "version": "1.129.0"
+            }
+          },
+          "M3-D4-Advantage_system1-vCpus4_Mem_4G": {
+            "id": "M3-D4-Advantage_system1-vCpus4_Mem_4G",
+            "path": "QCStack/M3-D4-Advantage_system1-vCpus4_Mem_4G",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
+              "version": "1.129.0"
+            }
+          },
+          "M3-D4-Advantage_system1-vCpus8_Mem_8G": {
+            "id": "M3-D4-Advantage_system1-vCpus8_Mem_8G",
+            "path": "QCStack/M3-D4-Advantage_system1-vCpus8_Mem_8G",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
+              "version": "1.129.0"
+            }
+          },
+          "M3-D4-Advantage_system1-vCpus16_Mem_16G": {
+            "id": "M3-D4-Advantage_system1-vCpus16_Mem_16G",
+            "path": "QCStack/M3-D4-Advantage_system1-vCpus16_Mem_16G",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
+              "version": "1.129.0"
+            }
+          },
+          "M3-D4-Advantage_system4-vCpus2_Mem_2G": {
+            "id": "M3-D4-Advantage_system4-vCpus2_Mem_2G",
+            "path": "QCStack/M3-D4-Advantage_system4-vCpus2_Mem_2G",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
+              "version": "1.129.0"
+            }
+          },
+          "M3-D4-Advantage_system4-vCpus4_Mem_4G": {
+            "id": "M3-D4-Advantage_system4-vCpus4_Mem_4G",
+            "path": "QCStack/M3-D4-Advantage_system4-vCpus4_Mem_4G",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
+              "version": "1.129.0"
+            }
+          },
+          "M3-D4-Advantage_system4-vCpus8_Mem_8G": {
+            "id": "M3-D4-Advantage_system4-vCpus8_Mem_8G",
+            "path": "QCStack/M3-D4-Advantage_system4-vCpus8_Mem_8G",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
+              "version": "1.129.0"
+            }
+          },
+          "M3-D4-Advantage_system4-vCpus16_Mem_16G": {
+            "id": "M3-D4-Advantage_system4-vCpus16_Mem_16G",
+            "path": "QCStack/M3-D4-Advantage_system4-vCpus16_Mem_16G",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
+              "version": "1.129.0"
+            }
+          },
+          "M4-D4-DW_2000Q_6-vCpus2_Mem_2G": {
+            "id": "M4-D4-DW_2000Q_6-vCpus2_Mem_2G",
+            "path": "QCStack/M4-D4-DW_2000Q_6-vCpus2_Mem_2G",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
+              "version": "1.129.0"
+            }
+          },
+          "M4-D4-DW_2000Q_6-vCpus4_Mem_4G": {
+            "id": "M4-D4-DW_2000Q_6-vCpus4_Mem_4G",
+            "path": "QCStack/M4-D4-DW_2000Q_6-vCpus4_Mem_4G",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
+              "version": "1.129.0"
+            }
+          },
+          "M4-D4-DW_2000Q_6-vCpus8_Mem_8G": {
+            "id": "M4-D4-DW_2000Q_6-vCpus8_Mem_8G",
+            "path": "QCStack/M4-D4-DW_2000Q_6-vCpus8_Mem_8G",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
+              "version": "1.129.0"
+            }
+          },
+          "M4-D4-DW_2000Q_6-vCpus16_Mem_16G": {
+            "id": "M4-D4-DW_2000Q_6-vCpus16_Mem_16G",
+            "path": "QCStack/M4-D4-DW_2000Q_6-vCpus16_Mem_16G",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
+              "version": "1.129.0"
+            }
+          },
+          "M4-D4-Advantage_system1-vCpus2_Mem_2G": {
+            "id": "M4-D4-Advantage_system1-vCpus2_Mem_2G",
+            "path": "QCStack/M4-D4-Advantage_system1-vCpus2_Mem_2G",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
+              "version": "1.129.0"
+            }
+          },
+          "M4-D4-Advantage_system1-vCpus4_Mem_4G": {
+            "id": "M4-D4-Advantage_system1-vCpus4_Mem_4G",
+            "path": "QCStack/M4-D4-Advantage_system1-vCpus4_Mem_4G",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
+              "version": "1.129.0"
+            }
+          },
+          "M4-D4-Advantage_system1-vCpus8_Mem_8G": {
+            "id": "M4-D4-Advantage_system1-vCpus8_Mem_8G",
+            "path": "QCStack/M4-D4-Advantage_system1-vCpus8_Mem_8G",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
+              "version": "1.129.0"
+            }
+          },
+          "M4-D4-Advantage_system1-vCpus16_Mem_16G": {
+            "id": "M4-D4-Advantage_system1-vCpus16_Mem_16G",
+            "path": "QCStack/M4-D4-Advantage_system1-vCpus16_Mem_16G",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
+              "version": "1.129.0"
+            }
+          },
+          "M4-D4-Advantage_system4-vCpus2_Mem_2G": {
+            "id": "M4-D4-Advantage_system4-vCpus2_Mem_2G",
+            "path": "QCStack/M4-D4-Advantage_system4-vCpus2_Mem_2G",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
+              "version": "1.129.0"
+            }
+          },
+          "M4-D4-Advantage_system4-vCpus4_Mem_4G": {
+            "id": "M4-D4-Advantage_system4-vCpus4_Mem_4G",
+            "path": "QCStack/M4-D4-Advantage_system4-vCpus4_Mem_4G",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
+              "version": "1.129.0"
+            }
+          },
+          "M4-D4-Advantage_system4-vCpus8_Mem_8G": {
+            "id": "M4-D4-Advantage_system4-vCpus8_Mem_8G",
+            "path": "QCStack/M4-D4-Advantage_system4-vCpus8_Mem_8G",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
+              "version": "1.129.0"
+            }
+          },
+          "M4-D4-Advantage_system4-vCpus16_Mem_16G": {
+            "id": "M4-D4-Advantage_system4-vCpus16_Mem_16G",
+            "path": "QCStack/M4-D4-Advantage_system4-vCpus16_Mem_16G",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.BatchSubmitJob",
+              "version": "1.129.0"
+            }
+          },
+          "QCBatchParallel": {
+            "id": "QCBatchParallel",
+            "path": "QCStack/QCBatchParallel",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions.Parallel",
+              "version": "1.129.0"
+            }
+          },
+          "AggResultLambdaRole": {
+            "id": "AggResultLambdaRole",
+            "path": "QCStack/AggResultLambdaRole",
             "children": {
-              "Role": {
-                "id": "Role",
-                "path": "QCStack/StateMachine/Role",
+              "Resource": {
+                "id": "Resource",
+                "path": "QCStack/AggResultLambdaRole/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::IAM::Role",
+                  "aws:cdk:cloudformation:props": {
+                    "assumeRolePolicyDocument": {
+                      "Statement": [
+                        {
+                          "Action": "sts:AssumeRole",
+                          "Effect": "Allow",
+                          "Principal": {
+                            "Service": "lambda.amazonaws.com"
+                          }
+                        }
+                      ],
+                      "Version": "2012-10-17"
+                    },
+                    "managedPolicyArns": [
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "arn:",
+                            {
+                              "Ref": "AWS::Partition"
+                            },
+                            ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"
+                          ]
+                        ]
+                      },
+                      {
+                        "Fn::Join": [
+                          "",
+                          [
+                            "arn:",
+                            {
+                              "Ref": "AWS::Partition"
+                            },
+                            ":iam::aws:policy/AmazonAthenaFullAccess"
+                          ]
+                        ]
+                      }
+                    ]
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-iam.CfnRole",
+                  "version": "1.129.0"
+                }
+              },
+              "DefaultPolicy": {
+                "id": "DefaultPolicy",
+                "path": "QCStack/AggResultLambdaRole/DefaultPolicy",
                 "children": {
                   "Resource": {
                     "id": "Resource",
-                    "path": "QCStack/StateMachine/Role/Resource",
+                    "path": "QCStack/AggResultLambdaRole/DefaultPolicy/Resource",
+                    "attributes": {
+                      "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
+                      "aws:cdk:cloudformation:props": {
+                        "policyDocument": {
+                          "Statement": [
+                            {
+                              "Action": [
+                                "s3:GetObject",
+                                "s3:PutObject",
+                                "s3:ListBucket"
+                              ],
+                              "Effect": "Allow",
+                              "Resource": [
+                                "arn:aws:s3:::amazon-braket-*",
+                                "arn:aws:s3:::braketnotebookcdk-*",
+                                "arn:aws:s3:::qcstack*"
+                              ]
+                            }
+                          ],
+                          "Version": "2012-10-17"
+                        },
+                        "policyName": "AggResultLambdaRoleDefaultPolicy7AC5256A",
+                        "roles": [
+                          {
+                            "Ref": "AggResultLambdaRoleE19247FA"
+                          }
+                        ]
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-iam.CfnPolicy",
+                      "version": "1.129.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-iam.Policy",
+                  "version": "1.129.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-iam.Role",
+              "version": "1.129.0"
+            }
+          },
+          "AggResultLambda": {
+            "id": "AggResultLambda",
+            "path": "QCStack/AggResultLambda",
+            "children": {
+              "Code": {
+                "id": "Code",
+                "path": "QCStack/AggResultLambda/Code",
+                "children": {
+                  "Stage": {
+                    "id": "Stage",
+                    "path": "QCStack/AggResultLambda/Code/Stage",
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/core.AssetStaging",
+                      "version": "1.129.0"
+                    }
+                  },
+                  "AssetBucket": {
+                    "id": "AssetBucket",
+                    "path": "QCStack/AggResultLambda/Code/AssetBucket",
+                    "children": {
+                      "Notifications": {
+                        "id": "Notifications",
+                        "path": "QCStack/AggResultLambda/Code/AssetBucket/Notifications",
+                        "constructInfo": {
+                          "fqn": "@aws-cdk/core.Construct",
+                          "version": "1.129.0"
+                        }
+                      }
+                    },
+                    "constructInfo": {
+                      "fqn": "@aws-cdk/aws-s3.BucketBase",
+                      "version": "1.129.0"
+                    }
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-s3-assets.Asset",
+                  "version": "1.129.0"
+                }
+              },
+              "Resource": {
+                "id": "Resource",
+                "path": "QCStack/AggResultLambda/Resource",
+                "attributes": {
+                  "aws:cdk:cloudformation:type": "AWS::Lambda::Function",
+                  "aws:cdk:cloudformation:props": {
+                    "code": {
+                      "s3Bucket": {
+                        "Ref": "AssetParametersc528704b2cac3dd8a479661a28123a8ecb9aaf0f81c9616c1f467b2c23adb094S3Bucket51C1DA4F"
+                      },
+                      "s3Key": {
+                        "Fn::Join": [
+                          "",
+                          [
+                            {
+                              "Fn::Select": [
+                                0,
+                                {
+                                  "Fn::Split": [
+                                    "||",
+                                    {
+                                      "Ref": "AssetParametersc528704b2cac3dd8a479661a28123a8ecb9aaf0f81c9616c1f467b2c23adb094S3VersionKeyBAE3C729"
+                                    }
+                                  ]
+                                }
+                              ]
+                            },
+                            {
+                              "Fn::Select": [
+                                1,
+                                {
+                                  "Fn::Split": [
+                                    "||",
+                                    {
+                                      "Ref": "AssetParametersc528704b2cac3dd8a479661a28123a8ecb9aaf0f81c9616c1f467b2c23adb094S3VersionKeyBAE3C729"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        ]
+                      }
+                    },
+                    "role": {
+                      "Fn::GetAtt": [
+                        "AggResultLambdaRoleE19247FA",
+                        "Arn"
+                      ]
+                    },
+                    "environment": {
+                      "variables": {
+                        "BUCKET": {
+                          "Ref": "amazonbraketC6E30921"
+                        }
+                      }
+                    },
+                    "handler": "index.handler",
+                    "memorySize": 512,
+                    "runtime": "nodejs12.x",
+                    "timeout": 120
+                  }
+                },
+                "constructInfo": {
+                  "fqn": "@aws-cdk/aws-lambda.CfnFunction",
+                  "version": "1.129.0"
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-lambda.Function",
+              "version": "1.129.0"
+            }
+          },
+          "Aggregate Result": {
+            "id": "Aggregate Result",
+            "path": "QCStack/Aggregate Result",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions-tasks.LambdaInvoke",
+              "version": "1.129.0"
+            }
+          },
+          "Succeed": {
+            "id": "Succeed",
+            "path": "QCStack/Succeed",
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-stepfunctions.Succeed",
+              "version": "1.129.0"
+            }
+          },
+          "QCBatchStateMachine": {
+            "id": "QCBatchStateMachine",
+            "path": "QCStack/QCBatchStateMachine",
+            "children": {
+              "Role": {
+                "id": "Role",
+                "path": "QCStack/QCBatchStateMachine/Role",
+                "children": {
+                  "Resource": {
+                    "id": "Resource",
+                    "path": "QCStack/QCBatchStateMachine/Role/Resource",
                     "attributes": {
                       "aws:cdk:cloudformation:type": "AWS::IAM::Role",
                       "aws:cdk:cloudformation:props": {
@@ -1857,16 +2982,26 @@
                   },
                   "DefaultPolicy": {
                     "id": "DefaultPolicy",
-                    "path": "QCStack/StateMachine/Role/DefaultPolicy",
+                    "path": "QCStack/QCBatchStateMachine/Role/DefaultPolicy",
                     "children": {
                       "Resource": {
                         "id": "Resource",
-                        "path": "QCStack/StateMachine/Role/DefaultPolicy/Resource",
+                        "path": "QCStack/QCBatchStateMachine/Role/DefaultPolicy/Resource",
                         "attributes": {
                           "aws:cdk:cloudformation:type": "AWS::IAM::Policy",
                           "aws:cdk:cloudformation:props": {
                             "policyDocument": {
                               "Statement": [
+                                {
+                                  "Action": "lambda:InvokeFunction",
+                                  "Effect": "Allow",
+                                  "Resource": {
+                                    "Fn::GetAtt": [
+                                      "AggResultLambda2D78F89C",
+                                      "Arn"
+                                    ]
+                                  }
+                                },
                                 {
                                   "Action": "batch:SubmitJob",
                                   "Effect": "Allow",
@@ -1927,10 +3062,10 @@
                               ],
                               "Version": "2012-10-17"
                             },
-                            "policyName": "StateMachineRoleDefaultPolicyDF1E6607",
+                            "policyName": "QCBatchStateMachineRoleDefaultPolicy6B48C4B9",
                             "roles": [
                               {
-                                "Ref": "StateMachineRoleB840431D"
+                                "Ref": "QCBatchStateMachineRoleB541B981"
                               }
                             ]
                           }
@@ -1954,13 +3089,13 @@
               },
               "Resource": {
                 "id": "Resource",
-                "path": "QCStack/StateMachine/Resource",
+                "path": "QCStack/QCBatchStateMachine/Resource",
                 "attributes": {
                   "aws:cdk:cloudformation:type": "AWS::StepFunctions::StateMachine",
                   "aws:cdk:cloudformation:props": {
                     "roleArn": {
                       "Fn::GetAtt": [
-                        "StateMachineRoleB840431D",
+                        "QCBatchStateMachineRoleB541B981",
                         "Arn"
                       ]
                     },
@@ -1968,15 +3103,255 @@
                       "Fn::Join": [
                         "",
                         [
-                          "{\"StartAt\":\"M2-D4-DW_2000Q_6-Vcpus1-Mem2\",\"States\":{\"M2-D4-DW_2000Q_6-Vcpus1-Mem2\":{\"Next\":\"M2-D4-DW_2000Q_6-Vcpus2-Mem4\",\"Type\":\"Task\",\"Resource\":\"arn:",
+                          "{\"StartAt\":\"QCBatchParallel\",\"States\":{\"QCBatchParallel\":{\"Type\":\"Parallel\",\"Next\":\"Aggregate Result\",\"Branches\":[{\"StartAt\":\"M1-D4-DW_2000Q_6-vCpus2_Mem_2G\",\"States\":{\"M1-D4-DW_2000Q_6-vCpus2_Mem_2G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
                           {
                             "Ref": "AWS::Partition"
                           },
                           ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
                           {
-                            "Ref": "batchjobdefA1425F8B"
+                            "Ref": "QCJobvCpus2Mem2GDBF9C9F0"
                           },
-                          "\",\"JobName\":\"M2-D4-DW_2000Q_6-Vcpus1-Mem2\",\"JobQueue\":\"",
+                          "\",\"JobName\":\"M1-D4-DW_2000Q_6-vCpus2_Mem_2G\",\"JobQueue\":\"",
+                          {
+                            "Ref": "JobQueueEE3AD499"
+                          },
+                          "\",\"ContainerOverrides\":{\"Command\":[\"--M\",\"1\",\"--D\",\"4\",\"--device-arn\",\"arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6\",\"--aws-region\",\"",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          "\",\"--instance-type\",\"vCpus2_Mem_2G\",\"--s3-bucket\",\"",
+                          {
+                            "Ref": "amazonbraketC6E30921"
+                          },
+                          "\"]}}}}},{\"StartAt\":\"M1-D4-DW_2000Q_6-vCpus4_Mem_4G\",\"States\":{\"M1-D4-DW_2000Q_6-vCpus4_Mem_4G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
+                          {
+                            "Ref": "QCJobvCpus4Mem4G33BBDF79"
+                          },
+                          "\",\"JobName\":\"M1-D4-DW_2000Q_6-vCpus4_Mem_4G\",\"JobQueue\":\"",
+                          {
+                            "Ref": "JobQueueEE3AD499"
+                          },
+                          "\",\"ContainerOverrides\":{\"Command\":[\"--M\",\"1\",\"--D\",\"4\",\"--device-arn\",\"arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6\",\"--aws-region\",\"",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          "\",\"--instance-type\",\"vCpus4_Mem_4G\",\"--s3-bucket\",\"",
+                          {
+                            "Ref": "amazonbraketC6E30921"
+                          },
+                          "\"]}}}}},{\"StartAt\":\"M1-D4-DW_2000Q_6-vCpus8_Mem_8G\",\"States\":{\"M1-D4-DW_2000Q_6-vCpus8_Mem_8G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
+                          {
+                            "Ref": "QCJobvCpus8Mem8GA565DAC0"
+                          },
+                          "\",\"JobName\":\"M1-D4-DW_2000Q_6-vCpus8_Mem_8G\",\"JobQueue\":\"",
+                          {
+                            "Ref": "JobQueueEE3AD499"
+                          },
+                          "\",\"ContainerOverrides\":{\"Command\":[\"--M\",\"1\",\"--D\",\"4\",\"--device-arn\",\"arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6\",\"--aws-region\",\"",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          "\",\"--instance-type\",\"vCpus8_Mem_8G\",\"--s3-bucket\",\"",
+                          {
+                            "Ref": "amazonbraketC6E30921"
+                          },
+                          "\"]}}}}},{\"StartAt\":\"M1-D4-DW_2000Q_6-vCpus16_Mem_16G\",\"States\":{\"M1-D4-DW_2000Q_6-vCpus16_Mem_16G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
+                          {
+                            "Ref": "QCJobvCpus16Mem16GB24CBF51"
+                          },
+                          "\",\"JobName\":\"M1-D4-DW_2000Q_6-vCpus16_Mem_16G\",\"JobQueue\":\"",
+                          {
+                            "Ref": "JobQueueEE3AD499"
+                          },
+                          "\",\"ContainerOverrides\":{\"Command\":[\"--M\",\"1\",\"--D\",\"4\",\"--device-arn\",\"arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6\",\"--aws-region\",\"",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          "\",\"--instance-type\",\"vCpus16_Mem_16G\",\"--s3-bucket\",\"",
+                          {
+                            "Ref": "amazonbraketC6E30921"
+                          },
+                          "\"]}}}}},{\"StartAt\":\"M1-D4-Advantage_system1-vCpus2_Mem_2G\",\"States\":{\"M1-D4-Advantage_system1-vCpus2_Mem_2G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
+                          {
+                            "Ref": "QCJobvCpus2Mem2GDBF9C9F0"
+                          },
+                          "\",\"JobName\":\"M1-D4-Advantage_system1-vCpus2_Mem_2G\",\"JobQueue\":\"",
+                          {
+                            "Ref": "JobQueueEE3AD499"
+                          },
+                          "\",\"ContainerOverrides\":{\"Command\":[\"--M\",\"1\",\"--D\",\"4\",\"--device-arn\",\"arn:aws:braket:::device/qpu/d-wave/Advantage_system1\",\"--aws-region\",\"",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          "\",\"--instance-type\",\"vCpus2_Mem_2G\",\"--s3-bucket\",\"",
+                          {
+                            "Ref": "amazonbraketC6E30921"
+                          },
+                          "\"]}}}}},{\"StartAt\":\"M1-D4-Advantage_system1-vCpus4_Mem_4G\",\"States\":{\"M1-D4-Advantage_system1-vCpus4_Mem_4G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
+                          {
+                            "Ref": "QCJobvCpus4Mem4G33BBDF79"
+                          },
+                          "\",\"JobName\":\"M1-D4-Advantage_system1-vCpus4_Mem_4G\",\"JobQueue\":\"",
+                          {
+                            "Ref": "JobQueueEE3AD499"
+                          },
+                          "\",\"ContainerOverrides\":{\"Command\":[\"--M\",\"1\",\"--D\",\"4\",\"--device-arn\",\"arn:aws:braket:::device/qpu/d-wave/Advantage_system1\",\"--aws-region\",\"",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          "\",\"--instance-type\",\"vCpus4_Mem_4G\",\"--s3-bucket\",\"",
+                          {
+                            "Ref": "amazonbraketC6E30921"
+                          },
+                          "\"]}}}}},{\"StartAt\":\"M1-D4-Advantage_system1-vCpus8_Mem_8G\",\"States\":{\"M1-D4-Advantage_system1-vCpus8_Mem_8G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
+                          {
+                            "Ref": "QCJobvCpus8Mem8GA565DAC0"
+                          },
+                          "\",\"JobName\":\"M1-D4-Advantage_system1-vCpus8_Mem_8G\",\"JobQueue\":\"",
+                          {
+                            "Ref": "JobQueueEE3AD499"
+                          },
+                          "\",\"ContainerOverrides\":{\"Command\":[\"--M\",\"1\",\"--D\",\"4\",\"--device-arn\",\"arn:aws:braket:::device/qpu/d-wave/Advantage_system1\",\"--aws-region\",\"",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          "\",\"--instance-type\",\"vCpus8_Mem_8G\",\"--s3-bucket\",\"",
+                          {
+                            "Ref": "amazonbraketC6E30921"
+                          },
+                          "\"]}}}}},{\"StartAt\":\"M1-D4-Advantage_system1-vCpus16_Mem_16G\",\"States\":{\"M1-D4-Advantage_system1-vCpus16_Mem_16G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
+                          {
+                            "Ref": "QCJobvCpus16Mem16GB24CBF51"
+                          },
+                          "\",\"JobName\":\"M1-D4-Advantage_system1-vCpus16_Mem_16G\",\"JobQueue\":\"",
+                          {
+                            "Ref": "JobQueueEE3AD499"
+                          },
+                          "\",\"ContainerOverrides\":{\"Command\":[\"--M\",\"1\",\"--D\",\"4\",\"--device-arn\",\"arn:aws:braket:::device/qpu/d-wave/Advantage_system1\",\"--aws-region\",\"",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          "\",\"--instance-type\",\"vCpus16_Mem_16G\",\"--s3-bucket\",\"",
+                          {
+                            "Ref": "amazonbraketC6E30921"
+                          },
+                          "\"]}}}}},{\"StartAt\":\"M1-D4-Advantage_system4-vCpus2_Mem_2G\",\"States\":{\"M1-D4-Advantage_system4-vCpus2_Mem_2G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
+                          {
+                            "Ref": "QCJobvCpus2Mem2GDBF9C9F0"
+                          },
+                          "\",\"JobName\":\"M1-D4-Advantage_system4-vCpus2_Mem_2G\",\"JobQueue\":\"",
+                          {
+                            "Ref": "JobQueueEE3AD499"
+                          },
+                          "\",\"ContainerOverrides\":{\"Command\":[\"--M\",\"1\",\"--D\",\"4\",\"--device-arn\",\"arn:aws:braket:::device/qpu/d-wave/Advantage_system4\",\"--aws-region\",\"",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          "\",\"--instance-type\",\"vCpus2_Mem_2G\",\"--s3-bucket\",\"",
+                          {
+                            "Ref": "amazonbraketC6E30921"
+                          },
+                          "\"]}}}}},{\"StartAt\":\"M1-D4-Advantage_system4-vCpus4_Mem_4G\",\"States\":{\"M1-D4-Advantage_system4-vCpus4_Mem_4G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
+                          {
+                            "Ref": "QCJobvCpus4Mem4G33BBDF79"
+                          },
+                          "\",\"JobName\":\"M1-D4-Advantage_system4-vCpus4_Mem_4G\",\"JobQueue\":\"",
+                          {
+                            "Ref": "JobQueueEE3AD499"
+                          },
+                          "\",\"ContainerOverrides\":{\"Command\":[\"--M\",\"1\",\"--D\",\"4\",\"--device-arn\",\"arn:aws:braket:::device/qpu/d-wave/Advantage_system4\",\"--aws-region\",\"",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          "\",\"--instance-type\",\"vCpus4_Mem_4G\",\"--s3-bucket\",\"",
+                          {
+                            "Ref": "amazonbraketC6E30921"
+                          },
+                          "\"]}}}}},{\"StartAt\":\"M1-D4-Advantage_system4-vCpus8_Mem_8G\",\"States\":{\"M1-D4-Advantage_system4-vCpus8_Mem_8G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
+                          {
+                            "Ref": "QCJobvCpus8Mem8GA565DAC0"
+                          },
+                          "\",\"JobName\":\"M1-D4-Advantage_system4-vCpus8_Mem_8G\",\"JobQueue\":\"",
+                          {
+                            "Ref": "JobQueueEE3AD499"
+                          },
+                          "\",\"ContainerOverrides\":{\"Command\":[\"--M\",\"1\",\"--D\",\"4\",\"--device-arn\",\"arn:aws:braket:::device/qpu/d-wave/Advantage_system4\",\"--aws-region\",\"",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          "\",\"--instance-type\",\"vCpus8_Mem_8G\",\"--s3-bucket\",\"",
+                          {
+                            "Ref": "amazonbraketC6E30921"
+                          },
+                          "\"]}}}}},{\"StartAt\":\"M1-D4-Advantage_system4-vCpus16_Mem_16G\",\"States\":{\"M1-D4-Advantage_system4-vCpus16_Mem_16G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
+                          {
+                            "Ref": "QCJobvCpus16Mem16GB24CBF51"
+                          },
+                          "\",\"JobName\":\"M1-D4-Advantage_system4-vCpus16_Mem_16G\",\"JobQueue\":\"",
+                          {
+                            "Ref": "JobQueueEE3AD499"
+                          },
+                          "\",\"ContainerOverrides\":{\"Command\":[\"--M\",\"1\",\"--D\",\"4\",\"--device-arn\",\"arn:aws:braket:::device/qpu/d-wave/Advantage_system4\",\"--aws-region\",\"",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          "\",\"--instance-type\",\"vCpus16_Mem_16G\",\"--s3-bucket\",\"",
+                          {
+                            "Ref": "amazonbraketC6E30921"
+                          },
+                          "\"]}}}}},{\"StartAt\":\"M2-D4-DW_2000Q_6-vCpus2_Mem_2G\",\"States\":{\"M2-D4-DW_2000Q_6-vCpus2_Mem_2G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
+                          {
+                            "Ref": "QCJobvCpus2Mem2GDBF9C9F0"
+                          },
+                          "\",\"JobName\":\"M2-D4-DW_2000Q_6-vCpus2_Mem_2G\",\"JobQueue\":\"",
                           {
                             "Ref": "JobQueueEE3AD499"
                           },
@@ -1984,19 +3359,19 @@
                           {
                             "Ref": "AWS::Region"
                           },
-                          "\",\"--instance-type\",\"vcpus-1-mem-2\",\"--s3-bucket\",\"",
+                          "\",\"--instance-type\",\"vCpus2_Mem_2G\",\"--s3-bucket\",\"",
                           {
                             "Ref": "amazonbraketC6E30921"
                           },
-                          "\"],\"Memory\":2048,\"Vcpus\":1}}},\"M2-D4-DW_2000Q_6-Vcpus2-Mem4\":{\"Next\":\"M2-D4-DW_2000Q_6-Vcpus4-Mem9\",\"Type\":\"Task\",\"Resource\":\"arn:",
+                          "\"]}}}}},{\"StartAt\":\"M2-D4-DW_2000Q_6-vCpus4_Mem_4G\",\"States\":{\"M2-D4-DW_2000Q_6-vCpus4_Mem_4G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
                           {
                             "Ref": "AWS::Partition"
                           },
                           ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
                           {
-                            "Ref": "batchjobdefA1425F8B"
+                            "Ref": "QCJobvCpus4Mem4G33BBDF79"
                           },
-                          "\",\"JobName\":\"M2-D4-DW_2000Q_6-Vcpus2-Mem4\",\"JobQueue\":\"",
+                          "\",\"JobName\":\"M2-D4-DW_2000Q_6-vCpus4_Mem_4G\",\"JobQueue\":\"",
                           {
                             "Ref": "JobQueueEE3AD499"
                           },
@@ -2004,19 +3379,19 @@
                           {
                             "Ref": "AWS::Region"
                           },
-                          "\",\"--instance-type\",\"vcpus-2-mem-4\",\"--s3-bucket\",\"",
+                          "\",\"--instance-type\",\"vCpus4_Mem_4G\",\"--s3-bucket\",\"",
                           {
                             "Ref": "amazonbraketC6E30921"
                           },
-                          "\"],\"Memory\":4096,\"Vcpus\":2}}},\"M2-D4-DW_2000Q_6-Vcpus4-Mem9\":{\"Next\":\"M2-D4-Advantage_system1-Vcpus1-Mem2\",\"Type\":\"Task\",\"Resource\":\"arn:",
+                          "\"]}}}}},{\"StartAt\":\"M2-D4-DW_2000Q_6-vCpus8_Mem_8G\",\"States\":{\"M2-D4-DW_2000Q_6-vCpus8_Mem_8G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
                           {
                             "Ref": "AWS::Partition"
                           },
                           ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
                           {
-                            "Ref": "batchjobdefA1425F8B"
+                            "Ref": "QCJobvCpus8Mem8GA565DAC0"
                           },
-                          "\",\"JobName\":\"M2-D4-DW_2000Q_6-Vcpus4-Mem9\",\"JobQueue\":\"",
+                          "\",\"JobName\":\"M2-D4-DW_2000Q_6-vCpus8_Mem_8G\",\"JobQueue\":\"",
                           {
                             "Ref": "JobQueueEE3AD499"
                           },
@@ -2024,19 +3399,39 @@
                           {
                             "Ref": "AWS::Region"
                           },
-                          "\",\"--instance-type\",\"vcpus-4-mem-9\",\"--s3-bucket\",\"",
+                          "\",\"--instance-type\",\"vCpus8_Mem_8G\",\"--s3-bucket\",\"",
                           {
                             "Ref": "amazonbraketC6E30921"
                           },
-                          "\"],\"Memory\":9216,\"Vcpus\":4}}},\"M2-D4-Advantage_system1-Vcpus1-Mem2\":{\"Next\":\"M2-D4-Advantage_system1-Vcpus2-Mem4\",\"Type\":\"Task\",\"Resource\":\"arn:",
+                          "\"]}}}}},{\"StartAt\":\"M2-D4-DW_2000Q_6-vCpus16_Mem_16G\",\"States\":{\"M2-D4-DW_2000Q_6-vCpus16_Mem_16G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
                           {
                             "Ref": "AWS::Partition"
                           },
                           ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
                           {
-                            "Ref": "batchjobdefA1425F8B"
+                            "Ref": "QCJobvCpus16Mem16GB24CBF51"
                           },
-                          "\",\"JobName\":\"M2-D4-Advantage_system1-Vcpus1-Mem2\",\"JobQueue\":\"",
+                          "\",\"JobName\":\"M2-D4-DW_2000Q_6-vCpus16_Mem_16G\",\"JobQueue\":\"",
+                          {
+                            "Ref": "JobQueueEE3AD499"
+                          },
+                          "\",\"ContainerOverrides\":{\"Command\":[\"--M\",\"2\",\"--D\",\"4\",\"--device-arn\",\"arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6\",\"--aws-region\",\"",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          "\",\"--instance-type\",\"vCpus16_Mem_16G\",\"--s3-bucket\",\"",
+                          {
+                            "Ref": "amazonbraketC6E30921"
+                          },
+                          "\"]}}}}},{\"StartAt\":\"M2-D4-Advantage_system1-vCpus2_Mem_2G\",\"States\":{\"M2-D4-Advantage_system1-vCpus2_Mem_2G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
+                          {
+                            "Ref": "QCJobvCpus2Mem2GDBF9C9F0"
+                          },
+                          "\",\"JobName\":\"M2-D4-Advantage_system1-vCpus2_Mem_2G\",\"JobQueue\":\"",
                           {
                             "Ref": "JobQueueEE3AD499"
                           },
@@ -2044,19 +3439,19 @@
                           {
                             "Ref": "AWS::Region"
                           },
-                          "\",\"--instance-type\",\"vcpus-1-mem-2\",\"--s3-bucket\",\"",
+                          "\",\"--instance-type\",\"vCpus2_Mem_2G\",\"--s3-bucket\",\"",
                           {
                             "Ref": "amazonbraketC6E30921"
                           },
-                          "\"],\"Memory\":2048,\"Vcpus\":1}}},\"M2-D4-Advantage_system1-Vcpus2-Mem4\":{\"Next\":\"M2-D4-Advantage_system1-Vcpus4-Mem9\",\"Type\":\"Task\",\"Resource\":\"arn:",
+                          "\"]}}}}},{\"StartAt\":\"M2-D4-Advantage_system1-vCpus4_Mem_4G\",\"States\":{\"M2-D4-Advantage_system1-vCpus4_Mem_4G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
                           {
                             "Ref": "AWS::Partition"
                           },
                           ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
                           {
-                            "Ref": "batchjobdefA1425F8B"
+                            "Ref": "QCJobvCpus4Mem4G33BBDF79"
                           },
-                          "\",\"JobName\":\"M2-D4-Advantage_system1-Vcpus2-Mem4\",\"JobQueue\":\"",
+                          "\",\"JobName\":\"M2-D4-Advantage_system1-vCpus4_Mem_4G\",\"JobQueue\":\"",
                           {
                             "Ref": "JobQueueEE3AD499"
                           },
@@ -2064,19 +3459,19 @@
                           {
                             "Ref": "AWS::Region"
                           },
-                          "\",\"--instance-type\",\"vcpus-2-mem-4\",\"--s3-bucket\",\"",
+                          "\",\"--instance-type\",\"vCpus4_Mem_4G\",\"--s3-bucket\",\"",
                           {
                             "Ref": "amazonbraketC6E30921"
                           },
-                          "\"],\"Memory\":4096,\"Vcpus\":2}}},\"M2-D4-Advantage_system1-Vcpus4-Mem9\":{\"Next\":\"M4-D4-DW_2000Q_6-Vcpus1-Mem2\",\"Type\":\"Task\",\"Resource\":\"arn:",
+                          "\"]}}}}},{\"StartAt\":\"M2-D4-Advantage_system1-vCpus8_Mem_8G\",\"States\":{\"M2-D4-Advantage_system1-vCpus8_Mem_8G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
                           {
                             "Ref": "AWS::Partition"
                           },
                           ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
                           {
-                            "Ref": "batchjobdefA1425F8B"
+                            "Ref": "QCJobvCpus8Mem8GA565DAC0"
                           },
-                          "\",\"JobName\":\"M2-D4-Advantage_system1-Vcpus4-Mem9\",\"JobQueue\":\"",
+                          "\",\"JobName\":\"M2-D4-Advantage_system1-vCpus8_Mem_8G\",\"JobQueue\":\"",
                           {
                             "Ref": "JobQueueEE3AD499"
                           },
@@ -2084,19 +3479,359 @@
                           {
                             "Ref": "AWS::Region"
                           },
-                          "\",\"--instance-type\",\"vcpus-4-mem-9\",\"--s3-bucket\",\"",
+                          "\",\"--instance-type\",\"vCpus8_Mem_8G\",\"--s3-bucket\",\"",
                           {
                             "Ref": "amazonbraketC6E30921"
                           },
-                          "\"],\"Memory\":9216,\"Vcpus\":4}}},\"M4-D4-DW_2000Q_6-Vcpus1-Mem2\":{\"Next\":\"M4-D4-DW_2000Q_6-Vcpus2-Mem4\",\"Type\":\"Task\",\"Resource\":\"arn:",
+                          "\"]}}}}},{\"StartAt\":\"M2-D4-Advantage_system1-vCpus16_Mem_16G\",\"States\":{\"M2-D4-Advantage_system1-vCpus16_Mem_16G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
                           {
                             "Ref": "AWS::Partition"
                           },
                           ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
                           {
-                            "Ref": "batchjobdefA1425F8B"
+                            "Ref": "QCJobvCpus16Mem16GB24CBF51"
                           },
-                          "\",\"JobName\":\"M4-D4-DW_2000Q_6-Vcpus1-Mem2\",\"JobQueue\":\"",
+                          "\",\"JobName\":\"M2-D4-Advantage_system1-vCpus16_Mem_16G\",\"JobQueue\":\"",
+                          {
+                            "Ref": "JobQueueEE3AD499"
+                          },
+                          "\",\"ContainerOverrides\":{\"Command\":[\"--M\",\"2\",\"--D\",\"4\",\"--device-arn\",\"arn:aws:braket:::device/qpu/d-wave/Advantage_system1\",\"--aws-region\",\"",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          "\",\"--instance-type\",\"vCpus16_Mem_16G\",\"--s3-bucket\",\"",
+                          {
+                            "Ref": "amazonbraketC6E30921"
+                          },
+                          "\"]}}}}},{\"StartAt\":\"M2-D4-Advantage_system4-vCpus2_Mem_2G\",\"States\":{\"M2-D4-Advantage_system4-vCpus2_Mem_2G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
+                          {
+                            "Ref": "QCJobvCpus2Mem2GDBF9C9F0"
+                          },
+                          "\",\"JobName\":\"M2-D4-Advantage_system4-vCpus2_Mem_2G\",\"JobQueue\":\"",
+                          {
+                            "Ref": "JobQueueEE3AD499"
+                          },
+                          "\",\"ContainerOverrides\":{\"Command\":[\"--M\",\"2\",\"--D\",\"4\",\"--device-arn\",\"arn:aws:braket:::device/qpu/d-wave/Advantage_system4\",\"--aws-region\",\"",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          "\",\"--instance-type\",\"vCpus2_Mem_2G\",\"--s3-bucket\",\"",
+                          {
+                            "Ref": "amazonbraketC6E30921"
+                          },
+                          "\"]}}}}},{\"StartAt\":\"M2-D4-Advantage_system4-vCpus4_Mem_4G\",\"States\":{\"M2-D4-Advantage_system4-vCpus4_Mem_4G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
+                          {
+                            "Ref": "QCJobvCpus4Mem4G33BBDF79"
+                          },
+                          "\",\"JobName\":\"M2-D4-Advantage_system4-vCpus4_Mem_4G\",\"JobQueue\":\"",
+                          {
+                            "Ref": "JobQueueEE3AD499"
+                          },
+                          "\",\"ContainerOverrides\":{\"Command\":[\"--M\",\"2\",\"--D\",\"4\",\"--device-arn\",\"arn:aws:braket:::device/qpu/d-wave/Advantage_system4\",\"--aws-region\",\"",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          "\",\"--instance-type\",\"vCpus4_Mem_4G\",\"--s3-bucket\",\"",
+                          {
+                            "Ref": "amazonbraketC6E30921"
+                          },
+                          "\"]}}}}},{\"StartAt\":\"M2-D4-Advantage_system4-vCpus8_Mem_8G\",\"States\":{\"M2-D4-Advantage_system4-vCpus8_Mem_8G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
+                          {
+                            "Ref": "QCJobvCpus8Mem8GA565DAC0"
+                          },
+                          "\",\"JobName\":\"M2-D4-Advantage_system4-vCpus8_Mem_8G\",\"JobQueue\":\"",
+                          {
+                            "Ref": "JobQueueEE3AD499"
+                          },
+                          "\",\"ContainerOverrides\":{\"Command\":[\"--M\",\"2\",\"--D\",\"4\",\"--device-arn\",\"arn:aws:braket:::device/qpu/d-wave/Advantage_system4\",\"--aws-region\",\"",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          "\",\"--instance-type\",\"vCpus8_Mem_8G\",\"--s3-bucket\",\"",
+                          {
+                            "Ref": "amazonbraketC6E30921"
+                          },
+                          "\"]}}}}},{\"StartAt\":\"M2-D4-Advantage_system4-vCpus16_Mem_16G\",\"States\":{\"M2-D4-Advantage_system4-vCpus16_Mem_16G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
+                          {
+                            "Ref": "QCJobvCpus16Mem16GB24CBF51"
+                          },
+                          "\",\"JobName\":\"M2-D4-Advantage_system4-vCpus16_Mem_16G\",\"JobQueue\":\"",
+                          {
+                            "Ref": "JobQueueEE3AD499"
+                          },
+                          "\",\"ContainerOverrides\":{\"Command\":[\"--M\",\"2\",\"--D\",\"4\",\"--device-arn\",\"arn:aws:braket:::device/qpu/d-wave/Advantage_system4\",\"--aws-region\",\"",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          "\",\"--instance-type\",\"vCpus16_Mem_16G\",\"--s3-bucket\",\"",
+                          {
+                            "Ref": "amazonbraketC6E30921"
+                          },
+                          "\"]}}}}},{\"StartAt\":\"M3-D4-DW_2000Q_6-vCpus2_Mem_2G\",\"States\":{\"M3-D4-DW_2000Q_6-vCpus2_Mem_2G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
+                          {
+                            "Ref": "QCJobvCpus2Mem2GDBF9C9F0"
+                          },
+                          "\",\"JobName\":\"M3-D4-DW_2000Q_6-vCpus2_Mem_2G\",\"JobQueue\":\"",
+                          {
+                            "Ref": "JobQueueEE3AD499"
+                          },
+                          "\",\"ContainerOverrides\":{\"Command\":[\"--M\",\"3\",\"--D\",\"4\",\"--device-arn\",\"arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6\",\"--aws-region\",\"",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          "\",\"--instance-type\",\"vCpus2_Mem_2G\",\"--s3-bucket\",\"",
+                          {
+                            "Ref": "amazonbraketC6E30921"
+                          },
+                          "\"]}}}}},{\"StartAt\":\"M3-D4-DW_2000Q_6-vCpus4_Mem_4G\",\"States\":{\"M3-D4-DW_2000Q_6-vCpus4_Mem_4G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
+                          {
+                            "Ref": "QCJobvCpus4Mem4G33BBDF79"
+                          },
+                          "\",\"JobName\":\"M3-D4-DW_2000Q_6-vCpus4_Mem_4G\",\"JobQueue\":\"",
+                          {
+                            "Ref": "JobQueueEE3AD499"
+                          },
+                          "\",\"ContainerOverrides\":{\"Command\":[\"--M\",\"3\",\"--D\",\"4\",\"--device-arn\",\"arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6\",\"--aws-region\",\"",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          "\",\"--instance-type\",\"vCpus4_Mem_4G\",\"--s3-bucket\",\"",
+                          {
+                            "Ref": "amazonbraketC6E30921"
+                          },
+                          "\"]}}}}},{\"StartAt\":\"M3-D4-DW_2000Q_6-vCpus8_Mem_8G\",\"States\":{\"M3-D4-DW_2000Q_6-vCpus8_Mem_8G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
+                          {
+                            "Ref": "QCJobvCpus8Mem8GA565DAC0"
+                          },
+                          "\",\"JobName\":\"M3-D4-DW_2000Q_6-vCpus8_Mem_8G\",\"JobQueue\":\"",
+                          {
+                            "Ref": "JobQueueEE3AD499"
+                          },
+                          "\",\"ContainerOverrides\":{\"Command\":[\"--M\",\"3\",\"--D\",\"4\",\"--device-arn\",\"arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6\",\"--aws-region\",\"",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          "\",\"--instance-type\",\"vCpus8_Mem_8G\",\"--s3-bucket\",\"",
+                          {
+                            "Ref": "amazonbraketC6E30921"
+                          },
+                          "\"]}}}}},{\"StartAt\":\"M3-D4-DW_2000Q_6-vCpus16_Mem_16G\",\"States\":{\"M3-D4-DW_2000Q_6-vCpus16_Mem_16G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
+                          {
+                            "Ref": "QCJobvCpus16Mem16GB24CBF51"
+                          },
+                          "\",\"JobName\":\"M3-D4-DW_2000Q_6-vCpus16_Mem_16G\",\"JobQueue\":\"",
+                          {
+                            "Ref": "JobQueueEE3AD499"
+                          },
+                          "\",\"ContainerOverrides\":{\"Command\":[\"--M\",\"3\",\"--D\",\"4\",\"--device-arn\",\"arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6\",\"--aws-region\",\"",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          "\",\"--instance-type\",\"vCpus16_Mem_16G\",\"--s3-bucket\",\"",
+                          {
+                            "Ref": "amazonbraketC6E30921"
+                          },
+                          "\"]}}}}},{\"StartAt\":\"M3-D4-Advantage_system1-vCpus2_Mem_2G\",\"States\":{\"M3-D4-Advantage_system1-vCpus2_Mem_2G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
+                          {
+                            "Ref": "QCJobvCpus2Mem2GDBF9C9F0"
+                          },
+                          "\",\"JobName\":\"M3-D4-Advantage_system1-vCpus2_Mem_2G\",\"JobQueue\":\"",
+                          {
+                            "Ref": "JobQueueEE3AD499"
+                          },
+                          "\",\"ContainerOverrides\":{\"Command\":[\"--M\",\"3\",\"--D\",\"4\",\"--device-arn\",\"arn:aws:braket:::device/qpu/d-wave/Advantage_system1\",\"--aws-region\",\"",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          "\",\"--instance-type\",\"vCpus2_Mem_2G\",\"--s3-bucket\",\"",
+                          {
+                            "Ref": "amazonbraketC6E30921"
+                          },
+                          "\"]}}}}},{\"StartAt\":\"M3-D4-Advantage_system1-vCpus4_Mem_4G\",\"States\":{\"M3-D4-Advantage_system1-vCpus4_Mem_4G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
+                          {
+                            "Ref": "QCJobvCpus4Mem4G33BBDF79"
+                          },
+                          "\",\"JobName\":\"M3-D4-Advantage_system1-vCpus4_Mem_4G\",\"JobQueue\":\"",
+                          {
+                            "Ref": "JobQueueEE3AD499"
+                          },
+                          "\",\"ContainerOverrides\":{\"Command\":[\"--M\",\"3\",\"--D\",\"4\",\"--device-arn\",\"arn:aws:braket:::device/qpu/d-wave/Advantage_system1\",\"--aws-region\",\"",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          "\",\"--instance-type\",\"vCpus4_Mem_4G\",\"--s3-bucket\",\"",
+                          {
+                            "Ref": "amazonbraketC6E30921"
+                          },
+                          "\"]}}}}},{\"StartAt\":\"M3-D4-Advantage_system1-vCpus8_Mem_8G\",\"States\":{\"M3-D4-Advantage_system1-vCpus8_Mem_8G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
+                          {
+                            "Ref": "QCJobvCpus8Mem8GA565DAC0"
+                          },
+                          "\",\"JobName\":\"M3-D4-Advantage_system1-vCpus8_Mem_8G\",\"JobQueue\":\"",
+                          {
+                            "Ref": "JobQueueEE3AD499"
+                          },
+                          "\",\"ContainerOverrides\":{\"Command\":[\"--M\",\"3\",\"--D\",\"4\",\"--device-arn\",\"arn:aws:braket:::device/qpu/d-wave/Advantage_system1\",\"--aws-region\",\"",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          "\",\"--instance-type\",\"vCpus8_Mem_8G\",\"--s3-bucket\",\"",
+                          {
+                            "Ref": "amazonbraketC6E30921"
+                          },
+                          "\"]}}}}},{\"StartAt\":\"M3-D4-Advantage_system1-vCpus16_Mem_16G\",\"States\":{\"M3-D4-Advantage_system1-vCpus16_Mem_16G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
+                          {
+                            "Ref": "QCJobvCpus16Mem16GB24CBF51"
+                          },
+                          "\",\"JobName\":\"M3-D4-Advantage_system1-vCpus16_Mem_16G\",\"JobQueue\":\"",
+                          {
+                            "Ref": "JobQueueEE3AD499"
+                          },
+                          "\",\"ContainerOverrides\":{\"Command\":[\"--M\",\"3\",\"--D\",\"4\",\"--device-arn\",\"arn:aws:braket:::device/qpu/d-wave/Advantage_system1\",\"--aws-region\",\"",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          "\",\"--instance-type\",\"vCpus16_Mem_16G\",\"--s3-bucket\",\"",
+                          {
+                            "Ref": "amazonbraketC6E30921"
+                          },
+                          "\"]}}}}},{\"StartAt\":\"M3-D4-Advantage_system4-vCpus2_Mem_2G\",\"States\":{\"M3-D4-Advantage_system4-vCpus2_Mem_2G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
+                          {
+                            "Ref": "QCJobvCpus2Mem2GDBF9C9F0"
+                          },
+                          "\",\"JobName\":\"M3-D4-Advantage_system4-vCpus2_Mem_2G\",\"JobQueue\":\"",
+                          {
+                            "Ref": "JobQueueEE3AD499"
+                          },
+                          "\",\"ContainerOverrides\":{\"Command\":[\"--M\",\"3\",\"--D\",\"4\",\"--device-arn\",\"arn:aws:braket:::device/qpu/d-wave/Advantage_system4\",\"--aws-region\",\"",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          "\",\"--instance-type\",\"vCpus2_Mem_2G\",\"--s3-bucket\",\"",
+                          {
+                            "Ref": "amazonbraketC6E30921"
+                          },
+                          "\"]}}}}},{\"StartAt\":\"M3-D4-Advantage_system4-vCpus4_Mem_4G\",\"States\":{\"M3-D4-Advantage_system4-vCpus4_Mem_4G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
+                          {
+                            "Ref": "QCJobvCpus4Mem4G33BBDF79"
+                          },
+                          "\",\"JobName\":\"M3-D4-Advantage_system4-vCpus4_Mem_4G\",\"JobQueue\":\"",
+                          {
+                            "Ref": "JobQueueEE3AD499"
+                          },
+                          "\",\"ContainerOverrides\":{\"Command\":[\"--M\",\"3\",\"--D\",\"4\",\"--device-arn\",\"arn:aws:braket:::device/qpu/d-wave/Advantage_system4\",\"--aws-region\",\"",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          "\",\"--instance-type\",\"vCpus4_Mem_4G\",\"--s3-bucket\",\"",
+                          {
+                            "Ref": "amazonbraketC6E30921"
+                          },
+                          "\"]}}}}},{\"StartAt\":\"M3-D4-Advantage_system4-vCpus8_Mem_8G\",\"States\":{\"M3-D4-Advantage_system4-vCpus8_Mem_8G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
+                          {
+                            "Ref": "QCJobvCpus8Mem8GA565DAC0"
+                          },
+                          "\",\"JobName\":\"M3-D4-Advantage_system4-vCpus8_Mem_8G\",\"JobQueue\":\"",
+                          {
+                            "Ref": "JobQueueEE3AD499"
+                          },
+                          "\",\"ContainerOverrides\":{\"Command\":[\"--M\",\"3\",\"--D\",\"4\",\"--device-arn\",\"arn:aws:braket:::device/qpu/d-wave/Advantage_system4\",\"--aws-region\",\"",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          "\",\"--instance-type\",\"vCpus8_Mem_8G\",\"--s3-bucket\",\"",
+                          {
+                            "Ref": "amazonbraketC6E30921"
+                          },
+                          "\"]}}}}},{\"StartAt\":\"M3-D4-Advantage_system4-vCpus16_Mem_16G\",\"States\":{\"M3-D4-Advantage_system4-vCpus16_Mem_16G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
+                          {
+                            "Ref": "QCJobvCpus16Mem16GB24CBF51"
+                          },
+                          "\",\"JobName\":\"M3-D4-Advantage_system4-vCpus16_Mem_16G\",\"JobQueue\":\"",
+                          {
+                            "Ref": "JobQueueEE3AD499"
+                          },
+                          "\",\"ContainerOverrides\":{\"Command\":[\"--M\",\"3\",\"--D\",\"4\",\"--device-arn\",\"arn:aws:braket:::device/qpu/d-wave/Advantage_system4\",\"--aws-region\",\"",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          "\",\"--instance-type\",\"vCpus16_Mem_16G\",\"--s3-bucket\",\"",
+                          {
+                            "Ref": "amazonbraketC6E30921"
+                          },
+                          "\"]}}}}},{\"StartAt\":\"M4-D4-DW_2000Q_6-vCpus2_Mem_2G\",\"States\":{\"M4-D4-DW_2000Q_6-vCpus2_Mem_2G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
+                          {
+                            "Ref": "QCJobvCpus2Mem2GDBF9C9F0"
+                          },
+                          "\",\"JobName\":\"M4-D4-DW_2000Q_6-vCpus2_Mem_2G\",\"JobQueue\":\"",
                           {
                             "Ref": "JobQueueEE3AD499"
                           },
@@ -2104,19 +3839,19 @@
                           {
                             "Ref": "AWS::Region"
                           },
-                          "\",\"--instance-type\",\"vcpus-1-mem-2\",\"--s3-bucket\",\"",
+                          "\",\"--instance-type\",\"vCpus2_Mem_2G\",\"--s3-bucket\",\"",
                           {
                             "Ref": "amazonbraketC6E30921"
                           },
-                          "\"],\"Memory\":2048,\"Vcpus\":1}}},\"M4-D4-DW_2000Q_6-Vcpus2-Mem4\":{\"Next\":\"M4-D4-DW_2000Q_6-Vcpus4-Mem9\",\"Type\":\"Task\",\"Resource\":\"arn:",
+                          "\"]}}}}},{\"StartAt\":\"M4-D4-DW_2000Q_6-vCpus4_Mem_4G\",\"States\":{\"M4-D4-DW_2000Q_6-vCpus4_Mem_4G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
                           {
                             "Ref": "AWS::Partition"
                           },
                           ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
                           {
-                            "Ref": "batchjobdefA1425F8B"
+                            "Ref": "QCJobvCpus4Mem4G33BBDF79"
                           },
-                          "\",\"JobName\":\"M4-D4-DW_2000Q_6-Vcpus2-Mem4\",\"JobQueue\":\"",
+                          "\",\"JobName\":\"M4-D4-DW_2000Q_6-vCpus4_Mem_4G\",\"JobQueue\":\"",
                           {
                             "Ref": "JobQueueEE3AD499"
                           },
@@ -2124,19 +3859,19 @@
                           {
                             "Ref": "AWS::Region"
                           },
-                          "\",\"--instance-type\",\"vcpus-2-mem-4\",\"--s3-bucket\",\"",
+                          "\",\"--instance-type\",\"vCpus4_Mem_4G\",\"--s3-bucket\",\"",
                           {
                             "Ref": "amazonbraketC6E30921"
                           },
-                          "\"],\"Memory\":4096,\"Vcpus\":2}}},\"M4-D4-DW_2000Q_6-Vcpus4-Mem9\":{\"Next\":\"M4-D4-Advantage_system1-Vcpus1-Mem2\",\"Type\":\"Task\",\"Resource\":\"arn:",
+                          "\"]}}}}},{\"StartAt\":\"M4-D4-DW_2000Q_6-vCpus8_Mem_8G\",\"States\":{\"M4-D4-DW_2000Q_6-vCpus8_Mem_8G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
                           {
                             "Ref": "AWS::Partition"
                           },
                           ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
                           {
-                            "Ref": "batchjobdefA1425F8B"
+                            "Ref": "QCJobvCpus8Mem8GA565DAC0"
                           },
-                          "\",\"JobName\":\"M4-D4-DW_2000Q_6-Vcpus4-Mem9\",\"JobQueue\":\"",
+                          "\",\"JobName\":\"M4-D4-DW_2000Q_6-vCpus8_Mem_8G\",\"JobQueue\":\"",
                           {
                             "Ref": "JobQueueEE3AD499"
                           },
@@ -2144,19 +3879,39 @@
                           {
                             "Ref": "AWS::Region"
                           },
-                          "\",\"--instance-type\",\"vcpus-4-mem-9\",\"--s3-bucket\",\"",
+                          "\",\"--instance-type\",\"vCpus8_Mem_8G\",\"--s3-bucket\",\"",
                           {
                             "Ref": "amazonbraketC6E30921"
                           },
-                          "\"],\"Memory\":9216,\"Vcpus\":4}}},\"M4-D4-Advantage_system1-Vcpus1-Mem2\":{\"Next\":\"M4-D4-Advantage_system1-Vcpus2-Mem4\",\"Type\":\"Task\",\"Resource\":\"arn:",
+                          "\"]}}}}},{\"StartAt\":\"M4-D4-DW_2000Q_6-vCpus16_Mem_16G\",\"States\":{\"M4-D4-DW_2000Q_6-vCpus16_Mem_16G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
                           {
                             "Ref": "AWS::Partition"
                           },
                           ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
                           {
-                            "Ref": "batchjobdefA1425F8B"
+                            "Ref": "QCJobvCpus16Mem16GB24CBF51"
                           },
-                          "\",\"JobName\":\"M4-D4-Advantage_system1-Vcpus1-Mem2\",\"JobQueue\":\"",
+                          "\",\"JobName\":\"M4-D4-DW_2000Q_6-vCpus16_Mem_16G\",\"JobQueue\":\"",
+                          {
+                            "Ref": "JobQueueEE3AD499"
+                          },
+                          "\",\"ContainerOverrides\":{\"Command\":[\"--M\",\"4\",\"--D\",\"4\",\"--device-arn\",\"arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6\",\"--aws-region\",\"",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          "\",\"--instance-type\",\"vCpus16_Mem_16G\",\"--s3-bucket\",\"",
+                          {
+                            "Ref": "amazonbraketC6E30921"
+                          },
+                          "\"]}}}}},{\"StartAt\":\"M4-D4-Advantage_system1-vCpus2_Mem_2G\",\"States\":{\"M4-D4-Advantage_system1-vCpus2_Mem_2G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
+                          {
+                            "Ref": "QCJobvCpus2Mem2GDBF9C9F0"
+                          },
+                          "\",\"JobName\":\"M4-D4-Advantage_system1-vCpus2_Mem_2G\",\"JobQueue\":\"",
                           {
                             "Ref": "JobQueueEE3AD499"
                           },
@@ -2164,19 +3919,19 @@
                           {
                             "Ref": "AWS::Region"
                           },
-                          "\",\"--instance-type\",\"vcpus-1-mem-2\",\"--s3-bucket\",\"",
+                          "\",\"--instance-type\",\"vCpus2_Mem_2G\",\"--s3-bucket\",\"",
                           {
                             "Ref": "amazonbraketC6E30921"
                           },
-                          "\"],\"Memory\":2048,\"Vcpus\":1}}},\"M4-D4-Advantage_system1-Vcpus2-Mem4\":{\"Next\":\"M4-D4-Advantage_system1-Vcpus4-Mem9\",\"Type\":\"Task\",\"Resource\":\"arn:",
+                          "\"]}}}}},{\"StartAt\":\"M4-D4-Advantage_system1-vCpus4_Mem_4G\",\"States\":{\"M4-D4-Advantage_system1-vCpus4_Mem_4G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
                           {
                             "Ref": "AWS::Partition"
                           },
                           ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
                           {
-                            "Ref": "batchjobdefA1425F8B"
+                            "Ref": "QCJobvCpus4Mem4G33BBDF79"
                           },
-                          "\",\"JobName\":\"M4-D4-Advantage_system1-Vcpus2-Mem4\",\"JobQueue\":\"",
+                          "\",\"JobName\":\"M4-D4-Advantage_system1-vCpus4_Mem_4G\",\"JobQueue\":\"",
                           {
                             "Ref": "JobQueueEE3AD499"
                           },
@@ -2184,19 +3939,19 @@
                           {
                             "Ref": "AWS::Region"
                           },
-                          "\",\"--instance-type\",\"vcpus-2-mem-4\",\"--s3-bucket\",\"",
+                          "\",\"--instance-type\",\"vCpus4_Mem_4G\",\"--s3-bucket\",\"",
                           {
                             "Ref": "amazonbraketC6E30921"
                           },
-                          "\"],\"Memory\":4096,\"Vcpus\":2}}},\"M4-D4-Advantage_system1-Vcpus4-Mem9\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
+                          "\"]}}}}},{\"StartAt\":\"M4-D4-Advantage_system1-vCpus8_Mem_8G\",\"States\":{\"M4-D4-Advantage_system1-vCpus8_Mem_8G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
                           {
                             "Ref": "AWS::Partition"
                           },
                           ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
                           {
-                            "Ref": "batchjobdefA1425F8B"
+                            "Ref": "QCJobvCpus8Mem8GA565DAC0"
                           },
-                          "\",\"JobName\":\"M4-D4-Advantage_system1-Vcpus4-Mem9\",\"JobQueue\":\"",
+                          "\",\"JobName\":\"M4-D4-Advantage_system1-vCpus8_Mem_8G\",\"JobQueue\":\"",
                           {
                             "Ref": "JobQueueEE3AD499"
                           },
@@ -2204,11 +3959,122 @@
                           {
                             "Ref": "AWS::Region"
                           },
-                          "\",\"--instance-type\",\"vcpus-4-mem-9\",\"--s3-bucket\",\"",
+                          "\",\"--instance-type\",\"vCpus8_Mem_8G\",\"--s3-bucket\",\"",
                           {
                             "Ref": "amazonbraketC6E30921"
                           },
-                          "\"],\"Memory\":9216,\"Vcpus\":4}}}},\"TimeoutSeconds\":7200}"
+                          "\"]}}}}},{\"StartAt\":\"M4-D4-Advantage_system1-vCpus16_Mem_16G\",\"States\":{\"M4-D4-Advantage_system1-vCpus16_Mem_16G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
+                          {
+                            "Ref": "QCJobvCpus16Mem16GB24CBF51"
+                          },
+                          "\",\"JobName\":\"M4-D4-Advantage_system1-vCpus16_Mem_16G\",\"JobQueue\":\"",
+                          {
+                            "Ref": "JobQueueEE3AD499"
+                          },
+                          "\",\"ContainerOverrides\":{\"Command\":[\"--M\",\"4\",\"--D\",\"4\",\"--device-arn\",\"arn:aws:braket:::device/qpu/d-wave/Advantage_system1\",\"--aws-region\",\"",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          "\",\"--instance-type\",\"vCpus16_Mem_16G\",\"--s3-bucket\",\"",
+                          {
+                            "Ref": "amazonbraketC6E30921"
+                          },
+                          "\"]}}}}},{\"StartAt\":\"M4-D4-Advantage_system4-vCpus2_Mem_2G\",\"States\":{\"M4-D4-Advantage_system4-vCpus2_Mem_2G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
+                          {
+                            "Ref": "QCJobvCpus2Mem2GDBF9C9F0"
+                          },
+                          "\",\"JobName\":\"M4-D4-Advantage_system4-vCpus2_Mem_2G\",\"JobQueue\":\"",
+                          {
+                            "Ref": "JobQueueEE3AD499"
+                          },
+                          "\",\"ContainerOverrides\":{\"Command\":[\"--M\",\"4\",\"--D\",\"4\",\"--device-arn\",\"arn:aws:braket:::device/qpu/d-wave/Advantage_system4\",\"--aws-region\",\"",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          "\",\"--instance-type\",\"vCpus2_Mem_2G\",\"--s3-bucket\",\"",
+                          {
+                            "Ref": "amazonbraketC6E30921"
+                          },
+                          "\"]}}}}},{\"StartAt\":\"M4-D4-Advantage_system4-vCpus4_Mem_4G\",\"States\":{\"M4-D4-Advantage_system4-vCpus4_Mem_4G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
+                          {
+                            "Ref": "QCJobvCpus4Mem4G33BBDF79"
+                          },
+                          "\",\"JobName\":\"M4-D4-Advantage_system4-vCpus4_Mem_4G\",\"JobQueue\":\"",
+                          {
+                            "Ref": "JobQueueEE3AD499"
+                          },
+                          "\",\"ContainerOverrides\":{\"Command\":[\"--M\",\"4\",\"--D\",\"4\",\"--device-arn\",\"arn:aws:braket:::device/qpu/d-wave/Advantage_system4\",\"--aws-region\",\"",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          "\",\"--instance-type\",\"vCpus4_Mem_4G\",\"--s3-bucket\",\"",
+                          {
+                            "Ref": "amazonbraketC6E30921"
+                          },
+                          "\"]}}}}},{\"StartAt\":\"M4-D4-Advantage_system4-vCpus8_Mem_8G\",\"States\":{\"M4-D4-Advantage_system4-vCpus8_Mem_8G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
+                          {
+                            "Ref": "QCJobvCpus8Mem8GA565DAC0"
+                          },
+                          "\",\"JobName\":\"M4-D4-Advantage_system4-vCpus8_Mem_8G\",\"JobQueue\":\"",
+                          {
+                            "Ref": "JobQueueEE3AD499"
+                          },
+                          "\",\"ContainerOverrides\":{\"Command\":[\"--M\",\"4\",\"--D\",\"4\",\"--device-arn\",\"arn:aws:braket:::device/qpu/d-wave/Advantage_system4\",\"--aws-region\",\"",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          "\",\"--instance-type\",\"vCpus8_Mem_8G\",\"--s3-bucket\",\"",
+                          {
+                            "Ref": "amazonbraketC6E30921"
+                          },
+                          "\"]}}}}},{\"StartAt\":\"M4-D4-Advantage_system4-vCpus16_Mem_16G\",\"States\":{\"M4-D4-Advantage_system4-vCpus16_Mem_16G\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
+                          {
+                            "Ref": "QCJobvCpus16Mem16GB24CBF51"
+                          },
+                          "\",\"JobName\":\"M4-D4-Advantage_system4-vCpus16_Mem_16G\",\"JobQueue\":\"",
+                          {
+                            "Ref": "JobQueueEE3AD499"
+                          },
+                          "\",\"ContainerOverrides\":{\"Command\":[\"--M\",\"4\",\"--D\",\"4\",\"--device-arn\",\"arn:aws:braket:::device/qpu/d-wave/Advantage_system4\",\"--aws-region\",\"",
+                          {
+                            "Ref": "AWS::Region"
+                          },
+                          "\",\"--instance-type\",\"vCpus16_Mem_16G\",\"--s3-bucket\",\"",
+                          {
+                            "Ref": "amazonbraketC6E30921"
+                          },
+                          "\"]}}}}}]},\"Aggregate Result\":{\"Next\":\"Succeed\",\"Retry\":[{\"ErrorEquals\":[\"Lambda.ServiceException\",\"Lambda.AWSLambdaException\",\"Lambda.SdkClientException\"],\"IntervalSeconds\":2,\"MaxAttempts\":6,\"BackoffRate\":2}],\"Type\":\"Task\",\"OutputPath\":\"$.Payload\",\"Resource\":\"arn:",
+                          {
+                            "Ref": "AWS::Partition"
+                          },
+                          ":states:::lambda:invoke\",\"Parameters\":{\"FunctionName\":\"",
+                          {
+                            "Fn::GetAtt": [
+                              "AggResultLambda2D78F89C",
+                              "Arn"
+                            ]
+                          },
+                          "\",\"Payload.$\":\"$\"}},\"Succeed\":{\"Type\":\"Succeed\"}},\"TimeoutSeconds\":7200}"
                         ]
                       ]
                     }

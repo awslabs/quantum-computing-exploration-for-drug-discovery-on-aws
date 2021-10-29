@@ -6,7 +6,7 @@ import {
 } from 'cdk-bootstrapless-synthesizer';
 import {
   QCLifeScienceStack
-} from './stack';
+} from './ligand-unfolding/stack';
 
 const app = new App();
 

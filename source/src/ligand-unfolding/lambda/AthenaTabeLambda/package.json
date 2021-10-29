@@ -1,0 +1,14 @@
+{
+  "name": "athenatabelambda",
+  "version": "1.0.0",
+  "description": "AWS lambda to create Athena table",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "yongmzn@",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.997.0"
+  }
+}
