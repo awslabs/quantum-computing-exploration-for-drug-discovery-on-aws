@@ -10,7 +10,7 @@
     "watch": "tsc -w",
     "eslint": "eslint --ext .ts,.tsx --fix --no-error-on-unmatched-pattern src test",
     "cdk": "cdk ",
-    "diff": "cdk  diff",
+    "diff": "cdk diff",
     "synth": "cdk  synth",
     "deploy": "cdk  deploy",
     "destroy": "cdk  destroy"

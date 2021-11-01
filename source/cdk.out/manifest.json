@@ -7,15 +7,15 @@
         "file": "tree.json"
       }
     },
-    "QCStack": {
+    "QCStack-main": {
       "type": "aws:cloudformation:stack",
       "environment": "aws://unknown-account/unknown-region",
       "properties": {
-        "templateFile": "QCStack.template.json",
+        "templateFile": "QCStack-main.template.json",
         "validateOnSynth": false
       },
       "metadata": {
-        "/QCStack": [
+        "/QCStack-main": [
           {
             "type": "aws:cdk:asset",
             "data": {
@@ -38,8 +38,8 @@
               "Function.getOrCreateProvider (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/custom-resource-provider/custom-resource-provider.ts:69:10)",
               "Bucket.enableAutoDeleteObjects (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:1152:45)",
               "new Bucket (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:783:12)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:291:22)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:281:22)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -79,11 +79,11 @@
               "JobDefinitionImageConfig.bindImageConfig (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-batch/lib/job-definition-image-config.ts:71:57)",
               "new JobDefinitionImageConfig (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-batch/lib/job-definition-image-config.ts:65:25)",
               "new JobDefinition (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-batch/lib/job-definition.ts:219:24)",
-              "QCLifeScienceStack.createBatchJobDef (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:645:12)",
-              "/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:375:19",
+              "QCLifeScienceStack.createBatchJobDef (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:454:12)",
+              "/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:365:19",
               "Array.map (<anonymous>)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:374:33)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:364:33)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -121,8 +121,8 @@
               "new Asset (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-s3-assets/lib/asset.ts:86:40)",
               "AssetCode.bind (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-lambda/lib/code.ts:183:20)",
               "new Function (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-lambda/lib/function.ts:338:29)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:429:29)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:419:29)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -141,13 +141,13 @@
             ]
           }
         ],
-        "/QCStack/NotebookInstanceType": [
+        "/QCStack-main/NotebookInstanceType": [
           {
             "type": "aws:cdk:logicalId",
             "data": "NotebookInstanceType",
             "trace": [
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:270:31)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:269:31)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -166,13 +166,13 @@
             ]
           }
         ],
-        "/QCStack/GitHubRepo": [
+        "/QCStack-main/GitHubRepo": [
           {
             "type": "aws:cdk:logicalId",
             "data": "GitHubRepo",
             "trace": [
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:276:25)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:275:25)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -191,39 +191,14 @@
             ]
           }
         ],
-        "/QCStack/quickSightUser": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "quickSightUser",
-            "trace": [
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:284:33)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
-              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
-              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
-              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
-              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
-              "Module.load (node:internal/modules/cjs/loader:981:32)",
-              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
-              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
-              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
-              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
-              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
-              "Module.load (node:internal/modules/cjs/loader:981:32)",
-              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
-              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
-              "node:internal/main/run_main_module:17:47"
-            ]
-          }
-        ],
-        "/QCStack/amazon-braket/Resource": [
+        "/QCStack-main/amazon-braket/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "amazonbraketC6E30921",
             "trace": [
               "new Bucket (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:715:22)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:291:22)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:281:22)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -242,7 +217,7 @@
             ]
           }
         ],
-        "/QCStack/amazon-braket/Policy/Resource": [
+        "/QCStack-main/amazon-braket/Policy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "amazonbraketPolicyA997C6D2",
@@ -251,8 +226,8 @@
               "Bucket.addToResourcePolicy (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:228:21)",
               "Bucket.enableAutoDeleteObjects (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:1160:10)",
               "new Bucket (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:783:12)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:291:22)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:281:22)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -271,7 +246,7 @@
             ]
           }
         ],
-        "/QCStack/amazon-braket/AutoDeleteObjectsCustomResource/Default": [
+        "/QCStack-main/amazon-braket/AutoDeleteObjectsCustomResource/Default": [
           {
             "type": "aws:cdk:logicalId",
             "data": "amazonbraketAutoDeleteObjectsCustomResource58542BE3",
@@ -279,8 +254,8 @@
               "new CustomResource (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/custom-resource.ts:36:21)",
               "Bucket.enableAutoDeleteObjects (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:1173:28)",
               "new Bucket (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:783:12)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:291:22)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:281:22)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -299,7 +274,7 @@
             ]
           }
         ],
-        "/QCStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
+        "/QCStack-main/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role": [
           {
             "type": "aws:cdk:logicalId",
             "data": "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
@@ -308,8 +283,8 @@
               "Function.getOrCreateProvider (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/custom-resource-provider/custom-resource-provider.ts:69:10)",
               "Bucket.enableAutoDeleteObjects (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:1152:45)",
               "new Bucket (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:783:12)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:291:22)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:281:22)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -328,7 +303,7 @@
             ]
           }
         ],
-        "/QCStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
+        "/QCStack-main/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler": [
           {
             "type": "aws:cdk:logicalId",
             "data": "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
@@ -337,8 +312,8 @@
               "Function.getOrCreateProvider (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/custom-resource-provider/custom-resource-provider.ts:69:10)",
               "Bucket.enableAutoDeleteObjects (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:1152:45)",
               "new Bucket (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:783:12)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:291:22)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:281:22)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -357,7 +332,7 @@
             ]
           }
         ],
-        "/QCStack/AssetParameters/1f7e277bd526ebce1983fa1e7a84a5281ec533d9187caaebb773681bbf7bf4c1/S3Bucket": [
+        "/QCStack-main/AssetParameters/1f7e277bd526ebce1983fa1e7a84a5281ec533d9187caaebb773681bbf7bf4c1/S3Bucket": [
           {
             "type": "aws:cdk:logicalId",
             "data": "AssetParameters1f7e277bd526ebce1983fa1e7a84a5281ec533d9187caaebb773681bbf7bf4c1S3Bucket4842F32D",
@@ -372,8 +347,8 @@
               "Function.getOrCreateProvider (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/custom-resource-provider/custom-resource-provider.ts:69:10)",
               "Bucket.enableAutoDeleteObjects (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:1152:45)",
               "new Bucket (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:783:12)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:291:22)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:281:22)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -392,7 +367,7 @@
             ]
           }
         ],
-        "/QCStack/AssetParameters/1f7e277bd526ebce1983fa1e7a84a5281ec533d9187caaebb773681bbf7bf4c1/S3VersionKey": [
+        "/QCStack-main/AssetParameters/1f7e277bd526ebce1983fa1e7a84a5281ec533d9187caaebb773681bbf7bf4c1/S3VersionKey": [
           {
             "type": "aws:cdk:logicalId",
             "data": "AssetParameters1f7e277bd526ebce1983fa1e7a84a5281ec533d9187caaebb773681bbf7bf4c1S3VersionKeyD0A0B57A",
@@ -407,8 +382,8 @@
               "Function.getOrCreateProvider (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/custom-resource-provider/custom-resource-provider.ts:69:10)",
               "Bucket.enableAutoDeleteObjects (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:1152:45)",
               "new Bucket (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:783:12)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:291:22)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:281:22)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -427,7 +402,7 @@
             ]
           }
         ],
-        "/QCStack/AssetParameters/1f7e277bd526ebce1983fa1e7a84a5281ec533d9187caaebb773681bbf7bf4c1/ArtifactHash": [
+        "/QCStack-main/AssetParameters/1f7e277bd526ebce1983fa1e7a84a5281ec533d9187caaebb773681bbf7bf4c1/ArtifactHash": [
           {
             "type": "aws:cdk:logicalId",
             "data": "AssetParameters1f7e277bd526ebce1983fa1e7a84a5281ec533d9187caaebb773681bbf7bf4c1ArtifactHash0128B949",
@@ -442,8 +417,8 @@
               "Function.getOrCreateProvider (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/custom-resource-provider/custom-resource-provider.ts:69:10)",
               "Bucket.enableAutoDeleteObjects (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:1152:45)",
               "new Bucket (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-s3/lib/bucket.ts:783:12)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:291:22)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:281:22)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -462,7 +437,7 @@
             ]
           }
         ],
-        "/QCStack/AssetParameters/347222fd2af9fb52a988141a4588da55867084cfba18d891ecc6239f992ed5b4/S3Bucket": [
+        "/QCStack-main/AssetParameters/347222fd2af9fb52a988141a4588da55867084cfba18d891ecc6239f992ed5b4/S3Bucket": [
           {
             "type": "aws:cdk:logicalId",
             "data": "AssetParameters347222fd2af9fb52a988141a4588da55867084cfba18d891ecc6239f992ed5b4S3Bucket79CA569E",
@@ -475,8 +450,8 @@
               "new Asset (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-s3-assets/lib/asset.ts:86:40)",
               "AssetCode.bind (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-lambda/lib/code.ts:183:20)",
               "new Function (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-lambda/lib/function.ts:338:29)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:429:29)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:419:29)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -495,7 +470,7 @@
             ]
           }
         ],
-        "/QCStack/AssetParameters/347222fd2af9fb52a988141a4588da55867084cfba18d891ecc6239f992ed5b4/S3VersionKey": [
+        "/QCStack-main/AssetParameters/347222fd2af9fb52a988141a4588da55867084cfba18d891ecc6239f992ed5b4/S3VersionKey": [
           {
             "type": "aws:cdk:logicalId",
             "data": "AssetParameters347222fd2af9fb52a988141a4588da55867084cfba18d891ecc6239f992ed5b4S3VersionKey55687F42",
@@ -508,8 +483,8 @@
               "new Asset (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-s3-assets/lib/asset.ts:86:40)",
               "AssetCode.bind (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-lambda/lib/code.ts:183:20)",
               "new Function (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-lambda/lib/function.ts:338:29)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:429:29)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:419:29)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -528,7 +503,7 @@
             ]
           }
         ],
-        "/QCStack/AssetParameters/347222fd2af9fb52a988141a4588da55867084cfba18d891ecc6239f992ed5b4/ArtifactHash": [
+        "/QCStack-main/AssetParameters/347222fd2af9fb52a988141a4588da55867084cfba18d891ecc6239f992ed5b4/ArtifactHash": [
           {
             "type": "aws:cdk:logicalId",
             "data": "AssetParameters347222fd2af9fb52a988141a4588da55867084cfba18d891ecc6239f992ed5b4ArtifactHash5ED53BA8",
@@ -541,8 +516,8 @@
               "new Asset (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-s3-assets/lib/asset.ts:86:40)",
               "AssetCode.bind (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-lambda/lib/code.ts:183:20)",
               "new Function (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-lambda/lib/function.ts:338:29)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:429:29)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:419:29)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -561,15 +536,15 @@
             ]
           }
         ],
-        "/QCStack/gcr-qc-notebook-role/Resource": [
+        "/QCStack-main/gcr-qc-notebook-role/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "gcrqcnotebookrole3D345977",
             "trace": [
               "new Role (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-iam/lib/role.ts:199:18)",
-              "QCLifeScienceStack.createNotebookIamRole (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:155:18)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:297:23)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "QCLifeScienceStack.createNotebookIamRole (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:154:18)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:287:23)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -588,7 +563,7 @@
             ]
           }
         ],
-        "/QCStack/gcr-qc-notebook-role/DefaultPolicy/Resource": [
+        "/QCStack-main/gcr-qc-notebook-role/DefaultPolicy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "gcrqcnotebookroleDefaultPolicyF44D109B",
@@ -596,9 +571,9 @@
               "new Policy (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-iam/lib/policy.ts:89:22)",
               "Role.addToPrincipalPolicy (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-iam/lib/role.ts:236:28)",
               "Role.addToPolicy (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-iam/lib/role.ts:244:17)",
-              "QCLifeScienceStack.createNotebookIamRole (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:160:10)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:297:23)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "QCLifeScienceStack.createNotebookIamRole (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:159:10)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:287:23)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -617,13 +592,13 @@
             ]
           }
         ],
-        "/QCStack/install-braket-sdk": [
+        "/QCStack-main/install-braket-sdk": [
           {
             "type": "aws:cdk:logicalId",
             "data": "installbraketsdk",
             "trace": [
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:304:30)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:294:30)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -642,13 +617,13 @@
             ]
           }
         ],
-        "/QCStack/GCRQCLifeScience": [
+        "/QCStack-main/GCRQCLifeScience": [
           {
             "type": "aws:cdk:logicalId",
             "data": "GCRQCLifeScience",
             "trace": [
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:310:29)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:300:29)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -667,13 +642,13 @@
             ]
           }
         ],
-        "/QCStack/notebookName": [
+        "/QCStack-main/notebookName": [
           {
             "type": "aws:cdk:logicalId",
             "data": "notebookName",
             "trace": [
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:320:5)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:310:5)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -692,13 +667,13 @@
             ]
           }
         ],
-        "/QCStack/bucketName": [
+        "/QCStack-main/bucketName": [
           {
             "type": "aws:cdk:logicalId",
             "data": "bucketName",
             "trace": [
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:325:5)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:315:5)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -717,13 +692,13 @@
             ]
           }
         ],
-        "/QCStack/notebookUrl": [
+        "/QCStack-main/notebookUrl": [
           {
             "type": "aws:cdk:logicalId",
             "data": "notebookUrl",
             "trace": [
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:332:5)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:322:5)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -742,15 +717,15 @@
             ]
           }
         ],
-        "/QCStack/executionRole/Resource": [
+        "/QCStack-main/executionRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "executionRole2F5D1D4F",
             "trace": [
               "new Role (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-iam/lib/role.ts:199:18)",
-              "QCLifeScienceStack.createBatchJobExecutionRole (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:197:18)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:339:39)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "QCLifeScienceStack.createBatchJobExecutionRole (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:196:18)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:329:39)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -769,7 +744,7 @@
             ]
           }
         ],
-        "/QCStack/executionRole/DefaultPolicy/Resource": [
+        "/QCStack-main/executionRole/DefaultPolicy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "executionRoleDefaultPolicy90A5691A",
@@ -777,9 +752,9 @@
               "new Policy (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-iam/lib/policy.ts:89:22)",
               "Role.addToPrincipalPolicy (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-iam/lib/role.ts:236:28)",
               "Role.addToPolicy (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-iam/lib/role.ts:244:17)",
-              "QCLifeScienceStack.createBatchJobExecutionRole (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:202:10)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:339:39)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "QCLifeScienceStack.createBatchJobExecutionRole (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:201:10)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:329:39)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -798,15 +773,15 @@
             ]
           }
         ],
-        "/QCStack/jobRole/Resource": [
+        "/QCStack-main/jobRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "jobRoleA2173686",
             "trace": [
               "new Role (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-iam/lib/role.ts:199:18)",
-              "QCLifeScienceStack.createBatchJobExecutionRole (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:197:18)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:340:30)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "QCLifeScienceStack.createBatchJobExecutionRole (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:196:18)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:330:30)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -825,7 +800,7 @@
             ]
           }
         ],
-        "/QCStack/jobRole/DefaultPolicy/Resource": [
+        "/QCStack-main/jobRole/DefaultPolicy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "jobRoleDefaultPolicy0F8702BD",
@@ -833,9 +808,9 @@
               "new Policy (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-iam/lib/policy.ts:89:22)",
               "Role.addToPrincipalPolicy (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-iam/lib/role.ts:236:28)",
               "Role.addToPolicy (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-iam/lib/role.ts:244:17)",
-              "QCLifeScienceStack.createBatchJobExecutionRole (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:202:10)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:340:30)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "QCLifeScienceStack.createBatchJobExecutionRole (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:201:10)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:330:30)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -854,14 +829,14 @@
             ]
           }
         ],
-        "/QCStack/VPC/Resource": [
+        "/QCStack-main/VPC/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "VPCB9E5F0B4",
             "trace": [
               "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:741:21)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:349:17)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:339:17)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -880,7 +855,7 @@
             ]
           }
         ],
-        "/QCStack/VPC/PublicSubnet1/Subnet": [
+        "/QCStack-main/VPC/PublicSubnet1/Subnet": [
           {
             "type": "aws:cdk:logicalId",
             "data": "VPCPublicSubnet1SubnetB4246D30",
@@ -892,8 +867,8 @@
               "Vpc.createSubnetResources (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:895:28)",
               "Vpc.createSubnets (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:890:12)",
               "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:770:10)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:349:17)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:339:17)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -912,7 +887,7 @@
             ]
           }
         ],
-        "/QCStack/VPC/PublicSubnet1/RouteTable": [
+        "/QCStack-main/VPC/PublicSubnet1/RouteTable": [
           {
             "type": "aws:cdk:logicalId",
             "data": "VPCPublicSubnet1RouteTableFEE4B781",
@@ -924,8 +899,8 @@
               "Vpc.createSubnetResources (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:895:28)",
               "Vpc.createSubnets (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:890:12)",
               "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:770:10)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:349:17)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:339:17)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -944,7 +919,7 @@
             ]
           }
         ],
-        "/QCStack/VPC/PublicSubnet1/RouteTableAssociation": [
+        "/QCStack-main/VPC/PublicSubnet1/RouteTableAssociation": [
           {
             "type": "aws:cdk:logicalId",
             "data": "VPCPublicSubnet1RouteTableAssociation0B0896DC",
@@ -956,8 +931,8 @@
               "Vpc.createSubnetResources (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:895:28)",
               "Vpc.createSubnets (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:890:12)",
               "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:770:10)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:349:17)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:339:17)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -976,7 +951,7 @@
             ]
           }
         ],
-        "/QCStack/VPC/PublicSubnet1/DefaultRoute": [
+        "/QCStack-main/VPC/PublicSubnet1/DefaultRoute": [
           {
             "type": "aws:cdk:logicalId",
             "data": "VPCPublicSubnet1DefaultRoute91CEF279",
@@ -985,8 +960,8 @@
               "/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:789:22",
               "Array.forEach (<anonymous>)",
               "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:788:46)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:349:17)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:339:17)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -1005,7 +980,7 @@
             ]
           }
         ],
-        "/QCStack/VPC/PublicSubnet1/EIP": [
+        "/QCStack-main/VPC/PublicSubnet1/EIP": [
           {
             "type": "aws:cdk:logicalId",
             "data": "VPCPublicSubnet1EIP6AD938E8",
@@ -1014,8 +989,8 @@
               "NatGatewayProvider.configureNat (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/nat.ts:116:27)",
               "Vpc.createNatGateways (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:865:14)",
               "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:795:14)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:349:17)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:339:17)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -1034,7 +1009,7 @@
             ]
           }
         ],
-        "/QCStack/VPC/PublicSubnet1/NATGateway": [
+        "/QCStack-main/VPC/PublicSubnet1/NATGateway": [
           {
             "type": "aws:cdk:logicalId",
             "data": "VPCPublicSubnet1NATGatewayE0556630",
@@ -1043,8 +1018,8 @@
               "NatGatewayProvider.configureNat (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/nat.ts:116:27)",
               "Vpc.createNatGateways (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:865:14)",
               "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:795:14)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:349:17)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:339:17)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -1063,7 +1038,7 @@
             ]
           }
         ],
-        "/QCStack/VPC/PublicSubnet2/Subnet": [
+        "/QCStack-main/VPC/PublicSubnet2/Subnet": [
           {
             "type": "aws:cdk:logicalId",
             "data": "VPCPublicSubnet2Subnet74179F39",
@@ -1075,8 +1050,8 @@
               "Vpc.createSubnetResources (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:895:28)",
               "Vpc.createSubnets (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:890:12)",
               "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:770:10)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:349:17)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:339:17)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -1095,7 +1070,7 @@
             ]
           }
         ],
-        "/QCStack/VPC/PublicSubnet2/RouteTable": [
+        "/QCStack-main/VPC/PublicSubnet2/RouteTable": [
           {
             "type": "aws:cdk:logicalId",
             "data": "VPCPublicSubnet2RouteTable6F1A15F1",
@@ -1107,8 +1082,8 @@
               "Vpc.createSubnetResources (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:895:28)",
               "Vpc.createSubnets (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:890:12)",
               "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:770:10)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:349:17)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:339:17)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -1127,7 +1102,7 @@
             ]
           }
         ],
-        "/QCStack/VPC/PublicSubnet2/RouteTableAssociation": [
+        "/QCStack-main/VPC/PublicSubnet2/RouteTableAssociation": [
           {
             "type": "aws:cdk:logicalId",
             "data": "VPCPublicSubnet2RouteTableAssociation5A808732",
@@ -1139,8 +1114,8 @@
               "Vpc.createSubnetResources (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:895:28)",
               "Vpc.createSubnets (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:890:12)",
               "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:770:10)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:349:17)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:339:17)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -1159,7 +1134,7 @@
             ]
           }
         ],
-        "/QCStack/VPC/PublicSubnet2/DefaultRoute": [
+        "/QCStack-main/VPC/PublicSubnet2/DefaultRoute": [
           {
             "type": "aws:cdk:logicalId",
             "data": "VPCPublicSubnet2DefaultRouteB7481BBA",
@@ -1168,8 +1143,8 @@
               "/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:789:22",
               "Array.forEach (<anonymous>)",
               "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:788:46)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:349:17)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:339:17)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -1188,7 +1163,7 @@
             ]
           }
         ],
-        "/QCStack/VPC/PublicSubnet2/EIP": [
+        "/QCStack-main/VPC/PublicSubnet2/EIP": [
           {
             "type": "aws:cdk:logicalId",
             "data": "VPCPublicSubnet2EIP4947BC00",
@@ -1197,8 +1172,8 @@
               "NatGatewayProvider.configureNat (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/nat.ts:116:27)",
               "Vpc.createNatGateways (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:865:14)",
               "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:795:14)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:349:17)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:339:17)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -1217,7 +1192,7 @@
             ]
           }
         ],
-        "/QCStack/VPC/PublicSubnet2/NATGateway": [
+        "/QCStack-main/VPC/PublicSubnet2/NATGateway": [
           {
             "type": "aws:cdk:logicalId",
             "data": "VPCPublicSubnet2NATGateway3C070193",
@@ -1226,8 +1201,8 @@
               "NatGatewayProvider.configureNat (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/nat.ts:116:27)",
               "Vpc.createNatGateways (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:865:14)",
               "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:795:14)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:349:17)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:339:17)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -1246,7 +1221,7 @@
             ]
           }
         ],
-        "/QCStack/VPC/PrivateSubnet1/Subnet": [
+        "/QCStack-main/VPC/PrivateSubnet1/Subnet": [
           {
             "type": "aws:cdk:logicalId",
             "data": "VPCPrivateSubnet1Subnet8BCA10E0",
@@ -1258,8 +1233,8 @@
               "Vpc.createSubnetResources (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:895:28)",
               "Vpc.createSubnets (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:890:12)",
               "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:770:10)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:349:17)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:339:17)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -1278,7 +1253,7 @@
             ]
           }
         ],
-        "/QCStack/VPC/PrivateSubnet1/RouteTable": [
+        "/QCStack-main/VPC/PrivateSubnet1/RouteTable": [
           {
             "type": "aws:cdk:logicalId",
             "data": "VPCPrivateSubnet1RouteTableBE8A6027",
@@ -1290,8 +1265,8 @@
               "Vpc.createSubnetResources (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:895:28)",
               "Vpc.createSubnets (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:890:12)",
               "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:770:10)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:349:17)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:339:17)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -1310,7 +1285,7 @@
             ]
           }
         ],
-        "/QCStack/VPC/PrivateSubnet1/RouteTableAssociation": [
+        "/QCStack-main/VPC/PrivateSubnet1/RouteTableAssociation": [
           {
             "type": "aws:cdk:logicalId",
             "data": "VPCPrivateSubnet1RouteTableAssociation347902D1",
@@ -1322,8 +1297,8 @@
               "Vpc.createSubnetResources (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:895:28)",
               "Vpc.createSubnets (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:890:12)",
               "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:770:10)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:349:17)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:339:17)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -1342,7 +1317,7 @@
             ]
           }
         ],
-        "/QCStack/VPC/PrivateSubnet1/DefaultRoute": [
+        "/QCStack-main/VPC/PrivateSubnet1/DefaultRoute": [
           {
             "type": "aws:cdk:logicalId",
             "data": "VPCPrivateSubnet1DefaultRouteAE1D6490",
@@ -1352,8 +1327,8 @@
               "NatGatewayProvider.configureNat (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/nat.ts:126:12)",
               "Vpc.createNatGateways (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:865:14)",
               "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:795:14)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:349:17)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:339:17)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -1372,7 +1347,7 @@
             ]
           }
         ],
-        "/QCStack/VPC/PrivateSubnet2/Subnet": [
+        "/QCStack-main/VPC/PrivateSubnet2/Subnet": [
           {
             "type": "aws:cdk:logicalId",
             "data": "VPCPrivateSubnet2SubnetCFCDAA7A",
@@ -1384,8 +1359,8 @@
               "Vpc.createSubnetResources (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:895:28)",
               "Vpc.createSubnets (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:890:12)",
               "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:770:10)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:349:17)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:339:17)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -1404,7 +1379,7 @@
             ]
           }
         ],
-        "/QCStack/VPC/PrivateSubnet2/RouteTable": [
+        "/QCStack-main/VPC/PrivateSubnet2/RouteTable": [
           {
             "type": "aws:cdk:logicalId",
             "data": "VPCPrivateSubnet2RouteTable0A19E10E",
@@ -1416,8 +1391,8 @@
               "Vpc.createSubnetResources (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:895:28)",
               "Vpc.createSubnets (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:890:12)",
               "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:770:10)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:349:17)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:339:17)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -1436,7 +1411,7 @@
             ]
           }
         ],
-        "/QCStack/VPC/PrivateSubnet2/RouteTableAssociation": [
+        "/QCStack-main/VPC/PrivateSubnet2/RouteTableAssociation": [
           {
             "type": "aws:cdk:logicalId",
             "data": "VPCPrivateSubnet2RouteTableAssociation0C73D413",
@@ -1448,8 +1423,8 @@
               "Vpc.createSubnetResources (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:895:28)",
               "Vpc.createSubnets (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:890:12)",
               "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:770:10)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:349:17)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:339:17)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -1468,7 +1443,7 @@
             ]
           }
         ],
-        "/QCStack/VPC/PrivateSubnet2/DefaultRoute": [
+        "/QCStack-main/VPC/PrivateSubnet2/DefaultRoute": [
           {
             "type": "aws:cdk:logicalId",
             "data": "VPCPrivateSubnet2DefaultRouteF4F5CFD2",
@@ -1478,8 +1453,8 @@
               "NatGatewayProvider.configureNat (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/nat.ts:126:12)",
               "Vpc.createNatGateways (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:865:14)",
               "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:795:14)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:349:17)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:339:17)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -1498,14 +1473,14 @@
             ]
           }
         ],
-        "/QCStack/VPC/IGW": [
+        "/QCStack-main/VPC/IGW": [
           {
             "type": "aws:cdk:logicalId",
             "data": "VPCIGWB7E252D3",
             "trace": [
               "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:777:19)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:349:17)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:339:17)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -1524,14 +1499,14 @@
             ]
           }
         ],
-        "/QCStack/VPC/VPCGW": [
+        "/QCStack-main/VPC/VPCGW": [
           {
             "type": "aws:cdk:logicalId",
             "data": "VPCVPCGW99B986DC",
             "trace": [
               "new Vpc (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/vpc.ts:783:19)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:349:17)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:339:17)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -1550,7 +1525,7 @@
             ]
           }
         ],
-        "/QCStack/Batch-Compute-Env/Resource-Security-Group/Resource": [
+        "/QCStack-main/Batch-Compute-Env/Resource-Security-Group/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "BatchComputeEnvResourceSecurityGroupCCDC1BDE",
@@ -1558,8 +1533,8 @@
               "new SecurityGroup (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-ec2/lib/security-group.ts:289:26)",
               "ComputeEnvironment.buildSecurityGroupIds (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-batch/lib/compute-environment.ts:355:9)",
               "new ComputeEnvironment (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-batch/lib/compute-environment.ts:169:32)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:350:30)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:340:30)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -1578,15 +1553,15 @@
             ]
           }
         ],
-        "/QCStack/Batch-Compute-Env/Ecs-Instance-Role/Resource": [
+        "/QCStack-main/Batch-Compute-Env/Ecs-Instance-Role/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "BatchComputeEnvEcsInstanceRoleD6AAF672",
             "trace": [
               "new Role (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-iam/lib/role.ts:199:18)",
               "new ComputeEnvironment (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-batch/lib/compute-environment.ts:184:23)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:350:30)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:340:30)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -1605,14 +1580,14 @@
             ]
           }
         ],
-        "/QCStack/Batch-Compute-Env/Instance-Profile": [
+        "/QCStack-main/Batch-Compute-Env/Instance-Profile": [
           {
             "type": "aws:cdk:logicalId",
             "data": "BatchComputeEnvInstanceProfileED642DDB",
             "trace": [
               "new ComputeEnvironment (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-batch/lib/compute-environment.ts:183:15)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:350:30)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:340:30)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -1631,15 +1606,15 @@
             ]
           }
         ],
-        "/QCStack/Batch-Compute-Env/Resource-Service-Instance-Role/Resource": [
+        "/QCStack-main/Batch-Compute-Env/Resource-Service-Instance-Role/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "BatchComputeEnvResourceServiceInstanceRole9A53B6DD",
             "trace": [
               "new Role (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-iam/lib/role.ts:199:18)",
               "new ComputeEnvironment (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-batch/lib/compute-environment.ts:201:12)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:350:30)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:340:30)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -1658,14 +1633,14 @@
             ]
           }
         ],
-        "/QCStack/Batch-Compute-Env/Resource": [
+        "/QCStack-main/Batch-Compute-Env/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "BatchComputeEnvED8FCD2D",
             "trace": [
               "new ComputeEnvironment (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-batch/lib/compute-environment.ts:197:32)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:350:30)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:340:30)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -1684,14 +1659,14 @@
             ]
           }
         ],
-        "/QCStack/JobQueue/Resource": [
+        "/QCStack-main/JobQueue/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "JobQueueEE3AD499",
             "trace": [
               "new JobQueue (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-batch/lib/job-queue.ts:66:22)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:359:22)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:349:22)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -1710,17 +1685,17 @@
             ]
           }
         ],
-        "/QCStack/QCJob_vCpus2_Mem2G/Resource": [
+        "/QCStack-main/QCJob_vCpus2_Mem2G/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "QCJobvCpus2Mem2GDBF9C9F0",
             "trace": [
               "new JobDefinition (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-batch/lib/job-definition.ts:223:20)",
-              "QCLifeScienceStack.createBatchJobDef (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:645:12)",
-              "/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:375:19",
+              "QCLifeScienceStack.createBatchJobDef (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:454:12)",
+              "/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:365:19",
               "Array.map (<anonymous>)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:374:33)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:364:33)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -1739,17 +1714,17 @@
             ]
           }
         ],
-        "/QCStack/QCJob_vCpus4_Mem4G/Resource": [
+        "/QCStack-main/QCJob_vCpus4_Mem4G/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "QCJobvCpus4Mem4G33BBDF79",
             "trace": [
               "new JobDefinition (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-batch/lib/job-definition.ts:223:20)",
-              "QCLifeScienceStack.createBatchJobDef (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:645:12)",
-              "/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:375:19",
+              "QCLifeScienceStack.createBatchJobDef (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:454:12)",
+              "/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:365:19",
               "Array.map (<anonymous>)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:374:33)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:364:33)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -1768,17 +1743,17 @@
             ]
           }
         ],
-        "/QCStack/QCJob_vCpus8_Mem8G/Resource": [
+        "/QCStack-main/QCJob_vCpus8_Mem8G/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "QCJobvCpus8Mem8GA565DAC0",
             "trace": [
               "new JobDefinition (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-batch/lib/job-definition.ts:223:20)",
-              "QCLifeScienceStack.createBatchJobDef (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:645:12)",
-              "/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:375:19",
+              "QCLifeScienceStack.createBatchJobDef (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:454:12)",
+              "/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:365:19",
               "Array.map (<anonymous>)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:374:33)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:364:33)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -1797,17 +1772,17 @@
             ]
           }
         ],
-        "/QCStack/QCJob_vCpus16_Mem16G/Resource": [
+        "/QCStack-main/QCJob_vCpus16_Mem16G/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "QCJobvCpus16Mem16GB24CBF51",
             "trace": [
               "new JobDefinition (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-batch/lib/job-definition.ts:223:20)",
-              "QCLifeScienceStack.createBatchJobDef (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:645:12)",
-              "/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:375:19",
+              "QCLifeScienceStack.createBatchJobDef (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:454:12)",
+              "/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:365:19",
               "Array.map (<anonymous>)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:374:33)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:364:33)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -1826,13 +1801,13 @@
             ]
           }
         ],
-        "/QCStack/jobQueue": [
+        "/QCStack-main/jobQueue": [
           {
             "type": "aws:cdk:logicalId",
             "data": "jobQueue",
             "trace": [
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:378:5)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:368:5)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -1851,15 +1826,15 @@
             ]
           }
         ],
-        "/QCStack/AggResultLambdaRole/Resource": [
+        "/QCStack-main/AggResultLambdaRole/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "AggResultLambdaRoleE19247FA",
             "trace": [
               "new Role (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-iam/lib/role.ts:199:18)",
-              "QCLifeScienceStack.createAggResultLambdaRole (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:241:18)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:438:18)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "QCLifeScienceStack.createAggResultLambdaRole (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:240:18)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:428:18)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -1878,7 +1853,7 @@
             ]
           }
         ],
-        "/QCStack/AggResultLambdaRole/DefaultPolicy/Resource": [
+        "/QCStack-main/AggResultLambdaRole/DefaultPolicy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "AggResultLambdaRoleDefaultPolicy7AC5256A",
@@ -1886,9 +1861,9 @@
               "new Policy (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-iam/lib/policy.ts:89:22)",
               "Role.addToPrincipalPolicy (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-iam/lib/role.ts:236:28)",
               "Role.addToPolicy (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-iam/lib/role.ts:244:17)",
-              "QCLifeScienceStack.createAggResultLambdaRole (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:246:10)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:438:18)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "QCLifeScienceStack.createAggResultLambdaRole (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:245:10)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:428:18)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -1907,14 +1882,14 @@
             ]
           }
         ],
-        "/QCStack/AggResultLambda/Resource": [
+        "/QCStack-main/AggResultLambda/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "AggResultLambda2D78F89C",
             "trace": [
               "new Function (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-lambda/lib/function.ts:388:35)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:429:29)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:419:29)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -1933,190 +1908,15 @@
             ]
           }
         ],
-        "/QCStack/qcDataSource": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "qcDataSource",
-            "trace": [
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:451:26)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
-              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
-              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
-              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
-              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
-              "Module.load (node:internal/modules/cjs/loader:981:32)",
-              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
-              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
-              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
-              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
-              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
-              "Module.load (node:internal/modules/cjs/loader:981:32)",
-              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
-              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
-              "node:internal/main/run_main_module:17:47"
-            ]
-          }
-        ],
-        "/QCStack/dataset": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "dataset",
-            "trace": [
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:500:23)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
-              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
-              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
-              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
-              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
-              "Module.load (node:internal/modules/cjs/loader:981:32)",
-              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
-              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
-              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
-              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
-              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
-              "Module.load (node:internal/modules/cjs/loader:981:32)",
-              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
-              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
-              "node:internal/main/run_main_module:17:47"
-            ]
-          }
-        ],
-        "/QCStack/qcqsAnaTemplate": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "qcqsAnaTemplate",
-            "trace": [
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:534:27)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
-              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
-              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
-              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
-              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
-              "Module.load (node:internal/modules/cjs/loader:981:32)",
-              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
-              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
-              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
-              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
-              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
-              "Module.load (node:internal/modules/cjs/loader:981:32)",
-              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
-              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
-              "node:internal/main/run_main_module:17:47"
-            ]
-          }
-        ],
-        "/QCStack/qcPefAnalysis": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "qcPefAnalysis",
-            "trace": [
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:549:24)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
-              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
-              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
-              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
-              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
-              "Module.load (node:internal/modules/cjs/loader:981:32)",
-              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
-              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
-              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
-              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
-              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
-              "Module.load (node:internal/modules/cjs/loader:981:32)",
-              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
-              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
-              "node:internal/main/run_main_module:17:47"
-            ]
-          }
-        ],
-        "/QCStack/qcPrefDashboard": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "qcPrefDashboard",
-            "trace": [
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:576:29)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
-              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
-              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
-              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
-              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
-              "Module.load (node:internal/modules/cjs/loader:981:32)",
-              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
-              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
-              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
-              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
-              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
-              "Module.load (node:internal/modules/cjs/loader:981:32)",
-              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
-              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
-              "node:internal/main/run_main_module:17:47"
-            ]
-          }
-        ],
-        "/QCStack/qcAnalysisArn": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "qcAnalysisArn",
-            "trace": [
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:613:5)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
-              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
-              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
-              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
-              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
-              "Module.load (node:internal/modules/cjs/loader:981:32)",
-              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
-              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
-              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
-              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
-              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
-              "Module.load (node:internal/modules/cjs/loader:981:32)",
-              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
-              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
-              "node:internal/main/run_main_module:17:47"
-            ]
-          }
-        ],
-        "/QCStack/qcPrefDashboardUrl": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "qcPrefDashboardUrl",
-            "trace": [
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:618:5)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
-              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
-              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
-              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
-              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
-              "Module.load (node:internal/modules/cjs/loader:981:32)",
-              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
-              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
-              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
-              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
-              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
-              "Module.load (node:internal/modules/cjs/loader:981:32)",
-              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
-              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
-              "node:internal/main/run_main_module:17:47"
-            ]
-          }
-        ],
-        "/QCStack/QCBatchStateMachine/Role/Resource": [
+        "/QCStack-main/QCBatchStateMachine/Role/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "QCBatchStateMachineRoleB541B981",
             "trace": [
               "new Role (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-iam/lib/role.ts:199:18)",
               "new StateMachine (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-stepfunctions/lib/state-machine.ts:264:31)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:624:26)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:440:26)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -2135,7 +1935,7 @@
             ]
           }
         ],
-        "/QCStack/QCBatchStateMachine/Role/DefaultPolicy/Resource": [
+        "/QCStack-main/QCBatchStateMachine/Role/DefaultPolicy/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "QCBatchStateMachineRoleDefaultPolicy6B48C4B9",
@@ -2144,8 +1944,8 @@
               "Role.addToPrincipalPolicy (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-iam/lib/role.ts:236:28)",
               "StateMachine.addToRolePolicy (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-stepfunctions/lib/state-machine.ts:304:15)",
               "new StateMachine (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-stepfunctions/lib/state-machine.ts:285:12)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:624:26)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:440:26)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -2164,14 +1964,14 @@
             ]
           }
         ],
-        "/QCStack/QCBatchStateMachine/Resource": [
+        "/QCStack-main/QCBatchStateMachine/Resource": [
           {
             "type": "aws:cdk:logicalId",
             "data": "QCBatchStateMachine1B303EBF",
             "trace": [
               "new StateMachine (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/aws-stepfunctions/lib/state-machine.ts:273:22)",
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:624:26)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:440:26)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -2190,13 +1990,13 @@
             ]
           }
         ],
-        "/QCStack/stateMachine": [
+        "/QCStack-main/stateMachine": [
           {
             "type": "aws:cdk:logicalId",
             "data": "stateMachine",
             "trace": [
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:629:5)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
+              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-main.ts:445:5)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:1)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -2215,32 +2015,7 @@
             ]
           }
         ],
-        "/QCStack/datasetID": [
-          {
-            "type": "aws:cdk:logicalId",
-            "data": "datasetID",
-            "trace": [
-              "new QCLifeScienceStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack.ts:634:5)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:17:1)",
-              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
-              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
-              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
-              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
-              "Module.load (node:internal/modules/cjs/loader:981:32)",
-              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
-              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
-              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
-              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
-              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
-              "Module.load (node:internal/modules/cjs/loader:981:32)",
-              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
-              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
-              "node:internal/main/run_main_module:17:47"
-            ]
-          }
-        ],
-        "/QCStack/CDKMetadata/Default": [
+        "/QCStack-main/CDKMetadata/Default": [
           {
             "type": "aws:cdk:logicalId",
             "data": "CDKMetadata",
@@ -2252,7 +2027,7 @@
               "injectMetadataResources (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/private/synthesis.ts:157:3)",
               "Object.synthesize (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/private/synthesis.ts:18:3)",
               "App.synth (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/stage.ts:94:23)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:5)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:29:5)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -2271,7 +2046,7 @@
             ]
           }
         ],
-        "/QCStack/CDKMetadata/Condition": [
+        "/QCStack-main/CDKMetadata/Condition": [
           {
             "type": "aws:cdk:logicalId",
             "data": "CDKMetadataAvailable",
@@ -2283,7 +2058,7 @@
               "injectMetadataResources (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/private/synthesis.ts:157:3)",
               "Object.synthesize (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/private/synthesis.ts:18:3)",
               "App.synth (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/stage.ts:94:23)",
-              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:21:5)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:29:5)",
               "Module._compile (node:internal/modules/cjs/loader:1101:14)",
               "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
               "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
@@ -2303,7 +2078,305 @@
           }
         ]
       },
-      "displayName": "QCStack"
+      "displayName": "QCStack-main"
+    },
+    "QCStack-dashboard": {
+      "type": "aws:cloudformation:stack",
+      "environment": "aws://unknown-account/unknown-region",
+      "properties": {
+        "templateFile": "QCStack-dashboard.template.json",
+        "validateOnSynth": false
+      },
+      "metadata": {
+        "/QCStack-dashboard/quickSightUser": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "quickSightUser",
+            "trace": [
+              "new QCDashboradStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-dashboard.ts:15:37)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:25:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/QCStack-dashboard/qcDataSource": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "qcDataSource",
+            "trace": [
+              "new QCDashboradStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-dashboard.ts:21:30)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:25:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/QCStack-dashboard/dataset": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "dataset",
+            "trace": [
+              "new QCDashboradStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-dashboard.ts:70:27)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:25:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/QCStack-dashboard/qcqsAnaTemplate": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "qcqsAnaTemplate",
+            "trace": [
+              "new QCDashboradStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-dashboard.ts:104:31)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:25:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/QCStack-dashboard/qcPefAnalysis": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "qcPefAnalysis",
+            "trace": [
+              "new QCDashboradStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-dashboard.ts:119:28)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:25:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/QCStack-dashboard/qcPrefDashboard": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "qcPrefDashboard",
+            "trace": [
+              "new QCDashboradStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-dashboard.ts:146:33)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:25:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/QCStack-dashboard/datasetID": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "datasetID",
+            "trace": [
+              "new QCDashboradStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-dashboard.ts:181:9)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:25:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/QCStack-dashboard/qcAnalysisArn": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "qcAnalysisArn",
+            "trace": [
+              "new QCDashboradStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-dashboard.ts:186:9)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:25:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/QCStack-dashboard/qcPrefDashboardUrl": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "qcPrefDashboardUrl",
+            "trace": [
+              "new QCDashboradStack (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/ligand-unfolding/stack-dashboard.ts:191:9)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:25:1)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/QCStack-dashboard/CDKMetadata/Default": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadata",
+            "trace": [
+              "new MetadataResource (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/private/metadata-resource.ts:22:24)",
+              "/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/private/synthesis.ts:166:5",
+              "visit (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/private/synthesis.ts:231:5)",
+              "visit (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/private/synthesis.ts:227:5)",
+              "injectMetadataResources (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/private/synthesis.ts:157:3)",
+              "Object.synthesize (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/private/synthesis.ts:18:3)",
+              "App.synth (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/stage.ts:94:23)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:29:5)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ],
+        "/QCStack-dashboard/CDKMetadata/Condition": [
+          {
+            "type": "aws:cdk:logicalId",
+            "data": "CDKMetadataAvailable",
+            "trace": [
+              "new MetadataResource (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/private/metadata-resource.ts:31:27)",
+              "/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/private/synthesis.ts:166:5",
+              "visit (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/private/synthesis.ts:231:5)",
+              "visit (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/private/synthesis.ts:227:5)",
+              "injectMetadataResources (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/private/synthesis.ts:157:3)",
+              "Object.synthesize (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/private/synthesis.ts:18:3)",
+              "App.synth (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/@aws-cdk/core/lib/stage.ts:94:23)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/main.ts:29:5)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Module.m._compile (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1056:23)",
+              "Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Object.require.extensions.<computed> [as .ts] (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/index.ts:1059:12)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "main (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:198:14)",
+              "Object.<anonymous> (/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/node_modules/ts-node/src/bin.ts:288:3)",
+              "Module._compile (node:internal/modules/cjs/loader:1101:14)",
+              "Object.Module._extensions..js (node:internal/modules/cjs/loader:1153:10)",
+              "Module.load (node:internal/modules/cjs/loader:981:32)",
+              "Function.Module._load (node:internal/modules/cjs/loader:822:12)",
+              "Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:79:12)",
+              "node:internal/main/run_main_module:17:47"
+            ]
+          }
+        ]
+      },
+      "displayName": "QCStack-dashboard"
     }
   }
 }

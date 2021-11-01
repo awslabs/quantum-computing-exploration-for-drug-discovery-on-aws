@@ -8,7 +8,6 @@ import * as batch from '@aws-cdk/aws-batch'
 import * as ecs from '@aws-cdk/aws-ecs'
 import * as sfn from '@aws-cdk/aws-stepfunctions';
 import * as tasks from '@aws-cdk/aws-stepfunctions-tasks';
-import * as quicksight from '@aws-cdk/aws-quicksight';
 
 import {
   CfnNotebookInstanceLifecycleConfig,
@@ -279,15 +278,6 @@ export class QCLifeScienceStack extends SolutionStack {
       description: "Public GitHub repository"
     });
 
-    const defaultQuicksightUser = `Admin-OneClick/yonmzn-Isengard`;
-
-    const quickSightUserParam = new cdk.CfnParameter(this, "quickSightUser", {
-      type: "String",
-      default: defaultQuicksightUser,
-      description: "quicksight user ARN"
-    });
-    const quicksightUser = `arn:aws:quicksight:us-east-1:${this.account}:user/default/${quickSightUserParam.valueAsString}`;
-
     const s3bucket = new s3.Bucket(this, 'amazon-braket', {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       bucketName: `amazon-braket-${this.stackName.toLowerCase()}-${this.account}-${this.region}`,
@@ -447,180 +437,6 @@ export class QCLifeScienceStack extends SolutionStack {
     batchParallel.next(aggResultStep).next(success);
 
 
-    // quicksight
-    const qcDataSource = new quicksight.CfnDataSource(this, "qcDataSource", {
-      awsAccountId: this.account,
-      dataSourceId: `${this.stackName}-qcdatasource`,
-      name: 'qcdatasource',
-      type: 'ATHENA',
-      dataSourceParameters: {
-        athenaParameters: {
-          workGroup: 'primary',
-        },
-      },
-      permissions: [{
-        principal: quicksightUser,
-        actions: [
-          'quicksight:UpdateDataSourcePermissions',
-          'quicksight:DescribeDataSource',
-          'quicksight:DescribeDataSourcePermissions',
-          'quicksight:PassDataSource',
-          'quicksight:UpdateDataSource',
-          'quicksight:DeleteDataSource'
-        ]
-      }]
-    });
-
-    const columns = [{
-        name: 'M',
-        type: 'INTEGER'
-      },
-      {
-        name: 'D',
-        type: 'INTEGER'
-      },
-      {
-        name: 'Device',
-        type: 'STRING'
-      },
-      {
-        name: 'InstanceType',
-        type: 'STRING'
-      },
-      {
-        name: 'ComputeType',
-        type: 'STRING'
-      },
-      {
-        name: 'mins',
-        type: 'DECIMAL'
-      },
-    ];
-
-    const qcDataset = new quicksight.CfnDataSet(this, "dataset", {
-      permissions: [{
-        principal: quicksightUser,
-        actions: [
-          'quicksight:UpdateDataSetPermissions',
-          'quicksight:DescribeDataSet',
-          'quicksight:DescribeDataSetPermissions',
-          'quicksight:PassDataSet',
-          'quicksight:DescribeIngestion',
-          'quicksight:ListIngestions',
-          'quicksight:UpdateDataSet',
-          'quicksight:DeleteDataSet',
-          'quicksight:CreateIngestion',
-          'quicksight:CancelIngestion'
-        ]
-      }],
-      awsAccountId: this.account,
-      name: "qcdataset",
-      dataSetId: `${this.stackName}-dataSetId`,
-      importMode: 'DIRECT_QUERY',
-      physicalTableMap: {
-        ATHENATable: {
-          customSql: {
-            dataSourceArn: qcDataSource.attrArn,
-            name: 'all',
-            sqlQuery: 'SELECT M, D, Device, InstanceType, ComputeType, mins FROM "AwsDataCatalog"."default"."qc_batch_performance_view"',
-            columns
-          },
-        }
-      }
-    });
-
-    const templateArn = 'arn:aws:quicksight:us-east-1:080766874269:template/QC-analysis-template'
-
-    const qcAnaTemplate = new quicksight.CfnTemplate(this, "qcqsAnaTemplate", {
-      awsAccountId: this.account,
-      templateId: `${this.stackName}-qcqsTemplateId`,
-      name: 'qcqsTemplateId',
-      permissions: [{
-        principal: quicksightUser,
-        actions: ['quicksight:DescribeTemplate']
-      }],
-      sourceEntity: {
-        sourceTemplate: {
-          arn: templateArn
-        }
-      }
-    });
-
-    const qcAnalysis = new quicksight.CfnAnalysis(this, "qcPefAnalysis", {
-      awsAccountId: this.account,
-      analysisId: `${this.stackName}-qcPefAnalysis`,
-      name: "qcPefAnalysis",
-      permissions: [{
-        principal: quicksightUser,
-        actions: [
-          'quicksight:RestoreAnalysis',
-          'quicksight:UpdateAnalysisPermissions',
-          'quicksight:DeleteAnalysis',
-          'quicksight:DescribeAnalysisPermissions',
-          'quicksight:QueryAnalysis',
-          'quicksight:DescribeAnalysis',
-          'quicksight:UpdateAnalysis'
-        ]
-      }],
-      sourceEntity: {
-        sourceTemplate: {
-          arn: qcAnaTemplate.attrArn,
-          dataSetReferences: [{
-            dataSetPlaceholder: 'qcds',
-            dataSetArn: qcDataset.attrArn
-          }]
-        }
-      },
-    });
-
-    const qcPrefDashboard = new quicksight.CfnDashboard(this, "qcPrefDashboard", {
-      dashboardId: `${this.stackName}-qcPrefDashboard`,
-      name: 'qcPrefDashboard',
-      awsAccountId: this.account,
-      permissions: [{
-        principal: quicksightUser,
-        actions: [
-          'quicksight:DescribeDashboard',
-          'quicksight:ListDashboardVersions',
-          'quicksight:UpdateDashboardPermissions',
-          'quicksight:QueryDashboard',
-          'quicksight:UpdateDashboard',
-          'quicksight:DeleteDashboard',
-          'quicksight:DescribeDashboardPermissions',
-          'quicksight:UpdateDashboardPublishedVersion'
-        ]
-      }],
-
-      sourceEntity: {
-        sourceTemplate: {
-          arn: qcAnaTemplate.attrArn,
-          dataSetReferences: [{
-            dataSetPlaceholder: 'qcds',
-            dataSetArn: qcDataset.attrArn
-          }]
-        }
-      },
-      dashboardPublishOptions: {
-        adHocFilteringOption: {
-          availabilityStatus: 'DISABLED'
-        }
-      }
-
-    });
-
-
-
-    new cdk.CfnOutput(this, "qcAnalysisArn", {
-      value: qcAnalysis.attrArn,
-      description: "qcAnalysis arn"
-    });
-
-    new cdk.CfnOutput(this, "qcPrefDashboardUrl", {
-      value: `https://${this.region}.quicksight.aws.amazon.com/sn/dashboards/${qcPrefDashboard.dashboardId}`,
-      description: "DashboardUrl Url"
-    });
-
-
     const stateMachine = new sfn.StateMachine(this, 'QCBatchStateMachine', {
       definition: batchParallel,
       timeout: cdk.Duration.hours(2)
@@ -630,14 +446,7 @@ export class QCLifeScienceStack extends SolutionStack {
       value: stateMachine.stateMachineName,
       description: "State Machine Name"
     });
-
-    new cdk.CfnOutput(this, "datasetID", {
-      value: qcDataset.dataSetId ? qcDataset.dataSetId : "",
-      description: "dataset ID"
-    });
   }
-
-
 
   private createBatchJobDef(defName: string, m: number, d: number, device: string,
     vcpus: number, mem: number, bucketName: string): batch.JobDefinition {

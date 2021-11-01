@@ -5,8 +5,12 @@ import {
   BootstraplessStackSynthesizer
 } from 'cdk-bootstrapless-synthesizer';
 import {
-  QCLifeScienceStack
-} from './ligand-unfolding/stack';
+  QCLifeScienceStack,
+} from './ligand-unfolding/stack-main';
+
+import {
+  QCDashboradStack
+} from './ligand-unfolding/stack-dashboard';
 
 const app = new App();
 
@@ -14,7 +18,11 @@ const app = new App();
 //   synthesizer: newSynthesizer()
 // });
 
-new QCLifeScienceStack(app, "QCStack", {
+new QCLifeScienceStack(app, "QCStack-main", {
+  synthesizer: newSynthesizer()
+});
+
+new QCDashboradStack(app, "QCStack-dashboard", {
   synthesizer: newSynthesizer()
 });
 
