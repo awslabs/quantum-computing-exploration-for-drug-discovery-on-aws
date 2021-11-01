@@ -9,11 +9,11 @@
     "test:compile": "tsc --noEmit --project tsconfig.jest.json",
     "watch": "tsc -w",
     "eslint": "eslint --ext .ts,.tsx --fix --no-error-on-unmatched-pattern src test",
-    "cdk": "cdk",
-    "diff": "cdk diff",
-    "synth": "cdk synth",
-    "deploy": "cdk deploy",
-    "destroy": "cdk destroy"
+    "cdk": "cdk ",
+    "diff": "cdk  diff",
+    "synth": "cdk  synth",
+    "deploy": "cdk  deploy",
+    "destroy": "cdk  destroy"
   },
   "devDependencies": {
     "@types/jest": "^27.0.0",
@@ -44,6 +44,7 @@
     "@aws-cdk/core": "^1.116.0",
     "@aws-cdk/aws-stepfunctions":"^1.116.0",
     "@aws-cdk/aws-stepfunctions-tasks": "^1.116.0",
+    "@aws-cdk/aws-quicksight": "^1.116.0",
     "cdk-bootstrapless-synthesizer": "^0.7.2"
   },
   "bundledDependencies": [],

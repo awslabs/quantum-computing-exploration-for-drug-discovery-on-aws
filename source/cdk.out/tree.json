@@ -32,6 +32,14 @@
               "version": "1.129.0"
             }
           },
+          "quickSightUser": {
+            "id": "quickSightUser",
+            "path": "QCStack/quickSightUser",
+            "constructInfo": {
+              "fqn": "@aws-cdk/core.CfnParameter",
+              "version": "1.129.0"
+            }
+          },
           "amazon-braket": {
             "id": "amazon-braket",
             "path": "QCStack/amazon-braket",
@@ -243,13 +251,13 @@
                   "version": "1.129.0"
                 }
               },
-              "c528704b2cac3dd8a479661a28123a8ecb9aaf0f81c9616c1f467b2c23adb094": {
-                "id": "c528704b2cac3dd8a479661a28123a8ecb9aaf0f81c9616c1f467b2c23adb094",
-                "path": "QCStack/AssetParameters/c528704b2cac3dd8a479661a28123a8ecb9aaf0f81c9616c1f467b2c23adb094",
+              "347222fd2af9fb52a988141a4588da55867084cfba18d891ecc6239f992ed5b4": {
+                "id": "347222fd2af9fb52a988141a4588da55867084cfba18d891ecc6239f992ed5b4",
+                "path": "QCStack/AssetParameters/347222fd2af9fb52a988141a4588da55867084cfba18d891ecc6239f992ed5b4",
                 "children": {
                   "S3Bucket": {
                     "id": "S3Bucket",
-                    "path": "QCStack/AssetParameters/c528704b2cac3dd8a479661a28123a8ecb9aaf0f81c9616c1f467b2c23adb094/S3Bucket",
+                    "path": "QCStack/AssetParameters/347222fd2af9fb52a988141a4588da55867084cfba18d891ecc6239f992ed5b4/S3Bucket",
                     "constructInfo": {
                       "fqn": "@aws-cdk/core.CfnParameter",
                       "version": "1.129.0"
@@ -257,7 +265,7 @@
                   },
                   "S3VersionKey": {
                     "id": "S3VersionKey",
-                    "path": "QCStack/AssetParameters/c528704b2cac3dd8a479661a28123a8ecb9aaf0f81c9616c1f467b2c23adb094/S3VersionKey",
+                    "path": "QCStack/AssetParameters/347222fd2af9fb52a988141a4588da55867084cfba18d891ecc6239f992ed5b4/S3VersionKey",
                     "constructInfo": {
                       "fqn": "@aws-cdk/core.CfnParameter",
                       "version": "1.129.0"
@@ -265,7 +273,7 @@
                   },
                   "ArtifactHash": {
                     "id": "ArtifactHash",
-                    "path": "QCStack/AssetParameters/c528704b2cac3dd8a479661a28123a8ecb9aaf0f81c9616c1f467b2c23adb094/ArtifactHash",
+                    "path": "QCStack/AssetParameters/347222fd2af9fb52a988141a4588da55867084cfba18d891ecc6239f992ed5b4/ArtifactHash",
                     "constructInfo": {
                       "fqn": "@aws-cdk/core.CfnParameter",
                       "version": "1.129.0"
@@ -2854,7 +2862,7 @@
                   "aws:cdk:cloudformation:props": {
                     "code": {
                       "s3Bucket": {
-                        "Ref": "AssetParametersc528704b2cac3dd8a479661a28123a8ecb9aaf0f81c9616c1f467b2c23adb094S3Bucket51C1DA4F"
+                        "Ref": "AssetParameters347222fd2af9fb52a988141a4588da55867084cfba18d891ecc6239f992ed5b4S3Bucket79CA569E"
                       },
                       "s3Key": {
                         "Fn::Join": [
@@ -2867,7 +2875,7 @@
                                   "Fn::Split": [
                                     "||",
                                     {
-                                      "Ref": "AssetParametersc528704b2cac3dd8a479661a28123a8ecb9aaf0f81c9616c1f467b2c23adb094S3VersionKeyBAE3C729"
+                                      "Ref": "AssetParameters347222fd2af9fb52a988141a4588da55867084cfba18d891ecc6239f992ed5b4S3VersionKey55687F42"
                                     }
                                   ]
                                 }
@@ -2880,7 +2888,7 @@
                                   "Fn::Split": [
                                     "||",
                                     {
-                                      "Ref": "AssetParametersc528704b2cac3dd8a479661a28123a8ecb9aaf0f81c9616c1f467b2c23adb094S3VersionKeyBAE3C729"
+                                      "Ref": "AssetParameters347222fd2af9fb52a988141a4588da55867084cfba18d891ecc6239f992ed5b4S3VersionKey55687F42"
                                     }
                                   ]
                                 }
@@ -2933,6 +2941,348 @@
             "path": "QCStack/Succeed",
             "constructInfo": {
               "fqn": "@aws-cdk/aws-stepfunctions.Succeed",
+              "version": "1.129.0"
+            }
+          },
+          "qcDataSource": {
+            "id": "qcDataSource",
+            "path": "QCStack/qcDataSource",
+            "attributes": {
+              "aws:cdk:cloudformation:type": "AWS::QuickSight::DataSource",
+              "aws:cdk:cloudformation:props": {
+                "awsAccountId": {
+                  "Ref": "AWS::AccountId"
+                },
+                "dataSourceId": "QCStack-qcdatasource",
+                "dataSourceParameters": {
+                  "athenaParameters": {
+                    "workGroup": "primary"
+                  }
+                },
+                "name": "qcdatasource",
+                "permissions": [
+                  {
+                    "principal": {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "arn:aws:quicksight:us-east-1:",
+                          {
+                            "Ref": "AWS::AccountId"
+                          },
+                          ":user/default/",
+                          {
+                            "Ref": "quickSightUser"
+                          }
+                        ]
+                      ]
+                    },
+                    "actions": [
+                      "quicksight:UpdateDataSourcePermissions",
+                      "quicksight:DescribeDataSource",
+                      "quicksight:DescribeDataSourcePermissions",
+                      "quicksight:PassDataSource",
+                      "quicksight:UpdateDataSource",
+                      "quicksight:DeleteDataSource"
+                    ]
+                  }
+                ],
+                "type": "ATHENA"
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-quicksight.CfnDataSource",
+              "version": "1.129.0"
+            }
+          },
+          "dataset": {
+            "id": "dataset",
+            "path": "QCStack/dataset",
+            "attributes": {
+              "aws:cdk:cloudformation:type": "AWS::QuickSight::DataSet",
+              "aws:cdk:cloudformation:props": {
+                "awsAccountId": {
+                  "Ref": "AWS::AccountId"
+                },
+                "dataSetId": "QCStack-dataSetId",
+                "importMode": "DIRECT_QUERY",
+                "name": "qcdataset",
+                "permissions": [
+                  {
+                    "principal": {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "arn:aws:quicksight:us-east-1:",
+                          {
+                            "Ref": "AWS::AccountId"
+                          },
+                          ":user/default/",
+                          {
+                            "Ref": "quickSightUser"
+                          }
+                        ]
+                      ]
+                    },
+                    "actions": [
+                      "quicksight:UpdateDataSetPermissions",
+                      "quicksight:DescribeDataSet",
+                      "quicksight:DescribeDataSetPermissions",
+                      "quicksight:PassDataSet",
+                      "quicksight:DescribeIngestion",
+                      "quicksight:ListIngestions",
+                      "quicksight:UpdateDataSet",
+                      "quicksight:DeleteDataSet",
+                      "quicksight:CreateIngestion",
+                      "quicksight:CancelIngestion"
+                    ]
+                  }
+                ],
+                "physicalTableMap": {
+                  "ATHENATable": {
+                    "customSql": {
+                      "dataSourceArn": {
+                        "Fn::GetAtt": [
+                          "qcDataSource",
+                          "Arn"
+                        ]
+                      },
+                      "name": "all",
+                      "sqlQuery": "SELECT M, D, Device, InstanceType, ComputeType, mins FROM \"AwsDataCatalog\".\"default\".\"qc_batch_performance_view\"",
+                      "columns": [
+                        {
+                          "name": "M",
+                          "type": "INTEGER"
+                        },
+                        {
+                          "name": "D",
+                          "type": "INTEGER"
+                        },
+                        {
+                          "name": "Device",
+                          "type": "STRING"
+                        },
+                        {
+                          "name": "InstanceType",
+                          "type": "STRING"
+                        },
+                        {
+                          "name": "ComputeType",
+                          "type": "STRING"
+                        },
+                        {
+                          "name": "mins",
+                          "type": "DECIMAL"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-quicksight.CfnDataSet",
+              "version": "1.129.0"
+            }
+          },
+          "qcqsAnaTemplate": {
+            "id": "qcqsAnaTemplate",
+            "path": "QCStack/qcqsAnaTemplate",
+            "attributes": {
+              "aws:cdk:cloudformation:type": "AWS::QuickSight::Template",
+              "aws:cdk:cloudformation:props": {
+                "awsAccountId": {
+                  "Ref": "AWS::AccountId"
+                },
+                "templateId": "QCStack-qcqsTemplateId",
+                "name": "qcqsTemplateId",
+                "permissions": [
+                  {
+                    "principal": {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "arn:aws:quicksight:us-east-1:",
+                          {
+                            "Ref": "AWS::AccountId"
+                          },
+                          ":user/default/",
+                          {
+                            "Ref": "quickSightUser"
+                          }
+                        ]
+                      ]
+                    },
+                    "actions": [
+                      "quicksight:DescribeTemplate"
+                    ]
+                  }
+                ],
+                "sourceEntity": {
+                  "sourceTemplate": {
+                    "arn": "arn:aws:quicksight:us-east-1:080766874269:template/QC-analysis-template"
+                  }
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-quicksight.CfnTemplate",
+              "version": "1.129.0"
+            }
+          },
+          "qcPefAnalysis": {
+            "id": "qcPefAnalysis",
+            "path": "QCStack/qcPefAnalysis",
+            "attributes": {
+              "aws:cdk:cloudformation:type": "AWS::QuickSight::Analysis",
+              "aws:cdk:cloudformation:props": {
+                "analysisId": "QCStack-qcPefAnalysis",
+                "awsAccountId": {
+                  "Ref": "AWS::AccountId"
+                },
+                "name": "qcPefAnalysis",
+                "permissions": [
+                  {
+                    "principal": {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "arn:aws:quicksight:us-east-1:",
+                          {
+                            "Ref": "AWS::AccountId"
+                          },
+                          ":user/default/",
+                          {
+                            "Ref": "quickSightUser"
+                          }
+                        ]
+                      ]
+                    },
+                    "actions": [
+                      "quicksight:RestoreAnalysis",
+                      "quicksight:UpdateAnalysisPermissions",
+                      "quicksight:DeleteAnalysis",
+                      "quicksight:DescribeAnalysisPermissions",
+                      "quicksight:QueryAnalysis",
+                      "quicksight:DescribeAnalysis",
+                      "quicksight:UpdateAnalysis"
+                    ]
+                  }
+                ],
+                "sourceEntity": {
+                  "sourceTemplate": {
+                    "arn": {
+                      "Fn::GetAtt": [
+                        "qcqsAnaTemplate",
+                        "Arn"
+                      ]
+                    },
+                    "dataSetReferences": [
+                      {
+                        "dataSetPlaceholder": "qcds",
+                        "dataSetArn": {
+                          "Fn::GetAtt": [
+                            "dataset",
+                            "Arn"
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-quicksight.CfnAnalysis",
+              "version": "1.129.0"
+            }
+          },
+          "qcPrefDashboard": {
+            "id": "qcPrefDashboard",
+            "path": "QCStack/qcPrefDashboard",
+            "attributes": {
+              "aws:cdk:cloudformation:type": "AWS::QuickSight::Dashboard",
+              "aws:cdk:cloudformation:props": {
+                "awsAccountId": {
+                  "Ref": "AWS::AccountId"
+                },
+                "dashboardId": "QCStack-qcPrefDashboard",
+                "dashboardPublishOptions": {
+                  "adHocFilteringOption": {
+                    "availabilityStatus": "DISABLED"
+                  }
+                },
+                "name": "qcPrefDashboard",
+                "permissions": [
+                  {
+                    "principal": {
+                      "Fn::Join": [
+                        "",
+                        [
+                          "arn:aws:quicksight:us-east-1:",
+                          {
+                            "Ref": "AWS::AccountId"
+                          },
+                          ":user/default/",
+                          {
+                            "Ref": "quickSightUser"
+                          }
+                        ]
+                      ]
+                    },
+                    "actions": [
+                      "quicksight:DescribeDashboard",
+                      "quicksight:ListDashboardVersions",
+                      "quicksight:UpdateDashboardPermissions",
+                      "quicksight:QueryDashboard",
+                      "quicksight:UpdateDashboard",
+                      "quicksight:DeleteDashboard",
+                      "quicksight:DescribeDashboardPermissions",
+                      "quicksight:UpdateDashboardPublishedVersion"
+                    ]
+                  }
+                ],
+                "sourceEntity": {
+                  "sourceTemplate": {
+                    "arn": {
+                      "Fn::GetAtt": [
+                        "qcqsAnaTemplate",
+                        "Arn"
+                      ]
+                    },
+                    "dataSetReferences": [
+                      {
+                        "dataSetPlaceholder": "qcds",
+                        "dataSetArn": {
+                          "Fn::GetAtt": [
+                            "dataset",
+                            "Arn"
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            "constructInfo": {
+              "fqn": "@aws-cdk/aws-quicksight.CfnDashboard",
+              "version": "1.129.0"
+            }
+          },
+          "qcAnalysisArn": {
+            "id": "qcAnalysisArn",
+            "path": "QCStack/qcAnalysisArn",
+            "constructInfo": {
+              "fqn": "@aws-cdk/core.CfnOutput",
+              "version": "1.129.0"
+            }
+          },
+          "qcPrefDashboardUrl": {
+            "id": "qcPrefDashboardUrl",
+            "path": "QCStack/qcPrefDashboardUrl",
+            "constructInfo": {
+              "fqn": "@aws-cdk/core.CfnOutput",
               "version": "1.129.0"
             }
           },
@@ -4094,6 +4444,14 @@
           "stateMachine": {
             "id": "stateMachine",
             "path": "QCStack/stateMachine",
+            "constructInfo": {
+              "fqn": "@aws-cdk/core.CfnOutput",
+              "version": "1.129.0"
+            }
+          },
+          "datasetID": {
+            "id": "datasetID",
+            "path": "QCStack/datasetID",
             "constructInfo": {
               "fqn": "@aws-cdk/core.CfnOutput",
               "version": "1.129.0"
