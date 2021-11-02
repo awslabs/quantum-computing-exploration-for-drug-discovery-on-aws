@@ -239,7 +239,7 @@ export class QCLifeScienceBatch extends Construct {
                 memoryLimitMiB: mem * 1024,
                 privileged: true
             },
-            timeout: cdk.Duration.seconds(3600 * 2),
+            timeout: cdk.Duration.hours(2),
             retryAttempts: 1
         });
     }
