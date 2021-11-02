@@ -10,7 +10,7 @@ export class QCDashboradStack extends SolutionStack {
         super(scope, id, props);
         this.setDescription('(SO8029) CDK for GCR solution: Quantum Computing in HCLS (Dashboard)');
 
-        const quicksightTemplateAccountId = process.env.QUICKSIGHT_TEMPLATE_ACCOUNTID || 'AA5222AA4467AA9887AA'
+        const quicksightTemplateAccountId = process.env.QUICKSIGHT_TEMPLATE_ACCOUNTID
         const quicksightTemplateAccountIdParam = new cdk.CfnParameter(this, "quicksightTemplateAccountId", {
             type: "String",
             default: quicksightTemplateAccountId,
