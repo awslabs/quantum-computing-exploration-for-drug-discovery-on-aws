@@ -10,13 +10,14 @@ export class QCDashboradStack extends SolutionStack {
         super(scope, id, props);
         this.setDescription('(SO8029) CDK for GCR solution: Quantum Computing in HCLS (Dashboard)');
 
+        const quicksightTemplateAccountId = process.env.QUICKSIGHT_TEMPLATE_ACCOUNTID || 'AA5222AA4467AA9887AA'
         const quicksightTemplateAccountIdParam = new cdk.CfnParameter(this, "quicksightTemplateAccountId", {
             type: "String",
-            default: '5222-4467-9887',
+            default: quicksightTemplateAccountId,
             description: "The AWS account id to host quicksight template in region: us-east-1"
         });
 
-        const defaultQuicksightUser = `Admin-OneClick/yonmzn-Isengard`;
+        const defaultQuicksightUser = process.env.QUICKSIGHT_USER || `Admin-OneClick/yonmzn-Isengard`;
         const quickSightUserParam = new cdk.CfnParameter(this, "quickSightUser", {
             type: "String",
             default: defaultQuicksightUser,
@@ -105,7 +106,7 @@ export class QCDashboradStack extends SolutionStack {
             }
         });
 
-        const templateAccountId = quicksightTemplateAccountIdParam.valueAsString.split('-').join('');
+        const templateAccountId = quicksightTemplateAccountIdParam.valueAsString.split('AA').join('');
 
         const templateArn = `arn:aws:quicksight:us-east-1:${templateAccountId}:template/QC-analysis-template`
         const qcAnaTemplate = new quicksight.CfnTemplate(this, "qcqsAnaTemplate", {
