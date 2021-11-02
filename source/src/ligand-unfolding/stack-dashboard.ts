@@ -8,7 +8,7 @@ export class QCDashboradStack extends SolutionStack {
 
     constructor(scope: cdk.Construct, id: string, props: cdk.StackProps = {}) {
         super(scope, id, props);
-        this.setDescription('(SO8029) CDK for GCR solution: Quantum Computing in HCLS (Dashborad)');
+        this.setDescription('(SO8029) CDK for GCR solution: Quantum Computing in HCLS (Dashboard)');
 
         // quicksight
         const defaultQuicksightUser = `Admin-OneClick/yonmzn-Isengard`;
