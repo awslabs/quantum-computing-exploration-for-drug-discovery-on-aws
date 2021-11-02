@@ -10,9 +10,9 @@ export class QCDashboradStack extends SolutionStack {
         super(scope, id, props);
         this.setDescription('(SO8029) CDK for GCR solution: Quantum Computing in HCLS (Dashboard)');
 
-        // default: '522244679887',
         const quicksightTemplateAccountIdParam = new cdk.CfnParameter(this, "quicksightTemplateAccountId", {
             type: "String",
+            default: '5222-4467-9887',
             description: "The AWS account id to host quicksight template in region: us-east-1"
         });
 
@@ -105,8 +105,9 @@ export class QCDashboradStack extends SolutionStack {
             }
         });
 
+        const templateAccountId = quicksightTemplateAccountIdParam.valueAsString.split('-').join('');
 
-        const templateArn = `arn:aws:quicksight:us-east-1:${quicksightTemplateAccountIdParam.valueAsString}:template/QC-analysis-template`
+        const templateArn = `arn:aws:quicksight:us-east-1:${templateAccountId}:template/QC-analysis-template`
         const qcAnaTemplate = new quicksight.CfnTemplate(this, "qcqsAnaTemplate", {
             awsAccountId: this.account,
             templateId: `${this.stackName}-qcqsTemplateId`,
@@ -121,14 +122,6 @@ export class QCDashboradStack extends SolutionStack {
                 }
             }
         });
-
-        qcAnaTemplate.addMetadata('cdk_nag', {
-            rules_to_suppress: [{
-                id: 'AwsSolutions-EC23',
-                reason: 'quicksight template ARN'
-            }, ],
-        });
-
         const qcAnalysis = new quicksight.CfnAnalysis(this, "qcPefAnalysis", {
             awsAccountId: this.account,
             analysisId: `${this.stackName}-qcPefAnalysis`,

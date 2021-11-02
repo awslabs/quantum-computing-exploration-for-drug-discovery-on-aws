@@ -13,9 +13,6 @@ import {
   QCDashboradStack
 } from './ligand-unfolding/stack-dashboard';
 
-import {
-  AwsSolutionsChecks
-} from 'cdk-nag';
 
 const app = new App();
 
@@ -26,8 +23,6 @@ new QCLifeScienceStack(app, "QCStack-main", {
 new QCDashboradStack(app, "QCStack-dashboard", {
   synthesizer: newSynthesizer()
 });
-
-Aspects.of(app).add(new AwsSolutionsChecks());
 
 app.synth();
 
