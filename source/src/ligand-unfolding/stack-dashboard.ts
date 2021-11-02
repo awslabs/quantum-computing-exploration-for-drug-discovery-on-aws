@@ -2,7 +2,7 @@ import * as cdk from '@aws-cdk/core';
 import * as quicksight from '@aws-cdk/aws-quicksight';
 import {
     SolutionStack
-} from './stack-main'
+} from '../stack'
 
 export class QCDashboradStack extends SolutionStack {
 
@@ -17,6 +17,7 @@ export class QCDashboradStack extends SolutionStack {
             default: defaultQuicksightUser,
             description: "quicksight user"
         });
+        
         const quicksightUser = `arn:aws:quicksight:us-east-1:${this.account}:user/default/${quickSightUserParam.valueAsString}`;
         const qcDataSource = new quicksight.CfnDataSource(this, "qcDataSource", {
             awsAccountId: this.account,
@@ -99,8 +100,8 @@ export class QCDashboradStack extends SolutionStack {
             }
         });
 
-        const templateArn = 'arn:aws:quicksight:us-east-1:080766874269:template/QC-analysis-template'
-
+        //const templateArn = 'arn:aws:quicksight:us-east-1:080766874269:template/QC-analysis-template'
+        const templateArn = 'arn:aws:quicksight:us-east-1:522244679887:template/QC-analysis-template'
         const qcAnaTemplate = new quicksight.CfnTemplate(this, "qcqsAnaTemplate", {
             awsAccountId: this.account,
             templateId: `${this.stackName}-qcqsTemplateId`,

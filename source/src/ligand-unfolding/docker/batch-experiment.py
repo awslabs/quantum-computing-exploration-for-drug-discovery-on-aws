@@ -472,41 +472,38 @@ start = time.time()
 # run BQM: solve with the D-Wave 2000Q device
 # sampler = BraketDWaveSampler(s3_folder,'arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6')
 
-sampler = BraketDWaveSampler(s3_folder, device_arn, aws_session=aws_session)
-#sampler = BraketDWaveSampler(s3_folder, device_arn)
-
-end = time.time()
-t1 = (end - start) / 60
-logging.info("elapsed time for init sampler {} min".format(t1))
-
-start = time.time()
-sampler = EmbeddingComposite(sampler)
-end = time.time()
-t2 = (end - start) / 60
-logging.info("elapsed time for embedding generation {} min".format(t2))
-
-start = time.time()
-sampleset = sampler.sample(qubo, num_reads=num_reads)
-end = time.time()
-t3 = (end - start) / 60
-logging.info("elapsed time for d wave of {} shots: {} min".format(num_shots, t3))
-
-t_sum_quantum = t1 + t2 + t3
-
-## aggregate solution: 
-# sampleset = sampleset.aggregate()
-# pddf_sample_result = sampleset.to_pandas_dataframe()
-# valid_name = []
-# for m in range(M):
-#    for d in range(D):
-#        valid_name.append('x_{}_{}'.format(m+1, d+1))
-#
-## print solution
-# logging.info(sampleset)
-
 logging.info("the sum time for sa {}".format(t_sum_classic))
-logging.info("the sum time for qa {}".format(t_sum_quantum))
 sum_log.append("{},sa,{}".format(content_prefix, t_sum_classic))
-sum_log.append("{},qa,{}".format(content_prefix, t_sum_quantum))
-string_to_s3("\n".join(sum_log))
 
+logging.info("BraketDWaveSampler start - {}".format(content_prefix))
+
+t_sum_quantum = -1
+try:
+   sampler = BraketDWaveSampler(s3_folder, device_arn, aws_session=aws_session)
+   #sampler = BraketDWaveSampler(s3_folder, device_arn)
+   end = time.time()
+   t1 = (end - start) / 60
+   logging.info("elapsed time for init sampler {} min".format(t1))
+   
+   start = time.time()
+   sampler = EmbeddingComposite(sampler)
+   end = time.time()
+   t2 = (end - start) / 60
+   logging.info("elapsed time for embedding generation {} min".format(t2))
+   
+   start = time.time()
+   sampleset = sampler.sample(qubo, num_reads=num_reads)
+   end = time.time()
+   t3 = (end - start) / 60
+   logging.info("elapsed time for d wave of {} shots: {} min".format(num_shots, t3))
+   
+   t_sum_quantum = t1 + t2 + t3
+
+   logging.info("the sum time for qa {}".format(t_sum_quantum))
+   sum_log.append("{},qa,{}".format(content_prefix, t_sum_quantum))
+
+except Exception as err:
+    logging.error(repr(err)) 
+    pass 
+
+string_to_s3("\n".join(sum_log))
