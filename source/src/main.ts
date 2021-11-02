@@ -1,5 +1,6 @@
 import {
-  App
+  App,
+  Aspects
 } from '@aws-cdk/core';
 import {
   BootstraplessStackSynthesizer
@@ -12,11 +13,11 @@ import {
   QCDashboradStack
 } from './ligand-unfolding/stack-dashboard';
 
-const app = new App();
+import {
+  AwsSolutionsChecks
+} from 'cdk-nag';
 
-// new MyStack(app, 'MyStack', {
-//   synthesizer: newSynthesizer()
-// });
+const app = new App();
 
 new QCLifeScienceStack(app, "QCStack-main", {
   synthesizer: newSynthesizer()
@@ -25,6 +26,8 @@ new QCLifeScienceStack(app, "QCStack-main", {
 new QCDashboradStack(app, "QCStack-dashboard", {
   synthesizer: newSynthesizer()
 });
+
+Aspects.of(app).add(new AwsSolutionsChecks());
 
 app.synth();
 

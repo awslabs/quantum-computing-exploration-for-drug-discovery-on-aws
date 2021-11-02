@@ -10,6 +10,12 @@ export class QCDashboradStack extends SolutionStack {
         super(scope, id, props);
         this.setDescription('(SO8029) CDK for GCR solution: Quantum Computing in HCLS (Dashboard)');
 
+        const quicksightTemplateAccountIdParam = new cdk.CfnParameter(this, "quicksightTemplateAccountId", {
+            type: "String",
+            default: '522244679887',
+            description: "The AWS account id to host quicksight template in region: us-east-1"
+          });
+ 
         // quicksight
         const defaultQuicksightUser = `Admin-OneClick/yonmzn-Isengard`;
         const quickSightUserParam = new cdk.CfnParameter(this, "quickSightUser", {
@@ -17,7 +23,7 @@ export class QCDashboradStack extends SolutionStack {
             default: defaultQuicksightUser,
             description: "quicksight user"
         });
-        
+
         const quicksightUser = `arn:aws:quicksight:us-east-1:${this.account}:user/default/${quickSightUserParam.valueAsString}`;
         const qcDataSource = new quicksight.CfnDataSource(this, "qcDataSource", {
             awsAccountId: this.account,
@@ -100,7 +106,8 @@ export class QCDashboradStack extends SolutionStack {
             }
         });
 
-        const templateArn = 'arn:aws:quicksight:us-east-1:522244679887:template/QC-analysis-template'
+    
+        const templateArn = `arn:aws:quicksight:us-east-1:${quicksightTemplateAccountIdParam.valueAsString}:template/QC-analysis-template`
         const qcAnaTemplate = new quicksight.CfnTemplate(this, "qcqsAnaTemplate", {
             awsAccountId: this.account,
             templateId: `${this.stackName}-qcqsTemplateId`,
@@ -114,6 +121,13 @@ export class QCDashboradStack extends SolutionStack {
                     arn: templateArn
                 }
             }
+        });
+
+        qcAnaTemplate.addMetadata('cdk_nag', {
+            rules_to_suppress: [{
+                id: 'AwsSolutions-EC23',
+                reason: 'quicksight template ARN'
+            }, ],
         });
 
         const qcAnalysis = new quicksight.CfnAnalysis(this, "qcPefAnalysis", {
