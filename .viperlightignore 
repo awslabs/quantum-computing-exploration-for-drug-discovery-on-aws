@@ -1,8 +1,9 @@
 CODE_OF_CONDUCT.md
 CONTRIBUTING.md
 Config
+
 node_modules/
-cdk.out
+cdk.out/
 deployment/regional-s3-assets/
-source
-docs
+source/
+docs/
