@@ -1,5 +1,8 @@
-docs/zh/index.md
-docs/en/index.md
-source/src/ligand-unfolding/stack-dashboard.ts
-
-
+CODE_OF_CONDUCT.md
+CONTRIBUTING.md
+Config
+node_modules/
+cdk.out
+deployment/regional-s3-assets/
+source
+docs
