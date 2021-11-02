@@ -48,7 +48,8 @@ title "cdk synth"
 
 run cd ${SRC_PATH}
 run npm i
-run npm run test
+
+# run npm run test
 
 export USE_BSS=true
 # How to config https://github.com/wchaws/cdk-bootstrapless-synthesizer/blob/main/API.md
@@ -57,7 +58,8 @@ export BSS_FILE_ASSET_BUCKET_NAME="${BUCKET_NAME}-\${AWS::Region}"
 export BSS_FILE_ASSET_PREFIX="${SOLUTION_NAME}/${VERSION}/"
 export BSS_FILE_ASSET_REGION_SET="us-east-1,${BSS_FILE_ASSET_REGION_SET}"
 
-run npm run synth -- --output ${CDK_OUT_PATH}
+run npm run synth-main -- --output ${CDK_OUT_PATH}
+# run npm run synth-dashboard -- --output ${CDK_OUT_PATH}
 run ${__dir}/helper.py ${CDK_OUT_PATH}
 
 title "tips!"

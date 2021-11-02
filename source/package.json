@@ -10,11 +10,18 @@
     "watch": "tsc -w",
     "eslint": "eslint --ext .ts,.tsx --fix --no-error-on-unmatched-pattern src test",
     "cdk": "cdk ",
-    "diff": "cdk  diff",
-    "synth": "cdk   synth",
-    "deploy": "cdk  deploy",
-    "destroy": "cdk  destroy",
-    "deploy_dashboard_to_rs": "cdk --profile liuyong_rs_ue1 deploy QCStack-dashboard  --parameters quickSightUser=Admin/yonmzn-Isengard"
+    "diff": "cdk diff",
+    "synth": "cdk synth",
+    "deploy": "cdk deploy",
+    "destroy": "cdk destroy",
+    
+    "synth-dashboard": "cdk synth QCStack-dashboard ",
+    "synth-main": "cdk synth QCStack-main ",
+    "deploy-dashboard": "cdk deploy QCStack-dashboard ",
+    "deploy-main": "cdk deploy QCStack-main ",
+    "destroy-dashboard": "cdk destroy QCStack-dashboard ",
+    "destroy-main": "cdk destroy QCStack-main ",
+    
   },
   "devDependencies": {
     "@types/jest": "^27.0.0",
