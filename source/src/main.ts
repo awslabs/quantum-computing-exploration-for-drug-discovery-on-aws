@@ -1,6 +1,5 @@
 import {
   App,
-  Aspects
 } from '@aws-cdk/core';
 import {
   BootstraplessStackSynthesizer
