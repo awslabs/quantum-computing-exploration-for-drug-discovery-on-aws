@@ -1,5 +1,5 @@
 INHERIT: ./mkdocs.base.yml
-site_name: Keycloak on AWS 部署文档
+site_name: 部署文档
 docs_dir: zh
 site_dir: ./site/zh
 theme:
