@@ -51,12 +51,13 @@ run npm i
 
 # run npm run test
 
-export USE_BSS=false
+export USE_BSS=true
 # How to config https://github.com/wchaws/cdk-bootstrapless-synthesizer/blob/main/API.md
 export BSS_TEMPLATE_BUCKET_NAME="${BUCKET_NAME}"
 export BSS_FILE_ASSET_BUCKET_NAME="${BUCKET_NAME}-\${AWS::Region}"
 export BSS_FILE_ASSET_PREFIX="${SOLUTION_NAME}/${VERSION}/"
 export BSS_FILE_ASSET_REGION_SET="us-east-1,${BSS_FILE_ASSET_REGION_SET}"
+export BSS_IMAGE_ASSET_REPOSITORY_NAME="qc-ligand-unfolding/batch-experiment"
 
 run npm run synth-main -- --output ${CDK_OUT_PATH}
 run npm run synth-dashboard -- --output ${CDK_OUT_PATH}
