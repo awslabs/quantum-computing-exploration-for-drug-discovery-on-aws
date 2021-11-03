@@ -29,7 +29,7 @@ class ChangePublicSubnet implements IAspect {
     }
 }
 
-class AddCfnNag implements IAspect {
+export class AddCfnNag implements IAspect {
     visit(node: cdk.IConstruct): void {
         if (node instanceof iam.CfnRole) {
             node.addMetadata('cfn_nag', {

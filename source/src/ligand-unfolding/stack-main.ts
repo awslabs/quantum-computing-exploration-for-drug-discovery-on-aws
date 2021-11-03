@@ -9,6 +9,7 @@ import {
 } from '@aws-cdk/aws-sagemaker';
 
 import {
+  Aspects,
   Construct,
   StackProps,
 } from '@aws-cdk/core';
@@ -22,6 +23,7 @@ import {
 } from '../stack';
 
 import {
+  AddCfnNag,
   QCLifeScienceBatch
 } from './construct-batch'
 
@@ -61,6 +63,7 @@ export class QCLifeScienceStack extends SolutionStack {
         "logs:CreateLogGroup"
       ]
     }));
+    Aspects.of(role).add(new AddCfnNag());
     return role;
   }
 
@@ -90,7 +93,7 @@ export class QCLifeScienceStack extends SolutionStack {
       autoDeleteObjects: true,
       encryption: s3.BucketEncryption.S3_MANAGED
     });
-
+    Aspects.of(s3bucket).add(new AddCfnNag());
 
     const role = this.createNotebookIamRole()
 
