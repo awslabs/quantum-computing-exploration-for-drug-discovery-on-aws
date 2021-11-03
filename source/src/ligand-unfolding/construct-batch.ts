@@ -56,8 +56,6 @@ export class AddCfnNag implements IAspect {
                     }
                 ],
             });
-
-
         }
 
         if (node instanceof s3.CfnBucket) {
@@ -217,7 +215,7 @@ export class QCLifeScienceBatch extends Construct {
 
         const batchSg = new ec2.SecurityGroup(this, "batchSg", {
             vpc,
-            allowAllOutbound: true,
+            allowAllOutbound: false,
             description: "Security Group for QC batch compute environment"
         });
 
@@ -302,6 +300,12 @@ export class QCLifeScienceBatch extends Construct {
         }
         const lambdaRole = this.createAggResultLambdaRole();
 
+        const lambdaSg = new ec2.SecurityGroup(this, "batchSg", {
+            vpc,
+            allowAllOutbound: false,
+            description: "Security Group for lambda"
+        });
+
         const aggResultLambda = new lambda.Function(this, 'AggResultLambda', {
             runtime: lambda.Runtime.NODEJS_12_X,
             code: lambda.Code.fromAsset(path.join(__dirname, './lambda/AthenaTabeLambda/')),
@@ -313,7 +317,8 @@ export class QCLifeScienceBatch extends Construct {
             },
             vpc,
             role: lambdaRole,
-            reservedConcurrentExecutions: 10
+            reservedConcurrentExecutions: 10,
+            securityGroups: [lambdaSg] 
         });
 
         Aspects.of(aggResultLambda).add(new AddCfnNag())
