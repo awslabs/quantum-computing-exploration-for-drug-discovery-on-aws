@@ -61,21 +61,6 @@ export class QCLifeScienceStack extends SolutionStack {
         "logs:CreateLogGroup"
       ]
     }));
-
-    role.addToPolicy(new iam.PolicyStatement({
-      resources: [
-        'arn:aws:braket:::device/qpu/d-wave/*',
-      ],
-      actions: [
-        "braket:GetDevice",
-        "braket:GetQuantumTask",
-        "braket:SearchQuantumTasks",
-        "braket:SearchDevices",
-        "braket:ListTagsForResource",
-        "braket:CreateQuantumTask",
-        "braket:CancelQuantumTask"
-      ]
-    }));
     return role;
   }
 
