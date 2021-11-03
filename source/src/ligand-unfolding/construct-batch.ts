@@ -9,6 +9,8 @@ import * as sfn from '@aws-cdk/aws-stepfunctions';
 import * as tasks from '@aws-cdk/aws-stepfunctions-tasks';
 
 import {
+    Aspects,
+    IAspect,
     Construct,
 } from '@aws-cdk/core';
 
@@ -18,6 +20,13 @@ export interface BatchProps {
     account: string;
 }
 
+class ChangePublicSubnet implements IAspect {
+    visit(node: cdk.IConstruct): void {
+        if (node instanceof ec2.CfnSubnet && node.mapPublicIpOnLaunch) {
+            node.addPropertyOverride('MapPublicIpOnLaunch', false)
+        }
+    }
+}
 
 export class QCLifeScienceBatch extends Construct {
 
@@ -58,22 +67,61 @@ export class QCLifeScienceBatch extends Construct {
 
         role.addToPolicy(new iam.PolicyStatement({
             resources: [
-                '*'
+                `arn:aws:ecr:*:${this.props.account}:repository/*`
             ],
             actions: [
-                "ecr:*",
+                "ecr:PutImageTagMutability",
+                "ecr:StartImageScan",
+                "ecr:DescribeImageReplicationStatus",
+                "ecr:ListTagsForResource",
+                "ecr:UploadLayerPart",
+                "ecr:BatchDeleteImage",
+                "ecr:ListImages",
+                "ecr:DeleteRepository",
+                "ecr:CompleteLayerUpload",
+                "ecr:DescribeRepositories",
+                "ecr:DeleteRepositoryPolicy",
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:ReplicateImage",
+                "ecr:GetLifecyclePolicy",
+                "ecr:PutLifecyclePolicy",
+                "ecr:DescribeImageScanFindings",
+                "ecr:GetLifecyclePolicyPreview",
+                "ecr:CreateRepository",
+                "ecr:PutImageScanningConfiguration",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:DeleteLifecyclePolicy",
+                "ecr:PutImage",
+                "ecr:SetRepositoryPolicy",
+                "ecr:BatchGetImage",
+                "ecr:DescribeImages",
+                "ecr:StartLifecyclePolicyPreview",
+                "ecr:InitiateLayerUpload",
+                "ecr:GetRepositoryPolicy",
+                "ecr:GetRegistryPolicy",
+                "ecr:DescribeRegistry",
+                "ecr:GetAuthorizationToken",
+                "ecr:DeleteRegistryPolicy",
+                "ecr:PutRegistryPolicy",
+                "ecr:PutReplicationConfiguration"
             ]
         }));
 
         role.addToPolicy(new iam.PolicyStatement({
             resources: [
-                '*'
+                'arn:aws:braket:::device/qpu/d-wave/*',
             ],
             actions: [
-                "braket:*",
+                "braket:GetDevice",
+                "braket:GetQuantumTask",
+                "braket:SearchQuantumTasks",
+                "braket:SearchDevices",
+                "braket:ListTagsForResource",
+                "braket:CreateQuantumTask",
+                "braket:CancelQuantumTask"
             ]
         }));
-        
+
         return role
     }
 
@@ -95,6 +143,31 @@ export class QCLifeScienceBatch extends Construct {
                 "s3:ListBucket"
             ]
         }));
+
+        role.addToPolicy(new iam.PolicyStatement({
+            effect: iam.Effect.ALLOW,
+            resources: [
+                `arn:aws:ec2:*:${this.props.account}:subnet/*`,
+                `arn:aws:ec2:*:${this.props.account}:network-interface/*`,
+                `arn:aws:ec2:*:${this.props.account}:instance/*`,
+                `arn:aws:ec2:*:${this.props.account}:elastic-ip/*`,
+                `arn:aws:ec2:*:${this.props.account}:vpc/*`
+            ],
+            actions: [
+                "ec2:AttachNetworkInterface",
+                "ec2:CreateNetworkInterface",
+                "ec2:CreateNetworkInterfacePermission",
+                "ec2:DeleteNetworkInterface",
+                "ec2:DeleteNetworkInterfacePermission",
+                "ec2:DescribeDhcpOptions",
+                "ec2:DescribeNetworkInterfaces",
+                "ec2:DescribeNetworkInterfacePermissions",
+                "ec2:DescribeSubnets",
+                "ec2:DescribeVpcs",
+                "ec2:DescribeInstances"
+            ]
+        }));
+
         return role;
     }
 
@@ -114,14 +187,23 @@ export class QCLifeScienceBatch extends Construct {
         ];
 
         const vpc = new ec2.Vpc(this, 'VPC', {
-            subnetConfiguration: [
+            cidr: '10.1.0.0/16',
+            subnetConfiguration: [{
+                    cidrMask: 18,
+                    name: 'Ingress',
+                    subnetType: ec2.SubnetType.PUBLIC
+                },
                 {
                     cidrMask: 18,
-                    name: 'batch',
+                    name: 'Application',
                     subnetType: ec2.SubnetType.PRIVATE_WITH_NAT
                 }
             ]
         });
+
+        vpc.publicSubnets.forEach(s => {
+            Aspects.of(s).add(new ChangePublicSubnet())
+        })
 
         vpc.addFlowLog("logtoCW", {
             destination: ec2.FlowLogDestination.toCloudWatchLogs(),
@@ -206,6 +288,7 @@ export class QCLifeScienceBatch extends Construct {
         for (const task of taskList) {
             batchParallel.branch(task)
         }
+        const lambdaRole = this.createAggResultLambdaRole();
 
         const aggResultLambda = new lambda.Function(this, 'AggResultLambda', {
             runtime: lambda.Runtime.NODEJS_12_X,
@@ -217,7 +300,7 @@ export class QCLifeScienceBatch extends Construct {
                 BUCKET: props.bucketName
             },
             vpc,
-            role: this.createAggResultLambdaRole(),
+            role: lambdaRole ,
             reservedConcurrentExecutions: 10
         });
 
