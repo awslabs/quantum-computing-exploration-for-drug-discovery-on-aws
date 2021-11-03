@@ -104,11 +104,7 @@ export class QCLifeScienceBatch extends Construct {
         role.addToPolicy(new iam.PolicyStatement({
             effect: iam.Effect.ALLOW,
             resources: [
-                `arn:aws:ec2:*:${this.props.account}:subnet/*`,
-                `arn:aws:ec2:*:${this.props.account}:network-interface/*`,
-                `arn:aws:ec2:*:${this.props.account}:instance/*`,
-                `arn:aws:ec2:*:${this.props.account}:elastic-ip/*`,
-                `arn:aws:ec2:*:${this.props.account}:vpc/*`
+                "*"
             ],
             actions: [
                 "ec2:AttachNetworkInterface",
