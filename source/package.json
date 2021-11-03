@@ -14,13 +14,12 @@
     "synth": "cdk synth",
     "deploy": "cdk deploy",
     "destroy": "cdk destroy",
-    
     "synth-dashboard": "cdk synth QCStack-dashboard ",
     "synth-main": "cdk synth QCStack-main ",
     "deploy-dashboard": "cdk deploy QCStack-dashboard ",
     "deploy-main": "cdk deploy QCStack-main ",
     "destroy-dashboard": "cdk destroy QCStack-dashboard ",
-    "destroy-main": "cdk destroy QCStack-main ",
+    "destroy-main": "cdk destroy QCStack-main "
     
   },
   "devDependencies": {
