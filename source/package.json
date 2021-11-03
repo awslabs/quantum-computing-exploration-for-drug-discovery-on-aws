@@ -1,7 +1,10 @@
 {
   "name": "AWS-gcr-qc-life-science",
   "description": "AWS GRC solution: Quantum Computing in HCLS",
-  "repository": "https://code.amazon.com/packages/AWS-gcr-qc-life-science",
+  "repository": {
+    "type": "git",
+    "url": "ssh://git.amazon.com/pkg/AWS-gcr-qc-life-science"
+  },
   "scripts": {
     "test": "rm -fr lib && npm run test:compile && jest --passWithNoTests --all --updateSnapshot && eslint",
     "build": "npm run test && npm run synth",
@@ -22,7 +25,7 @@
     "deploy-main": "cdk deploy QCStack-main ",
     "destroy-dashboard": "cdk destroy QCStack-dashboard ",
     "destroy-main": "cdk destroy QCStack-main "
-    
+
   },
   "devDependencies": {
     "@types/jest": "^27.0.0",
@@ -51,9 +54,10 @@
     "@aws-cdk/aws-s3": "^1.116.0",
     "@aws-cdk/aws-sagemaker": "^1.116.0",
     "@aws-cdk/core": "^1.116.0",
-    "@aws-cdk/aws-stepfunctions":"^1.116.0",
+    "@aws-cdk/aws-stepfunctions": "^1.116.0",
     "@aws-cdk/aws-stepfunctions-tasks": "^1.116.0",
-    "@aws-cdk/aws-quicksight": "^1.116.0"
+    "@aws-cdk/aws-quicksight": "^1.116.0",
+    "cdk-bootstrapless-synthesizer": "^0.7.2"
   },
   "bundledDependencies": [],
   "license": "Apache-2.0",
