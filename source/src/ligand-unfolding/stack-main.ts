@@ -108,7 +108,9 @@ export class QCLifeScienceStack extends SolutionStack {
       }]
     });
 
-    const qcKey = new kms.Key(this, 'qcKey');
+    const qcKey = new kms.Key(this, 'qcKey', {
+      enableKeyRotation: true
+    });
 
     const notebookInstnce = new CfnNotebookInstance(this, 'GCRQCLifeScienceNotebook', {
       instanceType: instanceTypeParam.valueAsString,

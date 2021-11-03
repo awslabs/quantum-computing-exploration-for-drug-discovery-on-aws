@@ -31,7 +31,7 @@ class ChangePublicSubnet implements IAspect {
 
 export class AddCfnNag implements IAspect {
     visit(node: cdk.IConstruct): void {
-        if (node instanceof iam.CfnRole) {
+        if (node instanceof iam.CfnPolicy) {
             node.addMetadata('cfn_nag', {
                 rules_to_suppress: [{
                     id: 'W12',
@@ -67,7 +67,7 @@ export class AddCfnNag implements IAspect {
             node.addMetadata('cfn_nag', {
                 rules_to_suppress: [{
                     id: 'W35',
-                    reason: 's3 Bucket access logging will be configured manually',
+                    reason: 'S3 bucket access logging will be configured manually',
                 }, ],
             });
         }
@@ -219,9 +219,9 @@ export class QCLifeScienceBatch extends Construct {
         });
 
         const batchSg = new ec2.SecurityGroup(this, "batchSg", {
-             vpc,
-             allowAllOutbound: true,
-             description: "Security Group for QC batch compute environment"   
+            vpc,
+            allowAllOutbound: true,
+            description: "Security Group for QC batch compute environment"
         });
 
         const batchEnvironment = new batch.ComputeEnvironment(this, 'Batch-Compute-Env', {
