@@ -11,12 +11,6 @@ import * as tasks from '@aws-cdk/aws-stepfunctions-tasks';
 import {
     Construct,
 } from '@aws-cdk/core';
-import {
-    E2BIG
-} from 'constants';
-import {
-    PublicSubnet
-} from '@aws-cdk/aws-ec2';
 
 export interface BatchProps {
     bucketName: string;
@@ -67,11 +61,19 @@ export class QCLifeScienceBatch extends Construct {
                 '*'
             ],
             actions: [
-                "braket:*",
                 "ecr:*",
-                "s3:*"
             ]
         }));
+
+        role.addToPolicy(new iam.PolicyStatement({
+            resources: [
+                '*'
+            ],
+            actions: [
+                "braket:*",
+            ]
+        }));
+        
         return role
     }
 
@@ -215,7 +217,8 @@ export class QCLifeScienceBatch extends Construct {
                 BUCKET: props.bucketName
             },
             vpc,
-            role: this.createAggResultLambdaRole()
+            role: this.createAggResultLambdaRole(),
+            reservedConcurrentExecutions: 10
         });
 
         const aggResultStep = new tasks.LambdaInvoke(this, 'Aggregate Result', {

@@ -96,8 +96,10 @@ export class QCLifeScienceStack extends SolutionStack {
     const s3bucket = new s3.Bucket(this, 'amazon-braket', {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       bucketName: `amazon-braket-${this.stackName.toLowerCase()}-${this.account}-${this.region}`,
-      autoDeleteObjects: true
+      autoDeleteObjects: true,
+      encryption: s3.BucketEncryption.S3_MANAGED
     });
+
 
     const role = this.createNotebookIamRole()
 
