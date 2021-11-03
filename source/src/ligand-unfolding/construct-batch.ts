@@ -11,6 +11,12 @@ import * as tasks from '@aws-cdk/aws-stepfunctions-tasks';
 import {
     Construct,
 } from '@aws-cdk/core';
+import {
+    E2BIG
+} from 'constants';
+import {
+    PublicSubnet
+} from '@aws-cdk/aws-ec2';
 
 export interface BatchProps {
     bucketName: string;
@@ -105,7 +111,21 @@ export class QCLifeScienceBatch extends Construct {
             ec2.InstanceType.of(ec2.InstanceClass.C5, ec2.InstanceSize.XLARGE4), // 16 vcpus, 32G mem
         ];
 
-        const vpc = new ec2.Vpc(this, 'VPC');
+        const vpc = new ec2.Vpc(this, 'VPC', {
+            subnetConfiguration: [
+                {
+                    cidrMask: 18,
+                    name: 'batch',
+                    subnetType: ec2.SubnetType.PRIVATE_WITH_NAT
+                }
+            ]
+        });
+
+        vpc.addFlowLog("logtoCW", {
+            destination: ec2.FlowLogDestination.toCloudWatchLogs(),
+            trafficType: ec2.FlowLogTrafficType.ALL
+        });
+
         const batchEnvironment = new batch.ComputeEnvironment(this, 'Batch-Compute-Env', {
             computeResources: {
                 type: batch.ComputeResourceType.ON_DEMAND,
@@ -237,7 +257,7 @@ export class QCLifeScienceBatch extends Construct {
                 jobRole: this.batchJobRole,
                 vcpus,
                 memoryLimitMiB: mem * 1024,
-                privileged: true
+                privileged: false
             },
             timeout: cdk.Duration.hours(2),
             retryAttempts: 1
