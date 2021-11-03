@@ -1,9 +1,9 @@
 import {
   App,
 } from '@aws-cdk/core';
-import {
-  BootstraplessStackSynthesizer
-} from 'cdk-bootstrapless-synthesizer';
+// import {
+//   BootstraplessStackSynthesizer
+// } from 'cdk-bootstrapless-synthesizer';
 import {
   QCLifeScienceStack,
 } from './ligand-unfolding/stack-main';
@@ -16,15 +16,15 @@ import {
 const app = new App();
 
 new QCLifeScienceStack(app, "QCStack-main", {
-  synthesizer: newSynthesizer()
+  //synthesizer: newSynthesizer()
 });
 
 new QCDashboradStack(app, "QCStack-dashboard", {
-  synthesizer: newSynthesizer()
+ // synthesizer: newSynthesizer()
 });
 
 app.synth();
 
 function newSynthesizer() {
-  return process.env.USE_BSS ? new BootstraplessStackSynthesizer() : undefined;
+  //return process.env.USE_BSS ? new BootstraplessStackSynthesizer() : undefined;
 }
