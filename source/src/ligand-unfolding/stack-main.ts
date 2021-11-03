@@ -1,7 +1,7 @@
 import * as cdk from '@aws-cdk/core';
 import * as s3 from '@aws-cdk/aws-s3';
 import * as iam from '@aws-cdk/aws-iam'
-
+import * as kms from '@aws-cdk/aws-kms'
 
 import {
   CfnNotebookInstanceLifecycleConfig,
@@ -105,13 +105,16 @@ export class QCLifeScienceStack extends SolutionStack {
       }]
     });
 
-    const notebookInstnce = new CfnNotebookInstance(this, 'GCRQCLifeScience', {
+    const qcKey = new kms.Key(this, 'qcKey');
+
+    const notebookInstnce = new CfnNotebookInstance(this, 'GCRQCLifeScienceNotebook', {
       instanceType: instanceTypeParam.valueAsString,
       roleArn: role.roleArn,
       rootAccess: 'Enabled',
       lifecycleConfigName: installBraketSdK.attrNotebookInstanceLifecycleConfigName,
       defaultCodeRepository: gitHubParam.valueAsString,
       volumeSizeInGb: 50,
+      kmsKeyId: qcKey.keyId
     });
 
     // Output //////////////////////////
@@ -135,9 +138,9 @@ export class QCLifeScienceStack extends SolutionStack {
 
     // Batch //////////////////////////
     new QCLifeScienceBatch(this, 'QCLifeScienceBatch', {
-      bucketName: s3bucket.bucketName,
       account: this.account,
-      region: this.region
+      region: this.region,
+      bucket: s3bucket
     });
   }
 
