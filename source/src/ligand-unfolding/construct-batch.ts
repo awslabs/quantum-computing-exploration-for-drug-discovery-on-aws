@@ -40,6 +40,8 @@ export class QCLifeScienceBatch extends Construct {
         });
 
         role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonBraketFullAccess'))
+        role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonEC2ContainerRegistryReadOnly'))
+
         role.addToPolicy(new iam.PolicyStatement({
             resources: [
                 'arn:aws:s3:::amazon-braket-*',
@@ -64,49 +66,6 @@ export class QCLifeScienceBatch extends Construct {
                 "logs:CreateLogGroup"
             ]
         }));
-
-        role.addToPolicy(new iam.PolicyStatement({
-            resources: [
-                `arn:aws:ecr:*:${this.props.account}:repository/*`
-            ],
-            actions: [
-                "ecr:PutImageTagMutability",
-                "ecr:StartImageScan",
-                "ecr:DescribeImageReplicationStatus",
-                "ecr:ListTagsForResource",
-                "ecr:UploadLayerPart",
-                "ecr:BatchDeleteImage",
-                "ecr:ListImages",
-                "ecr:DeleteRepository",
-                "ecr:CompleteLayerUpload",
-                "ecr:DescribeRepositories",
-                "ecr:DeleteRepositoryPolicy",
-                "ecr:BatchCheckLayerAvailability",
-                "ecr:ReplicateImage",
-                "ecr:GetLifecyclePolicy",
-                "ecr:PutLifecyclePolicy",
-                "ecr:DescribeImageScanFindings",
-                "ecr:GetLifecyclePolicyPreview",
-                "ecr:CreateRepository",
-                "ecr:PutImageScanningConfiguration",
-                "ecr:GetDownloadUrlForLayer",
-                "ecr:DeleteLifecyclePolicy",
-                "ecr:PutImage",
-                "ecr:SetRepositoryPolicy",
-                "ecr:BatchGetImage",
-                "ecr:DescribeImages",
-                "ecr:StartLifecyclePolicyPreview",
-                "ecr:InitiateLayerUpload",
-                "ecr:GetRepositoryPolicy",
-                "ecr:GetRegistryPolicy",
-                "ecr:DescribeRegistry",
-                "ecr:GetAuthorizationToken",
-                "ecr:DeleteRegistryPolicy",
-                "ecr:PutRegistryPolicy",
-                "ecr:PutReplicationConfiguration"
-            ]
-        }));
-
         role.addToPolicy(new iam.PolicyStatement({
             resources: [
                 'arn:aws:braket:::device/qpu/d-wave/*',
