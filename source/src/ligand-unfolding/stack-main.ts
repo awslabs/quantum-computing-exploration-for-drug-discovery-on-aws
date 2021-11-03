@@ -23,10 +23,12 @@ import {
 } from '../stack';
 
 import {
-  AddCfnNag,
+  AddCfnNag
+} from './utils'
+
+import {
   QCLifeScienceBatch
 } from './construct-batch'
-
 
 export class QCLifeScienceStack extends SolutionStack {
 
