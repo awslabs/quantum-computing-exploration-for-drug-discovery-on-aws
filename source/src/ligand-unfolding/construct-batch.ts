@@ -214,6 +214,7 @@ export class QCLifeScienceBatch extends Construct {
             environment: {
                 BUCKET: props.bucketName
             },
+            vpc,
             role: this.createAggResultLambdaRole()
         });
 
