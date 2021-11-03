@@ -1,5 +1,5 @@
-import { App } from '@aws-cdk/core';
-import { MyStack } from '../src/stack';
+// import { App } from '@aws-cdk/core';
+// import { MyStack } from '../src/stack';
 // test('Snapshot', () => {
 //   const app = new App();
 //   const stack = new MyStack(app, 'test');

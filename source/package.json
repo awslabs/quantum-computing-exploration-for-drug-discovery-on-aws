@@ -1,5 +1,5 @@
 {
-  "name": "aws-gcr-solutions-init-repo",
+  "name": "AWS-gcr-qc-life-science",
   "scripts": {
     "test": "rm -fr lib && npm run test:compile && jest --passWithNoTests --all --updateSnapshot && eslint",
     "build": "npm run test && npm run synth",
