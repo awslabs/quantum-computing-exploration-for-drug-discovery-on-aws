@@ -1,5 +1,7 @@
 {
   "name": "AWS-gcr-qc-life-science",
+  "description": "AWS GRC solution: Quantum Computing in HCLS",
+  "repository": "https://code.amazon.com/packages/AWS-gcr-qc-life-science",
   "scripts": {
     "test": "rm -fr lib && npm run test:compile && jest --passWithNoTests --all --updateSnapshot && eslint",
     "build": "npm run test && npm run synth",
