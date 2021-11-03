@@ -255,7 +255,7 @@ export class QCLifeScienceBatch extends Construct {
         }
         const lambdaRole = this.createAggResultLambdaRole();
 
-        const lambdaSg = new ec2.SecurityGroup(this, "batchSg", {
+        const lambdaSg = new ec2.SecurityGroup(this, "lambdaSg", {
             vpc,
             allowAllOutbound: false,
             description: "Security Group for lambda"
