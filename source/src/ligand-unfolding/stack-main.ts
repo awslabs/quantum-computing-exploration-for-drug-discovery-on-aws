@@ -110,7 +110,7 @@ export class QCLifeScienceStack extends SolutionStack {
       }]
     });
 
-    const qcKey = new kms.Key(this, 'qcKey', {
+    const qcNotebookKey = new kms.Key(this, 'qcNotebookKey', {
       enableKeyRotation: true
     });
 
@@ -121,7 +121,7 @@ export class QCLifeScienceStack extends SolutionStack {
       lifecycleConfigName: installBraketSdK.attrNotebookInstanceLifecycleConfigName,
       defaultCodeRepository: gitHubParam.valueAsString,
       volumeSizeInGb: 50,
-      kmsKeyId: qcKey.keyId
+      kmsKeyId: qcNotebookKey.keyId
     });
 
     // Output //////////////////////////
@@ -147,7 +147,7 @@ export class QCLifeScienceStack extends SolutionStack {
     new QCLifeScienceBatch(this, 'QCLifeScienceBatch', {
       account: this.account,
       region: this.region,
-      bucket: s3bucket
+      bucket: s3bucket,
     });
   }
 

@@ -8,6 +8,8 @@ import * as ecs from '@aws-cdk/aws-ecs'
 import * as sfn from '@aws-cdk/aws-stepfunctions';
 import * as tasks from '@aws-cdk/aws-stepfunctions-tasks';
 import * as s3 from '@aws-cdk/aws-s3'
+import * as logs from '@aws-cdk/aws-logs'
+import * as kms from '@aws-cdk/aws-kms'
 
 import {
     Aspects,
@@ -16,7 +18,8 @@ import {
 
 import {
     ChangePublicSubnet,
-    AddCfnNag
+    AddCfnNag,
+    grantKmsKeyPerm
 } from './utils'
 
 export interface BatchProps {
@@ -105,6 +108,8 @@ export class QCLifeScienceBatch extends Construct {
             effect: iam.Effect.ALLOW,
             resources: [
                 '*',
+                //`arn:aws:ec2:*:${this.props.account}:*`
+                // `arn:aws:ec2:*:${this.props.account}:*/*`,
                 // `arn:aws:ec2:*:${this.props.account}:subnet/*`,
                 // `arn:aws:ec2:*:${this.props.account}:network-interface/*`,
                 // `arn:aws:ec2:*:${this.props.account}:instance/*`,
@@ -164,8 +169,19 @@ export class QCLifeScienceBatch extends Construct {
             Aspects.of(s).add(new ChangePublicSubnet())
         });
 
+        const logKey = new kms.Key(this, 'qcLogKey', {
+            enableKeyRotation: true
+        });
+        grantKmsKeyPerm(logKey);
+
+        // const logGroupName = `${cdk.Stack.of(logKey).stackName}-vpcFlowlogGroup`;
+        // grantKmsKeyPerm(logKey,logGroupName);
+        const vpcFlowlog = new logs.LogGroup(this, "vpcFlowlog", {
+            encryptionKey: logKey
+        });
+
         vpc.addFlowLog("logtoCW", {
-            destination: ec2.FlowLogDestination.toS3(this.props.bucket, "vpcFlowLog/"),
+            destination: ec2.FlowLogDestination.toCloudWatchLogs(vpcFlowlog),
             trafficType: ec2.FlowLogTrafficType.ALL
         });
 
@@ -175,15 +191,22 @@ export class QCLifeScienceBatch extends Construct {
             description: "Security Group for QC batch compute environment"
         });
 
+        batchSg.connections.allowToAnyIpv4(ec2.Port.tcp(80))
+        batchSg.connections.allowToAnyIpv4(ec2.Port.tcp(443))
+
         const batchEnvironment = new batch.ComputeEnvironment(this, 'Batch-Compute-Env', {
             computeResources: {
                 type: batch.ComputeResourceType.ON_DEMAND,
                 vpc,
+                vpcSubnets: vpc.selectSubnets({
+                    subnetType: ec2.SubnetType.PRIVATE_WITH_NAT
+                }),
                 allocationStrategy: batch.AllocationStrategy.BEST_FIT,
                 instanceTypes,
                 securityGroups: [batchSg]
             }
         });
+
 
         const jobQueue = new batch.JobQueue(this, 'JobQueue', {
             computeEnvironments: [{
@@ -235,8 +258,12 @@ export class QCLifeScienceBatch extends Construct {
                             jobName,
                             jobQueueArn: jobQueue.jobQueueArn,
                             containerOverrides: {
-                                command: ['--M', `${m}`, '--D', `${d}`, '--device-arn',
-                                    deviceArn, '--aws-region', props.region, '--instance-type', `${instanceType}`,
+                                command: [
+                                    '--M', `${m}`,
+                                    '--D', `${d}`,
+                                    '--device-arn', deviceArn,
+                                    '--aws-region', props.region,
+                                    '--instance-type', `${instanceType}`,
                                     '--s3-bucket', this.props.bucket.bucketName
                                 ],
                             },
@@ -262,6 +289,9 @@ export class QCLifeScienceBatch extends Construct {
             description: "Security Group for lambda"
         });
 
+        lambdaSg.connections.allowToAnyIpv4(ec2.Port.tcp(80))
+        lambdaSg.connections.allowToAnyIpv4(ec2.Port.tcp(443))
+
         const aggResultLambda = new lambda.Function(this, 'AggResultLambda', {
             runtime: lambda.Runtime.NODEJS_12_X,
             code: lambda.Code.fromAsset(path.join(__dirname, './lambda/AthenaTabeLambda/')),
@@ -272,6 +302,9 @@ export class QCLifeScienceBatch extends Construct {
                 BUCKET: this.props.bucket.bucketName
             },
             vpc,
+            vpcSubnets: vpc.selectSubnets({
+                subnetType: ec2.SubnetType.PRIVATE_WITH_NAT
+            }),
             role: lambdaRole,
             reservedConcurrentExecutions: 10,
             securityGroups: [lambdaSg]
@@ -311,8 +344,12 @@ export class QCLifeScienceBatch extends Construct {
             platformCapabilities: [batch.PlatformCapabilities.EC2],
             container: {
                 image: ecs.ContainerImage.fromAsset(path.join(__dirname, './docker')),
-                command: ['--M', `${m}`, '--D', `${d}`, '--device-arn',
-                    device, '--aws-region', this.props.region, '--instance-type', `${instanceType}`,
+                command: [
+                    '--M', `${m}`,
+                    '--D', `${d}`,
+                    '--device-arn', device,
+                    '--aws-region', this.props.region,
+                    '--instance-type', `${instanceType}`,
                     '--s3-bucket', bucketName
                 ],
                 executionRole: this.batchJobExecutionRole,

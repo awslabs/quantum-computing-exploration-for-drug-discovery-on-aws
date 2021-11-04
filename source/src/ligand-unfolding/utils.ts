@@ -3,6 +3,7 @@ import * as lambda from '@aws-cdk/aws-lambda';
 import * as iam from '@aws-cdk/aws-iam'
 import * as s3 from '@aws-cdk/aws-s3'
 import * as ec2 from '@aws-cdk/aws-ec2'
+import * as kms from '@aws-cdk/aws-kms'
 
 import {
     IAspect,
@@ -55,3 +56,30 @@ export class AddCfnNag implements IAspect {
         }
     }
 }
+
+export function grantKmsKeyPerm(key: kms.IKey, logGroupName?: string): void {
+    key.addToResourcePolicy(new iam.PolicyStatement({
+      principals: [new iam.ServicePrincipal('logs.amazonaws.com')],
+      actions: [
+        'kms:Encrypt*',
+        'kms:ReEncrypt*',
+        'kms:Decrypt*',
+        'kms:GenerateDataKey*',
+        'kms:Describe*',
+      ],
+      resources: [
+        '*',
+      ],
+      conditions: {
+        ArnLike: {
+          'kms:EncryptionContext:aws:logs:arn': cdk.Arn.format({
+            service: 'logs',
+            resource: 'log-group',
+            resourceName: logGroupName? logGroupName : '*',
+            sep: ':',
+          }, cdk.Stack.of(key)),
+        },
+      },
+    }));
+  }
+  
