@@ -10,6 +10,7 @@ import * as tasks from '@aws-cdk/aws-stepfunctions-tasks';
 import * as s3 from '@aws-cdk/aws-s3'
 import * as logs from '@aws-cdk/aws-logs'
 import * as kms from '@aws-cdk/aws-kms'
+import * as ecr from '@aws-cdk/aws-ecr'
 
 import {
     Aspects,
@@ -237,9 +238,19 @@ export class QCLifeScienceBatch extends Construct {
             [8, 8],
             [16, 16]
         ];
+        // const ecrImage =  ecs.ContainerImage.fromAsset(path.join(__dirname, './docker'))
+        const ecrImage = ecs.ContainerImage.fromEcrRepository(
+            ecr.Repository.fromRepositoryName(this, 'ecrRepo', 'qc/ligand-unfolding-batch')
+            );
 
         const jobDefs = vcpuMemList.map(it => {
-            return this.createBatchJobDef(`QCJob_vCpus${it[0]}_Mem${it[1]}G`, 1, 4, Advantage_system1, it[0], it[1], this.props.bucket.bucketName);
+            return this.createBatchJobDef(`QCJob_vCpus${it[0]}_Mem${it[1]}G`, 
+            1, 4, 
+            Advantage_system1, 
+            it[0], it[1], 
+            this.props.bucket.bucketName,
+            ecrImage
+            );
         });
 
         new cdk.CfnOutput(this, "jobQueue", {
@@ -351,13 +362,14 @@ export class QCLifeScienceBatch extends Construct {
         });
     }
 
+
     private createBatchJobDef(defName: string, m: number, d: number, device: string,
-        vcpus: number, mem: number, bucketName: string): batch.JobDefinition {
+        vcpus: number, mem: number, bucketName: string, image: ecs.EcrImage ): batch.JobDefinition {
         const instanceType = this.getInstanceType(vcpus, mem)
         return new batch.JobDefinition(this, defName, {
             platformCapabilities: [batch.PlatformCapabilities.EC2],
             container: {
-                image: ecs.ContainerImage.fromAsset(path.join(__dirname, './docker')),
+                image,
                 command: [
                     '--M', `${m}`,
                     '--D', `${d}`,

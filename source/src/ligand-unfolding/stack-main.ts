@@ -151,7 +151,7 @@ export class QCLifeScienceStack extends SolutionStack {
     new QCLifeScienceBatch(this, 'QCLifeScienceBatch', {
       account: this.account,
       region: this.region,
-      bucket: s3bucket,
+      bucket: s3bucket
     });
 
     Aspects.of(this).add(new AddCfnNag());
