@@ -263,7 +263,7 @@ export class QCLifeScienceBatch extends Construct {
         const dValues = [4];
         const deviceArns = [
             'arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6',
-            'arn:aws:braket:::device/qpu/d-wave/Advantage_system1',
+            //'arn:aws:braket:::device/qpu/d-wave/Advantage_system1',
             'arn:aws:braket:::device/qpu/d-wave/Advantage_system4'
         ];
         const taskList = [];
