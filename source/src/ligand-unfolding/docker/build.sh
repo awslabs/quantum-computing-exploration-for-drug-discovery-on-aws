@@ -1,3 +1,6 @@
+#!/usr/bin/env bash
+set -e 
+
 repoName='qc/ligand-unfolding-batch'
 
  docker build -t $repoName .
