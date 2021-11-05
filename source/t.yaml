@@ -1,7 +1,3 @@
-
-> AWS-gcr-qc-life-science@0.0.1 synth-main
-> cdk synth QCStack-main
-
 Description: "(SO8029) CDK for GCR solution: Quantum Computing in HCLS (Notebook)"
 Parameters:
   NotebookInstanceType:
