@@ -50,7 +50,7 @@ export class AddCfnNag implements IAspect {
             (node as cdk.CfnResource).addMetadata('cfn_nag', {
                 rules_to_suppress: [{
                     id: 'W12',
-                    reason: 'need access the rescoures',
+                    reason: 'EC2:DescribeNetworkInterfaces is not resource-level permissions ',
                 }, ],
             });
         } else if (node instanceof s3.CfnBucket) {

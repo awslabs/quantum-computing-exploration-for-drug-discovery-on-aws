@@ -43,13 +43,19 @@ export class QCLifeScienceBatch extends Construct {
 
         role.addToPolicy(new iam.PolicyStatement({
             resources: [
-                'arn:aws:s3:::amazon-braket-*',
-                'arn:aws:s3:::braketnotebookcdk-*',
-                'arn:aws:s3:::qcstack*'
+                "arn:aws:s3:::*/*"
             ],
             actions: [
                 "s3:GetObject",
-                "s3:PutObject",
+                "s3:PutObject"
+            ]
+        }));
+
+        role.addToPolicy(new iam.PolicyStatement({
+            resources: [
+                'arn:aws:s3:::*'
+            ],
+            actions: [
                 "s3:ListBucket"
             ]
         }));
@@ -79,7 +85,6 @@ export class QCLifeScienceBatch extends Construct {
                 "braket:CancelQuantumTask"
             ]
         }));
-
         return role
     }
 
@@ -91,13 +96,19 @@ export class QCLifeScienceBatch extends Construct {
         role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonAthenaFullAccess'))
         role.addToPolicy(new iam.PolicyStatement({
             resources: [
-                'arn:aws:s3:::amazon-braket-*',
-                'arn:aws:s3:::braketnotebookcdk-*',
-                'arn:aws:s3:::qcstack*'
+                "arn:aws:s3:::*/*"
             ],
             actions: [
                 "s3:GetObject",
-                "s3:PutObject",
+                "s3:PutObject"
+            ]
+        }));
+
+        role.addToPolicy(new iam.PolicyStatement({
+            resources: [
+                'arn:aws:s3:::*'
+            ],
+            actions: [
                 "s3:ListBucket"
             ]
         }));
@@ -105,14 +116,11 @@ export class QCLifeScienceBatch extends Construct {
         role.addToPolicy(new iam.PolicyStatement({
             effect: iam.Effect.ALLOW,
             resources: [
-                '*',
-                //`arn:aws:ec2:*:${this.props.account}:*`
-                // `arn:aws:ec2:*:${this.props.account}:*/*`,
+                '*'
                 // `arn:aws:ec2:*:${this.props.account}:subnet/*`,
                 // `arn:aws:ec2:*:${this.props.account}:network-interface/*`,
                 // `arn:aws:ec2:*:${this.props.account}:instance/*`,
-                // `arn:aws:ec2:*:${this.props.account}:elastic-ip/*`,
-                // `arn:aws:ec2:*:${this.props.account}:vpc/*`
+                // `arn:aws:ec2:*:${this.props.account}:security-group/*`
             ],
             actions: [
                 "ec2:AttachNetworkInterface",
@@ -128,7 +136,17 @@ export class QCLifeScienceBatch extends Construct {
                 "ec2:DescribeInstances"
             ]
         }));
-
+        role.addToPolicy(new iam.PolicyStatement({
+            resources: [
+                `arn:aws:logs:*:${this.props.account}:log-group:*`
+            ],
+            actions: [
+                "logs:CreateLogStream",
+                "logs:DescribeLogStreams",
+                "logs:PutLogEvents",
+                "logs:CreateLogGroup"
+            ]
+        }));
         return role;
     }
 

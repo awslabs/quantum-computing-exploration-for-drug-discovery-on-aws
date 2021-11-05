@@ -43,13 +43,19 @@ export class QCLifeScienceStack extends SolutionStack {
     role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonBraketFullAccess'))
     role.addToPolicy(new iam.PolicyStatement({
       resources: [
-        'arn:aws:s3:::amazon-braket-*',
-        'arn:aws:s3:::braketnotebookcdk-*',
-        'arn:aws:s3:::qcstack*'
+        "arn:aws:s3:::*/*"
       ],
       actions: [
         "s3:GetObject",
-        "s3:PutObject",
+        "s3:PutObject"
+      ]
+    }));
+
+    role.addToPolicy(new iam.PolicyStatement({
+      resources: [
+        'arn:aws:s3:::*'
+      ],
+      actions: [
         "s3:ListBucket"
       ]
     }));
