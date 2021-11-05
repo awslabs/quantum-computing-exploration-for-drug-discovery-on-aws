@@ -35,8 +35,8 @@ export class AddCfnNag implements IAspect {
                     }
                 ],
             });
-        } else if (node instanceof iam.CfnPolicy) {
-            node.addMetadata('cfn_nag', {
+        } else if (node.node.path == 'QCStack-main/QCLifeScienceBatch/jobRole/DefaultPolicy/Resource') {
+            (node as cdk.CfnResource).addMetadata('cfn_nag', {
                 rules_to_suppress: [{
                     id: 'W12',
                     reason: 'read only policy',
