@@ -18,7 +18,6 @@ import {
 
 import {
     ChangePublicSubnet,
-    AddCfnNag,
     grantKmsKeyPerm
 } from './utils'
 
@@ -81,7 +80,6 @@ export class QCLifeScienceBatch extends Construct {
             ]
         }));
 
-        Aspects.of(role).add(new AddCfnNag())
         return role
     }
 
@@ -131,7 +129,6 @@ export class QCLifeScienceBatch extends Construct {
             ]
         }));
 
-        Aspects.of(role).add(new AddCfnNag())
         return role;
     }
 
@@ -193,7 +190,6 @@ export class QCLifeScienceBatch extends Construct {
 
         batchSg.connections.allowToAnyIpv4(ec2.Port.tcp(80));
         batchSg.connections.allowToAnyIpv4(ec2.Port.tcp(443));
-        Aspects.of(batchSg).add(new AddCfnNag());
 
         const batchEnvironment = new batch.ComputeEnvironment(this, 'Batch-Compute-Env', {
             computeResources: {
@@ -293,7 +289,6 @@ export class QCLifeScienceBatch extends Construct {
         lambdaSg.connections.allowToAnyIpv4(ec2.Port.tcp(80))
         lambdaSg.connections.allowToAnyIpv4(ec2.Port.tcp(443));
 
-        Aspects.of(lambdaSg).add(new AddCfnNag())
 
         const aggResultLambda = new lambda.Function(this, 'AggResultLambda', {
             runtime: lambda.Runtime.NODEJS_12_X,

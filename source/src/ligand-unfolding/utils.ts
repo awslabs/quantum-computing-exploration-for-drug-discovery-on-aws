@@ -35,13 +35,21 @@ export class AddCfnNag implements IAspect {
                     }
                 ],
             });
+        } else if (node.node.path == 'QCStack-main/QCLifeScienceBatch/AggResultLambda/Resource') {
+            (node as cdk.CfnResource).addMetadata('cfn_nag', {
+                rules_to_suppress: [{
+                    id: 'W58',
+                    reason: 'the lambda already have the permission',
+                }, ],
+            });
         } else if (node.node.path == 'QCStack-main/QCLifeScienceBatch/jobRole/DefaultPolicy/Resource' ||
-            node.node.path == 'QCStack-main/QCLifeScienceBatch/executionRole/DefaultPolicy/Resource'
+            node.node.path == 'QCStack-main/QCLifeScienceBatch/executionRole/DefaultPolicy/Resource' ||
+            node.node.path == 'QCStack-main/QCLifeScienceBatch/AggResultLambdaRole/DefaultPolicy/Resource'
         ) {
             (node as cdk.CfnResource).addMetadata('cfn_nag', {
                 rules_to_suppress: [{
                     id: 'W12',
-                    reason: 'read only policy',
+                    reason: 'need access the rescoures',
                 }, ],
             });
         } else if (node instanceof s3.CfnBucket) {
