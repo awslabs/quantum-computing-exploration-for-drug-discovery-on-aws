@@ -149,6 +149,9 @@ export class QCLifeScienceStack extends SolutionStack {
       region: this.region,
       bucket: s3bucket,
     });
+
+    Aspects.of(this).add(new AddCfnNag());
+
   }
 
 }

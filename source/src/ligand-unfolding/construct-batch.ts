@@ -191,8 +191,9 @@ export class QCLifeScienceBatch extends Construct {
             description: "Security Group for QC batch compute environment"
         });
 
-        batchSg.connections.allowToAnyIpv4(ec2.Port.tcp(80))
-        batchSg.connections.allowToAnyIpv4(ec2.Port.tcp(443))
+        batchSg.connections.allowToAnyIpv4(ec2.Port.tcp(80));
+        batchSg.connections.allowToAnyIpv4(ec2.Port.tcp(443));
+        Aspects.of(batchSg).add(new AddCfnNag());
 
         const batchEnvironment = new batch.ComputeEnvironment(this, 'Batch-Compute-Env', {
             computeResources: {
@@ -290,7 +291,9 @@ export class QCLifeScienceBatch extends Construct {
         });
 
         lambdaSg.connections.allowToAnyIpv4(ec2.Port.tcp(80))
-        lambdaSg.connections.allowToAnyIpv4(ec2.Port.tcp(443))
+        lambdaSg.connections.allowToAnyIpv4(ec2.Port.tcp(443));
+
+        Aspects.of(lambdaSg).add(new AddCfnNag())
 
         const aggResultLambda = new lambda.Function(this, 'AggResultLambda', {
             runtime: lambda.Runtime.NODEJS_12_X,
@@ -309,8 +312,6 @@ export class QCLifeScienceBatch extends Construct {
             reservedConcurrentExecutions: 10,
             securityGroups: [lambdaSg]
         });
-
-        Aspects.of(aggResultLambda).add(new AddCfnNag())
 
         const aggResultStep = new tasks.LambdaInvoke(this, 'Aggregate Result', {
             lambdaFunction: aggResultLambda,
