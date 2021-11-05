@@ -457,7 +457,7 @@ end = time.time()
 
 t_sum_classic = (end - start) / 60
 
-logging.info("elapsed time for sa of {} shots: {} min".format(num_shots, t_sum_classic))
+logging.info("elapsed time for HPC of {} shots: {} min".format(num_shots, t_sum_classic))
 
 response_aggregate = response.aggregate()
 
@@ -472,8 +472,8 @@ start = time.time()
 # run BQM: solve with the D-Wave 2000Q device
 # sampler = BraketDWaveSampler(s3_folder,'arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6')
 
-logging.info("the sum time for sa {}".format(t_sum_classic))
-sum_log.append("{},sa,{}".format(content_prefix, t_sum_classic))
+logging.info("the sum time for HPC {}".format(t_sum_classic))
+sum_log.append("{},HPC,{}".format(content_prefix, t_sum_classic))
 
 logging.info("BraketDWaveSampler start - {}".format(content_prefix))
 
@@ -499,8 +499,8 @@ try:
    
    t_sum_quantum = t1 + t2 + t3
 
-   logging.info("the sum time for qa {}".format(t_sum_quantum))
-   sum_log.append("{},qa,{}".format(content_prefix, t_sum_quantum))
+   logging.info("the sum time for QC {}".format(t_sum_quantum))
+   sum_log.append("{},QC,{}".format(content_prefix, t_sum_quantum))
 
 except Exception as err:
     logging.error(repr(err)) 
