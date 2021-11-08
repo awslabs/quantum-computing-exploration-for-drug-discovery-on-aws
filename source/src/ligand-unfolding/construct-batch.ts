@@ -118,10 +118,6 @@ export class QCLifeScienceBatch extends Construct {
             effect: iam.Effect.ALLOW,
             resources: [
                 '*'
-                // `arn:aws:ec2:*:${this.props.account}:subnet/*`,
-                // `arn:aws:ec2:*:${this.props.account}:network-interface/*`,
-                // `arn:aws:ec2:*:${this.props.account}:instance/*`,
-                // `arn:aws:ec2:*:${this.props.account}:security-group/*`
             ],
             actions: [
                 "ec2:AttachNetworkInterface",
@@ -217,7 +213,7 @@ export class QCLifeScienceBatch extends Construct {
                 vpcSubnets: vpc.selectSubnets({
                     subnetType: ec2.SubnetType.PRIVATE_WITH_NAT
                 }),
-                allocationStrategy: batch.AllocationStrategy.BEST_FIT,
+                allocationStrategy: batch.AllocationStrategy.BEST_FIT_PROGRESSIVE,
                 instanceTypes,
                 securityGroups: [batchSg]
             }
@@ -348,7 +344,7 @@ export class QCLifeScienceBatch extends Construct {
 
         const stateMachine = new sfn.StateMachine(this, 'QCBatchStateMachine', {
             definition: batchParallel,
-            timeout: cdk.Duration.hours(2)
+            timeout: cdk.Duration.hours(3)
         });
 
         new cdk.CfnOutput(this, "stateMachine", {
