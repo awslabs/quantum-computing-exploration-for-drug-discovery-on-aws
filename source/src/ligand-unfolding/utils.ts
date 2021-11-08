@@ -67,7 +67,7 @@ export class AddCfnNag implements IAspect {
                 },
                 {
                     id: 'W40',
-                    reason: 'allow all egress',
+                    reason: 'allow egress to pull docker images',
                 } ],
             });
         }
