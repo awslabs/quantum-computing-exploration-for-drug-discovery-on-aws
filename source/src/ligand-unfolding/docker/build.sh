@@ -23,7 +23,7 @@ echo "    AWS_CMD: $AWS_CMD"
 echo ""
 
 echo "Press Enter to continue ..."
-read reloy
+read reply
 
 create_repo () {
   name=$1
