@@ -64,7 +64,11 @@ export class AddCfnNag implements IAspect {
                 rules_to_suppress: [{
                     id: 'W5',
                     reason: 'need internet access',
-                }, ],
+                },
+                {
+                    id: 'W40',
+                    reason: 'allow all egress',
+                } ],
             });
         }
     }
