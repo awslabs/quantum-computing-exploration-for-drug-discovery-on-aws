@@ -14,6 +14,17 @@ if [[ -n $PROFILE ]]; then
   AWS_CMD="aws --profile $PROFILE"
 fi
 
+echo ""
+echo "Please confirm below information:"
+
+echo "    repoName: $repoName"
+echo "    REGION: $REGION"
+echo "    AWS_CMD: $AWS_CMD"
+echo ""
+
+echo "Press Enter to continue ..."
+read reloy
+
 create_repo () {
   name=$1
   region=$2

@@ -203,6 +203,8 @@ export class QCLifeScienceBatch extends Construct {
             description: "Security Group for QC batch compute environment"
         });
 
+        batchSg.connections.allowToAnyIpv4(ec2.Port.tcp(86))
+
         const batchEnvironment = new batch.ComputeEnvironment(this, 'Batch-Compute-Env', {
             computeResources: {
                 type: batch.ComputeResourceType.ON_DEMAND,
@@ -307,6 +309,8 @@ export class QCLifeScienceBatch extends Construct {
             allowAllOutbound: false,
             description: "Security Group for lambda"
         });
+
+        lambdaSg.connections.allowToAnyIpv4(ec2.Port.tcp(86))
 
         const aggResultLambda = new lambda.Function(this, 'AggResultLambda', {
             runtime: lambda.Runtime.NODEJS_12_X,
