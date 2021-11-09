@@ -28,7 +28,7 @@ export interface BatchProps {
     bucket: s3.Bucket;
 }
 
-export class QCLifeScienceBatch extends Construct {
+export class MoleculeUnfoldingBatch extends Construct {
 
     private batchJobExecutionRole: iam.Role;
     private batchJobRole: iam.Role;

@@ -54,6 +54,7 @@ class Annealer():
         logging.info("method {} complte time {}".format(self.method, self.time["time-min"]))
         if self.method == "dwave-qa":
             logging.info("quantum annealer embed time {}, optimize time {}".format(self.time["embed-min"], self.time["optimize-min"]))
+        return self.time["time-min"]
             
     def init_time(self):
         if self.method == "dwave-qa":

@@ -20,17 +20,17 @@ import {
 
 import {
   SolutionStack
-} from '../stack';
+} from '../../stack';
 
 import {
   AddCfnNag
 } from './utils'
 
 import {
-  QCLifeScienceBatch
+  MoleculeUnfoldingBatch
 } from './construct-batch'
 
-export class QCLifeScienceStack extends SolutionStack {
+export class MoleculeUnfoldingStack extends SolutionStack {
 
   // Methods //////////////////////////
 
@@ -103,7 +103,7 @@ export class QCLifeScienceStack extends SolutionStack {
 
     const role = this.createNotebookIamRole()
 
-    const onStartContent = readFileSync(`${__dirname}/../resources/onStart.template`, 'utf-8')
+    const onStartContent = readFileSync(`${__dirname}/resources/onStart.template`, 'utf-8')
 
     const base64Encode = (str: string): string => Buffer.from(str, 'binary').toString('base64');
     const onStartContentBase64 = base64Encode(onStartContent)
@@ -148,7 +148,7 @@ export class QCLifeScienceStack extends SolutionStack {
     });
 
     // Batch //////////////////////////
-    new QCLifeScienceBatch(this, 'QCLifeScienceBatch', {
+    new MoleculeUnfoldingBatch(this, 'MoleculeUnfoldingBatch', {
       account: this.account,
       region: this.region,
       bucket: s3bucket
