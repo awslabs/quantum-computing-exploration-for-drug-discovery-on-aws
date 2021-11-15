@@ -15,7 +15,6 @@ DEFAULT_AWS_REGION = 'us-east-1'
 
 
 def download_file(bucket, key, dir="./"):
-    s3 = boto3.client('s3')
     file_name = dir + key.split("/")[-1]
 
     with open(file_name, 'wb') as f:
@@ -26,7 +25,6 @@ def download_file(bucket, key, dir="./"):
 
 
 def string_to_s3(content, bucket, key):
-    s3 = boto3.client('s3')
     s3.put_object(
         Body=content.encode("utf-8"),
         Bucket=bucket,
@@ -37,8 +35,6 @@ def string_to_s3(content, bucket, key):
 
 def list_files(s3_bucket, s3_prefix):
     logging.inf("list_files - s3://{}/{}".format(s3_bucket, s3_prefix))
-
-    s3 = boto3.client('s3')
     partial_list = s3.list_objects_v2(
         Bucket=s3_bucket,
         Prefix=s3_prefix)
@@ -73,12 +69,10 @@ def qa_optimizer(qubo_data, s3_bucket, s3_prefix, device_arn):
     return qa_optimizer.time_summary()
 
 
-def run_on_device(model_file, device_arn):
+def run_on_device(model_file, device_arn, M):
     logging.info(
-        "run_on_device() - model_file:{}, device_arn: {}".format(model_file, device_arn))
-    param_file = "/".join(model_file.split("/")[:-1]) + "/param.json"
+        "run_on_device() - model_file:{}, device_arn: {}, M: {}".format(model_file, device_arn, M))
     local_model_file = download_file(s3_bucket, model_file)
-    local_param_file = download_file(s3_bucket, param_file)
 
     with open(local_model_file, 'r') as f:
         qubo_data = json.load(f)
@@ -86,38 +80,16 @@ def run_on_device(model_file, device_arn):
     time_in_mins = qa_optimizer(qubo_data, s3_bucket, s3_prefix, device_arn)
 
     device_name = device_arn.split("/")[-1]
-    params = json.load(local_param_file)
-    M = params['M']
 
     metrics_items = ["QC", str(device_name), str(M), str(time_in_mins)]
-    metrics = ",".join(metrics_items)
-    logging.info("metrics='{}'".format(metrics))
-    return metrics
+    metrics_line = ",".join(metrics_items)
+    logging.info("metrics='{}'".format(metrics_line))
+    metrics_key = "{}/metrics/{}-M{}--{}-{}.csv".format(
+        s3_prefix, "QC", M, device_name,int(time.time()))
 
+    string_to_s3("\n".join(metrics_line), s3_bucket, metrics_key)
 
-def run_all_on_devices(s3_bucket):
-    s3_prefix = "molecule-unfolding"
-    model_file_dir = "{}/model/".s3_prefix(s3_prefix)
-
-    logging.info("s3_bucket:{}, model_file_dir: {}".format(
-        s3_bucket, model_file_dir))
-
-    model_files = [model_file for model_file in
-                   list_files(s3_bucket, model_file_dir) if str(model_file).endswith("qubo.json")]
-    device_arns = [
-        'arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6',
-        'arn:aws:braket:::device/qpu/d-wave/Advantage_system4'
-    ]
-    metrics_lines = []
-    for model_file in model_files:
-        for device_arn in device_arns:
-            metrics_line = run_on_device(model_file, device_arn)
-            metrics_lines.append(metrics_line)
-
-    metrics_key = "{}/metrics/{}-{}.csv".format(
-        s3_prefix, "QC", int(time.time()))
-
-    string_to_s3("\n".join(metrics_lines), s3_bucket, metrics_key)
+    return metrics_line
 
 
 if __name__ == '__main__':
@@ -125,12 +97,23 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--s3-bucket', type=str)
     parser.add_argument('--aws-region', type=str, default=DEFAULT_AWS_REGION)
+    parser.add_argument('--device-arn', type=str, default='arn:aws:braket:::device/qpu/d-wave/Advantage_system4')
+    parser.add_argument('--M', type=int)
+    
+    s3_prefix = "molecule-unfolding"
 
     args, _ = parser.parse_known_args()
 
     aws_region = args.aws_region
     device_arn = args.device_arn
     s3_bucket = args.s3_bucket
+    M = args.M
+    
+    model_file = "{}/model/m{}/qubo.json".format(s3_prefix, M)
+
     boto3.setup_default_session(region_name=aws_region)
-    run_all_on_devices(s3_bucket)
+    s3 = boto3.client('s3')
+
+    run_on_device(model_file, device_arn, M)
+
     logging.info("Done")

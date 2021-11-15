@@ -2,7 +2,7 @@ import * as cdk from '@aws-cdk/core';
 import * as quicksight from '@aws-cdk/aws-quicksight';
 import {
     SolutionStack
-} from '../stack'
+} from '../../stack'
 
 export class MoleculeUnfoldingDashboardStack extends SolutionStack {
 

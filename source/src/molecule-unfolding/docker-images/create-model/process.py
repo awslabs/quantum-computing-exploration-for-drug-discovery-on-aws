@@ -41,8 +41,6 @@ def save_model_data(model_data, model_param, bucket, s3_prefix, m):
     if s3_prefix[-1] == '/':
         s3_prefix = s3_prefix[:-1]
 
-    s3 = boto3.client('s3')
-
     model_file = "./qubo.json"
     with open(model_file, 'w') as outfile:
         json.dump(model_data, outfile)
@@ -71,6 +69,7 @@ if __name__ == '__main__':
 
     s3_prefix = "molecule-unfolding"
     boto3.setup_default_session(region_name=aws_region)
+    s3 = boto3.client('s3')
 
     logging.info("s3_folder: s3://{}/{}".format(s3_bucket, s3_prefix))
 
