@@ -29,7 +29,7 @@ export interface BatchProps {
     bucket: s3.Bucket;
 }
 
-export class MoleculeUnfoldingBatch extends Construct {
+export class MolUnfBatch extends Construct {
 
     private batchJobExecutionRole: iam.Role;
     private batchJobRole: iam.Role;
@@ -270,7 +270,6 @@ export class MoleculeUnfoldingBatch extends Construct {
             }
         });
 
-
         const hpcJobQueue = new batch.JobQueue(this, 'hpcJobQueue', {
             computeEnvironments: [{
                 computeEnvironment: batchHPCEnvironment,
@@ -285,208 +284,34 @@ export class MoleculeUnfoldingBatch extends Construct {
             }, ],
         });
 
-        const vcpuMemList = [
-            [2, 2],
-            [4, 4],
-            [8, 8],
-            [16, 16]
-        ];
-
-        // const hpcEcrImage = ecs.ContainerImage.fromEcrRepository(
-        //     ecr.Repository.fromRepositoryName(this, 'ecrRepo', 'qc/ligand-unfolding-batch')
-        //     );
-
-        const createModelEcrImage = ecs.ContainerImage.fromAsset(path.join(__dirname, '../docker-images/create-model'))
-        const hpcEcrImage = ecs.ContainerImage.fromAsset(path.join(__dirname, '../docker-images/sa-optimizer'))
-        const qcEcrImage = ecs.ContainerImage.fromAsset(path.join(__dirname, '../docker-images/qa-optimizer'))
-
-
-        const createModelJobDef = new batch.JobDefinition(this, 'createModelJobDefinition', {
-            platformCapabilities: [batch.PlatformCapabilities.EC2],
-            container: {
-                image: createModelEcrImage,
-                command: [
-                    '--aws-region', this.props.region,
-                    '--s3-bucket', this.props.bucket.bucketName
-                ],
-                executionRole: this.batchJobExecutionRole,
-                jobRole: this.batchJobRole,
-                vcpus: 2,
-                memoryLimitMiB: 2 * 1024,
-                privileged: false
-            },
-            timeout: cdk.Duration.minutes(10),
-            retryAttempts: 1
-        });
-
-        const createModelStep = new tasks.BatchSubmitJob(this, 'createModelTask', {
-            jobDefinitionArn: createModelJobDef.jobDefinitionArn,
-            jobName: "createModelTask",
-            jobQueueArn: hpcJobQueue.jobQueueArn,
-            integrationPattern: sfn.IntegrationPattern.RUN_JOB
-
-        });
-
-
-        const hpcJobDefs = vcpuMemList.map(it => {
-            return this.createHPCBatchJobDef(`HPCJob_vCpus${it[0]}_Mem${it[1]}G`,
-                1,
-                it[0], it[1],
-                this.props.bucket.bucketName,
-                hpcEcrImage
-            );
-        });
-
-        const deviceArns = [
-            'arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6',
-            'arn:aws:braket:::device/qpu/d-wave/Advantage_system4'
-        ];
-
-        const qcJobDef = new batch.JobDefinition(this, 'qcJobDef', {
-            platformCapabilities: [batch.PlatformCapabilities.FARGATE],
-            container: {
-                image: qcEcrImage,
-                command: [
-                    '--aws-region', this.props.region,
-                    '--s3-bucket', this.props.bucket.bucketName,
-                    '--device-arn', deviceArns[-1],
-                    '--M', '1',
-                ],
-
-                executionRole: this.batchJobExecutionRole,
-                jobRole: this.batchJobRole,
-                vcpus: 1,
-                memoryLimitMiB: 2 * 1024,
-                privileged: false
-            },
-            timeout: cdk.Duration.minutes(20),
-            retryAttempts: 1
-        });
-
-
-
-        // step functions
-        const mValues = [1, 2, 3, 4, 5];
-
-        const hpcTaskList = [];
-        const qcTaskListMap: Map < string, tasks.BatchSubmitJob[] > = new Map();
-
-        for (let m of mValues) {
-            // HPC
-            for (let i = 0; i < vcpuMemList.length; i++) {
-                const [vcpu, mem] = vcpuMemList[i];
-                const jobDef = hpcJobDefs[i];
-                const resource = this.getResourceDescription(vcpu, mem)
-                const jobName = `HPC-M${m}-${resource}`.replace(".", "_");
-
-                const hpcBatchTask = new tasks.BatchSubmitJob(this, `${jobName}`, {
-                    jobDefinitionArn: jobDef.jobDefinitionArn,
-                    jobName,
-                    jobQueueArn: hpcJobQueue.jobQueueArn,
-                    containerOverrides: {
-                        command: [
-                            '--M', `${m}`,
-                            '--aws-region', props.region,
-                            '--resource', resource,
-                            '--s3-bucket', this.props.bucket.bucketName
-                        ],
-                    },
-                    integrationPattern: sfn.IntegrationPattern.RUN_JOB
-
-                });
-                hpcTaskList.push(hpcBatchTask);
-            }
-
-            // QC
-            for (let i = 0; i < deviceArns.length; i++) {
-                const deviceName = deviceArns[i].split("/").pop()
-                const jobName = `QC-M${m}-${deviceName}`.replace(".", "_");
-                const qcBatchTask = new tasks.BatchSubmitJob(this, `${jobName}`, {
-                    jobDefinitionArn: qcJobDef.jobDefinitionArn,
-                    jobName,
-                    jobQueueArn: qcJobQueue.jobQueueArn,
-                    containerOverrides: {
-                        command: [
-                            '--M', `${m}`,
-                            '--aws-region', props.region,
-                            '--device-arn', deviceArns[i],
-                            '--s3-bucket', this.props.bucket.bucketName
-                        ],
-                    },
-                    integrationPattern: sfn.IntegrationPattern.RUN_JOB
-
-                });
-
-                if (qcTaskListMap.get(deviceArns[i])) {
-                    qcTaskListMap.get(deviceArns[i])?.push(qcBatchTask)
-                } else {
-                    qcTaskListMap.set(deviceArns[i], [qcBatchTask])
-                }
-            }
-        }
-
         const lambdaSg = new ec2.SecurityGroup(this, "lambdaSg", {
             vpc,
             allowAllOutbound: true,
             description: "Security Group for lambda"
         });
 
-        const hpcBatchParallel = new sfn.Parallel(this, "HPCParallel");
 
-        for (const task of hpcTaskList) {
-            hpcBatchParallel.branch(task)
-        }
+        // const hpcEcrImage = ecs.ContainerImage.fromEcrRepository(
+        //     ecr.Repository.fromRepositoryName(this, 'ecrRepo', 'qc/ligand-unfolding-batch')
+        //     );
 
-        const qcBatchParallel = this.createQCBranch(vpc, lambdaSg, qcTaskListMap);
-
-        const hpcStateMachine = new sfn.StateMachine(this, 'HPCStateMachine', {
-            definition: hpcBatchParallel,
-            timeout: cdk.Duration.hours(3)
-        });
-
-        const qcStateMachine = new sfn.StateMachine(this, 'QCStateMachine', {
-            definition: qcBatchParallel,
-            timeout: cdk.Duration.hours(36)
-        });
-
-
-        const aggLambdaRole = this.createAggResultLambdaRole();
-        const aggResultLambda = new lambda.Function(this, 'AggResultLambda', {
-            runtime: lambda.Runtime.NODEJS_12_X,
-            code: lambda.Code.fromAsset(path.join(__dirname, '../lambda/AthenaTabeLambda/')),
-            handler: 'index.handler',
-            memorySize: 512,
-            timeout: cdk.Duration.seconds(120),
-            environment: {
-                BUCKET: this.props.bucket.bucketName
-            },
-            vpc,
-            vpcSubnets: vpc.selectSubnets({
-                subnetType: ec2.SubnetType.PRIVATE_WITH_NAT
-            }),
-            role: aggLambdaRole,
-            reservedConcurrentExecutions: 10,
-            securityGroups: [lambdaSg]
-        });
-
-        const aggResultStep = new tasks.LambdaInvoke(this, 'Aggregate Result', {
-            lambdaFunction: aggResultLambda,
-            outputPath: '$.Payload'
-        });
-
-
+        const mValues = [1, 2, 3, 4, 5];
+        const createModelStep = this.createCreateModelStep(hpcJobQueue);
         const qcAndHPCbatchParallel = new sfn.Parallel(this, "QCAndHPCParallel");
-        const success = new sfn.Succeed(this, 'Succeed');
-
+        const hpcStateMachine = this.createHPCStateMachine(mValues, hpcJobQueue);
         const hpcExecutionStep = new tasks.StepFunctionsStartExecution(this, 'RunHPC', {
             stateMachine: hpcStateMachine,
             integrationPattern: sfn.IntegrationPattern.RUN_JOB
         });
 
+        const qcStateMachine = this.createQCStateMachine(vpc, lambdaSg, mValues, qcJobQueue)
         const qcExecutionStep = new tasks.StepFunctionsStartExecution(this, 'RunQC', {
             stateMachine: qcStateMachine,
             integrationPattern: sfn.IntegrationPattern.RUN_JOB
         });
+
+        const aggResultStep = this.createAggResultStep(vpc, lambdaSg);
+        const success = new sfn.Succeed(this, 'Succeed');
 
         const qcAndHpcStateMachine = new sfn.StateMachine(this, 'QCAndHpcStateMachine', {
             definition: createModelStep.next(
@@ -538,7 +363,99 @@ export class MoleculeUnfoldingBatch extends Construct {
         return `vCpus${vcpus}_Mem_${mem}G`;
     }
 
-    private createQCBranch(vpc: ec2.Vpc, lambdaSg: ec2.SecurityGroup, qcTaskListMap: Map < string, tasks.BatchSubmitJob[] > ) {
+    private createCreateModelStep(hpcJobQueue: batch.JobQueue): tasks.BatchSubmitJob {
+        const createModelEcrImage = ecs.ContainerImage.fromAsset(path.join(__dirname, '../docker-images/create-model'))
+        const createModelJobDef = new batch.JobDefinition(this, 'createModelJobDefinition', {
+            platformCapabilities: [batch.PlatformCapabilities.EC2],
+            container: {
+                image: createModelEcrImage,
+                command: [
+                    '--aws-region', this.props.region,
+                    '--s3-bucket', this.props.bucket.bucketName
+                ],
+                executionRole: this.batchJobExecutionRole,
+                jobRole: this.batchJobRole,
+                vcpus: 2,
+                memoryLimitMiB: 2 * 1024,
+                privileged: false
+            },
+            timeout: cdk.Duration.minutes(10),
+            retryAttempts: 1
+        });
+
+        const createModelStep = new tasks.BatchSubmitJob(this, 'createModelTask', {
+            jobDefinitionArn: createModelJobDef.jobDefinitionArn,
+            jobName: "createModelTask",
+            jobQueueArn: hpcJobQueue.jobQueueArn,
+            integrationPattern: sfn.IntegrationPattern.RUN_JOB
+
+        });
+        return createModelStep;
+    }
+
+    private createQCStateMachine(
+        vpc: ec2.Vpc,
+        lambdaSg: ec2.SecurityGroup,
+        mValues: number[],
+        qcJobQueue: batch.JobQueue): sfn.StateMachine {
+
+        const qcEcrImage = ecs.ContainerImage.fromAsset(
+            path.join(__dirname, '../docker-images/qa-optimizer'))
+
+        const deviceArns = [
+            'arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6',
+            'arn:aws:braket:::device/qpu/d-wave/Advantage_system4'
+        ];
+
+        const qcJobDef = new batch.JobDefinition(this, 'qcJobDef', {
+            platformCapabilities: [batch.PlatformCapabilities.FARGATE],
+            container: {
+                image: qcEcrImage,
+                command: [
+                    '--aws-region', this.props.region,
+                    '--s3-bucket', this.props.bucket.bucketName,
+                    '--device-arn', deviceArns[0],
+                    '--M', '1',
+                ],
+
+                executionRole: this.batchJobExecutionRole,
+                jobRole: this.batchJobRole,
+                vcpus: 1,
+                memoryLimitMiB: 2 * 1024,
+                privileged: false
+            },
+            timeout: cdk.Duration.minutes(20),
+            retryAttempts: 1
+        });
+        const qcTaskListMap: Map < string, tasks.BatchSubmitJob[] > = new Map();
+        for (let m of mValues) {
+            // QC
+            for (let i = 0; i < deviceArns.length; i++) {
+                const deviceName = deviceArns[i].split("/").pop()
+                const jobName = `QC-M${m}-${deviceName}`.replace(".", "_");
+                const qcBatchTask = new tasks.BatchSubmitJob(this, `${jobName}`, {
+                    jobDefinitionArn: qcJobDef.jobDefinitionArn,
+                    jobName,
+                    jobQueueArn: qcJobQueue.jobQueueArn,
+                    containerOverrides: {
+                        command: [
+                            '--M', `${m}`,
+                            '--aws-region', this.props.region,
+                            '--device-arn', deviceArns[i],
+                            '--s3-bucket', this.props.bucket.bucketName
+                        ],
+                    },
+                    integrationPattern: sfn.IntegrationPattern.RUN_JOB
+                });
+
+                if (qcTaskListMap.get(deviceArns[i])) {
+                    qcTaskListMap.get(deviceArns[i])?.push(qcBatchTask)
+                } else {
+                    qcTaskListMap.set(deviceArns[i], [qcBatchTask])
+                }
+            }
+        }
+
         const checkLambdaRole = this.createDeviceAvailableCheckLambdaRole();
         const checkQCDeviceLambda = new lambda.Function(this, 'DeviceAvailableCheckLambda', {
             runtime: lambda.Runtime.PYTHON_3_8,
@@ -567,7 +484,7 @@ export class MoleculeUnfoldingBatch extends Construct {
                 outputPath: '$.Payload'
             });
 
-            qcTaskListMap.get(deviceArn)?.forEach((j: sfn.IChainable) => {
+            qcTaskListMap.get(deviceArn)?.forEach(j => {
                 qcDeviceParallel.branch(j)
             });
 
@@ -582,8 +499,99 @@ export class MoleculeUnfoldingBatch extends Construct {
                 ));
         }
 
-        return qcBatchParallel;
+        const qcStateMachine = new sfn.StateMachine(this, 'QCStateMachine', {
+            definition: qcBatchParallel,
+            timeout: cdk.Duration.hours(36)
+        });
+        return qcStateMachine;
     }
 
+    private createHPCStateMachine(mValues: number[], hpcJobQueue: batch.JobQueue): sfn.StateMachine {
 
+        const hpcEcrImage = ecs.ContainerImage.fromAsset(
+            path.join(__dirname, '../docker-images/sa-optimizer'))
+
+        const hpcTaskList = [];
+        const vcpuMemList = [
+            [2, 2],
+            [4, 4],
+            [8, 8],
+            [16, 16]
+        ];
+        const hpcJobDefs = vcpuMemList.map(it => {
+            return this.createHPCBatchJobDef(`HPCJob_vCpus${it[0]}_Mem${it[1]}G`,
+                1,
+                it[0], it[1],
+                this.props.bucket.bucketName,
+                hpcEcrImage
+            );
+        });
+
+        for (let m of mValues) {
+            // HPC
+            for (let i = 0; i < vcpuMemList.length; i++) {
+                const [vcpu, mem] = vcpuMemList[i];
+                const jobDef = hpcJobDefs[i];
+                const resource = this.getResourceDescription(vcpu, mem)
+                const jobName = `HPC-M${m}-${resource}`.replace(".", "_");
+
+                const hpcBatchTask = new tasks.BatchSubmitJob(this, `${jobName}`, {
+                    jobDefinitionArn: jobDef.jobDefinitionArn,
+                    jobName,
+                    jobQueueArn: hpcJobQueue.jobQueueArn,
+                    containerOverrides: {
+                        command: [
+                            '--M', `${m}`,
+                            '--aws-region', this.props.region,
+                            '--resource', resource,
+                            '--s3-bucket', this.props.bucket.bucketName
+                        ],
+                    },
+                    integrationPattern: sfn.IntegrationPattern.RUN_JOB
+
+                });
+                hpcTaskList.push(hpcBatchTask);
+            }
+        }
+
+        const hpcBatchParallel = new sfn.Parallel(this, "HPCParallel");
+
+        for (const task of hpcTaskList) {
+            hpcBatchParallel.branch(task)
+        }
+
+        const hpcStateMachine = new sfn.StateMachine(this, 'HPCStateMachine', {
+            definition: hpcBatchParallel,
+            timeout: cdk.Duration.hours(3)
+        });
+
+        return hpcStateMachine
+    }
+
+    private createAggResultStep(vpc: ec2.Vpc, lambdaSg: ec2.SecurityGroup): tasks.LambdaInvoke {
+        const aggLambdaRole = this.createAggResultLambdaRole();
+        const aggResultLambda = new lambda.Function(this, 'AggResultLambda', {
+            runtime: lambda.Runtime.NODEJS_12_X,
+            code: lambda.Code.fromAsset(path.join(__dirname, '../lambda/AthenaTabeLambda/')),
+            handler: 'index.handler',
+            memorySize: 512,
+            timeout: cdk.Duration.seconds(120),
+            environment: {
+                BUCKET: this.props.bucket.bucketName
+            },
+            vpc,
+            vpcSubnets: vpc.selectSubnets({
+                subnetType: ec2.SubnetType.PRIVATE_WITH_NAT
+            }),
+            role: aggLambdaRole,
+            reservedConcurrentExecutions: 10,
+            securityGroups: [lambdaSg]
+        });
+
+        const aggResultStep = new tasks.LambdaInvoke(this, 'Aggregate Result', {
+            lambdaFunction: aggResultLambda,
+            outputPath: '$.Payload'
+        });
+        return aggResultStep;
+    }
 }

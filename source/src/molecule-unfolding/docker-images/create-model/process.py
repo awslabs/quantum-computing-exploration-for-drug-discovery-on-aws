@@ -75,6 +75,7 @@ if __name__ == '__main__':
 
     input_data = build_input_data()
     max_m = input_data.bond_graph.rb_num
+    logging.info("max_m={}".format(max_m))
 
     for m in range(1, max_m+1):
        qmu_qubo_model, model_param = create_model(input_data, m)

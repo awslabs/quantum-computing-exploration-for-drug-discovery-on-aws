@@ -4,7 +4,7 @@ import {
     SolutionStack
 } from '../../stack'
 
-export class MoleculeUnfoldingDashboardStack extends SolutionStack {
+export class MolUnfDashboardStack extends SolutionStack {
 
     constructor(scope: cdk.Construct, id: string, props: cdk.StackProps = {}) {
         super(scope, id, props);

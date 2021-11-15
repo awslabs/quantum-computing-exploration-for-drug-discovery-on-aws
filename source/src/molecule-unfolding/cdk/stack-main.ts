@@ -27,10 +27,10 @@ import {
 } from './utils'
 
 import {
-  MoleculeUnfoldingBatch
+  MolUnfBatch
 } from './construct-batch'
 
-export class MoleculeUnfoldingStack extends SolutionStack {
+export class MolUnfStack extends SolutionStack {
 
   // Methods //////////////////////////
 
@@ -148,7 +148,7 @@ export class MoleculeUnfoldingStack extends SolutionStack {
     });
 
     // Batch //////////////////////////
-    new MoleculeUnfoldingBatch(this, 'MoleculeUnfoldingBatch', {
+    new MolUnfBatch(this, 'MolUnfBatch', {
       account: this.account,
       region: this.region,
       bucket: s3bucket

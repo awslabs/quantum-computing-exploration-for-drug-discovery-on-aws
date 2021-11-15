@@ -5,21 +5,21 @@ import {
   BootstraplessStackSynthesizer
 } from 'cdk-bootstrapless-synthesizer';
 import {
-  MoleculeUnfoldingStack,
+  MolUnfStack,
 } from './molecule-unfolding/cdk/stack-main';
 
 import {
-  MoleculeUnfoldingDashboardStack
+  MolUnfDashboardStack
 } from './molecule-unfolding/cdk/stack-dashboard';
 
 
 const app = new App();
 
-new MoleculeUnfoldingStack(app, "QCStack-main", {
+new MolUnfStack(app, "QCStack-main", {
   synthesizer: newSynthesizer()
 });
 
-new MoleculeUnfoldingDashboardStack(app, "QCStack-dashboard", {
+new MolUnfDashboardStack(app, "QCStack-dashboard", {
   synthesizer: newSynthesizer()
 });
 
