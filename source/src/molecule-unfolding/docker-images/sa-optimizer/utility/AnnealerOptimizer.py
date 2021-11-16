@@ -34,10 +34,12 @@ class Annealer():
     def fit(self):
         self.pre_check()
         start = time.time()
+        response = None
         if self.method == "dwave-sa" or self.method == "dwave-qa":
-            response = self.sampler.sample(self.qubo, num_reads=self.param["shots"])
+            response = self.sampler.sample(self.qubo, num_reads=self.param["shots"]).aggregate()
         end = time.time()
         self.time["optimize-min"] = (end-start)/60
+        return response
         
     def embed(self):
         start = time.time()
@@ -51,10 +53,9 @@ class Annealer():
             self.time["time-min"] = self.time["optimize-min"]
         elif self.method == "dwave-qa":
             self.time["time-min"] = self.time["optimize-min"] + self.time["embed-min"]
-        logging.info("method {} complte time {}".format(self.method, self.time["time-min"]))
+        logging.info("method {} complte time {} minutes".format(self.method, self.time["time-min"]))
         if self.method == "dwave-qa":
-            logging.info("quantum annealer embed time {}, optimize time {}".format(self.time["embed-min"], self.time["optimize-min"]))
-        return self.time["time-min"]
+            logging.info("quantum annealer embed time {} minutes, optimize time {} minutes".format(self.time["embed-min"], self.time["optimize-min"]))
             
     def init_time(self):
         if self.method == "dwave-qa":

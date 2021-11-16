@@ -10,7 +10,9 @@ import * as tasks from '@aws-cdk/aws-stepfunctions-tasks';
 import * as s3 from '@aws-cdk/aws-s3'
 import * as logs from '@aws-cdk/aws-logs'
 import * as kms from '@aws-cdk/aws-kms'
-//import * as ecr from '@aws-cdk/aws-ecr'
+import * as ecr from '@aws-cdk/aws-ecr'
+
+enum ECRRepoNameEnum { Create_Model, Sa_Optimizer, Qa_Optimizer };
 
 import {
     Aspects,
@@ -290,11 +292,6 @@ export class MolUnfBatch extends Construct {
             description: "Security Group for lambda"
         });
 
-
-        // const hpcEcrImage = ecs.ContainerImage.fromEcrRepository(
-        //     ecr.Repository.fromRepositoryName(this, 'ecrRepo', 'qc/ligand-unfolding-batch')
-        //     );
-
         const mValues = [1, 2, 3, 4, 5];
         const createModelStep = this.createCreateModelStep(hpcJobQueue);
         const qcAndHPCbatchParallel = new sfn.Parallel(this, "QCAndHPCParallel");
@@ -364,7 +361,8 @@ export class MolUnfBatch extends Construct {
     }
 
     private createCreateModelStep(hpcJobQueue: batch.JobQueue): tasks.BatchSubmitJob {
-        const createModelEcrImage = ecs.ContainerImage.fromAsset(path.join(__dirname, '../docker-images/create-model'))
+        const createModelEcrImage = this.getECRImage(ECRRepoNameEnum.Create_Model)
+
         const createModelJobDef = new batch.JobDefinition(this, 'createModelJobDefinition', {
             platformCapabilities: [batch.PlatformCapabilities.EC2],
             container: {
@@ -399,8 +397,7 @@ export class MolUnfBatch extends Construct {
         mValues: number[],
         qcJobQueue: batch.JobQueue): sfn.StateMachine {
 
-        const qcEcrImage = ecs.ContainerImage.fromAsset(
-            path.join(__dirname, '../docker-images/qa-optimizer'))
+        const qcEcrImage = this.getECRImage(ECRRepoNameEnum.Qa_Optimizer)
 
         const deviceArns = [
             'arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6',
@@ -508,9 +505,7 @@ export class MolUnfBatch extends Construct {
 
     private createHPCStateMachine(mValues: number[], hpcJobQueue: batch.JobQueue): sfn.StateMachine {
 
-        const hpcEcrImage = ecs.ContainerImage.fromAsset(
-            path.join(__dirname, '../docker-images/sa-optimizer'))
-
+        const hpcEcrImage = this.getECRImage(ECRRepoNameEnum.Sa_Optimizer)
         const hpcTaskList = [];
         const vcpuMemList = [
             [2, 2],
@@ -593,5 +588,41 @@ export class MolUnfBatch extends Construct {
             outputPath: '$.Payload'
         });
         return aggResultStep;
+    }
+
+    private getECRImage(name: ECRRepoNameEnum , userPreBuild = false): ecs.ContainerImage {
+
+        if (name == ECRRepoNameEnum.Create_Model) {
+            if (userPreBuild) {
+                return ecs.ContainerImage.fromEcrRepository(
+                    ecr.Repository.fromRepositoryName(this, 'ecrRepo', 'molecule-unfolding/create-model')
+                );
+            }
+            return ecs.ContainerImage.fromAsset(
+                path.join(__dirname, '../docker-images/create-model'))
+        }
+
+        if (name == ECRRepoNameEnum.Sa_Optimizer) {
+            if (userPreBuild) {
+                return ecs.ContainerImage.fromEcrRepository(
+                    ecr.Repository.fromRepositoryName(this, 'ecrRepo', 'molecule-unfolding/sa-optimizer')
+                );
+            }
+
+            return ecs.ContainerImage.fromAsset(
+                path.join(__dirname, '../docker-images/sa-optimizer'))
+        }
+
+        if (name == ECRRepoNameEnum.Qa_Optimizer) {
+            if (userPreBuild) {
+                return ecs.ContainerImage.fromEcrRepository(
+                    ecr.Repository.fromRepositoryName(this, 'ecrRepo', 'molecule-unfolding/qa-optimizer')
+                );
+            }
+
+            return ecs.ContainerImage.fromAsset(
+                path.join(__dirname, '../docker-images/qa-optimizer'))
+        }
+        throw new Error("Cannot find ecr: " + name);
     }
 }
