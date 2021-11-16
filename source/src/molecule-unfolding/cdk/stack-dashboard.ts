@@ -48,25 +48,18 @@ export class MolUnfDashboardStack extends SolutionStack {
             }]
         });
 
-        const columns = [{
-                name: 'M',
+        const columns = [
+            {
+                name: 'computetype',
+                type: 'STRING'
+            },
+            {
+                name: 'resource',
+                type: 'STRING'
+            },
+            {
+                name: 'm',
                 type: 'INTEGER'
-            },
-            {
-                name: 'D',
-                type: 'INTEGER'
-            },
-            {
-                name: 'Device',
-                type: 'STRING'
-            },
-            {
-                name: 'InstanceType',
-                type: 'STRING'
-            },
-            {
-                name: 'ComputeType',
-                type: 'STRING'
             },
             {
                 name: 'mins',
@@ -99,14 +92,14 @@ export class MolUnfDashboardStack extends SolutionStack {
                     customSql: {
                         dataSourceArn: qcDataSource.attrArn,
                         name: 'all',
-                        sqlQuery: 'SELECT M, D, Device, InstanceType, ComputeType, mins FROM "AwsDataCatalog"."default"."qc_batch_performance_view"',
+                        sqlQuery: 'SELECT computetype, resource, m, mins FROM "AwsDataCatalog"."default"."qc_batch_perf_view"',
                         columns
                     },
                 }
             }
         });
 
-        const templateAccountId = quicksightTemplateAccountIdParam.valueAsString.split('AA').join('');
+        const templateAccountId = quicksightTemplateAccountIdParam.valueAsString;
 
         const templateArn = `arn:aws:quicksight:us-east-1:${templateAccountId}:template/QC-analysis-template`
         const qcAnaTemplate = new quicksight.CfnTemplate(this, "qcqsAnaTemplate", {

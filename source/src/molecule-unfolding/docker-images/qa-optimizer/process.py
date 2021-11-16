@@ -1,8 +1,8 @@
 import argparse
 import logging
+import pickle
 import boto3
 import time
-import json
 from utility.AnnealerOptimizer import Annealer
 
 
@@ -66,7 +66,10 @@ def qa_optimizer(qubo_data, s3_bucket, s3_prefix, device_arn):
     qa_optimizer = Annealer(qubo_data, method, **optimizer_param)
     qa_optimizer.embed()
     qa_optimizer.fit()
-    return qa_optimizer.time_summary()
+    qa_optimizer.time_summary()
+    time_min =  qa_optimizer.time["time-min"]
+    logging.info(f"qa_optimizer return time_min: {time_min}")
+    return time_min
 
 
 def run_on_device(model_file, device_arn, M):
@@ -74,22 +77,22 @@ def run_on_device(model_file, device_arn, M):
         "run_on_device() - model_file:{}, device_arn: {}, M: {}".format(model_file, device_arn, M))
     local_model_file = download_file(s3_bucket, model_file)
 
-    with open(local_model_file, 'r') as f:
-        qubo_data = json.load(f)
+    with open(local_model_file, 'br') as f:
+        qubo_data = pickle.load(f)
 
     time_in_mins = qa_optimizer(qubo_data, s3_bucket, s3_prefix, device_arn)
-
+    
     device_name = device_arn.split("/")[-1]
 
     metrics_items = ["QC", str(device_name), str(M), str(time_in_mins)]
-    metrics_line = ",".join(metrics_items)
-    logging.info("metrics='{}'".format(metrics_line))
-    metrics_key = "{}/metrics/{}-M{}--{}-{}.csv".format(
+    metrics = ",".join(metrics_items)
+    logging.info("metrics='{}'".format(metrics))
+    metrics_key = "{}/metrics/{}-M{}-{}-{}.csv".format(
         s3_prefix, "QC", M, device_name,int(time.time()))
 
-    string_to_s3("\n".join(metrics_line), s3_bucket, metrics_key)
+    string_to_s3(metrics, s3_bucket, metrics_key)
 
-    return metrics_line
+    return metrics
 
 
 if __name__ == '__main__':
@@ -109,7 +112,7 @@ if __name__ == '__main__':
     s3_bucket = args.s3_bucket
     M = args.M
     
-    model_file = "{}/model/m{}/qubo.json".format(s3_prefix, M)
+    model_file = "{}/model/m{}/qubo.pickle".format(s3_prefix, M)
 
     boto3.setup_default_session(region_name=aws_region)
     s3 = boto3.client('s3')

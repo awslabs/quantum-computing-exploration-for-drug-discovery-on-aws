@@ -2,7 +2,7 @@ import argparse
 import logging
 import boto3
 import time
-import json
+import pickle
 from utility.AnnealerOptimizer import Annealer
 
 
@@ -38,7 +38,10 @@ def sa_optimizer(qubo_data):
     optimizer_param['shots'] = 1000
     sa_optimizer = Annealer(qubo_data, method, **optimizer_param)
     sa_optimizer.fit()
-    return sa_optimizer.time_summary()
+    sa_optimizer.time_summary()
+    time_min= sa_optimizer.time["time-min"]
+    logging.info(f"sa_optimizer return time_min: {time_min}")
+    return time_min
 
 
 if __name__ == '__main__':
@@ -57,7 +60,7 @@ if __name__ == '__main__':
     s3_bucket = args.s3_bucket
     M = args.M
     
-    model_file = "{}/model/m{}/qubo.json".format(s3_prefix, M)
+    model_file = "{}/model/m{}/qubo.pickle".format(s3_prefix, M)
 
     logging.info("s3_bucket:{}, model_file: {}".format(s3_bucket, model_file))
     
@@ -66,8 +69,8 @@ if __name__ == '__main__':
 
     local_model_file = download_file(s3_bucket, model_file)
 
-    with open(local_model_file, 'r') as f:
-        qubo_data = json.load(f)
+    with open(local_model_file, 'br') as f:
+        qubo_data = pickle.load(f)
 
     time_in_mins = sa_optimizer(qubo_data)
 

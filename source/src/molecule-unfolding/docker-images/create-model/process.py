@@ -1,7 +1,8 @@
 import argparse
 import logging
 import boto3
-import time
+import pickle
+import botocore
 import json
 from utility.QMUQUBO import QMUQUBO
 from utility.MoleculeParser import MoleculeData
@@ -41,15 +42,15 @@ def save_model_data(model_data, model_param, bucket, s3_prefix, m):
     if s3_prefix[-1] == '/':
         s3_prefix = s3_prefix[:-1]
 
-    model_file = "./qubo.json"
-    with open(model_file, 'w') as outfile:
-        json.dump(model_data, outfile)
+    model_file = "./qubo.pickle"
+    with open(model_file, 'bw') as outfile:
+        pickle.dump(model_data, outfile)
 
     param_file = "./qubo_param.json"
     with open(param_file, 'w') as outfile:
         json.dump(model_param, outfile)
 
-    key = "{}/model/m{}/qubo.json".format(s3_prefix, m)
+    key = "{}/model/m{}/qubo.pickle".format(s3_prefix, m)
     s3.upload_file(model_file, bucket, key)
     logging.info("save_model_data() s3://{}/{}".format(bucket, key))
 
@@ -58,14 +59,24 @@ def save_model_data(model_data, model_param, bucket, s3_prefix, m):
     logging.info("save_model_data() s3://{}/{}".format(bucket, key))
 
 
+def is_model_exist(bucket, s3_prefix, m):
+    try:
+        s3.head_object(Bucket=bucket, Key=f'{s3_prefix}/{m}/qubo.pickle')
+        return True
+    except botocore.exceptions.ClientError:
+        return False
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--s3-bucket', type=str)
     parser.add_argument('--aws-region', type=str, default=DEFAULT_AWS_REGION)
+    parser.add_argument('--force-update', type=int, default=1)
     args, _ = parser.parse_known_args()
 
     aws_region = args.aws_region
     s3_bucket = args.s3_bucket
+    force_update = args.force_update
 
     s3_prefix = "molecule-unfolding"
     boto3.setup_default_session(region_name=aws_region)
@@ -78,7 +89,11 @@ if __name__ == '__main__':
     logging.info("max_m={}".format(max_m))
 
     for m in range(1, max_m+1):
-       qmu_qubo_model, model_param = create_model(input_data, m)
-       save_model_data(qmu_qubo_model.qubo, model_param, s3_bucket, s3_prefix, m)
+        if force_update or not is_model_exist(s3_bucket, s3_prefix, m):
+            qmu_qubo_model, model_param = create_model(input_data, m)
+            save_model_data(qmu_qubo_model.qubo, model_param,
+                            s3_bucket, s3_prefix, m)
+        else:
+            logging.info(f"model file for M: {m} already exist, skip ...")
 
     logging.info("Done")

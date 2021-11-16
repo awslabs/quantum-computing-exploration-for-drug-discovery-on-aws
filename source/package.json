@@ -21,11 +21,16 @@
     "destroy": "cdk destroy",
     "build-docker": "cd ./src/ligand-unfolding/docker && ./build.sh",
     "synth-dashboard": "cdk synth QCStack-dashboard",
-    "synth-main": "cdk synth QCStack-main",
-    "deploy-dashboard": "cdk deploy QCStack-dashboard",
+    "synth-main": "cdk synth QCStack-main ",
+    "deploy-dashboard": "cdk deploy QCStack-dashboard ",
     "deploy-main": "cdk deploy QCStack-main",
-    "destroy-dashboard": "cdk destroy QCStack-dashboard",
-    "destroy-main": "cdk destroy QCStack-main"
+    "destroy-dashboard": "cdk destroy QCStack-dashboard ",
+    "destroy-main": "cdk destroy QCStack-main",
+
+    "deploy-dashboard-rs": "cdk deploy QCStack-dashboard --profile liuyong_rs_ue1",
+    "deploy-main-rs": "cdk deploy QCStack-main --profile liuyong_rs_ue1",
+    "destroy-dashboard-rs": "cdk destroy QCStack-dashboard --profile liuyong_rs_ue1",
+    "destroy-main-rs": "cdk destroy QCStack-main --profile liuyong_rs_ue1"
   },
   "devDependencies": {
     "@types/jest": "^27.0.0",

@@ -292,7 +292,7 @@ export class MolUnfBatch extends Construct {
             description: "Security Group for lambda"
         });
 
-        const mValues = [1, 2, 3, 4, 5];
+        const mValues = [1, 2, 3, 4];
         const createModelStep = this.createCreateModelStep(hpcJobQueue);
         const qcAndHPCbatchParallel = new sfn.Parallel(this, "QCAndHPCParallel");
         const hpcStateMachine = this.createHPCStateMachine(mValues, hpcJobQueue);
@@ -369,7 +369,8 @@ export class MolUnfBatch extends Construct {
                 image: createModelEcrImage,
                 command: [
                     '--aws-region', this.props.region,
-                    '--s3-bucket', this.props.bucket.bucketName
+                    '--s3-bucket', this.props.bucket.bucketName,
+                    '--force-update', '0'
                 ],
                 executionRole: this.batchJobExecutionRole,
                 jobRole: this.batchJobRole,
@@ -381,7 +382,7 @@ export class MolUnfBatch extends Construct {
             retryAttempts: 1
         });
 
-        const createModelStep = new tasks.BatchSubmitJob(this, 'createModelTask', {
+        const createModelStep = new tasks.BatchSubmitJob(this, 'Create Model', {
             jobDefinitionArn: createModelJobDef.jobDefinitionArn,
             jobName: "createModelTask",
             jobQueueArn: hpcJobQueue.jobQueueArn,
@@ -590,10 +591,10 @@ export class MolUnfBatch extends Construct {
         return aggResultStep;
     }
 
-    private getECRImage(name: ECRRepoNameEnum , userPreBuild = false): ecs.ContainerImage {
+    private getECRImage(name: ECRRepoNameEnum , usePreBuild = false): ecs.ContainerImage {
 
         if (name == ECRRepoNameEnum.Create_Model) {
-            if (userPreBuild) {
+            if (usePreBuild) {
                 return ecs.ContainerImage.fromEcrRepository(
                     ecr.Repository.fromRepositoryName(this, 'ecrRepo', 'molecule-unfolding/create-model')
                 );
@@ -603,7 +604,7 @@ export class MolUnfBatch extends Construct {
         }
 
         if (name == ECRRepoNameEnum.Sa_Optimizer) {
-            if (userPreBuild) {
+            if (usePreBuild) {
                 return ecs.ContainerImage.fromEcrRepository(
                     ecr.Repository.fromRepositoryName(this, 'ecrRepo', 'molecule-unfolding/sa-optimizer')
                 );
@@ -614,7 +615,7 @@ export class MolUnfBatch extends Construct {
         }
 
         if (name == ECRRepoNameEnum.Qa_Optimizer) {
-            if (userPreBuild) {
+            if (usePreBuild) {
                 return ecs.ContainerImage.fromEcrRepository(
                     ecr.Repository.fromRepositoryName(this, 'ecrRepo', 'molecule-unfolding/qa-optimizer')
                 );
