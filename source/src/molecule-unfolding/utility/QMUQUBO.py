@@ -19,7 +19,7 @@ class QMUQUBO():
         A = self.param['A']
         hubo_qubo_val = self.param['hubo_qubo_val']
         # prepare variables
-        self.var, self.var_rb_map, self.rb_var_map = self.prepare_var(mol_data, M, D)
+        self.var, self.var_rb_map, self.rb_var_map = self.prepare_var(mol_data, D)
         
         self.hubo = {}
         theta_option = [x * 360/D for x in range(D)]
@@ -37,16 +37,16 @@ class QMUQUBO():
             
         self.qubo = dimod.make_quadratic(self.hubo, hubo_qubo_val, dimod.BINARY)
         
-    def prepare_var(self, mol_data, M, D):
+    def prepare_var(self, mol_data, D):
         
         var = {}
         var_rb_map = {}
         rb_var_map = {}
                     
-        for m in range(M):
+        for m, name in enumerate(mol_data.bond_graph.rb_name):
             x_d = {}
-            var_rb_map[str(m+1)] = mol_data.bond_graph.rb_name[m]
-            rb_var_map[str(mol_data.bond_graph.rb_name[m])] = str(m+1) 
+            var_rb_map[str(m+1)] = name
+            rb_var_map[str(name)] = str(m+1) 
             for d in range(D):
                 x_d[str(d+1)] = 'x_{}_{}'.format(m+1, d+1)
             var[str(m+1)] = x_d
@@ -89,6 +89,8 @@ class QMUQUBO():
                     final_list = up_list + [var[rb_var_map[torsion_group[0]]][str(d+1)]]
                     update_hubo(torsion_group[1:], final_list)
         
+        torsion_cnt = 1
+        
         for ris, ris_data in mol_data.bond_graph.sort_ris_data.items():
             start = time.time()
             logging.debug("ris group {} ".format(ris))
@@ -97,6 +99,9 @@ class QMUQUBO():
             logging.info(torsion_group)
             update_hubo(torsion_group, [])
             logging.info("elasped time for torsion group {} : {} min".format(ris,(end-start)/60))
+            if torsion_cnt == M:
+                logging.info("finish construct model for {} torsions".format(M))
+                break
          
         return hubo_constraints, hubo_distances
             
