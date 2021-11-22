@@ -489,7 +489,7 @@ export class MolUnfBatch extends Construct {
             qcBatchParallel.branch(
                 checkLambdaStep.next(
                     new sfn.Choice(this, `Device [${deviceName}] Available?`)
-                    .when(sfn.Condition.stringEquals('$.deviceStatus', 'ONLINE'), qcDeviceParallel)
+                    .when(sfn.Condition.booleanEquals('$.availableNow', true), qcDeviceParallel)
                     .otherwise(
                         new sfn.Wait(this, `Wait 10 Minutes [${deviceName}]`, {
                             time: sfn.WaitTime.duration(cdk.Duration.minutes(10))
