@@ -1,6 +1,6 @@
 {
   "name": "AWS-gcr-qc-life-science",
-  "description": "AWS GRC solution: Quantum Computing in HCLS",
+  "description": "AWS GRC solution: Quantum Ready For Drug Discovery",
   "repository": {
     "type": "git",
     "url": "ssh://git.amazon.com/pkg/AWS-gcr-qc-life-science"

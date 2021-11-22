@@ -8,5 +8,6 @@ node_modules
 .cdk.staging
 cdk.out
 .env
+.DS_Store
 
 
