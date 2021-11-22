@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 sudo -u ec2-user -i <<EOS
+
 TMPDIR=$(mktemp -d)
 cd "$TMPDIR"
 
@@ -9,6 +10,10 @@ unzip braket-notebook-lcc.zip
 ./install.sh
 
 nohup rm -fr "$TMPDIR" &
+
+cd /home/ec2-user/SageMaker
+aws s3 cp s3://amazon-braket-gcr-qc-sol-common/notebook/latest/notebook.zip .
+unzip notebook.zip
 EOS
 
 exit 0

@@ -77,21 +77,14 @@ export class MolUnfStack extends SolutionStack {
   // constructor 
   constructor(scope: Construct, id: string, props: StackProps = {}) {
     super(scope, id, props);
-    this.setDescription('(SO8029) CDK for GCR solution: Quantum Computing in HCLS (Notebook)');
+    this.setDescription('(SO8029) CDK for GCR solution: Quantum Ready For Drug Discovery (Notebook)');
 
     const INSTANCE_TYPE = 'ml.c5.xlarge'
-    const CODE_REPO = 'https://github.com/amliuyong/aws-gcr-qc-life-science-public.git'
 
     const instanceTypeParam = new cdk.CfnParameter(this, "NotebookInstanceType", {
       type: "String",
       default: INSTANCE_TYPE,
       description: "Sagemaker notebook instance type"
-    });
-
-    const gitHubParam = new cdk.CfnParameter(this, "GitHubRepo", {
-      type: "String",
-      default: CODE_REPO,
-      description: "Public GitHub repository"
     });
 
     const s3bucket = new s3.Bucket(this, 'amazon-braket', {
@@ -123,7 +116,6 @@ export class MolUnfStack extends SolutionStack {
       roleArn: role.roleArn,
       rootAccess: 'Enabled',
       lifecycleConfigName: installBraketSdK.attrNotebookInstanceLifecycleConfigName,
-      defaultCodeRepository: gitHubParam.valueAsString,
       volumeSizeInGb: 50,
       kmsKeyId: qcNotebookKey.keyId
     });

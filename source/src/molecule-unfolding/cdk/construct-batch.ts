@@ -591,10 +591,10 @@ export class MolUnfBatch extends Construct {
         return aggResultStep;
     }
 
-    private getECRImage(name: ECRRepoNameEnum , usePreBuild = false): ecs.ContainerImage {
+    private getECRImage(name: ECRRepoNameEnum , usePreBuildImage = false): ecs.ContainerImage {
 
         if (name == ECRRepoNameEnum.Create_Model) {
-            if (usePreBuild) {
+            if (usePreBuildImage) {
                 return ecs.ContainerImage.fromEcrRepository(
                     ecr.Repository.fromRepositoryName(this, 'ecrRepo', 'molecule-unfolding/create-model')
                 );
@@ -604,7 +604,7 @@ export class MolUnfBatch extends Construct {
         }
 
         if (name == ECRRepoNameEnum.Sa_Optimizer) {
-            if (usePreBuild) {
+            if (usePreBuildImage) {
                 return ecs.ContainerImage.fromEcrRepository(
                     ecr.Repository.fromRepositoryName(this, 'ecrRepo', 'molecule-unfolding/sa-optimizer')
                 );
@@ -615,7 +615,7 @@ export class MolUnfBatch extends Construct {
         }
 
         if (name == ECRRepoNameEnum.Qa_Optimizer) {
-            if (usePreBuild) {
+            if (usePreBuildImage) {
                 return ecs.ContainerImage.fromEcrRepository(
                     ecr.Repository.fromRepositoryName(this, 'ecrRepo', 'molecule-unfolding/qa-optimizer')
                 );

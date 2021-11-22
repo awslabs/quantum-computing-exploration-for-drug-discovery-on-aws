@@ -8,16 +8,16 @@ export class MolUnfDashboardStack extends SolutionStack {
 
     constructor(scope: cdk.Construct, id: string, props: cdk.StackProps = {}) {
         super(scope, id, props);
-        this.setDescription('(SO8029) CDK for GCR solution: Quantum Computing in HCLS (Dashboard)');
+        this.setDescription('(SO8029) CDK for GCR solution: Quantum Ready For Drug Discovery (Dashboard)');
 
-        const quicksightTemplateAccountId = process.env.QUICKSIGHT_TEMPLATE_ACCOUNTID
+        const quicksightTemplateAccountId = this.node.tryGetContext('quicksight_template_account_id') || process.env.QUICKSIGHT_TEMPLATE_ACCOUNTID
         const quicksightTemplateAccountIdParam = new cdk.CfnParameter(this, "quicksightTemplateAccountId", {
             type: "String",
             default: quicksightTemplateAccountId,
             description: "The AWS account id to host quicksight template in region: us-east-1"
         });
 
-        const defaultQuicksightUser = process.env.QUICKSIGHT_USER || `Admin-OneClick/yonmzn-Isengard`;
+        const defaultQuicksightUser = this.node.tryGetContext('quicksight_user') || process.env.QUICKSIGHT_USER;
         const quickSightUserParam = new cdk.CfnParameter(this, "quickSightUser", {
             type: "String",
             default: defaultQuicksightUser,
