@@ -15,12 +15,17 @@ from .GraphModel import BuildMolGraph
 
 class MoleculeData():
     
-    def __init__(self, mol_file, function):
+    def __init__(self, mol_file, function, name=None):
         # parse file
         self.mol = None
         self.name = None
         file_type = mol_file.split('.')[-1]
-        self.name = mol_file.split('.')[0]
+        
+        if name == None:
+            self.name = mol_file.split('/')[-1].split('.')[0]
+        else:
+            self.name = name
+            
         if file_type == 'mol2':
             logging.info("parse mol2 file!")
             self.mol = PandasMol2().read_mol2(mol_file)
