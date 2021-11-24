@@ -27,6 +27,8 @@
     "destroy-dashboard": "cdk destroy QCStack-dashboard ",
     "destroy-main": "cdk destroy QCStack-main",
 
+    "deploy-main1": "cdk deploy QCStack-main1",
+
     "deploy-dashboard-rs": "cdk deploy QCStack-dashboard --profile liuyong_rs_ue1",
     "deploy-main-rs": "cdk deploy QCStack-main --profile liuyong_rs_ue1",
     "destroy-dashboard-rs": "cdk destroy QCStack-dashboard --profile liuyong_rs_ue1",

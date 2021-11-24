@@ -12,7 +12,11 @@ import * as logs from '@aws-cdk/aws-logs'
 import * as kms from '@aws-cdk/aws-kms'
 import * as ecr from '@aws-cdk/aws-ecr'
 
-enum ECRRepoNameEnum { Create_Model, Sa_Optimizer, Qa_Optimizer };
+enum ECRRepoNameEnum {
+    Create_Model,
+    Sa_Optimizer,
+    Qa_Optimizer
+};
 
 import {
     Aspects,
@@ -192,6 +196,64 @@ export class MolUnfBatch extends Construct {
         return role;
     }
 
+    private createGenericLambdaRole(roleName: string): iam.Role {
+        const role = new iam.Role(this, roleName, {
+            assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+        });
+        role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'))
+        role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonAthenaFullAccess'))
+        role.addToPolicy(new iam.PolicyStatement({
+            resources: [
+                "arn:aws:s3:::*/*"
+            ],
+            actions: [
+                "s3:GetObject",
+                "s3:PutObject"
+            ]
+        }));
+
+        role.addToPolicy(new iam.PolicyStatement({
+            resources: [
+                'arn:aws:s3:::*'
+            ],
+            actions: [
+                "s3:ListBucket"
+            ]
+        }));
+
+        role.addToPolicy(new iam.PolicyStatement({
+            effect: iam.Effect.ALLOW,
+            resources: [
+                '*'
+            ],
+            actions: [
+                "ec2:AttachNetworkInterface",
+                "ec2:CreateNetworkInterface",
+                "ec2:CreateNetworkInterfacePermission",
+                "ec2:DeleteNetworkInterface",
+                "ec2:DeleteNetworkInterfacePermission",
+                "ec2:DescribeDhcpOptions",
+                "ec2:DescribeNetworkInterfaces",
+                "ec2:DescribeNetworkInterfacePermissions",
+                "ec2:DescribeSubnets",
+                "ec2:DescribeVpcs",
+                "ec2:DescribeInstances"
+            ]
+        }));
+        role.addToPolicy(new iam.PolicyStatement({
+            resources: [
+                `arn:aws:logs:*:${this.props.account}:log-group:*`
+            ],
+            actions: [
+                "logs:CreateLogStream",
+                "logs:DescribeLogStreams",
+                "logs:PutLogEvents",
+                "logs:CreateLogGroup"
+            ]
+        }));
+        return role;
+    }
+
     // constructor 
     constructor(scope: Construct, id: string, props: BatchProps) {
         super(scope, id);
@@ -329,6 +391,24 @@ export class MolUnfBatch extends Construct {
             value: `https://console.aws.amazon.com/states/home?region=${this.props.region}#/statemachines/view/${qcAndHpcStateMachine.stateMachineArn}`,
             description: "State Machine URL"
         });
+
+        const taskParamLambda = new lambda.Function(this, 'TaskParametersLambda', {
+            runtime: lambda.Runtime.PYTHON_3_8,
+            code: lambda.Code.fromAsset(path.join(__dirname, '../lambda/TaskParametersLambda/')),
+            handler: 'app.handler',
+            memorySize: 512,
+            timeout: cdk.Duration.seconds(60),
+            vpc,
+            vpcSubnets: vpc.selectSubnets({
+                subnetType: ec2.SubnetType.PRIVATE_WITH_NAT
+            }),
+            role: this.createGenericLambdaRole('TaskParametersLambdaRole'),
+            reservedConcurrentExecutions: 10,
+            securityGroups: [lambdaSg]
+        })
+
+       this.createHPCStateMachineV2(taskParamLambda, hpcJobQueue)
+
     }
 
 
@@ -455,10 +535,23 @@ export class MolUnfBatch extends Construct {
         }
 
         const checkLambdaRole = this.createDeviceAvailableCheckLambdaRole();
-        const checkQCDeviceLambda = new lambda.Function(this, 'DeviceAvailableCheckLambda', {
-            runtime: lambda.Runtime.PYTHON_3_8,
-            code: lambda.Code.fromAsset(path.join(__dirname, '../lambda/DeviceAvailableCheckLambda/')),
-            handler: 'handler.handler',
+        // const checkQCDeviceLambda = new lambda.Function(this, 'DeviceAvailableCheckLambda', {
+        //     runtime: lambda.Runtime.PYTHON_3_8,
+        //     code: lambda.Code.fromAsset(path.join(__dirname, '../lambda/DeviceAvailableCheckLambda/')),
+        //     handler: 'handler.handler',
+        //     memorySize: 512,
+        //     timeout: cdk.Duration.seconds(60),
+        //     vpc,
+        //     vpcSubnets: vpc.selectSubnets({
+        //         subnetType: ec2.SubnetType.PRIVATE_WITH_NAT
+        //     }),
+        //     role: checkLambdaRole,
+        //     reservedConcurrentExecutions: 10,
+        //     securityGroups: [lambdaSg]
+        // });
+
+        const checkQCDeviceLambda = new lambda.DockerImageFunction(this, 'DeviceAvailableCheckLambda', {
+            code: lambda.DockerImageCode.fromImageAsset(path.join(__dirname, '../lambda/DeviceAvailableCheckLambda/')),
             memorySize: 512,
             timeout: cdk.Duration.seconds(60),
             vpc,
@@ -468,7 +561,7 @@ export class MolUnfBatch extends Construct {
             role: checkLambdaRole,
             reservedConcurrentExecutions: 10,
             securityGroups: [lambdaSg]
-        });
+        })
 
         const qcBatchParallel = new sfn.Parallel(this, "qcBatchParallel");
         for (let deviceArn of qcTaskListMap.keys()) {
@@ -542,6 +635,7 @@ export class MolUnfBatch extends Construct {
                             '--resource', resource,
                             '--s3-bucket', this.props.bucket.bucketName
                         ],
+
                     },
                     integrationPattern: sfn.IntegrationPattern.RUN_JOB
 
@@ -562,6 +656,84 @@ export class MolUnfBatch extends Construct {
         });
 
         return hpcStateMachine
+    }
+
+    private createHPCStateMachineV2(parametersLambda: lambda.Function, hpcJobQueue: batch.JobQueue): sfn.StateMachine {
+        const hpcEcrImage = this.getECRImage(ECRRepoNameEnum.Sa_Optimizer)
+        const parametersLambdaStep = new tasks.LambdaInvoke(this, 'GetTaskParameters', {
+            lambdaFunction: parametersLambda,
+            payload: sfn.TaskInput.fromObject({
+               "s3_bucket": this.props.bucket.bucketName
+            }),
+            outputPath: '$.Payload'
+        });
+
+        const jobDef = this.createHPCBatchJobDef("HPCJob_Template",
+            1, 2, 2, this.props.bucket.bucketName, hpcEcrImage
+        );
+
+        // const hpcBatchTask = new tasks.BatchSubmitJob(this, "Run HPC Job", {
+        //     jobDefinitionArn: jobDef.jobDefinitionArn,
+        //     jobName: "HPCJobIterator",
+        //     jobQueueArn: hpcJobQueue.jobQueueArn,
+        //     containerOverrides: {
+        //         command: sfn.JsonPath.listAt('$.ItemValue.params'),
+        //         vcpus: sfn.JsonPath.numberAt('$.ItemValue.vcpus'),
+        //         memory: cdk.Size.mebibytes(sfn.JsonPath.numberAt('$.ItemValue.memory')),  
+        //     },
+        //     integrationPattern: sfn.IntegrationPattern.RUN_JOB
+        // });
+
+        const stateJson = {
+            "Run HPC Job": {
+                "End": true,
+                "Type": "Task",
+                "Resource": "arn:aws:states:::batch:submitJob.sync",
+                "Parameters": {
+                  "JobDefinition": jobDef.jobDefinitionArn,
+                  "JobName": "HPCJobIterator",
+                  "JobQueue": hpcJobQueue.jobQueueArn,
+                  "ContainerOverrides": {
+                    "Command.$": "$.ItemValue.params",                   
+                    "ResourceRequirements": [
+                        {
+                          "Type": "VCPU",
+                          "Value.$": "States.Format('{}',$.ItemValue.vcpus)"
+                        },
+                        {
+                           "Type": "MEMORY",
+                           "Value.$": "States.Format('{}', $.ItemValue.memory)"
+                        }
+                      ]
+                  }
+                }
+              }
+          };
+
+        const customBatchSubmitJob = new sfn.CustomState(this, 'Run HPC Job', {
+            stateJson,
+          });
+
+
+        const parallelHPCJobsMap = new sfn.Map(this, 'ParallelHPCJobs', {
+            maxConcurrency: 20,
+            itemsPath: sfn.JsonPath.stringAt('$.hpcTaskParams'),
+            parameters: {
+                "ItemIndex.$": "$$.Map.Item.Index",
+                "ItemValue.$": "$$.Map.Item.Value",
+            }
+        });
+        parallelHPCJobsMap.iterator(customBatchSubmitJob);
+
+
+
+        const hpcStateMachine = new sfn.StateMachine(this, 'HPCStateMachineV2', {
+            definition: parametersLambdaStep.next(parallelHPCJobsMap),
+            timeout: cdk.Duration.hours(3)
+        });
+
+        return hpcStateMachine
+
     }
 
     private createAggResultStep(vpc: ec2.Vpc, lambdaSg: ec2.SecurityGroup): tasks.LambdaInvoke {
@@ -591,7 +763,7 @@ export class MolUnfBatch extends Construct {
         return aggResultStep;
     }
 
-    private getECRImage(name: ECRRepoNameEnum , usePreBuildImage = false): ecs.ContainerImage {
+    private getECRImage(name: ECRRepoNameEnum, usePreBuildImage = false): ecs.ContainerImage {
 
         if (name == ECRRepoNameEnum.Create_Model) {
             if (usePreBuildImage) {

@@ -19,6 +19,10 @@ new MolUnfStack(app, "QCStack-main", {
   synthesizer: newSynthesizer()
 });
 
+new MolUnfStack(app, "QCStack-main1", {
+  synthesizer: newSynthesizer()
+});
+
 new MolUnfDashboardStack(app, "QCStack-dashboard", {
   synthesizer: newSynthesizer()
 });
