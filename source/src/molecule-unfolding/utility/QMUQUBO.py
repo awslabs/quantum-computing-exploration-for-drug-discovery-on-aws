@@ -19,74 +19,76 @@ class QMUQUBO():
 
         self.mol_data = mol_data
 
-        self.name = "qmu_{}".format(self.mol_data.name)
+        self.name = f"qmu_{self.mol_data.name}"
 
         # init model_info to store the information for model of different methods
         # init model_qubo to store the qubo for model of different methods
         self.model_info = {}
         self.model_qubo = {}
+        # define vars/var_rb_map/rb_var_map for different models
+        self.var = None
+        self.var_rb_map = None
+        self.rb_var_map = None
 
         for mt in method:
-            self.model_info['{}'.format(mt)] = {}
-            self.model_qubo['{}'.format(mt)] = {}
+            self.model_info[f"{mt}"] = {}
+            self.model_qubo[f"{mt}"] = {}
 
-            if mt == 'pre-calc':
-                M = self.param[mt]['M']
-                D = self.param[mt]['D']
-                A = self.param[mt]['A']
-                hubo_qubo_val = self.param[mt]['hubo_qubo_val']
-                # prepare variables
-                self.var, self.var_rb_map, self.rb_var_map = self._prepare_var(
-                    self.mol_data, D)
-                logging.info("pre-calculate for constructing molecule QUBO")
-                self.model_info[mt]['M'] = set()
-                self.model_info[mt]['D'] = set()
-                self.model_info[mt]['A'] = set()
-                self.model_info[mt]['hubo_qubo_val'] = set()
-            elif mt == 'after-calc':
+            if mt == "pre-calc":
                 logging.info(
-                    "after calculate for constructing molecule QUBO not implemented !!")
+                    "initial pre-calculate for constructing molecule QUBO")
+                for param in self.param[mt]["param"]:
+                    self.model_info[mt][param] = set()
+            elif mt == "after-calc":
+                logging.info(
+                    "initial after calculate for constructing molecule QUBO not implemented !!")
             else:
-                logging.info("only pre-calculate(method='pre-calc') and after-calculate(method='after-calc') are supported, \
-                method {} not support !!".format(mt))
+                logging.info(f"only pre-calculate(method='pre-calc') and after-calculate(method='after-calc') are supported, \
+                method {mt} not support !!")
 
     def build_model(self, **param):
         for method, config in param.items():
             model_param = config
-            if method == 'pre-calc':
+            if method == "pre-calc":
                 self._build_pre_calc_model(**model_param)
         return 0
 
     def _build_pre_calc_model(self, **model_param):
-        var_list = ['M', 'D', 'A', 'hubo_qubo_val']
-        for M in model_param['M']:
-            for D in model_param['D']:
-                for A in model_param['A']:
-                    for hubo_qubo_val in model_param['hubo_qubo_val']:
+        for M in model_param["M"]:
+            for D in model_param["D"]:
+                for A in model_param["A"]:
+                    for hubo_qubo_val in model_param["hubo_qubo_val"]:
+                        # update var_map
+                        # prepare variables
+                        self.var, self.var_rb_map, self.rb_var_map = self._prepare_var(
+                            self.mol_data, D)
                         # check availability
-                        if self._check_duplicate([M, D, A, hubo_qubo_val], ['M', 'D', 'A', 'hubo_qubo_val'], 'pre-calc'):
-                            logging.info("duplicate model !! pass !! M:{},D:{},A:{},hubo_qubo_val {}".format(
-                                M, D, A, hubo_qubo_val))
+                        if self._check_duplicate([M, D, A, hubo_qubo_val], ["M", "D", "A", "hubo_qubo_val"], "pre-calc"):
+                            logging.info(
+                                f"duplicate model !! pass !! M:{M},D:{D},A:{A},hubo_qubo_val {hubo_qubo_val}")
                             continue
                         start = time.time()
                         hubo = {}
                         theta_option = [x * 360/D for x in range(D)]
                         hubo_constraints, hubo_distances = self._build_qubo_pre_calc(self.mol_data, M, D, A, self.var,
-                                                                                    self.rb_var_map, self.var_rb_map,
-                                                                                    theta_option)
+                                                                                     self.rb_var_map, self.var_rb_map,
+                                                                                     theta_option)
                         hubo.update(hubo_constraints)
                         hubo.update(hubo_distances)
+                        # transfer hubo to qubo
                         qubo = dimod.make_quadratic(
                             hubo, hubo_qubo_val, dimod.BINARY)
                         end = time.time()
-                        model_name = '{}_{}_{}_{}'.format(
-                            M, D, A, hubo_qubo_val)
-                        self.model_qubo['pre-calc'][model_name] = {}
-                        self.model_qubo['pre-calc'][model_name]['qubo'] = qubo
-                        self.model_qubo['pre-calc'][model_name]['time'] = end-start
+                        model_name = f"{M}_{D}_{A}_{hubo_qubo_val}"
+                        self.model_qubo["pre-calc"][model_name] = {}
+                        self.model_qubo["pre-calc"][model_name]["qubo"] = qubo
+                        self.model_qubo["pre-calc"][model_name]["var"] = self.var
+                        self.model_qubo["pre-calc"][model_name]["var_rb_map"] = self.var_rb_map
+                        self.model_qubo["pre-calc"][model_name]["rb_var_map"] = self.rb_var_map
+                        self.model_qubo["pre-calc"][model_name]["time"] = end-start
 
-                        logging.info("Construct model for M:{},D:{},A:{},hubo_qubo_val:{} {} min".format(
-                            M, D, A, hubo_qubo_val, (end-start)/60))
+                        logging.info(
+                            f"Construct model for M:{M},D:{D},A:{A},hubo_qubo_val:{hubo_qubo_val} {(end-start/60)} min")
 
     def _check_duplicate(self, values, names, method):
         initial_size = 0
@@ -102,8 +104,8 @@ class QMUQUBO():
 
     def clear_model(self, method):
         for mt in method:
-            self.model_info['{}'.format(mt)] = {}
-            self.model_qubo['{}'.format(mt)] = {}
+            self.model_info[f"{mt}"] = {}
+            self.model_qubo[f"{mt}"] = {}
 
         return 0
 
@@ -111,10 +113,10 @@ class QMUQUBO():
 
         # information for model
         for method, info in self.model_info.items():
-            logging.info("method: {}".format(method))
-            if method == 'pre-calc':
+            logging.info(f"method: {method}")
+            if method == "pre-calc":
                 logging.info(
-                    "The model_name should be {}_{}_{}_{}.format(M,D,A,hubo_qubo_val)")
+                    "The model_name should be {M}_{D}_{A}_{hubo_qubo_val}")
             for param, value in info.items():
                 logging.info("param: {}, value {}".format(param, value))
 
@@ -126,7 +128,7 @@ class QMUQUBO():
 
     def save(self, version, path=None):
         save_path = None
-        save_name = "{}_{}.pickle".format(self.name, version)
+        save_name = f"{self.name}_{version}.pickle"
 
         if path != None:
             save_path = os.path.join(path, save_name)
@@ -135,8 +137,9 @@ class QMUQUBO():
 
         with open(save_path, "wb") as f:
             pickle.dump(self, f)
-        logging.info("finish save {}".format(save_name))
+        logging.info(f"finish save {save_name}")
 
+    @classmethod
     def load(filename):
         with open(filename, "rb") as f:
             return pickle.load(f)
@@ -152,7 +155,7 @@ class QMUQUBO():
             var_rb_map[str(m+1)] = name
             rb_var_map[str(name)] = str(m+1)
             for d in range(D):
-                x_d[str(d+1)] = 'x_{}_{}'.format(m+1, d+1)
+                x_d[str(d+1)] = f"x_{m+1}_{d+1}"
             var[str(m+1)] = x_d
 
         return var, var_rb_map, rb_var_map
@@ -195,7 +198,7 @@ class QMUQUBO():
                 for d in range(D):
                     final_list = up_list + \
                         [var[rb_var_map[torsion_group[0]]][str(d+1)]]
-                    logging.debug("final list {}".format(final_list))
+                    logging.debug(f"final list {final_list}")
                     # distance
                     final_list_name = []
                     if len(final_list) == 1:
@@ -215,14 +218,14 @@ class QMUQUBO():
 
         for ris, ris_data in mol_data.bond_graph.sort_ris_data.items():
             start = time.time()
-            logging.debug("ris group {} ".format(ris))
+            logging.debug(f"ris group {ris} ")
             end = time.time()
             update_constraint(ris, hubo_constraints)
-            torsion_group = ris.split(',')
+            torsion_group = ris.split(",")
             logging.info(torsion_group)
             update_hubo(torsion_group, [])
-            logging.debug("elasped time for torsion group {} : {} min".format(
-                ris, (end-start)/60))
+            logging.debug(
+                f"elapsed time for torsion group {ris} : {(end-start)/60} min")
             if torsion_cnt == M:
                 break
             torsion_cnt = torsion_cnt + 1
