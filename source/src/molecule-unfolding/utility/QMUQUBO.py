@@ -139,6 +139,7 @@ class QMUQUBO():
         with open(save_path, "wb") as f:
             pickle.dump(self, f)
         logging.info(f"finish save {save_name}")
+        return save_path
 
     @classmethod
     def load(filename):

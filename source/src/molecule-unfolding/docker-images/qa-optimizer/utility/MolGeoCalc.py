@@ -12,39 +12,45 @@ def sub_list(l1, l2):
         result.append(l1[n]-l2[n])
     return result
 
+
 def add_list(l1, l2):
     result = []
     for n in range(len(l1)):
         result.append(l1[n]+l2[n])
     return result
 
+
 def rount_list(l):
     result = []
     for n in l:
         result.append(round(n, 4))
     return result
+
+
 """
     Return a point rotated about an arbitrary axis in 3D.
     Positive angles are counter-clockwise looking down the axis toward the origin.
     The coordinate system is assumed to be right-hand.
     Arguments: 'axis point 1', 'axis point 2', 'point to be rotated', 'angle of rotation (in radians)' >> 'new point' 
 """
+
+
 def PointRotate3D(p1, p2, p0, theta):
-#     from point import Point
+    #     from point import Point
     from math import cos, sin, sqrt
 
-    # Translate so axis is at origin    
+    # Translate so axis is at origin
     p = sub_list(p0, p1)
     # Initialize point q
-    q = [0.0,0.0,0.0]
+    q = [0.0, 0.0, 0.0]
     N = sub_list(p2, p1)
 #     Nm = sqrt(N.x**2 + N.y**2 + N.z**2)
     Nm = sqrt(N[0]**2 + N[1]**2 + N[2]**2)
-    
+
     # Rotation axis unit vector
     n = [N[0]/Nm, N[1]/Nm, N[2]/Nm]
 
-    # Matrix common factors     
+    # Matrix common factors
     c = cos(theta)
     t = (1 - cos(theta))
     s = sin(theta)
@@ -80,8 +86,10 @@ def get_idx(var, var_rb_map):
     # 'x_3_2' -> '3' -> '4+5' -> ['4','5']
     return var_rb_map[str(var.split('_')[1])].split('+')
 
+
 def get_theta(var, theta_option):
     return theta_option[int(var.split('_')[-1])-1]
+
 
 def get_current_pts(pts_name, pts_dict, mol_data):
     target_pts = []
@@ -90,15 +98,16 @@ def get_current_pts(pts_name, pts_dict, mol_data):
             atom = mol_data.atom_data[pt]
             pts_info = {}
             pts_info['pts'] = [atom['x'], atom['y'], atom['z']]
-            pts_info['idx'] = ([0,0,0],[0,0,0])
+            pts_info['idx'] = ([0, 0, 0], [0, 0, 0])
             target_pts.append(pts_info)
         else:
             target_pts.append(pts_dict[pt])
 #         if pts_name not in pts_dict[fragment_name].keys():
-#             target_pts = fragment_group[fragment_name][pts_name]    
+#             target_pts = fragment_group[fragment_name][pts_name]
 #         else:
 #             target_pts = pts_dict[fragment_name][pts_name]
     return target_pts
+
 
 def update_pts(start_pts, end_pts, pts_list, rotate_theta):
     rotate_list = []
@@ -108,11 +117,13 @@ def update_pts(start_pts, end_pts, pts_list, rotate_theta):
     pi = 3.1415926
     for pt in pts_list:
         if pt['idx'] != (start_pts[0]['pts'], end_pts[0]['pts']):
-            rotate_list.append(PointRotate3D(start_pts[0]['pts'], end_pts[0]['pts'], pt['pts'], rotate_theta/180*pi))
+            rotate_list.append(PointRotate3D(
+                start_pts[0]['pts'], end_pts[0]['pts'], pt['pts'], rotate_theta/180*pi))
         else:
             logging.debug("avoid same rotate *******")
             rotate_list.append(pt['pts'])
     return rotate_list
+
 
 def update_pts_dict(target_name, pts_dict, rotate_pts, rotate_bd):
     for cn, target in enumerate(target_name):
@@ -121,11 +132,13 @@ def update_pts_dict(target_name, pts_dict, rotate_pts, rotate_bd):
         pts_dict[target] = {}
         pts_dict[target]['pts'] = rotate_pts[cn]
         pts_dict[target]['idx'] = rotate_bd
-    
+
+
 def calc_distance_between_pts(pts1, pts2):
     pts1_middle = np.array(tuple(list(np.mean(np.array(pts1), axis=0))))
     pts2_middle = np.array(tuple(list(np.mean(np.array(pts2), axis=0))))
     return np.linalg.norm(pts1_middle-pts2_middle)
+
 
 def calc_mid_pts(pts, mol_data):
     pts_pos = []
@@ -134,8 +147,10 @@ def calc_mid_pts(pts, mol_data):
         pts_pos.append([atom['x'], atom['y'], atom['z']])
     return list(np.mean(np.array(pts_pos), axis=0))
 
+
 def transfer_pts_name(pts):
     return ','.join(list(pts))
+
 
 def rot_pts_name(pts, var_rb_map):
     rb = []
@@ -143,32 +158,34 @@ def rot_pts_name(pts, var_rb_map):
         rb.append(var_rb_map[str(pt.split('_')[1])])
     return ','.join(rb)
 
+
 def pts_pos_list(pts_dict_list):
     pts_list = []
     for pt_dict in pts_dict_list:
         pts_list.append(pt_dict['pts'])
     return pts_list
 
-def atom_distance_func(rotate_values, mol_data, var_rb_map, theta_option):
+
+def atom_distance_func(rotate_values, mol_data, var_rb_map, theta_option, M):
     # save temp results for pts
     temp_pts_dict = {}
-    
+
     tor_len = len(rotate_values)
     tor_last_idx = get_idx(rotate_values[tor_len-1], var_rb_map)
-    
+
     current_start_idx = []
-    
+
     # initial points for distance calculation
     tor_name = rot_pts_name(rotate_values, var_rb_map)
-    f_0 = mol_data.bond_graph.sort_ris_data[tor_name]['f_0_set']
+    f_0 = mol_data.bond_graph.sort_ris_data[str(M)][tor_name]['f_0_set']
     f_0_mid = calc_mid_pts(f_0, mol_data)
-    f_1 = mol_data.bond_graph.sort_ris_data[tor_name]['f_1_set']
+    f_1 = mol_data.bond_graph.sort_ris_data[str(M)][tor_name]['f_1_set']
     f_1_mid = calc_mid_pts(f_1, mol_data)
     f_1_name = transfer_pts_name(f_1)
     temp_pts_dict[f_1_name] = {}
     temp_pts_dict[f_1_name]['pts'] = f_1_mid
-    temp_pts_dict[f_1_name]['idx'] = ([0,0,0],[0,0,0])
-    
+    temp_pts_dict[f_1_name]['idx'] = ([0, 0, 0], [0, 0, 0])
+
     for left_idx in range(tor_len):
         # get rotate theta
         # e.g. ['x_3_2', 'x_4_7'] -> 'x_3_2'
@@ -186,11 +203,12 @@ def atom_distance_func(rotate_values, mol_data, var_rb_map, theta_option):
 
         end_name = tor_start_idx[1]
         end_pts = get_current_pts([end_name], temp_pts_dict, mol_data)
-        logging.debug("current tor {} with base_idx {} rotate_theta {}".format(tor_start_value, tor_start_idx, rotate_theta))
-        
+        logging.debug("current tor {} with base_idx {} rotate_theta {}".format(
+            tor_start_value, tor_start_idx, rotate_theta))
+
         rot_bond = (start_pts[0]['pts'], end_pts[0]['pts'])
-        
-        for right_idx in range(left_idx,tor_len):
+
+        for right_idx in range(left_idx, tor_len):
             tor_end_value = rotate_values[right_idx]
             tor_end_idx = get_idx(tor_end_value, var_rb_map)
 #             tor_end = sort_torsion_group[tor_end_idx]
@@ -200,38 +218,46 @@ def atom_distance_func(rotate_values, mol_data, var_rb_map, theta_option):
             # rotate target min/max pts
             if right_idx != left_idx:
                 target_start_name = tor_end_idx[0]
-                target_start_pts = get_current_pts([target_start_name], temp_pts_dict, mol_data)
+                target_start_pts = get_current_pts(
+                    [target_start_name], temp_pts_dict, mol_data)
 
                 target_end_name = tor_end_idx[1]
-                target_end_pts = get_current_pts([target_end_name], temp_pts_dict, mol_data)
+                target_end_pts = get_current_pts(
+                    [target_end_name], temp_pts_dict, mol_data)
 
-                rotate_start_pts = update_pts(start_pts, end_pts, target_start_pts, rotate_theta)
-                update_pts_dict([target_start_name], temp_pts_dict, rotate_start_pts, rot_bond)
-                
-                rotate_end_pts = update_pts(start_pts, end_pts, target_end_pts, rotate_theta)
-                update_pts_dict([target_end_name], temp_pts_dict, rotate_end_pts, rot_bond)
-            
-            
+                rotate_start_pts = update_pts(
+                    start_pts, end_pts, target_start_pts, rotate_theta)
+                update_pts_dict([target_start_name],
+                                temp_pts_dict, rotate_start_pts, rot_bond)
+
+                rotate_end_pts = update_pts(
+                    start_pts, end_pts, target_end_pts, rotate_theta)
+                update_pts_dict([target_end_name], temp_pts_dict,
+                                rotate_end_pts, rot_bond)
+
             if int(tor_end_idx[1]) == int(tor_last_idx[1]):
                 # update all the pts
                 logging.debug("update all pts!!!!!!!!")
                 f_1_rotate_pts = get_current_pts(f_1, temp_pts_dict, mol_data)
-                
-                end_mid_rotate_pts = update_pts(start_pts, end_pts, f_1_rotate_pts, rotate_theta)
-                update_pts_dict(f_1, temp_pts_dict, end_mid_rotate_pts, rot_bond)
-                
+
+                end_mid_rotate_pts = update_pts(
+                    start_pts, end_pts, f_1_rotate_pts, rotate_theta)
+                update_pts_dict(f_1, temp_pts_dict,
+                                end_mid_rotate_pts, rot_bond)
+
 #                 fragment_group[target_pts_name]['mid_pts'] = target_mid_rotate_pts
-            
+
             logging.debug("#########pts_dict {}".format(temp_pts_dict))
 
     base_pts = []
     base_pts = get_current_pts(f_0, temp_pts_dict, mol_data)
-    
+
     target_pts = []
     for pt in f_1:
         target_pts.append(temp_pts_dict[pt])
     logging.debug("base pts {}".format(base_pts))
     logging.debug("target pts {} ".format(target_pts))
-    distance = calc_distance_between_pts(pts_pos_list(base_pts), pts_pos_list(target_pts))
-    
+    distance = calc_distance_between_pts(
+        pts_pos_list(base_pts), pts_pos_list(target_pts))
+
     return distance

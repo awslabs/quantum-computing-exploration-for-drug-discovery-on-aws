@@ -2,6 +2,7 @@ import argparse
 import logging
 import pickle
 import boto3
+import json
 import time
 from utility.AnnealerOptimizer import Annealer
 
@@ -93,6 +94,18 @@ def run_on_device(model_file, device_arn, M):
     string_to_s3(metrics, s3_bucket, metrics_key)
 
     return metrics
+
+
+def string_to_s3(content, bucket, key):
+    s3.put_object(
+        Body=content.encode("utf-8"),
+        Bucket=bucket,
+        Key=key
+    )
+def read_user_input(execution_id, bucket, s3_prefix):
+    key= f"{s3_prefix}/{execution_id}/user_input.json"
+    obj = s3.get_object(Bucket=bucket, Key=key)
+    return json.loads(obj['Body'].read())
 
 
 if __name__ == '__main__':

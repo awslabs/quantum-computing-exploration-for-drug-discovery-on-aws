@@ -400,6 +400,20 @@ export class MolUnfBatch extends Construct {
             securityGroups: [lambdaSg]
         })
 
+        const checkInputParamsStep = new tasks.LambdaInvoke(this, 'Check Input', {
+            lambdaFunction: taskParamLambda,
+            payload: sfn.TaskInput.fromObject({
+                "s3_bucket": this.props.bucket.bucketName,
+                "param_type": "CHECK_INPUT",
+                "user_input.$": "$",
+                "execution_id.$": "$$.Execution.Id"
+            }),
+            resultSelector: {
+                'Payload.$': '$.Payload'
+            },
+            resultPath: "$.checkInputStep"  
+        });
+
         const createModelStep = this.createCreateModelStep(hpcJobQueue);
         const hpcStateMachine = this.createHPCStateMachine(taskParamLambda, hpcJobQueue);
         const qcStateMachine = this.createQCStateMachine(vpc, lambdaSg, taskParamLambda, qcJobQueue)
@@ -410,28 +424,37 @@ export class MolUnfBatch extends Construct {
         const hpcBranch = new tasks.StepFunctionsStartExecution(this, "Run HPC", {
             stateMachine: hpcStateMachine,
             integrationPattern: sfn.IntegrationPattern.RUN_JOB,
-            associateWithParent: true
+            associateWithParent: true,
+            input: sfn.TaskInput.fromObject({
+                "execution_id.$": "$.checkInputStep.Payload.execution_id"
+            })
         }).next(aggResultStep)
 
         const qcBranch = new tasks.StepFunctionsStartExecution(this, "Run QC", {
             stateMachine: qcStateMachine,
             integrationPattern: sfn.IntegrationPattern.RUN_JOB,
-            associateWithParent: true
+            associateWithParent: true,
+            input: sfn.TaskInput.fromObject({
+                "execution_id.$": "$.checkInputStep.Payload.execution_id"
+            })
         }).next(aggResultStep)
 
         const qcAndHpcBranch = new tasks.StepFunctionsStartExecution(this, "Run QC and HPC", {
             stateMachine: qcAndHPCStateMachine,
             integrationPattern: sfn.IntegrationPattern.RUN_JOB,
-            associateWithParent: true
+            associateWithParent: true,
+            input: sfn.TaskInput.fromObject({
+                "execution_id.$": "$.checkInputStep.Payload.execution_id"
+            })
         }).next(aggResultStep)
 
         const choiceStep = new sfn.Choice(this, "Select Running Mode")
-            .when(sfn.Condition.isNotPresent("$.RunMode"), qcAndHpcBranch)
-            .when(sfn.Condition.stringEquals("$.RunMode", 'HPC'), hpcBranch)
-            .when(sfn.Condition.stringEquals("$.RunMode", 'QC'), qcBranch)
+            .when(sfn.Condition.isNotPresent("$.runMode"), qcAndHpcBranch)
+            .when(sfn.Condition.stringEquals("$.runMode", 'HPC'), hpcBranch)
+            .when(sfn.Condition.stringEquals("$.runMode", 'QC'), qcBranch)
             .otherwise(qcAndHpcBranch)
 
-        const statchMachineChain = sfn.Chain.start(createModelStep)
+        const statchMachineChain = sfn.Chain.start(checkInputParamsStep).next(createModelStep)
             .next(choiceStep)
 
         const benchmarkStateMachine = new sfn.StateMachine(this, 'BenchmarkStateMachine', {
@@ -489,7 +512,6 @@ export class MolUnfBatch extends Construct {
                 command: [
                     '--aws-region', this.props.region,
                     '--s3-bucket', this.props.bucket.bucketName,
-                    '--force-update', '0'
                 ],
                 executionRole: this.batchJobExecutionRole,
                 jobRole: this.batchJobRole,
@@ -506,6 +528,9 @@ export class MolUnfBatch extends Construct {
             jobName: "createModelTask",
             jobQueueArn: hpcJobQueue.jobQueueArn,
             integrationPattern: sfn.IntegrationPattern.RUN_JOB,
+            containerOverrides: {
+                command: sfn.JsonPath.listAt('$.checkInputStep.Payload.model_param')   
+            },
             resultPath: sfn.JsonPath.stringAt("$.createModelStep"),
             resultSelector: {
                 "JobId": sfn.JsonPath.stringAt("$.JobId"),

@@ -3,6 +3,7 @@ import logging
 import boto3
 import time
 import pickle
+import json
 from utility.AnnealerOptimizer import Annealer
 
 
@@ -31,6 +32,10 @@ def string_to_s3(content, bucket, key):
     )
     logging.info("put file s3://{}/{}".format(bucket, key))
 
+def read_user_input(execution_id, bucket, s3_prefix):
+    key= f"{s3_prefix}/{execution_id}/user_input.json"
+    obj = s3.get_object(Bucket=bucket, Key=key)
+    return json.loads(obj['Body'].read())
 
 def sa_optimizer(qubo_data):
     method = 'dwave-sa'
@@ -48,7 +53,8 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--s3-bucket', type=str)
     parser.add_argument('--aws-region', type=str, default=DEFAULT_AWS_REGION)
-    parser.add_argument('--resource', type=str)
+    parser.add_argument('--resource', type=str),
+    parser.add_argument('--execution-id', type=str)
     parser.add_argument('--M', type=int)
     
     s3_prefix = "molecule-unfolding"
