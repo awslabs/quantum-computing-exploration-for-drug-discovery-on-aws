@@ -5,7 +5,7 @@ from braket.aws import AwsDevice
 
 def handler(event, context):
     print(f"event={event}")
-    device_arn = event['deviceArn']
+    device_arn = event['device_arn']
     if 'd-wave' in device_arn:
         boto3.setup_default_session(region_name='us-west-2')
 

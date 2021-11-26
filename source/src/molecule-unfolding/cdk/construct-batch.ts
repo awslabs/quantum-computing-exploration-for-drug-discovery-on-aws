@@ -426,29 +426,28 @@ export class MolUnfBatch extends Construct {
         }).next(aggResultStep)
 
         const choiceStep = new sfn.Choice(this, "Select Running Mode")
+            .when(sfn.Condition.isNotPresent("$.RunMode"), qcAndHpcBranch)
             .when(sfn.Condition.stringEquals("$.RunMode", 'HPC'), hpcBranch)
             .when(sfn.Condition.stringEquals("$.RunMode", 'QC'), qcBranch)
-            .when(sfn.Condition.isNotPresent("$.RunMode"), qcAndHpcBranch)
             .otherwise(qcAndHpcBranch)
 
         const statchMachineChain = sfn.Chain.start(createModelStep)
             .next(choiceStep)
 
-        const overAllBenchmarkStateMachine = new sfn.StateMachine(this, 'OverAllBenchmarkStateMachine', {
+        const benchmarkStateMachine = new sfn.StateMachine(this, 'BenchmarkStateMachine', {
             definition: statchMachineChain,
             timeout: cdk.Duration.hours(36)
         });
 
-        new cdk.CfnOutput(this, "stateMachine", {
-            value: overAllBenchmarkStateMachine.stateMachineName,
+        new cdk.CfnOutput(this, "stateMachineName", {
+            value: benchmarkStateMachine.stateMachineName,
             description: "State Machine Name"
         });
 
         new cdk.CfnOutput(this, "stateMachineURL", {
-            value: `https://console.aws.amazon.com/states/home?region=${this.props.region}#/statemachines/view/${overAllBenchmarkStateMachine.stateMachineArn}`,
+            value: `https://console.aws.amazon.com/states/home?region=${this.props.region}#/statemachines/view/${benchmarkStateMachine.stateMachineArn}`,
             description: "State Machine URL"
         });
-
     }
 
 
@@ -506,7 +505,13 @@ export class MolUnfBatch extends Construct {
             jobDefinitionArn: createModelJobDef.jobDefinitionArn,
             jobName: "createModelTask",
             jobQueueArn: hpcJobQueue.jobQueueArn,
-            integrationPattern: sfn.IntegrationPattern.RUN_JOB
+            integrationPattern: sfn.IntegrationPattern.RUN_JOB,
+            resultPath: sfn.JsonPath.stringAt("$.createModelStep"),
+            resultSelector: {
+                "JobId": sfn.JsonPath.stringAt("$.JobId"),
+                "JobDefinition": sfn.JsonPath.stringAt("$.JobDefinition"),
+                "Image": sfn.JsonPath.stringAt("$.Container.Image")
+            }
 
         });
         return createModelStep;
@@ -541,7 +546,7 @@ export class MolUnfBatch extends Construct {
         parametersLambda: lambda.Function,
         qcJobQueue: batch.JobQueue): sfn.StateMachine {
 
-        const getDeviceListLambdaStep = new tasks.LambdaInvoke(this, 'GetDeviceList', {
+        const getDeviceListLambdaStep = new tasks.LambdaInvoke(this, 'Get Device List', {
             lambdaFunction: parametersLambda,
             payload: sfn.TaskInput.fromObject({
                 "s3_bucket": this.props.bucket.bucketName,
@@ -555,12 +560,15 @@ export class MolUnfBatch extends Construct {
         const runOnQCDeviceStateMachineStep = new tasks.StepFunctionsStartExecution(this, "RunQCDevice", {
             stateMachine: runOnQCDeviceStateMachine,
             integrationPattern: sfn.IntegrationPattern.RUN_JOB,
-            associateWithParent: true
+            associateWithParent: true,
+            input: sfn.TaskInput.fromObject({
+                "device_arn": sfn.JsonPath.stringAt("$.ItemValue")
+            })
         });
 
         const parallelQCDeviceMap = new sfn.Map(this, 'parallelQCDeviceMap', {
             maxConcurrency: 20,
-            itemsPath: sfn.JsonPath.stringAt('$.devicesArns'),
+            itemsPath: sfn.JsonPath.stringAt('$.devices_arns'),
             parameters: {
                 "ItemIndex.$": "$$.Map.Item.Index",
                 "ItemValue.$": "$$.Map.Item.Value",
@@ -596,7 +604,10 @@ export class MolUnfBatch extends Construct {
 
         const checkQCDeviceStep = new tasks.LambdaInvoke(this, "Check Device status", {
             lambdaFunction: checkQCDeviceLambda,
-            outputPath: '$.Payload'
+            resultSelector: {
+                "statusPayload": sfn.JsonPath.stringAt('$.Payload'),
+            }, 
+            resultPath: sfn.JsonPath.stringAt('$.checkQCDeviceStep')
         });
 
         const getParametersLambdaStep = new tasks.LambdaInvoke(this, 'Get Task Paramters', {
@@ -654,7 +665,7 @@ export class MolUnfBatch extends Construct {
         const deviceOfflineFail = new sfn.Fail(this, "Device Not Online")
 
         const choiceStep = new sfn.Choice(this, "Device Online ?")
-            .when(sfn.Condition.stringEquals("$.deviceStatus", 'ONLINE'),
+            .when(sfn.Condition.stringEquals("$.checkQCDeviceStep.statusPayload.deviceStatus", 'ONLINE'),
                 getParametersLambdaStep.next(parallelQCJobsMap))
             .otherwise(deviceOfflineFail)
 
@@ -686,7 +697,7 @@ export class MolUnfBatch extends Construct {
             Resource: "arn:aws:states:::batch:submitJob.sync",
             Parameters: {
                 JobDefinition: jobDef.jobDefinitionArn,
-                JobName: "States.Format('HPCTaskIterator-{}', $.ItemValue.resource_name)",
+                "JobName.$": "States.Format('HPCTask{}-{}', $.ItemIndex, $.ItemValue.task_name)",
                 JobQueue: hpcJobQueue.jobQueueArn,
                 ContainerOverrides: {
                     "Command.$": "$.ItemValue.params",
