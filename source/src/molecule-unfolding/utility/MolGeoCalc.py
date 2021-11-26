@@ -166,7 +166,7 @@ def pts_pos_list(pts_dict_list):
     return pts_list
 
 
-def atom_distance_func(rotate_values, mol_data, var_rb_map, theta_option):
+def atom_distance_func(rotate_values, mol_data, var_rb_map, theta_option, M):
     # save temp results for pts
     temp_pts_dict = {}
 
@@ -177,9 +177,9 @@ def atom_distance_func(rotate_values, mol_data, var_rb_map, theta_option):
 
     # initial points for distance calculation
     tor_name = rot_pts_name(rotate_values, var_rb_map)
-    f_0 = mol_data.bond_graph.sort_ris_data[tor_name]['f_0_set']
+    f_0 = mol_data.bond_graph.sort_ris_data[str(M)][tor_name]['f_0_set']
     f_0_mid = calc_mid_pts(f_0, mol_data)
-    f_1 = mol_data.bond_graph.sort_ris_data[tor_name]['f_1_set']
+    f_1 = mol_data.bond_graph.sort_ris_data[str(M)][tor_name]['f_1_set']
     f_1_mid = calc_mid_pts(f_1, mol_data)
     f_1_name = transfer_pts_name(f_1)
     temp_pts_dict[f_1_name] = {}

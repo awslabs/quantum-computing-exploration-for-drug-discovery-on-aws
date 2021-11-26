@@ -75,6 +75,7 @@ class QMUQUBO():
                                                                                      theta_option)
                         hubo.update(hubo_constraints)
                         hubo.update(hubo_distances)
+                        # logging.info(f"hubo {hubo}")
                         # transfer hubo to qubo
                         qubo = dimod.make_quadratic(
                             hubo, hubo_qubo_val, dimod.BINARY)
@@ -88,7 +89,7 @@ class QMUQUBO():
                         self.model_qubo["pre-calc"][model_name]["time"] = end-start
 
                         logging.info(
-                            f"Construct model for M:{M},D:{D},A:{A},hubo_qubo_val:{hubo_qubo_val} {(end-start/60)} min")
+                            f"Construct model for M:{M},D:{D},A:{A},hubo_qubo_val:{hubo_qubo_val} {(end-start)/60} min")
 
     def _check_duplicate(self, values, names, method):
         initial_size = 0
@@ -207,27 +208,25 @@ class QMUQUBO():
                         final_list_name = final_list
 #                     hubo_distances[tuple(final_list_name)] = -1
                     hubo_distances[tuple(final_list_name)] = -atom_distance_func(
-                        tuple(final_list), mol_data, var_rb_map, theta_option)
+                        tuple(final_list), mol_data, var_rb_map, theta_option, M)
             else:
                 for d in range(D):
                     final_list = up_list + \
                         [var[rb_var_map[torsion_group[0]]][str(d+1)]]
                     update_hubo(torsion_group[1:], final_list)
 
-        torsion_cnt = 1
-
-        for ris, ris_data in mol_data.bond_graph.sort_ris_data.items():
+        for ris in mol_data.bond_graph.sort_ris_data[str(M)].keys():
             start = time.time()
             logging.debug(f"ris group {ris} ")
             end = time.time()
-            update_constraint(ris, hubo_constraints)
             torsion_group = ris.split(",")
+            if len(torsion_group) == 1:
+                # update constraint
+                update_constraint(ris, hubo_constraints)
             logging.info(torsion_group)
+            # update hubo terms
             update_hubo(torsion_group, [])
             logging.debug(
                 f"elapsed time for torsion group {ris} : {(end-start)/60} min")
-            if torsion_cnt == M:
-                break
-            torsion_cnt = torsion_cnt + 1
 
         return hubo_constraints, hubo_distances
