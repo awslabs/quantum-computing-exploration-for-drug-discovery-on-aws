@@ -22,8 +22,11 @@ class BuildMolGraph():
         self.mol_ug = self.mol_g.to_undirected()
 
         self.rb_list = self.build_rb()
-        self.rb_data = self.build_rb_data()
-        self.sort_ris_data = self.build_ris_data()
+        self.rb_data, self.rb_data_list = self.build_rb_data()
+        # test only N rb for graph model
+        self.sort_ris_data = {}
+        for M_cnt, rb_data in enumerate(self.rb_data_list):
+            self.sort_ris_data[str(M_cnt+1)] = self.build_ris_data(rb_data)
 
     def build_graph(self):
         def add_node(nodes_list, node):
@@ -105,9 +108,21 @@ class BuildMolGraph():
         #         update_pts_pair(rb_data[rb_name])
             self.mol_ug.add_edge(rb[0], rb[1])
 
-        return rb_data
+        sort_rb_data = {k: v for k, v in sorted(rb_data.items(), key=lambda rb: -rb[1]['bc_num'])}
 
-    def build_ris_data(self):
+        rb_data_list = []
+        for rb, data in sort_rb_data.items():
+            if len(rb_data_list) == 0:
+                current_rb_data = {}
+            else:
+                current_rb_data = rb_data_list[-1].copy()
+            current_rb_data[rb] = data
+            rb_data_list.append(current_rb_data)
+            logging.debug(rb_data_list)
+
+        return rb_data, rb_data_list
+
+    def build_ris_data(self, rb_data):
         ris_data = {}
 
         def judge_side_by_metrics(rb_data, candidate_pt):
@@ -152,7 +167,7 @@ class BuildMolGraph():
         for atom_l in range(1, self.atom_num+1):
             for atom_r in range(atom_l+1, self.atom_num+1):
                 candidate_pair = (str(atom_l), str(atom_r))
-                update_ris_data(ris_data, self.rb_data, candidate_pair)
+                update_ris_data(ris_data, rb_data, candidate_pair)
         #         print("{}-{}".format(atom_l, atom_r))
 
         # sorted(ris_data, key=lambda ris: (ris['rb_count_num']))
