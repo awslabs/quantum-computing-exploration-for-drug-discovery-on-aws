@@ -115,7 +115,8 @@ if __name__ == '__main__':
     parser.add_argument('--aws-region', type=str, default=DEFAULT_AWS_REGION)
     parser.add_argument('--device-arn', type=str, default='arn:aws:braket:::device/qpu/d-wave/Advantage_system4')
     parser.add_argument('--M', type=int)
-    
+    parser.add_argument('--execution-id', type=str)
+
     s3_prefix = "molecule-unfolding"
 
     args, _ = parser.parse_known_args()
@@ -123,8 +124,11 @@ if __name__ == '__main__':
     aws_region = args.aws_region
     device_arn = args.device_arn
     s3_bucket = args.s3_bucket
+    execution_id = args.execution_id
     M = args.M
     
+    logging.info("execution_id: {}".format(execution_id))
+
     model_file = "{}/model/m{}/qubo.pickle".format(s3_prefix, M)
 
     boto3.setup_default_session(region_name=aws_region)

@@ -33,13 +33,13 @@ def handler(event, context):
         'arn:aws:braket:::device/qpu/d-wave/Advantage_system4'
     ]
     default_model_params = {
-        "M": [1, 2, 3, 4]
+        "M": [1, 2]
     }
     default_hpc_resources = [
         # vcpu, memory
         (2, 2),
-        (4, 4),
-        (8, 8),
+        # (4, 4),
+        # (8, 8),
         (16, 16)
     ]
 
@@ -61,10 +61,12 @@ def handler(event, context):
         return {
             "model_param": f"{common_param},--execution-id,{execution_id}".split(","),
             "execution_id": execution_id,
+            "runMode": user_input.get('runMode', "ALL")
         }
     else:
         execution_id = event.get('execution_id', None)
         if execution_id:
+            common_param = f"{common_param},--execution-id,{execution_id}"
             user_input = read_user_input(
                 execution_id, bucket=s3_bucket, s3_prefix=s3_prefix)
 
@@ -79,7 +81,8 @@ def handler(event, context):
 
     if param_type == 'QC_DEVICE_LIST':
         return {
-            "devices_arns": devices_arns
+            "devices_arns": devices_arns,
+            "execution_id": execution_id
         }
 
     qc_task_params = defaultdict(list)
@@ -115,10 +118,12 @@ def handler(event, context):
 
         print(qc_task_params)
         return {
-            "qcTaskParams":  qc_task_params[device_arn]
+            "qcTaskParams":  qc_task_params[device_arn],
+            "execution_id": execution_id,
         }
 
     if param_type == 'PARAMS_FOR_HPC':
         return {
-            "hpcTaskParams": hpc_task_params
+            "hpcTaskParams": hpc_task_params,
+            "execution_id": execution_id
         }

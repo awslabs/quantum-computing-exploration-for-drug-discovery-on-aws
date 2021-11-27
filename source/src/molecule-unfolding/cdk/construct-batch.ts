@@ -408,10 +408,7 @@ export class MolUnfBatch extends Construct {
                 "user_input.$": "$",
                 "execution_id.$": "$$.Execution.Id"
             }),
-            resultSelector: {
-                'Payload.$': '$.Payload'
-            },
-            resultPath: "$.checkInputStep"  
+            outputPath: '$.Payload'
         });
 
         const createModelStep = this.createCreateModelStep(hpcJobQueue);
@@ -426,8 +423,9 @@ export class MolUnfBatch extends Construct {
             integrationPattern: sfn.IntegrationPattern.RUN_JOB,
             associateWithParent: true,
             input: sfn.TaskInput.fromObject({
-                "execution_id.$": "$.checkInputStep.Payload.execution_id"
-            })
+                "execution_id": sfn.JsonPath.stringAt("$.execution_id")
+            }),
+            resultPath: "$.hpcBranch"
         }).next(aggResultStep)
 
         const qcBranch = new tasks.StepFunctionsStartExecution(this, "Run QC", {
@@ -435,8 +433,9 @@ export class MolUnfBatch extends Construct {
             integrationPattern: sfn.IntegrationPattern.RUN_JOB,
             associateWithParent: true,
             input: sfn.TaskInput.fromObject({
-                "execution_id.$": "$.checkInputStep.Payload.execution_id"
-            })
+                "execution_id": sfn.JsonPath.stringAt("$.execution_id")
+            }),
+            resultPath: "$.qcBranch"
         }).next(aggResultStep)
 
         const qcAndHpcBranch = new tasks.StepFunctionsStartExecution(this, "Run QC and HPC", {
@@ -444,8 +443,9 @@ export class MolUnfBatch extends Construct {
             integrationPattern: sfn.IntegrationPattern.RUN_JOB,
             associateWithParent: true,
             input: sfn.TaskInput.fromObject({
-                "execution_id.$": "$.checkInputStep.Payload.execution_id"
-            })
+                "execution_id": sfn.JsonPath.stringAt("$.execution_id")
+            }),
+            resultPath: "$.qcAndHpcBranch"
         }).next(aggResultStep)
 
         const choiceStep = new sfn.Choice(this, "Select Running Mode")
@@ -529,15 +529,12 @@ export class MolUnfBatch extends Construct {
             jobQueueArn: hpcJobQueue.jobQueueArn,
             integrationPattern: sfn.IntegrationPattern.RUN_JOB,
             containerOverrides: {
-                command: sfn.JsonPath.listAt('$.checkInputStep.Payload.model_param')   
+                command: sfn.JsonPath.listAt('$.model_param')   
             },
             resultPath: sfn.JsonPath.stringAt("$.createModelStep"),
             resultSelector: {
-                "JobId": sfn.JsonPath.stringAt("$.JobId"),
-                "JobDefinition": sfn.JsonPath.stringAt("$.JobDefinition"),
-                "Image": sfn.JsonPath.stringAt("$.Container.Image")
+                "JobId": sfn.JsonPath.stringAt("$.JobId")
             }
-
         });
         return createModelStep;
     }
@@ -546,13 +543,21 @@ export class MolUnfBatch extends Construct {
         const hpcStateMachineStep = new tasks.StepFunctionsStartExecution(this, "Run HPC StateMachine", {
             stateMachine: hpcStateMachine,
             integrationPattern: sfn.IntegrationPattern.RUN_JOB,
+            input:sfn.TaskInput.fromObject({
+                "execution_id": sfn.JsonPath.stringAt("$.execution_id")
+            }),
+            resultPath: "$.hpcStateMachineStep",
             associateWithParent: true
         });
 
         const qcStateMachineStep = new tasks.StepFunctionsStartExecution(this, "Run QC StateMachine", {
             stateMachine: qcStateMachine,
             integrationPattern: sfn.IntegrationPattern.RUN_JOB,
-            associateWithParent: true
+            associateWithParent: true,
+            input:sfn.TaskInput.fromObject({
+                "execution_id": sfn.JsonPath.stringAt("$.execution_id")
+            }),
+            resultPath: "$.qcStateMachineStep",
         });
 
         const hpcAndQCParallel = new sfn.Parallel(this, "hpcAndQCParallel")
@@ -575,7 +580,9 @@ export class MolUnfBatch extends Construct {
             lambdaFunction: parametersLambda,
             payload: sfn.TaskInput.fromObject({
                 "s3_bucket": this.props.bucket.bucketName,
-                "param_type": "QC_DEVICE_LIST"
+                "param_type": "QC_DEVICE_LIST",
+                "execution_id": sfn.JsonPath.stringAt("$.execution_id"),
+                "context.$": "$$"
             }),
             outputPath: '$.Payload'
         });
@@ -587,7 +594,8 @@ export class MolUnfBatch extends Construct {
             integrationPattern: sfn.IntegrationPattern.RUN_JOB,
             associateWithParent: true,
             input: sfn.TaskInput.fromObject({
-                "device_arn": sfn.JsonPath.stringAt("$.ItemValue")
+                "device_arn": sfn.JsonPath.stringAt("$.ItemValue"),
+                "execution_id": sfn.JsonPath.stringAt("$.execution_id")
             })
         });
 
@@ -597,7 +605,9 @@ export class MolUnfBatch extends Construct {
             parameters: {
                 "ItemIndex.$": "$$.Map.Item.Index",
                 "ItemValue.$": "$$.Map.Item.Value",
-            }
+                "execution_id.$": "$.execution_id"
+            },
+            resultPath: "$.parallelQCDeviceMap"
         });
         parallelQCDeviceMap.iterator(runOnQCDeviceStateMachineStep);
         const qcStateMachine = new sfn.StateMachine(this, 'QCStateMachine', {
@@ -629,6 +639,10 @@ export class MolUnfBatch extends Construct {
 
         const checkQCDeviceStep = new tasks.LambdaInvoke(this, "Check Device status", {
             lambdaFunction: checkQCDeviceLambda,
+            payload: sfn.TaskInput.fromObject({
+                "execution_id": sfn.JsonPath.stringAt("$.execution_id"),
+                "device_arn": sfn.JsonPath.stringAt("$.device_arn")
+            }),
             resultSelector: {
                 "statusPayload": sfn.JsonPath.stringAt('$.Payload'),
             }, 
@@ -640,7 +654,9 @@ export class MolUnfBatch extends Construct {
             payload: sfn.TaskInput.fromObject({
                 "s3_bucket": this.props.bucket.bucketName,
                 "param_type": "PARAMS_FOR_QC_DEVICE",
-                "device_arn.$": "$.device_arn"
+                "device_arn.$": "$.device_arn",
+                "execution_id": sfn.JsonPath.stringAt("$.execution_id")
+
             }),
             outputPath: '$.Payload'
         });
@@ -673,6 +689,10 @@ export class MolUnfBatch extends Construct {
             jobQueueArn: qcJobQueue.jobQueueArn,
             containerOverrides: {
                 command: sfn.JsonPath.listAt("$.ItemValue.params")
+            },
+            resultSelector: {
+                JobId:  sfn.JsonPath.stringAt("$.JobId"),
+                JobName: sfn.JsonPath.stringAt("$.JobName"),
             }
         });
 
@@ -682,7 +702,9 @@ export class MolUnfBatch extends Construct {
             parameters: {
                 "ItemIndex.$": "$$.Map.Item.Index",
                 "ItemValue.$": "$$.Map.Item.Value",
-            }
+                "execution_id.$": "$.execution_id"
+            },
+            resultPath: "$.parallelQCJobsMap"
         });
 
         parallelQCJobsMap.iterator(qcBatchSubmitJob);
@@ -708,7 +730,9 @@ export class MolUnfBatch extends Construct {
             lambdaFunction: parametersLambda,
             payload: sfn.TaskInput.fromObject({
                 "s3_bucket": this.props.bucket.bucketName,
-                "param_type": "PARAMS_FOR_HPC"
+                "param_type": "PARAMS_FOR_HPC",
+                "execution_id": sfn.JsonPath.stringAt("$.execution_id"),
+                "context.$": "$$"
             }),
             outputPath: '$.Payload'
         });
@@ -736,11 +760,15 @@ export class MolUnfBatch extends Construct {
                         }
                     ]
                 }
+            },
+            "ResultSelector": {
+                "JobId.$": "$.JobId",
+                "JobName.$": "$.JobName"
             }
         };
 
         const customBatchSubmitJob = new sfn.CustomState(this, 'Run HPC Batch Task', {
-            stateJson,
+            stateJson
         });
 
         const parallelHPCJobsMap = new sfn.Map(this, 'ParallelHPCJobs', {
@@ -749,7 +777,9 @@ export class MolUnfBatch extends Construct {
             parameters: {
                 "ItemIndex.$": "$$.Map.Item.Index",
                 "ItemValue.$": "$$.Map.Item.Value",
-            }
+                "execution_id.$": "$.execution_id"
+            },
+            resultPath: "$.parallelHPCJobsMap"
         });
         parallelHPCJobsMap.iterator(customBatchSubmitJob);
 
@@ -803,7 +833,13 @@ export class MolUnfBatch extends Construct {
 
         const aggResultStep = new tasks.LambdaInvoke(this, 'Aggregate Result', {
             lambdaFunction: aggResultLambda,
-            outputPath: '$.Payload'
+            payload: sfn.TaskInput.fromObject({
+                "execution_id": sfn.JsonPath.stringAt("$.execution_id")
+            }),
+            resultSelector: {
+               "Payload.$": "$.Payload"
+            },
+            resultPath: '$.aggResultStep'
         });
         return aggResultStep;
     }

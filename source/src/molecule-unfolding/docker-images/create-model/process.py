@@ -67,12 +67,21 @@ def save_model(qmu_qubo, bucket, s3_prefix, version):
         s3_prefix = s3_prefix[:-1]
     model_path = qmu_qubo.save(version)
 
-    key = "{}/model/{}".format(s3_prefix, basename(model_path))
+    key = "{}/models/{}".format(s3_prefix, basename(model_path))
     s3.upload_file(model_path, bucket, key)
-    logging.info("save_model() s3://{}/{}".format(bucket, key))
+    s3_path = "s3://{}/{}".format(bucket, key)
+    logging.info("save_model() {}".format(s3_path))
+    return s3_path
+     
+
+def record_execution_mode_file(execution_id, s3_path: str):
     info_key = "{}/executions/{}/model_info.txt".format(
         s3_prefix, execution_id)
-    string_to_s3(content=str(key), bucket=bucket, key=info_key)
+
+    if not s3_path.startswith("s3://"):
+        s3_path = f"s3://{s3_bucket}/{s3_path}"
+        
+    string_to_s3(content=str(s3_path), bucket=s3_bucket, key=info_key)
 
 
 def string_to_s3(content, bucket, key):
@@ -117,8 +126,15 @@ if __name__ == '__main__':
 
     mol_file = user_input['user_input'].get("molFile", None)
     version = user_input['user_input'].get("modelVersion", 'latest')
+    model_file = user_input['user_input'].get("modelFile", None)
+    if model_file is None: 
+        logging.info(f"create new model")
+        molecule_data = prepare_molecule_data(mol_file)
+        qubo_model = create_qubo_model(molecule_data)
+        s3_mode_file = save_model(qubo_model, s3_bucket, s3_prefix, version)
+        record_execution_mode_file(execution_id, s3_mode_file)
+    else:
+        logging.info(f"use modelFile from input: {model_file}")
+        record_execution_mode_file(execution_id, model_file)
 
-    molecule_data = prepare_molecule_data(mol_file)
-    qubo_model = create_qubo_model(molecule_data)
-    save_model(qubo_model, s3_bucket, s3_prefix, version)
     logging.info("Done")

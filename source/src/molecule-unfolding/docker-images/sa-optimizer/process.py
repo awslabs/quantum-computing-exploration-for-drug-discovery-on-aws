@@ -64,12 +64,15 @@ if __name__ == '__main__':
     aws_region = args.aws_region
     resource = args.resource
     s3_bucket = args.s3_bucket
+    execution_id = args.execution_id
+
     M = args.M
     
     model_file = "{}/model/m{}/qubo.pickle".format(s3_prefix, M)
 
     logging.info("s3_bucket:{}, model_file: {}".format(s3_bucket, model_file))
-    
+    logging.info("execution_id: {}".format(execution_id))
+
     boto3.setup_default_session(region_name=aws_region)
     s3 = boto3.client('s3')
 
