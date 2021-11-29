@@ -72,7 +72,7 @@ def save_model(qmu_qubo, bucket, s3_prefix, version):
     s3_path = "s3://{}/{}".format(bucket, key)
     logging.info("save_model() {}".format(s3_path))
     return s3_path
-     
+
 
 def record_execution_mode_file(execution_id, s3_path: str):
     info_key = "{}/executions/{}/model_info.txt".format(
@@ -80,7 +80,7 @@ def record_execution_mode_file(execution_id, s3_path: str):
 
     if not s3_path.startswith("s3://"):
         s3_path = f"s3://{s3_bucket}/{s3_path}"
-        
+
     string_to_s3(content=str(s3_path), bucket=s3_bucket, key=info_key)
 
 
@@ -93,11 +93,13 @@ def string_to_s3(content, bucket, key):
     logging.info("put file s3://{}/{}".format(bucket, key))
 
 
-def read_user_input(execution_id, bucket, s3_prefix):
+def read_context(execution_id, bucket, s3_prefix):
     key = f"{s3_prefix}/executions/{execution_id}/user_input.json"
     logging.info("read: s3://{}/{}".format(bucket, key))
     obj = s3.get_object(Bucket=bucket, Key=key)
-    return json.loads(obj['Body'].read())
+    context = json.loads(obj['Body'].read())
+    logging.info(f"context={context}")
+    return context
 
 
 if __name__ == '__main__':
@@ -120,14 +122,14 @@ if __name__ == '__main__':
     logging.info("s3_folder: s3://{}/{}".format(s3_bucket, s3_prefix))
     logging.info("execution_id: {}".format(execution_id))
 
-    user_input = read_user_input(execution_id, s3_bucket, s3_prefix)
+    user_input = read_context(execution_id, s3_bucket, s3_prefix)
 
     logging.info(f"user_input:{user_input}")
 
     mol_file = user_input['user_input'].get("molFile", None)
     version = user_input['user_input'].get("modelVersion", 'latest')
     model_file = user_input['user_input'].get("modelFile", None)
-    if model_file is None: 
+    if model_file is None:
         logging.info(f"create new model")
         molecule_data = prepare_molecule_data(mol_file)
         qubo_model = create_qubo_model(molecule_data)

@@ -11,6 +11,11 @@ import * as s3 from '@aws-cdk/aws-s3'
 import * as logs from '@aws-cdk/aws-logs'
 import * as kms from '@aws-cdk/aws-kms'
 import * as ecr from '@aws-cdk/aws-ecr'
+import * as events from '@aws-cdk/aws-events'
+//import * as targets from '@aws-cdk/aws-events-targets'
+import * as sqs from '@aws-cdk/aws-sqs'
+const targets = require("@aws-cdk/aws-events-targets");
+
 
 enum ECRRepoNameEnum {
     Create_Model,
@@ -461,6 +466,8 @@ export class MolUnfBatch extends Construct {
             definition: statchMachineChain,
             timeout: cdk.Duration.hours(36)
         });
+        
+        this.createBracketEventRule(vpc, lambdaSg)
 
         new cdk.CfnOutput(this, "stateMachineName", {
             value: benchmarkStateMachine.stateMachineName,
@@ -589,7 +596,7 @@ export class MolUnfBatch extends Construct {
 
         const runOnQCDeviceStateMachine = this.createRunOnQCDeviceStateMachine(vpc, lambdaSg, parametersLambda, qcJobQueue)
 
-        const runOnQCDeviceStateMachineStep = new tasks.StepFunctionsStartExecution(this, "RunQCDevice", {
+        const runOnQCDeviceStateMachineStep = new tasks.StepFunctionsStartExecution(this, "Run On Device", {
             stateMachine: runOnQCDeviceStateMachine,
             integrationPattern: sfn.IntegrationPattern.RUN_JOB,
             associateWithParent: true,
@@ -693,8 +700,11 @@ export class MolUnfBatch extends Construct {
             resultSelector: {
                 JobId:  sfn.JsonPath.stringAt("$.JobId"),
                 JobName: sfn.JsonPath.stringAt("$.JobName"),
-            }
+            },
+            resultPath: "$.QCBatchJobIterator"
         });
+
+        const waitTokenStep = this.createWaitForTokenStep(vpc,lambdaSg); 
 
         const parallelQCJobsMap = new sfn.Map(this, 'ParallelQCJobs', {
             maxConcurrency: 20,
@@ -707,7 +717,7 @@ export class MolUnfBatch extends Construct {
             resultPath: "$.parallelQCJobsMap"
         });
 
-        parallelQCJobsMap.iterator(qcBatchSubmitJob);
+        parallelQCJobsMap.iterator(qcBatchSubmitJob.next(waitTokenStep));
 
         const deviceOfflineFail = new sfn.Fail(this, "Device Not Online")
 
@@ -843,6 +853,81 @@ export class MolUnfBatch extends Construct {
         });
         return aggResultStep;
     }
+
+    private createBracketEventRule(vpc: ec2.Vpc, lambdaSg: ec2.SecurityGroup) {
+
+        const rule = new events.Rule(this, 'BraketTaskStatusChangeRule', {
+            eventPattern: {
+              source: ["aws.braket"],
+              detail: ["Braket Task State Change"]
+            },
+          });
+
+        const queue = new sqs.Queue(this, 'BraketTaskDeadLetterQueue', {
+            encryption: sqs.QueueEncryption.KMS_MANAGED
+           // deliveryDelay: cdk.Duration.seconds(1)
+        });
+
+        const lambdaRole = this.createGenericLambdaRole("ParseBraketResultLambdaRole")
+        const parseBraketResultLambda = new lambda.Function(this, 'ParseBraketResultLambda', {
+            runtime: lambda.Runtime.PYTHON_3_8,
+            code: lambda.Code.fromAsset(path.join(__dirname, '../lambda/ParseBraketResultLambda/')),
+            handler: 'app.handler',
+            memorySize: 512,
+            timeout: cdk.Duration.seconds(60),
+            vpc,
+            vpcSubnets: vpc.selectSubnets({
+                subnetType: ec2.SubnetType.PRIVATE_WITH_NAT
+            }),
+            role: lambdaRole,
+            reservedConcurrentExecutions: 20,
+            securityGroups: [lambdaSg]
+        });
+
+        const lambdaTarget = new targets.LambdaFunction(parseBraketResultLambda, {
+            deadLetterQueue: queue, 
+            maxEventAge: cdk.Duration.minutes(16), 
+            retryAttempts: 2, 
+          });
+
+        rule.addTarget(lambdaTarget);
+    }
+
+    private createWaitForTokenStep(vpc: ec2.Vpc, lambdaSg: ec2.SecurityGroup): tasks.LambdaInvoke {
+        const lambdaRole = this.createGenericLambdaRole("WaitTaskCompleteStepLambdaRole")
+        const waitForTokenLambda = new lambda.Function(this, 'WaitTaskCompleteStepLambd', {
+            runtime: lambda.Runtime.PYTHON_3_8,
+            code: lambda.Code.fromAsset(path.join(__dirname, '../lambda/WaitTaskCompleteLambda/')),
+            handler: 'app.handler',
+            memorySize: 512,
+            timeout: cdk.Duration.seconds(60),
+            vpc,
+            vpcSubnets: vpc.selectSubnets({
+                subnetType: ec2.SubnetType.PRIVATE_WITH_NAT
+            }),
+            role: lambdaRole,
+            reservedConcurrentExecutions: 20,
+            securityGroups: [lambdaSg]
+        });
+
+        const waitCompleteStep = new tasks.LambdaInvoke(this, 'Wait Task Complete', {
+            lambdaFunction: waitForTokenLambda,
+            payload: sfn.TaskInput.fromObject({
+                "execution_id": sfn.JsonPath.stringAt("$.execution_id"),
+                "batch_job_id": sfn.JsonPath.stringAt("$.QCBatchJobIterator.JobId"),
+                "task_token": sfn.JsonPath.taskToken,
+                "ItemIndex": sfn.JsonPath.stringAt("$.ItemIndex"),
+                "s3_bucket": this.props.bucket.bucketName
+            }),
+            resultSelector: {
+               "Payload.$": "$.Payload"
+            },
+            resultPath: '$.WaitCompleteStep',
+            integrationPattern: sfn.IntegrationPattern.WAIT_FOR_TASK_TOKEN
+        });
+        return waitCompleteStep;
+    }
+
 
     private getECRImage(name: ECRRepoNameEnum, usePreBuildImage = false): ecs.ContainerImage {
 
