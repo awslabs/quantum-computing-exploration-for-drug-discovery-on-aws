@@ -94,7 +94,7 @@ def qa_optimizer(qubo_model, s3_bucket, task_output_s3_prefix, device_arn):
 
 def run_on_device(model_file, device_arn, model_param):
     logging.info(
-        "run_on_device() - model_file:{}, device_arn: {}, M: {}".format(model_file, device_arn, M))
+        "run_on_device() - model_file:{}, device_arn: {}, model_param: {}".format(model_file, device_arn, model_param))
 
     qubo_model, model_name = load_model(model_file, model_param)
 
