@@ -3,6 +3,7 @@ import os
 from collections import defaultdict
 import json
 import datetime
+import copy
 
 s3 = boto3.client('s3')
 s3_prefix = "molecule-unfolding"
@@ -22,6 +23,43 @@ def read_user_input(execution_id, bucket, s3_prefix):
     return json.loads(obj['Body'].read())
 
 
+def get_model_param_items(params_dict: dict):
+    param_list = []
+    for pname in ["M", "D", "A", "HQ"]:
+        pvalues = [f"{pname}={v}" for v in params_dict[pname]]
+        param_list.append(pvalues)
+
+    result = get_all_param_list(copy.deepcopy(param_list))
+    print(f"get_param_items: {result}")
+    return result
+
+
+def get_all_param_list(param_list):
+    first_l = None
+    index_i = 0
+    has_more_than_one = False
+    for i in range(len(param_list)):
+        l = param_list[i]
+        if len(l) > 1:
+            has_more_than_one = True
+
+        if len(l) > 1 and first_l is None:
+            first_l = l[0]
+            param_list[i] = l[1:]
+            index_i = i
+    if not has_more_than_one:
+        return ["&".join([ll[0] for ll in param_list])]
+    else:
+        param_list_copy = copy.deepcopy(param_list)
+        param_list_copy[index_i] = [first_l]
+        reslut_all = []
+        result_list0 = get_all_param_list(param_list_copy)
+        result_list1 = get_all_param_list(param_list)
+        reslut_all.extend(result_list0)
+        reslut_all.extend(result_list1)
+        return reslut_all
+
+
 def handler(event, context):
     print(f"event={event}")
     aws_region = os.environ['AWS_REGION']
@@ -33,7 +71,10 @@ def handler(event, context):
         'arn:aws:braket:::device/qpu/d-wave/Advantage_system4'
     ]
     default_model_params = {
-        "M": [1, 2]
+        "M": [1, 2],
+        "D": [4],
+        "A": [300],
+        "HQ": [200]  # hubo_qubo_val
     }
     default_hpc_resources = [
         # vcpu, memory
@@ -85,30 +126,35 @@ def handler(event, context):
             "execution_id": execution_id
         }
 
+    model_param_items = get_model_param_items(model_params)
+
     qc_task_params = defaultdict(list)
     qc_device_names = []
     for device_arn in devices_arns:
         device_name = device_arn.split("/").pop()
         qc_device_names.append(device_name)
-        for (param_name, param_values) in model_params.items():
-            for param_value in param_values:
-                qc_task_params[device_arn].append({
-                    "params": f"--{param_name},{param_value},--device-arn,{device_arn},{common_param}".split(","),
-                    "device_name": device_name,
-                    "device_arn": device_arn
-                })
+        for param_item in model_param_items:
+            param_item_name = str(param_item).replace(
+                "&", '').replace("=", '')
+            qc_task_params[device_arn].append({
+                "params": f"--model-param,{param_item},--device-arn,{device_arn},{common_param}".split(","),
+                "device_name": device_name,
+                "task_name": f"{device_name}_{param_item_name}",
+                "device_arn": device_arn})
+
     hpc_task_params = []
     for resource in hpc_resources:
         resource_name = f"Vcpu{resource[0]}_Mem{resource[1]}G"
-        for (param_name, param_values) in model_params.items():
-            for param_value in param_values:
-                hpc_task_params.append({
-                    "params": f"--{param_name},{param_value},--resource,{resource_name},{common_param}".split(","),
-                    "resource_name": resource_name,
-                    "task_name": f"{resource_name}_{param_value}{param_value}",
-                    "vcpus": resource[0],
-                    "memory": resource[1] * 1024
-                })
+        for param_item in model_param_items:
+            param_item_name = str(param_item).replace(
+                "&", '').replace("=", '')
+            hpc_task_params.append({
+                "params": f"--model-param,{param_item},--resource,{resource_name},{common_param}".split(","),
+                "resource_name": resource_name,
+                "task_name": f"{resource_name}_{param_item_name}",
+                "vcpus": resource[0],
+                "memory": resource[1] * 1024
+            })
 
     if param_type == 'PARAMS_FOR_QC_DEVICE':
         device_arn = event['device_arn']

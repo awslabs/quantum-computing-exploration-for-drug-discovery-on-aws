@@ -75,13 +75,15 @@ def save_model(qmu_qubo, bucket, s3_prefix, version):
 
 
 def record_execution_mode_file(execution_id, s3_path: str):
-    info_key = "{}/executions/{}/model_info.txt".format(
+    info_key = "{}/executions/{}/model_info.json".format(
         s3_prefix, execution_id)
 
     if not s3_path.startswith("s3://"):
         s3_path = f"s3://{s3_bucket}/{s3_path}"
 
-    string_to_s3(content=str(s3_path), bucket=s3_bucket, key=info_key)
+    string_to_s3(content=json.dumps({
+        "location": str(s3_path),
+    }), bucket=s3_bucket, key=info_key)
 
 
 def string_to_s3(content, bucket, key):

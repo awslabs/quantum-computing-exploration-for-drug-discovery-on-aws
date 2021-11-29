@@ -6,9 +6,9 @@ import json
 import time
 import datetime
 import os
-
-
+import uuid
 from utility.AnnealerOptimizer import Annealer
+from utility.QMUQUBO import QMUQUBO
 
 
 logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
@@ -59,18 +59,20 @@ def list_files(s3_bucket, s3_prefix):
         "list_files: find {} objects in s3://{}/{}".format(len(obj_list), s3_bucket, s3_prefix))
     return obj_list
 
-def get_qc_task_id(response):
-    return "qc-task-id-{int(time.time())}"
 
-def qa_optimizer(qubo_data, s3_bucket, s3_prefix, device_arn):
+def get_qc_task_id(response):
+    return f"qc-task-id-{time.time()}-{uuid.uuid1().hex}"
+
+
+def qa_optimizer(qubo_model, s3_bucket, task_output_s3_prefix, device_arn):
     method = 'dwave-qa'
     optimizer_param = {}
     optimizer_param['shots'] = 1000
     optimizer_param['bucket'] = s3_bucket
-    optimizer_param['prefix'] = s3_prefix
+    optimizer_param['prefix'] = task_output_s3_prefix
     optimizer_param['device'] = device_arn
     optimizer_param["embed_method"] = "default"
-    qa_optimizer = Annealer(qubo_data, method, **optimizer_param)
+    qa_optimizer = Annealer(qubo_model['qubo'], method, **optimizer_param)
     qa_optimizer.embed()
 
     response = qa_optimizer.fit()
@@ -82,32 +84,30 @@ def qa_optimizer(qubo_data, s3_bucket, s3_prefix, device_arn):
         'batch_job_id': batch_job_id,
         'qc_task_id': qc_task_id,
         'execution_id': execution_id
-    }), s3_bucket, key=f"f{s3_prefix}/batch_job_and_qc_task_map/{batch_job_id}.json")
+    }), s3_bucket, key=f"{s3_prefix}/batch_job_and_qc_task_map/{batch_job_id}.json")
 
     qa_optimizer.time_summary()
     time_sec = qa_optimizer.time["time-min"] * 60
     logging.info(f"qa_optimizer return time_sec: {time_sec}")
-    return time_sec
+    return time_sec, qc_task_id
 
 
-def run_on_device(model_file, device_arn, M):
+def run_on_device(model_file, device_arn, model_param):
     logging.info(
         "run_on_device() - model_file:{}, device_arn: {}, M: {}".format(model_file, device_arn, M))
-    local_model_file = download_file(s3_bucket, model_file)
 
-    with open(local_model_file, 'br') as f:
-        qubo_data = pickle.load(f)
+    qubo_model, model_name = load_model(model_file, model_param)
 
     task_output = f"{s3_prefix}/qc_task_output"
-    time_in_seconds = qa_optimizer(qubo_data, s3_bucket, task_output, device_arn)
+    time_in_seconds, qc_task_id = qa_optimizer(
+        qubo_model, s3_bucket, task_output, device_arn)
 
     device_name = device_arn.split("/")[-1]
-    task_id = "NA"
-    model_name = '_ModelName_'
+    task_id = qc_task_id
     metrics_items = [execution_id,
                      "QC",
                      str(device_name),
-                     f"M={M}",
+                     model_param,
                      str(time_in_seconds),
                      start_time,
                      experiment_name,
@@ -119,7 +119,7 @@ def run_on_device(model_file, device_arn, M):
 
     metrics = ",".join(metrics_items)
     logging.info("metrics='{}'".format(metrics))
-    metrics_key = f"{s3_prefix}/benchmark_metrics/{execution_id}-HPC-{device_name}-M{M}-{task_id}-{int(time.time())}.csv"
+    metrics_key = f"{s3_prefix}/benchmark_metrics/{execution_id}-QC-{device_name}-{model_param}-{task_id}-{int(time.time())}.csv"
     string_to_s3(metrics, s3_bucket, metrics_key)
     return metrics
 
@@ -141,6 +141,43 @@ def read_context(execution_id, bucket, s3_prefix):
     return context
 
 
+def get_model_file(execution_id):
+    key = f"{s3_prefix}/executions/{execution_id}/model_info.json"
+    obj = s3.get_object(Bucket=s3_bucket, Key=key)
+    model_file_info = json.loads(obj['Body'].read())
+    return model_file_info['location']
+
+
+def load_model(model_file, M):
+    logging.info(f"load_model() {model_file}, M={M}")
+    if model_file.startswith("s3://"):
+        model_file = "/".join(model_file.split("/")[3:])
+        s3bucket = model_file.split("/")[2]
+    else:
+        s3bucket = s3_bucket
+
+    logging.info(f"download s3://{s3bucket}/{model_file}")
+
+    local_model_file = download_file(s3bucket, model_file)
+    qmu_qubo_optimize = QMUQUBO.load(local_model_file)
+    model_info = qmu_qubo_optimize.describe_model()
+
+    logging.info(f"get_model model_info={model_info}")
+
+    # D = 4
+    # A = 300
+    # hubo_qubo_val = 200
+    # model_param = 'M=1&D=4&A=300&HQ=200'
+    # model_name = "{}_{}_{}_{}".format(M, D, A, hubo_qubo_val)
+    model_name = "_".join(map(lambda it: it.split("=")[1], model_param.split('&')))
+    logging.info(f"model_name:{model_name}")
+
+    method = "pre-calc"
+    logging.info(f"get_model model_name={model_name}, method={method}")
+    qubo_model = qmu_qubo_optimize.get_model(method, model_name)
+    return qubo_model, model_name
+
+
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
@@ -148,7 +185,7 @@ if __name__ == '__main__':
     parser.add_argument('--aws-region', type=str, default=DEFAULT_AWS_REGION)
     parser.add_argument('--device-arn', type=str,
                         default='arn:aws:braket:::device/qpu/d-wave/Advantage_system4')
-    parser.add_argument('--M', type=int)
+    parser.add_argument('--model-param', type=str)
     parser.add_argument('--execution-id', type=str)
 
     s3_prefix = "molecule-unfolding"
@@ -159,14 +196,15 @@ if __name__ == '__main__':
     device_arn = args.device_arn
     s3_bucket = args.s3_bucket
     execution_id = args.execution_id
-    M = args.M
+    model_param = args.model_param
 
     logging.info("execution_id: {}".format(execution_id))
 
-    model_file = "{}/model/m{}/qubo.pickle".format(s3_prefix, M)
-
     boto3.setup_default_session(region_name=aws_region)
     s3 = boto3.client('s3')
+
+    model_file = get_model_file(execution_id)
+    logging.info("model_file: {}".format(model_file))
 
     batch_job_id = os.environ['AWS_BATCH_JOB_ID']
     logging.info("batch_jod_id: {}".format(batch_job_id))
@@ -176,6 +214,6 @@ if __name__ == '__main__':
     experiment_name = context['user_input'].get(
         'experimentName', f'{execution_id}|{start_time}')
 
-    run_on_device(model_file, device_arn, M)
+    run_on_device(model_file, device_arn, model_param)
 
     logging.info("Done")

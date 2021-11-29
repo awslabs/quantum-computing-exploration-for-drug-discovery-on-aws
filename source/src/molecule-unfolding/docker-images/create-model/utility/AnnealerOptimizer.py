@@ -28,6 +28,7 @@ class Annealer():
             my_bucket = param["bucket"]  # the name of the bucket
             my_prefix = param["prefix"]  # the name of the folder in the bucket
             s3_folder = (my_bucket, my_prefix)
+            # async implementation
             self.sampler = BraketDWaveSampler(s3_folder, param["device"])
             logging.info("use quantum annealer {} ".format(param["device"]))
 

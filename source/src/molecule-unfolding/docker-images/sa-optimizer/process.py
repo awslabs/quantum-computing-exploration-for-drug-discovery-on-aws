@@ -6,6 +6,7 @@ import datetime
 import pickle
 import json
 from utility.AnnealerOptimizer import Annealer
+from utility.QMUQUBO import QMUQUBO
 
 
 logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
@@ -40,11 +41,12 @@ def read_user_input(execution_id, bucket, s3_prefix):
     return json.loads(obj['Body'].read())
 
 
-def sa_optimizer(qubo_data):
+def sa_optimizer(qubo_model):
     method = 'dwave-sa'
     optimizer_param = {}
     optimizer_param['shots'] = 1000
-    sa_optimizer = Annealer(qubo_data, method, **optimizer_param)
+    optimizer_param['notes'] = 'notebook_experiment'
+    sa_optimizer = Annealer(qubo_model['qubo'], method, **optimizer_param)
     sa_optimizer.fit()
     sa_optimizer.time_summary()
     time_sec = sa_optimizer.time["time-min"] * 60
@@ -61,13 +63,50 @@ def read_context(execution_id, bucket, s3_prefix):
     return context
 
 
+def get_model_file(execution_id):
+    key = f"{s3_prefix}/executions/{execution_id}/model_info.json"
+    obj = s3.get_object(Bucket=s3_bucket, Key=key)
+    model_file_info = json.loads(obj['Body'].read())
+    return model_file_info['location']
+
+
+def load_model(model_file, model_param):
+    logging.info(f"load_model() {model_file}, M={M}")
+    if model_file.startswith("s3://"):
+        model_file = "/".join(model_file.split("/")[3:])
+        s3bucket = model_file.split("/")[2]
+    else:
+        s3bucket = s3_bucket
+
+    logging.info(f"download s3://{s3bucket}/{model_file}")
+
+    local_model_file = download_file(s3bucket, model_file)
+    qmu_qubo_optimize = QMUQUBO.load(local_model_file)
+    model_info = qmu_qubo_optimize.describe_model()
+
+    logging.info(f"get_model model_info={model_info}")
+
+    # D = 4
+    # A = 300
+    # hubo_qubo_val = 200
+    # model_name = "{}_{}_{}_{}".format(M, D, A, hubo_qubo_val)
+
+    model_name = "_".join(map(lambda it: it.split("=")[1], model_param.split('&')))
+    logging.info(f"model_name:{model_name}")
+
+    method = "pre-calc"
+    logging.info(f"get_model model_name={model_name}, method={method}")
+    qubo_model = qmu_qubo_optimize.get_model(method, model_name)
+    return qubo_model, model_name
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--s3-bucket', type=str)
     parser.add_argument('--aws-region', type=str, default=DEFAULT_AWS_REGION)
     parser.add_argument('--resource', type=str),
     parser.add_argument('--execution-id', type=str)
-    parser.add_argument('--M', type=int)
+    parser.add_argument('--model-param', type=str)
 
     s3_prefix = "molecule-unfolding"
 
@@ -78,7 +117,7 @@ if __name__ == '__main__':
     s3_bucket = args.s3_bucket
     execution_id = args.execution_id
 
-    M = args.M
+    model_param = args.model_param
 
     model_file = "{}/model/m{}/qubo.pickle".format(s3_prefix, M)
 
@@ -93,30 +132,29 @@ if __name__ == '__main__':
     experiment_name = context['user_input'].get(
         'experimentName', f'{execution_id}|{start_time}')
 
-    local_model_file = download_file(s3_bucket, model_file)
+    model_file = get_model_file(execution_id)
+    logging.info("model_file: {}".format(model_file))
 
-    with open(local_model_file, 'br') as f:
-        qubo_data = pickle.load(f)
+    qubo_model, model_name = load_model(model_file, model_param)
 
-    time_in_seconds = sa_optimizer(qubo_data)
+    time_in_seconds = sa_optimizer(qubo_model)
     task_id = "NA"
-    model_name = '_ModelName_'
 
     metrics_items = [execution_id,
                      "HPC",
                      str(resource),
-                     f"M={M}",
+                     model_param,
                      str(time_in_seconds),
                      start_time,
                      experiment_name,
                      task_id,
                      model_name,
                      s3_prefix,
-                      datetime.datetime.utcnow().isoformat()
+                     datetime.datetime.utcnow().isoformat()
                      ]
     metrics = ",".join(metrics_items)
     logging.info("metrics='{}'".format(metrics))
 
-    metrics_key = f"{s3_prefix}/benchmark_metrics/{execution_id}-HPC-{resource}-M{M}-{task_id}-{int(time.time())}.csv"
+    metrics_key = f"{s3_prefix}/benchmark_metrics/{execution_id}-HPC-{resource}-{model_param}-{task_id}-{int(time.time())}.csv"
     string_to_s3(metrics, s3_bucket, metrics_key)
     logging.info("Done")

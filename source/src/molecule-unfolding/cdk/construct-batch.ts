@@ -11,10 +11,14 @@ import * as s3 from '@aws-cdk/aws-s3'
 import * as logs from '@aws-cdk/aws-logs'
 import * as kms from '@aws-cdk/aws-kms'
 import * as ecr from '@aws-cdk/aws-ecr'
-import * as events from '@aws-cdk/aws-events'
+//import * as sqs from '@aws-cdk/aws-sqs';
+
+
 //import * as targets from '@aws-cdk/aws-events-targets'
-import * as sqs from '@aws-cdk/aws-sqs'
-const targets = require("@aws-cdk/aws-events-targets");
+// import * as s3n from '@aws-cdk/aws-s3-notifications'
+
+const s3n = require('@aws-cdk/aws-s3-notifications')
+//const targets = require("@aws-cdk/aws-events-targets");
 
 
 enum ECRRepoNameEnum {
@@ -466,8 +470,8 @@ export class MolUnfBatch extends Construct {
             definition: statchMachineChain,
             timeout: cdk.Duration.hours(36)
         });
-        
-        this.createBracketEventRule(vpc, lambdaSg)
+
+        this.createEventListener(vpc, lambdaSg)
 
         new cdk.CfnOutput(this, "stateMachineName", {
             value: benchmarkStateMachine.stateMachineName,
@@ -481,7 +485,7 @@ export class MolUnfBatch extends Construct {
     }
 
 
-    private createHPCBatchJobDef(defName: string, m: number,
+    private createHPCBatchJobDef(defName: string,
         vcpus: number, mem: number, bucketName: string, image: ecs.ContainerImage): batch.JobDefinition {
         const resource = this.getResourceDescription(vcpus, mem)
         return new batch.JobDefinition(this, defName, {
@@ -489,7 +493,7 @@ export class MolUnfBatch extends Construct {
             container: {
                 image,
                 command: [
-                    '--M', `${m}`,
+                    '--model-param', 'M=1&D=4&A=300&HQ=200',
                     '--aws-region', this.props.region,
                     '--resource', `${resource}`,
                     '--s3-bucket', bucketName
@@ -536,7 +540,7 @@ export class MolUnfBatch extends Construct {
             jobQueueArn: hpcJobQueue.jobQueueArn,
             integrationPattern: sfn.IntegrationPattern.RUN_JOB,
             containerOverrides: {
-                command: sfn.JsonPath.listAt('$.model_param')   
+                command: sfn.JsonPath.listAt('$.model_param')
             },
             resultPath: sfn.JsonPath.stringAt("$.createModelStep"),
             resultSelector: {
@@ -550,7 +554,7 @@ export class MolUnfBatch extends Construct {
         const hpcStateMachineStep = new tasks.StepFunctionsStartExecution(this, "Run HPC StateMachine", {
             stateMachine: hpcStateMachine,
             integrationPattern: sfn.IntegrationPattern.RUN_JOB,
-            input:sfn.TaskInput.fromObject({
+            input: sfn.TaskInput.fromObject({
                 "execution_id": sfn.JsonPath.stringAt("$.execution_id")
             }),
             resultPath: "$.hpcStateMachineStep",
@@ -561,7 +565,7 @@ export class MolUnfBatch extends Construct {
             stateMachine: qcStateMachine,
             integrationPattern: sfn.IntegrationPattern.RUN_JOB,
             associateWithParent: true,
-            input:sfn.TaskInput.fromObject({
+            input: sfn.TaskInput.fromObject({
                 "execution_id": sfn.JsonPath.stringAt("$.execution_id")
             }),
             resultPath: "$.qcStateMachineStep",
@@ -652,7 +656,7 @@ export class MolUnfBatch extends Construct {
             }),
             resultSelector: {
                 "statusPayload": sfn.JsonPath.stringAt('$.Payload'),
-            }, 
+            },
             resultPath: sfn.JsonPath.stringAt('$.checkQCDeviceStep')
         });
 
@@ -677,7 +681,7 @@ export class MolUnfBatch extends Construct {
                     '--aws-region', this.props.region,
                     '--s3-bucket', this.props.bucket.bucketName,
                     '--device-arn', 'arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6',
-                    '--M', '1',
+                    '--model-param', 'M=1&D=4&A=300&HQ=200',
                 ],
 
                 executionRole: this.batchJobExecutionRole,
@@ -698,13 +702,13 @@ export class MolUnfBatch extends Construct {
                 command: sfn.JsonPath.listAt("$.ItemValue.params")
             },
             resultSelector: {
-                JobId:  sfn.JsonPath.stringAt("$.JobId"),
+                JobId: sfn.JsonPath.stringAt("$.JobId"),
                 JobName: sfn.JsonPath.stringAt("$.JobName"),
             },
             resultPath: "$.QCBatchJobIterator"
         });
 
-        const waitTokenStep = this.createWaitForTokenStep(vpc,lambdaSg); 
+        const waitTokenStep = this.createWaitForTokenStep(vpc, lambdaSg);
 
         const parallelQCJobsMap = new sfn.Map(this, 'ParallelQCJobs', {
             maxConcurrency: 20,
@@ -748,7 +752,7 @@ export class MolUnfBatch extends Construct {
         });
 
         const jobDef = this.createHPCBatchJobDef("HPCJob_Template",
-            1, 2, 2, this.props.bucket.bucketName, hpcEcrImage
+             2, 2, this.props.bucket.bucketName, hpcEcrImage
         );
         const stateJson = {
             End: true,
@@ -847,27 +851,14 @@ export class MolUnfBatch extends Construct {
                 "execution_id": sfn.JsonPath.stringAt("$.execution_id")
             }),
             resultSelector: {
-               "Payload.$": "$.Payload"
+                "Payload.$": "$.Payload"
             },
             resultPath: '$.aggResultStep'
         });
         return aggResultStep;
     }
 
-    private createBracketEventRule(vpc: ec2.Vpc, lambdaSg: ec2.SecurityGroup) {
-
-        const rule = new events.Rule(this, 'BraketTaskStatusChangeRule', {
-            eventPattern: {
-              source: ["aws.braket"],
-              detail: ["Braket Task State Change"]
-            },
-          });
-
-        const queue = new sqs.Queue(this, 'BraketTaskDeadLetterQueue', {
-            encryption: sqs.QueueEncryption.KMS_MANAGED
-           // deliveryDelay: cdk.Duration.seconds(1)
-        });
-
+    private createEventListener(vpc: ec2.Vpc, lambdaSg: ec2.SecurityGroup) {
         const lambdaRole = this.createGenericLambdaRole("ParseBraketResultLambdaRole")
         const parseBraketResultLambda = new lambda.Function(this, 'ParseBraketResultLambda', {
             runtime: lambda.Runtime.PYTHON_3_8,
@@ -884,13 +875,21 @@ export class MolUnfBatch extends Construct {
             securityGroups: [lambdaSg]
         });
 
-        const lambdaTarget = new targets.LambdaFunction(parseBraketResultLambda, {
-            deadLetterQueue: queue, 
-            maxEventAge: cdk.Duration.minutes(16), 
-            retryAttempts: 2, 
-          });
+        this.props.bucket.addEventNotification(s3.EventType.OBJECT_CREATED,
+            new s3n.LambdaDestination(parseBraketResultLambda), {
+                prefix: 'molecule-unfolding/qc_task_output/',
+                suffix: 'results.json'
+            });
 
-        rule.addTarget(lambdaTarget);
+        // const myQueue = new sqs.Queue(this, 'Queue', {
+        //     retentionPeriod: cdk.Duration.days(3),
+        // });
+
+        // this.props.bucket.addEventNotification(s3.EventType.OBJECT_REMOVED,
+        //     new s3n.SqsDestination(myQueue), {
+        //         prefix: 'molecule-unfolding/qc_task_output/',
+        //         suffix: 'results.json', 
+        //     });
     }
 
     private createWaitForTokenStep(vpc: ec2.Vpc, lambdaSg: ec2.SecurityGroup): tasks.LambdaInvoke {
@@ -900,7 +899,7 @@ export class MolUnfBatch extends Construct {
             code: lambda.Code.fromAsset(path.join(__dirname, '../lambda/WaitTaskCompleteLambda/')),
             handler: 'app.handler',
             memorySize: 512,
-            timeout: cdk.Duration.seconds(60),
+            timeout: cdk.Duration.seconds(120),
             vpc,
             vpcSubnets: vpc.selectSubnets({
                 subnetType: ec2.SubnetType.PRIVATE_WITH_NAT
@@ -916,12 +915,10 @@ export class MolUnfBatch extends Construct {
                 "execution_id": sfn.JsonPath.stringAt("$.execution_id"),
                 "batch_job_id": sfn.JsonPath.stringAt("$.QCBatchJobIterator.JobId"),
                 "task_token": sfn.JsonPath.taskToken,
-                "ItemIndex": sfn.JsonPath.stringAt("$.ItemIndex"),
-                "s3_bucket": this.props.bucket.bucketName
+                "s3_bucket": this.props.bucket.bucketName,
+                "ItemValue": sfn.JsonPath.stringAt("$.ItemValue"),
+                "ItemIndex": sfn.JsonPath.stringAt("$.ItemIndex")
             }),
-            resultSelector: {
-               "Payload.$": "$.Payload"
-            },
             resultPath: '$.WaitCompleteStep',
             integrationPattern: sfn.IntegrationPattern.WAIT_FOR_TASK_TOKEN
         });

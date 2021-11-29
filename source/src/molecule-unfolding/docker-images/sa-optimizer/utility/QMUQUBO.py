@@ -87,6 +87,10 @@ class QMUQUBO():
                         self.model_qubo["pre-calc"][model_name]["var_rb_map"] = self.var_rb_map
                         self.model_qubo["pre-calc"][model_name]["rb_var_map"] = self.rb_var_map
                         self.model_qubo["pre-calc"][model_name]["time"] = end-start
+                        self.model_qubo["pre-calc"][model_name]["model_name"] = model_name
+                        # optimize results
+                        self.model_qubo["pre-calc"][model_name]["optimizer"] = {}
+                        self.model_qubo["pre-calc"][model_name]["optimizer"]["post"] = {}
 
                         logging.info(
                             f"Construct model for M:{M},D:{D},A:{A},hubo_qubo_val:{hubo_qubo_val} {(end-start)/60} min")
@@ -139,9 +143,10 @@ class QMUQUBO():
         with open(save_path, "wb") as f:
             pickle.dump(self, f)
         logging.info(f"finish save {save_name}")
+        return save_path
 
     @classmethod
-    def load(filename):
+    def load(cls, filename):
         with open(filename, "rb") as f:
             return pickle.load(f)
 
