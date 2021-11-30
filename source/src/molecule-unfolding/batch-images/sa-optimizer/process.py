@@ -82,7 +82,7 @@ def load_model(model_input_file, model_param):
     logging.info(f"download s3://{s3bucket}/{model_file}")
 
     local_model_file = download_file(s3bucket, model_file)
-    mode_file_name = os.path.bashename(local_model_file)
+    mode_file_name = os.path.basename(local_model_file)
     qmu_qubo_optimize = QMUQUBO.load(local_model_file)
     model_info = qmu_qubo_optimize.describe_model()
 

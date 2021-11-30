@@ -32,12 +32,6 @@ def read_as_json(bucket, key):
     return json_
 
 
-def get_qc_task_id(batch_job_id, s3_bucket):
-    key = f"{s3_prefix}/batch_job_and_qc_task_map/{batch_job_id}.json"
-    job_info = read_as_json(s3_bucket, key)
-    return job_info['qc_task_id']
-
-
 def save_token_for_task_id(execution_id, qc_task_id, task_token, ItemValue, submit_res, s3_bucket):
     key = f"{s3_prefix}/qc_task_token/{qc_task_id}.json"
     string_to_s3(json.dumps({
@@ -64,7 +58,8 @@ def handler(event, context):
     submit_res = submit_qc_task(s3, execution_id, device_arn,
                                 model_param, s3_bucket, s3_prefix)
     # {"task_id": task_id, "model_name": model_name,  "mode_file_name": mode_file_name}
-    qc_task_id = submit_res['task_id'],
+    qc_task_id = submit_res['task_id']
+    
     print(f"qc_task_id={qc_task_id}")
     save_token_for_task_id(execution_id, qc_task_id,
                            task_token, ItemValue, submit_res, s3_bucket)
