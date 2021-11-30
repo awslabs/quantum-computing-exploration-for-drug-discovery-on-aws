@@ -59,15 +59,8 @@ def handler(event, context):
                                 model_param, s3_bucket, s3_prefix)
     # {"task_id": task_id, "model_name": model_name,  "mode_file_name": mode_file_name}
     qc_task_id = submit_res['task_id']
-    
+
     print(f"qc_task_id={qc_task_id}")
     save_token_for_task_id(execution_id, qc_task_id,
                            task_token, ItemValue, submit_res, s3_bucket)
 
-    step_func.send_task_success(
-        taskToken=task_token,
-        output=json.dumps({
-            'status': 'success',
-            'qc_task_id': qc_task_id
-        })
-    )

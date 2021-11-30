@@ -147,6 +147,7 @@ if __name__ == '__main__':
                      str(resource),
                      model_param,
                      str(time_in_seconds),
+                     str(time_in_seconds),
                      start_time,
                      experiment_name,
                      task_id,

@@ -4,6 +4,7 @@ from collections import defaultdict
 import json
 import time
 import datetime
+from ResultProcess import ResultParser
 
 s3 = boto3.client('s3')
 s3_prefix = "molecule-unfolding"
@@ -42,7 +43,7 @@ def get_token_for_task_id(qc_task_id, s3_bucket):
         except Exception as e:
             print(repr(e))
             n = n + 1
-            time.sleep(3)       
+            time.sleep(3)
     return None
 
 
@@ -65,12 +66,16 @@ def handler(event, context):
         print(f"parsing file: s3://{bucket}/{key}")
         qc_task_id = key.split("/")[-2]
         print(f"qc_task_id: {qc_task_id}")
+        prefix = "/".join(key.split("/")[:-2])
+
         task_info = get_token_for_task_id(qc_task_id, bucket)
 
-        if task_info:
-            execution_id = task_info['execution_id']
-            task_token = task_info['task_token']
-            
+        if not task_info:
+            continue
+
+        execution_id = task_info['execution_id']
+        task_token = task_info['task_token']
+
     #      {
     #     "execution_id": execution_id,
     #     "task_id": task_id,
@@ -81,8 +86,23 @@ def handler(event, context):
     #     "model_param": model_param,
     #     "device_name": device_name
     #     }
-            
-            time_in_seconds = 9999.99
+
+        #    self.method == "dwave-qa":
+        #     logging.info("parse quantum annealer result")
+        #     self.bucket = param["bucket"]
+        #     self.prefix = param["prefix"]
+        #     self.task_id = param["task_id"]
+
+        try:
+            parser = ResultParser('dwave-qa',
+                                  bucket=bucket,
+                                  prefix=prefix,
+                                  task_id=qc_task_id
+                                  )
+
+            task_time, qpu_time = parser.get_time()
+
+            print(f"task_time={task_time}, qpu_time={qpu_time}")
 
             submit_res = task_info['submit_res']
             model_param = submit_res['model_param']
@@ -93,24 +113,27 @@ def handler(event, context):
             device_name = submit_res['device_name']
 
             metrics_items = [execution_id,
-                     "QC",
-                     str(device_name),
-                     model_param,
-                     str(time_in_seconds),
-                     start_time,
-                     experiment_name,
-                     qc_task_id,
-                     model_name,
-                     mode_file_name,
-                     s3_prefix,
-                     datetime.datetime.utcnow().isoformat()
-                     ]
+                             "QC",
+                             str(device_name),
+                             model_param,
+                             str(task_time),
+                             str(qpu_time),
+                             start_time,
+                             experiment_name,
+                             qc_task_id,
+                             model_name,
+                             mode_file_name,
+                             s3_prefix,
+                             datetime.datetime.utcnow().isoformat()
+                             ]
 
             metrics = ",".join(metrics_items)
             print("metrics='{}'".format(metrics))
             metrics_key = f"{s3_prefix}/benchmark_metrics/{execution_id}-QCL-{device_name}-{model_name}-{qc_task_id}-{int(time.time())}.csv"
             string_to_s3(metrics, bucket, metrics_key)
-
+        except Exception as e:
+            print(repr(e))
+        finally:
             step_func.send_task_success(
                 taskToken=task_token,
                 output=json.dumps({
