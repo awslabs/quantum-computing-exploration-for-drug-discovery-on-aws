@@ -26,8 +26,8 @@ echo "    REGION: $REGION"
 echo "    AWS_CMD: $AWS_CMD"
 echo ""
 
-echo "Press Enter to continue ..."
-read reply
+# echo "Press Enter to continue ..."
+# read reply
 
 create_repo () {
   name=$1

@@ -883,7 +883,7 @@ export class MolUnfBatch extends Construct {
                 );
             }
             return ecs.ContainerImage.fromAsset(
-                path.join(__dirname, '../docker-images/create-model'))
+                path.join(__dirname, '../batch-images/create-model'))
         }
 
         if (name == ECRRepoNameEnum.Batch_Sa_Optimizer) {
@@ -894,7 +894,7 @@ export class MolUnfBatch extends Construct {
             }
 
             return ecs.ContainerImage.fromAsset(
-                path.join(__dirname, '../docker-images/sa-optimizer'))
+                path.join(__dirname, '../batch-images/sa-optimizer'))
         }
         if (name == ECRRepoNameEnum.Lambda_CheckDevice) {
             if (usePreBuildImage) {

@@ -238,6 +238,8 @@ def submit_qc_task(s3, execution_id, device_arn, model_param, s3_bucket, s3_pref
         "start_time": start_time,
         "experiment_name": experiment_name})
     logging_info("submit_qc_task return: {}".format(res))
+    return res
+    
 
 
 def run_in_batch_job():
