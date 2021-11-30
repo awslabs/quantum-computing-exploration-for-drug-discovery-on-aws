@@ -77,24 +77,10 @@ def qa_optimizer(execution_id, qubo_model, s3_bucket, task_output_s3_prefix, s3_
     qa_optimizer = Annealer(qubo_model['qubo'], method, **optimizer_param)
     qa_optimizer.embed()
 
-    response = qa_optimizer.fit()
-    logging_info(f"fit response:{response}")
-
-    qc_task_id = get_qc_task_id(response)
-
-    batch_job_id = os.environ.get('AWS_BATCH_JOB_ID', None)
-    if batch_job_id:
-        logging_info("batch_jod_id: {}".format(batch_job_id))
-        string_to_s3(json.dumps({
-            'batch_job_id': batch_job_id,
-            'qc_task_id': qc_task_id,
-            'execution_id': execution_id
-        }), s3_bucket, key=f"{s3_prefix}/batch_job_and_qc_task_map/{batch_job_id}.json")
-
-    qa_optimizer.time_summary()
-    time_sec = qa_optimizer.time["time-min"] * 60
-    logging_info(f"qa_optimizer return time_sec: {time_sec}")
-    return time_sec, qc_task_id
+    qa_optimizer.fit()
+    qc_task_id = qa_optimizer.get_task_id()
+    logging_info(f"qa_optimizer() return qc_task_id: {qc_task_id}")
+    return qc_task_id
 
 
 def run_on_device(s3, input_params):
@@ -114,7 +100,7 @@ def run_on_device(s3, input_params):
         s3, model_file, model_param, s3_bucket)
 
     task_output = f"{s3_prefix}/qc_task_output"
-    time_in_seconds, qc_task_id = qa_optimizer(
+    qc_task_id = qa_optimizer(
         execution_id,
         qubo_model,
         s3_bucket,
@@ -125,24 +111,24 @@ def run_on_device(s3, input_params):
     device_name = device_arn.split("/")[-1]
     task_id = qc_task_id
 
-    metrics_items = [execution_id,
-                     "QC",
-                     str(device_name),
-                     model_param,
-                     str(time_in_seconds),
-                     start_time,
-                     experiment_name,
-                     task_id,
-                     model_name,
-                     mode_file_name,
-                     s3_prefix,
-                     datetime.datetime.utcnow().isoformat()
-                     ]
+    # metrics_items = [execution_id,
+    #                  "QC",
+    #                  str(device_name),
+    #                  model_param,
+    #                  str(time_in_seconds),
+    #                  start_time,
+    #                  experiment_name,
+    #                  task_id,
+    #                  model_name,
+    #                  mode_file_name,
+    #                  s3_prefix,
+    #                  datetime.datetime.utcnow().isoformat()
+    #                  ]
 
-    metrics = ",".join(metrics_items)
-    logging_info("metrics='{}'".format(metrics))
-    metrics_key = f"{s3_prefix}/benchmark_metrics/{execution_id}-QC-{device_name}-{model_name}-{task_id}-{int(time.time())}.csv"
-    string_to_s3(s3, metrics, s3_bucket, metrics_key)
+    # metrics = ",".join(metrics_items)
+    # logging_info("metrics='{}'".format(metrics))
+    # metrics_key = f"{s3_prefix}/benchmark_metrics/{execution_id}-QC-{device_name}-{model_name}-{task_id}-{int(time.time())}.csv"
+    # string_to_s3(s3, metrics, s3_bucket, metrics_key)
 
     logging_info(
         "run_on_device() return - task_id:{}".format(task_id))

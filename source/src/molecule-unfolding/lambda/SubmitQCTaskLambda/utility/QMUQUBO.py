@@ -4,6 +4,7 @@
 import dimod
 from .MolGeoCalc import atom_distance_func
 
+from collections import defaultdict
 import time
 import logging
 import pickle
@@ -77,8 +78,12 @@ class QMUQUBO():
                         hubo.update(hubo_distances)
                         # logging.info(f"hubo {hubo}")
                         # transfer hubo to qubo
-                        qubo = dimod.make_quadratic(
+                        # TODO why make_quadratic not work?
+                        # qubo_raw = dimod.make_quadratic(
+                        #     hubo, hubo_qubo_val, dimod.BINARY).to_qubo()
+                        qubo_raw = dimod.make_quadratic(
                             hubo, hubo_qubo_val, dimod.BINARY)
+                        qubo = self._manual_qubo(qubo_raw.to_qubo())
                         end = time.time()
                         model_name = f"{M}_{D}_{A}_{hubo_qubo_val}"
                         self.model_qubo["pre-calc"][model_name] = {}
@@ -94,6 +99,14 @@ class QMUQUBO():
 
                         logging.info(
                             f"Construct model for M:{M},D:{D},A:{A},hubo_qubo_val:{hubo_qubo_val} {(end-start)/60} min")
+
+    def _manual_qubo(self, qubo_raw):
+        qubo = defaultdict(float)
+
+        for key, value in qubo_raw[0].items():
+            qubo[key] = value
+        
+        return qubo
 
     def _check_duplicate(self, values, names, method):
         initial_size = 0
