@@ -159,6 +159,6 @@ if __name__ == '__main__':
     metrics = ",".join(metrics_items)
     logging.info("metrics='{}'".format(metrics))
 
-    metrics_key = f"{s3_prefix}/benchmark_metrics/{execution_id}-HPC-{resource}-{model_name}-{task_id}-{int(time.time())}.csv"
+    metrics_key = f"{s3_prefix}/benchmark_metrics/{execution_id}-HPC-{resource}-{model_name}-{int(time.time())}.csv"
     string_to_s3(metrics, s3_bucket, metrics_key)
     logging.info("Done")

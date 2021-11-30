@@ -56,8 +56,8 @@ def read_context(execution_id, bucket, s3_prefix):
     return context
 
 
-def task_already_done(qc_task_id, bucket):
-    key = f"{s3_prefix}/done_task/{qc_task_id}"
+def task_already_done(execution_id, qc_task_id, bucket):
+    key = f"{s3_prefix}/done_task/{execution_id}-{qc_task_id}"
     try:
         s3.head_object(Bucket=bucket, Key=key)
         return True
@@ -77,10 +77,6 @@ def handler(event, context):
         print(f"qc_task_id: {qc_task_id}")
         prefix = "/".join(key.split("/")[:-2])
 
-        if task_already_done(qc_task_id, bucket):
-            print(f"qc_task_id={qc_task_id} already done")
-            continue
-
         task_info = get_token_for_task_id(qc_task_id, bucket)
 
         if not task_info:
@@ -88,6 +84,10 @@ def handler(event, context):
 
         execution_id = task_info['execution_id']
         task_token = task_info['task_token']
+
+        if task_already_done(execution_id, qc_task_id, bucket):
+            print(f"qc_task_id={qc_task_id} already done")
+            continue
 
     #      {
     #     "execution_id": execution_id,
@@ -145,8 +145,7 @@ def handler(event, context):
             metrics_key = f"{s3_prefix}/benchmark_metrics/{execution_id}-QC-{device_name}-{model_name}-{qc_task_id}.csv"
             string_to_s3(metrics, bucket, metrics_key)
             string_to_s3("Done", bucket,
-                         key=f"{s3_prefix}/done_task/{qc_task_id}")
-            time.sleep(3)
+                         key=f"{s3_prefix}/done_task/{execution_id}-{qc_task_id}")
 
         except Exception as e:
             print(repr(e))
