@@ -3,7 +3,7 @@ import logging
 import boto3
 import time
 import datetime
-import pickle
+import os
 import json
 from utility.AnnealerOptimizer import Annealer
 from utility.QMUQUBO import QMUQUBO
@@ -82,6 +82,7 @@ def load_model(model_input_file, model_param):
     logging.info(f"download s3://{s3bucket}/{model_file}")
 
     local_model_file = download_file(s3bucket, model_file)
+    mode_file_name = os.path.bashename(local_model_file)
     qmu_qubo_optimize = QMUQUBO.load(local_model_file)
     model_info = qmu_qubo_optimize.describe_model()
 
@@ -92,13 +93,14 @@ def load_model(model_input_file, model_param):
     # hubo_qubo_val = 200
     # model_name = "{}_{}_{}_{}".format(M, D, A, hubo_qubo_val)
 
-    model_name = "_".join(map(lambda it: it.split("=")[1], model_param.split('&')))
+    model_name = "_".join(
+        map(lambda it: it.split("=")[1], model_param.split('&')))
     logging.info(f"model_name:{model_name}")
 
     method = "pre-calc"
     logging.info(f"get_model model_name={model_name}, method={method}")
     qubo_model = qmu_qubo_optimize.get_model(method, model_name)
-    return qubo_model, model_name
+    return qubo_model, model_name, mode_file_name
 
 
 if __name__ == '__main__':
@@ -120,10 +122,8 @@ if __name__ == '__main__':
 
     model_param = args.model_param
 
-    model_file = "{}/model/m{}/qubo.pickle".format(s3_prefix, M)
-
-    logging.info("s3_bucket:{}, model_file: {}".format(s3_bucket, model_file))
-    logging.info("execution_id: {}".format(execution_id))
+    logging.info("execution_id: {}, model_param:{}".format(
+        execution_id, model_param))
 
     boto3.setup_default_session(region_name=aws_region)
     s3 = boto3.client('s3')
@@ -136,7 +136,8 @@ if __name__ == '__main__':
     model_file = get_model_file(execution_id)
     logging.info("model_file: {}".format(model_file))
 
-    qubo_model, model_name = load_model(model_file, model_param)
+    qubo_model, model_name, mode_file_name = load_model(
+        model_file, model_param)
 
     time_in_seconds = sa_optimizer(qubo_model)
     task_id = "NA"
@@ -150,6 +151,7 @@ if __name__ == '__main__':
                      experiment_name,
                      task_id,
                      model_name,
+                     mode_file_name,
                      s3_prefix,
                      datetime.datetime.utcnow().isoformat()
                      ]

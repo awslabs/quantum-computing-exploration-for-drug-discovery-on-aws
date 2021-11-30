@@ -11,20 +11,14 @@ import * as s3 from '@aws-cdk/aws-s3'
 import * as logs from '@aws-cdk/aws-logs'
 import * as kms from '@aws-cdk/aws-kms'
 import * as ecr from '@aws-cdk/aws-ecr'
-//import * as sqs from '@aws-cdk/aws-sqs';
-
-
-//import * as targets from '@aws-cdk/aws-events-targets'
-// import * as s3n from '@aws-cdk/aws-s3-notifications'
 
 const s3n = require('@aws-cdk/aws-s3-notifications')
-//const targets = require("@aws-cdk/aws-events-targets");
-
 
 enum ECRRepoNameEnum {
-    Create_Model,
-    Sa_Optimizer,
-    Qa_Optimizer
+    Batch_Create_Model,
+    Batch_Sa_Optimizer,
+    Lambda_CheckDevice,
+    Lambda_SubmitQCTask
 };
 
 import {
@@ -163,8 +157,8 @@ export class MolUnfBatch extends Construct {
         return role;
     }
 
-    private createDeviceAvailableCheckLambdaRole(): iam.Role {
-        const role = new iam.Role(this, 'DeviceAvailableCheckLambdaRole', {
+    private createBraketLambdaRole(roleName: string): iam.Role {
+        const role = new iam.Role(this, roleName, {
             assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
         });
         role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'))
@@ -199,6 +193,27 @@ export class MolUnfBatch extends Construct {
                 "ec2:DescribeSubnets",
                 "ec2:DescribeVpcs",
                 "ec2:DescribeInstances"
+            ]
+        }));
+
+        role.addToPolicy(new iam.PolicyStatement({
+            actions: [
+                "states:ListStateMachines",
+                "states:CreateStateMachine",
+                "states:DescribeStateMachine",
+                "states:StartExecution",
+                "states:DeleteStateMachine",
+                "states:ListExecutions",
+                "states:UpdateStateMachine",
+                "states:DescribeStateMachineForExecution",
+                "states:GetExecutionHistory",
+                "states:StopExecution",
+                "states:SendTaskSuccess",
+                "states:SendTaskFailure",
+                "states:SendTaskHeartbeat"
+            ],
+            resources: [
+                "arn:aws:states:*:*:*"
             ]
         }));
 
@@ -331,8 +346,6 @@ export class MolUnfBatch extends Construct {
         });
         grantKmsKeyPerm(logKey);
 
-        // const logGroupName = `${cdk.Stack.of(logKey).stackName}-vpcFlowlogGroup`;
-        // grantKmsKeyPerm(logKey,logGroupName);
         const vpcFlowlog = new logs.LogGroup(this, "vpcFlowlog", {
             encryptionKey: logKey
         });
@@ -361,27 +374,9 @@ export class MolUnfBatch extends Construct {
             }
         });
 
-        const batchQCEnvironment = new batch.ComputeEnvironment(this, 'Batch-QC-Compute-Env', {
-            computeResources: {
-                type: batch.ComputeResourceType.FARGATE,
-                vpc,
-                vpcSubnets: vpc.selectSubnets({
-                    subnetType: ec2.SubnetType.PRIVATE_WITH_NAT
-                }),
-                securityGroups: [batchSg]
-            }
-        });
-
         const hpcJobQueue = new batch.JobQueue(this, 'hpcJobQueue', {
             computeEnvironments: [{
                 computeEnvironment: batchHPCEnvironment,
-                order: 1,
-            }, ],
-        });
-
-        const qcJobQueue = new batch.JobQueue(this, 'qcJobQueue', {
-            computeEnvironments: [{
-                computeEnvironment: batchQCEnvironment,
                 order: 1,
             }, ],
         });
@@ -422,7 +417,7 @@ export class MolUnfBatch extends Construct {
 
         const createModelStep = this.createCreateModelStep(hpcJobQueue);
         const hpcStateMachine = this.createHPCStateMachine(taskParamLambda, hpcJobQueue);
-        const qcStateMachine = this.createQCStateMachine(vpc, lambdaSg, taskParamLambda, qcJobQueue)
+        const qcStateMachine = this.createQCStateMachine(vpc, lambdaSg, taskParamLambda)
         const qcAndHPCStateMachine = this.createHPCAndQCStateMachine(hpcStateMachine, qcStateMachine)
 
         const aggResultStep = this.createAggResultStep(vpc, lambdaSg);
@@ -514,7 +509,7 @@ export class MolUnfBatch extends Construct {
     }
 
     private createCreateModelStep(hpcJobQueue: batch.JobQueue): tasks.BatchSubmitJob {
-        const createModelEcrImage = this.getECRImage(ECRRepoNameEnum.Create_Model)
+        const createModelEcrImage = this.getECRImage(ECRRepoNameEnum.Batch_Create_Model) as ecs.ContainerImage
 
         const createModelJobDef = new batch.JobDefinition(this, 'createModelJobDefinition', {
             platformCapabilities: [batch.PlatformCapabilities.EC2],
@@ -540,7 +535,7 @@ export class MolUnfBatch extends Construct {
             jobQueueArn: hpcJobQueue.jobQueueArn,
             integrationPattern: sfn.IntegrationPattern.RUN_JOB,
             containerOverrides: {
-                command: sfn.JsonPath.listAt('$.model_param')
+                command: sfn.JsonPath.listAt('$.params')
             },
             resultPath: sfn.JsonPath.stringAt("$.createModelStep"),
             resultSelector: {
@@ -584,8 +579,8 @@ export class MolUnfBatch extends Construct {
     private createQCStateMachine(
         vpc: ec2.Vpc,
         lambdaSg: ec2.SecurityGroup,
-        parametersLambda: lambda.Function,
-        qcJobQueue: batch.JobQueue): sfn.StateMachine {
+        parametersLambda: lambda.Function
+    ): sfn.StateMachine {
 
         const getDeviceListLambdaStep = new tasks.LambdaInvoke(this, 'Get Device List', {
             lambdaFunction: parametersLambda,
@@ -598,7 +593,7 @@ export class MolUnfBatch extends Construct {
             outputPath: '$.Payload'
         });
 
-        const runOnQCDeviceStateMachine = this.createRunOnQCDeviceStateMachine(vpc, lambdaSg, parametersLambda, qcJobQueue)
+        const runOnQCDeviceStateMachine = this.createRunOnQCDeviceStateMachine(vpc, lambdaSg, parametersLambda)
 
         const runOnQCDeviceStateMachineStep = new tasks.StepFunctionsStartExecution(this, "Run On Device", {
             stateMachine: runOnQCDeviceStateMachine,
@@ -631,12 +626,13 @@ export class MolUnfBatch extends Construct {
     private createRunOnQCDeviceStateMachine(
         vpc: ec2.Vpc,
         lambdaSg: ec2.SecurityGroup,
-        parametersLambda: lambda.Function,
-        qcJobQueue: batch.JobQueue): sfn.StateMachine {
+        parametersLambda: lambda.Function
+    ): sfn.StateMachine {
 
-        const checkLambdaRole = this.createDeviceAvailableCheckLambdaRole();
+        const checkLambdaRole = this.createBraketLambdaRole('DeviceAvailableCheckLambdaRole');
+        const code = this.getECRImage(ECRRepoNameEnum.Lambda_CheckDevice) as lambda.DockerImageCode
         const checkQCDeviceLambda = new lambda.DockerImageFunction(this, 'DeviceAvailableCheckLambda', {
-            code: lambda.DockerImageCode.fromImageAsset(path.join(__dirname, '../lambda/DeviceAvailableCheckLambda/')),
+            code,
             memorySize: 512,
             timeout: cdk.Duration.seconds(60),
             vpc,
@@ -672,43 +668,7 @@ export class MolUnfBatch extends Construct {
             outputPath: '$.Payload'
         });
 
-        const qcEcrImage = this.getECRImage(ECRRepoNameEnum.Qa_Optimizer)
-        const qcJobDef = new batch.JobDefinition(this, 'qcJobDef', {
-            platformCapabilities: [batch.PlatformCapabilities.FARGATE],
-            container: {
-                image: qcEcrImage,
-                command: [
-                    '--aws-region', this.props.region,
-                    '--s3-bucket', this.props.bucket.bucketName,
-                    '--device-arn', 'arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6',
-                    '--model-param', 'M=1&D=4&A=300&HQ=200',
-                ],
-
-                executionRole: this.batchJobExecutionRole,
-                jobRole: this.batchJobRole,
-                vcpus: 1,
-                memoryLimitMiB: 2 * 1024,
-                privileged: false
-            },
-            timeout: cdk.Duration.minutes(60),
-            retryAttempts: 1
-        });
-
-        const qcBatchSubmitJob = new tasks.BatchSubmitJob(this, "Submit QC Task", {
-            jobDefinitionArn: qcJobDef.jobDefinitionArn,
-            jobName: "QCBatchJobIterator",
-            jobQueueArn: qcJobQueue.jobQueueArn,
-            containerOverrides: {
-                command: sfn.JsonPath.listAt("$.ItemValue.params")
-            },
-            resultSelector: {
-                JobId: sfn.JsonPath.stringAt("$.JobId"),
-                JobName: sfn.JsonPath.stringAt("$.JobName"),
-            },
-            resultPath: "$.QCBatchJobIterator"
-        });
-
-        const waitTokenStep = this.createWaitForTokenStep(vpc, lambdaSg);
+        const submitQCTaskStep = this.submitQCTaskStep(vpc, lambdaSg);
 
         const parallelQCJobsMap = new sfn.Map(this, 'ParallelQCJobs', {
             maxConcurrency: 20,
@@ -721,7 +681,7 @@ export class MolUnfBatch extends Construct {
             resultPath: "$.parallelQCJobsMap"
         });
 
-        parallelQCJobsMap.iterator(qcBatchSubmitJob.next(waitTokenStep));
+        parallelQCJobsMap.iterator(submitQCTaskStep);
 
         const deviceOfflineFail = new sfn.Fail(this, "Device Not Online")
 
@@ -739,7 +699,7 @@ export class MolUnfBatch extends Construct {
     }
 
     private createHPCStateMachine(parametersLambda: lambda.Function, hpcJobQueue: batch.JobQueue): sfn.StateMachine {
-        const hpcEcrImage = this.getECRImage(ECRRepoNameEnum.Sa_Optimizer)
+        const hpcEcrImage = this.getECRImage(ECRRepoNameEnum.Batch_Sa_Optimizer) as ecs.ContainerImage
         const parametersLambdaStep = new tasks.LambdaInvoke(this, 'Get Task Parameters', {
             lambdaFunction: parametersLambda,
             payload: sfn.TaskInput.fromObject({
@@ -752,7 +712,7 @@ export class MolUnfBatch extends Construct {
         });
 
         const jobDef = this.createHPCBatchJobDef("HPCJob_Template",
-             2, 2, this.props.bucket.bucketName, hpcEcrImage
+            2, 2, this.props.bucket.bucketName, hpcEcrImage
         );
         const stateJson = {
             End: true,
@@ -880,24 +840,13 @@ export class MolUnfBatch extends Construct {
                 prefix: 'molecule-unfolding/qc_task_output/',
                 suffix: 'results.json'
             });
-
-        // const myQueue = new sqs.Queue(this, 'Queue', {
-        //     retentionPeriod: cdk.Duration.days(3),
-        // });
-
-        // this.props.bucket.addEventNotification(s3.EventType.OBJECT_REMOVED,
-        //     new s3n.SqsDestination(myQueue), {
-        //         prefix: 'molecule-unfolding/qc_task_output/',
-        //         suffix: 'results.json', 
-        //     });
     }
 
-    private createWaitForTokenStep(vpc: ec2.Vpc, lambdaSg: ec2.SecurityGroup): tasks.LambdaInvoke {
-        const lambdaRole = this.createGenericLambdaRole("WaitTaskCompleteStepLambdaRole")
-        const waitForTokenLambda = new lambda.Function(this, 'WaitTaskCompleteStepLambd', {
-            runtime: lambda.Runtime.PYTHON_3_8,
-            code: lambda.Code.fromAsset(path.join(__dirname, '../lambda/WaitTaskCompleteLambda/')),
-            handler: 'app.handler',
+    private submitQCTaskStep(vpc: ec2.Vpc, lambdaSg: ec2.SecurityGroup): tasks.LambdaInvoke {
+        const lambdaRole = this.createBraketLambdaRole('SubmitQCTaskLambdaRole')
+        const code = this.getECRImage(ECRRepoNameEnum.Lambda_SubmitQCTask) as lambda.DockerImageCode
+        const submitQCTaskStepLambd = new lambda.DockerImageFunction(this, 'SubmitQCTaskLambda', {
+            code,
             memorySize: 512,
             timeout: cdk.Duration.seconds(120),
             vpc,
@@ -909,26 +858,25 @@ export class MolUnfBatch extends Construct {
             securityGroups: [lambdaSg]
         });
 
-        const waitCompleteStep = new tasks.LambdaInvoke(this, 'Wait Task Complete', {
-            lambdaFunction: waitForTokenLambda,
+        const submitQCTaskStep = new tasks.LambdaInvoke(this, 'Submit QC Task', {
+            lambdaFunction: submitQCTaskStepLambd,
             payload: sfn.TaskInput.fromObject({
                 "execution_id": sfn.JsonPath.stringAt("$.execution_id"),
-                "batch_job_id": sfn.JsonPath.stringAt("$.QCBatchJobIterator.JobId"),
                 "task_token": sfn.JsonPath.taskToken,
                 "s3_bucket": this.props.bucket.bucketName,
                 "ItemValue": sfn.JsonPath.stringAt("$.ItemValue"),
                 "ItemIndex": sfn.JsonPath.stringAt("$.ItemIndex")
             }),
-            resultPath: '$.WaitCompleteStep',
+            resultPath: '$.submitQCTaskStep',
             integrationPattern: sfn.IntegrationPattern.WAIT_FOR_TASK_TOKEN
         });
-        return waitCompleteStep;
+        return submitQCTaskStep;
     }
 
 
-    private getECRImage(name: ECRRepoNameEnum, usePreBuildImage = false): ecs.ContainerImage {
+    private getECRImage(name: ECRRepoNameEnum, usePreBuildImage = false): ecs.ContainerImage | lambda.DockerImageCode {
 
-        if (name == ECRRepoNameEnum.Create_Model) {
+        if (name == ECRRepoNameEnum.Batch_Create_Model) {
             if (usePreBuildImage) {
                 return ecs.ContainerImage.fromEcrRepository(
                     ecr.Repository.fromRepositoryName(this, 'ecrRepo', 'molecule-unfolding/create-model')
@@ -938,7 +886,7 @@ export class MolUnfBatch extends Construct {
                 path.join(__dirname, '../docker-images/create-model'))
         }
 
-        if (name == ECRRepoNameEnum.Sa_Optimizer) {
+        if (name == ECRRepoNameEnum.Batch_Sa_Optimizer) {
             if (usePreBuildImage) {
                 return ecs.ContainerImage.fromEcrRepository(
                     ecr.Repository.fromRepositoryName(this, 'ecrRepo', 'molecule-unfolding/sa-optimizer')
@@ -948,17 +896,24 @@ export class MolUnfBatch extends Construct {
             return ecs.ContainerImage.fromAsset(
                 path.join(__dirname, '../docker-images/sa-optimizer'))
         }
-
-        if (name == ECRRepoNameEnum.Qa_Optimizer) {
+        if (name == ECRRepoNameEnum.Lambda_CheckDevice) {
             if (usePreBuildImage) {
-                return ecs.ContainerImage.fromEcrRepository(
-                    ecr.Repository.fromRepositoryName(this, 'ecrRepo', 'molecule-unfolding/qa-optimizer')
+                return lambda.DockerImageCode.fromEcr(
+                    ecr.Repository.fromRepositoryName(this, 'ecrRepo', 'molecule-unfolding/lambda-device-available-check')
                 );
             }
-
-            return ecs.ContainerImage.fromAsset(
-                path.join(__dirname, '../docker-images/qa-optimizer'))
+            return lambda.DockerImageCode.fromImageAsset(path.join(__dirname, '../lambda/DeviceAvailableCheckLambda/'));
         }
+
+        if (name == ECRRepoNameEnum.Lambda_SubmitQCTask) {
+            if (usePreBuildImage) {
+                return lambda.DockerImageCode.fromEcr(
+                    ecr.Repository.fromRepositoryName(this, 'ecrRepo', 'molecule-unfolding/lambda-submit-qc-task')
+                );
+            }
+            return lambda.DockerImageCode.fromImageAsset(path.join(__dirname, '../lambda/SubmitQCTaskLambda/'));
+        }
+
         throw new Error("Cannot find ecr: " + name);
     }
 }

@@ -101,7 +101,7 @@ def handler(event, context):
             "start_time": datetime.datetime.utcnow().isoformat()
         }), bucket=s3_bucket, key=key)
         return {
-            "model_param": f"{common_param},--execution-id,{execution_id}".split(","),
+            "params": f"{common_param},--execution-id,{execution_id}".split(","),
             "execution_id": execution_id,
             "runMode": user_input.get('runMode', "ALL")
         }
@@ -141,6 +141,7 @@ def handler(event, context):
                 "params": f"--model-param,{param_item},--device-arn,{device_arn},{common_param}".split(","),
                 "device_name": device_name,
                 "task_name": f"{device_name}_{param_item_name}",
+                "model_param": param_item,
                 "device_arn": device_arn})
 
     hpc_task_params = []
@@ -153,6 +154,7 @@ def handler(event, context):
                 "params": f"--model-param,{param_item},--resource,{resource_name},{common_param}".split(","),
                 "resource_name": resource_name,
                 "task_name": f"{resource_name}_{param_item_name}",
+                "model_param": param_item,
                 "vcpus": resource[0],
                 "memory": resource[1] * 1024
             })

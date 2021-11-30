@@ -69,48 +69,53 @@ def handler(event, context):
 
         if task_info:
             execution_id = task_info['execution_id']
-            context = read_context(execution_id, bucket, s3_prefix)
-            start_time = context['start_time']
-            experiment_name = context['user_input'].get(
-                'experimentName', f'{execution_id}|{start_time}')
-
-            print(f"experiment_name={experiment_name}")
-
             task_token = task_info['task_token']
-            ItemValue = task_info['ItemValue']
-            params = ItemValue['params']
-            device_name = ItemValue['device_name']
-            param_str = "=".join([str(param).replace("--", '')
-                                 for param in params[0:2]])
+            
+    #      {
+    #     "execution_id": execution_id,
+    #     "task_id": task_id,
+    #     "model_name": model_name,
+    #     "mode_file_name": mode_file_name,
+    #     "experiment_name": experiment_name,
+    #     "start_time": start_time,
+    #     "model_param": model_param,
+    #     "device_name": device_name
+    #     }
+            
+            time_in_seconds = 9999.99
 
-            time_in_seconds = 3.14
-
-            model_name = "_Model_Name_"
+            submit_res = task_info['submit_res']
+            model_param = submit_res['model_param']
+            model_name = submit_res['model_name']
+            mode_file_name = submit_res['mode_file_name']
+            start_time = submit_res['start_time']
+            experiment_name = submit_res['experiment_name']
+            device_name = submit_res['device_name']
 
             metrics_items = [execution_id,
                      "QC",
                      str(device_name),
-                     param_str,
+                     model_param,
                      str(time_in_seconds),
                      start_time,
                      experiment_name,
                      qc_task_id,
                      model_name,
+                     mode_file_name,
                      s3_prefix,
                      datetime.datetime.utcnow().isoformat()
                      ]
 
             metrics = ",".join(metrics_items)
             print("metrics='{}'".format(metrics))
-            p = param_str.replace("=", '')
-            metrics_key = f"{s3_prefix}/benchmark_metrics/{execution_id}-QC-{device_name}-{p}-{qc_task_id}-{int(time.time())}.csv"
+            metrics_key = f"{s3_prefix}/benchmark_metrics/{execution_id}-QCL-{device_name}-{model_name}-{qc_task_id}-{int(time.time())}.csv"
             string_to_s3(metrics, bucket, metrics_key)
-
 
             step_func.send_task_success(
                 taskToken=task_token,
                 output=json.dumps({
                     'status': 'success',
                     'qc_task_id': qc_task_id,
+                    'metrics_key': metrics_key
                 })
             )
