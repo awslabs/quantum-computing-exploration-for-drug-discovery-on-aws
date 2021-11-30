@@ -56,6 +56,15 @@ def read_context(execution_id, bucket, s3_prefix):
     return context
 
 
+def task_already_done(qc_task_id, bucket):
+    key = f"{s3_prefix}/done_task/{qc_task_id}"
+    try:
+        s3.head_object(Bucket=bucket, Key=key)
+        return True
+    except Exception as e:
+        return False
+
+
 def handler(event, context):
     print(f"event={event}")
     aws_region = os.environ['AWS_REGION']
@@ -67,6 +76,10 @@ def handler(event, context):
         qc_task_id = key.split("/")[-2]
         print(f"qc_task_id: {qc_task_id}")
         prefix = "/".join(key.split("/")[:-2])
+
+        if task_already_done(qc_task_id, bucket):
+            print(f"qc_task_id={qc_task_id} already done")
+            continue
 
         task_info = get_token_for_task_id(qc_task_id, bucket)
 
@@ -129,16 +142,23 @@ def handler(event, context):
 
             metrics = ",".join(metrics_items)
             print("metrics='{}'".format(metrics))
-            metrics_key = f"{s3_prefix}/benchmark_metrics/{execution_id}-QCL-{device_name}-{model_name}-{qc_task_id}-{int(time.time())}.csv"
+            metrics_key = f"{s3_prefix}/benchmark_metrics/{execution_id}-QC-{device_name}-{model_name}-{qc_task_id}.csv"
             string_to_s3(metrics, bucket, metrics_key)
+            string_to_s3("Done", bucket,
+                         key=f"{s3_prefix}/done_task/{qc_task_id}")
+            time.sleep(3)
+
         except Exception as e:
             print(repr(e))
         finally:
-            step_func.send_task_success(
-                taskToken=task_token,
-                output=json.dumps({
-                    'status': 'success',
-                    'qc_task_id': qc_task_id,
-                    'metrics_key': metrics_key
-                })
-            )
+            try:
+                step_func.send_task_success(
+                    taskToken=task_token,
+                    output=json.dumps({
+                        'status': 'success',
+                        'qc_task_id': qc_task_id,
+                        'metrics_key': metrics_key
+                    })
+                )
+            except:
+                pass
