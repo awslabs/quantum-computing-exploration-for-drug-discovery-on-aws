@@ -8,6 +8,24 @@ import copy
 s3 = boto3.client('s3')
 s3_prefix = "molecule-unfolding"
 
+default_devices_arns = [
+    'arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6',
+    'arn:aws:braket:::device/qpu/d-wave/Advantage_system4'
+]
+default_model_params = {
+    "M": [1, 2],
+    "D": [4],
+    "A": [300],
+    "HQ": [200]  # hubo_qubo_val
+}
+default_hpc_resources = [
+    # vcpu, memory
+    (2, 2),
+    # (4, 4),
+    # (8, 8),
+    (16, 16)
+]
+
 
 def string_to_s3(content, bucket, key):
     s3.put_object(
@@ -26,7 +44,8 @@ def read_user_input(execution_id, bucket, s3_prefix):
 def get_model_param_items(params_dict: dict):
     param_list = []
     for pname in ["M", "D", "A", "HQ"]:
-        pvalues = [f"{pname}={v}" for v in params_dict[pname]]
+        pvalues = [f"{pname}={v}" for v in params_dict.get(
+            pname, default_model_params[pname])]
         param_list.append(pvalues)
 
     result = get_all_param_list(copy.deepcopy(param_list))
@@ -65,24 +84,6 @@ def handler(event, context):
     aws_region = os.environ['AWS_REGION']
     param_type = event['param_type']
     s3_bucket = event['s3_bucket']
-
-    default_devices_arns = [
-        'arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6',
-        'arn:aws:braket:::device/qpu/d-wave/Advantage_system4'
-    ]
-    default_model_params = {
-        "M": [1, 2],
-        "D": [4],
-        "A": [300],
-        "HQ": [200]  # hubo_qubo_val
-    }
-    default_hpc_resources = [
-        # vcpu, memory
-        (2, 2),
-        # (4, 4),
-        # (8, 8),
-        (16, 16)
-    ]
 
     common_param = f"--aws_region,{aws_region},--s3-bucket,{s3_bucket}"
 

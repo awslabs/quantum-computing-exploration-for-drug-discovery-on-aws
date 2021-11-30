@@ -119,7 +119,7 @@ def run_on_device(model_file, device_arn, model_param):
 
     metrics = ",".join(metrics_items)
     logging.info("metrics='{}'".format(metrics))
-    metrics_key = f"{s3_prefix}/benchmark_metrics/{execution_id}-QC-{device_name}-{model_param}-{task_id}-{int(time.time())}.csv"
+    metrics_key = f"{s3_prefix}/benchmark_metrics/{execution_id}-QC-{device_name}-{model_name}-{task_id}-{int(time.time())}.csv"
     string_to_s3(metrics, s3_bucket, metrics_key)
     return metrics
 
@@ -148,13 +148,14 @@ def get_model_file(execution_id):
     return model_file_info['location']
 
 
-def load_model(model_file, M):
-    logging.info(f"load_model() {model_file}, M={M}")
-    if model_file.startswith("s3://"):
-        model_file = "/".join(model_file.split("/")[3:])
-        s3bucket = model_file.split("/")[2]
+def load_model(model_input_file, model_param):
+    logging.info(f"load_model() {model_input_file}, model_param={model_param}")
+    if model_input_file.startswith("s3://"):
+        model_file = "/".join(model_input_file.split("/")[3:])
+        s3bucket = model_input_file.split("/")[2]
     else:
         s3bucket = s3_bucket
+        model_file = model_input_file
 
     logging.info(f"download s3://{s3bucket}/{model_file}")
 
@@ -212,7 +213,7 @@ if __name__ == '__main__':
     context = read_context(execution_id, s3_bucket, s3_prefix)
     start_time = context['start_time']
     experiment_name = context['user_input'].get(
-        'experimentName', f'{execution_id}|{start_time}')
+        'experimentName', f'{start_time}|{execution_id}')
 
     run_on_device(model_file, device_arn, model_param)
 
