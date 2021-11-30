@@ -47,9 +47,8 @@ def sa_optimizer(qubo_model):
     optimizer_param['shots'] = 1000
     optimizer_param['notes'] = 'notebook_experiment'
     sa_optimizer = Annealer(qubo_model['qubo'], method, **optimizer_param)
-    sa_optimizer.fit()
-    sa_optimizer.time_summary()
-    time_sec = sa_optimizer.time["time-min"] * 60
+    sa_optimize_result = sa_optimizer.fit()
+    time_sec = sa_optimize_result['time']
     logging.info(f"sa_optimizer return time_sec: {time_sec}")
     return time_sec
 
@@ -146,6 +145,7 @@ if __name__ == '__main__':
                      "HPC",
                      str(resource),
                      model_param,
+                     str(time_in_seconds),
                      str(time_in_seconds),
                      str(time_in_seconds),
                      start_time,

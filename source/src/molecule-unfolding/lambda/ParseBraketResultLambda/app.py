@@ -89,23 +89,6 @@ def handler(event, context):
             print(f"qc_task_id={qc_task_id} already done")
             continue
 
-    #      {
-    #     "execution_id": execution_id,
-    #     "task_id": task_id,
-    #     "model_name": model_name,
-    #     "mode_file_name": mode_file_name,
-    #     "experiment_name": experiment_name,
-    #     "start_time": start_time,
-    #     "model_param": model_param,
-    #     "device_name": device_name
-    #     }
-
-        #    self.method == "dwave-qa":
-        #     logging.info("parse quantum annealer result")
-        #     self.bucket = param["bucket"]
-        #     self.prefix = param["prefix"]
-        #     self.task_id = param["task_id"]
-
         try:
             parser = ResultParser('dwave-qa',
                                   bucket=bucket,
@@ -124,6 +107,7 @@ def handler(event, context):
             start_time = submit_res['start_time']
             experiment_name = submit_res['experiment_name']
             device_name = submit_res['device_name']
+            local_fit_time = submit_res['local_fit_time']
 
             metrics_items = [execution_id,
                              "QC",
@@ -131,6 +115,7 @@ def handler(event, context):
                              model_param,
                              str(task_time),
                              str(qpu_time),
+                             str(local_fit_time),
                              start_time,
                              experiment_name,
                              qc_task_id,
