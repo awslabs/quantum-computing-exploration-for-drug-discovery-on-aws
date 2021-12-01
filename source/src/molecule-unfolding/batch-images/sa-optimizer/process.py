@@ -129,8 +129,12 @@ if __name__ == '__main__':
 
     context = read_context(execution_id, s3_bucket, s3_prefix)
     start_time = context['start_time']
-    experiment_name = context['user_input'].get(
-        'experimentName', f'{start_time}|{execution_id}')
+
+    experiment_name = context['user_input'].get('experimentName', None)
+    if experiment_name is None:
+        experiment_name = f"{start_time}|{execution_id}"
+    else:
+        experiment_name = f"{start_time}|{experiment_name}"
 
     model_file = get_model_file(execution_id)
     logging.info("model_file: {}".format(model_file))

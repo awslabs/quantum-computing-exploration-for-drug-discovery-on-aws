@@ -13,17 +13,17 @@ default_devices_arns = [
     'arn:aws:braket:::device/qpu/d-wave/Advantage_system4'
 ]
 default_model_params = {
-    "M": [1, 2],
+    "M": [1, 2, 3, 4],
     "D": [4],
     "A": [300],
     "HQ": [200]  # hubo_qubo_val
 }
 default_hpc_resources = [
-    # vcpu, memory
-    (2, 2),
-    # (4, 4),
-    # (8, 8),
-    (16, 16)
+    # vcpu, memory_in_GB
+    [2, 2],
+    [4, 4],
+    [8, 8],
+    [16, 16]
 ]
 
 

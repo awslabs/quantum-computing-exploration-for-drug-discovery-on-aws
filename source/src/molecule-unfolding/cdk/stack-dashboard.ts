@@ -25,10 +25,10 @@ export class MolUnfDashboardStack extends SolutionStack {
         });
 
         const quicksightUser = `arn:aws:quicksight:us-east-1:${this.account}:user/default/${quickSightUserParam.valueAsString}`;
-        const qcDataSource = new quicksight.CfnDataSource(this, "qcDataSource", {
+        const qcDataSource = new quicksight.CfnDataSource(this, "qcBenchmark-DataSource", {
             awsAccountId: this.account,
-            dataSourceId: `${this.stackName}-qcdatasource`,
-            name: 'qcdatasource',
+            dataSourceId: `${this.stackName}-qcBenchmark-Datasource`,
+            name: `${this.stackName}-qcBenchmark-Datasource`,
             type: 'ATHENA',
             dataSourceParameters: {
                 athenaParameters: {
@@ -48,9 +48,12 @@ export class MolUnfDashboardStack extends SolutionStack {
             }]
         });
 
-        const columns = [
+        const columns = [{
+                name: 'execution_id',
+                type: 'STRING'
+            },
             {
-                name: 'computetype',
+                name: 'compute_type',
                 type: 'STRING'
             },
             {
@@ -58,16 +61,52 @@ export class MolUnfDashboardStack extends SolutionStack {
                 type: 'STRING'
             },
             {
-                name: 'm',
-                type: 'INTEGER'
+                name: 'params',
+                type: 'STRING'
             },
             {
-                name: 'mins',
+                name: 'task_duration1',
                 type: 'DECIMAL'
             },
+            {
+                name: 'task_duration2',
+                type: 'DECIMAL'
+            },
+            {
+                name: 'task_duration3',
+                type: 'DECIMAL'
+            },
+            {
+                name: 'start_time',
+                type: 'STRING'
+            },
+            {
+                name: 'experiment_name',
+                type: 'STRING'
+            },
+            {
+                name: 'task_id',
+                type: 'STRING'
+            },
+            {
+                name: 'model_name',
+                type: 'STRING'
+            },
+            {
+                name: 'model_filename',
+                type: 'STRING'
+            },
+            {
+                name: 'scenario',
+                type: 'STRING'
+            },
+            {
+                name: 'create_time',
+                type: 'STRING'
+            }
         ];
 
-        const qcDataset = new quicksight.CfnDataSet(this, "dataset", {
+        const qcDataset = new quicksight.CfnDataSet(this, "qcBenchmark-DataSet", {
             permissions: [{
                 principal: quicksightUser,
                 actions: [
@@ -84,15 +123,15 @@ export class MolUnfDashboardStack extends SolutionStack {
                 ]
             }],
             awsAccountId: this.account,
-            name: "qcdataset",
-            dataSetId: `${this.stackName}-dataSetId`,
+            dataSetId: `${this.stackName}-qcBenchmark-DataSet`,
+            name: `${this.stackName}-qcBenchmark-DataSet`,
             importMode: 'DIRECT_QUERY',
             physicalTableMap: {
                 ATHENATable: {
                     customSql: {
                         dataSourceArn: qcDataSource.attrArn,
                         name: 'all',
-                        sqlQuery: 'SELECT computetype, resource, m, mins FROM "AwsDataCatalog"."default"."qc_batch_perf_view"',
+                        sqlQuery: 'SELECT * FROM "AwsDataCatalog"."default"."qc_benchmark_metrics_hist"',
                         columns
                     },
                 }
@@ -101,11 +140,11 @@ export class MolUnfDashboardStack extends SolutionStack {
 
         const templateAccountId = quicksightTemplateAccountIdParam.valueAsString;
 
-        const templateArn = `arn:aws:quicksight:us-east-1:${templateAccountId}:template/QC-analysis-template`
-        const qcAnaTemplate = new quicksight.CfnTemplate(this, "qcqsAnaTemplate", {
+        const templateArn = `arn:aws:quicksight:us-east-1:${templateAccountId}:template/QC-benchmark-analysis-template`
+        const qcAnaTemplate = new quicksight.CfnTemplate(this, "qcBenchmark-QSTemplate", {
             awsAccountId: this.account,
-            templateId: `${this.stackName}-qcqsTemplateId`,
-            name: 'qcqsTemplateId',
+            templateId: `${this.stackName}-qcBenchmark-QSTemplate`,
+            name: `${this.stackName}-qcBenchmark-QSTemplate`,
             permissions: [{
                 principal: quicksightUser,
                 actions: ['quicksight:DescribeTemplate']
@@ -116,36 +155,10 @@ export class MolUnfDashboardStack extends SolutionStack {
                 }
             }
         });
-        const qcAnalysis = new quicksight.CfnAnalysis(this, "qcPefAnalysis", {
-            awsAccountId: this.account,
-            analysisId: `${this.stackName}-qcPefAnalysis`,
-            name: "qcPefAnalysis",
-            permissions: [{
-                principal: quicksightUser,
-                actions: [
-                    'quicksight:RestoreAnalysis',
-                    'quicksight:UpdateAnalysisPermissions',
-                    'quicksight:DeleteAnalysis',
-                    'quicksight:DescribeAnalysisPermissions',
-                    'quicksight:QueryAnalysis',
-                    'quicksight:DescribeAnalysis',
-                    'quicksight:UpdateAnalysis'
-                ]
-            }],
-            sourceEntity: {
-                sourceTemplate: {
-                    arn: qcAnaTemplate.attrArn,
-                    dataSetReferences: [{
-                        dataSetPlaceholder: 'qcds',
-                        dataSetArn: qcDataset.attrArn
-                    }]
-                }
-            },
-        });
 
-        const qcPrefDashboard = new quicksight.CfnDashboard(this, "qcPrefDashboard", {
-            dashboardId: `${this.stackName}-qcPrefDashboard`,
-            name: 'qcPrefDashboard',
+        const qcBenchmarkDashboard = new quicksight.CfnDashboard(this, "qcBenchmark-Dashboard", {
+            dashboardId: `${this.stackName}-qcBenchmark-Dashboard`,
+            name: `${this.stackName}-qcBenchmark-Dashboard`,
             awsAccountId: this.account,
             permissions: [{
                 principal: quicksightUser,
@@ -178,19 +191,9 @@ export class MolUnfDashboardStack extends SolutionStack {
 
         });
 
-        new cdk.CfnOutput(this, "datasetID", {
-            value: qcDataset.dataSetId ? qcDataset.dataSetId : "",
-            description: "dataset ID"
-        });
-
-        new cdk.CfnOutput(this, "qcAnalysisArn", {
-            value: qcAnalysis.attrArn,
-            description: "qcAnalysis arn"
-        });
-
-        new cdk.CfnOutput(this, "qcPrefDashboardUrl", {
-            value: `https://${this.region}.quicksight.aws.amazon.com/sn/dashboards/${qcPrefDashboard.dashboardId}`,
-            description: "DashboardUrl Url"
+        new cdk.CfnOutput(this, "qcBenchmarkDashboardUrl", {
+            value: `https://${this.region}.quicksight.aws.amazon.com/sn/dashboards/${qcBenchmarkDashboard.dashboardId}`,
+            description: "Dashboard Url"
         });
 
     }
