@@ -5,7 +5,7 @@
     "modelFile": "s3://amazon-braket-qcstack-main-080766874269-us-east-1/molecule-unfolding/models/qmu_Aspirin_latest.pickle",
     "experimentName": "test",
     "modelParams": {
-        "M": [1, 2],
+        "M": [1, 2, 3, 4],
         "D": [4],
         "A": [300],
         "HQ": [200]

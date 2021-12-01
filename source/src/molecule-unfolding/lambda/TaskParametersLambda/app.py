@@ -38,7 +38,9 @@ def string_to_s3(content, bucket, key):
 def read_user_input(execution_id, bucket, s3_prefix):
     key = f"{s3_prefix}/executions/{execution_id}/user_input.json"
     obj = s3.get_object(Bucket=bucket, Key=key)
-    return json.loads(obj['Body'].read())
+    input =  json.loads(obj['Body'].read())
+    print(f"user_input={input}")
+    return input
 
 
 def get_model_param_items(params_dict: dict):
@@ -112,14 +114,18 @@ def handler(event, context):
             user_input = read_user_input(
                 execution_id, bucket=s3_bucket, s3_prefix=s3_prefix)
 
-            devices_arns = user_input.get('devicesArns', default_devices_arns)
-            model_params = user_input.get('modelParams', default_model_params)
-            hpc_resources = user_input.get(
+            devices_arns = user_input['user_input'].get('devicesArns', default_devices_arns)
+            model_params = user_input['user_input'].get('modelParams', default_model_params)
+            hpc_resources = user_input['user_input'].get(
                 'hpcResources', default_hpc_resources)
         else:
             devices_arns = default_devices_arns
             model_params = default_model_params
             hpc_resources = default_model_params
+
+    print(f"devices_arns={devices_arns}")
+    print(f"model_params={model_params}")
+    print(f"hpc_resources={hpc_resources}")
 
     if param_type == 'QC_DEVICE_LIST':
         return {
