@@ -11,6 +11,7 @@ import * as s3 from '@aws-cdk/aws-s3'
 import * as logs from '@aws-cdk/aws-logs'
 import * as kms from '@aws-cdk/aws-kms'
 import * as ecr from '@aws-cdk/aws-ecr'
+import * as sns from '@aws-cdk/aws-sns'
 
 const s3n = require('@aws-cdk/aws-s3-notifications')
 
@@ -421,6 +422,8 @@ export class MolUnfBatch extends Construct {
         const qcAndHPCStateMachine = this.createHPCAndQCStateMachine(hpcStateMachine, qcStateMachine)
 
         const aggResultStep = this.createAggResultStep(vpc, lambdaSg);
+        const notifyStep = this.createSNSNotifyStep();
+        const postSteps = sfn.Chain.start(aggResultStep).next(notifyStep)
 
         const hpcBranch = new tasks.StepFunctionsStartExecution(this, "Run HPC", {
             stateMachine: hpcStateMachine,
@@ -430,7 +433,7 @@ export class MolUnfBatch extends Construct {
                 "execution_id": sfn.JsonPath.stringAt("$.execution_id")
             }),
             resultPath: "$.hpcBranch"
-        }).next(aggResultStep)
+        }).next(postSteps)
 
         const qcBranch = new tasks.StepFunctionsStartExecution(this, "Run QC", {
             stateMachine: qcStateMachine,
@@ -440,7 +443,7 @@ export class MolUnfBatch extends Construct {
                 "execution_id": sfn.JsonPath.stringAt("$.execution_id")
             }),
             resultPath: "$.qcBranch"
-        }).next(aggResultStep)
+        }).next(postSteps)
 
         const qcAndHpcBranch = new tasks.StepFunctionsStartExecution(this, "Run QC and HPC", {
             stateMachine: qcAndHPCStateMachine,
@@ -450,7 +453,7 @@ export class MolUnfBatch extends Construct {
                 "execution_id": sfn.JsonPath.stringAt("$.execution_id")
             }),
             resultPath: "$.qcAndHpcBranch"
-        }).next(aggResultStep)
+        }).next(postSteps)
 
         const choiceStep = new sfn.Choice(this, "Select Running Mode")
             .when(sfn.Condition.isNotPresent("$.runMode"), qcAndHpcBranch)
@@ -871,6 +874,29 @@ export class MolUnfBatch extends Construct {
             integrationPattern: sfn.IntegrationPattern.WAIT_FOR_TASK_TOKEN
         });
         return submitQCTaskStep;
+    }
+
+    private createSNSNotifyStep(): tasks.SnsPublish {
+        const topic = new sns.Topic(this, 'SNS Topic', {
+            displayName: 'QC Stepfunctions Execution Complete Topic',
+        });
+        const snsStep = new tasks.SnsPublish(this, 'Notify Complete', {
+            topic,
+            message: sfn.TaskInput.fromObject({
+                "execution_id": sfn.JsonPath.stringAt("$.execution_id"),
+                "start_time": sfn.JsonPath.stringAt("$.start_time"),
+                "end_time":  sfn.JsonPath.stringAt("$.aggResultStep.Payload.endTime"),
+                "status": "Complete"
+            }),
+            resultPath: '$.snsStep',
+        });
+
+        new cdk.CfnOutput(this, 'SNS Topic Name', {
+            value: topic.topicName,
+            description: "SNS Topic Name"
+        });
+        
+        return snsStep
     }
 
 

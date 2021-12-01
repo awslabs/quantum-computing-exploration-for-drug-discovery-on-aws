@@ -105,7 +105,8 @@ def handler(event, context):
         return {
             "params": f"{common_param},--execution-id,{execution_id}".split(","),
             "execution_id": execution_id,
-            "runMode": user_input.get('runMode', "ALL")
+            "runMode": user_input.get('runMode', "ALL"),
+            "start_time": datetime.datetime.utcnow().isoformat()
         }
     else:
         execution_id = event.get('execution_id', None)
