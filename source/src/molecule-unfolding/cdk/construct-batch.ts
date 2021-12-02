@@ -905,7 +905,7 @@ export class MolUnfBatch extends Construct {
         if (name == ECRRepoNameEnum.Batch_Create_Model) {
             if (usePreBuildImage) {
                 return ecs.ContainerImage.fromEcrRepository(
-                    ecr.Repository.fromRepositoryName(this, 'ecrRepo', 'molecule-unfolding/create-model')
+                    ecr.Repository.fromRepositoryName(this, 'create-model', 'molecule-unfolding/create-model')
                 );
             }
             return ecs.ContainerImage.fromAsset(
@@ -915,7 +915,7 @@ export class MolUnfBatch extends Construct {
         if (name == ECRRepoNameEnum.Batch_Sa_Optimizer) {
             if (usePreBuildImage) {
                 return ecs.ContainerImage.fromEcrRepository(
-                    ecr.Repository.fromRepositoryName(this, 'ecrRepo', 'molecule-unfolding/sa-optimizer')
+                    ecr.Repository.fromRepositoryName(this, 'sa-optimizer', 'molecule-unfolding/sa-optimizer')
                 );
             }
 
@@ -925,7 +925,7 @@ export class MolUnfBatch extends Construct {
         if (name == ECRRepoNameEnum.Lambda_CheckDevice) {
             if (usePreBuildImage) {
                 return lambda.DockerImageCode.fromEcr(
-                    ecr.Repository.fromRepositoryName(this, 'ecrRepo', 'molecule-unfolding/lambda-device-available-check')
+                    ecr.Repository.fromRepositoryName(this, 'lambda-device-available-check', 'molecule-unfolding/lambda-device-available-check')
                 );
             }
             return lambda.DockerImageCode.fromImageAsset(path.join(__dirname, '../lambda/DeviceAvailableCheckLambda/'));
@@ -934,7 +934,7 @@ export class MolUnfBatch extends Construct {
         if (name == ECRRepoNameEnum.Lambda_SubmitQCTask) {
             if (usePreBuildImage) {
                 return lambda.DockerImageCode.fromEcr(
-                    ecr.Repository.fromRepositoryName(this, 'ecrRepo', 'molecule-unfolding/lambda-submit-qc-task')
+                    ecr.Repository.fromRepositoryName(this, 'lambda-submit-qc-task', 'molecule-unfolding/lambda-submit-qc-task')
                 );
             }
             return lambda.DockerImageCode.fromImageAsset(path.join(__dirname, '../lambda/SubmitQCTaskLambda/'));
