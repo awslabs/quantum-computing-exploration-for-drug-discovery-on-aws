@@ -12,8 +12,9 @@ unzip braket-notebook-lcc.zip
 nohup rm -fr "$TMPDIR" &
 
 cd /home/ec2-user/SageMaker
-aws s3 cp s3://amazon-braket-gcr-qc-sol-common/notebook/latest/notebook.zip .
-unzip notebook.zip
+rm -rf *
+aws s3 cp s3://amazon-braket-gcr-qc-sol-common/molecule-unfolding-code/latest/molecule-unfolding-code.zip .
+unzip molecule-unfolding-code.zip
 EOS
 
 exit 0
