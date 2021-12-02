@@ -43,7 +43,7 @@ def get_token_for_task_id(qc_task_id, s3_bucket):
         except Exception as e:
             print(repr(e))
             n = n + 1
-            time.sleep(3)
+            time.sleep(2 * n)
     return None
 
 
@@ -57,7 +57,7 @@ def read_context(execution_id, bucket, s3_prefix):
 
 
 def task_already_done(execution_id, qc_task_id, bucket):
-    key = f"{s3_prefix}/done_task/{execution_id}-{qc_task_id}"
+    key = f"{s3_prefix}/done_task/{execution_id}_{qc_task_id}"
     try:
         s3.head_object(Bucket=bucket, Key=key)
         return True
@@ -89,7 +89,9 @@ def handler(event, context):
             print(f"qc_task_id={qc_task_id} already done")
             continue
 
+        message = None
         try:
+            print("ResultParser ...")
             parser = ResultParser('dwave-qa',
                                   bucket=bucket,
                                   prefix=prefix,
@@ -130,19 +132,31 @@ def handler(event, context):
             metrics_key = f"{s3_prefix}/benchmark_metrics/{execution_id}-QC-{device_name}-{model_name}-{qc_task_id}.csv"
             string_to_s3(metrics, bucket, metrics_key)
             string_to_s3("Done", bucket,
-                         key=f"{s3_prefix}/done_task/{execution_id}-{qc_task_id}")
+                         key=f"{s3_prefix}/done_task/{execution_id}_{qc_task_id}")
+            message = metrics_key
+            success = True
+        except Exception as e:
+            string_to_s3(repr(e), bucket,
+                         key=f"{s3_prefix}/err_task/{execution_id}_{qc_task_id}")
+            print(repr(e))
+            message = repr(e)
+            success = False
+
+        try:
+            print(f"send call back for qc_task_id: {qc_task_id}, task_token: {task_token}")
+            if success:
+              step_func.send_task_success(
+                taskToken=task_token,
+                output=json.dumps({
+                    'message': message,
+                    'task_id': qc_task_id
+                }))
+            else:
+                step_func.send_task_failure(
+                taskToken=task_token,
+                error=message,
+                cause='ParseBraketResultLambda'
+               )
 
         except Exception as e:
             print(repr(e))
-        finally:
-            try:
-                step_func.send_task_success(
-                    taskToken=task_token,
-                    output=json.dumps({
-                        'status': 'success',
-                        'qc_task_id': qc_task_id,
-                        'metrics_key': metrics_key
-                    })
-                )
-            except:
-                pass
