@@ -62,6 +62,41 @@ export class MolUnfStack extends SolutionStack {
 
     role.addToPolicy(new iam.PolicyStatement({
       resources: [
+        `arn:aws:ecr:${this.region}:${this.account}:repository/*`
+      ],
+      actions: [
+        "ecr:PutImageTagMutability",
+        "ecr:StartImageScan",
+        "ecr:DescribeImageReplicationStatus",
+        "ecr:ListTagsForResource",
+        "ecr:UploadLayerPart",
+        "ecr:BatchDeleteImage",
+        "ecr:BatchGetRepositoryScanningConfiguration",
+        "ecr:DeleteRepository",
+        "ecr:CompleteLayerUpload",
+        "ecr:TagResource",
+        "ecr:DescribeRepositories",
+        "ecr:BatchCheckLayerAvailability",
+        "ecr:ReplicateImage",
+        "ecr:GetLifecyclePolicy",
+        "ecr:PutLifecyclePolicy",
+        "ecr:DescribeImageScanFindings",
+        "ecr:GetLifecyclePolicyPreview",
+        "ecr:CreateRepository",
+        "ecr:PutImageScanningConfiguration",
+        "ecr:GetDownloadUrlForLayer",
+        "ecr:DeleteLifecyclePolicy",
+        "ecr:PutImage",
+        "ecr:UntagResource",
+        "ecr:BatchGetImage",
+        "ecr:StartLifecyclePolicyPreview",
+        "ecr:InitiateLayerUpload",
+        "ecr:GetRepositoryPolicy"
+      ]
+    }));
+
+    role.addToPolicy(new iam.PolicyStatement({
+      resources: [
         `arn:aws:logs:*:${this.account}:log-group:/aws/sagemaker/*`
       ],
       actions: [
