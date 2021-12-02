@@ -15,10 +15,10 @@ cd /home/ec2-user/SageMaker
 rm -rf *
 mkdir ./molecule-unfolding && cd ./molecule-unfolding
 
-aws s3 cp s3://amazon-braket-gcr-qc-sol-common/molecule-unfolding-code/latest/molecule-unfolding-code.zip .
-unzip molecule-unfolding-code.zip
-
-./build.sh > ~/tmp/build.log 2>&1
+aws s3 cp s3://amazon-braket-gcr-qc-sol-common/qc/latest/code.zip .
+unzip code.zip
+cd molecule-unfolding/
+./build.sh > /tmp/build.log 2>&1
 
 EOS
 
