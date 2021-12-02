@@ -175,10 +175,12 @@ export class MolUnfStack extends SolutionStack {
     });
 
     // Batch //////////////////////////
+    const usePreBuildImage = this.node.tryGetContext('use_prebuild_iamge') || false
     new MolUnfBatch(this, 'MolUnfBatch', {
       account: this.account,
       region: this.region,
-      bucket: s3bucket
+      bucket: s3bucket,
+      usePreBuildImage: usePreBuildImage
     });
 
     Aspects.of(this).add(new AddCfnNag());

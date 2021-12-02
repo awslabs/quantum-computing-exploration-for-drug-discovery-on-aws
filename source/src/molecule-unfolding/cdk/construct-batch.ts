@@ -37,6 +37,7 @@ export interface BatchProps {
     region: string;
     account: string;
     bucket: s3.Bucket;
+    usePreBuildImage: boolean
 }
 
 export class MolUnfBatch extends Construct {
@@ -900,8 +901,9 @@ export class MolUnfBatch extends Construct {
     }
 
 
-    private getECRImage(name: ECRRepoNameEnum, usePreBuildImage = false): ecs.ContainerImage | lambda.DockerImageCode {
-
+    private getECRImage(name: ECRRepoNameEnum): ecs.ContainerImage | lambda.DockerImageCode {
+        const usePreBuildImage = this.props.usePreBuildImage
+        
         if (name == ECRRepoNameEnum.Batch_Create_Model) {
             if (usePreBuildImage) {
                 return ecs.ContainerImage.fromEcrRepository(
