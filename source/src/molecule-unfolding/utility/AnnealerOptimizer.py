@@ -7,7 +7,10 @@ from braket.ocean_plugin import BraketDWaveSampler
 from braket.ocean_plugin import BraketSampler
 
 import time
+import pickle
+import os
 import logging
+
 
 class Annealer():
 
@@ -21,8 +24,10 @@ class Annealer():
         self.time = {}
         self.init_time()
 
-        # initial result 
+        # initial result
         self.response = None
+        # result containing time/response
+        self.result = None
 
         if method == "dwave-sa":
             logging.info("use simulated annealer from dimod")
@@ -54,8 +59,9 @@ class Annealer():
         result = {}
         result["response"] = self.response
         result["time"] = self.time["run-time"]
+        self.result = result
         return result
-    
+
     def get_task_id(self):
         if self.method == "dwave-qa":
             return self.response.info["taskMetadata"]["id"].split("/")[-1]
@@ -63,7 +69,21 @@ class Annealer():
             raise Exception(
                 "only method 'dwave-qa' has task id !")
 
-        
+    def save(self, name, path=None):
+        save_path = None
+        save_name = f"{name}"
+
+        if path != None:
+            save_path = os.path.join(path, save_name)
+        else:
+            save_path = os.path.join(".", save_name)
+
+        with open(save_path, "wb") as f:
+            pickle.dump(self.result, f)
+
+        logging.info(f"finish save {save_name}")
+
+        return save_path
 
     def embed(self):
         start = time.time()
