@@ -91,7 +91,7 @@ def handler(event, context):
 
         message = None
         try:
-            print("ResultParser ...")
+            print(f"ResultParser(task_id={qc_task_id}, prefix={prefix}) ...")
             parser = ResultParser('dwave-qa',
                                   bucket=bucket,
                                   prefix=prefix,
