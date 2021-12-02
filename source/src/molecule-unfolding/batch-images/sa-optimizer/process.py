@@ -143,15 +143,15 @@ if __name__ == '__main__':
         model_file, model_param)
 
     time_in_seconds = sa_optimizer(qubo_model)
-    task_id = "NA"
+    task_id = ""
 
     metrics_items = [execution_id,
                      "HPC",
                      str(resource),
                      model_param,
                      str(time_in_seconds),
-                     str(time_in_seconds),
-                     str(time_in_seconds),
+                     '',
+                     '',
                      start_time,
                      experiment_name,
                      task_id,
