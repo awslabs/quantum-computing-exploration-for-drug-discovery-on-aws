@@ -13,7 +13,6 @@ nohup rm -fr "$TMPDIR" &
 
 cd /home/ec2-user/SageMaker
 rm -rf *
-mkdir ./molecule-unfolding && cd ./molecule-unfolding
 
 aws s3 cp s3://amazon-braket-gcr-qc-sol-common/qc/latest/code.zip .
 unzip code.zip
