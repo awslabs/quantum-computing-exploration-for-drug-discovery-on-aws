@@ -93,9 +93,10 @@ class QMUQUBO():
                         self.model_qubo["pre-calc"][model_name]["rb_var_map"] = self.rb_var_map
                         self.model_qubo["pre-calc"][model_name]["time"] = end-start
                         self.model_qubo["pre-calc"][model_name]["model_name"] = model_name
-                        # optimize results
-                        self.model_qubo["pre-calc"][model_name]["optimizer"] = {}
-                        self.model_qubo["pre-calc"][model_name]["optimizer"]["post"] = {}
+                        self.model_qubo["pre-calc"][model_name]["rb_name"] = list(self.mol_data.bond_graph.sort_ris_data[str(M)].keys())
+                        # # optimize results
+                        # self.model_qubo["pre-calc"][model_name]["optimizer"] = {}
+                        # self.model_qubo["pre-calc"][model_name]["optimizer"]["post"] = {}
 
                         logging.info(
                             f"Construct model for M:{M},D:{D},A:{A},hubo_qubo_val:{hubo_qubo_val} {(end-start)/60} min")
