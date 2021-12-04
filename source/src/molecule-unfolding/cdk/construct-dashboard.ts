@@ -2,7 +2,7 @@ import * as cdk from '@aws-cdk/core';
 import * as s3 from '@aws-cdk/aws-s3'
 import * as quicksight from '@aws-cdk/aws-quicksight';
 
-export interface DashBoardProps {
+interface DashBoardProps {
     region: string;
     account: string;
     bucket: s3.Bucket;

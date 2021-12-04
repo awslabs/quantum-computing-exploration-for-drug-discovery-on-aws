@@ -1,4 +1,3 @@
-import * as path from 'path';
 import * as cdk from '@aws-cdk/core';
 import * as ec2 from '@aws-cdk/aws-ec2';
 import * as lambda from '@aws-cdk/aws-lambda';
@@ -8,30 +7,26 @@ import * as ecs from '@aws-cdk/aws-ecs'
 import * as sfn from '@aws-cdk/aws-stepfunctions';
 import * as tasks from '@aws-cdk/aws-stepfunctions-tasks';
 import * as s3 from '@aws-cdk/aws-s3'
-import * as logs from '@aws-cdk/aws-logs'
-import * as kms from '@aws-cdk/aws-kms'
-import * as ecr from '@aws-cdk/aws-ecr'
 import * as sns from '@aws-cdk/aws-sns'
 
-const s3n = require('@aws-cdk/aws-s3-notifications')
-
-enum ECRRepoNameEnum {
-    Batch_Create_Model,
-    Batch_Sa_Optimizer,
-    Lambda_CheckDevice,
-    Lambda_SubmitQCTask,
-    Lambda_ParseBraketResult
-};
 
 import {
-    Aspects,
     Construct,
 } from '@aws-cdk/core';
 
+
 import {
-    ChangePublicSubnet,
-    grantKmsKeyPerm
-} from './utils'
+    ECRRepoNameEnum,
+    ECRImageUtil
+} from './utils/utils-images'
+
+import {
+    RoleUtil
+} from './utils/utils-role'
+
+import {
+    LambdaUtil
+} from './utils/utils-lambda'
 
 
 export interface BatchProps {
@@ -41,6 +36,9 @@ export interface BatchProps {
     usePreBuildImage: boolean;
     dashboardUrl: string;
     prefix: string;
+    vpc: ec2.Vpc;
+    batchSg: ec2.SecurityGroup;
+    lambdaSg: ec2.SecurityGroup;
 }
 
 export class MolUnfBatch extends Construct {
@@ -48,277 +46,23 @@ export class MolUnfBatch extends Construct {
     private batchJobExecutionRole: iam.Role;
     private batchJobRole: iam.Role;
     private props: BatchProps;
-
-    private createBatchJobExecutionRole(roleName: string): iam.Role {
-        const role = new iam.Role(this, roleName, {
-            assumedBy: new iam.ServicePrincipal('ecs-tasks.amazonaws.com'),
-        });
-
-        role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonBraketFullAccess'))
-        role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonEC2ContainerRegistryReadOnly'))
-
-        role.addToPolicy(new iam.PolicyStatement({
-            resources: [
-                "arn:aws:s3:::*/*"
-            ],
-            actions: [
-                "s3:GetObject",
-                "s3:PutObject"
-            ]
-        }));
-
-        role.addToPolicy(new iam.PolicyStatement({
-            resources: [
-                'arn:aws:s3:::*'
-            ],
-            actions: [
-                "s3:ListBucket"
-            ]
-        }));
-
-        role.addToPolicy(new iam.PolicyStatement({
-            resources: [
-                `arn:aws:logs:*:${this.props.account}:log-group:/aws/batch/*`
-            ],
-            actions: [
-                "logs:CreateLogStream",
-                "logs:DescribeLogStreams",
-                "logs:PutLogEvents",
-                "logs:CreateLogGroup"
-            ]
-        }));
-        role.addToPolicy(new iam.PolicyStatement({
-            resources: [
-                'arn:aws:braket:::device/qpu/d-wave/*',
-            ],
-            actions: [
-                "braket:GetDevice",
-                "braket:GetQuantumTask",
-                "braket:SearchQuantumTasks",
-                "braket:SearchDevices",
-                "braket:ListTagsForResource",
-                "braket:CreateQuantumTask",
-                "braket:CancelQuantumTask"
-            ]
-        }));
-        return role
-    }
-
-    private createAggResultLambdaRole(): iam.Role {
-        const role = new iam.Role(this, 'AggResultLambdaRole', {
-            assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
-        });
-        role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'))
-        role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonAthenaFullAccess'))
-        role.addToPolicy(new iam.PolicyStatement({
-            resources: [
-                "arn:aws:s3:::*/*"
-            ],
-            actions: [
-                "s3:GetObject",
-                "s3:PutObject"
-            ]
-        }));
-
-        role.addToPolicy(new iam.PolicyStatement({
-            resources: [
-                'arn:aws:s3:::*'
-            ],
-            actions: [
-                "s3:ListBucket"
-            ]
-        }));
-
-        role.addToPolicy(new iam.PolicyStatement({
-            effect: iam.Effect.ALLOW,
-            resources: [
-                '*'
-            ],
-            actions: [
-                "ec2:AttachNetworkInterface",
-                "ec2:CreateNetworkInterface",
-                "ec2:CreateNetworkInterfacePermission",
-                "ec2:DeleteNetworkInterface",
-                "ec2:DeleteNetworkInterfacePermission",
-                "ec2:DescribeDhcpOptions",
-                "ec2:DescribeNetworkInterfaces",
-                "ec2:DescribeNetworkInterfacePermissions",
-                "ec2:DescribeSubnets",
-                "ec2:DescribeVpcs",
-                "ec2:DescribeInstances"
-            ]
-        }));
-        role.addToPolicy(new iam.PolicyStatement({
-            resources: [
-                `arn:aws:logs:*:${this.props.account}:log-group:*`
-            ],
-            actions: [
-                "logs:CreateLogStream",
-                "logs:DescribeLogStreams",
-                "logs:PutLogEvents",
-                "logs:CreateLogGroup"
-            ]
-        }));
-        return role;
-    }
-
-    private createBraketLambdaRole(roleName: string): iam.Role {
-        const role = new iam.Role(this, roleName, {
-            assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
-        });
-        role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'))
-        role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonBraketFullAccess'))
-
-        role.addToPolicy(new iam.PolicyStatement({
-            resources: [
-                `arn:aws:logs:*:${this.props.account}:log-group:*`
-            ],
-            actions: [
-                "logs:CreateLogStream",
-                "logs:DescribeLogStreams",
-                "logs:PutLogEvents",
-                "logs:CreateLogGroup"
-            ]
-        }));
-
-        role.addToPolicy(new iam.PolicyStatement({
-            effect: iam.Effect.ALLOW,
-            resources: [
-                '*'
-            ],
-            actions: [
-                "ec2:AttachNetworkInterface",
-                "ec2:CreateNetworkInterface",
-                "ec2:CreateNetworkInterfacePermission",
-                "ec2:DeleteNetworkInterface",
-                "ec2:DeleteNetworkInterfacePermission",
-                "ec2:DescribeDhcpOptions",
-                "ec2:DescribeNetworkInterfaces",
-                "ec2:DescribeNetworkInterfacePermissions",
-                "ec2:DescribeSubnets",
-                "ec2:DescribeVpcs",
-                "ec2:DescribeInstances"
-            ]
-        }));
-
-        role.addToPolicy(new iam.PolicyStatement({
-            actions: [
-                "states:ListStateMachines",
-                "states:CreateStateMachine",
-                "states:DescribeStateMachine",
-                "states:StartExecution",
-                "states:DeleteStateMachine",
-                "states:ListExecutions",
-                "states:UpdateStateMachine",
-                "states:DescribeStateMachineForExecution",
-                "states:GetExecutionHistory",
-                "states:StopExecution",
-                "states:SendTaskSuccess",
-                "states:SendTaskFailure",
-                "states:SendTaskHeartbeat"
-            ],
-            resources: [
-                "arn:aws:states:*:*:*"
-            ]
-        }));
-
-        return role;
-    }
-
-    private createGenericLambdaRole(roleName: string): iam.Role {
-        const role = new iam.Role(this, roleName, {
-            assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
-        });
-        role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'))
-        role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonAthenaFullAccess'))
-        role.addToPolicy(new iam.PolicyStatement({
-            resources: [
-                "arn:aws:s3:::*/*"
-            ],
-            actions: [
-                "s3:GetObject",
-                "s3:PutObject"
-            ]
-        }));
-
-        role.addToPolicy(new iam.PolicyStatement({
-            resources: [
-                'arn:aws:s3:::*'
-            ],
-            actions: [
-                "s3:ListBucket"
-            ]
-        }));
-
-        role.addToPolicy(new iam.PolicyStatement({
-            effect: iam.Effect.ALLOW,
-            resources: [
-                '*'
-            ],
-            actions: [
-                "ec2:AttachNetworkInterface",
-                "ec2:CreateNetworkInterface",
-                "ec2:CreateNetworkInterfacePermission",
-                "ec2:DeleteNetworkInterface",
-                "ec2:DeleteNetworkInterfacePermission",
-                "ec2:DescribeDhcpOptions",
-                "ec2:DescribeNetworkInterfaces",
-                "ec2:DescribeNetworkInterfacePermissions",
-                "ec2:DescribeSubnets",
-                "ec2:DescribeVpcs",
-                "ec2:DescribeInstances"
-            ]
-        }));
-        role.addToPolicy(new iam.PolicyStatement({
-            resources: [
-                `arn:aws:logs:*:${this.props.account}:log-group:*`
-            ],
-            actions: [
-                "logs:CreateLogStream",
-                "logs:DescribeLogStreams",
-                "logs:PutLogEvents",
-                "logs:CreateLogGroup"
-            ]
-        }));
-
-        role.addToPolicy(new iam.PolicyStatement({
-            actions: [
-                "states:ListStateMachines",
-                "states:CreateStateMachine",
-                "states:DescribeStateMachine",
-                "states:StartExecution",
-                "states:DeleteStateMachine",
-                "states:ListExecutions",
-                "states:UpdateStateMachine",
-                "states:DescribeStateMachineForExecution",
-                "states:GetExecutionHistory",
-                "states:StopExecution",
-                "states:SendTaskSuccess",
-                "states:SendTaskFailure",
-                "states:SendTaskHeartbeat"
-            ],
-            resources: [
-                "arn:aws:states:*:*:*"
-            ]
-        }));
-        role.addToPolicy(new iam.PolicyStatement({
-            actions: [
-                "iam:PassRole"
-            ],
-            resources: [
-                "arn:aws:iam:::role/*"
-            ]
-        }));
-        return role;
-    }
+    private images: ECRImageUtil
+    private roleUtil: RoleUtil
+    private lambdaUtil: LambdaUtil
 
     // constructor 
     constructor(scope: Construct, id: string, props: BatchProps) {
         super(scope, id);
         this.props = props;
+        this.images = ECRImageUtil.newInstance(scope, this.props)
+        this.roleUtil = RoleUtil.newInstance(scope, this.props)
 
-        this.batchJobExecutionRole = this.createBatchJobExecutionRole('executionRole');
-        this.batchJobRole = this.createBatchJobExecutionRole('jobRole');
+        this.lambdaUtil = LambdaUtil.newInstance(scope, this.props, {
+            roleUtil: this.roleUtil,
+            imageUtil: this.images
+        });
+        this.batchJobExecutionRole = this.roleUtil.createBatchJobExecutionRole('executionRole');
+        this.batchJobRole = this.roleUtil.createBatchJobExecutionRole('jobRole');
 
         const hpcIstanceTypes = [
             ec2.InstanceType.of(ec2.InstanceClass.C5, ec2.InstanceSize.LARGE), // 2 vcpus, 4G mem
@@ -326,45 +70,8 @@ export class MolUnfBatch extends Construct {
             ec2.InstanceType.of(ec2.InstanceClass.C5, ec2.InstanceSize.XLARGE2), // 8 vcpus, 16G mem
             ec2.InstanceType.of(ec2.InstanceClass.C5, ec2.InstanceSize.XLARGE4), // 16 vcpus, 32G mem
         ];
-
-        const vpc = new ec2.Vpc(this, 'VPC', {
-            cidr: '10.1.0.0/16',
-            subnetConfiguration: [{
-                    cidrMask: 18,
-                    name: 'Ingress',
-                    subnetType: ec2.SubnetType.PUBLIC
-                },
-                {
-                    cidrMask: 18,
-                    name: 'Application',
-                    subnetType: ec2.SubnetType.PRIVATE_WITH_NAT
-                }
-            ]
-        });
-
-        vpc.publicSubnets.forEach(s => {
-            Aspects.of(s).add(new ChangePublicSubnet())
-        });
-
-        const logKey = new kms.Key(this, 'qcLogKey', {
-            enableKeyRotation: true
-        });
-        grantKmsKeyPerm(logKey);
-
-        const vpcFlowlog = new logs.LogGroup(this, "vpcFlowlog", {
-            encryptionKey: logKey
-        });
-
-        vpc.addFlowLog("logtoCW", {
-            destination: ec2.FlowLogDestination.toCloudWatchLogs(vpcFlowlog),
-            trafficType: ec2.FlowLogTrafficType.ALL
-        });
-
-        const batchSg = new ec2.SecurityGroup(this, "batchSg", {
-            vpc,
-            allowAllOutbound: true,
-            description: "Security Group for QC batch compute environment"
-        });
+        const vpc = this.props.vpc
+        const batchSg = this.props.batchSg
 
         const batchHPCEnvironment = new batch.ComputeEnvironment(this, 'Batch-HPC-Compute-Env', {
             computeResources: {
@@ -386,29 +93,7 @@ export class MolUnfBatch extends Construct {
             }, ],
         });
 
-        const lambdaSg = new ec2.SecurityGroup(this, "lambdaSg", {
-            vpc,
-            allowAllOutbound: true,
-            description: "Security Group for lambda"
-        });
-
-        const lambdaRole = this.createGenericLambdaRole('TaskParametersLambdaRole');
-
-        const taskParamLambda = new lambda.Function(this, 'TaskParametersLambda', {
-            runtime: lambda.Runtime.PYTHON_3_8,
-            code: lambda.Code.fromAsset(path.join(__dirname, '../lambda/TaskParametersLambda/')),
-            handler: 'app.handler',
-            memorySize: 512,
-            timeout: cdk.Duration.seconds(60),
-            vpc,
-            vpcSubnets: vpc.selectSubnets({
-                subnetType: ec2.SubnetType.PRIVATE_WITH_NAT
-            }),
-            role: lambdaRole,
-            reservedConcurrentExecutions: 10,
-            securityGroups: [lambdaSg]
-        })
-
+        const taskParamLambda = this.lambdaUtil.createTaskParametersLambda()
         const checkInputParamsStep = new tasks.LambdaInvoke(this, 'Check Input', {
             lambdaFunction: taskParamLambda,
             payload: sfn.TaskInput.fromObject({
@@ -423,10 +108,9 @@ export class MolUnfBatch extends Construct {
 
         const createModelStep = this.createCreateModelStep(hpcJobQueue);
         const hpcStateMachine = this.createHPCStateMachine(taskParamLambda, hpcJobQueue);
-        const qcStateMachine = this.createQCStateMachine(vpc, lambdaSg, taskParamLambda)
+        const qcStateMachine = this.createQCStateMachine(taskParamLambda)
         const qcAndHPCStateMachine = this.createHPCAndQCStateMachine(hpcStateMachine, qcStateMachine)
-
-        const aggResultStep = this.createAggResultStep(vpc, lambdaSg);
+        const aggResultStep = this.createAggResultStep();
         const notifyStep = this.createSNSNotifyStep();
         const postSteps = sfn.Chain.start(aggResultStep).next(notifyStep)
 
@@ -474,8 +158,6 @@ export class MolUnfBatch extends Construct {
             timeout: cdk.Duration.hours(36)
         });
 
-        this.createEventListener(vpc, lambdaSg)
-
         new cdk.CfnOutput(this, "stateMachineName", {
             value: benchmarkStateMachine.stateMachineName,
             description: "State Machine Name"
@@ -517,7 +199,7 @@ export class MolUnfBatch extends Construct {
     }
 
     private createCreateModelStep(hpcJobQueue: batch.JobQueue): tasks.BatchSubmitJob {
-        const createModelEcrImage = this.getECRImage(ECRRepoNameEnum.Batch_Create_Model) as ecs.ContainerImage
+        const createModelEcrImage = this.images.getECRImage(ECRRepoNameEnum.Batch_Create_Model) as ecs.ContainerImage
 
         const createModelJobDef = new batch.JobDefinition(this, 'createModelJobDefinition', {
             platformCapabilities: [batch.PlatformCapabilities.EC2],
@@ -585,8 +267,6 @@ export class MolUnfBatch extends Construct {
     }
 
     private createQCStateMachine(
-        vpc: ec2.Vpc,
-        lambdaSg: ec2.SecurityGroup,
         parametersLambda: lambda.Function
     ): sfn.StateMachine {
 
@@ -601,7 +281,7 @@ export class MolUnfBatch extends Construct {
             outputPath: '$.Payload'
         });
 
-        const runOnQCDeviceStateMachine = this.createRunOnQCDeviceStateMachine(vpc, lambdaSg, parametersLambda)
+        const runOnQCDeviceStateMachine = this.createRunOnQCDeviceStateMachine(parametersLambda)
 
         const runOnQCDeviceStateMachineStep = new tasks.StepFunctionsStartExecution(this, "Run On Device", {
             stateMachine: runOnQCDeviceStateMachine,
@@ -632,26 +312,10 @@ export class MolUnfBatch extends Construct {
     }
 
     private createRunOnQCDeviceStateMachine(
-        vpc: ec2.Vpc,
-        lambdaSg: ec2.SecurityGroup,
         parametersLambda: lambda.Function
     ): sfn.StateMachine {
 
-        const checkLambdaRole = this.createBraketLambdaRole('DeviceAvailableCheckLambdaRole');
-        const code = this.getECRImage(ECRRepoNameEnum.Lambda_CheckDevice) as lambda.DockerImageCode
-        const checkQCDeviceLambda = new lambda.DockerImageFunction(this, 'DeviceAvailableCheckLambda', {
-            code,
-            memorySize: 512,
-            timeout: cdk.Duration.seconds(60),
-            vpc,
-            vpcSubnets: vpc.selectSubnets({
-                subnetType: ec2.SubnetType.PRIVATE_WITH_NAT
-            }),
-            role: checkLambdaRole,
-            reservedConcurrentExecutions: 10,
-            securityGroups: [lambdaSg]
-        })
-
+        const checkQCDeviceLambda = this.lambdaUtil.createCheckQCDeviceLambda()
         const checkQCDeviceStep = new tasks.LambdaInvoke(this, "Check Device status", {
             lambdaFunction: checkQCDeviceLambda,
             payload: sfn.TaskInput.fromObject({
@@ -676,7 +340,7 @@ export class MolUnfBatch extends Construct {
             outputPath: '$.Payload'
         });
 
-        const submitQCTaskStep = this.submitQCTaskStep(vpc, lambdaSg);
+        const submitQCTaskStep = this.submitQCTaskStep();
 
         const parallelQCJobsMap = new sfn.Map(this, 'ParallelQCJobs', {
             maxConcurrency: 20,
@@ -707,7 +371,7 @@ export class MolUnfBatch extends Construct {
     }
 
     private createHPCStateMachine(parametersLambda: lambda.Function, hpcJobQueue: batch.JobQueue): sfn.StateMachine {
-        const hpcEcrImage = this.getECRImage(ECRRepoNameEnum.Batch_Sa_Optimizer) as ecs.ContainerImage
+        const hpcEcrImage = this.images.getECRImage(ECRRepoNameEnum.Batch_Sa_Optimizer) as ecs.ContainerImage
         const parametersLambdaStep = new tasks.LambdaInvoke(this, 'Get Task Parameters', {
             lambdaFunction: parametersLambda,
             payload: sfn.TaskInput.fromObject({
@@ -793,26 +457,8 @@ export class MolUnfBatch extends Construct {
         return hpcStateMachine
     }
 
-    private createAggResultStep(vpc: ec2.Vpc, lambdaSg: ec2.SecurityGroup): tasks.LambdaInvoke {
-        const aggLambdaRole = this.createAggResultLambdaRole();
-        const aggResultLambda = new lambda.Function(this, 'AggResultLambda', {
-            runtime: lambda.Runtime.NODEJS_12_X,
-            code: lambda.Code.fromAsset(path.join(__dirname, '../lambda/AthenaTabeLambda/')),
-            handler: 'index.handler',
-            memorySize: 512,
-            timeout: cdk.Duration.seconds(120),
-            environment: {
-                BUCKET: this.props.bucket.bucketName
-            },
-            vpc,
-            vpcSubnets: vpc.selectSubnets({
-                subnetType: ec2.SubnetType.PRIVATE_WITH_NAT
-            }),
-            role: aggLambdaRole,
-            reservedConcurrentExecutions: 10,
-            securityGroups: [lambdaSg]
-        });
-
+    private createAggResultStep(): tasks.LambdaInvoke {
+        const aggResultLambda = this.lambdaUtil.createAggResultLambda()
         const aggResultStep = new tasks.LambdaInvoke(this, 'Aggregate Result', {
             lambdaFunction: aggResultLambda,
             payload: sfn.TaskInput.fromObject({
@@ -826,45 +472,8 @@ export class MolUnfBatch extends Construct {
         return aggResultStep;
     }
 
-    private createEventListener(vpc: ec2.Vpc, lambdaSg: ec2.SecurityGroup) {
-        const lambdaRole = this.createGenericLambdaRole("ParseBraketResultLambdaRole")
-        const code = this.getECRImage(ECRRepoNameEnum.Lambda_ParseBraketResult) as lambda.DockerImageCode
-        const parseBraketResultLambda = new lambda.DockerImageFunction(this, 'ParseBraketResultLambda', {
-            code,
-            memorySize: 512,
-            timeout: cdk.Duration.seconds(120),
-            vpc,
-            vpcSubnets: vpc.selectSubnets({
-                subnetType: ec2.SubnetType.PRIVATE_WITH_NAT
-            }),
-            role: lambdaRole,
-            reservedConcurrentExecutions: 20,
-            securityGroups: [lambdaSg]
-        });
-
-        this.props.bucket.addEventNotification(s3.EventType.OBJECT_CREATED,
-            new s3n.LambdaDestination(parseBraketResultLambda), {
-                prefix: `${this.props.prefix}/qc_task_output/`,
-                suffix: 'results.json'
-            });
-    }
-
-    private submitQCTaskStep(vpc: ec2.Vpc, lambdaSg: ec2.SecurityGroup): tasks.LambdaInvoke {
-        const lambdaRole = this.createBraketLambdaRole('SubmitQCTaskLambdaRole')
-        const code = this.getECRImage(ECRRepoNameEnum.Lambda_SubmitQCTask) as lambda.DockerImageCode
-        const submitQCTaskStepLambd = new lambda.DockerImageFunction(this, 'SubmitQCTaskLambda', {
-            code,
-            memorySize: 512,
-            timeout: cdk.Duration.seconds(120),
-            vpc,
-            vpcSubnets: vpc.selectSubnets({
-                subnetType: ec2.SubnetType.PRIVATE_WITH_NAT
-            }),
-            role: lambdaRole,
-            reservedConcurrentExecutions: 20,
-            securityGroups: [lambdaSg]
-        });
-
+    private submitQCTaskStep(): tasks.LambdaInvoke {
+        const submitQCTaskStepLambd = this.lambdaUtil.createSubmitQCTaskLambda()
         const submitQCTaskStep = new tasks.LambdaInvoke(this, 'Submit QC Task', {
             lambdaFunction: submitQCTaskStepLambd,
             payload: sfn.TaskInput.fromObject({
@@ -902,63 +511,5 @@ export class MolUnfBatch extends Construct {
         });
 
         return snsStep
-    }
-
-
-    private getECRImage(name: ECRRepoNameEnum): ecs.ContainerImage | lambda.DockerImageCode {
-        const usePreBuildImage = this.props.usePreBuildImage
-
-        if (name == ECRRepoNameEnum.Batch_Create_Model) {
-            if (usePreBuildImage) {
-                return ecs.ContainerImage.fromEcrRepository(
-                    ecr.Repository.fromRepositoryName(this, 'create-model',
-                    `${this.props.prefix}/create-model`)
-                );
-            }
-            return ecs.ContainerImage.fromAsset(
-                path.join(__dirname, '../batch-images/create-model'))
-        }
-
-        if (name == ECRRepoNameEnum.Batch_Sa_Optimizer) {
-            if (usePreBuildImage) {
-                return ecs.ContainerImage.fromEcrRepository(
-                    ecr.Repository.fromRepositoryName(this, 'sa-optimizer',
-                    `${this.props.prefix}/sa-optimizer`)
-                );
-            }
-
-            return ecs.ContainerImage.fromAsset(
-                path.join(__dirname, '../batch-images/sa-optimizer'))
-        }
-        if (name == ECRRepoNameEnum.Lambda_CheckDevice) {
-            if (usePreBuildImage) {
-                return lambda.DockerImageCode.fromEcr(
-                    ecr.Repository.fromRepositoryName(this, 'lambda-device-available-check',
-                    `${this.props.prefix}/lambda-device-available-check`)
-                );
-            }
-            return lambda.DockerImageCode.fromImageAsset(path.join(__dirname, '../lambda/DeviceAvailableCheckLambda/'));
-        }
-
-        if (name == ECRRepoNameEnum.Lambda_SubmitQCTask) {
-            if (usePreBuildImage) {
-                return lambda.DockerImageCode.fromEcr(
-                    ecr.Repository.fromRepositoryName(this, 'lambda-submit-qc-task',
-                    `${this.props.prefix}/lambda-submit-qc-task`)
-                );
-            }
-            return lambda.DockerImageCode.fromImageAsset(path.join(__dirname, '../lambda/SubmitQCTaskLambda/'));
-        }
-
-        if (name == ECRRepoNameEnum.Lambda_ParseBraketResult) {
-            if (usePreBuildImage) {
-                return lambda.DockerImageCode.fromEcr(
-                    ecr.Repository.fromRepositoryName(this, 'lambda-parse-braket-result',
-                        `${this.props.prefix}/lambda-parse-braket-result`)
-                );
-            }
-            return lambda.DockerImageCode.fromImageAsset(path.join(__dirname, '../lambda/ParseBraketResultLambda/'));
-        }
-        throw new Error("Cannot find ecr: " + name);
     }
 }

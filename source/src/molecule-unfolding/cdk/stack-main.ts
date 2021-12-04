@@ -1,7 +1,7 @@
 import * as cdk from '@aws-cdk/core';
 import * as s3 from '@aws-cdk/aws-s3';
-import * as iam from '@aws-cdk/aws-iam'
 import * as kms from '@aws-cdk/aws-kms'
+import setup_vpc_and_sg from './utils/vpc'
 
 import {
   CfnNotebookInstanceLifecycleConfig,
@@ -24,7 +24,7 @@ import {
 
 import {
   AddCfnNag
-} from './utils'
+} from './utils/utils'
 
 import {
   MolUnfBatch
@@ -34,89 +34,24 @@ import {
   MolUnfDashboard
 } from './construct-dashboard'
 
+import {
+  RoleUtil
+} from './utils/utils-role'
+
+import {
+  EventListener
+} from './construct-listener'
+
 export class MolUnfStack extends SolutionStack {
-
-  // Methods //////////////////////////
-
-  private createNotebookIamRole(): iam.Role {
-
-    const role = new iam.Role(this, 'gcr-qc-notebook-role', {
-      assumedBy: new iam.ServicePrincipal('sagemaker.amazonaws.com'),
-    });
-
-    role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonBraketFullAccess'))
-    role.addToPolicy(new iam.PolicyStatement({
-      resources: [
-        "arn:aws:s3:::*/*"
-      ],
-      actions: [
-        "s3:GetObject",
-        "s3:PutObject"
-      ]
-    }));
-
-    role.addToPolicy(new iam.PolicyStatement({
-      resources: [
-        'arn:aws:s3:::*'
-      ],
-      actions: [
-        "s3:ListBucket"
-      ]
-    }));
-
-    role.addToPolicy(new iam.PolicyStatement({
-      resources: [
-        `arn:aws:ecr:${this.region}:${this.account}:repository/*`
-      ],
-      actions: [
-        "ecr:PutImageTagMutability",
-        "ecr:StartImageScan",
-        "ecr:DescribeImageReplicationStatus",
-        "ecr:ListTagsForResource",
-        "ecr:UploadLayerPart",
-        "ecr:BatchDeleteImage",
-        "ecr:BatchGetRepositoryScanningConfiguration",
-        "ecr:DeleteRepository",
-        "ecr:CompleteLayerUpload",
-        "ecr:TagResource",
-        "ecr:DescribeRepositories",
-        "ecr:BatchCheckLayerAvailability",
-        "ecr:ReplicateImage",
-        "ecr:GetLifecyclePolicy",
-        "ecr:PutLifecyclePolicy",
-        "ecr:DescribeImageScanFindings",
-        "ecr:GetLifecyclePolicyPreview",
-        "ecr:CreateRepository",
-        "ecr:PutImageScanningConfiguration",
-        "ecr:GetDownloadUrlForLayer",
-        "ecr:DeleteLifecyclePolicy",
-        "ecr:PutImage",
-        "ecr:UntagResource",
-        "ecr:BatchGetImage",
-        "ecr:StartLifecyclePolicyPreview",
-        "ecr:InitiateLayerUpload",
-        "ecr:GetRepositoryPolicy"
-      ]
-    }));
-
-    role.addToPolicy(new iam.PolicyStatement({
-      resources: [
-        `arn:aws:logs:*:${this.account}:log-group:/aws/sagemaker/*`
-      ],
-      actions: [
-        "logs:CreateLogStream",
-        "logs:DescribeLogStreams",
-        "logs:PutLogEvents",
-        "logs:CreateLogGroup"
-      ]
-    }));
-    return role;
-  }
+  private roleUtil: RoleUtil
 
   // constructor 
   constructor(scope: Construct, id: string, props: StackProps = {}) {
     super(scope, id, props);
-    this.setDescription('(SO8029) CDK for GCR solution: Quantum Ready For Drug Discovery (Notebook)');
+    this.setDescription('(SO8029) CDK for GCR solution: Quantum Ready For Drug Discovery');
+    const stackName = this.stackName
+
+    const prefix = 'molecule-unfolding'
 
     const INSTANCE_TYPE = 'ml.c5.xlarge'
 
@@ -143,7 +78,14 @@ export class MolUnfStack extends SolutionStack {
 
     console.log(`usePreBuildImage: ${usePreBuildImage}`)
 
-    const role = this.createNotebookIamRole()
+    this.roleUtil = RoleUtil.newInstance(this, {
+      account: this.account,
+      region: this.region,
+      bucket: s3bucket,
+      prefix,
+    });
+
+    const notebookRole = this.roleUtil.createNotebookIamRole()
 
     let onStartContent = readFileSync(`${__dirname}/resources/onStart.template`, 'utf-8')
     if (usePreBuildImage) {
@@ -166,7 +108,7 @@ export class MolUnfStack extends SolutionStack {
 
     const notebookInstnce = new CfnNotebookInstance(this, 'GCRQCLifeScienceNotebook', {
       instanceType: instanceTypeParam.valueAsString,
-      roleArn: role.roleArn,
+      roleArn: notebookRole.roleArn,
       rootAccess: 'Enabled',
       lifecycleConfigName: installBraketSdK.attrNotebookInstanceLifecycleConfigName,
       volumeSizeInGb: 50,
@@ -192,14 +134,15 @@ export class MolUnfStack extends SolutionStack {
       description: "Notebook URL"
     });
 
-    const prefix = 'molecule-unfolding'
+    const {vpc, batchSg, lambdaSg} = setup_vpc_and_sg(this)
+
     // Dashboard //////////////////////////
     const dashboard = new MolUnfDashboard(this, 'MolUnfDashboard', {
       account: this.account,
       region: this.region,
       bucket: s3bucket,
       prefix,
-      stackName: this.stackName
+      stackName
     });
 
     // Batch //////////////////////////
@@ -208,14 +151,27 @@ export class MolUnfStack extends SolutionStack {
       region: this.region,
       bucket: s3bucket,
       prefix,
-      usePreBuildImage: usePreBuildImage,
-      dashboardUrl: dashboard.outputDashboradUrl.value
+      usePreBuildImage,
+      dashboardUrl: dashboard.outputDashboradUrl.value,
+      vpc, 
+      batchSg, 
+      lambdaSg,
     });
 
     if (usePreBuildImage) {
       console.log("add addDependency batchStepFuncs -> notebookInstnce")
       batchStepFuncs.node.addDependency(notebookInstnce)
     }
+
+    new EventListener(this, 'BraketTaskEventHanlder', {
+      account: this.account,
+      region: this.region,
+      bucket: s3bucket,
+      prefix,
+      usePreBuildImage,
+      vpc,
+      lambdaSg,
+    })
 
     Aspects.of(this).add(new AddCfnNag());
   }
