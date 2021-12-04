@@ -13,7 +13,6 @@ fi
 echo ""
 echo "Please confirm below information:"
 
-echo "    repoName: $repoName"
 echo "    REGION: $REGION"
 echo "    AWS_CMD: $AWS_CMD"
 echo ""
