@@ -9,6 +9,8 @@ import numpy as np
 import re
 
 import logging
+import pickle
+import os
 
 from .GraphModel import BuildMolGraph
 
@@ -58,3 +60,22 @@ class MoleculeData():
     def atom_parset(self):
         self.mol.df['atom_id'] = self.mol.df.atom_id.astype('str')
         return self.mol.df.set_index('atom_id').T.to_dict('dict')
+
+    def save(self, version, path=None):
+        save_path = None
+        save_name = f"mol_{self.name}_{version}.pickle"
+
+        if path != None:
+            save_path = os.path.join(path, save_name)
+        else:
+            save_path = os.path.join(".", save_name)
+
+        with open(save_path, "wb") as f:
+            pickle.dump(self, f)
+        logging.info(f"finish save {save_name}")
+        return save_path
+
+    @classmethod
+    def load(cls, filename):
+        with open(filename, "rb") as f:
+            return pickle.load(f)

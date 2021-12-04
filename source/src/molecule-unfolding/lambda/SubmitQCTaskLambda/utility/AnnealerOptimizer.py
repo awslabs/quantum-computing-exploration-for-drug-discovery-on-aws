@@ -14,9 +14,11 @@ import logging
 
 class Annealer():
 
-    def __init__(self, qubo, method, **param):
+    def __init__(self, model, method, **param):
 
-        self.qubo = qubo
+        self.qubo = model["qubo"]
+        self.model_info = {}
+        self._update_model_info(model)
         self.method = method
         self.param = param
 
@@ -40,6 +42,13 @@ class Annealer():
             self.sampler = BraketSampler(s3_folder, param["device"])
             logging.info("use quantum annealer {} ".format(param["device"]))
 
+    def _update_model_info(self, model):
+        self.model_info["model_name"] = model["model_name"]
+        self.model_info["rb_name"] = model["rb_name"]
+        self.model_info["var"] = model["var"]
+        self.model_info["var_rb_map"] = model["var_rb_map"]
+        self.model_info["rb_var_map"] = model["rb_var_map"]
+
     def fit(self):
         # self.pre_check()
         start = time.time()
@@ -59,6 +68,7 @@ class Annealer():
         result = {}
         result["response"] = self.response
         result["time"] = self.time["run-time"]
+        result["model_info"] = self.model_info
         self.result = result
         return result
 
