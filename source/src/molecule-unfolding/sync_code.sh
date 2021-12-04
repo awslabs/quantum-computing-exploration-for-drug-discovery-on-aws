@@ -5,6 +5,7 @@ sync_dirs=(
     ./batch-images/create-model
     ./batch-images/sa-optimizer
     ./lambda/SubmitQCTaskLambda/ 
+    ./lambda/ParseBraketResultLambda/
 )
 
 for d in ${sync_dirs[@]};do 
@@ -18,8 +19,5 @@ rm -rf ./batch-images/create-model/molecule-data
 
 echo "cp -r ./molecule-data ./batch-images/create-model/"
 cp -r ./molecule-data ./batch-images/create-model/
-
-echo "cp ./utility/ResultProcess.py ./lambda/ParseBraketResultLambda/"
-cp ./utility/ResultProcess.py ./lambda/ParseBraketResultLambda/
 
 echo "Done"

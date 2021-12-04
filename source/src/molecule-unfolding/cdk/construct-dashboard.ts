@@ -7,6 +7,7 @@ export interface DashBoardProps {
     account: string;
     bucket: s3.Bucket;
     stackName: string;
+    prefix: string;
 }
 
 export class MolUnfDashboard extends cdk.Construct {

@@ -16,8 +16,9 @@ rm -rf *
 
 aws s3 cp s3://amazon-braket-gcr-qc-sol-common/qc/latest/code.zip .
 unzip code.zip
-cd molecule-unfolding/
-./build.sh > /tmp/build.log 2>&1
+cd src/molecule-unfolding/
+
+#_RUN_BUILD_#./build.sh | tee /tmp/build.log
 
 EOS
 

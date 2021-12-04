@@ -19,7 +19,8 @@ enum ECRRepoNameEnum {
     Batch_Create_Model,
     Batch_Sa_Optimizer,
     Lambda_CheckDevice,
-    Lambda_SubmitQCTask
+    Lambda_SubmitQCTask,
+    Lambda_ParseBraketResult
 };
 
 import {
@@ -39,6 +40,7 @@ export interface BatchProps {
     bucket: s3.Bucket;
     usePreBuildImage: boolean;
     dashboardUrl: string;
+    prefix: string;
 }
 
 export class MolUnfBatch extends Construct {
@@ -411,6 +413,7 @@ export class MolUnfBatch extends Construct {
             lambdaFunction: taskParamLambda,
             payload: sfn.TaskInput.fromObject({
                 "s3_bucket": this.props.bucket.bucketName,
+                "s3_prefix": this.props.prefix,
                 "param_type": "CHECK_INPUT",
                 "user_input.$": "$",
                 "execution_id.$": "$$.Execution.Id"
@@ -825,12 +828,11 @@ export class MolUnfBatch extends Construct {
 
     private createEventListener(vpc: ec2.Vpc, lambdaSg: ec2.SecurityGroup) {
         const lambdaRole = this.createGenericLambdaRole("ParseBraketResultLambdaRole")
-        const parseBraketResultLambda = new lambda.Function(this, 'ParseBraketResultLambda', {
-            runtime: lambda.Runtime.PYTHON_3_8,
-            code: lambda.Code.fromAsset(path.join(__dirname, '../lambda/ParseBraketResultLambda/')),
-            handler: 'app.handler',
+        const code = this.getECRImage(ECRRepoNameEnum.Lambda_ParseBraketResult) as lambda.DockerImageCode
+        const parseBraketResultLambda = new lambda.DockerImageFunction(this, 'ParseBraketResultLambda', {
+            code,
             memorySize: 512,
-            timeout: cdk.Duration.seconds(60),
+            timeout: cdk.Duration.seconds(120),
             vpc,
             vpcSubnets: vpc.selectSubnets({
                 subnetType: ec2.SubnetType.PRIVATE_WITH_NAT
@@ -842,7 +844,7 @@ export class MolUnfBatch extends Construct {
 
         this.props.bucket.addEventNotification(s3.EventType.OBJECT_CREATED,
             new s3n.LambdaDestination(parseBraketResultLambda), {
-                prefix: 'molecule-unfolding/qc_task_output/',
+                prefix: `${this.props.prefix}/qc_task_output/`,
                 suffix: 'results.json'
             });
     }
@@ -909,7 +911,8 @@ export class MolUnfBatch extends Construct {
         if (name == ECRRepoNameEnum.Batch_Create_Model) {
             if (usePreBuildImage) {
                 return ecs.ContainerImage.fromEcrRepository(
-                    ecr.Repository.fromRepositoryName(this, 'create-model', 'molecule-unfolding/create-model')
+                    ecr.Repository.fromRepositoryName(this, 'create-model',
+                    `${this.props.prefix}/create-model`)
                 );
             }
             return ecs.ContainerImage.fromAsset(
@@ -919,7 +922,8 @@ export class MolUnfBatch extends Construct {
         if (name == ECRRepoNameEnum.Batch_Sa_Optimizer) {
             if (usePreBuildImage) {
                 return ecs.ContainerImage.fromEcrRepository(
-                    ecr.Repository.fromRepositoryName(this, 'sa-optimizer', 'molecule-unfolding/sa-optimizer')
+                    ecr.Repository.fromRepositoryName(this, 'sa-optimizer',
+                    `${this.props.prefix}/sa-optimizer`)
                 );
             }
 
@@ -929,7 +933,8 @@ export class MolUnfBatch extends Construct {
         if (name == ECRRepoNameEnum.Lambda_CheckDevice) {
             if (usePreBuildImage) {
                 return lambda.DockerImageCode.fromEcr(
-                    ecr.Repository.fromRepositoryName(this, 'lambda-device-available-check', 'molecule-unfolding/lambda-device-available-check')
+                    ecr.Repository.fromRepositoryName(this, 'lambda-device-available-check',
+                    `${this.props.prefix}/lambda-device-available-check`)
                 );
             }
             return lambda.DockerImageCode.fromImageAsset(path.join(__dirname, '../lambda/DeviceAvailableCheckLambda/'));
@@ -938,12 +943,22 @@ export class MolUnfBatch extends Construct {
         if (name == ECRRepoNameEnum.Lambda_SubmitQCTask) {
             if (usePreBuildImage) {
                 return lambda.DockerImageCode.fromEcr(
-                    ecr.Repository.fromRepositoryName(this, 'lambda-submit-qc-task', 'molecule-unfolding/lambda-submit-qc-task')
+                    ecr.Repository.fromRepositoryName(this, 'lambda-submit-qc-task',
+                    `${this.props.prefix}/lambda-submit-qc-task`)
                 );
             }
             return lambda.DockerImageCode.fromImageAsset(path.join(__dirname, '../lambda/SubmitQCTaskLambda/'));
         }
 
+        if (name == ECRRepoNameEnum.Lambda_ParseBraketResult) {
+            if (usePreBuildImage) {
+                return lambda.DockerImageCode.fromEcr(
+                    ecr.Repository.fromRepositoryName(this, 'lambda-parse-braket-result',
+                        `${this.props.prefix}/lambda-parse-braket-result`)
+                );
+            }
+            return lambda.DockerImageCode.fromImageAsset(path.join(__dirname, '../lambda/ParseBraketResultLambda/'));
+        }
         throw new Error("Cannot find ecr: " + name);
     }
 }

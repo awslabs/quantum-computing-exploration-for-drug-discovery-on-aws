@@ -5,10 +5,11 @@ curr_dir=$(pwd)
 ./sync_code.sh 
 
 iamge_dirs=(
-${curr_dir}/batch-images/create-model
-${curr_dir}/batch-images/sa-optimizer 
 ${curr_dir}/lambda/DeviceAvailableCheckLambda
 ${curr_dir}/lambda/SubmitQCTaskLambda
+${curr_dir}/lambda/ParseBraketResultLambda
+${curr_dir}/batch-images/create-model
+${curr_dir}/batch-images/sa-optimizer 
 )
 
 HOST=$(hostname)

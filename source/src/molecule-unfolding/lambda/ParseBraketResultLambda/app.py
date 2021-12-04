@@ -1,10 +1,9 @@
 import boto3
 import os
-from collections import defaultdict
 import json
 import time
 import datetime
-from ResultProcess import ResultParser
+from utility.ResultProcess import ResultParser
 
 s3 = boto3.client('s3')
 s3_prefix = "molecule-unfolding"

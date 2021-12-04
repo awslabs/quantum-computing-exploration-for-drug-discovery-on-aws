@@ -133,9 +133,23 @@ export class MolUnfStack extends SolutionStack {
       encryption: s3.BucketEncryption.S3_MANAGED
     });
 
+    const usePreBuildImageStrValue = (this.node.tryGetContext('use_prebuild_iamge') + '').toLowerCase() || 'false'
+    let usePreBuildImage = false
+    if (usePreBuildImageStrValue.toLowerCase() == 'false') {
+      usePreBuildImage = false
+    } else {
+      usePreBuildImage = true
+    }
+
+    console.log(`usePreBuildImage: ${usePreBuildImage}`)
+
     const role = this.createNotebookIamRole()
 
-    const onStartContent = readFileSync(`${__dirname}/resources/onStart.template`, 'utf-8')
+    let onStartContent = readFileSync(`${__dirname}/resources/onStart.template`, 'utf-8')
+    if (usePreBuildImage) {
+      console.log('replace #_RUN_BUILD_#')
+      onStartContent = onStartContent.replace('#_RUN_BUILD_#', '')
+    }
 
     const base64Encode = (str: string): string => Buffer.from(str, 'binary').toString('base64');
     const onStartContentBase64 = base64Encode(onStartContent)
@@ -178,23 +192,31 @@ export class MolUnfStack extends SolutionStack {
       description: "Notebook URL"
     });
 
+    const prefix = 'molecule-unfolding'
     // Dashboard //////////////////////////
     const dashboard = new MolUnfDashboard(this, 'MolUnfDashboard', {
       account: this.account,
       region: this.region,
       bucket: s3bucket,
+      prefix,
       stackName: this.stackName
     });
-  
+
     // Batch //////////////////////////
-    const usePreBuildImage = this.node.tryGetContext('use_prebuild_iamge') || false
-    new MolUnfBatch(this, 'MolUnfBatch', {
+    const batchStepFuncs = new MolUnfBatch(this, 'MolUnfBatch', {
       account: this.account,
       region: this.region,
       bucket: s3bucket,
+      prefix,
       usePreBuildImage: usePreBuildImage,
       dashboardUrl: dashboard.outputDashboradUrl.value
     });
+
+    if (usePreBuildImage) {
+      console.log("add addDependency batchStepFuncs -> notebookInstnce")
+      batchStepFuncs.node.addDependency(notebookInstnce)
+    }
+
     Aspects.of(this).add(new AddCfnNag());
   }
 
