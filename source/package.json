@@ -21,8 +21,8 @@
     "destroy": "cdk destroy QCStack",
     "build-docker": "cd ./src/ligand-unfolding/ && ./build.sh",
     "deploy-test": "cdk deploy QCStack-test -c use_prebuild_iamge=true",
-    "deploy-main-rs": "cdk deploy QCStack --profile liuyong_rs_ue1",
-    "destroy-main-rs": "cdk destroy QCStack --profile liuyong_rs_ue1"
+    "deploy-rs": "cdk deploy QCStack --profile liuyong_rs_ue1",
+    "destroy-rs": "cdk destroy QCStack --profile liuyong_rs_ue1"
   },
   "devDependencies": {
     "@types/jest": "^27.0.0",
