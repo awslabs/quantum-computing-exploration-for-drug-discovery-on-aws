@@ -15,6 +15,8 @@ mkdir ../code/
 cp -r * ../code/
 
 cd ../code/
+rm -rf cdk.out  > /dev/null 2>&1 || true
+rm -rf node_modules > /dev/null 2>&1 || true 
 
 zip -r ../code.zip .
 cd ..
@@ -36,8 +38,4 @@ for s3_path in ${s3_paths[@]};do
     echo $s3_path
 done
 rm ./code.zip
-
-
-
-
 

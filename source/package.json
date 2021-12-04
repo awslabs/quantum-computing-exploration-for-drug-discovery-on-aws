@@ -21,16 +21,12 @@
     "destroy": "cdk destroy",
     "build-docker": "cd ./src/ligand-unfolding/docker && ./build.sh",
     "synth-dashboard": "cdk synth QCStack-dashboard",
-    "synth-main": "cdk synth QCStack-main ",
-    "deploy-dashboard": "cdk deploy QCStack-dashboard ",
-    "deploy-main": "cdk deploy QCStack-main",
-    "destroy-dashboard": "cdk destroy QCStack-dashboard ",
-    "destroy-main": "cdk destroy QCStack-main",
-    "deploy-main1": "cdk deploy QCStack-main1 -c use_prebuild_iamge=true",
-    "deploy-dashboard-rs": "cdk deploy QCStack-dashboard -c quicksight_user=Admin/yonmzn-Isengard --profile liuyong_rs_ue1",
-    "deploy-main-rs": "cdk deploy QCStack-main --profile liuyong_rs_ue1",
-    "destroy-dashboard-rs": "cdk destroy QCStack-dashboard --profile liuyong_rs_ue1",
-    "destroy-main-rs": "cdk destroy QCStack-main --profile liuyong_rs_ue1"
+    "synth-main": "cdk synth QCStack ",
+    "deploy-main": "cdk deploy QCStack",
+    "destroy-main": "cdk destroy QCStack",
+    "deploy-test": "cdk deploy QCStack-test -c use_prebuild_iamge=true",
+    "deploy-main-rs": "cdk deploy QCStack --profile liuyong_rs_ue1",
+    "destroy-main-rs": "cdk destroy QCStack --profile liuyong_rs_ue1"
   },
   "devDependencies": {
     "@types/jest": "^27.0.0",

@@ -8,22 +8,13 @@ import {
   MolUnfStack,
 } from './molecule-unfolding/cdk/stack-main';
 
-import {
-  MolUnfDashboardStack
-} from './molecule-unfolding/cdk/stack-dashboard';
-
-
 const app = new App();
 
-new MolUnfStack(app, "QCStack-main", {
+new MolUnfStack(app, "QCStack", {
   synthesizer: newSynthesizer()
 });
 
-new MolUnfStack(app, "QCStack-main1", {
-  synthesizer: newSynthesizer()
-});
-
-new MolUnfDashboardStack(app, "QCStack-dashboard", {
+new MolUnfStack(app, "QCStack-test", {
   synthesizer: newSynthesizer()
 });
 

@@ -1,14 +1,21 @@
 import * as cdk from '@aws-cdk/core';
+import * as s3 from '@aws-cdk/aws-s3'
 import * as quicksight from '@aws-cdk/aws-quicksight';
-import {
-    SolutionStack
-} from '../../stack'
 
-export class MolUnfDashboardStack extends SolutionStack {
+export interface DashBoardProps {
+    region: string;
+    account: string;
+    bucket: s3.Bucket;
+    stackName: string;
+}
 
-    constructor(scope: cdk.Construct, id: string, props: cdk.StackProps = {}) {
-        super(scope, id, props);
-        this.setDescription('(SO8029) CDK for GCR solution: Quantum Ready For Drug Discovery (Dashboard)');
+export class MolUnfDashboard extends cdk.Construct {
+    private props: DashBoardProps
+    outputDashboradUrl: cdk.CfnOutput
+
+    constructor(scope: cdk.Construct, id: string, props: DashBoardProps) {
+        super(scope, id);
+        this.props = props
 
         const quicksightTemplateAccountId = this.node.tryGetContext('quicksight_template_account_id') || process.env.QUICKSIGHT_TEMPLATE_ACCOUNTID
         const quicksightTemplateAccountIdParam = new cdk.CfnParameter(this, "quicksightTemplateAccountId", {
@@ -24,11 +31,11 @@ export class MolUnfDashboardStack extends SolutionStack {
             description: "Quicksight User"
         });
 
-        const quicksightUser = `arn:aws:quicksight:us-east-1:${this.account}:user/default/${quickSightUserParam.valueAsString}`;
+        const quicksightUser = `arn:aws:quicksight:us-east-1:${this.props.account}:user/default/${quickSightUserParam.valueAsString}`;
         const qcDataSource = new quicksight.CfnDataSource(this, "qcBenchmark-DataSource", {
-            awsAccountId: this.account,
-            dataSourceId: `${this.stackName}-qcBenchmark-Datasource`,
-            name: `${this.stackName}-qcBenchmark-Datasource`,
+            awsAccountId: this.props.account,
+            dataSourceId: `${this.props.stackName}-qcBenchmark-Datasource`,
+            name: `${this.props.stackName}-qcBenchmark-Datasource`,
             type: 'ATHENA',
             dataSourceParameters: {
                 athenaParameters: {
@@ -122,9 +129,9 @@ export class MolUnfDashboardStack extends SolutionStack {
                     'quicksight:CancelIngestion'
                 ]
             }],
-            awsAccountId: this.account,
-            dataSetId: `${this.stackName}-qcBenchmark-DataSet`,
-            name: `${this.stackName}-qcBenchmark-DataSet`,
+            awsAccountId: this.props.account,
+            dataSetId: `${this.props.stackName}-qcBenchmark-DataSet`,
+            name: `${this.props.stackName}-qcBenchmark-DataSet`,
             importMode: 'DIRECT_QUERY',
             physicalTableMap: {
                 ATHENATable: {
@@ -142,9 +149,9 @@ export class MolUnfDashboardStack extends SolutionStack {
 
         const templateArn = `arn:aws:quicksight:us-east-1:${templateAccountId}:template/QC-benchmark-analysis-template`
         const qcAnaTemplate = new quicksight.CfnTemplate(this, "qcBenchmark-QSTemplate", {
-            awsAccountId: this.account,
-            templateId: `${this.stackName}-qcBenchmark-QSTemplate`,
-            name: `${this.stackName}-qcBenchmark-QSTemplate`,
+            awsAccountId: this.props.account,
+            templateId: `${this.props.stackName}-qcBenchmark-QSTemplate`,
+            name: `${this.props.stackName}-qcBenchmark-QSTemplate`,
             permissions: [{
                 principal: quicksightUser,
                 actions: ['quicksight:DescribeTemplate']
@@ -157,9 +164,9 @@ export class MolUnfDashboardStack extends SolutionStack {
         });
 
         const qcBenchmarkDashboard = new quicksight.CfnDashboard(this, "qcBenchmark-Dashboard", {
-            dashboardId: `${this.stackName}-qcBenchmark-Dashboard`,
-            name: `${this.stackName}-qcBenchmark-Dashboard`,
-            awsAccountId: this.account,
+            dashboardId: `${this.props.stackName}-qcBenchmark-Dashboard`,
+            name: `${this.props.stackName}-qcBenchmark-Dashboard`,
+            awsAccountId: this.props.account,
             permissions: [{
                 principal: quicksightUser,
                 actions: [
@@ -191,10 +198,9 @@ export class MolUnfDashboardStack extends SolutionStack {
 
         });
 
-        new cdk.CfnOutput(this, "qcBenchmarkDashboardUrl", {
-            value: `https://${this.region}.quicksight.aws.amazon.com/sn/dashboards/${qcBenchmarkDashboard.dashboardId}`,
+        this.outputDashboradUrl = new cdk.CfnOutput(this, "qcBenchmarkDashboardUrl", {
+            value: `https://${this.props.region}.quicksight.aws.amazon.com/sn/dashboards/${qcBenchmarkDashboard.dashboardId}`,
             description: "Dashboard Url"
         });
-
     }
 }

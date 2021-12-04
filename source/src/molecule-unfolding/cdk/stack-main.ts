@@ -30,6 +30,10 @@ import {
   MolUnfBatch
 } from './construct-batch'
 
+import {
+  MolUnfDashboard
+} from './construct-dashboard'
+
 export class MolUnfStack extends SolutionStack {
 
   // Methods //////////////////////////
@@ -174,17 +178,24 @@ export class MolUnfStack extends SolutionStack {
       description: "Notebook URL"
     });
 
+    // Dashboard //////////////////////////
+    const dashboard = new MolUnfDashboard(this, 'MolUnfDashboard', {
+      account: this.account,
+      region: this.region,
+      bucket: s3bucket,
+      stackName: this.stackName
+    });
+  
     // Batch //////////////////////////
     const usePreBuildImage = this.node.tryGetContext('use_prebuild_iamge') || false
     new MolUnfBatch(this, 'MolUnfBatch', {
       account: this.account,
       region: this.region,
       bucket: s3bucket,
-      usePreBuildImage: usePreBuildImage
+      usePreBuildImage: usePreBuildImage,
+      dashboardUrl: dashboard.outputDashboradUrl.value
     });
-
     Aspects.of(this).add(new AddCfnNag());
-
   }
 
 }

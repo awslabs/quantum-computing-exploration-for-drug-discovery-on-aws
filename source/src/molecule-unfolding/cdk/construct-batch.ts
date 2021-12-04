@@ -37,7 +37,8 @@ export interface BatchProps {
     region: string;
     account: string;
     bucket: s3.Bucket;
-    usePreBuildImage: boolean
+    usePreBuildImage: boolean;
+    dashboardUrl: string;
 }
 
 export class MolUnfBatch extends Construct {
@@ -886,7 +887,8 @@ export class MolUnfBatch extends Construct {
             message: sfn.TaskInput.fromObject({
                 "execution_id": sfn.JsonPath.stringAt("$.execution_id"),
                 "start_time": sfn.JsonPath.stringAt("$.start_time"),
-                "end_time":  sfn.JsonPath.stringAt("$.aggResultStep.Payload.endTime"),
+                "end_time": sfn.JsonPath.stringAt("$.aggResultStep.Payload.endTime"),
+                "dashboard": this.props.dashboardUrl,
                 "status": "Complete"
             }),
             resultPath: '$.snsStep',
@@ -896,14 +898,14 @@ export class MolUnfBatch extends Construct {
             value: topic.topicName,
             description: "SNS Topic Name"
         });
-        
+
         return snsStep
     }
 
 
     private getECRImage(name: ECRRepoNameEnum): ecs.ContainerImage | lambda.DockerImageCode {
         const usePreBuildImage = this.props.usePreBuildImage
-        
+
         if (name == ECRRepoNameEnum.Batch_Create_Model) {
             if (usePreBuildImage) {
                 return ecs.ContainerImage.fromEcrRepository(
