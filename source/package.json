@@ -21,7 +21,7 @@
     "destroy": "cdk destroy QCStack",
     "build-docker": "cd ./src/ligand-unfolding/ && ./build.sh",
     "deploy-test": "cdk deploy QCStack-test -c use_prebuild_iamge=true",
-    "deploy-rs": "cdk deploy QCStack --profile liuyong_rs_ue1",
+    "deploy-rs": "cdk deploy QCStack  -c quicksight_user=Admin/yonmzn-Isengard --profile liuyong_rs_ue1",
     "destroy-rs": "cdk destroy QCStack --profile liuyong_rs_ue1"
   },
   "devDependencies": {
