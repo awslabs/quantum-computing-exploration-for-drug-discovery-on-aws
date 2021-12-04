@@ -199,9 +199,43 @@ export class MolUnfDashboard extends cdk.Construct {
 
         });
 
+        const qcBenchmarkAnalysis = new quicksight.CfnAnalysis(this, "qcBenchmark-Analysis", {
+            analysisId: `${this.props.stackName}-qcBenchmark-Analysis`,
+            name: `${this.props.stackName}-qcBenchmark-Analysis`,
+            awsAccountId: this.props.account,
+            permissions: [{
+                principal: quicksightUser,
+                actions: [
+                    'quicksight:DescribeAnalysis',
+                    'quicksight:UpdateAnalysisPermissions',
+                    'quicksight:QueryAnalysis',
+                    'quicksight:UpdateAnalysis',
+                    'quicksight:RestoreAnalysis',
+                    'quicksight:DeleteAnalysis',
+                    'quicksight:DescribeAnalysisPermissions'
+                ]
+            }],
+
+            sourceEntity: {
+                sourceTemplate: {
+                    arn: qcAnaTemplate.attrArn,
+                    dataSetReferences: [{
+                        dataSetPlaceholder: 'qcds',
+                        dataSetArn: qcDataset.attrArn
+                    }]
+                }
+            },
+
+        });
+
         this.outputDashboradUrl = new cdk.CfnOutput(this, "qcBenchmarkDashboardUrl", {
             value: `https://${this.props.region}.quicksight.aws.amazon.com/sn/dashboards/${qcBenchmarkDashboard.dashboardId}`,
-            description: "Dashboard Url"
+            description: "Quicksight Dashboard Url"
+        });
+
+        new cdk.CfnOutput(this, "qcBenchmarkAnalysis", {
+            value: qcBenchmarkAnalysis.analysisId,
+            description: "Quicksight Analysis Id"
         });
     }
 }
