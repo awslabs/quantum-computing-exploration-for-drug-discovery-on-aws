@@ -9,7 +9,8 @@ import datetime
 import logging
 import re
 
-from .MolGeoCalc import update_pts
+from .MolGeoCalc import atom_distance_func, update_pts
+from .MolGeoCalc import mol_distance_func
 
 s3_client = boto3.client("s3")
 
@@ -36,6 +37,9 @@ class ResultParser():
         self.theta_option = None
         self.valid_var_name = []
         self._parse_model_info()
+        # initial parameter file
+        self.parameters = {}
+        self._init_parameters()
 
         if self.method == "dwave-sa":
             logging.info("parse simulated annealer result")
@@ -47,6 +51,13 @@ class ResultParser():
             self.task_id = param["task_id"]
             self.result = self._read_result_json(
                 self.bucket, self.prefix, self.task_id, "results.json")
+
+    def _init_parameters(self):
+        self.parameters["volume"] = {}
+        self.parameters["volume"]["initial"], _ = self._calc_volume(self.atom_pos_data)
+    
+    def _calc_volume(self, atom_pos_data):
+        return mol_distance_func(atom_pos_data)
 
     def _init_mol_file(self):
         for pt, info in self.mol_data.atom_data.items():
@@ -152,11 +163,14 @@ class ResultParser():
             start_pts = self.atom_pos_data[rb_name.split('+')[0]]
             end_pts = self.atom_pos_data[rb_name.split('+')[1]]
             rotate_list = update_pts([start_pts], [end_pts], _gen_pts_list(
-                rb_set['f_0_set'], self.atom_pos_data), self.theta_option[int(d)-1])
-            for pt_name, pt_value in zip(rb_set['f_0_set'], rotate_list):
+                rb_set['f_1_set'], self.atom_pos_data), self.theta_option[int(d)-1])
+            for pt_name, pt_value in zip(rb_set['f_1_set'], rotate_list):
                 self.atom_pos_data[pt_name]['pts'] = pt_value
 
         logging.info(f"finish update optimize points for {chosen_var}")
+
+        # update mol distance metrics
+        self.parameters["volume"]["optimize"], _ = mol_distance_func(self.atom_pos_data)
 
         return 0
 

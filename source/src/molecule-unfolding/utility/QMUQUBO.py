@@ -218,7 +218,6 @@ class QMUQUBO():
                 for d in range(D):
                     final_list = up_list + \
                         [var[rb_var_map[torsion_group[0]]][str(d+1)]]
-                    logging.debug(f"final list {final_list}")
                     # distance
                     final_list_name = []
                     if len(final_list) == 1:
@@ -226,8 +225,9 @@ class QMUQUBO():
                     else:
                         final_list_name = final_list
 #                     hubo_distances[tuple(final_list_name)] = -1
-                    hubo_distances[tuple(final_list_name)] = -atom_distance_func(
-                        tuple(final_list), mol_data, var_rb_map, theta_option, M)
+                    distance = -atom_distance_func(tuple(final_list), mol_data, var_rb_map, theta_option, M)
+                    hubo_distances[tuple(final_list_name)] = distance
+                    logging.debug(f"final list {final_list} with distance {distance}")
             else:
                 for d in range(D):
                     final_list = up_list + \
