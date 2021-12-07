@@ -208,8 +208,8 @@ class ResultParser():
 
             return update_line
 
-        mol_save_name = f"{self.mol_file_name.split('mol2')[0][:-1]}_{self.method}_{save_name}.mol2"
-        file_save_name = f"{self.mol_file_name.split('mol2')[0][:-1]}_{self.method}_{save_name}.json"
+        mol_save_name = f"/tmp/{self.mol_file_name.split('mol2')[0][:-1]}_{self.method}_{save_name}.mol2"
+        file_save_name = f"/tmp/{self.mol_file_name.split('mol2')[0][:-1]}_{self.method}_{save_name}.json"
 
         update_f = open(mol_save_name, 'w')
 

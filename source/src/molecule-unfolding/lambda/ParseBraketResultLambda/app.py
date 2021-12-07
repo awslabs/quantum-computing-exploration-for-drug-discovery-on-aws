@@ -1,3 +1,4 @@
+from posixpath import basename
 import boto3
 import os
 import json
@@ -77,6 +78,16 @@ def task_already_done(execution_id, qc_task_id, bucket):
     except Exception as e:
         return False
 
+def upload_result_files(execution_id, task_id, res_files: list, bucket):
+    keys = []
+    for f in res_files:
+        name = basename(f)
+        key = f"{s3_prefix}/executions/{execution_id}/result/{task_id}/{name}"
+        print(f"upload {f} -> {key}")
+        s3.upload_file(f, bucket, key)
+        keys.append(f"s3://{bucket}/{key}")
+    return keys         
+
 
 def handler(event, context):
     print(f"event={event}")
@@ -126,6 +137,15 @@ def handler(event, context):
 
             print(
                 f"local_time={local_time}, task_time={task_time}, total_time={total_time}, access_time={access_time}")
+
+           
+            print("generate_optimize_pts()")
+            timestamp = int(time.time())
+            qa_atom_pos_data = qa_process_result.generate_optimize_pts()
+            print(f"qa_atom_pos_data: {qa_atom_pos_data}")
+            result_files = qa_process_result.save_mol_file(f"{timestamp}")  
+            result_s3_files = upload_result_files(execution_id, qc_task_id, result_files, bucket)
+            print(f"result_s3_files: {result_s3_files}")
 
             model_param = submit_result['model_param']
             model_name = submit_result['model_name']
