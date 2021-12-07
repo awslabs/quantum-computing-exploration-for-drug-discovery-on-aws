@@ -20,7 +20,7 @@ class QMUQUBO():
 
         self.mol_data = mol_data
 
-        self.name = f"qmu_{self.mol_data.name}"
+        self.name = f"qmu_{self.mol_data.name}_model"
 
         # init model_info to store the information for model of different methods
         # init model_qubo to store the qubo for model of different methods

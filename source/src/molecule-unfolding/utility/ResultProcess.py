@@ -11,6 +11,7 @@ import re
 
 from .MolGeoCalc import atom_distance_func, update_pts
 from .MolGeoCalc import mol_distance_func
+from .MoleculeParser import MoleculeData
 
 s3_client = boto3.client("s3")
 
@@ -21,13 +22,17 @@ class ResultParser():
         self.method = method
         # raw_result, load from pickle file, maintain by dwave
         self.raw_result = None
-        self._load_raw_result(param["result_path"])
+        if self.method == "dwave-qa":
+            self.bucket = param["bucket"]
+            self.prefix = param["prefix"]
+            self.task_id = param["task_id"]
+        self._load_raw_result()
         # result: get by task_id, maintain by braket api
         self.result = None
         # initial mol file
         self.atom_pos_data = {}
-        self.mol_file_name = param["mol_file_name"]
-        self.mol_data = param["mol_data"]
+        self.mol_file_name = param["raw_path"]
+        self.mol_data = MoleculeData.load(param["data_path"])
         self._init_mol_file()
         # parse model_info
         self.rb_var_map = None
@@ -46,11 +51,9 @@ class ResultParser():
             self.result = None
         elif self.method == "dwave-qa":
             logging.info("parse quantum annealer result")
-            self.bucket = param["bucket"]
-            self.prefix = param["prefix"]
-            self.task_id = param["task_id"]
-            self.result = self._read_result_json(
+            obj = self._read_result_obj(
                 self.bucket, self.prefix, self.task_id, "results.json")
+            self.result = json.loads(obj["Body"].read())
 
     def _init_parameters(self):
         self.parameters["volume"] = {}
@@ -65,22 +68,22 @@ class ResultParser():
             self.atom_pos_data[pt]['pts'] = [info['x'], info['y'], info['z']]
             self.atom_pos_data[pt]['idx'] = ([0, 0, 0], [0, 0, 0])
 
-    def _read_result_json(self, bucket, prefix, task_id, file_name):
+    def _read_result_obj(self, bucket, prefix, task_id, file_name):
         key = f"{prefix}/{task_id}/{file_name}"
         obj = s3_client.get_object(Bucket=bucket, Key=key)
-        return json.loads(obj["Body"].read())
+        return obj
 
-    def _load_raw_result(self, path):
+    def _load_raw_result(self):
         if self.method == "dwave-sa":
             logging.info("load simulated annealer raw result")
-            full_path = os.path.join(path, "sa_result.pickle")
+            full_path = "./sa_result.pickle"
             with open(full_path, "rb") as f:
                 self.raw_result = pickle.load(f)
         elif self.method == "dwave-qa":
             logging.info("load quantum annealer raw result")
-            full_path = os.path.join(path, "qa_result.pickle")
-            with open(full_path, "rb") as f:
-                self.raw_result = pickle.load(f)
+            obj = self._read_result_obj(
+                self.bucket, self.prefix, self.task_id, "qa_result.pickle")
+            self.raw_result = pickle.loads(obj["Body"].read())
 
     def get_all_result(self):
         return self.raw_result, self.result
