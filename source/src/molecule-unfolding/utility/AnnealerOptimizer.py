@@ -1,6 +1,7 @@
 ########################################################################################################################
 #   The following class is for different kinds of annealing optimizer
 ########################################################################################################################
+from posixpath import basename
 import dimod
 from dwave.system.composites import EmbeddingComposite
 from braket.ocean_plugin import BraketDWaveSampler
@@ -90,7 +91,9 @@ class Annealer():
         return result
 
     def _upload_result_json(self, task_id, file_name):
-        key = f"{self.my_prefix}/{task_id}/{file_name}"
+        base_file_name = basename(file_name)
+        key = f"{self.my_prefix}/{task_id}/{base_file_name}"
+        print(f"_upload_result_json, bucket={self.my_bucket}, key={key}")
         response = s3_client.upload_file(file_name, Bucket=self.my_bucket, Key=key)
         return response
 

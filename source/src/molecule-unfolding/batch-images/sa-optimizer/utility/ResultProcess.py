@@ -71,6 +71,7 @@ class ResultParser():
 
     def _read_result_obj(self, bucket, prefix, task_id, file_name):
         key = f"{prefix}/{task_id}/{file_name}"
+        print(f"_read_result_obj: {key}")
         obj = s3_client.get_object(Bucket=bucket, Key=key)
         return obj
 
