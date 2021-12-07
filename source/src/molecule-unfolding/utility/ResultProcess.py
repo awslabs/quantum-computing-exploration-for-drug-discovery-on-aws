@@ -171,6 +171,8 @@ class ResultParser():
 
         # update mol distance metrics
         self.parameters["volume"]["optimize"], _ = mol_distance_func(self.atom_pos_data)
+        # update relative improvement
+        self.parameters["volume"]["gain"] = self.parameters["volume"]["optimize"]/self.parameters["volume"]["initial"]
 
         return 0
 
@@ -178,9 +180,7 @@ class ResultParser():
         raw_f = open(self.mol_file_name, "r")
         lines = raw_f.readlines()
 
-        id = []
         start_parse = 0
-        test_string = ""
 
         def _update_atom_pos(line, atom_pos_data):
             atom_idx_name = re.findall(r"\d+ [A-Z]\d+", line)[0]
@@ -202,7 +202,7 @@ class ResultParser():
             return update_line
 
         mol_save_name = f"{self.mol_file_name.split('mol2')[0][:-1]}_{self.method}_{save_name}.mol2"
-        file_save_name = f"{self.mol_file_name.split('mol2')[0][:-1]}_{self.method}_{save_name}.mol2"
+        file_save_name = f"{self.mol_file_name.split('mol2')[0][:-1]}_{self.method}_{save_name}.json"
 
         update_f = open(mol_save_name, 'w')
 
@@ -226,9 +226,11 @@ class ResultParser():
         raw_f.close()
         update_f.close()
 
-        logging.info(f"finish save {mol_save_name}")
+        # update_parameters
+        with open(file_save_name, "w") as outfile:
+            json.dump(self.parameters, outfile)
 
-        # TODO: update_parameters
+        logging.info(f"finish save {mol_save_name} and {file_save_name}")
 
         return 0
 
