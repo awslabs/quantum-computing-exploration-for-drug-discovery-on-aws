@@ -10,6 +10,22 @@ s3_prefix = "molecule-unfolding"
 step_func = boto3.client('stepfunctions')
 
 
+def download_file(bucket, key, dir="/tmp/"):
+    file_name = dir + key.split("/")[-1]
+
+    with open(file_name, 'wb') as f:
+        s3.download_fileobj(bucket, key, f)
+    print("download_file: {} -> {}".format(key, file_name))
+    return file_name
+
+
+def download_s3_file(s3_path):
+    print(f"download_s3_file {s3_path} ...")
+    b = s3_path.split("/")[2]
+    k = "/".join(s3_path.split("/")[3:])
+    return download_file(b, k)
+    
+
 def string_to_s3(content, bucket, key):
     s3.put_object(
         Body=content.encode("utf-8"),
@@ -26,10 +42,8 @@ def read_as_json(bucket, key):
     return json_
 
 
-def read_user_input(execution_id, bucket, s3_prefix):
-    key = f"{s3_prefix}/executions/{execution_id}/user_input.json"
-    obj = s3.get_object(Bucket=bucket, Key=key)
-    return json.loads(obj['Body'].read())
+def del_local_file(path):
+    os.remove(path)
 
 
 def get_token_for_task_id(qc_task_id, s3_bucket):
@@ -83,40 +97,50 @@ def handler(event, context):
 
         execution_id = task_info['execution_id']
         task_token = task_info['task_token']
-
+        submit_result = task_info['submit_result']
+       
         if task_already_done(execution_id, qc_task_id, bucket):
             print(f"qc_task_id={qc_task_id} already done")
             continue
 
         message = None
         try:
-            print(f"ResultParser(task_id={qc_task_id}, prefix={prefix}) ...")
-            parser = ResultParser('dwave-qa',
-                                  bucket=bucket,
-                                  prefix=prefix,
-                                  task_id=qc_task_id
-                                  )
+            model_info = submit_result['model_info']
+            data_s3_path = model_info['data']
+            raw_s3_path = model_info['raw']
 
-            task_time, qpu_time = parser.get_time()
+            data_local_path = download_s3_file(data_s3_path)
+            raw_local_path = download_s3_file(raw_s3_path)
 
-            print(f"task_time={task_time}, qpu_time={qpu_time}")
+            print(
+                f"ResultParser(task_id={qc_task_id}, prefix={prefix}, data_path={data_local_path}, raw_path={raw_local_path}) ...")
+            qa_process_result = ResultParser('dwave-qa',
+                                             bucket=bucket,
+                                             prefix=prefix,
+                                             task_id=qc_task_id,
+                                             data_path=data_local_path,
+                                             raw_path=raw_local_path
+                                             )
 
-            submit_res = task_info['submit_res']
-            model_param = submit_res['model_param']
-            model_name = submit_res['model_name']
-            mode_file_name = submit_res['mode_file_name']
-            start_time = submit_res['start_time']
-            experiment_name = submit_res['experiment_name']
-            device_name = submit_res['device_name']
-            local_fit_time = submit_res['local_fit_time']
+            local_time, task_time, total_time, access_time = qa_process_result.get_time()
+
+            print(
+                f"local_time={local_time}, task_time={task_time}, total_time={total_time}, access_time={access_time}")
+
+            model_param = submit_result['model_param']
+            model_name = submit_result['model_name']
+            mode_file_name = submit_result['mode_file_name']
+            start_time = submit_result['start_time']
+            experiment_name = submit_result['experiment_name']
+            device_name = submit_result['device_name']
+            #local_fit_time = submit_res['local_fit_time']
 
             metrics_items = [execution_id,
                              "QC",
                              str(device_name),
                              model_param,
                              str(task_time),
-                             str(qpu_time),
-                             str(local_fit_time),
+                             f"task_time={task_time} total_time={total_time} local_time=${local_time} access_time=${access_time}",
                              start_time,
                              experiment_name,
                              qc_task_id,
@@ -140,22 +164,26 @@ def handler(event, context):
             print(repr(e))
             message = repr(e)
             success = False
+        finally:
+            del_local_file(data_local_path)
+            del_local_file(raw_local_path)
 
         try:
-            print(f"send call back for qc_task_id: {qc_task_id}, task_token: {task_token}")
+            print(
+                f"send call back for qc_task_id: {qc_task_id}, task_token: {task_token}")
             if success:
-              step_func.send_task_success(
-                taskToken=task_token,
-                output=json.dumps({
-                    'message': message,
-                    'task_id': qc_task_id
-                }))
+                step_func.send_task_success(
+                    taskToken=task_token,
+                    output=json.dumps({
+                        'message': message,
+                        'task_id': qc_task_id
+                    }))
             else:
                 step_func.send_task_failure(
-                taskToken=task_token,
-                error=message,
-                cause='ParseBraketResultLambda'
-               )
+                    taskToken=task_token,
+                    error=message,
+                    cause='ParseBraketResultLambda'
+                )
 
         except Exception as e:
             print(repr(e))

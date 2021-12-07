@@ -10,6 +10,10 @@ import time
 import pickle
 import os
 import logging
+import json
+import boto3
+
+s3_client = boto3.client("s3")
 
 
 class Annealer():
@@ -31,13 +35,17 @@ class Annealer():
         # result containing time/response
         self.result = None
 
+        # location in s3
+        self.my_bucket = None
+        self.my_prefix = None
+
         if method == "dwave-sa":
             logging.info("use simulated annealer from dimod")
             self.sampler = dimod.SimulatedAnnealingSampler()
         elif method == "dwave-qa":
-            my_bucket = param["bucket"]  # the name of the bucket
-            my_prefix = param["prefix"]  # the name of the folder in the bucket
-            s3_folder = (my_bucket, my_prefix)
+            self.my_bucket = param["bucket"]  # the name of the bucket
+            self.my_prefix = param["prefix"]  # the name of the folder in the bucket
+            s3_folder = (self.my_bucket, self.my_prefix)
             # async implementation
             self.sampler = BraketSampler(s3_folder, param["device"])
             logging.info("use quantum annealer {} ".format(param["device"]))
@@ -70,7 +78,21 @@ class Annealer():
         result["time"] = self.time["run-time"]
         result["model_info"] = self.model_info
         self.result = result
+        # upload data
+        if self.method == "dwave-sa":
+            logging.info(f"{self.method} save to local")
+            self.save("sa_result.pickle")
+        elif self.method == "dwave-qa":
+            task_id = self.get_task_id()
+            self.save("qa_result.pickle")
+            response = self._upload_result_json(task_id, "qa_result.pickle")
+            logging.info(f"{self.method} save to s3 - {task_id}: {response}")
         return result
+
+    def _upload_result_json(self, task_id, file_name):
+        key = f"{self.my_prefix}/{task_id}/{file_name}"
+        response = s3_client.upload_file(file_name, Bucket=self.my_bucket, Key=key)
+        return response
 
     def get_task_id(self):
         if self.method == "dwave-qa":

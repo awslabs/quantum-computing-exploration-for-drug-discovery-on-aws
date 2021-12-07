@@ -15,9 +15,8 @@ exports.handler = function (event, context, callback) {
         "\tCompute_Type string,\n" +
         "\tResource string,\n" +
         "\tParams string,\n" +
-        "\tTask_Duration1 float,\n" +
-        "\tTask_Duration2 float,\n" +
-        "\tTask_Duration3 float,\n" +
+        "\tTask_Duration float,\n" +
+        "\tTime_Info string,\n" +
         "\tStart_Time string,\n" +
         "\tExperiment_Name string,\n" +
         "\tTask_Id string,\n" +

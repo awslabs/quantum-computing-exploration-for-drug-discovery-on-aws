@@ -173,8 +173,6 @@ def atom_distance_func(rotate_values, mol_data, var_rb_map, theta_option, M):
     tor_len = len(rotate_values)
     tor_last_idx = get_idx(rotate_values[tor_len-1], var_rb_map)
 
-    current_start_idx = []
-
     # initial points for distance calculation
     tor_name = rot_pts_name(rotate_values, var_rb_map)
     f_0 = mol_data.bond_graph.sort_ris_data[str(M)][tor_name]['f_0_set']
@@ -261,3 +259,24 @@ def atom_distance_func(rotate_values, mol_data, var_rb_map, theta_option, M):
         pts_pos_list(base_pts), pts_pos_list(target_pts))
 
     return distance
+
+
+def mol_distance_func(atom_pos_data):
+    max_idx = max([int(num) for num in atom_pos_data.keys()])
+
+    sum_distance = 0
+
+    record_distance = []
+
+    for left_idx in range(max_idx-1):
+        for right_idx in range(left_idx+1, max_idx):
+            left_key = str(left_idx+1)
+            right_key = str(right_idx+1)
+
+            distance = calc_distance_between_pts([atom_pos_data[left_key]['pts']], [atom_pos_data[right_key]['pts']])
+
+            sum_distance = sum_distance + distance
+
+            record_distance.append(distance)
+    
+    return sum_distance, record_distance

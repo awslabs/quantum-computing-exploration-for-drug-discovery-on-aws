@@ -164,11 +164,11 @@ def read_context(s3, execution_id, bucket, s3_prefix):
     return context
 
 
-def get_model_file(s3, execution_id, s3_bucket, s3_prefix):
+def get_model_info(s3, execution_id, s3_bucket, s3_prefix):
     key = f"{s3_prefix}/executions/{execution_id}/model_info.json"
     obj = s3.get_object(Bucket=s3_bucket, Key=key)
-    model_file_info = json.loads(obj['Body'].read())
-    return model_file_info['location']
+    model_info = json.loads(obj['Body'].read())
+    return model_info
 
 
 def load_model(s3, model_input_file, model_param, s3_bucket):
@@ -208,8 +208,9 @@ def load_model(s3, model_input_file, model_param, s3_bucket):
 
 def submit_qc_task(s3, execution_id, device_arn, model_param, s3_bucket, s3_prefix):
 
-    model_file = get_model_file(s3, execution_id, s3_bucket, s3_prefix)
-    logging_info("model_file: {}".format(model_file))
+    model_info = get_model_info(s3, execution_id, s3_bucket, s3_prefix)
+
+    logging_info("model_info: {}".format(model_info))
 
     context = read_context(s3, execution_id, s3_bucket, s3_prefix)
     start_time = context['start_time']
@@ -223,14 +224,17 @@ def submit_qc_task(s3, execution_id, device_arn, model_param, s3_bucket, s3_pref
     # {"task_id": task_id, "model_name": model_name,  "mode_file_name": mode_file_name}
     res = run_on_device(s3, {
         "execution_id": execution_id,
-        "model_file": model_file,
+        "model_file": model_info['model'],
         "device_arn": device_arn,
         "model_param": model_param,
         "s3_bucket": s3_bucket,
         "s3_prefix": s3_prefix,
         "start_time": start_time,
         "experiment_name": experiment_name})
+
+    res['model_info'] = model_info
     logging_info("submit_qc_task return: {}".format(res))
+
     return res
     
 

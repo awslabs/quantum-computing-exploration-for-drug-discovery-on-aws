@@ -32,14 +32,14 @@ def read_as_json(bucket, key):
     return json_
 
 
-def save_token_for_task_id(execution_id, qc_task_id, task_token, ItemValue, submit_res, s3_bucket):
+def save_token_for_task_id(execution_id, qc_task_id, task_token, ItemValue, submit_result, s3_bucket):
     key = f"{s3_prefix}/qc_task_token/{qc_task_id}.json"
     string_to_s3(json.dumps({
         "execution_id": execution_id,
         "qc_task_id": qc_task_id,
         "task_token": task_token,
         "ItemValue": ItemValue,
-        "submit_res": submit_res
+        "submit_result": submit_result
     }), s3_bucket, key)
     print(f"saved s3://{s3_bucket}/{key}")
 
@@ -55,12 +55,12 @@ def handler(event, context):
     device_arn = ItemValue['device_arn']
     model_param =ItemValue['model_param']
 
-    submit_res = submit_qc_task(s3, execution_id, device_arn,
+    submit_result = submit_qc_task(s3, execution_id, device_arn,
                                 model_param, s3_bucket, s3_prefix)
     # {"task_id": task_id, "model_name": model_name,  "mode_file_name": mode_file_name}
-    qc_task_id = submit_res['task_id']
+    qc_task_id = submit_result['task_id']
 
     print(f"qc_task_id={qc_task_id}")
     save_token_for_task_id(execution_id, qc_task_id,
-                           task_token, ItemValue, submit_res, s3_bucket)
+                           task_token, ItemValue, submit_result, s3_bucket)
 

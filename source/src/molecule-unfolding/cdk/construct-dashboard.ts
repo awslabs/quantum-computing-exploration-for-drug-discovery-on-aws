@@ -10,7 +10,7 @@ interface DashBoardProps {
     prefix: string;
 }
 
-export class MolUnfDashboard extends cdk.Construct {
+export class Dashboard extends cdk.Construct {
     private props: DashBoardProps
     outputDashboradUrl: cdk.CfnOutput
 
@@ -73,16 +73,12 @@ export class MolUnfDashboard extends cdk.Construct {
                 type: 'STRING'
             },
             {
-                name: 'task_duration1',
+                name: 'task_duration',
                 type: 'DECIMAL'
             },
             {
-                name: 'task_duration2',
-                type: 'DECIMAL'
-            },
-            {
-                name: 'task_duration3',
-                type: 'DECIMAL'
+                name: 'time_info',
+                type: 'STRING'
             },
             {
                 name: 'start_time',
@@ -228,6 +224,7 @@ export class MolUnfDashboard extends cdk.Construct {
 
         });
 
+        // Output //////////////////////////
         this.outputDashboradUrl = new cdk.CfnOutput(this, "qcBenchmarkDashboardUrl", {
             value: `https://${this.props.region}.quicksight.aws.amazon.com/sn/dashboards/${qcBenchmarkDashboard.dashboardId}`,
             description: "Quicksight Dashboard Url"

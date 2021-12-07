@@ -22,8 +22,13 @@ def download_file(bucket, key, dir="./"):
     with open(file_name, 'wb') as f:
         s3.download_fileobj(bucket, key, f)
     logging.info("download_file: {} -> {}".format(key, file_name))
-
     return file_name
+
+
+def upload_file(bucket, key, file_name):
+    s3.upload_file(file_name, bucket, key)
+    logging.info(f"upload_file {file_name} -> s3://{bucket}/{key}")
+    return f"s3://{bucket}/{key}"
 
 
 def string_to_s3(content, bucket, key):
@@ -66,7 +71,7 @@ def get_model_file(execution_id):
     key = f"{s3_prefix}/executions/{execution_id}/model_info.json"
     obj = s3.get_object(Bucket=s3_bucket, Key=key)
     model_file_info = json.loads(obj['Body'].read())
-    return model_file_info['location']
+    return model_file_info['model']
 
 
 def load_model(model_input_file, model_param):
@@ -150,7 +155,6 @@ if __name__ == '__main__':
                      str(resource),
                      model_param,
                      str(time_in_seconds),
-                     '',
                      '',
                      start_time,
                      experiment_name,

@@ -9,7 +9,9 @@ import datetime
 import logging
 import re
 
-from .MolGeoCalc import update_pts
+from .MolGeoCalc import atom_distance_func, update_pts
+from .MolGeoCalc import mol_distance_func
+from .MoleculeParser import MoleculeData
 
 s3_client = boto3.client("s3")
 
@@ -20,13 +22,17 @@ class ResultParser():
         self.method = method
         # raw_result, load from pickle file, maintain by dwave
         self.raw_result = None
-        self._load_raw_result(param["result_path"])
+        if self.method == "dwave-qa":
+            self.bucket = param["bucket"]
+            self.prefix = param["prefix"]
+            self.task_id = param["task_id"]
+        self._load_raw_result()
         # result: get by task_id, maintain by braket api
         self.result = None
         # initial mol file
         self.atom_pos_data = {}
-        self.mol_file_name = param["mol_file_name"]
-        self.mol_data = param["mol_data"]
+        self.mol_file_name = param["raw_path"]
+        self.mol_data = MoleculeData.load(param["data_path"])
         self._init_mol_file()
         # parse model_info
         self.rb_var_map = None
@@ -36,17 +42,25 @@ class ResultParser():
         self.theta_option = None
         self.valid_var_name = []
         self._parse_model_info()
+        # initial parameter file
+        self.parameters = {}
+        self._init_parameters()
 
         if self.method == "dwave-sa":
             logging.info("parse simulated annealer result")
             self.result = None
         elif self.method == "dwave-qa":
             logging.info("parse quantum annealer result")
-            self.bucket = param["bucket"]
-            self.prefix = param["prefix"]
-            self.task_id = param["task_id"]
-            self.result = self._read_result_json(
+            obj = self._read_result_obj(
                 self.bucket, self.prefix, self.task_id, "results.json")
+            self.result = json.loads(obj["Body"].read())
+
+    def _init_parameters(self):
+        self.parameters["volume"] = {}
+        self.parameters["volume"]["initial"], _ = self._calc_volume(self.atom_pos_data)
+    
+    def _calc_volume(self, atom_pos_data):
+        return mol_distance_func(atom_pos_data)
 
     def _init_mol_file(self):
         for pt, info in self.mol_data.atom_data.items():
@@ -54,22 +68,22 @@ class ResultParser():
             self.atom_pos_data[pt]['pts'] = [info['x'], info['y'], info['z']]
             self.atom_pos_data[pt]['idx'] = ([0, 0, 0], [0, 0, 0])
 
-    def _read_result_json(self, bucket, prefix, task_id, file_name):
+    def _read_result_obj(self, bucket, prefix, task_id, file_name):
         key = f"{prefix}/{task_id}/{file_name}"
         obj = s3_client.get_object(Bucket=bucket, Key=key)
-        return json.loads(obj["Body"].read())
+        return obj
 
-    def _load_raw_result(self, path):
+    def _load_raw_result(self):
         if self.method == "dwave-sa":
             logging.info("load simulated annealer raw result")
-            full_path = os.path.join(path, "sa_result.pickle")
+            full_path = "./sa_result.pickle"
             with open(full_path, "rb") as f:
                 self.raw_result = pickle.load(f)
         elif self.method == "dwave-qa":
             logging.info("load quantum annealer raw result")
-            full_path = os.path.join(path, "qa_result.pickle")
-            with open(full_path, "rb") as f:
-                self.raw_result = pickle.load(f)
+            obj = self._read_result_obj(
+                self.bucket, self.prefix, self.task_id, "qa_result.pickle")
+            self.raw_result = pickle.loads(obj["Body"].read())
 
     def get_all_result(self):
         return self.raw_result, self.result
@@ -152,11 +166,16 @@ class ResultParser():
             start_pts = self.atom_pos_data[rb_name.split('+')[0]]
             end_pts = self.atom_pos_data[rb_name.split('+')[1]]
             rotate_list = update_pts([start_pts], [end_pts], _gen_pts_list(
-                rb_set['f_0_set'], self.atom_pos_data), self.theta_option[int(d)-1])
-            for pt_name, pt_value in zip(rb_set['f_0_set'], rotate_list):
+                rb_set['f_1_set'], self.atom_pos_data), self.theta_option[int(d)-1])
+            for pt_name, pt_value in zip(rb_set['f_1_set'], rotate_list):
                 self.atom_pos_data[pt_name]['pts'] = pt_value
 
         logging.info(f"finish update optimize points for {chosen_var}")
+
+        # update mol distance metrics
+        self.parameters["volume"]["optimize"], _ = mol_distance_func(self.atom_pos_data)
+        # update relative improvement
+        self.parameters["volume"]["gain"] = self.parameters["volume"]["optimize"]/self.parameters["volume"]["initial"]
 
         return 0
 
@@ -164,9 +183,7 @@ class ResultParser():
         raw_f = open(self.mol_file_name, "r")
         lines = raw_f.readlines()
 
-        id = []
         start_parse = 0
-        test_string = ""
 
         def _update_atom_pos(line, atom_pos_data):
             atom_idx_name = re.findall(r"\d+ [A-Z]\d+", line)[0]
@@ -188,7 +205,7 @@ class ResultParser():
             return update_line
 
         mol_save_name = f"{self.mol_file_name.split('mol2')[0][:-1]}_{self.method}_{save_name}.mol2"
-        file_save_name = f"{self.mol_file_name.split('mol2')[0][:-1]}_{self.method}_{save_name}.mol2"
+        file_save_name = f"{self.mol_file_name.split('mol2')[0][:-1]}_{self.method}_{save_name}.json"
 
         update_f = open(mol_save_name, 'w')
 
@@ -212,9 +229,11 @@ class ResultParser():
         raw_f.close()
         update_f.close()
 
-        logging.info(f"finish save {mol_save_name}")
+        # update_parameters
+        with open(file_save_name, "w") as outfile:
+            json.dump(self.parameters, outfile)
 
-        # TODO: update_parameters
+        logging.info(f"finish save {mol_save_name} and {file_save_name}")
 
         return 0
 

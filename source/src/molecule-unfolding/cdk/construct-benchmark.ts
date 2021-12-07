@@ -41,7 +41,7 @@ export interface BatchProps {
     lambdaSg: ec2.SecurityGroup;
 }
 
-export class MolUnfBatch extends Construct {
+export class Benchmark extends Construct {
 
     private batchJobExecutionRole: iam.Role;
     private batchJobRole: iam.Role;
@@ -158,11 +158,7 @@ export class MolUnfBatch extends Construct {
             timeout: cdk.Duration.hours(36)
         });
 
-        new cdk.CfnOutput(this, "stateMachineName", {
-            value: benchmarkStateMachine.stateMachineName,
-            description: "State Machine Name"
-        });
-
+        // Output //////////////////////////
         new cdk.CfnOutput(this, "stateMachineURL", {
             value: `https://console.aws.amazon.com/states/home?region=${this.props.region}#/statemachines/view/${benchmarkStateMachine.stateMachineArn}`,
             description: "State Machine URL"

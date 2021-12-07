@@ -1,1 +1,5 @@
 numpy==1.19.2
+dimod==0.9.13
+networkx==2.6.3
+biopandas
+

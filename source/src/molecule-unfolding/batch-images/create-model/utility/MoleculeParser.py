@@ -63,7 +63,7 @@ class MoleculeData():
 
     def save(self, version, path=None):
         save_path = None
-        save_name = f"mol_{self.name}_{version}.pickle"
+        save_name = f"qmu_{self.name}_data_{version}.pickle"
 
         if path != None:
             save_path = os.path.join(path, save_name)
