@@ -261,22 +261,39 @@ def atom_distance_func(rotate_values, mol_data, var_rb_map, theta_option, M):
     return distance
 
 
-def mol_distance_func(atom_pos_data):
+def mol_distance_func(atom_pos_data, check, set):
     max_idx = max([int(num) for num in atom_pos_data.keys()])
 
     sum_distance = 0
 
     record_distance = []
 
+    map_set = set
+
     for left_idx in range(max_idx-1):
         for right_idx in range(left_idx+1, max_idx):
             left_key = str(left_idx+1)
             right_key = str(right_idx+1)
 
-            distance = calc_distance_between_pts([atom_pos_data[left_key]['pts']], [atom_pos_data[right_key]['pts']])
+            distance = calc_distance_between_pts([atom_pos_data[left_key]['pts']], [
+                                                 atom_pos_data[right_key]['pts']])
+
+            if check == 'initial':
+                check_radius_distance = atom_pos_data[left_key]['vdw-radius'] + \
+                    atom_pos_data[right_key]['vdw-radius']
+                if check_radius_distance > distance:
+                    map_set.add((left_key,right_key))
+                    logging.debug(
+                        f"!!!!!!!!!!!! initial van der waals check fail at {left_key} and {right_key} with check: {check_radius_distance} v.s. real {distance}")
+            if check == 'test':
+                check_radius_distance = atom_pos_data[left_key]['vdw-radius'] + \
+                    atom_pos_data[right_key]['vdw-radius']
+                if check_radius_distance > distance and (left_key,right_key) not in map_set:
+                    logging.info(
+                        f"!!!!!!!!!!!! found van der waals check fail at {left_key} and {right_key} with check: {check_radius_distance} v.s. real {distance}")
 
             sum_distance = sum_distance + distance
 
             record_distance.append(distance)
-    
-    return sum_distance, record_distance
+
+    return sum_distance, record_distance, map_set

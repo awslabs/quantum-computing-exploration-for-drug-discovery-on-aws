@@ -20,6 +20,7 @@ class ResultParser():
     def __init__(self, method, **param):
         self.agg_response = None
         self.method = method
+        self.set = set()
         # raw_result, load from pickle file, maintain by dwave
         self.raw_result = None
         if self.method == "dwave-qa":
@@ -56,17 +57,17 @@ class ResultParser():
             self.result = json.loads(obj["Body"].read())
 
     def _init_parameters(self):
+        van_der_waals_check = 'initial'
         self.parameters["volume"] = {}
-        self.parameters["volume"]["initial"], _ = self._calc_volume(self.atom_pos_data)
-    
-    def _calc_volume(self, atom_pos_data):
-        return mol_distance_func(atom_pos_data)
+        self.parameters["volume"]["initial"], _, self.set = mol_distance_func(
+            self.atom_pos_data, van_der_waals_check, self.set)
 
     def _init_mol_file(self):
         for pt, info in self.mol_data.atom_data.items():
             self.atom_pos_data[pt] = {}
             self.atom_pos_data[pt]['pts'] = [info['x'], info['y'], info['z']]
             self.atom_pos_data[pt]['idx'] = ([0, 0, 0], [0, 0, 0])
+            self.atom_pos_data[pt]['vdw-radius'] = info['vdw-radius']
 
     def _read_result_obj(self, bucket, prefix, task_id, file_name):
         key = f"{prefix}/{task_id}/{file_name}"
@@ -173,9 +174,12 @@ class ResultParser():
         logging.info(f"finish update optimize points for {chosen_var}")
 
         # update mol distance metrics
-        self.parameters["volume"]["optimize"], _ = mol_distance_func(self.atom_pos_data)
+        van_der_waals_check = 'test'
+        self.parameters["volume"]["optimize"], _, _ = mol_distance_func(
+            self.atom_pos_data, van_der_waals_check, self.set)
         # update relative improvement
-        self.parameters["volume"]["gain"] = self.parameters["volume"]["optimize"]/self.parameters["volume"]["initial"]
+        self.parameters["volume"]["gain"] = self.parameters["volume"]["optimize"] / \
+            self.parameters["volume"]["initial"]
 
         return 0
 
@@ -236,5 +240,3 @@ class ResultParser():
         logging.info(f"finish save {mol_save_name} and {file_save_name}")
 
         return 0
-
-
