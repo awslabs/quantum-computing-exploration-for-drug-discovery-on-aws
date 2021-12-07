@@ -135,12 +135,19 @@ def handler(event, context):
             device_name = submit_result['device_name']
             #local_fit_time = submit_res['local_fit_time']
 
+            time_info_json = json.dumps({
+                                 "task_time": task_time,
+                                 "total_time": total_time,
+                                 "local_time": local_time,
+                                 "access_time": access_time
+                             })
+
             metrics_items = [execution_id,
                              "QC",
                              str(device_name),
                              model_param,
                              str(task_time),
-                             f"task_time={task_time} total_time={total_time} local_time=${local_time} access_time=${access_time}",
+                             time_info_json,
                              start_time,
                              experiment_name,
                              qc_task_id,

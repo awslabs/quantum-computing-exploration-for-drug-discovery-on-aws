@@ -149,13 +149,17 @@ if __name__ == '__main__':
 
     time_in_seconds = sa_optimizer(qubo_model)
     task_id = ""
+    
+    time_info_json = json.dumps({
+                                 "task_time": time_in_seconds,
+                             })
 
     metrics_items = [execution_id,
                      "HPC",
                      str(resource),
                      model_param,
                      str(time_in_seconds),
-                     '',
+                     time_info_json,
                      start_time,
                      experiment_name,
                      task_id,
