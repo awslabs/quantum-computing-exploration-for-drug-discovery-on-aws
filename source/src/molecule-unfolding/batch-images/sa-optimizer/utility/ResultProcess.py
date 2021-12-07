@@ -15,6 +15,7 @@ from .MoleculeParser import MoleculeData
 
 s3_client = boto3.client("s3")
 
+logging_info = print
 
 class ResultParser():
     def __init__(self, method, **param):
@@ -48,10 +49,10 @@ class ResultParser():
         self._init_parameters()
 
         if self.method == "dwave-sa":
-            logging.info("parse simulated annealer result")
+            logging_info("parse simulated annealer result")
             self.result = None
         elif self.method == "dwave-qa":
-            logging.info("parse quantum annealer result")
+            logging_info("parse quantum annealer result")
             obj = self._read_result_obj(
                 self.bucket, self.prefix, self.task_id, "results.json")
             self.result = json.loads(obj["Body"].read())
@@ -77,12 +78,12 @@ class ResultParser():
 
     def _load_raw_result(self):
         if self.method == "dwave-sa":
-            logging.info("load simulated annealer raw result")
+            logging_info("load simulated annealer raw result")
             full_path = "./sa_result.pickle"
             with open(full_path, "rb") as f:
                 self.raw_result = pickle.load(f)
         elif self.method == "dwave-qa":
-            logging.info("load quantum annealer raw result")
+            logging_info("load quantum annealer raw result")
             obj = self._read_result_obj(
                 self.bucket, self.prefix, self.task_id, "qa_result.pickle")
             self.raw_result = pickle.loads(obj["Body"].read())
@@ -119,7 +120,7 @@ class ResultParser():
             return local_time, task_time, qa_total_time, qa_access_time
         else:
             local_time = self.raw_result["time"]
-            logging.info("sa only has local_time!")
+            logging_info("sa only has local_time!")
             return local_time, None, None, None
 
     def _parse_model_info(self):
@@ -136,7 +137,7 @@ class ResultParser():
             var = self.rb_var_map[rb]
             for d in range(self.D):
                 self.valid_var_name.append(f'x_{var}_{d+1}')
-        logging.info(f"valid var for this model is {self.valid_var_name}")
+        logging_info(f"valid var for this model is {self.valid_var_name}")
 
         return 0
 
@@ -148,9 +149,9 @@ class ResultParser():
         pddf_best_result = pddf_sample_result.iloc[pddf_sample_result['energy'].idxmin(
         ), :]
 
-        logging.debug(self.raw_result["model_info"])
+        logging_info(self.raw_result["model_info"])
 
-        logging.debug(self.raw_result["response"].variables)
+        logging_info(self.raw_result["response"].variables)
 
         best_config = pddf_best_result.filter(items=self.valid_var_name)
 
@@ -172,7 +173,7 @@ class ResultParser():
             for pt_name, pt_value in zip(rb_set['f_1_set'], rotate_list):
                 self.atom_pos_data[pt_name]['pts'] = pt_value
 
-        logging.info(f"finish update optimize points for {chosen_var}")
+        logging_info(f"finish update optimize points for {chosen_var}")
 
         # update mol distance metrics
         van_der_waals_check = 'test'
@@ -238,6 +239,6 @@ class ResultParser():
         with open(file_save_name, "w") as outfile:
             json.dump(self.parameters, outfile)
 
-        logging.info(f"finish save {mol_save_name} and {file_save_name}")
+        logging_info(f"finish save {mol_save_name} and {file_save_name}")
 
         return mol_save_name, file_save_name
