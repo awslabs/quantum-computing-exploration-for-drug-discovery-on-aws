@@ -34,6 +34,7 @@ class ResultParser():
         # initial mol file
         self.atom_pos_data = {}
         self.mol_file_name = param["raw_path"]
+        logging_info("MoleculeData.load()")
         self.mol_data = MoleculeData.load(param["data_path"])
         self._init_mol_file()
         # parse model_info
@@ -58,12 +59,14 @@ class ResultParser():
             self.result = json.loads(obj["Body"].read())
 
     def _init_parameters(self):
+        logging_info("_init_parameters")
         van_der_waals_check = 'initial'
         self.parameters["volume"] = {}
         self.parameters["volume"]["initial"], _, self.set = mol_distance_func(
             self.atom_pos_data, van_der_waals_check, self.set)
 
     def _init_mol_file(self):
+        logging_info("_init_mol_file")
         for pt, info in self.mol_data.atom_data.items():
             self.atom_pos_data[pt] = {}
             self.atom_pos_data[pt]['pts'] = [info['x'], info['y'], info['z']]
@@ -71,12 +74,14 @@ class ResultParser():
             self.atom_pos_data[pt]['vdw-radius'] = info['vdw-radius']
 
     def _read_result_obj(self, bucket, prefix, task_id, file_name):
+        logging_info("_read_result_obj")
         key = f"{prefix}/{task_id}/{file_name}"
         print(f"_read_result_obj: {key}")
         obj = s3_client.get_object(Bucket=bucket, Key=key)
         return obj
 
     def _load_raw_result(self):
+        logging_info("_load_raw_result")
         if self.method == "dwave-sa":
             logging_info("load simulated annealer raw result")
             full_path = "./sa_result.pickle"
@@ -124,6 +129,7 @@ class ResultParser():
             return local_time, None, None, None
 
     def _parse_model_info(self):
+        logging_info("_parse_model_info")
         self.rb_var_map = self.raw_result["model_info"]["rb_var_map"]
         self.var_rb_map = self.raw_result["model_info"]["var_rb_map"]
 
@@ -142,6 +148,7 @@ class ResultParser():
         return 0
 
     def generate_optimize_pts(self):
+        logging_info("generate_optimize_pts")
         # get best configuration
         pddf_sample_result = self.raw_result["response"].aggregate(
         ).to_pandas_dataframe()
@@ -186,6 +193,7 @@ class ResultParser():
         return 0
 
     def save_mol_file(self, save_name):
+        logging_info(f"save_mol_file {save_name}")
         raw_f = open(self.mol_file_name, "r")
         lines = raw_f.readlines()
 
@@ -241,4 +249,4 @@ class ResultParser():
 
         logging_info(f"finish save {mol_save_name} and {file_save_name}")
 
-        return mol_save_name, file_save_name
+        return [mol_save_name, file_save_name]
