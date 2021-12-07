@@ -84,8 +84,12 @@ class Annealer():
             self.save("sa_result.pickle")
         elif self.method == "dwave-qa":
             task_id = self.get_task_id()
-            self.save("qa_result.pickle")
+            self.save("/tmp/qa_result.pickle")
+<<<<<<< HEAD
             response = self._upload_result_json(task_id, "qa_result.pickle")
+=======
+            response = self._upload_result_json(task_id, "/tmp/qa_result.pickle")
+>>>>>>> ac47a25fd7d4e01c42234beeb615c1eb11f69719
             logging.info(f"{self.method} save to s3 - {task_id}: {response}")
         return result
 

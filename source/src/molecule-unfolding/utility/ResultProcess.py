@@ -239,4 +239,4 @@ class ResultParser():
 
         logging.info(f"finish save {mol_save_name} and {file_save_name}")
 
-        return 0
+        return mol_save_name, file_save_name
