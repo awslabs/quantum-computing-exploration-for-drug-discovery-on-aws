@@ -89,7 +89,7 @@ export class MainStack extends SolutionStack {
       stackName
     });
 
-    // MolUnfbenchmark StepFuncs //////////////////////////
+    // Benchmark StepFuncs //////////////////////////
     const benchmarkStepFuncs = new Benchmark(this, 'MolUnfbenchmark', {
       account: this.account,
       region: this.region,
@@ -116,7 +116,7 @@ export class MainStack extends SolutionStack {
       usePreBuildImage,
       vpc,
       lambdaSg,
-    })
+    });
 
     Aspects.of(this).add(new AddCfnNag());
   }

@@ -82,7 +82,7 @@ def upload_result_files(execution_id, task_id, res_files: list, bucket):
     keys = []
     for f in res_files:
         name = basename(f)
-        key = f"{s3_prefix}/executions/{execution_id}/result/{task_id}/{name}"
+        key = f"{s3_prefix}/executions/{execution_id}/result/QC/{task_id}/{name}"
         print(f"upload {f} -> {key}")
         s3.upload_file(f, bucket, key)
         keys.append(f"s3://{bucket}/{key}")
@@ -139,7 +139,6 @@ def handler(event, context):
             print(
                 f"local_time={local_time}, task_time={task_time}, total_time={total_time}, access_time={access_time}")
 
-   
 
             print("generate_optimize_pts()")
             timestamp = int(time.time())
@@ -167,11 +166,13 @@ def handler(event, context):
                                  "access_time": access_time
                              })
 
+            result_file_info = json.dumps(result_s3_files)
+
             metrics_items = [execution_id,
                              "QC",
                              str(device_name),
                              model_param,
-                             str(task_time),
+                             str(total_time),
                              time_info_json,
                              start_time,
                              experiment_name,
@@ -179,7 +180,8 @@ def handler(event, context):
                              model_name,
                              mode_file_name,
                              s3_prefix,
-                             datetime.datetime.utcnow().isoformat()
+                             datetime.datetime.utcnow().isoformat(),
+                             result_file_info
                              ]
 
             metrics = ",".join(metrics_items)

@@ -107,7 +107,11 @@ export class Dashboard extends cdk.Construct {
             {
                 name: 'create_time',
                 type: 'STRING'
-            }
+            },
+            {
+                name: 'result_location',
+                type: 'STRING'
+            } 
         ];
 
         const qcDataset = new quicksight.CfnDataSet(this, "qcBenchmark-DataSet", {

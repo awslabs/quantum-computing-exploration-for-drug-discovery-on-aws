@@ -74,7 +74,8 @@ def qa_optimizer(execution_id, qubo_model, s3_bucket, task_output_s3_prefix, s3_
     optimizer_param['prefix'] = task_output_s3_prefix
     optimizer_param['device'] = device_arn
     optimizer_param["embed_method"] = "default"
-    qa_optimizer = Annealer(qubo_model['qubo'], method, **optimizer_param)
+    #qa_optimizer = Annealer(qubo_model['qubo'], method, **optimizer_param)
+    qa_optimizer = Annealer(qubo_model, method, **optimizer_param)
     qa_optimizer.embed()
 
     qa_optimize_result = qa_optimizer.fit()
@@ -184,7 +185,7 @@ def load_model(s3, model_input_file, model_param, s3_bucket):
 
     local_model_file = download_file(s3, s3bucket, model_file)
 
-    mode_file_name = os.path.basename(local_model_file)
+    model_file_name = os.path.basename(local_model_file)
 
     qmu_qubo_optimize = QMUQUBO.load(local_model_file)
     model_info = qmu_qubo_optimize.describe_model()
@@ -203,7 +204,7 @@ def load_model(s3, model_input_file, model_param, s3_bucket):
     method = "pre-calc"
     logging_info(f"get_model model_name={model_name}, method={method}")
     qubo_model = qmu_qubo_optimize.get_model(method, model_name)
-    return qubo_model, model_name, mode_file_name
+    return qubo_model, model_name, model_file_name
 
 
 def submit_qc_task(s3, execution_id, device_arn, model_param, s3_bucket, s3_prefix):

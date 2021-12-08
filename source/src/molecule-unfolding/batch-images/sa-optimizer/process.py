@@ -5,8 +5,11 @@ import time
 import datetime
 import os
 import json
+from posixpath import basename
+
 from utility.AnnealerOptimizer import Annealer
 from utility.QMUQUBO import QMUQUBO
+from utility.ResultProcess import ResultParser
 
 
 logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
@@ -46,16 +49,63 @@ def read_user_input(execution_id, bucket, s3_prefix):
     return json.loads(obj['Body'].read())
 
 
-def sa_optimizer(qubo_model):
+def download_file(bucket, key, dir="/tmp/"):
+    file_name = dir + key.split("/")[-1]
+
+    with open(file_name, 'wb') as f:
+        s3.download_fileobj(bucket, key, f)
+    print("download_file: {} -> {}".format(key, file_name))
+    return file_name
+
+
+def download_s3_file(s3_path):
+    print(f"download_s3_file {s3_path} ...")
+    b = s3_path.split("/")[2]
+    k = "/".join(s3_path.split("/")[3:])
+    return download_file(b, k)
+
+
+def upload_result_files(execution_id, param_info, res_files: list, bucket):
+    keys = []
+    for f in res_files:
+        name = basename(f)
+        key = f"{s3_prefix}/executions/{execution_id}/result/HPC/{param_info}/{name}"
+        print(f"upload {f} -> {key}")
+        s3.upload_file(f, bucket, key)
+        keys.append(f"s3://{bucket}/{key}")
+    return keys     
+
+
+def sa_optimizer(qubo_model, model_file_info, param_info):
     method = 'dwave-sa'
     optimizer_param = {}
     optimizer_param['shots'] = 1000
     optimizer_param['notes'] = 'notebook_experiment'
-    sa_optimizer = Annealer(qubo_model['qubo'], method, **optimizer_param)
+    sa_optimizer = Annealer(qubo_model, method, **optimizer_param)
     sa_optimize_result = sa_optimizer.fit()
     time_sec = sa_optimize_result['time']
     logging.info(f"sa_optimizer return time_sec: {time_sec}")
-    return time_sec
+
+    raw_s3_path = model_file_info['raw']
+    data_s3_path = model_file_info['data']
+    raw_path = download_s3_file(raw_s3_path)
+    data_path = download_s3_file(data_s3_path)
+    
+    sa_param = {}
+    sa_param["raw_path"] = raw_path
+    sa_param["data_path"] = data_path
+    
+    sa_process_result = ResultParser(method, **sa_param)
+    logging.info(f"{method} result is {sa_process_result.get_all_result()}")
+    local_time, _ , _, _= sa_process_result.get_time()
+
+    sa_atom_pos_data = sa_process_result.generate_optimize_pts()
+    timestamp = int(time.time())
+    result_files = sa_process_result.save_mol_file(f"{timestamp}")  
+
+    result_s3_files = upload_result_files(execution_id, param_info, result_files, s3_bucket)
+
+    return { 'fit_time': time_sec, 'local_time': local_time, 'result_s3_files': result_s3_files }
 
 
 def read_context(execution_id, bucket, s3_prefix):
@@ -67,11 +117,11 @@ def read_context(execution_id, bucket, s3_prefix):
     return context
 
 
-def get_model_file(execution_id):
+def get_model_info(execution_id):
     key = f"{s3_prefix}/executions/{execution_id}/model_info.json"
     obj = s3.get_object(Bucket=s3_bucket, Key=key)
     model_file_info = json.loads(obj['Body'].read())
-    return model_file_info['model']
+    return model_file_info
 
 
 def load_model(model_input_file, model_param):
@@ -129,6 +179,8 @@ if __name__ == '__main__':
     logging.info("execution_id: {}, model_param:{}".format(
         execution_id, model_param))
 
+    param_info = f"{model_param}_{resource}"    
+
     boto3.setup_default_session(region_name=aws_region)
     s3 = boto3.client('s3')
 
@@ -141,24 +193,28 @@ if __name__ == '__main__':
     else:
         experiment_name = f"{start_time}|{experiment_name}"
 
-    model_file = get_model_file(execution_id)
-    logging.info("model_file: {}".format(model_file))
+    model_file_info = get_model_info(execution_id)
+    logging.info("model_file: {}".format(model_file_info))
 
     qubo_model, model_name, mode_file_name = load_model(
-        model_file, model_param)
+        model_file_info['model'], model_param)
 
-    time_in_seconds = sa_optimizer(qubo_model)
+    sa_result = sa_optimizer(qubo_model, model_file_info, param_info)
     task_id = ""
+    local_time = sa_result['local_time']
+    result_s3_files = sa_result['result_s3_files']
     
     time_info_json = json.dumps({
-                                 "task_time": time_in_seconds,
+                                 "local_time": sa_result['local_time'],
                              })
+    
+    result_file_info = json.dumps(result_s3_files)
 
     metrics_items = [execution_id,
                      "HPC",
                      str(resource),
                      model_param,
-                     str(time_in_seconds),
+                     str(local_time),
                      time_info_json,
                      start_time,
                      experiment_name,
@@ -166,7 +222,8 @@ if __name__ == '__main__':
                      model_name,
                      mode_file_name,
                      s3_prefix,
-                     datetime.datetime.utcnow().isoformat()
+                     datetime.datetime.utcnow().isoformat(),
+                     result_file_info
                      ]
     metrics = ",".join(metrics_items)
     logging.info("metrics='{}'".format(metrics))

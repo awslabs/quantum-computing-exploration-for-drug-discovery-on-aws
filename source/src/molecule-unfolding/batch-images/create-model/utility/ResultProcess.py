@@ -130,11 +130,14 @@ class ResultParser():
 
     def _parse_model_info(self):
         logging_info("_parse_model_info")
+        logging_info(self.raw_result["model_info"])
+        
         self.rb_var_map = self.raw_result["model_info"]["rb_var_map"]
         self.var_rb_map = self.raw_result["model_info"]["var_rb_map"]
 
         # parse D from model_name
         model_name = self.raw_result["model_info"]["model_name"]
+        
         self.M = int(model_name.split("_")[0])
         self.D = int(model_name.split("_")[1])
         self.theta_option = [x * 360/self.D for x in range(self.D)]

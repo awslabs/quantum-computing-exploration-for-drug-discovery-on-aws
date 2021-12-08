@@ -8,10 +8,8 @@ import copy
 s3 = boto3.client('s3')
 default_s3_prefix = "molecule-unfolding"
 
-default_devices_arns = [
-    'arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6',
-    'arn:aws:braket:::device/qpu/d-wave/Advantage_system4'
-]
+default_devices_arns = None
+
 default_model_params = {
     "M": [1, 2, 3, 4],
     "D": [4],
@@ -26,6 +24,13 @@ default_hpc_resources = [
     [16, 16]
 ]
 
+def get_default_devices_arns():
+    #TODO - we can get list from braket services 
+    return  [
+    'arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6',
+    'arn:aws:braket:::device/qpu/d-wave/Advantage_system4'
+    ]
+
 
 def string_to_s3(content, bucket, key):
     s3.put_object(
@@ -38,7 +43,7 @@ def string_to_s3(content, bucket, key):
 def read_user_input(execution_id, bucket, s3_prefix):
     key = f"{s3_prefix}/executions/{execution_id}/user_input.json"
     obj = s3.get_object(Bucket=bucket, Key=key)
-    input =  json.loads(obj['Body'].read())
+    input = json.loads(obj['Body'].read())
     print(f"user_input={input}")
     return input
 
@@ -81,6 +86,49 @@ def get_all_param_list(param_list):
         return reslut_all
 
 
+def validate_input(input_dict: dict):
+    print('validate_input')
+    valid_keys = ['runMode', 'molFile', 'modelVersion',
+                  'experimentName', 'modelParams', 'devicesArns', 'hpcResources', 'Comment']
+    valid_keys_str = "|".join(valid_keys)
+    errors = []
+    try:
+        for k in input_dict.keys():
+            if k not in valid_keys:
+                errors.append(
+                    f"invalid field: {k}, support fields: {valid_keys_str}")
+
+            if 'devicesArns' == k:
+                if not isinstance(input_dict[k], list):
+                    errors.append(f"devicesArns must be an array")
+
+                for arn in list(input_dict[k]):
+                    if arn not in default_devices_arns:
+                        errors.append(f"unknown devices arn: {arn}")
+
+            if 'modelParams' == k:
+                if not isinstance(input_dict[k], dict):
+                    errors.append(f"devicesArns must be a dict")
+
+                param_names = dict(input_dict[k]).keys()
+                for p in param_names:
+                    if p not in ["M", "D", "A", "HQ"]:
+                        errors.append(f"unknown modelParam: {p}")
+
+            if 'hpcResources' == k:
+                if not isinstance(input_dict[k], list):
+                    errors.append(f"hpcResources must be an array")
+                for c_m in list(input_dict[k]):
+                    if not isinstance(c_m, list) or len(c_m) != 2:
+                        errors.append(
+                            f"element in hpcResources must be an array with size=2")
+    except Exception as e:
+        errors.append(repr(e))
+
+    print(errors)
+    return errors
+
+
 def handler(event, context):
     print(f"event={event}")
     aws_region = os.environ['AWS_REGION']
@@ -89,12 +137,19 @@ def handler(event, context):
     s3_prefix = event.get('s3_prefix', default_s3_prefix)
 
     common_param = f"--aws_region,{aws_region},--s3-bucket,{s3_bucket},--s3_prefix,{s3_prefix}"
+    
+    global default_devices_arns
+    default_devices_arns = get_default_devices_arns()
 
     if param_type == 'CHECK_INPUT':
 
         user_input = event['user_input']
         execution_id = event['execution_id']
         execution_id = execution_id.split(':')[-1]
+
+        errs = validate_input(user_input)
+        if len(errs) > 0:
+            raise Exception("validate error: {}".format("\n".join(errs)))
 
         key = f"{s3_prefix}/executions/{execution_id}/user_input.json"
         string_to_s3(content=json.dumps({
@@ -118,8 +173,10 @@ def handler(event, context):
             user_input = read_user_input(
                 execution_id, bucket=s3_bucket, s3_prefix=s3_prefix)
 
-            devices_arns = user_input['user_input'].get('devicesArns', default_devices_arns)
-            model_params = user_input['user_input'].get('modelParams', default_model_params)
+            devices_arns = user_input['user_input'].get(
+                'devicesArns', default_devices_arns)
+            model_params = user_input['user_input'].get(
+                'modelParams', default_model_params)
             hpc_resources = user_input['user_input'].get(
                 'hpcResources', default_hpc_resources)
         else:
