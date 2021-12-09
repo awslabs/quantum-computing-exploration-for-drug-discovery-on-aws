@@ -112,7 +112,7 @@ export class LambdaUtil {
     }
 
     public createTaskParametersLambda(): lambda.Function {
-        const lambdaRole = this.roleUtil.createGenericLambdaRole('TaskParametersLambdaRole');
+        const lambdaRole = this.roleUtil.createBraketLambdaRole('TaskParametersLambdaRole');
         const vpc = this.props.vpc;
         const lambdaSg = this.props.lambdaSg;
 

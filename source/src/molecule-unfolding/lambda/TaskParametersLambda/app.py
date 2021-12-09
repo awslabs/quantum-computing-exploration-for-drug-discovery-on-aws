@@ -8,7 +8,10 @@ import copy
 s3 = boto3.client('s3')
 default_s3_prefix = "molecule-unfolding"
 
-default_devices_arns = None
+default_devices_arns = [
+    'arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6',
+    'arn:aws:braket:::device/qpu/d-wave/Advantage_system4'
+]
 
 default_model_params = {
     "M": [1, 2, 3, 4],
@@ -24,12 +27,33 @@ default_hpc_resources = [
     [16, 16]
 ]
 
-def get_default_devices_arns():
-    #TODO - we can get list from braket services 
-    return  [
-    'arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6',
-    'arn:aws:braket:::device/qpu/d-wave/Advantage_system4'
-    ]
+
+def read_as_json(bucket, key):
+    print(f"read s3://{bucket}/{key}")
+    obj = s3.get_object(Bucket=bucket, Key=key)
+    json_ = json.loads(obj['Body'].read())
+    print(f"return: {json_}")
+    return json_
+
+
+def read_config(s3_bucket, s3_prefix):
+    config_file = f"{s3_prefix}/config/default.json"
+    config = None
+    global default_hpc_resources
+    global default_model_params
+    global default_devices_arns
+    try:
+        config = read_as_json(s3_bucket, config_file)
+   
+        if 'hpcResources' in config:
+            default_hpc_resources = config['hpcResources']
+        if 'modelParams' in config:
+            default_model_params = config['modelParams']
+        if 'devicesArns' in config:
+            default_devices_arns = config['devicesArns']
+    except Exception as e:
+        print(f"cannot find {config_file}")
+        pass
 
 
 def string_to_s3(content, bucket, key):
@@ -115,8 +139,8 @@ def validate_input(input_dict: dict):
                     if p not in ["M", "D", "A", "HQ"]:
                         errors.append(f"unknown modelParam: {p}")
                     if not isinstance(input_dict[k][p], list):
-                        errors.append(f"values of modelParam: {p} must be an array")
-                
+                        errors.append(
+                            f"values of modelParam: {p} must be an array")
 
             if 'hpcResources' == k:
                 if not isinstance(input_dict[k], list):
@@ -139,10 +163,9 @@ def handler(event, context):
     s3_bucket = event['s3_bucket']
     s3_prefix = event.get('s3_prefix', default_s3_prefix)
 
+    read_config(s3_bucket, s3_prefix)
+
     common_param = f"--aws_region,{aws_region},--s3-bucket,{s3_bucket},--s3_prefix,{s3_prefix}"
-    
-    global default_devices_arns
-    default_devices_arns = get_default_devices_arns()
 
     if param_type == 'CHECK_INPUT':
 
