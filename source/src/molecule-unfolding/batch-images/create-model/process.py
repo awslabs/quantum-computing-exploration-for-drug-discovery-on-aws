@@ -1,6 +1,6 @@
 import argparse
 import logging
-from posixpath import basename
+from os.path import basename
 import boto3
 import pickle
 import botocore
@@ -22,7 +22,7 @@ def download_file(bucket, key, dir="/tmp/"):
     return file_name
 
 
-def prepare_molecule_data(mol_file: str, execution_id: str):
+def prepare_molecule_data(mol_file: str, execution_id, version):
     logging.info("prepare_molecule_data() enter")
     if mol_file:
         if mol_file.startswith("s3://"):
@@ -46,7 +46,9 @@ def prepare_molecule_data(mol_file: str, execution_id: str):
     mol_data = MoleculeData(mol_file_name, 'qmu')
     logging.info(
         f"build_input_data() done, raw_model_s3_path: {raw_model_s3_path}")
-    return mol_data, raw_model_s3_path
+
+    data_file_s3_path = save_model_data(mol_data, s3_bucket, s3_prefix, 'data', version)    
+    return mol_data, raw_model_s3_path, data_file_s3_path
 
 
 def upload_file(bucket, key, file_name):
@@ -55,7 +57,7 @@ def upload_file(bucket, key, file_name):
     return f"s3://{bucket}/{key}"
 
 
-def create_qubo_model(mol_data):
+def create_qubo_model(mol_data, execution_id, version):
     logging.info("create_model() enter")
     init_param = {}
     method = ['pre-calc']
@@ -80,7 +82,9 @@ def create_qubo_model(mol_data):
     model_param[method]['hubo_qubo_val'] = [200]
 
     qmu_qubo.build_model(**model_param)
-    return qmu_qubo
+
+    model_file_s3_path = save_model_data(qmu_qubo, s3_bucket, s3_prefix, 'model', version)   
+    return qmu_qubo, model_file_s3_path
 
 
 def save_model_data(saveable, bucket, s3_prefix, category, version):
@@ -91,18 +95,18 @@ def save_model_data(saveable, bucket, s3_prefix, category, version):
     key = "{}/models/{}/{}".format(s3_prefix, category, basename(model_path))
     s3.upload_file(model_path, bucket, key)
     s3_path = "s3://{}/{}".format(bucket, key)
-    logging.info("save_mol_or_model() {}".format(s3_path))
+    logging.info("save_model_data() {}".format(s3_path))
     return s3_path
 
 
-def record_execution_model_info(execution_id, s3_model_path: str, s3_mol_path: str, s3_raw_path: str):
+def record_execution_model_info(execution_id, raw_s3_path, data_s3_path, model_s3_path):
     info_key = "{}/executions/{}/model_info.json".format(
         s3_prefix, execution_id)
 
     string_to_s3(content=json.dumps({
-        "model": str(s3_model_path),
-        "data": str(s3_mol_path),
-        "raw": str(s3_raw_path),
+        "model": str(model_s3_path),
+        "data": str(data_s3_path),
+        "raw": str(raw_s3_path),
     }), bucket=s3_bucket, key=info_key)
 
 
@@ -153,14 +157,12 @@ if __name__ == '__main__':
 
     logging.info(f"create model, modelVersion:{version}")
 
-    molecule_data, raw_model_s3_path = prepare_molecule_data(
-        mol_file, execution_id)
-    s3_mol_file = save_model_data(
-        molecule_data, s3_bucket, s3_prefix, 'data', version)
-    qubo_model = create_qubo_model(molecule_data)
-    s3_mode_file = save_model_data(
-        qubo_model, s3_bucket, s3_prefix, 'model', version)
+    molecule_data, raw_s3_path, data_s3_path = prepare_molecule_data(
+        mol_file, execution_id, version)
+
+    qubo_model, model_s3_path = create_qubo_model(molecule_data, execution_id, version)
+   
     record_execution_model_info(
-        execution_id, s3_mode_file, s3_mol_file, raw_model_s3_path)
+        execution_id, raw_s3_path, data_s3_path, model_s3_path)
 
     logging.info("Done")

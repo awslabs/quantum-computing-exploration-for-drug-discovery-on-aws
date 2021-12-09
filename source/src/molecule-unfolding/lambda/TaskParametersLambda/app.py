@@ -114,6 +114,9 @@ def validate_input(input_dict: dict):
                 for p in param_names:
                     if p not in ["M", "D", "A", "HQ"]:
                         errors.append(f"unknown modelParam: {p}")
+                    if not isinstance(input_dict[k][p], list):
+                        errors.append(f"values of modelParam: {p} must be an array")
+                
 
             if 'hpcResources' == k:
                 if not isinstance(input_dict[k], list):

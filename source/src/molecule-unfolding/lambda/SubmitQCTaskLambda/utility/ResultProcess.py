@@ -130,7 +130,7 @@ class ResultParser():
 
     def _parse_model_info(self):
         logging_info("_parse_model_info")
-        logging_info(self.raw_result["model_info"])
+        logging_info("_parse_model_info() model_info = {}".format(self.raw_result["model_info"]))
         
         self.rb_var_map = self.raw_result["model_info"]["rb_var_map"]
         self.var_rb_map = self.raw_result["model_info"]["var_rb_map"]
@@ -151,7 +151,7 @@ class ResultParser():
         return 0
 
     def generate_optimize_pts(self):
-        logging_info("generate_optimize_pts")
+        logging_info("generate_optimize_pts()")
         # get best configuration
         pddf_sample_result = self.raw_result["response"].aggregate(
         ).to_pandas_dataframe()
@@ -159,9 +159,9 @@ class ResultParser():
         pddf_best_result = pddf_sample_result.iloc[pddf_sample_result['energy'].idxmin(
         ), :]
 
-        logging_info(self.raw_result["model_info"])
+        logging_info("generate_optimize_pts model_info={}".format(self.raw_result["model_info"]))
 
-        logging_info(self.raw_result["response"].variables)
+        #logging_info(self.raw_result["response"].variables)
 
         best_config = pddf_best_result.filter(items=self.valid_var_name)
 
@@ -221,8 +221,8 @@ class ResultParser():
 
             return update_line
 
-        mol_save_name = f"/tmp/{self.mol_file_name.split('mol2')[0][:-1]}_{self.method}_{save_name}.mol2"
-        file_save_name = f"/tmp/{self.mol_file_name.split('mol2')[0][:-1]}_{self.method}_{save_name}.json"
+        mol_save_name = f"{self.mol_file_name.split('mol2')[0][:-1]}_{self.method}_{save_name}.mol2"
+        file_save_name = f"{self.mol_file_name.split('mol2')[0][:-1]}_{self.method}_{save_name}.json"
 
         update_f = open(mol_save_name, 'w')
 
