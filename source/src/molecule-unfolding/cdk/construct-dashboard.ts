@@ -32,6 +32,11 @@ export class Dashboard extends cdk.Construct {
             description: "Quicksight User"
         });
 
+        const templateAccountId = quicksightTemplateAccountIdParam.valueAsString;
+
+        const templateArn = `arn:aws:quicksight:us-east-1:${templateAccountId}:template/QC-benchmark-analysis-template`
+
+
         const quicksightUser = `arn:aws:quicksight:us-east-1:${this.props.account}:user/default/${quickSightUserParam.valueAsString}`;
         const qcDataSource = new quicksight.CfnDataSource(this, "qcBenchmark-DataSource", {
             awsAccountId: this.props.account,
@@ -146,9 +151,7 @@ export class Dashboard extends cdk.Construct {
             }
         });
 
-        const templateAccountId = quicksightTemplateAccountIdParam.valueAsString;
 
-        const templateArn = `arn:aws:quicksight:us-east-1:${templateAccountId}:template/QC-benchmark-analysis-template`
         const qcAnaTemplate = new quicksight.CfnTemplate(this, "qcBenchmark-QSTemplate", {
             awsAccountId: this.props.account,
             templateId: `${this.props.stackName}-qcBenchmark-QSTemplate`,

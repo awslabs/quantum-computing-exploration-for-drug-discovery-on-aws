@@ -184,7 +184,7 @@ def handler(event, context):
                              result_file_info
                              ]
 
-            metrics = ",".join(metrics_items)
+            metrics = "!".join(metrics_items)
             print("metrics='{}'".format(metrics))
             metrics_key = f"{s3_prefix}/benchmark_metrics/{execution_id}-QC-{device_name}-{model_name}-{qc_task_id}.csv"
             string_to_s3(metrics, bucket, metrics_key)

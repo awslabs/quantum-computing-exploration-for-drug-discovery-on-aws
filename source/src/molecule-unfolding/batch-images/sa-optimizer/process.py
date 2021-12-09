@@ -5,7 +5,7 @@ import time
 import datetime
 import os
 import json
-from posixpath import basename
+from os.path import basename
 
 from utility.AnnealerOptimizer import Annealer
 from utility.QMUQUBO import QMUQUBO
@@ -189,9 +189,9 @@ if __name__ == '__main__':
 
     experiment_name = context['user_input'].get('experimentName', None)
     if experiment_name is None:
-        experiment_name = f"{start_time}|{execution_id}"
+        experiment_name = f"{start_time}_{execution_id}"
     else:
-        experiment_name = f"{start_time}|{experiment_name}"
+        experiment_name = f"{start_time}_{experiment_name}"
 
     model_file_info = get_model_info(execution_id)
     logging.info("model_file: {}".format(model_file_info))
@@ -225,7 +225,7 @@ if __name__ == '__main__':
                      datetime.datetime.utcnow().isoformat(),
                      result_file_info
                      ]
-    metrics = ",".join(metrics_items)
+    metrics = "!".join(metrics_items)
     logging.info("metrics='{}'".format(metrics))
 
     metrics_key = f"{s3_prefix}/benchmark_metrics/{execution_id}-HPC-{resource}-{model_name}-{int(time.time())}.csv"

@@ -218,10 +218,10 @@ def submit_qc_task(s3, execution_id, device_arn, model_param, s3_bucket, s3_pref
 
     experiment_name = context['user_input'].get('experimentName', None)
     if experiment_name is None:
-        experiment_name = f"{start_time}|{execution_id}"
+        experiment_name = f"{start_time}_{execution_id}"
     else:
-        experiment_name = f"{start_time}|{experiment_name}"
-
+        experiment_name = f"{start_time}_{experiment_name}"
+    
     # {"task_id": task_id, "model_name": model_name,  "mode_file_name": mode_file_name}
     res = run_on_device(s3, {
         "execution_id": execution_id,

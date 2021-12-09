@@ -25,7 +25,7 @@ exports.handler = function (event, context, callback) {
         "\tScenario string,\n" +
         "\tCreate_Time string,\n" +
         "\tResult_Location string\n" +
-        ") ROW FORMAT DELIMITED FIELDS TERMINATED BY ',' LINES TERMINATED BY '\\n' LOCATION '" + location + "'"
+        ") ROW FORMAT DELIMITED FIELDS TERMINATED BY '!' LINES TERMINATED BY '\\n' LOCATION '" + location + "'"
 
     const createViewSql = `
         CREATE OR REPLACE VIEW qc_benchmark_metrics as 

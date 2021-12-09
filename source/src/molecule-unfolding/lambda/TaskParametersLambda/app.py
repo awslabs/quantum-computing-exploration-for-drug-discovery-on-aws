@@ -116,6 +116,10 @@ def validate_input(input_dict: dict):
                   'experimentName', 'modelParams', 'devicesArns', 'hpcResources', 'Comment']
     valid_keys_str = "|".join(valid_keys)
     errors = []
+    
+    if '!' in json.dumps(input_dict):
+         errors.append("invalid char '!' in input")
+
     try:
         for k in input_dict.keys():
             if k not in valid_keys:
@@ -224,6 +228,7 @@ def handler(event, context):
 
     qc_task_params = defaultdict(list)
     qc_device_names = []
+    qc_index = 0
     for device_arn in devices_arns:
         device_name = device_arn.split("/").pop()
         qc_device_names.append(device_name)
@@ -231,23 +236,27 @@ def handler(event, context):
             param_item_name = str(param_item).replace(
                 "&", '').replace("=", '')
             qc_task_params[device_arn].append({
-                "params": f"--model-param,{param_item},--device-arn,{device_arn},{common_param}".split(","),
+                "params": f"--model-param,{param_item},--device-arn,{device_arn},--index {qc_index}, {common_param}".split(","),
                 "device_name": device_name,
                 "task_name": f"{device_name}_{param_item_name}",
                 "model_param": param_item,
+                "index": qc_index,
                 "device_arn": device_arn})
 
     hpc_task_params = []
+    hpc_index = 0
     for resource in hpc_resources:
         resource_name = f"Vcpu{resource[0]}_Mem{resource[1]}G"
         for param_item in model_param_items:
+            hpc_index += 1
             param_item_name = str(param_item).replace(
                 "&", '').replace("=", '')
             hpc_task_params.append({
-                "params": f"--model-param,{param_item},--resource,{resource_name},{common_param}".split(","),
+                "params": f"--model-param,{param_item},--resource,{resource_name},--index {hpc_index}, {common_param}".split(","),
                 "resource_name": resource_name,
                 "task_name": f"{resource_name}_{param_item_name}",
                 "model_param": param_item,
+                "index": hpc_index,
                 "vcpus": resource[0],
                 "memory": resource[1] * 1024
             })
