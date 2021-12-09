@@ -117,6 +117,7 @@ def handler(event, context):
 
         message = None
         try:
+            index = submit_result['index']
             model_info = submit_result['model_info']
             data_s3_path = model_info['data']
             raw_s3_path = model_info['raw']
@@ -186,7 +187,7 @@ def handler(event, context):
 
             metrics = "!".join(metrics_items)
             print("metrics='{}'".format(metrics))
-            metrics_key = f"{s3_prefix}/benchmark_metrics/{execution_id}-QC-{device_name}-{model_name}-{qc_task_id}.csv"
+            metrics_key = f"{s3_prefix}/benchmark_metrics/{execution_id}-QC-{device_name}-{model_name}-{index}-{qc_task_id}.csv"
             string_to_s3(metrics, bucket, metrics_key)
             string_to_s3("Done", bucket,
                          key=f"{s3_prefix}/done_task/{execution_id}_{qc_task_id}")

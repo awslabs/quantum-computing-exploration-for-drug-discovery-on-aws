@@ -2,8 +2,6 @@ import * as cdk from '@aws-cdk/core';
 import * as ec2 from '@aws-cdk/aws-ec2';
 import * as lambda from '@aws-cdk/aws-lambda';
 import * as iam from '@aws-cdk/aws-iam'
-import * as batch from '@aws-cdk/aws-batch'
-import * as ecs from '@aws-cdk/aws-ecs'
 import * as sfn from '@aws-cdk/aws-stepfunctions';
 import * as tasks from '@aws-cdk/aws-stepfunctions-tasks';
 import * as s3 from '@aws-cdk/aws-s3'
@@ -16,7 +14,6 @@ import {
 
 
 import {
-    ECRRepoNameEnum,
     ECRImageUtil
 } from './utils/utils-images'
 
@@ -28,6 +25,9 @@ import {
     LambdaUtil
 } from './utils/utils-lambda'
 
+import {
+    BatchUtil
+} from './utils/utils-batch'
 
 export interface BatchProps {
     region: string;
@@ -43,12 +43,11 @@ export interface BatchProps {
 
 export class Benchmark extends Construct {
 
-    private batchJobExecutionRole: iam.Role;
-    private batchJobRole: iam.Role;
     private props: BatchProps;
     private images: ECRImageUtil
     private roleUtil: RoleUtil
     private lambdaUtil: LambdaUtil
+    private batchUtil: BatchUtil
 
     // constructor 
     constructor(scope: Construct, id: string, props: BatchProps) {
@@ -61,37 +60,11 @@ export class Benchmark extends Construct {
             roleUtil: this.roleUtil,
             imageUtil: this.images
         });
-        this.batchJobExecutionRole = this.roleUtil.createBatchJobExecutionRole('executionRole');
-        this.batchJobRole = this.roleUtil.createBatchJobExecutionRole('jobRole');
 
-        const hpcIstanceTypes = [
-            ec2.InstanceType.of(ec2.InstanceClass.C5, ec2.InstanceSize.LARGE), // 2 vcpus, 4G mem
-            ec2.InstanceType.of(ec2.InstanceClass.C5, ec2.InstanceSize.XLARGE), // 4 vcpus, 8G mem
-            ec2.InstanceType.of(ec2.InstanceClass.C5, ec2.InstanceSize.XLARGE2), // 8 vcpus, 16G mem
-            ec2.InstanceType.of(ec2.InstanceClass.C5, ec2.InstanceSize.XLARGE4), // 16 vcpus, 32G mem
-        ];
-        const vpc = this.props.vpc
-        const batchSg = this.props.batchSg
-
-        const batchHPCEnvironment = new batch.ComputeEnvironment(this, 'Batch-HPC-Compute-Env', {
-            computeResources: {
-                type: batch.ComputeResourceType.ON_DEMAND,
-                vpc,
-                vpcSubnets: vpc.selectSubnets({
-                    subnetType: ec2.SubnetType.PRIVATE_WITH_NAT
-                }),
-                allocationStrategy: batch.AllocationStrategy.BEST_FIT_PROGRESSIVE,
-                instanceTypes: hpcIstanceTypes,
-                securityGroups: [batchSg]
-            }
-        });
-
-        const hpcJobQueue = new batch.JobQueue(this, 'hpcJobQueue', {
-            computeEnvironments: [{
-                computeEnvironment: batchHPCEnvironment,
-                order: 1,
-            }, ],
-        });
+        this.batchUtil = BatchUtil.newInstance(scope, this.props, {
+            roleUtil: this.roleUtil,
+            imageUtil: this.images
+        })
 
         const taskParamLambda = this.lambdaUtil.createTaskParametersLambda()
         const checkInputParamsStep = new tasks.LambdaInvoke(this, 'Check Input', {
@@ -106,8 +79,8 @@ export class Benchmark extends Construct {
             outputPath: '$.Payload'
         });
 
-        const createModelStep = this.createCreateModelStep(hpcJobQueue);
-        const hpcStateMachine = this.createHPCStateMachine(taskParamLambda, hpcJobQueue);
+        const createModelStep = this.createCreateModelStep();
+        const hpcStateMachine = this.createHPCStateMachine(taskParamLambda);
         const qcStateMachine = this.createQCStateMachine(taskParamLambda)
         const qcAndHPCStateMachine = this.createHPCAndQCStateMachine(hpcStateMachine, qcStateMachine)
         const aggResultStep = this.createAggResultStep();
@@ -165,55 +138,9 @@ export class Benchmark extends Construct {
         });
     }
 
-
-    private createHPCBatchJobDef(defName: string,
-        vcpus: number, mem: number, bucketName: string, image: ecs.ContainerImage): batch.JobDefinition {
-        const resource = this.getResourceDescription(vcpus, mem)
-        return new batch.JobDefinition(this, defName, {
-            platformCapabilities: [batch.PlatformCapabilities.EC2],
-            container: {
-                image,
-                command: [
-                    '--model-param', 'M=1&D=4&A=300&HQ=200',
-                    '--aws-region', this.props.region,
-                    '--resource', `${resource}`,
-                    '--s3-bucket', bucketName
-                ],
-                executionRole: this.batchJobExecutionRole,
-                jobRole: this.batchJobRole,
-                vcpus,
-                memoryLimitMiB: mem * 1024,
-                privileged: false
-            },
-            timeout: cdk.Duration.hours(2),
-            retryAttempts: 1
-        });
-    }
-
-    private getResourceDescription(vcpus: number, mem: number): string {
-        return `vCpus${vcpus}_Mem_${mem}G`;
-    }
-
-    private createCreateModelStep(hpcJobQueue: batch.JobQueue): tasks.BatchSubmitJob {
-        const createModelEcrImage = this.images.getECRImage(ECRRepoNameEnum.Batch_Create_Model) as ecs.ContainerImage
-
-        const createModelJobDef = new batch.JobDefinition(this, 'createModelJobDefinition', {
-            platformCapabilities: [batch.PlatformCapabilities.EC2],
-            container: {
-                image: createModelEcrImage,
-                command: [
-                    '--aws-region', this.props.region,
-                    '--s3-bucket', this.props.bucket.bucketName,
-                ],
-                executionRole: this.batchJobExecutionRole,
-                jobRole: this.batchJobRole,
-                vcpus: 2,
-                memoryLimitMiB: 2 * 1024,
-                privileged: false
-            },
-            timeout: cdk.Duration.minutes(10),
-            retryAttempts: 1
-        });
+    private createCreateModelStep(): tasks.BatchSubmitJob {
+        const hpcJobQueue = this.batchUtil.getHpcJobQueue()
+        const createModelJobDef = this.batchUtil.createCreateModelJobDef()
 
         const createModelStep = new tasks.BatchSubmitJob(this, 'Create Model', {
             jobDefinitionArn: createModelJobDef.jobDefinitionArn,
@@ -366,8 +293,7 @@ export class Benchmark extends Construct {
         return qcStateMachine;
     }
 
-    private createHPCStateMachine(parametersLambda: lambda.Function, hpcJobQueue: batch.JobQueue): sfn.StateMachine {
-        const hpcEcrImage = this.images.getECRImage(ECRRepoNameEnum.Batch_Sa_Optimizer) as ecs.ContainerImage
+    private createHPCStateMachine(parametersLambda: lambda.Function): sfn.StateMachine {
         const parametersLambdaStep = new tasks.LambdaInvoke(this, 'Get Task Parameters', {
             lambdaFunction: parametersLambda,
             payload: sfn.TaskInput.fromObject({
@@ -378,10 +304,9 @@ export class Benchmark extends Construct {
             }),
             outputPath: '$.Payload'
         });
+        const hpcJobQueue = this.batchUtil.getHpcJobQueue()
+        const jobDef = this.batchUtil.createHPCBatchJobDef("HPCJob_Template", 2, 2);
 
-        const jobDef = this.createHPCBatchJobDef("HPCJob_Template",
-            2, 2, this.props.bucket.bucketName, hpcEcrImage
-        );
         const stateJson = {
             End: true,
             Type: "Task",

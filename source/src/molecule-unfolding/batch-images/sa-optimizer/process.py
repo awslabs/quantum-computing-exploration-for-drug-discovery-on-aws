@@ -164,6 +164,7 @@ if __name__ == '__main__':
     parser.add_argument('--resource', type=str),
     parser.add_argument('--execution-id', type=str)
     parser.add_argument('--model-param', type=str)
+    parser.add_argument('--index', type=str)
 
     s3_prefix = "molecule-unfolding"
 
@@ -173,6 +174,7 @@ if __name__ == '__main__':
     resource = args.resource
     s3_bucket = args.s3_bucket
     execution_id = args.execution_id
+    index = args.index
 
     model_param = args.model_param
 
@@ -228,6 +230,6 @@ if __name__ == '__main__':
     metrics = "!".join(metrics_items)
     logging.info("metrics='{}'".format(metrics))
 
-    metrics_key = f"{s3_prefix}/benchmark_metrics/{execution_id}-HPC-{resource}-{model_name}-{int(time.time())}.csv"
+    metrics_key = f"{s3_prefix}/benchmark_metrics/{execution_id}-HPC-{resource}-{model_name}-{index}-{int(time.time())}.csv"
     string_to_s3(metrics, s3_bucket, metrics_key)
     logging.info("Done")

@@ -238,39 +238,3 @@ def submit_qc_task(s3, execution_id, device_arn, model_param, s3_bucket, s3_pref
 
     return res
     
-
-
-def run_in_batch_job():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--s3-bucket', type=str)
-    parser.add_argument('--aws-region', type=str, default=DEFAULT_AWS_REGION)
-    parser.add_argument('--device-arn', type=str,
-                        default='arn:aws:braket:::device/qpu/d-wave/Advantage_system4')
-    parser.add_argument('--model-param', type=str)
-    parser.add_argument('--execution-id', type=str)
-
-    s3_prefix = "molecule-unfolding"
-
-    args, _ = parser.parse_known_args()
-
-    aws_region = args.aws_region
-    device_arn = args.device_arn
-    s3_bucket = args.s3_bucket
-    execution_id = args.execution_id
-    model_param = args.model_param
-
-    logging_info("execution_id: {}, model_param:{}".format(
-        execution_id, model_param))
-
-    boto3.setup_default_session(region_name=aws_region)
-    s3 = boto3.client('s3')
-
-    submit_qc_task(s3, execution_id, device_arn,
-                   model_param, s3_bucket, s3_prefix)
-
-
-if __name__ == '__main__':
-    batch_job_id = os.environ['AWS_BATCH_JOB_ID']
-    if batch_job_id:
-        run_in_batch_job()
-    logging_info("Done")

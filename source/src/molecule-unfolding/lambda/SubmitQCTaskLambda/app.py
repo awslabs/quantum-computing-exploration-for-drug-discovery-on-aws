@@ -54,9 +54,11 @@ def handler(event, context):
 
     device_arn = ItemValue['device_arn']
     model_param =ItemValue['model_param']
+    index = ItemValue['index']
 
     submit_result = submit_qc_task(s3, execution_id, device_arn,
                                 model_param, s3_bucket, s3_prefix)
+    submit_result['index'] = index
     # {"task_id": task_id, "model_name": model_name,  "mode_file_name": mode_file_name}
     qc_task_id = submit_result['task_id']
 

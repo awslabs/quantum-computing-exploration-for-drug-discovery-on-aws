@@ -93,7 +93,12 @@ class QMUQUBO():
                         self.model_qubo["pre-calc"][model_name]["rb_var_map"] = self.rb_var_map
                         self.model_qubo["pre-calc"][model_name]["time"] = end-start
                         self.model_qubo["pre-calc"][model_name]["model_name"] = model_name
-                        self.model_qubo["pre-calc"][model_name]["rb_name"] = list(self.mol_data.bond_graph.sort_ris_data[str(M)].keys())
+                        ris_name = list(self.mol_data.bond_graph.sort_ris_data[str(M)].keys()).copy()
+                        valid_rb_name = []
+                        for name in ris_name:
+                            if len(name.split(',')) == 1:
+                                valid_rb_name.append(name)
+                        self.model_qubo["pre-calc"][model_name]["rb_name"] = valid_rb_name
                         # # optimize results
                         # self.model_qubo["pre-calc"][model_name]["optimizer"] = {}
                         # self.model_qubo["pre-calc"][model_name]["optimizer"]["post"] = {}
