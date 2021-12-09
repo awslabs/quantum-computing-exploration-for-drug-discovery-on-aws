@@ -65,20 +65,9 @@ export class Benchmark extends Construct {
             roleUtil: this.roleUtil,
             imageUtil: this.images
         })
-
         const taskParamLambda = this.lambdaUtil.createTaskParametersLambda()
-        const checkInputParamsStep = new tasks.LambdaInvoke(this, 'Check Input', {
-            lambdaFunction: taskParamLambda,
-            payload: sfn.TaskInput.fromObject({
-                "s3_bucket": this.props.bucket.bucketName,
-                "s3_prefix": this.props.prefix,
-                "param_type": "CHECK_INPUT",
-                "user_input.$": "$",
-                "execution_id.$": "$$.Execution.Id"
-            }),
-            outputPath: '$.Payload'
-        });
 
+        const checkInputParamsStep = this.createCheckInputStep(taskParamLambda)
         const createModelStep = this.createCreateModelStep();
         const hpcStateMachine = this.createHPCStateMachine(taskParamLambda);
         const qcStateMachine = this.createQCStateMachine(taskParamLambda)
@@ -138,6 +127,20 @@ export class Benchmark extends Construct {
         });
     }
 
+    private createCheckInputStep(taskParamLambda: lambda.Function): tasks.LambdaInvoke {
+        return new tasks.LambdaInvoke(this, 'Check Input', {
+            lambdaFunction: taskParamLambda,
+            payload: sfn.TaskInput.fromObject({
+                "s3_bucket": this.props.bucket.bucketName,
+                "s3_prefix": this.props.prefix,
+                "param_type": "CHECK_INPUT",
+                "user_input.$": "$",
+                "execution_id.$": "$$.Execution.Id"
+            }),
+            outputPath: '$.Payload'
+        });
+    }
+
     private createCreateModelStep(): tasks.BatchSubmitJob {
         const hpcJobQueue = this.batchUtil.getHpcJobQueue()
         const createModelJobDef = this.batchUtil.createCreateModelJobDef()
@@ -189,9 +192,7 @@ export class Benchmark extends Construct {
         return hpcAndQCStateMachine;
     }
 
-    private createQCStateMachine(
-        parametersLambda: lambda.Function
-    ): sfn.StateMachine {
+    private createQCStateMachine(parametersLambda: lambda.Function): sfn.StateMachine {
 
         const getDeviceListLambdaStep = new tasks.LambdaInvoke(this, 'Get Device List', {
             lambdaFunction: parametersLambda,
@@ -229,14 +230,11 @@ export class Benchmark extends Construct {
         parallelQCDeviceMap.iterator(runOnQCDeviceStateMachineStep);
         const qcStateMachine = new sfn.StateMachine(this, 'QCStateMachine', {
             definition: getDeviceListLambdaStep.next(parallelQCDeviceMap),
-            timeout: cdk.Duration.hours(36)
         });
         return qcStateMachine;
     }
 
-    private createRunOnQCDeviceStateMachine(
-        parametersLambda: lambda.Function
-    ): sfn.StateMachine {
+    private createRunOnQCDeviceStateMachine(parametersLambda: lambda.Function): sfn.StateMachine {
 
         const checkQCDeviceLambda = this.lambdaUtil.createCheckQCDeviceLambda()
         const checkQCDeviceStep = new tasks.LambdaInvoke(this, "Check Device status", {
@@ -305,7 +303,7 @@ export class Benchmark extends Construct {
             outputPath: '$.Payload'
         });
         const hpcJobQueue = this.batchUtil.getHpcJobQueue()
-        const jobDef = this.batchUtil.createHPCBatchJobDef("HPCJob_Template", 2, 2);
+        const jobDef = this.batchUtil.createHPCBatchJobDef("HPCJob_Template", 2, 4);
 
         const stateJson = {
             End: true,
