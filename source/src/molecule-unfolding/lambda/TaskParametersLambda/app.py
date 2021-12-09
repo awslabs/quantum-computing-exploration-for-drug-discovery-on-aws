@@ -116,7 +116,7 @@ def validate_input(input_dict: dict):
                   'experimentName', 'modelParams', 'devicesArns', 'hpcResources', 'Comment']
     valid_keys_str = "|".join(valid_keys)
     errors = []
-    
+
     if '!' in json.dumps(input_dict):
          errors.append("invalid char '!' in input")
 
@@ -236,7 +236,7 @@ def handler(event, context):
             param_item_name = str(param_item).replace(
                 "&", '').replace("=", '')
             qc_task_params[device_arn].append({
-                "params": f"--model-param,{param_item},--device-arn,{device_arn},--index {qc_index}, {common_param}".split(","),
+                "params": f"--model-param,{param_item},--device-arn,{device_arn},--index,{qc_index},{common_param}".split(","),
                 "device_name": device_name,
                 "task_name": f"{device_name}_{param_item_name}",
                 "model_param": param_item,
@@ -252,7 +252,7 @@ def handler(event, context):
             param_item_name = str(param_item).replace(
                 "&", '').replace("=", '')
             hpc_task_params.append({
-                "params": f"--model-param,{param_item},--resource,{resource_name},--index {hpc_index}, {common_param}".split(","),
+                "params": f"--model-param,{param_item},--resource,{resource_name},--index,{hpc_index},{common_param}".split(","),
                 "resource_name": resource_name,
                 "task_name": f"{resource_name}_{param_item_name}",
                 "model_param": param_item,
