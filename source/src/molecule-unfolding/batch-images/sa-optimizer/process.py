@@ -103,9 +103,14 @@ def sa_optimizer(qubo_model, model_file_info, param_info):
     timestamp = int(time.time())
     result_files = sa_process_result.save_mol_file(f"{timestamp}")  
 
+    result_json = get_result(result_files[1])
+
     result_s3_files = upload_result_files(execution_id, param_info, result_files, s3_bucket)
 
-    return { 'fit_time': time_sec, 'local_time': local_time, 'result_s3_files': result_s3_files }
+    return { 'fit_time': time_sec, 'local_time': local_time,
+     'result_s3_files': result_s3_files,
+     'result_json': result_json
+     }
 
 
 def read_context(execution_id, bucket, s3_prefix):
@@ -156,6 +161,9 @@ def load_model(model_input_file, model_param):
     qubo_model = qmu_qubo_optimize.get_model(method, model_name)
     return qubo_model, model_name, mode_file_name
 
+def get_result(path):
+    with open(path) as f:
+        return json.dumps(json.load(f))
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -205,12 +213,13 @@ if __name__ == '__main__':
     task_id = ""
     local_time = sa_result['local_time']
     result_s3_files = sa_result['result_s3_files']
-    
+    result_json = sa_result['result_json']
+
     time_info_json = json.dumps({
                                  "local_time": sa_result['local_time'],
                              })
     
-    result_file_info = json.dumps(result_s3_files)
+    #result_file_info = json.dumps(result_s3_files)
 
     metrics_items = [execution_id,
                      "HPC",
@@ -225,7 +234,8 @@ if __name__ == '__main__':
                      mode_file_name,
                      s3_prefix,
                      datetime.datetime.utcnow().isoformat(),
-                     result_file_info
+                     result_json,
+                     result_s3_files[0]
                      ]
     metrics = "!".join(metrics_items)
     logging.info("metrics='{}'".format(metrics))

@@ -1,9 +1,0 @@
-numpy==1.19.2
-boto3==1.14.43
-dimod==0.9.13
-dwave-ocean-sdk
-amazon-braket-sdk
-amazon-braket-ocean-plugin
-biopandas
-
-

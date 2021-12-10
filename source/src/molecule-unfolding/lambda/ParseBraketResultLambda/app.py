@@ -25,7 +25,7 @@ def download_s3_file(s3_path):
     b = s3_path.split("/")[2]
     k = "/".join(s3_path.split("/")[3:])
     return download_file(b, k)
-    
+
 
 def string_to_s3(content, bucket, key):
     s3.put_object(
@@ -78,6 +78,7 @@ def task_already_done(execution_id, qc_task_id, bucket):
     except Exception as e:
         return False
 
+
 def upload_result_files(execution_id, task_id, res_files: list, bucket):
     keys = []
     for f in res_files:
@@ -87,7 +88,12 @@ def upload_result_files(execution_id, task_id, res_files: list, bucket):
         s3.upload_file(f, bucket, key)
         keys.append(f"s3://{bucket}/{key}")
         del_local_file(f)
-    return keys         
+    return keys
+
+
+def get_result(path):
+    with open(path) as f:
+        return json.dumps(json.load(f))
 
 
 def handler(event, context):
@@ -110,7 +116,7 @@ def handler(event, context):
         execution_id = task_info['execution_id']
         task_token = task_info['task_token']
         submit_result = task_info['submit_result']
-       
+
         if task_already_done(execution_id, qc_task_id, bucket):
             print(f"qc_task_id={qc_task_id} already done")
             continue
@@ -140,17 +146,17 @@ def handler(event, context):
             print(
                 f"local_time={local_time}, task_time={task_time}, total_time={total_time}, access_time={access_time}")
 
-
             print("generate_optimize_pts()")
             timestamp = int(time.time())
             qa_atom_pos_data = qa_process_result.generate_optimize_pts()
             print(f"qa_atom_pos_data: {qa_atom_pos_data}")
-            result_files = qa_process_result.save_mol_file(f"{timestamp}")  
-            result_s3_files = upload_result_files(execution_id, qc_task_id, result_files, bucket)
+            result_files = qa_process_result.save_mol_file(f"{timestamp}")
+            result_json = get_result(result_files[1])
+            result_s3_files = upload_result_files(
+                execution_id, qc_task_id, result_files, bucket)
             print(f"result_s3_files: {result_s3_files}")
             del_local_file(data_local_path)
             del_local_file(raw_local_path)
-
 
             model_param = submit_result['model_param']
             model_name = submit_result['model_name']
@@ -161,13 +167,13 @@ def handler(event, context):
             #local_fit_time = submit_res['local_fit_time']
 
             time_info_json = json.dumps({
-                                 "task_time": task_time,
-                                 "total_time": total_time,
-                                 "local_time": local_time,
-                                 "access_time": access_time
-                             })
+                "task_time": task_time,
+                "total_time": total_time,
+                "local_time": local_time,
+                "access_time": access_time
+            })
 
-            result_file_info = json.dumps(result_s3_files)
+            #result_file_info = json.dumps(result_s3_files)
 
             metrics_items = [execution_id,
                              "QC",
@@ -182,7 +188,8 @@ def handler(event, context):
                              mode_file_name,
                              s3_prefix,
                              datetime.datetime.utcnow().isoformat(),
-                             result_file_info
+                             result_json,
+                             result_s3_files[0]
                              ]
 
             metrics = "!".join(metrics_items)
@@ -199,8 +206,6 @@ def handler(event, context):
             print(repr(e))
             message = repr(e)
             success = False
-
-           
 
         try:
             print(
