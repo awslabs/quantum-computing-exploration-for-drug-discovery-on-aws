@@ -19,7 +19,7 @@ export class ChangePublicSubnet implements IAspect {
 export class AddCfnNag implements IAspect {
     visit(node: cdk.IConstruct): void {
 
-        if (node.node.path == 'QCStack-main/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler') {
+        if (node.node.path == 'QCStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler') {
             (node as cdk.CfnResource).addMetadata('cfn_nag', {
                 rules_to_suppress: [{
                         id: 'W58',
@@ -35,16 +35,16 @@ export class AddCfnNag implements IAspect {
                     }
                 ],
             });
-        } else if (node.node.path == 'QCStack-main/QCLifeScienceBatch/AggResultLambda/Resource') {
+        } else if (node.node.path == 'QCStack/AggResultLambda/Resource') {
             (node as cdk.CfnResource).addMetadata('cfn_nag', {
                 rules_to_suppress: [{
                     id: 'W58',
                     reason: 'the lambda already have the permission',
                 }, ],
             });
-        } else if (node.node.path == 'QCStack-main/QCLifeScienceBatch/jobRole/DefaultPolicy/Resource' ||
-            node.node.path == 'QCStack-main/QCLifeScienceBatch/executionRole/DefaultPolicy/Resource' ||
-            node.node.path == 'QCStack-main/QCLifeScienceBatch/AggResultLambdaRole/DefaultPolicy/Resource'
+        } else if (node.node.path == 'QCStack/jobRole/DefaultPolicy/Resource' ||
+            node.node.path == 'QCStack/executionRole/DefaultPolicy/Resource' ||
+            node.node.path == 'QCStack/AggResultLambdaRole/DefaultPolicy/Resource'
         ) {
             (node as cdk.CfnResource).addMetadata('cfn_nag', {
                 rules_to_suppress: [{

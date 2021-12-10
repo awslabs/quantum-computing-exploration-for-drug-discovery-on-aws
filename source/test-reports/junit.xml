@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="28" failures="0" errors="0" time="14.228">
+  <testsuite name="Listener" errors="0" failures="0" skipped="0" timestamp="2021-12-10T10:21:48" time="11.105" tests="2">
+    <testcase classname="Listener has s3 notification" name="Listener has s3 notification" time="1.214">
+    </testcase>
+    <testcase classname="Listener s3 notification is configed correctly" name="Listener s3 notification is configed correctly" time="0.615">
+    </testcase>
+  </testsuite>
+  <testsuite name="Notebook" errors="0" failures="0" skipped="0" timestamp="2021-12-10T10:21:48" time="11.576" tests="2">
+    <testcase classname="Notebook has 1 notebook" name="Notebook has 1 notebook" time="1.694">
+    </testcase>
+    <testcase classname="Notebook the notebook has a lifecycle" name="Notebook the notebook has a lifecycle" time="0.494">
+    </testcase>
+  </testsuite>
+  <testsuite name="Dashboard" errors="0" failures="0" skipped="0" timestamp="2021-12-10T10:21:48" time="12.629" tests="6">
+    <testcase classname="Dashboard has 1 datasource" name="Dashboard has 1 datasource" time="1.216">
+    </testcase>
+    <testcase classname="Dashboard has 1 dataset" name="Dashboard has 1 dataset" time="0.59">
+    </testcase>
+    <testcase classname="Dashboard has 1 template" name="Dashboard has 1 template" time="0.474">
+    </testcase>
+    <testcase classname="Dashboard has 1 dashboard" name="Dashboard has 1 dashboard" time="0.417">
+    </testcase>
+    <testcase classname="Dashboard has 1 analysis" name="Dashboard has 1 analysis" time="0.324">
+    </testcase>
+    <testcase classname="Dashboard dataset is configed correctly" name="Dashboard dataset is configed correctly" time="0.339">
+    </testcase>
+  </testsuite>
+  <testsuite name="undefined" errors="0" failures="0" skipped="0" timestamp="2021-12-10T10:21:48" time="13.195" tests="9">
+    <testcase classname=" can create base stack" name=" can create base stack" time="0.033">
+    </testcase>
+    <testcase classname=" can create MainStack" name=" can create MainStack" time="0.522">
+    </testcase>
+    <testcase classname=" synthesizes the way we expect" name=" synthesizes the way we expect" time="0.871">
+    </testcase>
+    <testcase classname=" has 1 s3 bucket" name=" has 1 s3 bucket" time="0.486">
+    </testcase>
+    <testcase classname=" s3 bucket can be deleted" name=" s3 bucket can be deleted" time="0.408">
+    </testcase>
+    <testcase classname=" has 1 vpc" name=" has 1 vpc" time="0.361">
+    </testcase>
+    <testcase classname=" has 4 subnets" name=" has 4 subnets" time="0.326">
+    </testcase>
+    <testcase classname=" has 1 flowLog" name=" has 1 flowLog" time="0.276">
+    </testcase>
+    <testcase classname=" has output - bucketName" name=" has output - bucketName" time="0.246">
+    </testcase>
+  </testsuite>
+  <testsuite name="Benchmarak" errors="0" failures="0" skipped="0" timestamp="2021-12-10T10:21:48" time="13.388" tests="9">
+    <testcase classname="Benchmarak has 1 batch ComputeEnvironment" name="Benchmarak has 1 batch ComputeEnvironment" time="1.261">
+    </testcase>
+    <testcase classname="Benchmarak has 1 batch JobQueue" name="Benchmarak has 1 batch JobQueue" time="0.592">
+    </testcase>
+    <testcase classname="Benchmarak has 2 batch JobDefinitions" name="Benchmarak has 2 batch JobDefinitions" time="0.481">
+    </testcase>
+    <testcase classname="Benchmarak has 1 SNS" name="Benchmarak has 1 SNS" time="0.366">
+    </testcase>
+    <testcase classname="Benchmarak bechmark StateMachine" name="Benchmarak bechmark StateMachine" time="0.301">
+    </testcase>
+    <testcase classname="Benchmarak bechmark main StateMachine" name="Benchmarak bechmark main StateMachine" time="0.317">
+    </testcase>
+    <testcase classname="Benchmarak has 7 lambdas" name="Benchmarak has 7 lambdas" time="0.284">
+    </testcase>
+    <testcase classname="Benchmarak has lambdas with image package type" name="Benchmarak has lambdas with image package type" time="0.248">
+    </testcase>
+    <testcase classname="Benchmarak has lambdas in vpc" name="Benchmarak has lambdas in vpc" time="0.254">
+    </testcase>
+  </testsuite>
+</testsuites>

@@ -58,7 +58,7 @@ export class Notebook extends Construct {
 
         let onStartContent = readFileSync(`${__dirname}/resources/onStart.template`, 'utf-8')
         if (this.props.usePreBuildImage) {
-            console.log('replace #_RUN_BUILD_#')
+            //console.log('replace #_RUN_BUILD_#')
             onStartContent = onStartContent.replace('#_RUN_BUILD_#', '')
         }
 

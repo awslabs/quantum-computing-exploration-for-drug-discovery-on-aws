@@ -57,7 +57,7 @@ export class MainStack extends SolutionStack {
       usePreBuildImage = true
     }
 
-    console.log(`usePreBuildImage: ${usePreBuildImage}`)
+    //console.log(`usePreBuildImage: ${usePreBuildImage}`)
 
     new cdk.CfnOutput(this, "bucketName", {
       value: s3bucket.bucketName,
@@ -103,7 +103,7 @@ export class MainStack extends SolutionStack {
     });
 
     if (usePreBuildImage) {
-      console.log("add addDependency batchStepFuncs -> notebook")
+      //console.log("add addDependency batchStepFuncs -> notebook")
       benchmarkStepFuncs.node.addDependency(notebook)
     }
 

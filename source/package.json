@@ -1,12 +1,12 @@
 {
-  "name": "AWS-gcr-qc-life-science",
+  "name": "gcr-quantum-ready-for-drug-discovery",
   "description": "AWS GRC solution: Quantum Ready For Drug Discovery",
   "repository": {
     "type": "git",
     "url": "ssh://git.amazon.com/pkg/AWS-gcr-qc-life-science"
   },
   "scripts": {
-    "test": "rm -fr lib && npm run test:compile && jest --passWithNoTests --all --updateSnapshot && eslint",
+    "test": "rm -fr lib && npm run test:compile && jest --passWithNoTests --all --updateSnapshot --silent && eslint",
     "build": "npm run test && npm run synth",
     "bump": "standard-version -i ../CHANGELOG.md",
     "test:watch": "jest --watch",
@@ -25,7 +25,8 @@
     "destroy-rs": "cdk destroy QCStack --profile liuyong_rs_ue1"
   },
   "devDependencies": {
-    "@types/jest": "^27.0.0",
+    "@aws-cdk/assertions": "^1.116.0",
+    "@types/jest": "^27.0.3",
     "@types/node": "14.17.7",
     "@typescript-eslint/eslint-plugin": "^4.29.0",
     "@typescript-eslint/parser": "^4.29.0",
@@ -34,7 +35,7 @@
     "eslint-import-resolver-node": "^0.3.4",
     "eslint-import-resolver-typescript": "^2.4.0",
     "eslint-plugin-import": "^2.23.4",
-    "jest": "^27.3.1",
+    "jest": "^27.4.4",
     "jest-junit": "^13.0.0",
     "json-schema": "^0.4.0",
     "standard-version": "^9.3.1",
@@ -52,12 +53,12 @@
     "@aws-cdk/aws-lambda": "^1.116.0",
     "@aws-cdk/aws-quicksight": "^1.116.0",
     "@aws-cdk/aws-s3": "^1.116.0",
+    "@aws-cdk/aws-s3-notifications": "^1.116.0",
     "@aws-cdk/aws-sagemaker": "^1.116.0",
     "@aws-cdk/aws-sqs": "^1.116.0",
     "@aws-cdk/aws-stepfunctions": "^1.116.0",
     "@aws-cdk/aws-stepfunctions-tasks": "^1.116.0",
     "@aws-cdk/core": "^1.116.0",
-    "@aws-cdk/aws-s3-notifications": "^1.116.0",
     "cdk-bootstrapless-synthesizer": "^0.7.2"
   },
   "bundledDependencies": [],
