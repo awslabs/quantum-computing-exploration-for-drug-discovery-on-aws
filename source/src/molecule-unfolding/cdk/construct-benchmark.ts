@@ -412,7 +412,7 @@ export class Benchmark extends Construct {
     private createSNSNotifyStep(): tasks.SnsPublish {
         const topic = new sns.Topic(this, 'SNS Topic', {
             displayName: 'QC Stepfunctions Execution Complete Topic',
-            masterKey: kms.Alias.fromAliasName(this, 'snsKey', 'aws/sns')
+            masterKey: kms.Alias.fromAliasName(this, 'snsKey', 'alias/aws/sns')
         });
         const snsStep = new tasks.SnsPublish(this, 'Notify Complete', {
             topic,

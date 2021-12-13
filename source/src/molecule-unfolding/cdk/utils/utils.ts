@@ -19,10 +19,10 @@ export class ChangePublicSubnet implements IAspect {
 export class AddCfnNag implements IAspect {
     visit(node: cdk.IConstruct): void {
 
-        if (node.node.path in [
-            'QCStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler',
-            'QCStack/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Resource'
-        ]) {
+        if (
+            node.node.path == 'QCStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler' ||
+            node.node.path == 'QCStack/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Resource'
+        ) {
             (node as cdk.CfnResource).addMetadata('cfn_nag', {
                 rules_to_suppress: [{
                         id: 'W58',
@@ -38,23 +38,23 @@ export class AddCfnNag implements IAspect {
                     }
                 ],
             });
-        } else if (node.node.path in [
-                'QCStack/AggResultLambda/Resource',
-                'QCStack/TaskParametersLambda/Resource',
-                'QCStack/DeviceAvailableCheckLambda/Resource',
-                'QCStack/SubmitQCTaskLambda/Resource',
-                'QCStack/BraketTaskEventHanlderParseBraketResultLambda/Resource',
-            ]) {
+        } else if (
+            node.node.path == 'QCStack/AggResultLambda/Resource' ||
+            node.node.path == 'QCStack/TaskParametersLambda/Resource' ||
+            node.node.path == 'QCStack/DeviceAvailableCheckLambda/Resource' ||
+            node.node.path == 'QCStack/SubmitQCTaskLambda/Resource' ||
+            node.node.path == 'QCStack/BraketTaskEventHanlderParseBraketResultLambda/Resource'
+        ) {
             (node as cdk.CfnResource).addMetadata('cfn_nag', {
                 rules_to_suppress: [{
-                    id: 'W58',
-                    reason: 'the lambda already have the cloudwatch permission',
-                }, 
-                {
-                    id: 'W12',
-                    reason: 'EC2:DescribeNetworkInterfaces is not resource-level permissions',
-                },
-            ],
+                        id: 'W58',
+                        reason: 'the lambda already have the cloudwatch permission',
+                    },
+                    {
+                        id: 'W12',
+                        reason: 'EC2:DescribeNetworkInterfaces is not resource-level permissions',
+                    },
+                ],
             });
         } else if (node.node.path == 'QCStack/jobRole/DefaultPolicy/Resource' ||
             node.node.path == 'QCStack/executionRole/DefaultPolicy/Resource' ||
