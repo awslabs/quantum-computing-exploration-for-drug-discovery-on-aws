@@ -148,7 +148,7 @@ def validate_input(input_dict: dict):
                     list_vals = input_dict[k][p]
                     for e in list_vals:
                         if not isinstance(e, int):
-                            errors.append(f"value for {p} must be int, {e}")
+                            errors.append(f"invalid value {e}, value for {p} must be int")
 
             if 'hpcResources' == k:
                 if not isinstance(input_dict[k], list):
@@ -160,7 +160,7 @@ def validate_input(input_dict: dict):
                     for e in c_m:
                         if not isinstance(e, int):
                             errors.append(
-                                f"elements for {k} must be int array, {c_m}")
+                                f"invalid value {e}, elements for {k} must be int array, {c_m}")
 
     except Exception as e:
         errors.append(repr(e))
