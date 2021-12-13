@@ -93,7 +93,7 @@ export function grantKmsKeyPerm(key: kms.IKey, logGroupName ? : string): void {
                     service: 'logs',
                     resource: 'log-group',
                     resourceName: logGroupName ? logGroupName : '*',
-                    sep: ':',
+                    arnFormat: cdk.ArnFormat.COLON_RESOURCE_NAME,
                 }, cdk.Stack.of(key)),
             },
         },

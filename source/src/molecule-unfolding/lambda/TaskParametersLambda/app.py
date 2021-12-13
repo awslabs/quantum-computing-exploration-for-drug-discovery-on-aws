@@ -44,7 +44,7 @@ def read_config(s3_bucket, s3_prefix):
     global default_devices_arns
     try:
         config = read_as_json(s3_bucket, config_file)
-   
+
         if 'hpcResources' in config:
             default_hpc_resources = config['hpcResources']
         if 'modelParams' in config:
@@ -118,7 +118,7 @@ def validate_input(input_dict: dict):
     errors = []
 
     if '!' in json.dumps(input_dict):
-         errors.append("invalid char '!' in input")
+        errors.append("invalid char '!' in input")
 
     try:
         for k in input_dict.keys():
@@ -145,6 +145,10 @@ def validate_input(input_dict: dict):
                     if not isinstance(input_dict[k][p], list):
                         errors.append(
                             f"values of modelParam: {p} must be an array")
+                    list_vals = input_dict[k][p]
+                    for e in list_vals:
+                        if not isinstance(e, int):
+                            errors.append(f"value for {p} must be int, {e}")
 
             if 'hpcResources' == k:
                 if not isinstance(input_dict[k], list):
@@ -153,6 +157,11 @@ def validate_input(input_dict: dict):
                     if not isinstance(c_m, list) or len(c_m) != 2:
                         errors.append(
                             f"element in hpcResources must be an array with size=2")
+                    for e in c_m:
+                        if not isinstance(e, int):
+                            errors.append(
+                                f"elements for {k} must be int array, {c_m}")
+
     except Exception as e:
         errors.append(repr(e))
 
