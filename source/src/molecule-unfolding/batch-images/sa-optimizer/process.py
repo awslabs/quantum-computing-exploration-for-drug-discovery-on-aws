@@ -79,8 +79,16 @@ def upload_result_files(execution_id, param_info, res_files: list, bucket):
 def sa_optimizer(qubo_model, model_file_info, param_info):
     method = 'dwave-sa'
     optimizer_param = {}
-    optimizer_param['shots'] = 1000
-    optimizer_param['notes'] = 'notebook_experiment'
+
+    optimizer_param['shots'] =  1000
+    optimizer_param['notes'] =  'benchmarking'
+
+    optimizer_params = context['user_input'].get('optParams', None)
+    if optimizer_params and optimizer_params.get('sa', None):
+        user_optimizer_param = optimizer_params.get('sa')
+        optimizer_param['shots'] = user_optimizer_param.get('shots', 1000)
+        optimizer_param['notes'] =  user_optimizer_param.get('notes', 'benchmarking')
+    
     sa_optimizer = Annealer(qubo_model, method, **optimizer_param)
     sa_optimize_result = sa_optimizer.fit()
     time_sec = sa_optimize_result['time']

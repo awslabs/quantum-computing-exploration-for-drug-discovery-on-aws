@@ -3,6 +3,18 @@
     "molFile": "s3://amazon-braket-qcstack-080766874269-us-east-1/raw/Aspirin.mol2",
     "modelVersion": "v1",
     "experimentName": "test",
+    "optParams": {
+        "qa": {
+            "shots": 1000,
+            "notes": "benchmarking"
+
+        },
+        "sa": {
+            "shots": 1000,
+            "embed_method": "default"
+        }
+    },
+
     "modelParams": {
         "M": [1, 2, 3, 4],
         "D": [4],
@@ -13,7 +25,7 @@
         "arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6",
         "arn:aws:braket:::device/qpu/d-wave/Advantage_system4"
     ],
-    "hpcResources":  [
+    "hpcResources": [
         [2, 2],
         [4, 4],
         [8, 8],

@@ -27,6 +27,18 @@ default_hpc_resources = [
     [16, 16]
 ]
 
+default_opt_params = {
+    "qa": {
+        "shots": 1000,
+        "notes": "benchmarking"
+
+    },
+    "sa": {
+        "shots": 1000,
+        "embed_method": "default"
+    }
+}
+
 
 def read_as_json(bucket, key):
     print(f"read s3://{bucket}/{key}")
@@ -42,6 +54,7 @@ def read_config(s3_bucket, s3_prefix):
     global default_hpc_resources
     global default_model_params
     global default_devices_arns
+    global default_opt_params
     try:
         config = read_as_json(s3_bucket, config_file)
 
@@ -51,6 +64,8 @@ def read_config(s3_bucket, s3_prefix):
             default_model_params = config['modelParams']
         if 'devicesArns' in config:
             default_devices_arns = config['devicesArns']
+        if 'optParams' in config:
+            default_opt_params = config['optParams']
     except Exception as e:
         print(f"cannot find {config_file}")
         pass
@@ -112,7 +127,7 @@ def get_all_param_list(param_list):
 
 def validate_input(input_dict: dict):
     print('validate_input')
-    valid_keys = ['runMode', 'molFile', 'modelVersion',
+    valid_keys = ['runMode', 'molFile', 'modelVersion', 'optParams'
                   'experimentName', 'modelParams', 'devicesArns', 'hpcResources', 'Comment']
     valid_keys_str = "|".join(valid_keys)
     errors = []
@@ -148,7 +163,8 @@ def validate_input(input_dict: dict):
                     list_vals = input_dict[k][p]
                     for e in list_vals:
                         if not isinstance(e, int):
-                            errors.append(f"invalid value {e}, value for {p} must be int")
+                            errors.append(
+                                f"invalid value {e}, value for {p} must be int")
 
             if 'hpcResources' == k:
                 if not isinstance(input_dict[k], list):
@@ -161,6 +177,19 @@ def validate_input(input_dict: dict):
                         if not isinstance(e, int):
                             errors.append(
                                 f"invalid value {e}, elements for {k} must be int array, {c_m}")
+            if 'optParams' == k:
+                if not isinstance(input_dict[k], dict):
+                    errors.append(f"optParams must be a dict")
+                for p in input_dict[k].keys():
+                    if p not in ['sa', 'qa']:
+                        errors.append(f"invalid key {p} of optParams, values: sa|qa")
+                    elif not isinstance(input_dict[k][p], dict):
+                        errors.append(f"optParams[{p}] must be a dict")
+                    elif input_dict[k][p].get('shots', None) is None:
+                        errors.append(f"optParams[{p}][shots] must be set")
+                    elif not isinstance(input_dict[k][p]['shots'], int):
+                        errors.append(f"optParams[{p}][shots] must be int, value: {input_dict[k][p]['shots']}")
+
 
     except Exception as e:
         errors.append(repr(e))
@@ -189,6 +218,14 @@ def handler(event, context):
         errs = validate_input(user_input)
         if len(errs) > 0:
             raise Exception("validate error: {}".format("\n".join(errs)))
+
+        # set default optParams
+        if user_input.get('optParams', None) is None:
+            user_input['optParams'] = default_opt_params
+        elif user_input['optParams'].get('sa', None) is None:
+            user_input['optParams']['sa'] = default_opt_params['sa']
+        elif user_input['optParams'].get('qa', None) is None:
+            user_input['optParams']['qa'] = default_opt_params['qa']
 
         key = f"{s3_prefix}/executions/{execution_id}/user_input.json"
         string_to_s3(content=json.dumps({

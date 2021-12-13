@@ -66,7 +66,7 @@ def get_qc_task_id(response):
     return f"qc-task-id-{time.time()}-{uuid.uuid1().hex}"
 
 
-def qa_optimizer(execution_id, qubo_model, s3_bucket, task_output_s3_prefix, s3_prefix, device_arn):
+def qa_optimizer(context, execution_id, qubo_model, s3_bucket, task_output_s3_prefix, s3_prefix, device_arn):
     method = 'dwave-qa'
     optimizer_param = {}
     optimizer_param['shots'] = 1000
@@ -75,6 +75,14 @@ def qa_optimizer(execution_id, qubo_model, s3_bucket, task_output_s3_prefix, s3_
     optimizer_param['device'] = device_arn
     optimizer_param["embed_method"] = "default"
     #qa_optimizer = Annealer(qubo_model['qubo'], method, **optimizer_param)
+
+    optimizer_params = context['user_input'].get('optParams', None)
+    if optimizer_params and optimizer_params.get('qa', None):
+        user_optimizer_param = optimizer_params.get('qa')
+        optimizer_param['shots'] = user_optimizer_param.get('shots', 1000)
+        optimizer_param['embed_method'] =  user_optimizer_param.get('embed_method', 'default')
+
+
     qa_optimizer = Annealer(qubo_model, method, **optimizer_param)
     qa_optimizer.embed()
 
@@ -90,6 +98,7 @@ def run_on_device(s3, input_params):
     logging_info(
         "run_on_device() - input_params: {}".format(input_params))
 
+    context = input_params['context']
     model_file = input_params['model_file']
     model_param = input_params['model_param']
     s3_bucket = input_params['s3_bucket']
@@ -104,6 +113,7 @@ def run_on_device(s3, input_params):
 
     task_output = f"{s3_prefix}/qc_task_output"
     qc_task_id, local_fit_time = qa_optimizer(
+        context,
         execution_id,
         qubo_model,
         s3_bucket,
@@ -224,6 +234,7 @@ def submit_qc_task(s3, execution_id, device_arn, model_param, s3_bucket, s3_pref
     
     # {"task_id": task_id, "model_name": model_name,  "mode_file_name": mode_file_name}
     res = run_on_device(s3, {
+        "context": context,
         "execution_id": execution_id,
         "model_file": model_info['model'],
         "device_arn": device_arn,
