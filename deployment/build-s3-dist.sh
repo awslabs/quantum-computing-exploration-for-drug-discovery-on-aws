@@ -57,7 +57,7 @@ export BSS_TEMPLATE_BUCKET_NAME="${BUCKET_NAME}"
 export BSS_FILE_ASSET_BUCKET_NAME="${BUCKET_NAME}-\${AWS::Region}"
 export BSS_FILE_ASSET_PREFIX="${SOLUTION_NAME}/${VERSION}/"
 export BSS_FILE_ASSET_REGION_SET="us-east-1,${BSS_FILE_ASSET_REGION_SET}"
-export BSS_IMAGE_ASSET_REPOSITORY_NAME="qc-ligand-unfolding/batch-experiment"
+export BSS_IMAGE_ASSET_REPOSITORY_NAME="qc/molecule-unfolding"
 
 run npm run synth -- --output ${CDK_OUT_PATH}
 run ${__dir}/helper.py ${CDK_OUT_PATH}
