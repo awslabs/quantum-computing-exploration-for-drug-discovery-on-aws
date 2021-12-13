@@ -6,6 +6,7 @@ import * as sfn from '@aws-cdk/aws-stepfunctions';
 import * as tasks from '@aws-cdk/aws-stepfunctions-tasks';
 import * as s3 from '@aws-cdk/aws-s3'
 import * as sns from '@aws-cdk/aws-sns'
+import * as kms from '@aws-cdk/aws-kms'
 
 
 import {
@@ -411,6 +412,7 @@ export class Benchmark extends Construct {
     private createSNSNotifyStep(): tasks.SnsPublish {
         const topic = new sns.Topic(this, 'SNS Topic', {
             displayName: 'QC Stepfunctions Execution Complete Topic',
+            masterKey: kms.Alias.fromAliasName(this, 'snsKey', 'aws/sns')
         });
         const snsStep = new tasks.SnsPublish(this, 'Notify Complete', {
             topic,
@@ -426,7 +428,7 @@ export class Benchmark extends Construct {
 
         new cdk.CfnOutput(this, 'SNS Topic Name', {
             value: topic.topicName,
-            description: "SNS Topic Name"
+            description: "SNS Topic Name",
         });
 
         return snsStep
