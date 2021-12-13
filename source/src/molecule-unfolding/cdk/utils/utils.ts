@@ -43,7 +43,7 @@ export class AddCfnNag implements IAspect {
             node.node.path == 'QCStack/TaskParametersLambda/Resource' ||
             node.node.path == 'QCStack/DeviceAvailableCheckLambda/Resource' ||
             node.node.path == 'QCStack/SubmitQCTaskLambda/Resource' ||
-            node.node.path == 'QCStack/BraketTaskEventHanlderParseBraketResultLambda/Resource'
+            node.node.path == 'QCStack/BraketTaskEventHanlder/ParseBraketResultLambda/Resource'
         ) {
             (node as cdk.CfnResource).addMetadata('cfn_nag', {
                 rules_to_suppress: [{
@@ -58,7 +58,11 @@ export class AddCfnNag implements IAspect {
             });
         } else if (node.node.path == 'QCStack/jobRole/DefaultPolicy/Resource' ||
             node.node.path == 'QCStack/executionRole/DefaultPolicy/Resource' ||
-            node.node.path == 'QCStack/AggResultLambdaRole/DefaultPolicy/Resource'
+            node.node.path == 'QCStack/TaskParametersLambdaRole/DefaultPolicy/Resource' ||
+            node.node.path == 'QCStack/DeviceAvailableCheckLambda/DefaultPolicy/Resource' ||
+            node.node.path == 'QCStack/SubmitQCTaskLambdaRole/DefaultPolicy/Resource' ||
+            node.node.path == 'QCStack/ParseBraketResultLambdaRole/DefaultPolicy/Resource' ||
+            node.node.path == 'QCStack/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/DefaultPolicy/Resource'
         ) {
             (node as cdk.CfnResource).addMetadata('cfn_nag', {
                 rules_to_suppress: [{
