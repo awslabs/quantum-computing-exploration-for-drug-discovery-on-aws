@@ -123,6 +123,7 @@ def handler(event, context):
 
         message = None
         try:
+           
             index = submit_result['index']
             model_info = submit_result['model_info']
             data_s3_path = model_info['data']
@@ -165,6 +166,7 @@ def handler(event, context):
             experiment_name = submit_result['experiment_name']
             device_name = submit_result['device_name']
             #local_fit_time = submit_res['local_fit_time']
+            optimizer_param = submit_result['optimizer_param']
 
             time_info_json = json.dumps({
                 "task_time": task_time,
@@ -179,6 +181,7 @@ def handler(event, context):
                              "QC",
                              str(device_name),
                              model_param,
+                             json.dumps(optimizer_param),
                              str(total_time),
                              time_info_json,
                              start_time,

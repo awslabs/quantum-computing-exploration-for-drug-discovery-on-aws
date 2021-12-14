@@ -26,35 +26,7 @@ export class RoleUtil {
             assumedBy: new iam.ServicePrincipal('sagemaker.amazonaws.com'),
         });
 
-        //role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonBraketFullAccess'))
-
-        role.addToPolicy(new iam.PolicyStatement({
-            resources: [
-                `arn:aws:braket:*:${this.props.account}:quantum-task/*`,
-                `arn:aws:braket:*:${this.props.account}:job/*`
-            ],
-            actions: [
-                "braket:GetJob",
-                "braket:GetQuantumTask",
-                "braket:CancelQuantumTask",
-                "braket:CancelJob",
-                "braket:ListTagsForResource"
-            ]
-        }));
-
-        role.addToPolicy(new iam.PolicyStatement({
-            resources: [
-                '*'
-            ],
-            actions: [
-                "braket:CreateJob",
-                "braket:GetDevice",
-                "braket:SearchDevices",
-                "braket:CreateQuantumTask",
-                "braket:SearchJobs",
-                "braket:SearchQuantumTasks"
-            ]
-        }));
+        role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonBraketFullAccess'))
 
         role.addToPolicy(new iam.PolicyStatement({
             resources: [

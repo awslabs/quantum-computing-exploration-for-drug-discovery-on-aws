@@ -117,7 +117,8 @@ def sa_optimizer(qubo_model, model_file_info, param_info):
 
     return { 'fit_time': time_sec, 'local_time': local_time,
      'result_s3_files': result_s3_files,
-     'result_json': result_json
+     'result_json': result_json,
+     'optimizer_param': optimizer_param
      }
 
 
@@ -222,6 +223,7 @@ if __name__ == '__main__':
     local_time = sa_result['local_time']
     result_s3_files = sa_result['result_s3_files']
     result_json = sa_result['result_json']
+    optimizer_param =  sa_result['optimizer_param']
 
     time_info_json = json.dumps({
                                  "local_time": sa_result['local_time'],
@@ -233,6 +235,7 @@ if __name__ == '__main__':
                      "HPC",
                      str(resource),
                      model_param,
+                     json.dumps(optimizer_param),
                      str(local_time),
                      time_info_json,
                      start_time,

@@ -76,6 +76,10 @@ export class Dashboard extends cdk.Construct {
                 type: 'STRING'
             },
             {
+                name: 'opt_params',
+                type: 'STRING'
+            },
+            {
                 name: 'task_duration',
                 type: 'DECIMAL'
             },

@@ -83,6 +83,10 @@ def qa_optimizer(context, execution_id, qubo_model, s3_bucket, task_output_s3_pr
         optimizer_param['embed_method'] =  user_optimizer_param.get('embed_method', 'default')
 
 
+    rt_optimizer_param = optimizer_param.copy()
+    for k in ['bucket', 'prefix', 'device']:
+        del rt_optimizer_param[k]
+
     qa_optimizer = Annealer(qubo_model, method, **optimizer_param)
     qa_optimizer.embed()
 
@@ -91,7 +95,7 @@ def qa_optimizer(context, execution_id, qubo_model, s3_bucket, task_output_s3_pr
 
     qc_task_id = qa_optimizer.get_task_id()
     logging_info(f"qa_optimizer() return qc_task_id: {qc_task_id}, local_fit_time:{local_fit_time}")
-    return qc_task_id, local_fit_time
+    return qc_task_id, local_fit_time, rt_optimizer_param
 
 
 def run_on_device(s3, input_params):
@@ -112,7 +116,7 @@ def run_on_device(s3, input_params):
         s3, model_file, model_param, s3_bucket)
 
     task_output = f"{s3_prefix}/qc_task_output"
-    qc_task_id, local_fit_time = qa_optimizer(
+    qc_task_id, local_fit_time, optimizer_param = qa_optimizer(
         context,
         execution_id,
         qubo_model,
@@ -154,7 +158,8 @@ def run_on_device(s3, input_params):
         "start_time": start_time,
         "model_param": model_param,
         "device_name": device_name,
-        "local_fit_time": local_fit_time
+        "local_fit_time": local_fit_time,
+        "optimizer_param": optimizer_param
     }
 
 
