@@ -20,8 +20,8 @@ export class AddCfnNag implements IAspect {
     visit(node: cdk.IConstruct): void {
 
         if (
-            node.node.path == 'QCStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler' ||
-            node.node.path == 'QCStack/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Resource'
+            node.node.path.endsWith('Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler') ||
+            node.node.path.endsWith('BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Resource')
         ) {
             (node as cdk.CfnResource).addMetadata('cfn_nag', {
                 rules_to_suppress: [{
@@ -39,11 +39,11 @@ export class AddCfnNag implements IAspect {
                 ],
             });
         } else if (
-            node.node.path == 'QCStack/AggResultLambda/Resource' ||
-            node.node.path == 'QCStack/TaskParametersLambda/Resource' ||
-            node.node.path == 'QCStack/DeviceAvailableCheckLambda/Resource' ||
-            node.node.path == 'QCStack/SubmitQCTaskLambda/Resource' ||
-            node.node.path == 'QCStack/BraketTaskEventHanlder/ParseBraketResultLambda/Resource'
+            node.node.path.endsWith('AggResultLambda/Resource') ||
+            node.node.path.endsWith('TaskParametersLambda/Resource') ||
+            node.node.path.endsWith('DeviceAvailableCheckLambda/Resource') ||
+            node.node.path.endsWith('SubmitQCTaskLambda/Resource') ||
+            node.node.path.endsWith('BraketTaskEventHanlder/ParseBraketResultLambda/Resource')
         ) {
             (node as cdk.CfnResource).addMetadata('cfn_nag', {
                 rules_to_suppress: [{
@@ -56,14 +56,14 @@ export class AddCfnNag implements IAspect {
                     },
                 ],
             });
-        } else if (node.node.path == 'QCStack/jobRole/DefaultPolicy/Resource' ||
-            node.node.path == 'QCStack/executionRole/DefaultPolicy/Resource' ||
-            node.node.path == 'QCStack/TaskParametersLambdaRole/DefaultPolicy/Resource' ||
-            node.node.path == 'QCStack/DeviceAvailableCheckLambdaRole/DefaultPolicy/Resource' ||
-            node.node.path == 'QCStack/SubmitQCTaskLambdaRole/DefaultPolicy/Resource' ||
-            node.node.path == 'QCStack/ParseBraketResultLambdaRole/DefaultPolicy/Resource' ||
-            node.node.path == 'QCStack/AggResultLambdaRole/DefaultPolicy/Resource' ||
-            node.node.path == 'QCStack/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/DefaultPolicy/Resource'
+        } else if (node.node.path.endsWith('jobRole/DefaultPolicy/Resource') ||
+            node.node.path.endsWith('executionRole/DefaultPolicy/Resource') ||
+            node.node.path.endsWith('TaskParametersLambdaRole/DefaultPolicy/Resource') ||
+            node.node.path.endsWith('DeviceAvailableCheckLambdaRole/DefaultPolicy/Resource') ||
+            node.node.path.endsWith('SubmitQCTaskLambdaRole/DefaultPolicy/Resource') ||
+            node.node.path.endsWith('ParseBraketResultLambdaRole/DefaultPolicy/Resource') ||
+            node.node.path.endsWith('AggResultLambdaRole/DefaultPolicy/Resource') ||
+            node.node.path.endsWith('BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/DefaultPolicy/Resource')
         ) {
             (node as cdk.CfnResource).addMetadata('cfn_nag', {
                 rules_to_suppress: [{
@@ -71,6 +71,14 @@ export class AddCfnNag implements IAspect {
                     reason: 'EC2:DescribeNetworkInterfaces is not resource-level permissions',
                 }, ],
             });
+        } else if (node.node.path.endsWith('BenchmarkStateMachine/Role/DefaultPolicy/Resource')) {
+            (node as cdk.CfnResource).addMetadata('cfn_nag', {
+                rules_to_suppress: [{
+                    id: 'W76',
+                    reason: 'The policy is generated automatically by CDK',
+                }, ],
+            });
+
         } else if (node instanceof s3.CfnBucket) {
             node.addMetadata('cfn_nag', {
                 rules_to_suppress: [{
