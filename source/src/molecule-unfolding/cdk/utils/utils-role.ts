@@ -102,7 +102,6 @@ export class RoleUtil {
             assumedBy: new iam.ServicePrincipal('ecs-tasks.amazonaws.com'),
         });
 
-
         role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonEC2ContainerRegistryReadOnly'))
 
         //role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonBraketFullAccess'))
@@ -164,20 +163,6 @@ export class RoleUtil {
                 "logs:DescribeLogStreams",
                 "logs:PutLogEvents",
                 "logs:CreateLogGroup"
-            ]
-        }));
-        role.addToPolicy(new iam.PolicyStatement({
-            resources: [
-                'arn:aws:braket:::device/qpu/d-wave/*',
-            ],
-            actions: [
-                "braket:GetDevice",
-                "braket:GetQuantumTask",
-                "braket:SearchQuantumTasks",
-                "braket:SearchDevices",
-                "braket:ListTagsForResource",
-                "braket:CreateQuantumTask",
-                "braket:CancelQuantumTask"
             ]
         }));
         return role
