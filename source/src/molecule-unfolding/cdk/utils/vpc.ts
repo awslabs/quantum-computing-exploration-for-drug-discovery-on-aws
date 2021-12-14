@@ -16,6 +16,7 @@ export default (scope: Construct) => {
 
     const vpc = new ec2.Vpc(scope, 'VPC', {
         cidr: '10.1.0.0/16',
+        maxAzs: 2,
         subnetConfiguration: [{
                 cidrMask: 18,
                 name: 'Ingress',
