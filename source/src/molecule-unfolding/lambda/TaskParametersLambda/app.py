@@ -33,7 +33,7 @@ default_opt_params = {
         "embed_method": "default"
     },
     "sa": {
-        "shots": 100,
+        "shots": 1000,
         "notes": "benchmarking"
     }
 }
