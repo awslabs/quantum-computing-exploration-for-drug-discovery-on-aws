@@ -17,7 +17,7 @@ export class RoleUtil {
         this.scope = scope
     }
 
-    public static newInstance(scope: cdk.Construct, props: Props){
+    public static newInstance(scope: cdk.Construct, props: Props) {
         return new this(scope, props);
     }
 
@@ -26,7 +26,36 @@ export class RoleUtil {
             assumedBy: new iam.ServicePrincipal('sagemaker.amazonaws.com'),
         });
 
-        role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonBraketFullAccess'))
+        //role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonBraketFullAccess'))
+
+        role.addToPolicy(new iam.PolicyStatement({
+            resources: [
+                `arn:aws:braket:*:${this.props.account}:quantum-task/*`,
+                `arn:aws:braket:*:${this.props.account}:job/*`
+            ],
+            actions: [
+                "braket:GetJob",
+                "braket:GetQuantumTask",
+                "braket:CancelQuantumTask",
+                "braket:CancelJob",
+                "braket:ListTagsForResource"
+            ]
+        }));
+
+        role.addToPolicy(new iam.PolicyStatement({
+            resources: [
+                '*'
+            ],
+            actions: [
+                "braket:CreateJob",
+                "braket:GetDevice",
+                "braket:SearchDevices",
+                "braket:CreateQuantumTask",
+                "braket:SearchJobs",
+                "braket:SearchQuantumTasks"
+            ]
+        }));
+
         role.addToPolicy(new iam.PolicyStatement({
             resources: [
                 "arn:aws:s3:::*/*"
@@ -101,8 +130,39 @@ export class RoleUtil {
             assumedBy: new iam.ServicePrincipal('ecs-tasks.amazonaws.com'),
         });
 
-        role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonBraketFullAccess'))
+
         role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonEC2ContainerRegistryReadOnly'))
+
+        //role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonBraketFullAccess'))
+
+        role.addToPolicy(new iam.PolicyStatement({
+            resources: [
+                `arn:aws:braket:*:${this.props.account}:quantum-task/*`,
+                `arn:aws:braket:*:${this.props.account}:job/*`
+            ],
+            actions: [
+                "braket:GetJob",
+                "braket:GetQuantumTask",
+                "braket:CancelQuantumTask",
+                "braket:CancelJob",
+                "braket:ListTagsForResource"
+            ]
+        }));
+
+        role.addToPolicy(new iam.PolicyStatement({
+            resources: [
+                '*'
+            ],
+            actions: [
+                "braket:CreateJob",
+                "braket:GetDevice",
+                "braket:SearchDevices",
+                "braket:CreateQuantumTask",
+                "braket:SearchJobs",
+                "braket:SearchQuantumTasks"
+            ]
+        }));
+
 
         role.addToPolicy(new iam.PolicyStatement({
             resources: [
@@ -157,7 +217,39 @@ export class RoleUtil {
             assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
         });
         role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'))
-        role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonAthenaFullAccess'))
+        //role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonAthenaFullAccess'))
+        role.addToPolicy(new iam.PolicyStatement({
+            resources: [
+                `arn:aws:athena:*:${this.props.account}:workgroup/*`,
+                `arn:aws:athena:*:${this.props.account}:datacatalog/*`
+            ],
+            actions: [
+                "athena:CreateDataCatalog",
+                "athena:UpdateDataCatalog",
+                "athena:CreatePreparedStatement",
+                "athena:GetTableMetadata",
+                "athena:StartQueryExecution",
+                "athena:GetQueryResultsStream",
+                "athena:UpdatePreparedStatement",
+                "athena:GetQueryResults",
+                "athena:GetDatabase",
+                "athena:GetDataCatalog",
+                "athena:DeletePreparedStatement",
+                "athena:DeleteNamedQuery",
+                "athena:GetNamedQuery",
+                "athena:GetPreparedStatement",
+                "athena:ListTagsForResource",
+                "athena:ListQueryExecutions",
+                "athena:GetWorkGroup",
+                "athena:CreateNamedQuery",
+                "athena:DeleteDataCatalog",
+                "athena:GetQueryExecution",
+                "athena:BatchGetNamedQuery",
+                "athena:ListTableMetadata",
+                "athena:BatchGetQueryExecution"
+            ]
+        }));
+
         role.addToPolicy(new iam.PolicyStatement({
             resources: [
                 "arn:aws:s3:::*/*"
@@ -215,7 +307,36 @@ export class RoleUtil {
             assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
         });
         role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'))
-        role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonBraketFullAccess'))
+        //role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonBraketFullAccess'))
+
+        role.addToPolicy(new iam.PolicyStatement({
+            resources: [
+                `arn:aws:braket:*:${this.props.account}:quantum-task/*`,
+                `arn:aws:braket:*:${this.props.account}:job/*`
+            ],
+            actions: [
+                "braket:GetJob",
+                "braket:GetQuantumTask",
+                "braket:CancelQuantumTask",
+                "braket:CancelJob",
+                "braket:ListTagsForResource"
+            ]
+        }));
+
+        role.addToPolicy(new iam.PolicyStatement({
+            resources: [
+                '*'
+            ],
+            actions: [
+                "braket:CreateJob",
+                "braket:GetDevice",
+                "braket:SearchDevices",
+                "braket:CreateQuantumTask",
+                "braket:SearchJobs",
+                "braket:SearchQuantumTasks"
+            ]
+        }));
+
 
         role.addToPolicy(new iam.PolicyStatement({
             resources: [
@@ -279,7 +400,39 @@ export class RoleUtil {
             assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
         });
         role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'))
-        role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonAthenaFullAccess'))
+        //role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonAthenaFullAccess'))
+        role.addToPolicy(new iam.PolicyStatement({
+            resources: [
+                `arn:aws:athena:*:${this.props.account}:workgroup/*`,
+                `arn:aws:athena:*:${this.props.account}:datacatalog/*`
+            ],
+            actions: [
+                "athena:CreateDataCatalog",
+                "athena:UpdateDataCatalog",
+                "athena:CreatePreparedStatement",
+                "athena:GetTableMetadata",
+                "athena:StartQueryExecution",
+                "athena:GetQueryResultsStream",
+                "athena:UpdatePreparedStatement",
+                "athena:GetQueryResults",
+                "athena:GetDatabase",
+                "athena:GetDataCatalog",
+                "athena:DeletePreparedStatement",
+                "athena:DeleteNamedQuery",
+                "athena:GetNamedQuery",
+                "athena:GetPreparedStatement",
+                "athena:ListTagsForResource",
+                "athena:ListQueryExecutions",
+                "athena:GetWorkGroup",
+                "athena:CreateNamedQuery",
+                "athena:DeleteDataCatalog",
+                "athena:GetQueryExecution",
+                "athena:BatchGetNamedQuery",
+                "athena:ListTableMetadata",
+                "athena:BatchGetQueryExecution"
+            ]
+        }));
+
         role.addToPolicy(new iam.PolicyStatement({
             resources: [
                 "arn:aws:s3:::*/*"
