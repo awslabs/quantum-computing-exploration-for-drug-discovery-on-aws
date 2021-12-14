@@ -309,6 +309,24 @@ export class RoleUtil {
             ]
         }));
 
+        role.addToPolicy(new iam.PolicyStatement({
+            resources: [
+                "arn:aws:s3:::*/*"
+            ],
+            actions: [
+                "s3:GetObject",
+                "s3:PutObject"
+            ]
+        }));
+
+        role.addToPolicy(new iam.PolicyStatement({
+            resources: [
+                'arn:aws:s3:::*'
+            ],
+            actions: [
+                "s3:ListBucket"
+            ]
+        }));
 
         role.addToPolicy(new iam.PolicyStatement({
             resources: [
