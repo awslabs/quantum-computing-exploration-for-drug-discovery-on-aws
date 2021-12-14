@@ -189,7 +189,6 @@ export class RoleUtil {
             assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
         });
         role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'))
-        //role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonAthenaFullAccess'))
         role.addToPolicy(new iam.PolicyStatement({
             resources: [
                 `arn:aws:athena:*:${this.props.account}:workgroup/*`,
@@ -260,7 +259,6 @@ export class RoleUtil {
             assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
         });
         role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'))
-        //role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonBraketFullAccess'))
 
         role.addToPolicy(new iam.PolicyStatement({
             resources: [
@@ -341,26 +339,16 @@ export class RoleUtil {
             ]
         }));
 
-        // role.addToPolicy(new iam.PolicyStatement({
-        //     actions: [
-        //         "states:ListStateMachines",
-        //         "states:CreateStateMachine",
-        //         "states:DescribeStateMachine",
-        //         "states:StartExecution",
-        //         "states:DeleteStateMachine",
-        //         "states:ListExecutions",
-        //         "states:UpdateStateMachine",
-        //         "states:DescribeStateMachineForExecution",
-        //         "states:GetExecutionHistory",
-        //         "states:StopExecution",
-        //         "states:SendTaskSuccess",
-        //         "states:SendTaskFailure",
-        //         "states:SendTaskHeartbeat"
-        //     ],
-        //     resources: [
-        //         "arn:aws:states:*:*:*"
-        //     ]
-        // }));
+        role.addToPolicy(new iam.PolicyStatement({
+            actions: [
+                "states:SendTaskSuccess",
+                "states:SendTaskFailure",
+                "states:SendTaskHeartbeat"
+            ],
+            resources: [
+                "arn:aws:states:*:*:*"
+            ]
+        }));
 
         return role;
     }
@@ -371,20 +359,6 @@ export class RoleUtil {
             assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
         });
         role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'))
-        //role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonAthenaFullAccess'))
-        // role.addToPolicy(new iam.PolicyStatement({
-        //     resources: [
-        //         `arn:aws:athena:*:${this.props.account}:workgroup/*`,
-        //         `arn:aws:athena:*:${this.props.account}:datacatalog/*`
-        //     ],
-        //     actions: [
-        //         "athena:CreatePreparedStatement",
-        //         "athena:StartQueryExecution",
-        //         "athena:UpdatePreparedStatement",
-        //         "athena:GetQueryResults"
-        //     ]
-        // }));
-
         role.addToPolicy(new iam.PolicyStatement({
             resources: [
                 "arn:aws:s3:::*/*"
@@ -435,34 +409,17 @@ export class RoleUtil {
             ]
         }));
 
-        // role.addToPolicy(new iam.PolicyStatement({
-        //     actions: [
-        //         "states:ListStateMachines",
-        //         "states:CreateStateMachine",
-        //         "states:DescribeStateMachine",
-        //         "states:StartExecution",
-        //         "states:DeleteStateMachine",
-        //         "states:ListExecutions",
-        //         "states:UpdateStateMachine",
-        //         "states:DescribeStateMachineForExecution",
-        //         "states:GetExecutionHistory",
-        //         "states:StopExecution",
-        //         "states:SendTaskSuccess",
-        //         "states:SendTaskFailure",
-        //         "states:SendTaskHeartbeat"
-        //     ],
-        //     resources: [
-        //         "arn:aws:states:*:*:*"
-        //     ]
-        // }));
-        // role.addToPolicy(new iam.PolicyStatement({
-        //     actions: [
-        //         "iam:PassRole"
-        //     ],
-        //     resources: [
-        //         "arn:aws:iam:::role/*"
-        //     ]
-        // }));
+        role.addToPolicy(new iam.PolicyStatement({
+            actions: [
+                "states:SendTaskSuccess",
+                "states:SendTaskFailure",
+                "states:SendTaskHeartbeat"
+            ],
+            resources: [
+                "arn:aws:states:*:*:*"
+            ]
+        }));
+
         return role;
     }
 }
