@@ -185,9 +185,7 @@ def validate_input(input_dict: dict):
                         errors.append(f"invalid key {p} of optParams, values: sa|qa")
                     elif not isinstance(input_dict[k][p], dict):
                         errors.append(f"optParams[{p}] must be a dict")
-                    elif input_dict[k][p].get('shots', None) is None:
-                        errors.append(f"optParams[{p}][shots] must be set")
-                    elif not isinstance(input_dict[k][p]['shots'], int):
+                    elif 'shots' in input_dict[k][p] and not isinstance(input_dict[k][p]['shots'], int):
                         errors.append(f"optParams[{p}][shots] must be int, value: {input_dict[k][p]['shots']}")
 
 
