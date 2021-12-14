@@ -196,29 +196,10 @@ export class RoleUtil {
                 `arn:aws:athena:*:${this.props.account}:datacatalog/*`
             ],
             actions: [
-                "athena:CreateDataCatalog",
-                "athena:UpdateDataCatalog",
                 "athena:CreatePreparedStatement",
-                "athena:GetTableMetadata",
                 "athena:StartQueryExecution",
-                "athena:GetQueryResultsStream",
                 "athena:UpdatePreparedStatement",
-                "athena:GetQueryResults",
-                "athena:GetDatabase",
-                "athena:GetDataCatalog",
-                "athena:DeletePreparedStatement",
-                "athena:DeleteNamedQuery",
-                "athena:GetNamedQuery",
-                "athena:GetPreparedStatement",
-                "athena:ListTagsForResource",
-                "athena:ListQueryExecutions",
-                "athena:GetWorkGroup",
-                "athena:CreateNamedQuery",
-                "athena:DeleteDataCatalog",
-                "athena:GetQueryExecution",
-                "athena:BatchGetNamedQuery",
-                "athena:ListTableMetadata",
-                "athena:BatchGetQueryExecution"
+                "athena:GetQueryResults"
             ]
         }));
 
@@ -360,26 +341,26 @@ export class RoleUtil {
             ]
         }));
 
-        role.addToPolicy(new iam.PolicyStatement({
-            actions: [
-                "states:ListStateMachines",
-                "states:CreateStateMachine",
-                "states:DescribeStateMachine",
-                "states:StartExecution",
-                "states:DeleteStateMachine",
-                "states:ListExecutions",
-                "states:UpdateStateMachine",
-                "states:DescribeStateMachineForExecution",
-                "states:GetExecutionHistory",
-                "states:StopExecution",
-                "states:SendTaskSuccess",
-                "states:SendTaskFailure",
-                "states:SendTaskHeartbeat"
-            ],
-            resources: [
-                "arn:aws:states:*:*:*"
-            ]
-        }));
+        // role.addToPolicy(new iam.PolicyStatement({
+        //     actions: [
+        //         "states:ListStateMachines",
+        //         "states:CreateStateMachine",
+        //         "states:DescribeStateMachine",
+        //         "states:StartExecution",
+        //         "states:DeleteStateMachine",
+        //         "states:ListExecutions",
+        //         "states:UpdateStateMachine",
+        //         "states:DescribeStateMachineForExecution",
+        //         "states:GetExecutionHistory",
+        //         "states:StopExecution",
+        //         "states:SendTaskSuccess",
+        //         "states:SendTaskFailure",
+        //         "states:SendTaskHeartbeat"
+        //     ],
+        //     resources: [
+        //         "arn:aws:states:*:*:*"
+        //     ]
+        // }));
 
         return role;
     }
@@ -391,37 +372,18 @@ export class RoleUtil {
         });
         role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'))
         //role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonAthenaFullAccess'))
-        role.addToPolicy(new iam.PolicyStatement({
-            resources: [
-                `arn:aws:athena:*:${this.props.account}:workgroup/*`,
-                `arn:aws:athena:*:${this.props.account}:datacatalog/*`
-            ],
-            actions: [
-                "athena:CreateDataCatalog",
-                "athena:UpdateDataCatalog",
-                "athena:CreatePreparedStatement",
-                "athena:GetTableMetadata",
-                "athena:StartQueryExecution",
-                "athena:GetQueryResultsStream",
-                "athena:UpdatePreparedStatement",
-                "athena:GetQueryResults",
-                "athena:GetDatabase",
-                "athena:GetDataCatalog",
-                "athena:DeletePreparedStatement",
-                "athena:DeleteNamedQuery",
-                "athena:GetNamedQuery",
-                "athena:GetPreparedStatement",
-                "athena:ListTagsForResource",
-                "athena:ListQueryExecutions",
-                "athena:GetWorkGroup",
-                "athena:CreateNamedQuery",
-                "athena:DeleteDataCatalog",
-                "athena:GetQueryExecution",
-                "athena:BatchGetNamedQuery",
-                "athena:ListTableMetadata",
-                "athena:BatchGetQueryExecution"
-            ]
-        }));
+        // role.addToPolicy(new iam.PolicyStatement({
+        //     resources: [
+        //         `arn:aws:athena:*:${this.props.account}:workgroup/*`,
+        //         `arn:aws:athena:*:${this.props.account}:datacatalog/*`
+        //     ],
+        //     actions: [
+        //         "athena:CreatePreparedStatement",
+        //         "athena:StartQueryExecution",
+        //         "athena:UpdatePreparedStatement",
+        //         "athena:GetQueryResults"
+        //     ]
+        // }));
 
         role.addToPolicy(new iam.PolicyStatement({
             resources: [
@@ -473,34 +435,34 @@ export class RoleUtil {
             ]
         }));
 
-        role.addToPolicy(new iam.PolicyStatement({
-            actions: [
-                "states:ListStateMachines",
-                "states:CreateStateMachine",
-                "states:DescribeStateMachine",
-                "states:StartExecution",
-                "states:DeleteStateMachine",
-                "states:ListExecutions",
-                "states:UpdateStateMachine",
-                "states:DescribeStateMachineForExecution",
-                "states:GetExecutionHistory",
-                "states:StopExecution",
-                "states:SendTaskSuccess",
-                "states:SendTaskFailure",
-                "states:SendTaskHeartbeat"
-            ],
-            resources: [
-                "arn:aws:states:*:*:*"
-            ]
-        }));
-        role.addToPolicy(new iam.PolicyStatement({
-            actions: [
-                "iam:PassRole"
-            ],
-            resources: [
-                "arn:aws:iam:::role/*"
-            ]
-        }));
+        // role.addToPolicy(new iam.PolicyStatement({
+        //     actions: [
+        //         "states:ListStateMachines",
+        //         "states:CreateStateMachine",
+        //         "states:DescribeStateMachine",
+        //         "states:StartExecution",
+        //         "states:DeleteStateMachine",
+        //         "states:ListExecutions",
+        //         "states:UpdateStateMachine",
+        //         "states:DescribeStateMachineForExecution",
+        //         "states:GetExecutionHistory",
+        //         "states:StopExecution",
+        //         "states:SendTaskSuccess",
+        //         "states:SendTaskFailure",
+        //         "states:SendTaskHeartbeat"
+        //     ],
+        //     resources: [
+        //         "arn:aws:states:*:*:*"
+        //     ]
+        // }));
+        // role.addToPolicy(new iam.PolicyStatement({
+        //     actions: [
+        //         "iam:PassRole"
+        //     ],
+        //     resources: [
+        //         "arn:aws:iam:::role/*"
+        //     ]
+        // }));
         return role;
     }
 }
