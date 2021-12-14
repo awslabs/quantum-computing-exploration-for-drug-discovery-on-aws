@@ -127,7 +127,7 @@ def get_all_param_list(param_list):
 
 def validate_input(input_dict: dict):
     print('validate_input')
-    valid_keys = ['runMode', 'molFile', 'modelVersion', 'optParams'
+    valid_keys = ['runMode', 'molFile', 'modelVersion', 'optParams',
                   'experimentName', 'modelParams', 'devicesArns', 'hpcResources', 'Comment']
     valid_keys_str = "|".join(valid_keys)
     errors = []
