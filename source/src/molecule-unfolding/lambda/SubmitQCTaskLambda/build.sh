@@ -32,35 +32,16 @@ echo ""
 create_repo () {
   name=$1
   region=$2
-  public_access=$3
 
-  echo "create_repo() - name: $name, region: $region, public_access: $public_access"
+  echo "create_repo() - name: $name, region: $region"
 
   $AWS_CMD ecr create-repository  \
   --repository-name $name \
   --image-scanning-configuration scanOnPush=true \
   --region $region >/dev/null 2>&1 || true
-
-  if [[ $public_access -eq '1' ]]; then
-       $AWS_CMD ecr set-repository-policy  --repository-name $name --region $region --policy-text \
-       '{
-         "Version": "2008-10-17",
-         "Statement": [
-             {
-                 "Sid": "AllowPull",
-                 "Effect": "Allow",
-                 "Principal": "*",
-                 "Action": [
-                     "ecr:GetDownloadUrlForLayer",
-                     "ecr:BatchGetImage"
-                 ]
-             }
-         ]
-       }'
-  fi
 }
 
-create_repo $repoName $REGION 0
+create_repo $repoName $REGION
 
 account_id=$($AWS_CMD sts get-caller-identity --query Account --output text)
 
