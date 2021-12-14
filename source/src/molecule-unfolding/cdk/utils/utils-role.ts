@@ -189,18 +189,19 @@ export class RoleUtil {
             assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
         });
         role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'))
-        role.addToPolicy(new iam.PolicyStatement({
-            resources: [
-                `arn:aws:athena:*:${this.props.account}:workgroup/*`,
-                `arn:aws:athena:*:${this.props.account}:datacatalog/*`
-            ],
-            actions: [
-                "athena:CreatePreparedStatement",
-                "athena:StartQueryExecution",
-                "athena:UpdatePreparedStatement",
-                "athena:GetQueryResults"
-            ]
-        }));
+        role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonAthenaFullAccess'))
+        // role.addToPolicy(new iam.PolicyStatement({
+        //     resources: [
+        //         `arn:aws:athena:*:${this.props.account}:workgroup/*`,
+        //         `arn:aws:athena:*:${this.props.account}:datacatalog/*`
+        //     ],
+        //     actions: [
+        //         "athena:CreatePreparedStatement",
+        //         "athena:StartQueryExecution",
+        //         "athena:UpdatePreparedStatement",
+        //         "athena:GetQueryResults"
+        //     ]
+        // }));
 
         role.addToPolicy(new iam.PolicyStatement({
             resources: [
