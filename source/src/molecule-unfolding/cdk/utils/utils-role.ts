@@ -339,14 +339,62 @@ export class RoleUtil {
             ]
         }));
 
+        return role;
+    }
+
+
+    public createGenericLambdaRole(roleName: string): iam.Role {
+        const role = new iam.Role(this.scope, `${roleName}`, {
+            assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+        });
+        role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'))
         role.addToPolicy(new iam.PolicyStatement({
-            actions: [
-                "states:SendTaskSuccess",
-                "states:SendTaskFailure",
-                "states:SendTaskHeartbeat"
-            ],
             resources: [
-                "arn:aws:states:*:*:*"
+                "arn:aws:s3:::*/*"
+            ],
+            actions: [
+                "s3:GetObject",
+                "s3:PutObject"
+            ]
+        }));
+
+        role.addToPolicy(new iam.PolicyStatement({
+            resources: [
+                'arn:aws:s3:::*'
+            ],
+            actions: [
+                "s3:ListBucket"
+            ]
+        }));
+
+        role.addToPolicy(new iam.PolicyStatement({
+            effect: iam.Effect.ALLOW,
+            resources: [
+                '*'
+            ],
+            actions: [
+                "ec2:AttachNetworkInterface",
+                "ec2:CreateNetworkInterface",
+                "ec2:CreateNetworkInterfacePermission",
+                "ec2:DeleteNetworkInterface",
+                "ec2:DeleteNetworkInterfacePermission",
+                "ec2:DescribeDhcpOptions",
+                "ec2:DescribeNetworkInterfaces",
+                "ec2:DescribeNetworkInterfacePermissions",
+                "ec2:DescribeSubnets",
+                "ec2:DescribeVpcs",
+                "ec2:DescribeInstances"
+            ]
+        }));
+        role.addToPolicy(new iam.PolicyStatement({
+            resources: [
+                `arn:aws:logs:*:${this.props.account}:log-group:*`
+            ],
+            actions: [
+                "logs:CreateLogStream",
+                "logs:DescribeLogStreams",
+                "logs:PutLogEvents",
+                "logs:CreateLogGroup"
             ]
         }));
 
@@ -354,7 +402,7 @@ export class RoleUtil {
     }
 
 
-    public createGenericLambdaRole(roleName: string): iam.Role {
+    public createCallBackLambdaRole(roleName: string): iam.Role {
         const role = new iam.Role(this.scope, `${roleName}`, {
             assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
         });

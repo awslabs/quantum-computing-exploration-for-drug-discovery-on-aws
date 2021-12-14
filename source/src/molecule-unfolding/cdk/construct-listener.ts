@@ -38,7 +38,7 @@ export class EventListener extends cdk.Construct {
     }
 
     private createEventListener(vpc: ec2.Vpc, lambdaSg: ec2.SecurityGroup) {
-        const lambdaRole = this.roleUtil.createGenericLambdaRole("ParseBraketResultLambdaRole")
+        const lambdaRole = this.roleUtil.createCallBackLambdaRole("ParseBraketResultLambdaRole")
         const code = this.images.getECRImage(ECRRepoNameEnum.Lambda_ParseBraketResult) as lambda.DockerImageCode
         const parseBraketResultLambda = new lambda.DockerImageFunction(this, 'ParseBraketResultLambda', {
             code,
