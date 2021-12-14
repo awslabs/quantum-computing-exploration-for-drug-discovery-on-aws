@@ -71,6 +71,10 @@ describe("Dashboard", () => {
                                 "Type": "STRING"
                             },
                             {
+                                "Name": "opt_params",
+                                "Type": "STRING"
+                            },
+                            {
                                 "Name": "task_duration",
                                 "Type": "DECIMAL"
                             },
