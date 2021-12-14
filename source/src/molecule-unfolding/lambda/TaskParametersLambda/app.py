@@ -30,12 +30,11 @@ default_hpc_resources = [
 default_opt_params = {
     "qa": {
         "shots": 1000,
-        "notes": "benchmarking"
-
+        "embed_method": "default"
     },
     "sa": {
-        "shots": 1000,
-        "embed_method": "default"
+        "shots": 100,
+        "notes": "benchmarking"
     }
 }
 
