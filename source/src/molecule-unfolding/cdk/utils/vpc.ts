@@ -54,8 +54,10 @@ export default (scope: Construct) => {
         description: "Security Group for QC batch compute environment"
     });
 
-    batchSg.addEgressRule(ec2.Peer.anyIpv4(), ec2.Port.allTcp())
-    batchSg.addEgressRule(ec2.Peer.anyIpv6(), ec2.Port.allTcp())
+    batchSg.addEgressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(443))
+    batchSg.addEgressRule(ec2.Peer.anyIpv6(), ec2.Port.tcp(443))
+    batchSg.addEgressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(80))
+    batchSg.addEgressRule(ec2.Peer.anyIpv6(), ec2.Port.tcp(80))
 
     const lambdaSg = new ec2.SecurityGroup(scope, "lambdaSg", {
         vpc,
@@ -63,8 +65,10 @@ export default (scope: Construct) => {
         description: "Security Group for lambda"
     });
 
-    lambdaSg.addEgressRule(ec2.Peer.anyIpv4(), ec2.Port.allTcp())
-    lambdaSg.addEgressRule(ec2.Peer.anyIpv6(), ec2.Port.allTcp())
+    lambdaSg.addEgressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(443))
+    lambdaSg.addEgressRule(ec2.Peer.anyIpv6(), ec2.Port.tcp(443))
+    lambdaSg.addEgressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(80))
+    lambdaSg.addEgressRule(ec2.Peer.anyIpv6(), ec2.Port.tcp(80))
 
     return {
         vpc,
