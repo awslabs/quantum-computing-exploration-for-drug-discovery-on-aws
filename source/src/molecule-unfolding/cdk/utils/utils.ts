@@ -85,17 +85,12 @@ export class AddCfnNag implements IAspect {
         } else if (node.node.path.endsWith('batchSg/Resource') ||
             node.node.path.endsWith('lambdaSg/Resource')
         ) {
-            // node.addMetadata('cfn_nag', {
-            //     rules_to_suppress: [{
-            //             id: 'W5',
-            //             reason: 'need egress access',
-            //         },
-            //         {
-            //             id: 'W40',
-            //             reason: 'allow egress to pull docker images',
-            //         }
-            //     ],
-            // });
+            (node as cdk.CfnResource).addMetadata('cfn_nag', {
+                rules_to_suppress: [{
+                    id: 'W5',
+                    reason: 'cidr open to world on egress',
+                }],
+            });
         }
     }
 }
