@@ -211,7 +211,8 @@ export class RoleUtil {
                 'arn:aws:s3:::*'
             ],
             actions: [
-                "s3:ListBucket"
+                "s3:ListBucket",
+                "s3:GetBucketLocation",
             ]
         }));
 

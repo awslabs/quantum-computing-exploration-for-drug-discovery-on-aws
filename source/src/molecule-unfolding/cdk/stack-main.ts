@@ -42,11 +42,19 @@ export class MainStack extends SolutionStack {
 
     const prefix = 'molecule-unfolding'
 
+    const logS3bucket = new s3.Bucket(this, 'AccessLogS3Bucket', {
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: true,
+      encryption: s3.BucketEncryption.S3_MANAGED,
+    });
+
     const s3bucket = new s3.Bucket(this, 'amazon-braket', {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       bucketName: `amazon-braket-${this.stackName.toLowerCase()}-${this.account}-${this.region}`,
       autoDeleteObjects: true,
-      encryption: s3.BucketEncryption.S3_MANAGED
+      encryption: s3.BucketEncryption.S3_MANAGED,
+      serverAccessLogsBucket: logS3bucket,
+      serverAccessLogsPrefix: 'accesslogs/'
     });
 
     const usePreBuildImageStrValue = (this.node.tryGetContext('use_prebuild_iamge') + '').toLowerCase() || 'false'
