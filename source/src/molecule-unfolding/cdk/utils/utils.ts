@@ -58,7 +58,6 @@ export class AddCfnNag implements IAspect {
             node.node.path.endsWith('ParseBraketResultLambdaRole/DefaultPolicy/Resource') ||
             node.node.path.endsWith('AggResultLambdaRole/DefaultPolicy/Resource') ||
             node.node.path.endsWith('MolUnfNotebook/NotebookRole/DefaultPolicy/Resource') ||
-
             node.node.path.endsWith('BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/DefaultPolicy/Resource')
         ) {
             (node as cdk.CfnResource).addMetadata('cfn_nag', {
