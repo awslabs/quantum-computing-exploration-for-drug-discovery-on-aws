@@ -50,10 +50,6 @@ export class AddCfnNag implements IAspect {
                         id: 'W58',
                         reason: 'the lambda already have the cloudwatch permission',
                     },
-                    {
-                        id: 'W12',
-                        reason: 'EC2:DescribeNetworkInterfaces is not resource-level permissions',
-                    },
                 ],
             });
         } else if (node.node.path.endsWith('jobRole/DefaultPolicy/Resource') ||
@@ -68,7 +64,7 @@ export class AddCfnNag implements IAspect {
             (node as cdk.CfnResource).addMetadata('cfn_nag', {
                 rules_to_suppress: [{
                     id: 'W12',
-                    reason: 'EC2:DescribeNetworkInterfaces is not resource-level permissions',
+                    reason: 'some permissions are not resource-level permissions',
                 }, ],
             });
         } else if (node.node.path.endsWith('BenchmarkStateMachine/Role/DefaultPolicy/Resource')) {
@@ -90,7 +86,7 @@ export class AddCfnNag implements IAspect {
             node.addMetadata('cfn_nag', {
                 rules_to_suppress: [{
                         id: 'W5',
-                        reason: 'need internet access',
+                        reason: 'need egress access',
                     },
                     {
                         id: 'W40',
