@@ -25,7 +25,8 @@ def handler(event, context):
             "deviceStatus": device.status
         }
     except Exception as e:
-        {
+        print(repr(e))
+        return {
             "availableNow": False,
             "errorMsg": repr(e),
             "deviceStatus": "ERROR"

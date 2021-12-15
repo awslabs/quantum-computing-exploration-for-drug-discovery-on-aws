@@ -52,6 +52,7 @@ export class MainStack extends SolutionStack {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       bucketName: `amazon-braket-${this.stackName.toLowerCase()}-${this.account}-${this.region}`,
       autoDeleteObjects: true,
+      enforceSSL: true,
       encryption: s3.BucketEncryption.S3_MANAGED,
       serverAccessLogsBucket: logS3bucket,
       serverAccessLogsPrefix: 'accesslogs/'

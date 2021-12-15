@@ -17,6 +17,8 @@ cp -r * ../code/
 cd ../code/
 rm -rf cdk.out  > /dev/null 2>&1 || true
 rm -rf node_modules > /dev/null 2>&1 || true 
+rm -rf cdk.context.json > /dev/null 2>&1 || true 
+rm -rf package_code.sh > /dev/null 2>&1 || true 
 
 zip -r ../code.zip .
 cd ..

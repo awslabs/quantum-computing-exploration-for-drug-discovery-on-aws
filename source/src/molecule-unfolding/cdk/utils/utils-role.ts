@@ -26,86 +26,6 @@ export class RoleUtil {
             assumedBy: new iam.ServicePrincipal('sagemaker.amazonaws.com'),
         });
 
-        role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonBraketFullAccess'))
-
-        role.addToPolicy(new iam.PolicyStatement({
-            resources: [
-                "arn:aws:s3:::*/*"
-            ],
-            actions: [
-                "s3:GetObject",
-                "s3:PutObject"
-            ]
-        }));
-
-        role.addToPolicy(new iam.PolicyStatement({
-            resources: [
-                'arn:aws:s3:::*'
-            ],
-            actions: [
-                "s3:ListBucket"
-            ]
-        }));
-
-        role.addToPolicy(new iam.PolicyStatement({
-            resources: [
-                `arn:aws:ecr:${this.props.region}:${this.props.account}:repository/*`
-            ],
-            actions: [
-                "ecr:PutImageTagMutability",
-                "ecr:StartImageScan",
-                "ecr:DescribeImageReplicationStatus",
-                "ecr:ListTagsForResource",
-                "ecr:UploadLayerPart",
-                "ecr:BatchDeleteImage",
-                "ecr:BatchGetRepositoryScanningConfiguration",
-                "ecr:DeleteRepository",
-                "ecr:CompleteLayerUpload",
-                "ecr:TagResource",
-                "ecr:DescribeRepositories",
-                "ecr:BatchCheckLayerAvailability",
-                "ecr:ReplicateImage",
-                "ecr:GetLifecyclePolicy",
-                "ecr:PutLifecyclePolicy",
-                "ecr:DescribeImageScanFindings",
-                "ecr:GetLifecyclePolicyPreview",
-                "ecr:CreateRepository",
-                "ecr:PutImageScanningConfiguration",
-                "ecr:GetDownloadUrlForLayer",
-                "ecr:DeleteLifecyclePolicy",
-                "ecr:PutImage",
-                "ecr:UntagResource",
-                "ecr:BatchGetImage",
-                "ecr:StartLifecyclePolicyPreview",
-                "ecr:InitiateLayerUpload",
-                "ecr:GetRepositoryPolicy"
-            ]
-        }));
-
-        role.addToPolicy(new iam.PolicyStatement({
-            resources: [
-                `arn:aws:logs:*:${this.props.account}:log-group:/aws/sagemaker/*`
-            ],
-            actions: [
-                "logs:CreateLogStream",
-                "logs:DescribeLogStreams",
-                "logs:PutLogEvents",
-                "logs:CreateLogGroup"
-            ]
-        }));
-        return role;
-    }
-
-
-    public createBatchJobExecutionRole(roleName: string): iam.Role {
-        const role = new iam.Role(this.scope, `${roleName}`, {
-            assumedBy: new iam.ServicePrincipal('ecs-tasks.amazonaws.com'),
-        });
-
-        role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonEC2ContainerRegistryReadOnly'))
-
-        //role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonBraketFullAccess'))
-
         role.addToPolicy(new iam.PolicyStatement({
             resources: [
                 `arn:aws:braket:*:${this.props.account}:quantum-task/*`,
@@ -134,10 +54,9 @@ export class RoleUtil {
             ]
         }));
 
-
         role.addToPolicy(new iam.PolicyStatement({
             resources: [
-                "arn:aws:s3:::*/*"
+                `arn:aws:s3:::${this.props.bucket.bucketName}/*`
             ],
             actions: [
                 "s3:GetObject",
@@ -147,7 +66,84 @@ export class RoleUtil {
 
         role.addToPolicy(new iam.PolicyStatement({
             resources: [
-                'arn:aws:s3:::*'
+                `arn:aws:s3:::${this.props.bucket.bucketName}`
+            ],
+            actions: [
+                "s3:ListBucket"
+            ]
+        }));
+
+        role.addToPolicy(new iam.PolicyStatement({
+            resources: [
+                `arn:aws:ecr:${this.props.region}:${this.props.account}:repository/${this.props.prefix}/*`
+            ],
+            actions: [
+                "ecr:UploadLayerPart",
+                "ecr:BatchDeleteImage",
+                "ecr:DeleteRepository",
+                "ecr:CompleteLayerUpload",
+                "ecr:DescribeRepositories",
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:CreateRepository",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:PutImage",
+                "ecr:BatchGetImage",
+                "ecr:InitiateLayerUpload"
+            ]
+        }));
+
+        role.addToPolicy(new iam.PolicyStatement({
+            resources: [
+                `arn:aws:logs:*:${this.props.account}:log-group:/aws/sagemaker/*`
+            ],
+            actions: [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "logs:CreateLogGroup"
+            ]
+        }));
+        return role;
+    }
+
+
+    public createBatchJobExecutionRole(roleName: string): iam.Role {
+        const role = new iam.Role(this.scope, `${roleName}`, {
+            assumedBy: new iam.ServicePrincipal('ecs-tasks.amazonaws.com'),
+        });
+
+        role.addToPolicy(new iam.PolicyStatement({
+            resources: [
+                `arn:aws:ecr:${this.props.region}:${this.props.account}:repository/*`
+            ],
+            actions: [
+                "ecr:BatchCheckLayerAvailability",
+                "ecr:GetDownloadUrlForLayer",
+                "ecr:BatchGetImage",
+            ]
+        }));
+
+        role.addToPolicy(new iam.PolicyStatement({
+            resources: [
+                "*"
+            ],
+            actions: [
+                "ecr:GetAuthorizationToken",
+
+            ]
+        }));
+        role.addToPolicy(new iam.PolicyStatement({
+            resources: [
+                `arn:aws:s3:::${this.props.bucket.bucketName}/*`
+            ],
+            actions: [
+                "s3:GetObject",
+                "s3:PutObject"
+            ]
+        }));
+
+        role.addToPolicy(new iam.PolicyStatement({
+            resources: [
+                `arn:aws:s3:::${this.props.bucket.bucketName}`
             ],
             actions: [
                 "s3:ListBucket"
@@ -160,7 +156,6 @@ export class RoleUtil {
             ],
             actions: [
                 "logs:CreateLogStream",
-                "logs:DescribeLogStreams",
                 "logs:PutLogEvents",
                 "logs:CreateLogGroup"
             ]
@@ -173,8 +168,6 @@ export class RoleUtil {
         const role = new iam.Role(this.scope, `AggResultLambdaRole`, {
             assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
         });
-        role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'))
-        //role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonAthenaFullAccess'))
         role.addToPolicy(new iam.PolicyStatement({
             resources: [
                 `arn:aws:athena:*:${this.props.account}:workgroup/*`,
@@ -195,10 +188,9 @@ export class RoleUtil {
             ]
         }));
 
-
         role.addToPolicy(new iam.PolicyStatement({
             resources: [
-                "arn:aws:s3:::*/*"
+                `arn:aws:s3:::${this.props.bucket.bucketName}/*`
             ],
             actions: [
                 "s3:GetObject",
@@ -208,7 +200,7 @@ export class RoleUtil {
 
         role.addToPolicy(new iam.PolicyStatement({
             resources: [
-                'arn:aws:s3:::*'
+                `arn:aws:s3:::${this.props.bucket.bucketName}`
             ],
             actions: [
                 "s3:ListBucket",
@@ -222,17 +214,12 @@ export class RoleUtil {
                 '*'
             ],
             actions: [
-                "ec2:AttachNetworkInterface",
                 "ec2:CreateNetworkInterface",
-                "ec2:CreateNetworkInterfacePermission",
-                "ec2:DeleteNetworkInterface",
-                "ec2:DeleteNetworkInterfacePermission",
-                "ec2:DescribeDhcpOptions",
                 "ec2:DescribeNetworkInterfaces",
-                "ec2:DescribeNetworkInterfacePermissions",
-                "ec2:DescribeSubnets",
-                "ec2:DescribeVpcs",
-                "ec2:DescribeInstances"
+                "ec2:DeleteNetworkInterface",
+                "ec2:AssignPrivateIpAddresses",
+                "ec2:UnassignPrivateIpAddresses"
+
             ]
         }));
         role.addToPolicy(new iam.PolicyStatement({
@@ -241,7 +228,6 @@ export class RoleUtil {
             ],
             actions: [
                 "logs:CreateLogStream",
-                "logs:DescribeLogStreams",
                 "logs:PutLogEvents",
                 "logs:CreateLogGroup"
             ]
@@ -253,7 +239,6 @@ export class RoleUtil {
         const role = new iam.Role(this.scope, `${roleName}`, {
             assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
         });
-        role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'))
 
         role.addToPolicy(new iam.PolicyStatement({
             resources: [
@@ -262,10 +247,7 @@ export class RoleUtil {
             ],
             actions: [
                 "braket:GetJob",
-                "braket:GetQuantumTask",
-                "braket:CancelQuantumTask",
-                "braket:CancelJob",
-                "braket:ListTagsForResource"
+                "braket:GetQuantumTask"
             ]
         }));
 
@@ -285,7 +267,7 @@ export class RoleUtil {
 
         role.addToPolicy(new iam.PolicyStatement({
             resources: [
-                "arn:aws:s3:::*/*"
+                `arn:aws:s3:::${this.props.bucket.bucketName}/*`
             ],
             actions: [
                 "s3:GetObject",
@@ -295,7 +277,7 @@ export class RoleUtil {
 
         role.addToPolicy(new iam.PolicyStatement({
             resources: [
-                'arn:aws:s3:::*'
+                `arn:aws:s3:::${this.props.bucket.bucketName}`
             ],
             actions: [
                 "s3:ListBucket"
@@ -308,7 +290,6 @@ export class RoleUtil {
             ],
             actions: [
                 "logs:CreateLogStream",
-                "logs:DescribeLogStreams",
                 "logs:PutLogEvents",
                 "logs:CreateLogGroup"
             ]
@@ -320,17 +301,11 @@ export class RoleUtil {
                 '*'
             ],
             actions: [
-                "ec2:AttachNetworkInterface",
                 "ec2:CreateNetworkInterface",
-                "ec2:CreateNetworkInterfacePermission",
-                "ec2:DeleteNetworkInterface",
-                "ec2:DeleteNetworkInterfacePermission",
-                "ec2:DescribeDhcpOptions",
                 "ec2:DescribeNetworkInterfaces",
-                "ec2:DescribeNetworkInterfacePermissions",
-                "ec2:DescribeSubnets",
-                "ec2:DescribeVpcs",
-                "ec2:DescribeInstances"
+                "ec2:DeleteNetworkInterface",
+                "ec2:AssignPrivateIpAddresses",
+                "ec2:UnassignPrivateIpAddresses"
             ]
         }));
 
@@ -342,10 +317,9 @@ export class RoleUtil {
         const role = new iam.Role(this.scope, `${roleName}`, {
             assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
         });
-        role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'))
         role.addToPolicy(new iam.PolicyStatement({
             resources: [
-                "arn:aws:s3:::*/*"
+                `arn:aws:s3:::${this.props.bucket.bucketName}/*`
             ],
             actions: [
                 "s3:GetObject",
@@ -355,7 +329,7 @@ export class RoleUtil {
 
         role.addToPolicy(new iam.PolicyStatement({
             resources: [
-                'arn:aws:s3:::*'
+                `arn:aws:s3:::${this.props.bucket.bucketName}`
             ],
             actions: [
                 "s3:ListBucket"
@@ -368,17 +342,11 @@ export class RoleUtil {
                 '*'
             ],
             actions: [
-                "ec2:AttachNetworkInterface",
                 "ec2:CreateNetworkInterface",
-                "ec2:CreateNetworkInterfacePermission",
-                "ec2:DeleteNetworkInterface",
-                "ec2:DeleteNetworkInterfacePermission",
-                "ec2:DescribeDhcpOptions",
                 "ec2:DescribeNetworkInterfaces",
-                "ec2:DescribeNetworkInterfacePermissions",
-                "ec2:DescribeSubnets",
-                "ec2:DescribeVpcs",
-                "ec2:DescribeInstances"
+                "ec2:DeleteNetworkInterface",
+                "ec2:AssignPrivateIpAddresses",
+                "ec2:UnassignPrivateIpAddresses"
             ]
         }));
         role.addToPolicy(new iam.PolicyStatement({
@@ -387,7 +355,6 @@ export class RoleUtil {
             ],
             actions: [
                 "logs:CreateLogStream",
-                "logs:DescribeLogStreams",
                 "logs:PutLogEvents",
                 "logs:CreateLogGroup"
             ]
@@ -401,10 +368,9 @@ export class RoleUtil {
         const role = new iam.Role(this.scope, `${roleName}`, {
             assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
         });
-        role.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole'))
         role.addToPolicy(new iam.PolicyStatement({
             resources: [
-                "arn:aws:s3:::*/*"
+                `arn:aws:s3:::${this.props.bucket.bucketName}/*`
             ],
             actions: [
                 "s3:GetObject",
@@ -414,7 +380,7 @@ export class RoleUtil {
 
         role.addToPolicy(new iam.PolicyStatement({
             resources: [
-                'arn:aws:s3:::*'
+                `arn:aws:s3:::${this.props.bucket.bucketName}`
             ],
             actions: [
                 "s3:ListBucket"
@@ -427,17 +393,11 @@ export class RoleUtil {
                 '*'
             ],
             actions: [
-                "ec2:AttachNetworkInterface",
                 "ec2:CreateNetworkInterface",
-                "ec2:CreateNetworkInterfacePermission",
-                "ec2:DeleteNetworkInterface",
-                "ec2:DeleteNetworkInterfacePermission",
-                "ec2:DescribeDhcpOptions",
                 "ec2:DescribeNetworkInterfaces",
-                "ec2:DescribeNetworkInterfacePermissions",
-                "ec2:DescribeSubnets",
-                "ec2:DescribeVpcs",
-                "ec2:DescribeInstances"
+                "ec2:DeleteNetworkInterface",
+                "ec2:AssignPrivateIpAddresses",
+                "ec2:UnassignPrivateIpAddresses"
             ]
         }));
         role.addToPolicy(new iam.PolicyStatement({
@@ -446,7 +406,6 @@ export class RoleUtil {
             ],
             actions: [
                 "logs:CreateLogStream",
-                "logs:DescribeLogStreams",
                 "logs:PutLogEvents",
                 "logs:CreateLogGroup"
             ]
