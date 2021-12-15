@@ -50,15 +50,19 @@ export default (scope: Construct) => {
 
     const batchSg = new ec2.SecurityGroup(scope, "batchSg", {
         vpc,
-        allowAllOutbound: true,
+        allowAllOutbound: false,
         description: "Security Group for QC batch compute environment"
     });
 
+    batchSg.addEgressRule(ec2.Peer.anyIpv4(), ec2.Port.tcpRange(1024, 49151))
+
     const lambdaSg = new ec2.SecurityGroup(scope, "lambdaSg", {
         vpc,
-        allowAllOutbound: true,
+        allowAllOutbound: false,
         description: "Security Group for lambda"
     });
+
+    batchSg.addEgressRule(ec2.Peer.anyIpv4(), ec2.Port.tcpRange(1024, 49151))
 
     return {
         vpc,

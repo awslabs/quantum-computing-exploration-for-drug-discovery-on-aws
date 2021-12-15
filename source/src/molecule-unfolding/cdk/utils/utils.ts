@@ -1,6 +1,5 @@
 import * as cdk from '@aws-cdk/core';
 import * as iam from '@aws-cdk/aws-iam'
-import * as s3 from '@aws-cdk/aws-s3'
 import * as ec2 from '@aws-cdk/aws-ec2'
 import * as kms from '@aws-cdk/aws-kms'
 
@@ -47,10 +46,9 @@ export class AddCfnNag implements IAspect {
         ) {
             (node as cdk.CfnResource).addMetadata('cfn_nag', {
                 rules_to_suppress: [{
-                        id: 'W58',
-                        reason: 'the lambda already have the cloudwatch permission',
-                    },
-                ],
+                    id: 'W58',
+                    reason: 'the lambda already have the cloudwatch permission',
+                }, ],
             });
         } else if (node.node.path.endsWith('jobRole/DefaultPolicy/Resource') ||
             node.node.path.endsWith('executionRole/DefaultPolicy/Resource') ||
@@ -59,6 +57,8 @@ export class AddCfnNag implements IAspect {
             node.node.path.endsWith('SubmitQCTaskLambdaRole/DefaultPolicy/Resource') ||
             node.node.path.endsWith('ParseBraketResultLambdaRole/DefaultPolicy/Resource') ||
             node.node.path.endsWith('AggResultLambdaRole/DefaultPolicy/Resource') ||
+            node.node.path.endsWith('MolUnfNotebook/NotebookRole/DefaultPolicy/Resource') ||
+
             node.node.path.endsWith('BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/DefaultPolicy/Resource')
         ) {
             (node as cdk.CfnResource).addMetadata('cfn_nag', {
@@ -75,25 +75,27 @@ export class AddCfnNag implements IAspect {
                 }, ],
             });
 
-        } else if (node instanceof s3.CfnBucket) {
-            node.addMetadata('cfn_nag', {
+        } else if (node.node.path.endsWith('AccessLogS3Bucket/Resource')) {
+            (node as cdk.CfnResource).addMetadata('cfn_nag', {
                 rules_to_suppress: [{
                     id: 'W35',
-                    reason: 'S3 bucket access logging will be configured manually',
+                    reason: 'this is access log bucket ',
                 }, ],
             });
-        } else if (node instanceof ec2.CfnSecurityGroup) {
-            node.addMetadata('cfn_nag', {
-                rules_to_suppress: [{
-                        id: 'W5',
-                        reason: 'need egress access',
-                    },
-                    {
-                        id: 'W40',
-                        reason: 'allow egress to pull docker images',
-                    }
-                ],
-            });
+        } else if (node.node.path.endsWith('batchSg/Resource') ||
+            node.node.path.endsWith('lambdaSg/Resource')
+        ) {
+            // node.addMetadata('cfn_nag', {
+            //     rules_to_suppress: [{
+            //             id: 'W5',
+            //             reason: 'need egress access',
+            //         },
+            //         {
+            //             id: 'W40',
+            //             reason: 'allow egress to pull docker images',
+            //         }
+            //     ],
+            // });
         }
     }
 }

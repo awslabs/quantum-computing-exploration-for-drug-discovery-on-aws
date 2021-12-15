@@ -43,8 +43,8 @@ export class MainStack extends SolutionStack {
     const prefix = 'molecule-unfolding'
 
     const logS3bucket = new s3.Bucket(this, 'AccessLogS3Bucket', {
-      removalPolicy: cdk.RemovalPolicy.DESTROY,
-      autoDeleteObjects: true,
+      removalPolicy: cdk.RemovalPolicy.RETAIN,
+      //autoDeleteObjects: true,
       enforceSSL: true,
       encryption: s3.BucketEncryption.S3_MANAGED,
     });
