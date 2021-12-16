@@ -38,8 +38,8 @@ default_opt_params = {
     }
 }
 
-max_vcpu, min_vcpu = 16, 0.25
-max_mem, min_mem = 32,  0.5
+max_vcpu, min_vcpu = 16, 1
+max_mem, min_mem = 32,  1
 
 
 def read_as_json(bucket, key):
@@ -188,9 +188,9 @@ def validate_input(input_dict: dict):
                         errors.append(
                             f"element in hpcResources must be an array with size=2")
                     for e in c_m:
-                        if  not (isinstance(e, int) or isinstance(e, float)):
+                        if  not (isinstance(e, int)):
                             errors.append(
-                                f"invalid value {c_m}, elements must be int/float")
+                                f"invalid value {e}, element must be an int")
                     vcpu, mem = c_m
                     if vcpu > max_vcpu or mem > max_mem or vcpu < min_vcpu or mem < min_mem:
                         errors.append(
