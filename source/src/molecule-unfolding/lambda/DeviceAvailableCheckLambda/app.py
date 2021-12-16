@@ -70,7 +70,7 @@ def createTimeRange(date, window, available_days):
                     TWENTY_FOUR_HOURS_IN_MILLISECONDS * \
                     (day - 6 - date.weekday())
 
-                time_ranges.unshift([warp_start_utc, wrap_end_utc])
+                time_ranges.unshift([wrap_start_utc, wrap_end_utc])
             end_utc = end_utc + TWENTY_FOUR_HOURS_IN_MILLISECONDS
 
         time_ranges.append([start_utc, end_utc])
