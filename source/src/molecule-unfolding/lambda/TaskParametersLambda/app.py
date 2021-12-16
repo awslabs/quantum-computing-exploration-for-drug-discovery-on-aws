@@ -178,7 +178,7 @@ def validate_input(input_dict: dict):
                             f"invalid value for {p}, current only support '[ 200 ]'")
                     if p == 'M' and (max(list_vals) > 4 or min(list_vals) < 1):
                         errors.append(
-                            f"invalid value for {p}: {list_vals}, current only support range: [1, 4], e.g. [1, 2, 3, 4] ")
+                            f"invalid value for {p}: {list_vals}, current only support range: [1, 4], e.g [1, 2, 3, 4] ")
 
             if 'hpcResources' == k:
                 if not isinstance(input_dict[k], list):

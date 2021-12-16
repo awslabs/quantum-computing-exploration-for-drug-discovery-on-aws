@@ -66,6 +66,15 @@ export class RoleUtil {
 
         role.addToPolicy(new iam.PolicyStatement({
             resources: [
+                `arn:aws:s3:::amazon-braket-gcr-qc-sol-common/qc/*`
+            ],
+            actions: [
+                "s3:GetObject",
+            ]
+        }));
+
+        role.addToPolicy(new iam.PolicyStatement({
+            resources: [
                 `arn:aws:s3:::${this.props.bucket.bucketName}`
             ],
             actions: [
