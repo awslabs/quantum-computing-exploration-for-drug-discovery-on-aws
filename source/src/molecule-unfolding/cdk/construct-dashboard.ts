@@ -33,7 +33,8 @@ export class Dashboard extends cdk.Construct {
         });
 
         const templateAccountId = quicksightTemplateAccountIdParam.valueAsString;
-        const templateArn = `arn:aws:quicksight:us-east-1:${templateAccountId}:template/QC-benchmark-analysis-template`
+        const templateRegion = this.node.tryGetContext('quicksight_template_region') || 'us-east-1'
+        const templateArn = `arn:aws:quicksight:${templateRegion}:${templateAccountId}:template/QC-benchmark-analysis-template`
 
         const quicksightUser = `arn:aws:quicksight:us-east-1:${this.props.account}:user/default/${quickSightUserParam.valueAsString}`;
         const qcDataSource = new quicksight.CfnDataSource(this, "qcBenchmark-DataSource", {
@@ -150,7 +151,7 @@ export class Dashboard extends cdk.Construct {
                     customSql: {
                         dataSourceArn: qcDataSource.attrArn,
                         name: 'all',
-                        sqlQuery: 'SELECT * FROM "AwsDataCatalog"."default"."qc_benchmark_metrics_hist"',
+                        sqlQuery: `SELECT * FROM "AwsDataCatalog"."default"."${this.props.stackName}_qc_benchmark_metrics_hist"`,
                         columns
                     },
                 }

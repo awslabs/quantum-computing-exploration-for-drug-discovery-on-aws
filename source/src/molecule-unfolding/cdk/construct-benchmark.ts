@@ -37,6 +37,7 @@ export interface BatchProps {
     usePreBuildImage: boolean;
     dashboardUrl: string;
     prefix: string;
+    stackName: string;
     vpc: ec2.Vpc;
     batchSg: ec2.SecurityGroup;
     lambdaSg: ec2.SecurityGroup;
@@ -382,7 +383,9 @@ export class Benchmark extends Construct {
         const aggResultStep = new tasks.LambdaInvoke(this, 'Aggregate Result', {
             lambdaFunction: aggResultLambda,
             payload: sfn.TaskInput.fromObject({
-                "execution_id": sfn.JsonPath.stringAt("$.execution_id")
+                "execution_id": sfn.JsonPath.stringAt("$.execution_id"),
+                "stackName": this.props.stackName,
+                "s3_prefix": this.props.prefix
             }),
             resultSelector: {
                 "Payload.$": "$.Payload"

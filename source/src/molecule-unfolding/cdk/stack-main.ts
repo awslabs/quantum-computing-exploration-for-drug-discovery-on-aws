@@ -38,7 +38,7 @@ export class MainStack extends SolutionStack {
   constructor(scope: Construct, id: string, props: StackProps = {}) {
     super(scope, id, props);
     this.setDescription('(SO8029) CDK for GCR solution: Quantum Ready For Drug Discovery');
-    const stackName = this.stackName
+    const stackName = this.stackName.replace(/[^a-zA-Z0-9_]+/, '').toLocaleLowerCase()
 
     const prefix = 'molecule-unfolding'
 
@@ -49,7 +49,7 @@ export class MainStack extends SolutionStack {
       encryption: s3.BucketEncryption.S3_MANAGED,
     });
 
-    const bucketName = `amazon-braket-${this.stackName.toLowerCase()}-${this.account}-${this.region}`
+    const bucketName = `amazon-braket-${stackName}-${this.account}-${this.region}`
     const s3bucket = new s3.Bucket(this, 'amazon-braket', {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       bucketName,
@@ -106,6 +106,7 @@ export class MainStack extends SolutionStack {
       region: this.region,
       bucket: s3bucket,
       prefix,
+      stackName,
       usePreBuildImage,
       dashboardUrl: dashboard.outputDashboradUrl.value,
       vpc,

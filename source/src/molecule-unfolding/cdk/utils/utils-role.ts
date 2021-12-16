@@ -186,11 +186,18 @@ export class RoleUtil {
         role.addToPolicy(new iam.PolicyStatement({
             resources: [
                 `arn:aws:athena:*:${this.props.account}:workgroup/*`,
-                `arn:aws:athena:*:${this.props.account}:datacatalog/*`
+                `arn:aws:athena:*:${this.props.account}:datacatalog/*`,
+                `arn:aws:glue:*:${this.props.account}:database/*`,
+                `arn:aws:glue:*:${this.props.account}:table/*/*`,
+                `arn:aws:glue:*:${this.props.account}:catalog`
             ],
             actions: [
                 "athena:StartQueryExecution",
-                "athena:GetQueryResults"
+                "athena:GetQueryResults",
+                "glue:GetTable",
+                "glue:DeleteTable",
+                "glue:CreateTable",
+                "glue:UpdateTable"
             ]
         }));
 

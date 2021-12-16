@@ -5,12 +5,19 @@ const bucket = process.env.BUCKET
 
 exports.handler = function (event, context, callback) {
     console.log("REQUEST RECEIVED:\n" + JSON.stringify(event))
-    const s3_prefix = "molecule-unfolding"
+    const s3_prefix = event['s3_prefix']
+    const stackName = event['stackName']
+
+    console.log(`stackName: ${stackName}, s3_prefix: ${s3_prefix}`)
+
     const ATHENA_OUTPUT_LOCATION = `s3://${bucket}/${s3_prefix}/athena-out/`
     const location = `s3://${bucket}/${s3_prefix}/benchmark_metrics/`
-    const dropTableSql = "DROP TABLE IF EXISTS qc_benchmark_metrics_hist"
+    const tableName = `${stackName}_qc_benchmark_metrics_hist`
+    const viewName = `${stackName}_qc_benchmark_metrics`
 
-    const createTableSql = "CREATE EXTERNAL TABLE IF NOT EXISTS qc_benchmark_metrics_hist(\n" +
+    const dropTableSql = `DROP TABLE IF EXISTS ${tableName}`
+
+    const createTableSql = "CREATE EXTERNAL TABLE IF NOT EXISTS " + tableName + "(\n" +
         "\tExecution_Id string,\n" +
         "\tCompute_Type string,\n" +
         "\tResource string,\n" +
@@ -30,11 +37,11 @@ exports.handler = function (event, context, callback) {
         ") ROW FORMAT DELIMITED FIELDS TERMINATED BY '!' LINES TERMINATED BY '\\n' LOCATION '" + location + "'"
 
     const createViewSql = `
-        CREATE OR REPLACE VIEW qc_benchmark_metrics as 
-        select * from qc_benchmark_metrics_hist h1
-        where Start_Time = (select Max(Start_Time) from qc_benchmark_metrics_hist h2)
+        CREATE OR REPLACE VIEW ${viewName} as 
+        select * from  ${tableName} h1
+        where Start_Time = (select Max(Start_Time) from ${tableName} h2)
          `
-    const querySql = "SELECT * FROM qc_benchmark_metrics"
+    const querySql = `SELECT * FROM ${viewName}`
 
     const startAhenaQueryExecution = (queryInfo) => {
         return new Promise((resolve, reject) => {
