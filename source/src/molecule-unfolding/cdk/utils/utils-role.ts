@@ -110,7 +110,6 @@ export class RoleUtil {
         const role = new iam.Role(this.scope, `${roleName}`, {
             assumedBy: new iam.ServicePrincipal('ecs-tasks.amazonaws.com'),
         });
-
         role.addToPolicy(new iam.PolicyStatement({
             resources: [
                 `arn:aws:ecr:${this.props.region}:${this.props.account}:repository/*`
@@ -131,6 +130,24 @@ export class RoleUtil {
 
             ]
         }));
+
+        role.addToPolicy(new iam.PolicyStatement({
+            resources: [
+                `arn:aws:logs:*:${this.props.account}:log-group:/aws/batch/*`
+            ],
+            actions: [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "logs:CreateLogGroup"
+            ]
+        }));
+        return role
+    }
+
+    public createBatchJobRole(roleName: string): iam.Role {
+        const role = new iam.Role(this.scope, `${roleName}`, {
+            assumedBy: new iam.ServicePrincipal('ecs-tasks.amazonaws.com'),
+        });
         role.addToPolicy(new iam.PolicyStatement({
             resources: [
                 `arn:aws:s3:::${this.props.bucket.bucketName}/*`
@@ -147,17 +164,6 @@ export class RoleUtil {
             ],
             actions: [
                 "s3:ListBucket"
-            ]
-        }));
-
-        role.addToPolicy(new iam.PolicyStatement({
-            resources: [
-                `arn:aws:logs:*:${this.props.account}:log-group:/aws/batch/*`
-            ],
-            actions: [
-                "logs:CreateLogStream",
-                "logs:PutLogEvents",
-                "logs:CreateLogGroup"
             ]
         }));
         return role

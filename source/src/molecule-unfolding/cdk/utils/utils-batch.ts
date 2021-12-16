@@ -37,10 +37,10 @@ export class BatchUtil {
         imageUtil: ECRImageUtil
     }) {
         this.props = props
-        this.scope = scope
+        this.scope = scope 
         this.imageUtil = utils.imageUtil
         this.batchJobExecutionRole = utils.roleUtil.createBatchJobExecutionRole('executionRole');
-        this.batchJobRole = utils.roleUtil.createBatchJobExecutionRole('jobRole');
+        this.batchJobRole = utils.roleUtil.createBatchJobRole('jobRole');
         this.hpcJobQueue = this.setUpBashEnv()
     }
     public static newInstance(scope: cdk.Construct, props: Props, utils: {
