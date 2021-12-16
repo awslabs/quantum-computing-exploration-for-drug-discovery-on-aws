@@ -49,14 +49,15 @@ export class MainStack extends SolutionStack {
       encryption: s3.BucketEncryption.S3_MANAGED,
     });
 
+    const bucketName = `amazon-braket-${this.stackName.toLowerCase()}-${this.account}-${this.region}`
     const s3bucket = new s3.Bucket(this, 'amazon-braket', {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
-      bucketName: `amazon-braket-${this.stackName.toLowerCase()}-${this.account}-${this.region}`,
+      bucketName,
       autoDeleteObjects: true,
       enforceSSL: true,
       encryption: s3.BucketEncryption.S3_MANAGED,
       serverAccessLogsBucket: logS3bucket,
-      serverAccessLogsPrefix: 'accesslogs/'
+      serverAccessLogsPrefix: `accesslogs/${bucketName}/`
     });
 
     const usePreBuildImageStrValue = (this.node.tryGetContext('use_prebuild_iamge') + '').toLowerCase() || 'false'
