@@ -38,6 +38,9 @@ default_opt_params = {
     }
 }
 
+max_vcpu, min_vcpu = 16, 0.25
+max_mem, min_mem = 32,  0.5
+
 
 def read_as_json(bucket, key):
     print(f"read s3://{bucket}/{key}")
@@ -164,6 +167,18 @@ def validate_input(input_dict: dict):
                         if not isinstance(e, int):
                             errors.append(
                                 f"invalid value {e}, value for {p} must be int")
+                    if p == 'D' and list_vals != [4]:
+                        errors.append(
+                            f"invalid value for {p}, current only support '[ 4 ]'")
+                    if p == 'A' and list_vals != [300]:
+                        errors.append(
+                            f"invalid value for {p}, current only support '[ 300 ]'")
+                    if p == 'HQ' and list_vals != [200]:
+                        errors.append(
+                            f"invalid value for {p}, current only support '[ 200 ]'")
+                    if p == 'M' and (max(list_vals) > 4 or min(list_vals) < 1):
+                        errors.append(
+                            f"invalid value for {p}: {list_vals}, current only support range: [1, 4], e.g. [1, 2, 3, 4] ")
 
             if 'hpcResources' == k:
                 if not isinstance(input_dict[k], list):
@@ -173,20 +188,26 @@ def validate_input(input_dict: dict):
                         errors.append(
                             f"element in hpcResources must be an array with size=2")
                     for e in c_m:
-                        if not isinstance(e, int):
+                        if not isinstance(e, float):
                             errors.append(
                                 f"invalid value {e}, elements for {k} must be int array, {c_m}")
+                    vcpu, mem = c_m
+                    if vcpu > max_vcpu or mem > max_mem or vcpu < min_vcpu or mem < min_mem:
+                        errors.append(
+                            f"invalid value [vcpu, mem]: [{vcpu}, {mem}], vcpu range: [{min_vcpu}, {max_vcpu}], mem range: [{min_mem}, {max_mem}]")
+
             if 'optParams' == k:
                 if not isinstance(input_dict[k], dict):
                     errors.append(f"optParams must be a dict")
                 for p in input_dict[k].keys():
                     if p not in ['sa', 'qa']:
-                        errors.append(f"invalid key {p} of optParams, values: sa|qa")
+                        errors.append(
+                            f"invalid key {p} of optParams, values: sa|qa")
                     elif not isinstance(input_dict[k][p], dict):
                         errors.append(f"optParams[{p}] must be a dict")
                     elif 'shots' in input_dict[k][p] and not isinstance(input_dict[k][p]['shots'], int):
-                        errors.append(f"optParams[{p}][shots] must be int, value: {input_dict[k][p]['shots']}")
-
+                        errors.append(
+                            f"optParams[{p}][shots] must be int, value: {input_dict[k][p]['shots']}")
 
     except Exception as e:
         errors.append(repr(e))
