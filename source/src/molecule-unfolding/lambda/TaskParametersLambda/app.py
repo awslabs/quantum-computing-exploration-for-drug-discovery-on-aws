@@ -311,6 +311,8 @@ def handler(event, context):
     hpc_index = 0
     for resource in hpc_resources:
         resource_name = f"Vcpu{resource[0]}_Mem{resource[1]}G"
+        if '.' in resource_name: 
+            resource_name = resource_name.replace(r'.', '_')
         for param_item in model_param_items:
             hpc_index += 1
             param_item_name = str(param_item).replace(
