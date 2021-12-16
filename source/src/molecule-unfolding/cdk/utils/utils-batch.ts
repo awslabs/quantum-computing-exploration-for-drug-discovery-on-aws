@@ -68,7 +68,7 @@ export class BatchUtil {
                 vpcSubnets: vpc.selectSubnets({
                     subnetType: ec2.SubnetType.PRIVATE_WITH_NAT
                 }),
-                allocationStrategy: batch.AllocationStrategy.BEST_FIT_PROGRESSIVE,
+                allocationStrategy: batch.AllocationStrategy.BEST_FIT,
                 instanceTypes: hpcIstanceTypes,
                 securityGroups: [batchSg]
             }
