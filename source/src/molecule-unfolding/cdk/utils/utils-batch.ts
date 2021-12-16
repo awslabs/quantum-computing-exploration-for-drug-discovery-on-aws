@@ -56,6 +56,7 @@ export class BatchUtil {
             ec2.InstanceType.of(ec2.InstanceClass.C5, ec2.InstanceSize.XLARGE), // 4 vcpus, 8G mem
             ec2.InstanceType.of(ec2.InstanceClass.C5, ec2.InstanceSize.XLARGE2), // 8 vcpus, 16G mem
             ec2.InstanceType.of(ec2.InstanceClass.C5, ec2.InstanceSize.XLARGE4), // 16 vcpus, 32G mem
+            //ec2.InstanceType.of(ec2.InstanceClass.C5, ec2.InstanceSize.XLARGE9), // 36 vcpus, 72 mem
         ];
         const vpc = this.props.vpc
         const batchSg = this.props.batchSg

@@ -39,7 +39,7 @@ default_opt_params = {
 }
 
 max_vcpu, min_vcpu = 16, 1
-max_mem, min_mem = 32,  1
+max_mem, min_mem = 30,  1
 
 
 def read_as_json(bucket, key):
