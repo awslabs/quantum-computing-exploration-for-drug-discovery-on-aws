@@ -39,8 +39,8 @@ exports.handler = function (event, context, callback) {
     `
     const createViewSql = `
         CREATE OR REPLACE VIEW ${viewName} as 
-        select * from ${tableName} where Execution_Id in (
-            select distinct Execution_Id from ${tableName} order by Start_Time desc limit 20
+        select * from ${tableName} where Experiment_Name in (
+            select distinct Experiment_Name from ${tableName} order by Experiment_Name desc limit 20
         )
     `
     const querySql = `SELECT * FROM ${viewName}`
