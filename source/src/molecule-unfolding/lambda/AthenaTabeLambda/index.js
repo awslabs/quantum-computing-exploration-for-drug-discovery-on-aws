@@ -17,30 +17,32 @@ exports.handler = function (event, context, callback) {
     const viewName = `${stackName}_qc_benchmark_metrics`
 
     const dropTableSql = `DROP TABLE IF EXISTS ${tableName}`
-
-    const createTableSql = "CREATE EXTERNAL TABLE IF NOT EXISTS " + tableName + "(\n" +
-        "\tExecution_Id string,\n" +
-        "\tCompute_Type string,\n" +
-        "\tResource string,\n" +
-        "\tParams string,\n" + 
-        "\tOpt_Params string,\n" +
-        "\tTask_Duration float,\n" +
-        "\tTime_Info string,\n" +
-        "\tStart_Time string,\n" +
-        "\tExperiment_Name string,\n" +
-        "\tTask_Id string,\n" +
-        "\tModel_Name string,\n" +  
-        "\tModel_FileName string,\n" + 
-        "\tScenario string,\n" +
-        "\tCreate_Time string,\n" +
-        "\tResult_Detail string,\n" +
-        "\tResult_Location string\n" +
-        ") ROW FORMAT DELIMITED FIELDS TERMINATED BY '!' LINES TERMINATED BY '\\n' LOCATION '" + location + "'"
-
+    const createTableSql = `
+    CREATE EXTERNAL TABLE IF NOT EXISTS ${tableName} (
+        Execution_Id string,
+        Compute_Type string,
+        Resource string,
+        Params string,
+        Opt_Params string,
+        Task_Duration float,
+        Time_Info string,
+        Start_Time string,
+        Experiment_Name string,
+        Task_Id string,
+        Model_Name string,
+        Model_FileName string, 
+        Scenario string,
+        Create_Time string,
+        Result_Detail string,
+        Result_Location string
+    ) ROW FORMAT DELIMITED FIELDS TERMINATED BY '!' LINES TERMINATED BY '\\n' LOCATION ${location} 
+    `
     const createViewSql = `
         CREATE OR REPLACE VIEW ${viewName} as 
-        select * from  ${tableName} order by Start_Time desc limit 2000
-         `
+        select * from ${tableName} where Execution_Id in (
+            select distinct Execution_Id from  ${tableName} order by Start_Time desc limit 20
+        )
+    `
     const querySql = `SELECT * FROM ${viewName}`
 
     const startAhenaQueryExecution = (queryInfo) => {
