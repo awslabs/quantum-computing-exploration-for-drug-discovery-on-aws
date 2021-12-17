@@ -35,7 +35,7 @@ exports.handler = function (event, context, callback) {
         Create_Time string,
         Result_Detail string,
         Result_Location string
-    ) ROW FORMAT DELIMITED FIELDS TERMINATED BY '!' LINES TERMINATED BY '\\n' LOCATION ${location} 
+    ) ROW FORMAT DELIMITED FIELDS TERMINATED BY '!' LINES TERMINATED BY '\\n' LOCATION '${location}' 
     `
     const createViewSql = `
         CREATE OR REPLACE VIEW ${viewName} as 

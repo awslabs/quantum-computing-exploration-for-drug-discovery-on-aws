@@ -19,8 +19,8 @@ export class AddCfnNag implements IAspect {
     visit(node: cdk.IConstruct): void {
 
         if (
-            node.node.path.endsWith('Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler') ||
-            node.node.path.endsWith('BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Resource')
+            node.node.path.endsWith('/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler') ||
+            node.node.path.endsWith('/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Resource')
         ) {
             (node as cdk.CfnResource).addMetadata('cfn_nag', {
                 rules_to_suppress: [{
@@ -38,11 +38,11 @@ export class AddCfnNag implements IAspect {
                 ],
             });
         } else if (
-            node.node.path.endsWith('AggResultLambda/Resource') ||
-            node.node.path.endsWith('TaskParametersLambda/Resource') ||
-            node.node.path.endsWith('DeviceAvailableCheckLambda/Resource') ||
-            node.node.path.endsWith('SubmitQCTaskLambda/Resource') ||
-            node.node.path.endsWith('BraketTaskEventHanlder/ParseBraketResultLambda/Resource')
+            node.node.path.endsWith('/AggResultLambda/Resource') ||
+            node.node.path.endsWith('/TaskParametersLambda/Resource') ||
+            node.node.path.endsWith('/DeviceAvailableCheckLambda/Resource') ||
+            node.node.path.endsWith('/SubmitQCTaskLambda/Resource') ||
+            node.node.path.endsWith('/BraketTaskEventHanlder/ParseBraketResultLambda/Resource')
         ) {
             (node as cdk.CfnResource).addMetadata('cfn_nag', {
                 rules_to_suppress: [{
@@ -50,15 +50,15 @@ export class AddCfnNag implements IAspect {
                     reason: 'the lambda already have the cloudwatch permission',
                 }, ],
             });
-        } else if (node.node.path.endsWith('jobRole/DefaultPolicy/Resource') ||
-            node.node.path.endsWith('executionRole/DefaultPolicy/Resource') ||
-            node.node.path.endsWith('TaskParametersLambdaRole/DefaultPolicy/Resource') ||
-            node.node.path.endsWith('DeviceAvailableCheckLambdaRole/DefaultPolicy/Resource') ||
-            node.node.path.endsWith('SubmitQCTaskLambdaRole/DefaultPolicy/Resource') ||
-            node.node.path.endsWith('ParseBraketResultLambdaRole/DefaultPolicy/Resource') ||
-            node.node.path.endsWith('AggResultLambdaRole/DefaultPolicy/Resource') ||
-            node.node.path.endsWith('MolUnfNotebook/NotebookRole/DefaultPolicy/Resource') ||
-            node.node.path.endsWith('BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/DefaultPolicy/Resource')
+        } else if (node.node.path.endsWith('/jobRole/DefaultPolicy/Resource') ||
+            node.node.path.endsWith('/executionRole/DefaultPolicy/Resource') ||
+            node.node.path.endsWith('/TaskParametersLambdaRole/DefaultPolicy/Resource') ||
+            node.node.path.endsWith('/DeviceAvailableCheckLambdaRole/DefaultPolicy/Resource') ||
+            node.node.path.endsWith('/SubmitQCTaskLambdaRole/DefaultPolicy/Resource') ||
+            node.node.path.endsWith('/ParseBraketResultLambdaRole/DefaultPolicy/Resource') ||
+            node.node.path.endsWith('/AggResultLambdaRole/DefaultPolicy/Resource') ||
+            node.node.path.endsWith('/MolUnfNotebook/NotebookRole/DefaultPolicy/Resource') ||
+            node.node.path.endsWith('/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/DefaultPolicy/Resource')
         ) {
             (node as cdk.CfnResource).addMetadata('cfn_nag', {
                 rules_to_suppress: [{
@@ -66,9 +66,9 @@ export class AddCfnNag implements IAspect {
                     reason: 'some permissions are not resource-level permissions',
                 }, ],
             });
-        } else if (node.node.path.endsWith('HPCStateMachine/Role/DefaultPolicy/Resource') ||
-            node.node.path.endsWith('QCDeviceStateMachine/Role/DefaultPolicy/Resource') ||
-            node.node.path.endsWith('QCStateMachine/Role/DefaultPolicy/Resource')
+        } else if (node.node.path.endsWith('/HPCStateMachine/Role/DefaultPolicy/Resource') ||
+            node.node.path.endsWith('/QCDeviceStateMachine/Role/DefaultPolicy/Resource') ||
+            node.node.path.endsWith('/QCStateMachine/Role/DefaultPolicy/Resource')
         ) {
             (node as cdk.CfnResource).addMetadata('cfn_nag', {
                 rules_to_suppress: [{
@@ -77,8 +77,8 @@ export class AddCfnNag implements IAspect {
                 }, ],
             });
         } else if (
-            node.node.path.endsWith('BenchmarkStateMachine/Role/DefaultPolicy/Resource') ||
-            node.node.path.endsWith('RunHPCAndQCStateMachine/Role/DefaultPolicy/Resource')
+            node.node.path.endsWith('/BenchmarkStateMachine/Role/DefaultPolicy/Resource') ||
+            node.node.path.endsWith('/RunHPCAndQCStateMachine/Role/DefaultPolicy/Resource')
         ) {
             (node as cdk.CfnResource).addMetadata('cfn_nag', {
                 rules_to_suppress: [{
@@ -91,15 +91,15 @@ export class AddCfnNag implements IAspect {
                     },
                 ],
             });
-        } else if (node.node.path.endsWith('AccessLogS3Bucket/Resource')) {
+        } else if (node.node.path.endsWith('/AccessLogS3Bucket/Resource')) {
             (node as cdk.CfnResource).addMetadata('cfn_nag', {
                 rules_to_suppress: [{
                     id: 'W35',
                     reason: 'this is access log bucket ',
                 }, ],
             });
-        } else if (node.node.path.endsWith('batchSg/Resource') ||
-            node.node.path.endsWith('lambdaSg/Resource')
+        } else if (node.node.path.endsWith('/batchSg/Resource') ||
+            node.node.path.endsWith('/lambdaSg/Resource')
         ) {
             (node as cdk.CfnResource).addMetadata('cfn_nag', {
                 rules_to_suppress: [{
