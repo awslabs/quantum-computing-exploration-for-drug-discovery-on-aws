@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1639731120814" clover="3.2.0">
-  <project timestamp="1639731120814" name="All files">
-    <metrics statements="408" coveredstatements="388" conditionals="64" coveredconditionals="56" methods="57" coveredmethods="50" elements="529" coveredelements="494" complexity="0" loc="408" ncloc="408" packages="3" files="12" classes="12"/>
+<coverage generated="1639734265034" clover="3.2.0">
+  <project timestamp="1639734265034" name="All files">
+    <metrics statements="415" coveredstatements="394" conditionals="71" coveredconditionals="62" methods="57" coveredmethods="50" elements="543" coveredelements="506" complexity="0" loc="415" ncloc="415" packages="3" files="12" classes="12"/>
     <package name="src">
       <metrics statements="17" coveredstatements="4" conditionals="5" coveredconditionals="0" methods="9" coveredmethods="2"/>
       <file name="stack.ts" path="/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/stack.ts">
         <metrics statements="17" coveredstatements="4" conditionals="5" coveredconditionals="0" methods="9" coveredmethods="2"/>
         <line num="1" count="5" type="stmt"/>
         <line num="7" count="5" type="stmt"/>
-        <line num="8" count="29" type="stmt"/>
-        <line num="13" count="28" type="stmt"/>
+        <line num="8" count="28" type="stmt"/>
+        <line num="13" count="27" type="stmt"/>
         <line num="16" count="0" type="stmt"/>
         <line num="21" count="0" type="stmt"/>
         <line num="22" count="0" type="stmt"/>
@@ -26,9 +26,9 @@
       </file>
     </package>
     <package name="src.molecule-unfolding.cdk">
-      <metrics statements="198" coveredstatements="197" conditionals="13" coveredconditionals="11" methods="16" coveredmethods="16"/>
+      <metrics statements="203" coveredstatements="202" conditionals="13" coveredconditionals="11" methods="16" coveredmethods="16"/>
       <file name="construct-benchmark.ts" path="/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/molecule-unfolding/cdk/construct-benchmark.ts">
-        <metrics statements="105" coveredstatements="105" conditionals="0" coveredconditionals="0" methods="10" coveredmethods="10"/>
+        <metrics statements="110" coveredstatements="110" conditionals="0" coveredconditionals="0" methods="10" coveredmethods="10"/>
         <line num="1" count="5" type="stmt"/>
         <line num="4" count="5" type="stmt"/>
         <line num="5" count="5" type="stmt"/>
@@ -43,121 +43,126 @@
         <line num="28" count="5" type="stmt"/>
         <line num="32" count="5" type="stmt"/>
         <line num="49" count="5" type="stmt"/>
-        <line num="60" count="28" type="stmt"/>
-        <line num="61" count="28" type="stmt"/>
-        <line num="62" count="28" type="stmt"/>
-        <line num="63" count="28" type="stmt"/>
-        <line num="65" count="28" type="stmt"/>
-        <line num="70" count="28" type="stmt"/>
-        <line num="75" count="28" type="stmt"/>
-        <line num="79" count="28" type="stmt"/>
-        <line num="81" count="28" type="stmt"/>
-        <line num="82" count="28" type="stmt"/>
-        <line num="83" count="28" type="stmt"/>
-        <line num="84" count="28" type="stmt"/>
-        <line num="85" count="28" type="stmt"/>
-        <line num="86" count="28" type="stmt"/>
-        <line num="87" count="28" type="stmt"/>
-        <line num="88" count="28" type="stmt"/>
-        <line num="90" count="28" type="stmt"/>
-        <line num="100" count="28" type="stmt"/>
-        <line num="110" count="28" type="stmt"/>
-        <line num="120" count="28" type="stmt"/>
-        <line num="126" count="28" type="stmt"/>
-        <line num="129" count="28" type="stmt"/>
-        <line num="130" count="28" type="stmt"/>
-        <line num="132" count="28" type="stmt"/>
-        <line num="137" count="28" type="stmt"/>
-        <line num="147" count="28" type="stmt"/>
-        <line num="154" count="28" type="stmt"/>
-        <line num="168" count="28" type="stmt"/>
-        <line num="169" count="28" type="stmt"/>
-        <line num="171" count="28" type="stmt"/>
-        <line num="184" count="28" type="stmt"/>
-        <line num="188" count="28" type="stmt"/>
-        <line num="198" count="28" type="stmt"/>
-        <line num="208" count="28" type="stmt"/>
-        <line num="209" count="28" type="stmt"/>
-        <line num="210" count="28" type="stmt"/>
-        <line num="212" count="28" type="stmt"/>
-        <line num="213" count="28" type="stmt"/>
-        <line num="215" count="28" type="stmt"/>
-        <line num="220" count="28" type="stmt"/>
-        <line num="227" count="28" type="stmt"/>
-        <line num="232" count="28" type="stmt"/>
-        <line num="244" count="28" type="stmt"/>
-        <line num="246" count="28" type="stmt"/>
-        <line num="256" count="28" type="stmt"/>
-        <line num="266" count="28" type="stmt"/>
-        <line num="268" count="28" type="stmt"/>
-        <line num="269" count="28" type="stmt"/>
-        <line num="271" count="28" type="stmt"/>
-        <line num="276" count="28" type="stmt"/>
-        <line num="283" count="28" type="stmt"/>
-        <line num="288" count="28" type="stmt"/>
-        <line num="289" count="28" type="stmt"/>
-        <line num="301" count="28" type="stmt"/>
-        <line num="314" count="28" type="stmt"/>
-        <line num="316" count="28" type="stmt"/>
-        <line num="327" count="28" type="stmt"/>
-        <line num="329" count="28" type="stmt"/>
-        <line num="331" count="28" type="stmt"/>
-        <line num="336" count="28" type="stmt"/>
-        <line num="338" count="28" type="stmt"/>
-        <line num="339" count="28" type="stmt"/>
-        <line num="341" count="28" type="stmt"/>
-        <line num="346" count="28" type="stmt"/>
-        <line num="353" count="28" type="stmt"/>
-        <line num="357" count="28" type="stmt"/>
-        <line num="368" count="28" type="stmt"/>
-        <line num="369" count="28" type="stmt"/>
-        <line num="371" count="28" type="stmt"/>
-        <line num="398" count="28" type="stmt"/>
-        <line num="402" count="28" type="stmt"/>
-        <line num="412" count="28" type="stmt"/>
-        <line num="414" count="28" type="stmt"/>
-        <line num="416" count="28" type="stmt"/>
-        <line num="417" count="28" type="stmt"/>
-        <line num="419" count="28" type="stmt"/>
-        <line num="424" count="28" type="stmt"/>
-        <line num="432" count="28" type="stmt"/>
-        <line num="441" count="28" type="stmt"/>
-        <line num="451" count="28" type="stmt"/>
-        <line num="455" count="28" type="stmt"/>
-        <line num="456" count="28" type="stmt"/>
-        <line num="468" count="28" type="stmt"/>
-        <line num="472" count="28" type="stmt"/>
-        <line num="473" count="28" type="stmt"/>
-        <line num="486" count="28" type="stmt"/>
-        <line num="490" count="28" type="stmt"/>
-        <line num="495" count="28" type="stmt"/>
-        <line num="511" count="28" type="stmt"/>
-        <line num="523" count="28" type="stmt"/>
-        <line num="528" count="28" type="stmt"/>
+        <line num="60" count="27" type="stmt"/>
+        <line num="61" count="27" type="stmt"/>
+        <line num="62" count="27" type="stmt"/>
+        <line num="63" count="27" type="stmt"/>
+        <line num="65" count="27" type="stmt"/>
+        <line num="70" count="27" type="stmt"/>
+        <line num="75" count="27" type="stmt"/>
+        <line num="79" count="27" type="stmt"/>
+        <line num="81" count="27" type="stmt"/>
+        <line num="82" count="27" type="stmt"/>
+        <line num="83" count="27" type="stmt"/>
+        <line num="84" count="27" type="stmt"/>
+        <line num="85" count="27" type="stmt"/>
+        <line num="86" count="27" type="stmt"/>
+        <line num="87" count="27" type="stmt"/>
+        <line num="88" count="27" type="stmt"/>
+        <line num="90" count="27" type="stmt"/>
+        <line num="100" count="27" type="stmt"/>
+        <line num="110" count="27" type="stmt"/>
+        <line num="120" count="27" type="stmt"/>
+        <line num="126" count="27" type="stmt"/>
+        <line num="129" count="27" type="stmt"/>
+        <line num="130" count="27" type="stmt"/>
+        <line num="132" count="27" type="stmt"/>
+        <line num="137" count="27" type="stmt"/>
+        <line num="145" count="27" type="stmt"/>
+        <line num="148" count="27" type="stmt"/>
+        <line num="155" count="27" type="stmt"/>
+        <line num="169" count="27" type="stmt"/>
+        <line num="170" count="27" type="stmt"/>
+        <line num="172" count="27" type="stmt"/>
+        <line num="185" count="27" type="stmt"/>
+        <line num="189" count="27" type="stmt"/>
+        <line num="199" count="27" type="stmt"/>
+        <line num="209" count="27" type="stmt"/>
+        <line num="210" count="27" type="stmt"/>
+        <line num="211" count="27" type="stmt"/>
+        <line num="213" count="27" type="stmt"/>
+        <line num="214" count="27" type="stmt"/>
+        <line num="216" count="27" type="stmt"/>
+        <line num="221" count="27" type="stmt"/>
+        <line num="228" count="27" type="stmt"/>
+        <line num="229" count="27" type="stmt"/>
+        <line num="234" count="27" type="stmt"/>
+        <line num="246" count="27" type="stmt"/>
+        <line num="248" count="27" type="stmt"/>
+        <line num="258" count="27" type="stmt"/>
+        <line num="268" count="27" type="stmt"/>
+        <line num="270" count="27" type="stmt"/>
+        <line num="271" count="27" type="stmt"/>
+        <line num="273" count="27" type="stmt"/>
+        <line num="278" count="27" type="stmt"/>
+        <line num="285" count="27" type="stmt"/>
+        <line num="287" count="27" type="stmt"/>
+        <line num="292" count="27" type="stmt"/>
+        <line num="293" count="27" type="stmt"/>
+        <line num="305" count="27" type="stmt"/>
+        <line num="318" count="27" type="stmt"/>
+        <line num="320" count="27" type="stmt"/>
+        <line num="331" count="27" type="stmt"/>
+        <line num="333" count="27" type="stmt"/>
+        <line num="335" count="27" type="stmt"/>
+        <line num="340" count="27" type="stmt"/>
+        <line num="342" count="27" type="stmt"/>
+        <line num="343" count="27" type="stmt"/>
+        <line num="345" count="27" type="stmt"/>
+        <line num="350" count="27" type="stmt"/>
+        <line num="357" count="27" type="stmt"/>
+        <line num="358" count="27" type="stmt"/>
+        <line num="362" count="27" type="stmt"/>
+        <line num="373" count="27" type="stmt"/>
+        <line num="374" count="27" type="stmt"/>
+        <line num="376" count="27" type="stmt"/>
+        <line num="403" count="27" type="stmt"/>
+        <line num="407" count="27" type="stmt"/>
+        <line num="417" count="27" type="stmt"/>
+        <line num="419" count="27" type="stmt"/>
+        <line num="421" count="27" type="stmt"/>
+        <line num="422" count="27" type="stmt"/>
+        <line num="424" count="27" type="stmt"/>
+        <line num="429" count="27" type="stmt"/>
+        <line num="436" count="27" type="stmt"/>
+        <line num="438" count="27" type="stmt"/>
+        <line num="447" count="27" type="stmt"/>
+        <line num="457" count="27" type="stmt"/>
+        <line num="461" count="27" type="stmt"/>
+        <line num="462" count="27" type="stmt"/>
+        <line num="474" count="27" type="stmt"/>
+        <line num="478" count="27" type="stmt"/>
+        <line num="479" count="27" type="stmt"/>
+        <line num="492" count="27" type="stmt"/>
+        <line num="496" count="27" type="stmt"/>
+        <line num="501" count="27" type="stmt"/>
+        <line num="517" count="27" type="stmt"/>
+        <line num="529" count="27" type="stmt"/>
+        <line num="534" count="27" type="stmt"/>
       </file>
       <file name="construct-dashboard.ts" path="/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/molecule-unfolding/cdk/construct-dashboard.ts">
         <metrics statements="21" coveredstatements="21" conditionals="6" coveredconditionals="6" methods="1" coveredmethods="1"/>
         <line num="1" count="5" type="stmt"/>
         <line num="3" count="5" type="stmt"/>
         <line num="13" count="5" type="stmt"/>
-        <line num="18" count="28" type="stmt"/>
-        <line num="19" count="28" type="stmt"/>
-        <line num="21" count="28" type="cond" truecount="2" falsecount="0"/>
-        <line num="22" count="28" type="stmt"/>
-        <line num="28" count="28" type="cond" truecount="2" falsecount="0"/>
-        <line num="29" count="28" type="stmt"/>
-        <line num="35" count="28" type="stmt"/>
-        <line num="36" count="28" type="cond" truecount="2" falsecount="0"/>
-        <line num="37" count="28" type="stmt"/>
-        <line num="39" count="28" type="stmt"/>
-        <line num="40" count="28" type="stmt"/>
-        <line num="63" count="28" type="stmt"/>
-        <line num="133" count="28" type="stmt"/>
-        <line num="166" count="28" type="stmt"/>
-        <line num="181" count="28" type="stmt"/>
-        <line num="216" count="28" type="stmt"/>
-        <line num="246" count="28" type="stmt"/>
-        <line num="251" count="28" type="stmt"/>
+        <line num="18" count="27" type="stmt"/>
+        <line num="19" count="27" type="stmt"/>
+        <line num="21" count="27" type="cond" truecount="2" falsecount="0"/>
+        <line num="22" count="27" type="stmt"/>
+        <line num="28" count="27" type="cond" truecount="2" falsecount="0"/>
+        <line num="29" count="27" type="stmt"/>
+        <line num="35" count="27" type="stmt"/>
+        <line num="36" count="27" type="cond" truecount="2" falsecount="0"/>
+        <line num="37" count="27" type="stmt"/>
+        <line num="39" count="27" type="stmt"/>
+        <line num="40" count="27" type="stmt"/>
+        <line num="63" count="27" type="stmt"/>
+        <line num="129" count="27" type="stmt"/>
+        <line num="162" count="27" type="stmt"/>
+        <line num="177" count="27" type="stmt"/>
+        <line num="212" count="27" type="stmt"/>
+        <line num="242" count="27" type="stmt"/>
+        <line num="247" count="27" type="stmt"/>
       </file>
       <file name="construct-listener.ts" path="/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/molecule-unfolding/cdk/construct-listener.ts">
         <metrics statements="17" coveredstatements="17" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
@@ -169,15 +174,15 @@
         <line num="11" count="5" type="stmt"/>
         <line num="15" count="5" type="stmt"/>
         <line num="27" count="5" type="stmt"/>
-        <line num="33" count="28" type="stmt"/>
-        <line num="34" count="28" type="stmt"/>
-        <line num="35" count="28" type="stmt"/>
-        <line num="36" count="28" type="stmt"/>
-        <line num="37" count="28" type="stmt"/>
-        <line num="41" count="28" type="stmt"/>
-        <line num="42" count="28" type="stmt"/>
-        <line num="43" count="28" type="stmt"/>
-        <line num="56" count="28" type="stmt"/>
+        <line num="33" count="27" type="stmt"/>
+        <line num="34" count="27" type="stmt"/>
+        <line num="35" count="27" type="stmt"/>
+        <line num="36" count="27" type="stmt"/>
+        <line num="37" count="27" type="stmt"/>
+        <line num="41" count="27" type="stmt"/>
+        <line num="42" count="27" type="stmt"/>
+        <line num="43" count="27" type="stmt"/>
+        <line num="56" count="27" type="stmt"/>
       </file>
       <file name="construct-notebook.ts" path="/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/molecule-unfolding/cdk/construct-notebook.ts">
         <metrics statements="23" coveredstatements="23" conditionals="1" coveredconditionals="1" methods="2" coveredmethods="2"/>
@@ -188,22 +193,22 @@
         <line num="14" count="5" type="stmt"/>
         <line num="18" count="5" type="stmt"/>
         <line num="32" count="5" type="stmt"/>
-        <line num="39" count="28" type="stmt"/>
-        <line num="40" count="28" type="stmt"/>
-        <line num="41" count="28" type="stmt"/>
-        <line num="43" count="28" type="stmt"/>
-        <line num="50" count="28" type="stmt"/>
-        <line num="56" count="28" type="stmt"/>
-        <line num="58" count="28" type="stmt"/>
-        <line num="59" count="28" type="cond" truecount="1" falsecount="0"/>
-        <line num="61" count="28" type="stmt"/>
-        <line num="64" count="28" type="stmt"/>
-        <line num="65" count="28" type="stmt"/>
-        <line num="67" count="28" type="stmt"/>
-        <line num="73" count="28" type="stmt"/>
-        <line num="77" count="28" type="stmt"/>
-        <line num="87" count="28" type="stmt"/>
-        <line num="89" count="28" type="stmt"/>
+        <line num="39" count="27" type="stmt"/>
+        <line num="40" count="27" type="stmt"/>
+        <line num="41" count="27" type="stmt"/>
+        <line num="43" count="27" type="stmt"/>
+        <line num="50" count="27" type="stmt"/>
+        <line num="56" count="27" type="stmt"/>
+        <line num="58" count="27" type="stmt"/>
+        <line num="59" count="27" type="cond" truecount="1" falsecount="0"/>
+        <line num="61" count="27" type="stmt"/>
+        <line num="64" count="27" type="stmt"/>
+        <line num="65" count="27" type="stmt"/>
+        <line num="67" count="27" type="stmt"/>
+        <line num="73" count="27" type="stmt"/>
+        <line num="77" count="27" type="stmt"/>
+        <line num="87" count="27" type="stmt"/>
+        <line num="89" count="27" type="stmt"/>
       </file>
       <file name="stack-main.ts" path="/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/molecule-unfolding/cdk/stack-main.ts">
         <metrics statements="32" coveredstatements="31" conditionals="6" coveredconditionals="4" methods="1" coveredmethods="1"/>
@@ -218,31 +223,31 @@
         <line num="27" count="5" type="stmt"/>
         <line num="31" count="5" type="stmt"/>
         <line num="35" count="5" type="stmt"/>
-        <line num="39" count="28" type="stmt"/>
-        <line num="40" count="28" type="stmt"/>
-        <line num="41" count="28" type="stmt"/>
-        <line num="43" count="28" type="stmt"/>
-        <line num="45" count="28" type="stmt"/>
-        <line num="52" count="28" type="stmt"/>
-        <line num="53" count="28" type="stmt"/>
-        <line num="63" count="28" type="cond" truecount="1" falsecount="1"/>
-        <line num="64" count="28" type="stmt"/>
-        <line num="65" count="28" type="cond" truecount="1" falsecount="1"/>
+        <line num="39" count="27" type="stmt"/>
+        <line num="40" count="27" type="stmt"/>
+        <line num="41" count="27" type="stmt"/>
+        <line num="43" count="27" type="stmt"/>
+        <line num="45" count="27" type="stmt"/>
+        <line num="52" count="27" type="stmt"/>
+        <line num="53" count="27" type="stmt"/>
+        <line num="63" count="27" type="cond" truecount="1" falsecount="1"/>
+        <line num="64" count="27" type="stmt"/>
+        <line num="65" count="27" type="cond" truecount="1" falsecount="1"/>
         <line num="66" count="0" type="stmt"/>
-        <line num="68" count="28" type="stmt"/>
-        <line num="73" count="28" type="stmt"/>
-        <line num="82" count="28" type="stmt"/>
-        <line num="86" count="28" type="stmt"/>
-        <line num="95" count="28" type="stmt"/>
-        <line num="104" count="28" type="stmt"/>
-        <line num="117" count="28" type="cond" truecount="1" falsecount="0"/>
-        <line num="119" count="28" type="stmt"/>
-        <line num="123" count="28" type="stmt"/>
-        <line num="133" count="28" type="stmt"/>
+        <line num="68" count="27" type="stmt"/>
+        <line num="73" count="27" type="stmt"/>
+        <line num="82" count="27" type="stmt"/>
+        <line num="86" count="27" type="stmt"/>
+        <line num="95" count="27" type="stmt"/>
+        <line num="104" count="27" type="stmt"/>
+        <line num="117" count="27" type="cond" truecount="1" falsecount="0"/>
+        <line num="119" count="27" type="stmt"/>
+        <line num="123" count="27" type="stmt"/>
+        <line num="133" count="27" type="stmt"/>
       </file>
     </package>
     <package name="src.molecule-unfolding.cdk.utils">
-      <metrics statements="193" coveredstatements="187" conditionals="46" coveredconditionals="45" methods="32" coveredmethods="32"/>
+      <metrics statements="195" coveredstatements="188" conditionals="53" coveredconditionals="51" methods="32" coveredmethods="32"/>
       <file name="utils-batch.ts" path="/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/molecule-unfolding/cdk/utils/utils-batch.ts">
         <metrics statements="27" coveredstatements="27" conditionals="0" coveredconditionals="0" methods="7" coveredmethods="7"/>
         <line num="1" count="5" type="stmt"/>
@@ -250,28 +255,28 @@
         <line num="3" count="5" type="stmt"/>
         <line num="12" count="5" type="stmt"/>
         <line num="27" count="5" type="stmt"/>
-        <line num="39" count="28" type="stmt"/>
-        <line num="40" count="28" type="stmt"/>
-        <line num="41" count="28" type="stmt"/>
-        <line num="42" count="28" type="stmt"/>
-        <line num="43" count="28" type="stmt"/>
-        <line num="44" count="28" type="stmt"/>
-        <line num="50" count="28" type="stmt"/>
-        <line num="54" count="28" type="stmt"/>
-        <line num="61" count="28" type="stmt"/>
-        <line num="62" count="28" type="stmt"/>
-        <line num="64" count="28" type="stmt"/>
-        <line num="77" count="28" type="stmt"/>
-        <line num="86" count="56" type="stmt"/>
-        <line num="91" count="28" type="stmt"/>
-        <line num="92" count="28" type="stmt"/>
-        <line num="93" count="28" type="stmt"/>
-        <line num="94" count="28" type="stmt"/>
-        <line num="96" count="28" type="stmt"/>
-        <line num="119" count="28" type="stmt"/>
-        <line num="120" count="28" type="stmt"/>
-        <line num="122" count="28" type="stmt"/>
-        <line num="145" count="56" type="stmt"/>
+        <line num="39" count="27" type="stmt"/>
+        <line num="40" count="27" type="stmt"/>
+        <line num="41" count="27" type="stmt"/>
+        <line num="42" count="27" type="stmt"/>
+        <line num="43" count="27" type="stmt"/>
+        <line num="44" count="27" type="stmt"/>
+        <line num="50" count="27" type="stmt"/>
+        <line num="54" count="27" type="stmt"/>
+        <line num="61" count="27" type="stmt"/>
+        <line num="62" count="27" type="stmt"/>
+        <line num="64" count="27" type="stmt"/>
+        <line num="77" count="27" type="stmt"/>
+        <line num="86" count="54" type="stmt"/>
+        <line num="91" count="27" type="stmt"/>
+        <line num="92" count="27" type="stmt"/>
+        <line num="93" count="27" type="stmt"/>
+        <line num="94" count="27" type="stmt"/>
+        <line num="96" count="27" type="stmt"/>
+        <line num="119" count="27" type="stmt"/>
+        <line num="120" count="27" type="stmt"/>
+        <line num="122" count="27" type="stmt"/>
+        <line num="145" count="54" type="stmt"/>
       </file>
       <file name="utils-images.ts" path="/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/molecule-unfolding/cdk/utils/utils-images.ts">
         <metrics statements="36" coveredstatements="30" conditionals="12" coveredconditionals="12" methods="4" coveredmethods="4"/>
@@ -286,29 +291,29 @@
         <line num="12" count="5" type="stmt"/>
         <line num="13" count="5" type="stmt"/>
         <line num="21" count="5" type="stmt"/>
-        <line num="26" count="56" type="stmt"/>
-        <line num="27" count="56" type="stmt"/>
-        <line num="30" count="56" type="stmt"/>
-        <line num="34" count="140" type="stmt"/>
-        <line num="36" count="140" type="cond" truecount="1" falsecount="0"/>
-        <line num="37" count="28" type="cond" truecount="1" falsecount="0"/>
-        <line num="38" count="28" type="stmt"/>
+        <line num="26" count="54" type="stmt"/>
+        <line num="27" count="54" type="stmt"/>
+        <line num="30" count="54" type="stmt"/>
+        <line num="34" count="135" type="stmt"/>
+        <line num="36" count="135" type="cond" truecount="1" falsecount="0"/>
+        <line num="37" count="27" type="cond" truecount="1" falsecount="0"/>
+        <line num="38" count="27" type="stmt"/>
         <line num="43" count="0" type="stmt"/>
-        <line num="47" count="112" type="cond" truecount="1" falsecount="0"/>
-        <line num="48" count="28" type="cond" truecount="1" falsecount="0"/>
-        <line num="49" count="28" type="stmt"/>
+        <line num="47" count="108" type="cond" truecount="1" falsecount="0"/>
+        <line num="48" count="27" type="cond" truecount="1" falsecount="0"/>
+        <line num="49" count="27" type="stmt"/>
         <line num="55" count="0" type="stmt"/>
-        <line num="58" count="84" type="cond" truecount="1" falsecount="0"/>
-        <line num="59" count="28" type="cond" truecount="1" falsecount="0"/>
-        <line num="60" count="28" type="stmt"/>
+        <line num="58" count="81" type="cond" truecount="1" falsecount="0"/>
+        <line num="59" count="27" type="cond" truecount="1" falsecount="0"/>
+        <line num="60" count="27" type="stmt"/>
         <line num="65" count="0" type="stmt"/>
-        <line num="68" count="56" type="cond" truecount="1" falsecount="0"/>
-        <line num="69" count="28" type="cond" truecount="1" falsecount="0"/>
-        <line num="70" count="28" type="stmt"/>
+        <line num="68" count="54" type="cond" truecount="1" falsecount="0"/>
+        <line num="69" count="27" type="cond" truecount="1" falsecount="0"/>
+        <line num="70" count="27" type="stmt"/>
         <line num="75" count="0" type="stmt"/>
-        <line num="78" count="28" type="cond" truecount="1" falsecount="0"/>
-        <line num="79" count="28" type="cond" truecount="1" falsecount="0"/>
-        <line num="80" count="28" type="stmt"/>
+        <line num="78" count="27" type="cond" truecount="1" falsecount="0"/>
+        <line num="79" count="27" type="cond" truecount="1" falsecount="0"/>
+        <line num="80" count="27" type="stmt"/>
         <line num="85" count="0" type="stmt"/>
         <line num="87" count="0" type="stmt"/>
       </file>
@@ -320,110 +325,112 @@
         <line num="5" count="5" type="stmt"/>
         <line num="10" count="5" type="stmt"/>
         <line num="25" count="5" type="stmt"/>
-        <line num="37" count="28" type="stmt"/>
-        <line num="38" count="28" type="stmt"/>
-        <line num="39" count="28" type="stmt"/>
-        <line num="40" count="28" type="stmt"/>
-        <line num="47" count="28" type="stmt"/>
-        <line num="51" count="28" type="stmt"/>
-        <line num="52" count="28" type="stmt"/>
-        <line num="53" count="28" type="stmt"/>
-        <line num="54" count="28" type="stmt"/>
-        <line num="74" count="28" type="stmt"/>
-        <line num="75" count="28" type="stmt"/>
-        <line num="76" count="28" type="stmt"/>
-        <line num="77" count="28" type="stmt"/>
-        <line num="79" count="28" type="stmt"/>
-        <line num="94" count="28" type="stmt"/>
-        <line num="95" count="28" type="stmt"/>
-        <line num="96" count="28" type="stmt"/>
-        <line num="97" count="28" type="stmt"/>
-        <line num="99" count="28" type="stmt"/>
-        <line num="115" count="28" type="stmt"/>
-        <line num="116" count="28" type="stmt"/>
-        <line num="117" count="28" type="stmt"/>
-        <line num="119" count="28" type="stmt"/>
+        <line num="37" count="27" type="stmt"/>
+        <line num="38" count="27" type="stmt"/>
+        <line num="39" count="27" type="stmt"/>
+        <line num="40" count="27" type="stmt"/>
+        <line num="47" count="27" type="stmt"/>
+        <line num="51" count="27" type="stmt"/>
+        <line num="52" count="27" type="stmt"/>
+        <line num="53" count="27" type="stmt"/>
+        <line num="54" count="27" type="stmt"/>
+        <line num="74" count="27" type="stmt"/>
+        <line num="75" count="27" type="stmt"/>
+        <line num="76" count="27" type="stmt"/>
+        <line num="77" count="27" type="stmt"/>
+        <line num="79" count="27" type="stmt"/>
+        <line num="94" count="27" type="stmt"/>
+        <line num="95" count="27" type="stmt"/>
+        <line num="96" count="27" type="stmt"/>
+        <line num="97" count="27" type="stmt"/>
+        <line num="99" count="27" type="stmt"/>
+        <line num="115" count="27" type="stmt"/>
+        <line num="116" count="27" type="stmt"/>
+        <line num="117" count="27" type="stmt"/>
+        <line num="119" count="27" type="stmt"/>
       </file>
       <file name="utils-role.ts" path="/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/molecule-unfolding/cdk/utils/utils-role.ts">
         <metrics statements="54" coveredstatements="54" conditionals="0" coveredconditionals="0" methods="10" coveredmethods="10"/>
         <line num="2" count="5" type="stmt"/>
         <line num="12" count="5" type="stmt"/>
-        <line num="16" count="84" type="stmt"/>
-        <line num="17" count="84" type="stmt"/>
-        <line num="21" count="84" type="stmt"/>
-        <line num="25" count="28" type="stmt"/>
-        <line num="29" count="28" type="stmt"/>
-        <line num="43" count="28" type="stmt"/>
-        <line num="57" count="28" type="stmt"/>
-        <line num="67" count="28" type="stmt"/>
-        <line num="76" count="28" type="stmt"/>
-        <line num="85" count="28" type="stmt"/>
-        <line num="104" count="28" type="stmt"/>
-        <line num="114" count="28" type="stmt"/>
-        <line num="119" count="28" type="stmt"/>
-        <line num="122" count="28" type="stmt"/>
-        <line num="133" count="28" type="stmt"/>
-        <line num="143" count="28" type="stmt"/>
-        <line num="153" count="28" type="stmt"/>
-        <line num="157" count="28" type="stmt"/>
-        <line num="160" count="28" type="stmt"/>
-        <line num="170" count="28" type="stmt"/>
-        <line num="178" count="28" type="stmt"/>
-        <line num="183" count="28" type="stmt"/>
-        <line num="186" count="28" type="stmt"/>
-        <line num="204" count="28" type="stmt"/>
-        <line num="213" count="28" type="stmt"/>
-        <line num="223" count="28" type="stmt"/>
-        <line num="233" count="28" type="stmt"/>
-        <line num="247" count="28" type="stmt"/>
-        <line num="257" count="28" type="stmt"/>
-        <line num="261" count="28" type="stmt"/>
-        <line num="265" count="28" type="stmt"/>
-        <line num="274" count="28" type="stmt"/>
-        <line num="288" count="28" type="stmt"/>
-        <line num="298" count="28" type="stmt"/>
-        <line num="309" count="28" type="stmt"/>
-        <line num="323" count="28" type="stmt"/>
-        <line num="327" count="28" type="stmt"/>
-        <line num="331" count="28" type="stmt"/>
-        <line num="340" count="28" type="stmt"/>
-        <line num="351" count="28" type="stmt"/>
-        <line num="365" count="28" type="stmt"/>
-        <line num="369" count="28" type="stmt"/>
-        <line num="372" count="28" type="stmt"/>
-        <line num="382" count="28" type="stmt"/>
-        <line num="395" count="28" type="stmt"/>
-        <line num="406" count="28" type="stmt"/>
-        <line num="411" count="28" type="stmt"/>
-        <line num="414" count="28" type="stmt"/>
-        <line num="423" count="28" type="stmt"/>
-        <line num="436" count="28" type="stmt"/>
-        <line num="447" count="28" type="stmt"/>
-        <line num="458" count="28" type="stmt"/>
+        <line num="16" count="81" type="stmt"/>
+        <line num="17" count="81" type="stmt"/>
+        <line num="21" count="81" type="stmt"/>
+        <line num="25" count="27" type="stmt"/>
+        <line num="29" count="27" type="stmt"/>
+        <line num="43" count="27" type="stmt"/>
+        <line num="57" count="27" type="stmt"/>
+        <line num="67" count="27" type="stmt"/>
+        <line num="76" count="27" type="stmt"/>
+        <line num="85" count="27" type="stmt"/>
+        <line num="104" count="27" type="stmt"/>
+        <line num="114" count="27" type="stmt"/>
+        <line num="119" count="27" type="stmt"/>
+        <line num="122" count="27" type="stmt"/>
+        <line num="133" count="27" type="stmt"/>
+        <line num="143" count="27" type="stmt"/>
+        <line num="153" count="27" type="stmt"/>
+        <line num="157" count="27" type="stmt"/>
+        <line num="160" count="27" type="stmt"/>
+        <line num="170" count="27" type="stmt"/>
+        <line num="178" count="27" type="stmt"/>
+        <line num="183" count="27" type="stmt"/>
+        <line num="186" count="27" type="stmt"/>
+        <line num="204" count="27" type="stmt"/>
+        <line num="213" count="27" type="stmt"/>
+        <line num="223" count="27" type="stmt"/>
+        <line num="233" count="27" type="stmt"/>
+        <line num="247" count="27" type="stmt"/>
+        <line num="257" count="27" type="stmt"/>
+        <line num="261" count="27" type="stmt"/>
+        <line num="265" count="27" type="stmt"/>
+        <line num="274" count="27" type="stmt"/>
+        <line num="288" count="27" type="stmt"/>
+        <line num="298" count="27" type="stmt"/>
+        <line num="309" count="27" type="stmt"/>
+        <line num="323" count="27" type="stmt"/>
+        <line num="327" count="27" type="stmt"/>
+        <line num="331" count="27" type="stmt"/>
+        <line num="340" count="27" type="stmt"/>
+        <line num="351" count="27" type="stmt"/>
+        <line num="365" count="27" type="stmt"/>
+        <line num="369" count="27" type="stmt"/>
+        <line num="372" count="27" type="stmt"/>
+        <line num="382" count="27" type="stmt"/>
+        <line num="395" count="27" type="stmt"/>
+        <line num="406" count="27" type="stmt"/>
+        <line num="411" count="27" type="stmt"/>
+        <line num="414" count="27" type="stmt"/>
+        <line num="423" count="27" type="stmt"/>
+        <line num="436" count="27" type="stmt"/>
+        <line num="447" count="27" type="stmt"/>
+        <line num="458" count="27" type="stmt"/>
       </file>
       <file name="utils.ts" path="/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/molecule-unfolding/cdk/utils/utils.ts">
-        <metrics statements="21" coveredstatements="21" conditionals="34" coveredconditionals="33" methods="3" coveredmethods="3"/>
+        <metrics statements="23" coveredstatements="22" conditionals="41" coveredconditionals="39" methods="3" coveredmethods="3"/>
         <line num="1" count="5" type="stmt"/>
         <line num="2" count="5" type="stmt"/>
         <line num="3" count="5" type="stmt"/>
         <line num="10" count="5" type="stmt"/>
-        <line num="12" count="432" type="cond" truecount="3" falsecount="0"/>
-        <line num="13" count="54" type="stmt"/>
+        <line num="12" count="416" type="cond" truecount="3" falsecount="0"/>
+        <line num="13" count="52" type="stmt"/>
         <line num="18" count="5" type="stmt"/>
-        <line num="21" count="6642" type="cond" truecount="2" falsecount="0"/>
-        <line num="25" count="54" type="stmt"/>
-        <line num="40" count="6588" type="cond" truecount="2" falsecount="0"/>
-        <line num="47" count="135" type="stmt"/>
-        <line num="53" count="6453" type="cond" truecount="11" falsecount="0"/>
-        <line num="63" count="243" type="stmt"/>
-        <line num="69" count="6210" type="cond" truecount="2" falsecount="0"/>
-        <line num="70" count="27" type="stmt"/>
-        <line num="77" count="6183" type="cond" truecount="2" falsecount="0"/>
-        <line num="78" count="27" type="stmt"/>
-        <line num="84" count="6156" type="cond" truecount="3" falsecount="0"/>
-        <line num="87" count="54" type="stmt"/>
-        <line num="97" count="5" type="stmt"/>
-        <line num="98" count="168" type="stmt"/>
+        <line num="21" count="6396" type="cond" truecount="2" falsecount="0"/>
+        <line num="25" count="52" type="stmt"/>
+        <line num="40" count="6344" type="cond" truecount="2" falsecount="0"/>
+        <line num="47" count="130" type="stmt"/>
+        <line num="53" count="6214" type="cond" truecount="11" falsecount="0"/>
+        <line num="63" count="234" type="stmt"/>
+        <line num="69" count="5980" type="cond" truecount="7" falsecount="0"/>
+        <line num="75" count="130" type="stmt"/>
+        <line num="81" count="5850" type="cond" truecount="1" falsecount="1"/>
+        <line num="82" count="0" type="stmt"/>
+        <line num="89" count="5850" type="cond" truecount="2" falsecount="0"/>
+        <line num="90" count="26" type="stmt"/>
+        <line num="96" count="5824" type="cond" truecount="3" falsecount="0"/>
+        <line num="99" count="52" type="stmt"/>
+        <line num="109" count="5" type="stmt"/>
+        <line num="110" count="162" type="stmt"/>
       </file>
       <file name="vpc.ts" path="/Volumes/workplace/qc/src/AWS-gcr-qc-life-science/source/src/molecule-unfolding/cdk/utils/vpc.ts">
         <metrics statements="26" coveredstatements="26" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
@@ -434,25 +441,25 @@
         <line num="6" count="5" type="stmt"/>
         <line num="11" count="5" type="stmt"/>
         <line num="17" count="5" type="stmt"/>
-        <line num="19" count="28" type="stmt"/>
-        <line num="35" count="28" type="stmt"/>
-        <line num="36" count="56" type="stmt"/>
-        <line num="39" count="28" type="stmt"/>
-        <line num="42" count="28" type="stmt"/>
-        <line num="44" count="28" type="stmt"/>
-        <line num="46" count="28" type="stmt"/>
-        <line num="51" count="28" type="stmt"/>
-        <line num="56" count="28" type="stmt"/>
-        <line num="62" count="28" type="stmt"/>
-        <line num="63" count="28" type="stmt"/>
-        <line num="64" count="28" type="stmt"/>
-        <line num="65" count="28" type="stmt"/>
-        <line num="67" count="28" type="stmt"/>
-        <line num="73" count="28" type="stmt"/>
-        <line num="74" count="28" type="stmt"/>
-        <line num="75" count="28" type="stmt"/>
-        <line num="76" count="28" type="stmt"/>
-        <line num="78" count="28" type="stmt"/>
+        <line num="19" count="27" type="stmt"/>
+        <line num="35" count="27" type="stmt"/>
+        <line num="36" count="54" type="stmt"/>
+        <line num="39" count="27" type="stmt"/>
+        <line num="42" count="27" type="stmt"/>
+        <line num="44" count="27" type="stmt"/>
+        <line num="46" count="27" type="stmt"/>
+        <line num="51" count="27" type="stmt"/>
+        <line num="56" count="27" type="stmt"/>
+        <line num="62" count="27" type="stmt"/>
+        <line num="63" count="27" type="stmt"/>
+        <line num="64" count="27" type="stmt"/>
+        <line num="65" count="27" type="stmt"/>
+        <line num="67" count="27" type="stmt"/>
+        <line num="73" count="27" type="stmt"/>
+        <line num="74" count="27" type="stmt"/>
+        <line num="75" count="27" type="stmt"/>
+        <line num="76" count="27" type="stmt"/>
+        <line num="78" count="27" type="stmt"/>
       </file>
     </package>
   </project>

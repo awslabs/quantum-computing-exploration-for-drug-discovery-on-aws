@@ -34,8 +34,7 @@ exports.handler = function (event, context, callback) {
         "\tScenario string,\n" +
         "\tCreate_Time string,\n" +
         "\tResult_Detail string,\n" +
-        "\tResult_Location string,\n" +
-        "\tcurrent_timestamp as End_Time\n" +
+        "\tResult_Location string\n" +
         ") ROW FORMAT DELIMITED FIELDS TERMINATED BY '!' LINES TERMINATED BY '\\n' LOCATION '" + location + "'"
 
     const createViewSql = `

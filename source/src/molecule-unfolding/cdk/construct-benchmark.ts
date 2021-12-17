@@ -142,6 +142,7 @@ export class Benchmark extends Construct {
                 level: sfn.LogLevel.ALL,
             },
         });
+        logGroup.grantWrite(benchmarkStateMachine)
 
         // Output //////////////////////////
         new cdk.CfnOutput(this, "stateMachineURL", {
@@ -224,6 +225,7 @@ export class Benchmark extends Construct {
                 level: sfn.LogLevel.ALL,
             },
         });
+        logGroup.grantWrite(hpcAndQCStateMachine)
         return hpcAndQCStateMachine;
     }
 
@@ -280,6 +282,8 @@ export class Benchmark extends Construct {
                 level: sfn.LogLevel.ALL,
             },
         });
+        logGroup.grantWrite(qcStateMachine)
+        
         return qcStateMachine;
     }
 
@@ -343,14 +347,15 @@ export class Benchmark extends Construct {
             logGroupName
         });
 
-        const qcStateMachine = new sfn.StateMachine(this, 'QCDeviceStateMachine', {
+        const qcDeviceStateMachine = new sfn.StateMachine(this, 'QCDeviceStateMachine', {
             definition: chain,
             logs: {
                 destination: logGroup,
                 level: sfn.LogLevel.ALL,
             },
         });
-        return qcStateMachine;
+        logGroup.grantWrite(qcDeviceStateMachine)
+        return qcDeviceStateMachine;
     }
 
     private createHPCStateMachine(parametersLambda: lambda.Function): sfn.StateMachine {
@@ -427,8 +432,9 @@ export class Benchmark extends Construct {
                 destination: logGroup,
                 level: sfn.LogLevel.ALL,
             },
-
         });
+        logGroup.grantWrite(hpcStateMachine)
+
         hpcStateMachine.role.addToPrincipalPolicy(new iam.PolicyStatement({
             resources: [
                 `arn:aws:batch:${this.props.region}:${this.props.account}:job-definition/*`,
