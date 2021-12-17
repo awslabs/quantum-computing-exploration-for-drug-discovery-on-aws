@@ -39,8 +39,7 @@ exports.handler = function (event, context, callback) {
 
     const createViewSql = `
         CREATE OR REPLACE VIEW ${viewName} as 
-        select * from  ${tableName} h1
-        where Start_Time = (select Max(Start_Time) from ${tableName} h2)
+        select * from  ${tableName} order by Start_Time desc limit 2000
          `
     const querySql = `SELECT * FROM ${viewName}`
 
