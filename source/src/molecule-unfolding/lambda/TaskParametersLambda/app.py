@@ -301,6 +301,7 @@ def handler(event, context):
         for param_item in model_param_items:
             param_item_name = str(param_item).replace(
                 "&", '').replace("=", '')
+            qc_index += 1
             qc_task_params[device_arn].append({
                 "params": f"--model-param,{param_item},--device-arn,{device_arn},--index,{qc_index},{common_param}".split(","),
                 "device_name": device_name,
