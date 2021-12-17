@@ -39,7 +39,7 @@ default_opt_params = {
 
 max_vcpu, min_vcpu = 16, 1
 max_mem, min_mem = 30,  1
-
+max_shots, min_shots = 10000, 1
 
 def read_as_json(bucket, key):
     print(f"read s3://{bucket}/{key}")
@@ -187,7 +187,7 @@ def validate_input(input_dict: dict):
                         errors.append(
                             f"element in hpcResources must be an array with size=2")
                     for e in c_m:
-                        if  not (isinstance(e, int)):
+                        if not (isinstance(e, int)):
                             errors.append(
                                 f"invalid value {e}, element must be an int")
                     vcpu, mem = c_m
@@ -204,9 +204,14 @@ def validate_input(input_dict: dict):
                             f"invalid key {p} of optParams, values: sa|qa")
                     elif not isinstance(input_dict[k][p], dict):
                         errors.append(f"optParams[{p}] must be a dict")
-                    elif 'shots' in input_dict[k][p] and not isinstance(input_dict[k][p]['shots'], int):
-                        errors.append(
-                            f"optParams[{p}][shots] must be int, value: {input_dict[k][p]['shots']}")
+                    elif 'shots' in input_dict[k][p]:
+                        shots = input_dict[k][p]['shots']
+                        if not isinstance(shots, int):
+                            errors.append(
+                                f"optParams[{p}][shots] must be int, invalid value: {shots}")
+                        elif shots > max_shots or shots < min_shots:
+                            errors.append(
+                                f"optParams[{p}][shots], invalid shots value: {shots}, value range [{min_shots}, {max_shots}]")
 
     except Exception as e:
         errors.append(repr(e))
@@ -216,7 +221,7 @@ def validate_input(input_dict: dict):
 
 
 def handler(event, context):
-    #print(f"event={event}")
+    # print(f"event={event}")
     aws_region = os.environ['AWS_REGION']
     param_type = event['param_type']
     s3_bucket = event['s3_bucket']
@@ -308,7 +313,7 @@ def handler(event, context):
     hpc_index = 0
     for resource in hpc_resources:
         resource_name = f"Vcpu{resource[0]}_Mem{resource[1]}G"
-        if '.' in resource_name: 
+        if '.' in resource_name:
             resource_name = resource_name.replace(r'.', '_')
         for param_item in model_param_items:
             hpc_index += 1
