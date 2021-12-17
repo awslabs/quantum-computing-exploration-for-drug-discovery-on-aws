@@ -38,11 +38,19 @@ exports.handler = function (event, context, callback) {
     ) ROW FORMAT DELIMITED FIELDS TERMINATED BY '!' LINES TERMINATED BY '\\n' LOCATION '${location}' 
     `
     const createViewSql = `
-        CREATE OR REPLACE VIEW ${viewName} as 
-        select * from ${tableName} where Experiment_Name in (
-            select distinct Experiment_Name from ${tableName} order by Experiment_Name desc limit 20
-        )
-    `
+    CREATE OR REPLACE VIEW ${viewName} as 
+        select h1.*
+        from ${tableName} h1,
+        	(
+        		select distinct Execution_Id,
+        			Start_Time
+        		from ${tableName}
+        		order by Start_Time desc
+        		limit 20
+        	) h2
+        where h1.Execution_Id = h2.Execution_Id
+`
+
     const querySql = `SELECT * FROM ${viewName}`
 
     const startAhenaQueryExecution = (queryInfo) => {
