@@ -1,20 +1,19 @@
-import * as cdk from '@aws-cdk/core';
-import * as s3 from '@aws-cdk/aws-s3';
+import * as cdk from '@aws-cdk/core'
+import * as s3 from '@aws-cdk/aws-s3'
 import * as kms from '@aws-cdk/aws-kms'
 
 import {
     CfnNotebookInstanceLifecycleConfig,
     CfnNotebookInstance
-} from '@aws-cdk/aws-sagemaker';
+} from '@aws-cdk/aws-sagemaker'
 
 import {
     readFileSync
-} from 'fs';
-
+} from 'fs'
 
 import {
     Construct,
-} from '@aws-cdk/core';
+} from '@aws-cdk/core'
 
 import {
     RoleUtil

@@ -1,6 +1,6 @@
-import * as cdk from '@aws-cdk/core';
+import * as cdk from '@aws-cdk/core'
 import * as s3 from '@aws-cdk/aws-s3'
-import * as quicksight from '@aws-cdk/aws-quicksight';
+import * as quicksight from '@aws-cdk/aws-quicksight'
 
 interface DashBoardProps {
     region: string;
@@ -34,7 +34,7 @@ export class Dashboard extends cdk.Construct {
 
         const templateAccountId = quicksightTemplateAccountIdParam.valueAsString;
         const templateRegion = this.node.tryGetContext('quicksight_template_region') || 'us-east-1'
-        const templateArn = `arn:aws:quicksight:${templateRegion}:${templateAccountId}:template/QC-benchmark-analysis-template`
+        const templateArn = `arn:aws:quicksight:${templateRegion}:${templateAccountId}:template/QC-benchmark-analysis-template/version/1`
 
         const quicksightUser = `arn:aws:quicksight:us-east-1:${this.props.account}:user/default/${quickSightUserParam.valueAsString}`;
         const qcDataSource = new quicksight.CfnDataSource(this, "qcBenchmark-DataSource", {
@@ -123,7 +123,11 @@ export class Dashboard extends cdk.Construct {
             {
                 name: 'result_location',
                 type: 'STRING'
-            }
+            },
+            {
+                name: 'end_time',
+                type: 'STRING'
+            } 
         ];
 
         const qcDataset = new quicksight.CfnDataSet(this, "qcBenchmark-DataSet", {

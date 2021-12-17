@@ -1,6 +1,6 @@
 import * as batch from '@aws-cdk/aws-batch'
-import * as cdk from '@aws-cdk/core';
-import * as ec2 from '@aws-cdk/aws-ec2';
+import * as cdk from '@aws-cdk/core'
+import * as ec2 from '@aws-cdk/aws-ec2'
 import * as iam from '@aws-cdk/aws-iam'
 import * as ecs from '@aws-cdk/aws-ecs'
 import * as s3 from '@aws-cdk/aws-s3'

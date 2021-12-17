@@ -6,7 +6,6 @@ import datetime
 import copy
 
 s3 = boto3.client('s3')
-default_s3_prefix = "molecule-unfolding"
 
 default_devices_arns = [
     'arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6',
@@ -217,11 +216,11 @@ def validate_input(input_dict: dict):
 
 
 def handler(event, context):
-    print(f"event={event}")
+    #print(f"event={event}")
     aws_region = os.environ['AWS_REGION']
     param_type = event['param_type']
     s3_bucket = event['s3_bucket']
-    s3_prefix = event.get('s3_prefix', default_s3_prefix)
+    s3_prefix = event['s3_prefix']
 
     read_config(s3_bucket, s3_prefix)
 
@@ -250,15 +249,13 @@ def handler(event, context):
             "user_input": user_input,
             "execution_id": execution_id,
             "aws_region": aws_region,
-            "start_time": datetime.datetime.utcnow().isoformat(),
-
+            "start_time": datetime.datetime.utcnow().isoformat()
         }), bucket=s3_bucket, key=key)
         return {
             "params": f"{common_param},--execution-id,{execution_id}".split(","),
             "execution_id": execution_id,
             "runMode": user_input.get('runMode', "ALL"),
-            "start_time": datetime.datetime.utcnow().isoformat(),
-            "s3_prefix": s3_prefix
+            "start_time": datetime.datetime.utcnow().isoformat()
         }
     else:
         execution_id = event.get('execution_id', None)

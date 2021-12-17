@@ -1,8 +1,8 @@
-import * as cdk from '@aws-cdk/core';
+import * as cdk from '@aws-cdk/core'
 import * as s3 from '@aws-cdk/aws-s3'
 import * as lambda from '@aws-cdk/aws-lambda'
-import * as path from 'path';
-import * as ec2 from '@aws-cdk/aws-ec2';
+import * as path from 'path'
+import * as ec2 from '@aws-cdk/aws-ec2'
 import {
     RoleUtil
 } from './utils-role'
@@ -52,7 +52,7 @@ export class LambdaUtil {
         const lambdaSg = this.props.lambdaSg;
         const aggLambdaRole = this.roleUtil.createAggResultLambdaRole();
         return new lambda.Function(this.scope, 'AggResultLambda', {
-            runtime: lambda.Runtime.NODEJS_12_X,
+            runtime: lambda.Runtime.NODEJS_14_X,
             code: lambda.Code.fromAsset(path.join(__dirname, '../../lambda/AthenaTabeLambda/')),
             handler: 'index.handler',
             memorySize: 512,
@@ -71,7 +71,7 @@ export class LambdaUtil {
     }
 
     public createCheckQCDeviceLambda(): lambda.Function {
-        const checkLambdaRole = this.roleUtil.createBraketLambdaRole('DeviceAvailableCheckLambdaRole');
+        const checkLambdaRole = this.roleUtil.createCheckQCDeviceLambdaRole('DeviceAvailableCheckLambdaRole');
         const code = this.imageUtil.getECRImage(ECRRepoNameEnum.Lambda_CheckDevice) as lambda.DockerImageCode
         const vpc = this.props.vpc;
         const lambdaSg = this.props.lambdaSg;
@@ -91,7 +91,7 @@ export class LambdaUtil {
     }
 
     public createSubmitQCTaskLambda(): lambda.Function {
-        const lambdaRole = this.roleUtil.createBraketLambdaRole('SubmitQCTaskLambdaRole')
+        const lambdaRole = this.roleUtil.createSumitQCTaskLambdaRole('SubmitQCTaskLambdaRole')
         const code = this.imageUtil.getECRImage(ECRRepoNameEnum.Lambda_SubmitQCTask) as lambda.DockerImageCode
         const vpc = this.props.vpc;
         const lambdaSg = this.props.lambdaSg;
@@ -112,12 +112,12 @@ export class LambdaUtil {
     }
 
     public createTaskParametersLambda(): lambda.Function {
-        const lambdaRole = this.roleUtil.createBraketLambdaRole('TaskParametersLambdaRole');
+        const lambdaRole = this.roleUtil.createTaskParametersLambdaRole('TaskParametersLambdaRole');
         const vpc = this.props.vpc;
         const lambdaSg = this.props.lambdaSg;
 
         return new lambda.Function(this.scope, 'TaskParametersLambda', {
-            runtime: lambda.Runtime.PYTHON_3_8,
+            runtime: lambda.Runtime.PYTHON_3_9,
             code: lambda.Code.fromAsset(path.join(__dirname, '../../lambda/TaskParametersLambda/')),
             handler: 'app.handler',
             memorySize: 512,

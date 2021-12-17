@@ -4,9 +4,10 @@ const client = new AWS.Athena({})
 const bucket = process.env.BUCKET
 
 exports.handler = function (event, context, callback) {
-    console.log("REQUEST RECEIVED:\n" + JSON.stringify(event))
+    //console.log("REQUEST RECEIVED:\n" + JSON.stringify(event))
     const s3_prefix = event['s3_prefix']
     const stackName = event['stackName']
+    const execution_id = event['execution_id']
 
     console.log(`stackName: ${stackName}, s3_prefix: ${s3_prefix}`)
 
@@ -34,6 +35,7 @@ exports.handler = function (event, context, callback) {
         "\tCreate_Time string,\n" +
         "\tResult_Detail string,\n" +
         "\tResult_Location string\n" +
+        "\tcurrent_timestamp as End_Time\n" +
         ") ROW FORMAT DELIMITED FIELDS TERMINATED BY '!' LINES TERMINATED BY '\\n' LOCATION '" + location + "'"
 
     const createViewSql = `

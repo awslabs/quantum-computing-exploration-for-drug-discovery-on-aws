@@ -133,6 +133,7 @@ if __name__ == '__main__':
     parser.add_argument('--s3-bucket', type=str)
     parser.add_argument('--aws-region', type=str)
     parser.add_argument('--execution-id', type=str)
+    parser.add_argument('--s3_prefix', type=str)
 
     args, _ = parser.parse_known_args()
     logging.info(args)
@@ -140,8 +141,8 @@ if __name__ == '__main__':
     aws_region = args.aws_region
     s3_bucket = args.s3_bucket
     execution_id = args.execution_id
+    s3_prefix = args.s3_prefix
 
-    s3_prefix = "molecule-unfolding"
     boto3.setup_default_session(region_name=aws_region)
     s3 = boto3.client('s3')
 

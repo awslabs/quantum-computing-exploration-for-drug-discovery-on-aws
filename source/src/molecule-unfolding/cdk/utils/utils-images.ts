@@ -1,9 +1,9 @@
 import * as ecr from '@aws-cdk/aws-ecr'
 import * as ecs from '@aws-cdk/aws-ecs'
-import * as cdk from '@aws-cdk/core';
+import * as cdk from '@aws-cdk/core'
 
-import * as path from 'path';
-import * as lambda from '@aws-cdk/aws-lambda';
+import * as path from 'path'
+import * as lambda from '@aws-cdk/aws-lambda'
 
 export enum ECRRepoNameEnum {
     Batch_Create_Model,

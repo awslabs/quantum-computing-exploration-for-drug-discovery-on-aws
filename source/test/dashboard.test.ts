@@ -117,6 +117,10 @@ describe("Dashboard", () => {
                             {
                                 "Name": "result_location",
                                 "Type": "STRING"
+                            },
+                            {
+                                "Name": "end_time",
+                                "Type": "STRING"
                             }
                         ]
                     }

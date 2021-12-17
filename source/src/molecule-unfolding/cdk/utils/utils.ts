@@ -1,4 +1,4 @@
-import * as cdk from '@aws-cdk/core';
+import * as cdk from '@aws-cdk/core'
 import * as iam from '@aws-cdk/aws-iam'
 import * as ec2 from '@aws-cdk/aws-ec2'
 import * as kms from '@aws-cdk/aws-kms'

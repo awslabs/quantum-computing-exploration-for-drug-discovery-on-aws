@@ -75,7 +75,7 @@ describe("Benchmarak", () => {
                         {
                             "Ref": Match.anyValue()
                         },
-                        "\",\"param_type\":\"PARAMS_FOR_HPC\",\"execution_id.$\":\"$.execution_id\",\"context.$\":\"$$\"}}},\"ParallelHPCJobs\":{\"Type\":\"Map\",\"ResultPath\":\"$.parallelHPCJobsMap\",\"End\":true,\"Parameters\":{\"ItemIndex.$\":\"$$.Map.Item.Index\",\"ItemValue.$\":\"$$.Map.Item.Value\",\"execution_id.$\":\"$.execution_id\"},\"Iterator\":{\"StartAt\":\"Run HPC Batch Task\",\"States\":{\"Run HPC Batch Task\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:aws:states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
+                        "\",\"s3_prefix\":\"molecule-unfolding\",\"param_type\":\"PARAMS_FOR_HPC\",\"execution_id.$\":\"$.execution_id\",\"context.$\":\"$$\"}}},\"ParallelHPCJobs\":{\"Type\":\"Map\",\"ResultPath\":\"$.parallelHPCJobsMap\",\"End\":true,\"Parameters\":{\"ItemIndex.$\":\"$$.Map.Item.Index\",\"ItemValue.$\":\"$$.Map.Item.Value\",\"execution_id.$\":\"$.execution_id\"},\"Iterator\":{\"StartAt\":\"Run HPC Batch Task\",\"States\":{\"Run HPC Batch Task\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:aws:states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
                         {
                             "Ref": Match.anyValue()
                         },

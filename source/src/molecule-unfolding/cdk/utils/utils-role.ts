@@ -1,4 +1,4 @@
-import * as cdk from '@aws-cdk/core';
+import * as cdk from '@aws-cdk/core'
 import * as iam from '@aws-cdk/aws-iam'
 import * as s3 from '@aws-cdk/aws-s3'
 
@@ -257,7 +257,7 @@ export class RoleUtil {
         return role;
     }
 
-    public createBraketLambdaRole(roleName: string): iam.Role {
+    public createSumitQCTaskLambdaRole(roleName: string): iam.Role {
         const role = new iam.Role(this.scope, `${roleName}`, {
             assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
         });
@@ -265,10 +265,8 @@ export class RoleUtil {
         role.addToPolicy(new iam.PolicyStatement({
             resources: [
                 `arn:aws:braket:*:${this.props.account}:quantum-task/*`,
-                `arn:aws:braket:*:${this.props.account}:job/*`
             ],
             actions: [
-                "braket:GetJob",
                 "braket:GetQuantumTask"
             ]
         }));
@@ -278,12 +276,12 @@ export class RoleUtil {
                 '*'
             ],
             actions: [
-                "braket:CreateJob",
+                //"braket:CreateJob",
                 "braket:GetDevice",
-                "braket:SearchDevices",
+                // "braket:SearchDevices",
                 "braket:CreateQuantumTask",
-                "braket:SearchJobs",
-                "braket:SearchQuantumTasks"
+                // "braket:SearchJobs",
+                //"braket:SearchQuantumTasks"
             ]
         }));
 
@@ -294,15 +292,6 @@ export class RoleUtil {
             actions: [
                 "s3:GetObject",
                 "s3:PutObject"
-            ]
-        }));
-
-        role.addToPolicy(new iam.PolicyStatement({
-            resources: [
-                `arn:aws:s3:::${this.props.bucket.bucketName}`
-            ],
-            actions: [
-                "s3:ListBucket"
             ]
         }));
 
@@ -334,8 +323,49 @@ export class RoleUtil {
         return role;
     }
 
+    public createCheckQCDeviceLambdaRole(roleName: string): iam.Role {
+        const role = new iam.Role(this.scope, `${roleName}`, {
+            assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
+        });
 
-    public createGenericLambdaRole(roleName: string): iam.Role {
+        role.addToPolicy(new iam.PolicyStatement({
+            resources: [
+                '*'
+            ],
+            actions: [
+                "braket:GetDevice",
+            ]
+        }));
+
+        role.addToPolicy(new iam.PolicyStatement({
+            resources: [
+                `arn:aws:logs:*:${this.props.account}:log-group:*`
+            ],
+            actions: [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "logs:CreateLogGroup"
+            ]
+        }));
+
+        role.addToPolicy(new iam.PolicyStatement({
+            effect: iam.Effect.ALLOW,
+            resources: [
+                '*'
+            ],
+            actions: [
+                "ec2:CreateNetworkInterface",
+                "ec2:DescribeNetworkInterfaces",
+                "ec2:DeleteNetworkInterface",
+                "ec2:AssignPrivateIpAddresses",
+                "ec2:UnassignPrivateIpAddresses"
+            ]
+        }));
+
+        return role;
+    }
+
+    public createTaskParametersLambdaRole(roleName: string): iam.Role {
         const role = new iam.Role(this.scope, `${roleName}`, {
             assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
         });
@@ -346,15 +376,6 @@ export class RoleUtil {
             actions: [
                 "s3:GetObject",
                 "s3:PutObject"
-            ]
-        }));
-
-        role.addToPolicy(new iam.PolicyStatement({
-            resources: [
-                `arn:aws:s3:::${this.props.bucket.bucketName}`
-            ],
-            actions: [
-                "s3:ListBucket"
             ]
         }));
 
@@ -399,16 +420,6 @@ export class RoleUtil {
                 "s3:PutObject"
             ]
         }));
-
-        role.addToPolicy(new iam.PolicyStatement({
-            resources: [
-                `arn:aws:s3:::${this.props.bucket.bucketName}`
-            ],
-            actions: [
-                "s3:ListBucket"
-            ]
-        }));
-
         role.addToPolicy(new iam.PolicyStatement({
             effect: iam.Effect.ALLOW,
             resources: [

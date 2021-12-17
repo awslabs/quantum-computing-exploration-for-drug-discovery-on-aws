@@ -1,16 +1,16 @@
-import * as cdk from '@aws-cdk/core';
-import * as s3 from '@aws-cdk/aws-s3';
+import * as cdk from '@aws-cdk/core'
+import * as s3 from '@aws-cdk/aws-s3'
 import setup_vpc_and_sg from './utils/vpc'
 
 import {
   Aspects,
   Construct,
   StackProps,
-} from '@aws-cdk/core';
+} from '@aws-cdk/core'
 
 import {
   SolutionStack
-} from '../../stack';
+} from '../../stack'
 
 import {
   AddCfnNag

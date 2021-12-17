@@ -1,18 +1,17 @@
-import * as cdk from '@aws-cdk/core';
-import * as ec2 from '@aws-cdk/aws-ec2';
-import * as lambda from '@aws-cdk/aws-lambda';
+import * as cdk from '@aws-cdk/core'
+import * as ec2 from '@aws-cdk/aws-ec2'
+import * as lambda from '@aws-cdk/aws-lambda'
 import * as iam from '@aws-cdk/aws-iam'
-import * as sfn from '@aws-cdk/aws-stepfunctions';
-import * as tasks from '@aws-cdk/aws-stepfunctions-tasks';
+import * as sfn from '@aws-cdk/aws-stepfunctions'
+import * as tasks from '@aws-cdk/aws-stepfunctions-tasks'
 import * as s3 from '@aws-cdk/aws-s3'
 import * as sns from '@aws-cdk/aws-sns'
 import * as kms from '@aws-cdk/aws-kms'
-
+import * as logs from '@aws-cdk/aws-logs'
 
 import {
     Construct,
 } from '@aws-cdk/core';
-
 
 import {
     ECRImageUtil
@@ -29,6 +28,10 @@ import {
 import {
     BatchUtil
 } from './utils/utils-batch'
+
+import {
+    grantKmsKeyPerm
+} from './utils/utils'
 
 export interface BatchProps {
     region: string;
@@ -50,6 +53,7 @@ export class Benchmark extends Construct {
     private roleUtil: RoleUtil
     private lambdaUtil: LambdaUtil
     private batchUtil: BatchUtil
+    private logKey: kms.Key
 
     // constructor 
     constructor(scope: Construct, id: string, props: BatchProps) {
@@ -67,6 +71,11 @@ export class Benchmark extends Construct {
             roleUtil: this.roleUtil,
             imageUtil: this.images
         })
+
+        this.logKey = new kms.Key(scope, 'stepFuncsLogKey', {
+            enableKeyRotation: true
+        });
+
         const taskParamLambda = this.lambdaUtil.createTaskParametersLambda()
 
         const checkInputParamsStep = this.createCheckInputStep(taskParamLambda)
@@ -117,9 +126,21 @@ export class Benchmark extends Construct {
         const statchMachineChain = sfn.Chain.start(checkInputParamsStep).next(createModelStep)
             .next(choiceStep)
 
+        const logGroupName = `${this.props.stackName}-BenchmarkStateMachineLogGroup`
+        grantKmsKeyPerm(this.logKey, logGroupName)
+
+        const logGroup = new logs.LogGroup(this, 'BenchmarkStateMachineLogGroup', {
+            encryptionKey: this.logKey,
+            logGroupName
+        });
+
         const benchmarkStateMachine = new sfn.StateMachine(this, 'BenchmarkStateMachine', {
             definition: statchMachineChain,
-            timeout: cdk.Duration.hours(36)
+            timeout: cdk.Duration.hours(36),
+            logs: {
+                destination: logGroup,
+                level: sfn.LogLevel.ALL,
+            },
         });
 
         // Output //////////////////////////
@@ -188,8 +209,20 @@ export class Benchmark extends Construct {
         hpcAndQCParallel.branch(hpcStateMachineStep)
         hpcAndQCParallel.branch(qcStateMachineStep)
 
+        const logGroupName = `${this.props.stackName}-RunHPCAndQCStateMachineLogGroup`
+        grantKmsKeyPerm(this.logKey, logGroupName)
+
+        const logGroup = new logs.LogGroup(this, 'RunHPCAndQCStateMachineLogGroup', {
+            encryptionKey: this.logKey,
+            logGroupName
+        });
+
         const hpcAndQCStateMachine = new sfn.StateMachine(this, 'RunHPCAndQCStateMachine', {
             definition: hpcAndQCParallel,
+            logs: {
+                destination: logGroup,
+                level: sfn.LogLevel.ALL,
+            },
         });
         return hpcAndQCStateMachine;
     }
@@ -200,6 +233,7 @@ export class Benchmark extends Construct {
             lambdaFunction: parametersLambda,
             payload: sfn.TaskInput.fromObject({
                 "s3_bucket": this.props.bucket.bucketName,
+                "s3_prefix": this.props.prefix,
                 "param_type": "QC_DEVICE_LIST",
                 "execution_id": sfn.JsonPath.stringAt("$.execution_id"),
                 "context.$": "$$"
@@ -230,8 +264,21 @@ export class Benchmark extends Construct {
             resultPath: "$.parallelQCDeviceMap"
         });
         parallelQCDeviceMap.iterator(runOnQCDeviceStateMachineStep);
+
+        const logGroupName = `${this.props.stackName}-QCStateMachineLogGroup`
+        grantKmsKeyPerm(this.logKey, logGroupName)
+
+        const logGroup = new logs.LogGroup(this, 'QCStateMachineLogGroup', {
+            encryptionKey: this.logKey,
+            logGroupName
+        });
+
         const qcStateMachine = new sfn.StateMachine(this, 'QCStateMachine', {
             definition: getDeviceListLambdaStep.next(parallelQCDeviceMap),
+            logs: {
+                destination: logGroup,
+                level: sfn.LogLevel.ALL,
+            },
         });
         return qcStateMachine;
     }
@@ -255,6 +302,7 @@ export class Benchmark extends Construct {
             lambdaFunction: parametersLambda,
             payload: sfn.TaskInput.fromObject({
                 "s3_bucket": this.props.bucket.bucketName,
+                "s3_prefix": this.props.prefix,
                 "param_type": "PARAMS_FOR_QC_DEVICE",
                 "device_arn.$": "$.device_arn",
                 "execution_id": sfn.JsonPath.stringAt("$.execution_id")
@@ -287,8 +335,20 @@ export class Benchmark extends Construct {
 
         const chain = sfn.Chain.start(checkQCDeviceStep).next(choiceStep);
 
+        const logGroupName = `${this.props.stackName}-QCDeviceStateMachineLogGroup`
+        grantKmsKeyPerm(this.logKey, logGroupName)
+
+        const logGroup = new logs.LogGroup(this, 'QCDeviceStateMachineLogGroup', {
+            encryptionKey: this.logKey,
+            logGroupName
+        });
+
         const qcStateMachine = new sfn.StateMachine(this, 'QCDeviceStateMachine', {
             definition: chain,
+            logs: {
+                destination: logGroup,
+                level: sfn.LogLevel.ALL,
+            },
         });
         return qcStateMachine;
     }
@@ -298,6 +358,7 @@ export class Benchmark extends Construct {
             lambdaFunction: parametersLambda,
             payload: sfn.TaskInput.fromObject({
                 "s3_bucket": this.props.bucket.bucketName,
+                "s3_prefix": this.props.prefix,
                 "param_type": "PARAMS_FOR_HPC",
                 "execution_id": sfn.JsonPath.stringAt("$.execution_id"),
                 "context.$": "$$"
@@ -352,8 +413,20 @@ export class Benchmark extends Construct {
 
         const chain = sfn.Chain.start(parametersLambdaStep).next(parallelHPCJobsMap);
 
+        const logGroupName = `${this.props.stackName}-HPCStateMachineLogGroup`
+        grantKmsKeyPerm(this.logKey, logGroupName)
+
+        const logGroup = new logs.LogGroup(this, 'HPCStateMachineLogGroup', {
+            encryptionKey: this.logKey,
+            logGroupName
+        });
+
         const hpcStateMachine = new sfn.StateMachine(this, 'HPCStateMachine', {
             definition: chain,
+            logs: {
+                destination: logGroup,
+                level: sfn.LogLevel.ALL,
+            },
 
         });
         hpcStateMachine.role.addToPrincipalPolicy(new iam.PolicyStatement({
@@ -403,6 +476,7 @@ export class Benchmark extends Construct {
                 "execution_id": sfn.JsonPath.stringAt("$.execution_id"),
                 "task_token": sfn.JsonPath.taskToken,
                 "s3_bucket": this.props.bucket.bucketName,
+                "s3_prefix": this.props.prefix,
                 "ItemValue": sfn.JsonPath.stringAt("$.ItemValue"),
                 "ItemIndex": sfn.JsonPath.stringAt("$.ItemIndex")
             }),
@@ -417,6 +491,23 @@ export class Benchmark extends Construct {
             displayName: 'QC Stepfunctions Execution Complete Topic',
             masterKey: kms.Alias.fromAliasName(this, 'snsKey', 'alias/aws/sns')
         });
+    
+        topic.addToResourcePolicy(new iam.PolicyStatement({
+            effect: iam.Effect.DENY,
+            principals: [new iam.AnyPrincipal()],
+            actions: [
+                "sns:Publish",
+                "sns:Subscribe"
+            ],
+            resources: [
+                topic.topicArn
+            ],
+            conditions: {
+                Bool: {
+                    "aws:SecureTransport": "false"
+                }
+            }
+        }))
         const snsStep = new tasks.SnsPublish(this, 'Notify Complete', {
             topic,
             message: sfn.TaskInput.fromObject({

@@ -1,6 +1,8 @@
 import * as logs from '@aws-cdk/aws-logs'
 import * as kms from '@aws-cdk/aws-kms'
-import * as ec2 from '@aws-cdk/aws-ec2';
+import * as ec2 from '@aws-cdk/aws-ec2'
+import * as cdk from '@aws-cdk/core'
+
 import {
     Aspects,
     Construct
@@ -37,10 +39,13 @@ export default (scope: Construct) => {
     const logKey = new kms.Key(scope, 'qcLogKey', {
         enableKeyRotation: true
     });
-    grantKmsKeyPerm(logKey);
+    const logGroupName = `${cdk.Stack.of(logKey).stackName}-vpcFlowlog`
+
+    grantKmsKeyPerm(logKey, logGroupName);
 
     const vpcFlowlog = new logs.LogGroup(scope, "vpcFlowlog", {
-        encryptionKey: logKey
+        encryptionKey: logKey,
+        logGroupName
     });
 
     vpc.addFlowLog("logtoCW", {

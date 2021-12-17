@@ -1,7 +1,7 @@
-import * as cdk from '@aws-cdk/core';
-import * as s3 from '@aws-cdk/aws-s3';
-import * as ec2 from '@aws-cdk/aws-ec2';
-import * as lambda from '@aws-cdk/aws-lambda';
+import * as cdk from '@aws-cdk/core'
+import * as s3 from '@aws-cdk/aws-s3'
+import * as ec2 from '@aws-cdk/aws-ec2'
+import * as lambda from '@aws-cdk/aws-lambda'
 
 import {
     ECRRepoNameEnum,
@@ -49,7 +49,7 @@ export class EventListener extends cdk.Construct {
                 subnetType: ec2.SubnetType.PRIVATE_WITH_NAT
             }),
             role: lambdaRole,
-            reservedConcurrentExecutions: 20,
+            reservedConcurrentExecutions: 30,
             securityGroups: [lambdaSg]
         });
 

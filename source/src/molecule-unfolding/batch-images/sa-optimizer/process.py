@@ -16,8 +16,6 @@ logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname)-8s [%(filename)s:
                     datefmt='%Y-%m-%d:%H:%M:%S',
                     level=logging.INFO)
 
-DEFAULT_AWS_REGION = 'us-east-1'
-
 
 def download_file(bucket, key, dir="./"):
     file_name = dir + key.split("/")[-1]
@@ -177,13 +175,13 @@ def get_result(path):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--s3-bucket', type=str)
-    parser.add_argument('--aws-region', type=str, default=DEFAULT_AWS_REGION)
+    parser.add_argument('--aws-region', type=str)
     parser.add_argument('--resource', type=str),
     parser.add_argument('--execution-id', type=str)
     parser.add_argument('--model-param', type=str)
     parser.add_argument('--index', type=str)
+    parser.add_argument('--s3_prefix', type=str)
 
-    s3_prefix = "molecule-unfolding"
 
     args, _ = parser.parse_known_args()
 
@@ -192,6 +190,7 @@ if __name__ == '__main__':
     s3_bucket = args.s3_bucket
     execution_id = args.execution_id
     index = args.index
+    s3_prefix = args.s3_prefix
 
     model_param = args.model_param
 

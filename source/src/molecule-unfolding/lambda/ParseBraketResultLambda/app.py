@@ -7,9 +7,8 @@ import datetime
 from utility.ResultProcess import ResultParser
 
 s3 = boto3.client('s3')
-s3_prefix = "molecule-unfolding"
 step_func = boto3.client('stepfunctions')
-
+s3_prefix = None
 
 def download_file(bucket, key, dir="/tmp/"):
     file_name = dir + key.split("/")[-1]
@@ -97,13 +96,16 @@ def get_result(path):
 
 
 def handler(event, context):
-    print(f"event={event}")
+    #print(f"event={event}")
     aws_region = os.environ['AWS_REGION']
     # {'Records': [{'eventVersion': '2.1', 'eventSource': 'aws:s3', 'awsRegion': 'us-east-1', 'eventTime': '2021-11-29T05:17:52.234Z', 'eventName': 'ObjectCreated:Put', 'userIdentity': {'principalId': 'AWS:AROARFTQUWKOUWSYO5XRB:AWSServiceRoleForAmazonBraket'}, 'requestParameters': {'sourceIPAddress': '52.25.248.119'}, 'responseElements': {'x-amz-request-id': '1FQTNJ9HM86M7DMY', 'x-amz-id-2': 'UW1UEJKmwy6NcYRFnTafQSpD4sx05nAOxgs+YtEBH6ryx2MEGbXUj4nAW1ROIs6qtT2D12KCrcDMaKMnIDynCtLmwKAVQu8p'}, 's3': {'s3SchemaVersion': '1.0', 'configurationId': 'ZmNmMzBiZTktNTJiNi00YTllLTk1ODQtYjQyMWI1MzU2OTMw', 'bucket': {'name': 'amazon-braket-qcstack-main-080766874269-us-east-1', 'ownerIdentity': {'principalId': 'AKDTHGWL4N5KF'}, 'arn': 'arn:aws:s3:::amazon-braket-qcstack-main-080766874269-us-east-1'}, 'object': {'key': 'molecule-unfolding/qc_task_output/2fb927dc-32af-42a1-8517-b0872fa4e921/results.json', 'size': 16475, 'eTag': 'd86bf699fb617e1e03ea704695173f13', 'sequencer': '0061A462802499277F'}}}]}
     for rec in event['Records']:
         bucket = rec['s3']['bucket']['name']
         key = rec['s3']['object']['key']
         print(f"parsing file: s3://{bucket}/{key}")
+        global s3_prefix
+        s3_prefix = key.split('/qc_task_output/')[0]
+        
         qc_task_id = key.split("/")[-2]
         print(f"qc_task_id: {qc_task_id}")
         prefix = "/".join(key.split("/")[:-2])
