@@ -53,7 +53,7 @@ Definition:
 
     experimentName: any string
 
-    hpcResources: 2-d array, e.g: 2 vCPU 4GiB memory and 4 vCPU 8GiB memory : [[2, 4], [4, 8]] 
+    hpcResources: 2-d array, e.g: 2 vCPU/4GiB memory and 4 vCPU/8GiB memory : [[2, 4], [4, 8]] 
 
 A typical and default(if input json is `{}`) input:
 ```json
