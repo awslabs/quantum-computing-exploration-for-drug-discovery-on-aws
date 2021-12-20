@@ -1,5 +1,45 @@
 # Quantum Ready Solution For Drug Discovery
 
+## Overview 
+
+AWS Solution Quantum-Ready Solution for Drug Discovery (abbrev. QRSDDSolution), an open-sourced solution that helps customers study drug discovery problems using quantum computing (Amazon Braket), like molecular docking and protein folding. With QRSDD, customers use job management service (AWS Batch) and workflow service (AWS Step Functions) to orchestrate different kinds of computing resources. To be at the forefront of innovations in drug discovery, customers can tailor sample codes to reuse the pipeline for different problems.
+
+The overall architecture is shown as below:
+
+![architecture](./docs/images/architecture.png)
+
+There are two types of experimentations of this solution: Benchmark experimentation and Notebook experimentation.
+
+### Benchmark experimentation:
+
+1. User triggers the benchmark execution through AWS StepFunctions from AWS console.
+
+1. The StepFunctions parallel run HPC tasks and QC tasks.
+
+   - HPC tasks
+      1. StepFunctions synchronous parallel launch various HPC tasks through AWS batch jobs based on different resources (vcpu and memory) and different parameters of the algorithm.
+      1. Batch jobs save result to S3.
+      1. StepFunctions continue to next step.
+  
+   - QC tasks
+     1. StepFunctions parallel launch various QC tasks through AWS lambda based on different QC devices (DW_2000Q_6/Advantage_system4) and different parameters of the algorithm.
+     1. Each lambda asynchronous submits the QC task as AWS Braket job/task to AWS Braket service. 
+     1. StepFunctions wait for completion callback to continue.
+     1. When a Braket job/task completed, it saves its result to S3, which triggers the listener lambda.
+     1. The listener lambda sends a callback token to StepFunctions.
+     1. When StepFunctions get all callback tokens, continue to next step.
+
+1. An Athena table is created based on metrics data in S3.
+
+1. A SNS notification is sent out when all HPC and QC tasks completed.
+
+1. User views the benchmarking result through AWS Quicksight dashboard.
+
+### Notebook experimentation:
+
+This solution also deploys SageMaker notebooks, user can run and study backend algorithms for drug discovery in notebook. The code is step-by-step guide user to build models, run them by HPC and Braket service and post process the result. 
+
+
 ## Quick start
 
 ### Signup for QuickSight
@@ -69,5 +109,5 @@ npm run deploy
 
 
 ### More 
- - [Benchmark Experiment](./docs/en/benchmark.md) 
- - [Notebook](./docs/en/notebook.md) 
+ - [Benchmark Experimentation](./docs/en/benchmark.md) 
+ - [Notebook Experimentation](./docs/en/notebook.md) 
