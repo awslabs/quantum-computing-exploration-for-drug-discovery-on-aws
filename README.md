@@ -69,5 +69,5 @@ npm run deploy
 
 
 ### More 
-  [Benchmark Experiment](./docs/en/benchmark.md) 
-
+ - [Benchmark Experiment](./docs/en/benchmark.md) 
+ - [Notebook](./docs/en/notebook.md) 
