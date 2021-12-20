@@ -1,6 +1,6 @@
 # Quantum Ready Solution For Drug Discovery
 
-## How to use?
+## Quick start
 
 ### Signup for QuickSight
    - Go to [quicksight](https://quicksight.aws.amazon.com/sn/start)
@@ -55,8 +55,8 @@ npm run deploy
 
 ### Run benchmark through Stepfunctons
 
- -  open StepFunctons link in step 4
- -  click the 'Start execution' button, keep the input as default, click 'Start execution'
+ -  open StepFunctons link in `deployment output`
+ -  click the 'Start execution' button, click 'Start execution' to exuecute the StepFunctons workflow
  -  wait Stepfunctons to complete
 
 ### View benchmark dashbaord
