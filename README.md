@@ -45,8 +45,7 @@ npm run deploy
  - Save the change 
 
 
-6. Run benchmark througheneccccggkhcljriudeitlgfvhjktjngigbibrtjdnuj
- Stepfunctons
+6. Run benchmark through Stepfunctons
  -  open StepFunctons link in step 4
  -  click the 'Start execution' button, keep the input as default, click 'Start execution'
  -  wait Stepfunctons to complete
