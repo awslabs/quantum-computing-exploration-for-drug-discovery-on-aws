@@ -1,6 +1,6 @@
 ## Expriment in notebook
 
-This solution will deploy a Sagemaker notebook instance with braket SDK installed and some ready-to-run notebooks for quantum algorithms for drug discovery.
+This solution will deploy a Sagemaker notebook instance with braket SDK installed and some ready-to-run notebooks of quantum algorithms for drug discovery.
 
 ### Get Notebook link from deployment output
 
