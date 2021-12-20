@@ -41,6 +41,7 @@ max_vcpu, min_vcpu = 16, 1
 max_mem, min_mem = 30,  1
 max_shots, min_shots = 10000, 1
 
+
 def read_as_json(bucket, key):
     print(f"read s3://{bucket}/{key}")
     obj = s3.get_object(Bucket=bucket, Key=key)
@@ -128,7 +129,7 @@ def get_all_param_list(param_list):
 
 def validate_input(input_dict: dict):
     print('validate_input')
-    valid_keys = ['runMode', 'molFile', 'modelVersion', 'optParams',
+    valid_keys = ['version', 'runMode', 'molFile', 'modelVersion', 'optParams',
                   'experimentName', 'modelParams', 'devicesArns', 'hpcResources', 'Comment']
     valid_keys_str = "|".join(valid_keys)
     errors = []
@@ -141,6 +142,11 @@ def validate_input(input_dict: dict):
             if k not in valid_keys:
                 errors.append(
                     f"invalid field: {k}, support fields: {valid_keys_str}")
+
+            if 'version' == k:
+                if input_dict['version'] not in ['1']:
+                    errors.append(
+                        f"invalid version, current only support value: '1' ")
 
             if 'devicesArns' == k:
                 if not isinstance(input_dict[k], list):
