@@ -101,3 +101,20 @@ If you run StepFunctions multi-times, by default, the dashbaord average  metrics
 
 
 
+### Trouble shooting
+
+1. StepFunctions failed becasue of "Check Input" step failed
+
+    If the input json not is passed the input validation, this step fails. Check the `errorMessage` of the step, fix your input.
+
+1. StepFunctions failed becasue of `Lambda.TooManyRequestsException`
+
+    If you run the StepFunctions with high a frequency, you may get this error, you can wait serveal seconds and retry.
+
+1. Dashboard can not be displayed, the error message complains permission error when accessing data in S3 bucket
+
+    Go to [quicksight admin](https://us-east-1.quicksight.aws.amazon.com/sn/admin#aws), in `QuickSight access to AWS services`, make sure your S3 bucket is checked.
+
+
+
+
