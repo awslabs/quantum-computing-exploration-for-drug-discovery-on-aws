@@ -46,7 +46,7 @@ npm run deploy
 ### Change QuickSight permissions
 
  - Go to [quicksight admin](https://us-east-1.quicksight.aws.amazon.com/sn/admin#aws) 
- - In `QuickSight access to AWS services`, click 'Manage' button, select the S3 bucket create in step 4
+ - In `QuickSight access to AWS services`, click 'Manage' button, select the S3 bucket create in step `deployment output`
 
 ![quicksight permissions](./docs/images/quicksight_perm.png) 
 
@@ -61,11 +61,11 @@ npm run deploy
 
 ### View benchmark dashbaord
 
- - open the QuickSight dashboard link in step 4
+ - open the QuickSight dashboard link in step `deployment output`
 
 ### Notebook experiment 
 
- - open the Notebook link in step 4
+ - open the Notebook link in step `deployment output`
 
 
 
