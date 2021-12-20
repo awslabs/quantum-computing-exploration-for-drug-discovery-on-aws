@@ -8,8 +8,6 @@
         "qa": {
             "shots": 1000,
             "embed_method": "default"
-           
-
         },
         "sa": {
             "shots": 1000,
