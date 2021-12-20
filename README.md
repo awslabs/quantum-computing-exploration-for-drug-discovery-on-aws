@@ -36,7 +36,7 @@ npm run deploy
 
 ```
 
-### Check deployment output
+### Deployment output
 
  After deployment, go to [cloudformation](https://console.aws.amazon.com/cloudformation/home), find the statck `QCStack`, from the output, you will get related links for Notebook, stepFunctions to run benchmark tasks, and QuickSight dashboard URL
 
