@@ -61,7 +61,7 @@ cd source
 cp cdk.context.template.json cdk.context.json 
 
 # edit cdk.context.json, 
-# fill  `quicksight_user` in step 1, 
+# fill `quicksight_user` in previous step, 
 # fill `quicksight_template_account_id` from user guide.
 
 ```
