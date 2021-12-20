@@ -1,40 +1,62 @@
-# aws-gcr-solutions-init-ts-repo
+# Quantum Ready Solution For Drug Discovery
 
 ## How to use?
 
-```shell
-$ cd source
-$ npm i
-$ vim .env  # edit your .env
-$ source .env
-$ cd deployment
-$ ./build-s3-dist.sh $DIST_OUTPUT_BUCKET $SOLUTION_NAME $VERSION
-```
+1. Signup for QuickSight
+   - Go to [quicksight](https://quicksight.aws.amazon.com/sn/start)
+   - Click "Sign uup for QuickSight"
+   - Choose `Enterprise`, click continue
+   - In the `Create your QuickSight account` page, fill the necessary infomaiton:
+   ![create quicksight](./docs/images/create_quicksight.png) 
+   - Go to [quicksight admin](https://us-east-1.quicksight.aws.amazon.com/sn/admin), record your QuickSight username
+   ![quicksight username](./docs/images/quicksight_username.png)    
 
-## How to cdk synth/diff/deploy?
-
-```shell
-$ npm run synth
-$ npm run diff
-$ npm run deploy
-$ npm run deploy -- --parameters Param1=Value1 --parameters Param2=Value2
-```
-
-## How to format your code?
+2. Create `cdk.context.json`
 
 ```shell
-$ npm run eslint
+cd source
+cp cdk.context.template.json cdk.context.json 
+
+# edit cdk.context.json, 
+# fill  `quicksight_user` in step 1, 
+# fill `quicksight_template_account_id` from user guide.
+
 ```
 
-## How to release?
+3. Deploy 
 
 ```shell
-$ # https://github.com/conventional-changelog/standard-version#release-as-a-target-type-imperatively-npm-version-like
-$ npm run bump -- --release-as minor # major, minor or patch
-$ # or
-$ npm run bump -- --release-as 1.1.0
-$ # dryrun
-$ npm run bump -- --dry-run --release-as 1.1.0
-$ # push tag to remote
-$ git push origin v1.1.0
+cd source
+
+npm install
+npm run deploy
+
 ```
+
+4. After deployment, go to [cloudformation](https://console.aws.amazon.com/cloudformation/home), find the statck `QCStack`, from the output, you will get related links for Notebook, stepFunctions to run benchmark tasks, and QuickSight dashboard URL
+
+![cloudformation output](./docs/images/deploy_output.png)   
+
+
+5. Change QuickSight permissions
+ - Go to [quicksight admin](https://us-east-1.quicksight.aws.amazon.com/sn/admin#aws) 
+ - In `QuickSight access to AWS services`, click 'Manage' button, select the S3 bucket create in step 4
+![quicksight permissions](./docs/images/quicksight_perm.png) 
+ - Save the change 
+
+
+6. Run benchmark througheneccccggkhcljriudeitlgfvhjktjngigbibrtjdnuj
+ Stepfunctons
+ -  open StepFunctons link in step 4
+ -  click the 'Start execution' button, keep the input as default, click 'Start execution'
+ -  wait Stepfunctons to complete
+
+7. View benchmark dashbaord
+ - open the QuickSight dashboard link in step 4
+
+8. Notebook experiment 
+ - open the Notebook link in step 4
+
+
+
+
