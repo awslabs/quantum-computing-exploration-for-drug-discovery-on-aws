@@ -1,4 +1,5 @@
 {
+    "version": "1",
     "runMode": "HPC|QC|ALL",
     "molFile": "s3://amazon-braket-qcstack-080766874269-us-east-1/raw/Aspirin.mol2",
     "modelVersion": "v1",
@@ -6,12 +7,13 @@
     "optParams": {
         "qa": {
             "shots": 1000,
-            "notes": "benchmarking"
+            "embed_method": "default"
+           
 
         },
         "sa": {
             "shots": 1000,
-            "embed_method": "default"
+            "notes": "benchmarking"
         }
     },
 

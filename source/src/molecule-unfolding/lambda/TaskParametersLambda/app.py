@@ -127,6 +127,92 @@ def get_all_param_list(param_list):
         return reslut_all
 
 
+def validate_modelParams(input_dict: dict, errors: list):
+    k = 'modelParams'
+    if not isinstance(input_dict[k], dict):
+        errors.append(f"devicesArns must be a dict")
+
+    param_names = dict(input_dict[k]).keys()
+    for p in param_names:
+        if p not in ["M", "D", "A", "HQ"]:
+            errors.append(f"unknown modelParam: {p}")
+        if not isinstance(input_dict[k][p], list):
+            errors.append(
+                f"values of modelParam: {p} must be an array")
+        list_vals = input_dict[k][p]
+        for e in list_vals:
+            if not isinstance(e, int):
+                errors.append(
+                    f"invalid value {e}, value for {p} must be int")
+        if p == 'D' and list_vals != [4]:
+            errors.append(
+                f"invalid value for {p}, current only support '[ 4 ]'")
+        if p == 'A' and list_vals != [300]:
+            errors.append(
+                f"invalid value for {p}, current only support '[ 300 ]'")
+        if p == 'HQ' and list_vals != [200]:
+            errors.append(
+                f"invalid value for {p}, current only support '[ 200 ]'")
+        if p == 'M' and (max(list_vals) > 4 or min(list_vals) < 1):
+            errors.append(
+                f"invalid value for {p}: {list_vals}, current only support range: [1, 4], e.g [1, 2, 3, 4] ")
+
+
+def validate_hpcResources(input_dict: dict, errors: list):
+    k = 'hpcResources'
+    if not isinstance(input_dict[k], list):
+        errors.append(f"hpcResources must be an array")
+    for c_m in list(input_dict[k]):
+        if not isinstance(c_m, list) or len(c_m) != 2:
+            errors.append(
+                f"element in hpcResources must be an array with size=2")
+        for e in c_m:
+            if not (isinstance(e, int)):
+                errors.append(
+                    f"invalid value {e}, element must be an int")
+        vcpu, mem = c_m
+        if vcpu > max_vcpu or mem > max_mem or vcpu < min_vcpu or mem < min_mem:
+            errors.append(
+                f"invalid value [vcpu, mem]: [{vcpu}, {mem}], vcpu range: [{min_vcpu}, {max_vcpu}], mem range: [{min_mem}, {max_mem}]")
+
+
+def validate_optParams(input_dict: dict, errors: list):
+    k = 'optParams'
+    if not isinstance(input_dict[k], dict):
+        errors.append(f"optParams must be a dict")
+    for p in input_dict[k].keys():
+        if p not in ['sa', 'qa']:
+            errors.append(
+                f"invalid key {p} of optParams, values: sa|qa")
+        elif not isinstance(input_dict[k][p], dict):
+            errors.append(f"optParams[{p}] must be a dict")
+        elif 'shots' in input_dict[k][p]:
+            shots = input_dict[k][p]['shots']
+            if not isinstance(shots, int):
+                errors.append(
+                    f"optParams[{p}][shots] must be int, invalid value: {shots}")
+            elif shots > max_shots or shots < min_shots:
+                errors.append(
+                    f"optParams[{p}][shots], invalid shots value: {shots}, value range [{min_shots}, {max_shots}]")
+        if p == 'qa':
+            for kk in input_dict[k][p].keys():
+                if kk not in ['shots', 'embed_method']:
+                    errors.append(
+                        f'invalid param for {k}.{p}: {kk}, support params: shots|embed_method')
+                if kk == 'embed_method' and input_dict[k][p][kk] != 'default':
+                    errors.append(
+                        f'invalid value for {k}.{p}.{kk}: {input_dict[k][p][kk]}, support value: default')
+
+        if p == 'sa':
+            for kk in input_dict[k][p].keys():
+                if kk not in ['shots', 'notes']:
+                    errors.append(
+                        f'invalid param for {k}.{p}: {kk}, support params: shots|notes')
+                if kk == 'notes' and len(input_dict[k][p][kk]) > 20:
+                    errors.append(
+                        f'invalid value for {k}.{p}.{kk}, string len cannot more than 20')
+
+
 def validate_input(input_dict: dict):
     print('validate_input')
     valid_keys = ['version', 'runMode', 'molFile', 'modelVersion', 'optParams',
@@ -142,12 +228,10 @@ def validate_input(input_dict: dict):
             if k not in valid_keys:
                 errors.append(
                     f"invalid field: {k}, support fields: {valid_keys_str}")
-
             if 'version' == k:
                 if input_dict['version'] not in ['1']:
                     errors.append(
                         f"invalid version, current only support value: '1' ")
-
             if 'devicesArns' == k:
                 if not isinstance(input_dict[k], list):
                     errors.append(f"devicesArns must be an array")
@@ -155,70 +239,12 @@ def validate_input(input_dict: dict):
                 for arn in list(input_dict[k]):
                     if arn not in default_devices_arns:
                         errors.append(f"unknown devices arn: {arn}")
-
             if 'modelParams' == k:
-                if not isinstance(input_dict[k], dict):
-                    errors.append(f"devicesArns must be a dict")
-
-                param_names = dict(input_dict[k]).keys()
-                for p in param_names:
-                    if p not in ["M", "D", "A", "HQ"]:
-                        errors.append(f"unknown modelParam: {p}")
-                    if not isinstance(input_dict[k][p], list):
-                        errors.append(
-                            f"values of modelParam: {p} must be an array")
-                    list_vals = input_dict[k][p]
-                    for e in list_vals:
-                        if not isinstance(e, int):
-                            errors.append(
-                                f"invalid value {e}, value for {p} must be int")
-                    if p == 'D' and list_vals != [4]:
-                        errors.append(
-                            f"invalid value for {p}, current only support '[ 4 ]'")
-                    if p == 'A' and list_vals != [300]:
-                        errors.append(
-                            f"invalid value for {p}, current only support '[ 300 ]'")
-                    if p == 'HQ' and list_vals != [200]:
-                        errors.append(
-                            f"invalid value for {p}, current only support '[ 200 ]'")
-                    if p == 'M' and (max(list_vals) > 4 or min(list_vals) < 1):
-                        errors.append(
-                            f"invalid value for {p}: {list_vals}, current only support range: [1, 4], e.g [1, 2, 3, 4] ")
-
+                validate_modelParams(input_dict, errors)
             if 'hpcResources' == k:
-                if not isinstance(input_dict[k], list):
-                    errors.append(f"hpcResources must be an array")
-                for c_m in list(input_dict[k]):
-                    if not isinstance(c_m, list) or len(c_m) != 2:
-                        errors.append(
-                            f"element in hpcResources must be an array with size=2")
-                    for e in c_m:
-                        if not (isinstance(e, int)):
-                            errors.append(
-                                f"invalid value {e}, element must be an int")
-                    vcpu, mem = c_m
-                    if vcpu > max_vcpu or mem > max_mem or vcpu < min_vcpu or mem < min_mem:
-                        errors.append(
-                            f"invalid value [vcpu, mem]: [{vcpu}, {mem}], vcpu range: [{min_vcpu}, {max_vcpu}], mem range: [{min_mem}, {max_mem}]")
-
+                validate_hpcResources(input_dict, errors)
             if 'optParams' == k:
-                if not isinstance(input_dict[k], dict):
-                    errors.append(f"optParams must be a dict")
-                for p in input_dict[k].keys():
-                    if p not in ['sa', 'qa']:
-                        errors.append(
-                            f"invalid key {p} of optParams, values: sa|qa")
-                    elif not isinstance(input_dict[k][p], dict):
-                        errors.append(f"optParams[{p}] must be a dict")
-                    elif 'shots' in input_dict[k][p]:
-                        shots = input_dict[k][p]['shots']
-                        if not isinstance(shots, int):
-                            errors.append(
-                                f"optParams[{p}][shots] must be int, invalid value: {shots}")
-                        elif shots > max_shots or shots < min_shots:
-                            errors.append(
-                                f"optParams[{p}][shots], invalid shots value: {shots}, value range [{min_shots}, {max_shots}]")
-
+                validate_optParams(input_dict, errors)
     except Exception as e:
         errors.append(repr(e))
 
