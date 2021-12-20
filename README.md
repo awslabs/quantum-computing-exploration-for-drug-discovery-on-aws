@@ -68,5 +68,6 @@ npm run deploy
  - open the Notebook link in step `deployment output`
 
 
-
+### More 
+  [Benchmark Experiment](./docs/en/benchmark.md) 
 
