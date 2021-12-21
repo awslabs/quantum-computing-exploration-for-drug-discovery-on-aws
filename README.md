@@ -39,6 +39,9 @@ There are two types of Experiments of this solution: Benchmark experiment and No
 
 This solution also deploys SageMaker notebooks, user can run and study backend algorithms for drug discovery in notebook. The code is step-by-step guide user to build models, run them by HPC and Braket service and post process the result. 
 
+## Dataset
+
+We use molecule data for this solution (source/src/molecule-unfolding/molecule-data/117_ideal.mol2). These data comes from the PDB protein data bank which is under [CC0 license](https://www.rcsb.org/pages/usage-policy). Please refer to the link for [117 mol file](https://www.rcsb.org/ligand/117)
 
 ## Quick start
 
@@ -106,6 +109,7 @@ npm run deploy
 ### Notebook experiment 
 
  - open the Notebook link in step `deployment output`
+
 
 
 ### More 
