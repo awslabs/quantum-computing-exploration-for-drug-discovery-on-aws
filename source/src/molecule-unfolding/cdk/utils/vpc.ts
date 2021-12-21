@@ -45,7 +45,9 @@ export default (scope: Construct) => {
 
     const vpcFlowlog = new logs.LogGroup(scope, "vpcFlowlog", {
         encryptionKey: logKey,
-        logGroupName
+        logGroupName,
+        removalPolicy: cdk.RemovalPolicy.DESTROY,
+        retention: logs.RetentionDays.THREE_MONTHS
     });
 
     vpc.addFlowLog("logtoCW", {

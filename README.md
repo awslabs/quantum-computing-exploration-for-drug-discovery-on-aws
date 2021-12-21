@@ -8,9 +8,9 @@ The overall architecture is shown as below:
 
 ![architecture](./docs/images/architecture.png)
 
-There are two types of experimentations of this solution: Benchmark experimentation and Notebook experimentation.
+There are two types of Experiments of this solution: Benchmark experiment and Notebook experiment.
 
-### Benchmark experimentation:
+### Benchmark Experiment:
 
 1. User triggers the benchmark execution through AWS StepFunctions from AWS console.
 
@@ -35,7 +35,7 @@ There are two types of experimentations of this solution: Benchmark experimentat
 
 1. User views the benchmarking result through AWS Quicksight dashboard.
 
-### Notebook experimentation:
+### Notebook Experiment:
 
 This solution also deploys SageMaker notebooks, user can run and study backend algorithms for drug discovery in notebook. The code is step-by-step guide user to build models, run them by HPC and Braket service and post process the result. 
 
@@ -109,5 +109,5 @@ npm run deploy
 
 
 ### More 
- - [Benchmark Experimentation](./docs/en/benchmark.md) 
- - [Notebook Experimentation](./docs/en/notebook.md) 
+ - [Benchmark Experiment](./docs/en/benchmark.md) 
+ - [Notebook Experiment](./docs/en/notebook.md) 

@@ -40,10 +40,10 @@ export interface BatchProps {
     usePreBuildImage: boolean;
     dashboardUrl: string;
     prefix: string;
-    stackName: string;
     vpc: ec2.Vpc;
     batchSg: ec2.SecurityGroup;
     lambdaSg: ec2.SecurityGroup;
+    stackName: string;
 }
 
 export class Benchmark extends Construct {
@@ -131,7 +131,9 @@ export class Benchmark extends Construct {
 
         const logGroup = new logs.LogGroup(this, 'BenchmarkStateMachineLogGroup', {
             encryptionKey: this.logKey,
-            logGroupName
+            logGroupName,
+            removalPolicy: cdk.RemovalPolicy.DESTROY,
+            retention: logs.RetentionDays.THREE_MONTHS
         });
 
         const benchmarkStateMachine = new sfn.StateMachine(this, 'BenchmarkStateMachine', {
@@ -215,7 +217,9 @@ export class Benchmark extends Construct {
 
         const logGroup = new logs.LogGroup(this, 'RunHPCAndQCStateMachineLogGroup', {
             encryptionKey: this.logKey,
-            logGroupName
+            logGroupName,
+            removalPolicy: cdk.RemovalPolicy.DESTROY,
+            retention: logs.RetentionDays.THREE_MONTHS
         });
 
         const hpcAndQCStateMachine = new sfn.StateMachine(this, 'RunHPCAndQCStateMachine', {
@@ -272,7 +276,9 @@ export class Benchmark extends Construct {
 
         const logGroup = new logs.LogGroup(this, 'QCStateMachineLogGroup', {
             encryptionKey: this.logKey,
-            logGroupName
+            logGroupName,
+            removalPolicy: cdk.RemovalPolicy.DESTROY,
+            retention: logs.RetentionDays.THREE_MONTHS
         });
 
         const qcStateMachine = new sfn.StateMachine(this, 'QCStateMachine', {
@@ -344,7 +350,9 @@ export class Benchmark extends Construct {
 
         const logGroup = new logs.LogGroup(this, 'QCDeviceStateMachineLogGroup', {
             encryptionKey: this.logKey,
-            logGroupName
+            logGroupName,
+            removalPolicy: cdk.RemovalPolicy.DESTROY,
+            retention: logs.RetentionDays.THREE_MONTHS
         });
 
         const qcDeviceStateMachine = new sfn.StateMachine(this, 'QCDeviceStateMachine', {
@@ -423,7 +431,9 @@ export class Benchmark extends Construct {
 
         const logGroup = new logs.LogGroup(this, 'HPCStateMachineLogGroup', {
             encryptionKey: this.logKey,
-            logGroupName
+            logGroupName,
+            removalPolicy: cdk.RemovalPolicy.DESTROY,
+            retention: logs.RetentionDays.THREE_MONTHS
         });
 
         const hpcStateMachine = new sfn.StateMachine(this, 'HPCStateMachine', {

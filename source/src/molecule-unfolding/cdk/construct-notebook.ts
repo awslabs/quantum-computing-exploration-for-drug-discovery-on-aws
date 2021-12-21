@@ -24,7 +24,6 @@ import {
 export interface Props {
     region: string;
     account: string;
-    usePreBuildImage: boolean
     bucket: s3.Bucket;
     prefix: string;
 }
@@ -56,11 +55,7 @@ export class Notebook extends Construct {
         const notebookRole = this.roleUtil.createNotebookIamRole()
 
         let onStartContent = readFileSync(`${__dirname}/resources/onStart.template`, 'utf-8')
-        if (this.props.usePreBuildImage) {
-            //console.log('replace #_RUN_BUILD_#')
-            onStartContent = onStartContent.replace('#_RUN_BUILD_#', '')
-        }
-
+        
         const base64Encode = (str: string): string => Buffer.from(str, 'binary').toString('base64');
         const onStartContentBase64 = base64Encode(onStartContent)
 
@@ -74,15 +69,23 @@ export class Notebook extends Construct {
             enableKeyRotation: true
         });
 
+        // const gitConfigProperty = {
+        //     // TODO:
+        //     // this will be set to the github repository of this project after open source
+        //     repositoryUrl: '',
+        // };
+
         const notebookInstnce = new CfnNotebookInstance(this, 'GCRQCLifeScienceNotebook', {
             instanceType: instanceTypeParam.valueAsString,
             roleArn: notebookRole.roleArn,
             rootAccess: 'Enabled',
             lifecycleConfigName: installBraketSdK.attrNotebookInstanceLifecycleConfigName,
             volumeSizeInGb: 50,
-            kmsKeyId: qcNotebookKey.keyId
+            kmsKeyId: qcNotebookKey.keyId,
+           // defaultCodeRepository: gitConfigProperty.repositoryUrl
         });
 
+        
         // Output //////////////////////////
         const notebookUrl = `https://console.aws.amazon.com/sagemaker/home?region=${this.props.region}#/notebook-instances/openNotebook/${notebookInstnce.attrNotebookInstanceName}?view=classic`
 

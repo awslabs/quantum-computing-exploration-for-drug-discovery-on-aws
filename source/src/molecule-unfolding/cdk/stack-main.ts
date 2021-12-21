@@ -1,6 +1,11 @@
 import * as cdk from '@aws-cdk/core'
 import * as s3 from '@aws-cdk/aws-s3'
 import setup_vpc_and_sg from './utils/vpc'
+// import {
+//   Asset
+// } from '@aws-cdk/aws-s3-assets'
+// const path = require('path')
+
 
 import {
   Aspects,
@@ -82,13 +87,22 @@ export class MainStack extends SolutionStack {
     } = setup_vpc_and_sg(this)
 
 
+    // const codeAsset = new Asset(this, "Code", {
+    //   path: path.join(__dirname, "../../")
+    // });
+
+    // new cdk.CfnOutput(this, 'SourceCode', {
+    //   value: codeAsset.httpUrl,
+    //   description: "SourceCode",
+    // });
+
+
     // Notebook //////////////////////////
     const notebook = new Notebook(this, 'MolUnfNotebook', {
       account: this.account,
       region: this.region,
       bucket: s3bucket,
-      prefix,
-      usePreBuildImage
+      prefix
     });
 
     // Dashboard //////////////////////////
@@ -106,12 +120,12 @@ export class MainStack extends SolutionStack {
       region: this.region,
       bucket: s3bucket,
       prefix,
-      stackName,
       usePreBuildImage,
       dashboardUrl: dashboard.outputDashboradUrl.value,
       vpc,
       batchSg,
       lambdaSg,
+      stackName
     });
 
     if (usePreBuildImage) {
@@ -129,7 +143,6 @@ export class MainStack extends SolutionStack {
       vpc,
       lambdaSg,
     });
-
     Aspects.of(this).add(new AddCfnNag());
   }
 

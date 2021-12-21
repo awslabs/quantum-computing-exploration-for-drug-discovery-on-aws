@@ -2,23 +2,12 @@
 
 sudo -u ec2-user -i <<EOS
 
-TMPDIR=$(mktemp -d)
-cd "$TMPDIR"
-
-aws s3 cp s3://amazon-braket-gcr-qc-sol-common/qc/notebook/braket-notebook-lcc.zip .
-unzip braket-notebook-lcc.zip
-./install.sh
-
-nohup rm -fr "$TMPDIR" &
-
-cd /home/ec2-user/SageMaker
-rm -rf *
-
-aws s3 cp s3://amazon-braket-gcr-qc-sol-common/qc/latest/code.zip .
-unzip code.zip
-cd src/molecule-unfolding/
-
-#_RUN_BUILD_#./build.sh | tee /tmp/build.log
+pip install dimod==0.9.13
+pip install networkx==2.6.3
+pip install dwave-ocean-sdk
+pip install amazon-braket-sdk
+pip install amazon-braket-ocean-plugin
+pip install biopandas
 
 EOS
 

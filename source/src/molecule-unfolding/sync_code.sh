@@ -20,4 +20,11 @@ rm -rf ./batch-images/create-model/molecule-data
 echo "cp -r ./molecule-data ./batch-images/create-model/"
 cp -r ./molecule-data ./batch-images/create-model/
 
+
+# echo "copy files to ./notebook/"
+# rm -rf ./notebook/* 
+# cp -r ./molecule-data ./notebook/
+# cp -r ./utility ./notebook/
+# cp *.ipynb ./notebook/
+
 echo "Done"

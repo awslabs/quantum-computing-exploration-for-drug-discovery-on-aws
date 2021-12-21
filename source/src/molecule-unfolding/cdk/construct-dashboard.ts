@@ -6,8 +6,8 @@ interface DashBoardProps {
     region: string;
     account: string;
     bucket: s3.Bucket;
-    stackName: string;
     prefix: string;
+    stackName: string;
 }
 
 export class Dashboard extends cdk.Construct {
