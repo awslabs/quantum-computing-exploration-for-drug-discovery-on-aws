@@ -8,6 +8,5 @@ node_modules
 cdk.out
 .env
 .DS_Store
-cdk.context.json
 
 

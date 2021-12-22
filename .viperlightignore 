@@ -7,3 +7,5 @@ cdk.out/
 deployment/regional-s3-assets/
 source/
 docs/
+cdk.context.json
+
