@@ -1,13 +1,25 @@
 #!/usr/bin/env bash
 
 sudo -u ec2-user -i <<EOS
+python3 --version
 
-pip install dimod==0.9.13
-pip install networkx==2.6.3
-pip install dwave-ocean-sdk
-pip install amazon-braket-sdk
-pip install amazon-braket-ocean-plugin
-pip install biopandas
+mkdir qcenv
+cd qcenv
+python3 -m venv qcenv
+source qcenv/bin/activate
+
+pip3 install numpy==1.19.2
+pip3 install boto3==1.20.18
+pip3 install dimod==0.10.10
+pip3 install networkx==2.6.3
+pip3 install dwave-ocean-sdk
+pip3 install amazon-braket-sdk
+pip3 install amazon-braket-ocean-plugin
+pip3 install biopandas
+
+pip3 install jupyter ipykernel
+
+python3 -m ipykernel install --user --name=qcenv
 
 EOS
 

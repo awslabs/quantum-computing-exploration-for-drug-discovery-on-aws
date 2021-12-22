@@ -1,6 +1,6 @@
 numpy==1.19.2
-boto3==1.14.43
-dimod==0.9.13
+boto3==1.20.18
+dimod==0.10.10
 networkx==2.6.3
 dwave-ocean-sdk
 amazon-braket-sdk

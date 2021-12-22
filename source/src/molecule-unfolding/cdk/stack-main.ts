@@ -6,7 +6,6 @@ import setup_vpc_and_sg from './utils/vpc'
 // } from '@aws-cdk/aws-s3-assets'
 // const path = require('path')
 
-
 import {
   Aspects,
   Construct,
@@ -92,7 +91,7 @@ export class MainStack extends SolutionStack {
     // });
 
     // new cdk.CfnOutput(this, 'SourceCode', {
-    //   value: codeAsset.httpUrl,
+    //   value: `s3://${codeAsset.s3BucketName}/${codeAsset.s3ObjectKey}`,
     //   description: "SourceCode",
     // });
 

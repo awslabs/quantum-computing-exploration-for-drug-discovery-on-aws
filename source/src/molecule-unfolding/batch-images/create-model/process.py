@@ -37,7 +37,7 @@ def prepare_molecule_data(mol_file: str, execution_id, version):
         raw_model_s3_path = f"s3://{b}/{k}"
 
     else:
-        mol_file_name = './molecule-data/Aspirin.mol2'
+        mol_file_name = './molecule-data/117_ideal.mol2'
         mol2_name = basename(mol_file_name)
         raw_model_s3_path = upload_file(bucket=s3_bucket, key=f"{s3_prefix}/executions/{execution_id}/models/raw/{mol2_name}",
                                         file_name=mol_file_name)
