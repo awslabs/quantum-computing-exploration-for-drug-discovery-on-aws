@@ -64,14 +64,8 @@ export class MainStack extends SolutionStack {
       serverAccessLogsPrefix: `accesslogs/${bucketName}/`
     });
 
-    const usePreBuildImageStrValue = (this.node.tryGetContext('use_prebuild_iamge') + '').toLowerCase() || 'false'
-    let usePreBuildImage = false
-    if (usePreBuildImageStrValue.toLowerCase() == 'false') {
-      usePreBuildImage = false
-    } else {
-      usePreBuildImage = true
-    }
-
+    let usePreBuildImage = stackName.endsWith('dev')
+  
     //console.log(`usePreBuildImage: ${usePreBuildImage}`)
 
     new cdk.CfnOutput(this, "bucketName", {

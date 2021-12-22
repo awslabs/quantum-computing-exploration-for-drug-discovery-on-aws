@@ -1,6 +1,5 @@
 {
     "quicksight_template_account_id": "",
     "quicksight_template_region": "us-east-1",
-    "quicksight_user": "",
-    "use_prebuild_iamge": false
+    "quicksight_user": ""
 }
