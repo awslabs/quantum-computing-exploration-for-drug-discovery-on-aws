@@ -57,15 +57,13 @@ We use molecule data for this solution (source/src/molecule-unfolding/molecule-d
    
    ![quicksight username](./docs/images/quicksight_username.png)    
 
-### Create `cdk.context.json`
+### Update `cdk.context.json`
 
 ```shell
 cd source
-cp cdk.context.template.json cdk.context.json 
 
 # edit cdk.context.json, 
 # fill `quicksight_user` in previous step, 
-# fill `quicksight_template_account_id` from user guide.
 
 ```
 
