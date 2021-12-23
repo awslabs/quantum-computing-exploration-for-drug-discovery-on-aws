@@ -87,6 +87,9 @@ class BuildMolGraph():
                     if pair_pts not in rb_data['pair_set']:
                         rb_data['pair_set'].add(pair_pts)
 
+        # add list to save invalid rb
+        invalid_rb_list = []
+        invalid_rb_name_list = []
         for rb in self.rb_list:
             self.mol_ug.remove_edge(rb[0], rb[1])
             current_rb_name = "{}+{}".format(rb[0], rb[1])
@@ -101,12 +104,20 @@ class BuildMolGraph():
                     clear_set(update_pts, rb)
                     rb_data[current_rb_name]['f_{}_set'.format(i)] = update_pts
                     i = i + 1
+                if "f_1_set" not in rb_data[current_rb_name].keys():
+                    invalid_rb_list.append(rb)
+                    invalid_rb_name_list.append(current_rb_name)
+                    # print(f"rb_name {current_rb_name} f_0_set {rb_data[current_rb_name]['f_0_set']} with length {len(rb_data[current_rb_name]['f_0_set'])}")
                 # update bc score
                 rb_data[current_rb_name]['bc_num'] = (
                     self.bc[rb[0]] + self.bc[rb[1]])/2
                 # update make pts pair set
         #         update_pts_pair(rb_data[rb_name])
             self.mol_ug.add_edge(rb[0], rb[1])
+        
+        for invalid_rb, invalid_rb_name in zip(invalid_rb_list, invalid_rb_name_list):
+            self.rb_list.remove(invalid_rb)
+            del rb_data[invalid_rb_name]
 
         sort_rb_data = {k: v for k, v in sorted(rb_data.items(), key=lambda rb: -rb[1]['bc_num'])}
 
