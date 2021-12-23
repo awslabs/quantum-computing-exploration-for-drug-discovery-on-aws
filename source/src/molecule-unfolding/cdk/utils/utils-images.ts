@@ -23,7 +23,7 @@ interface Props {
 export class ECRImageUtil {
     private props: Props
     private scope: cdk.Construct
-    private ecr_account_id : string
+    private ecr_account_id: string
 
     private constructor(scope: cdk.Construct, props: Props) {
         this.props = props
