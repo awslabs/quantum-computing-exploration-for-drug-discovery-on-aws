@@ -16,28 +16,36 @@ export enum ECRRepoNameEnum {
 interface Props {
     usePreBuildImage: boolean;
     prefix: string;
+    region: string;
+    account: string;
 }
 
 export class ECRImageUtil {
     private props: Props
     private scope: cdk.Construct
+    private ecr_account_id : string
 
     private constructor(scope: cdk.Construct, props: Props) {
         this.props = props
         this.scope = scope
+        this.ecr_account_id = this.props.account
     }
-    public static newInstance(scope: cdk.Construct, props: Props){
+    public static newInstance(scope: cdk.Construct, props: Props) {
         return new this(scope, props);
     }
 
-    public getECRImage( name: ECRRepoNameEnum): ecs.ContainerImage | lambda.DockerImageCode {
+    public getECRImage(name: ECRRepoNameEnum): ecs.ContainerImage | lambda.DockerImageCode {
         const usePreBuildImage = this.props.usePreBuildImage
 
         if (name == ECRRepoNameEnum.Batch_Create_Model) {
             if (usePreBuildImage) {
                 return ecs.ContainerImage.fromEcrRepository(
-                    ecr.Repository.fromRepositoryName(this.scope, 'create-model',
-                        `${this.props.prefix}/create-model`)
+                    // ecr.Repository.fromRepositoryName(this.scope, 'create-model',
+                    //     `${this.props.prefix}/create-model`)
+
+                    ecr.Repository.fromRepositoryArn(this.scope, 'create-model',
+                        `arn:aws:ecr:${this.props.region}:${this.ecr_account_id}:repository/${this.props.prefix}/create-model`
+                    )
                 );
             }
             return ecs.ContainerImage.fromAsset(
@@ -47,8 +55,12 @@ export class ECRImageUtil {
         if (name == ECRRepoNameEnum.Batch_Sa_Optimizer) {
             if (usePreBuildImage) {
                 return ecs.ContainerImage.fromEcrRepository(
-                    ecr.Repository.fromRepositoryName(this.scope, 'sa-optimizer',
-                        `${this.props.prefix}/sa-optimizer`)
+                    // ecr.Repository.fromRepositoryName(this.scope, 'sa-optimizer',
+                    //     `${this.props.prefix}/sa-optimizer`)
+
+                    ecr.Repository.fromRepositoryArn(this.scope, 'sa-optimizer',
+                        `arn:aws:ecr:${this.props.region}:${this.ecr_account_id}:repository/${this.props.prefix}/sa-optimizer`
+                    )
                 );
             }
 
@@ -58,8 +70,12 @@ export class ECRImageUtil {
         if (name == ECRRepoNameEnum.Lambda_CheckDevice) {
             if (usePreBuildImage) {
                 return lambda.DockerImageCode.fromEcr(
-                    ecr.Repository.fromRepositoryName(this.scope, 'lambda-device-available-check',
-                        `${this.props.prefix}/lambda-device-available-check`)
+                    // ecr.Repository.fromRepositoryName(this.scope, 'lambda-device-available-check',
+                    //     `${this.props.prefix}/lambda-device-available-check`)
+
+                    ecr.Repository.fromRepositoryArn(this.scope, 'lambda-device-available-check',
+                        `arn:aws:ecr:${this.props.region}:${this.ecr_account_id}:repository/${this.props.prefix}/lambda-device-available-check`
+                    )
                 );
             }
             return lambda.DockerImageCode.fromImageAsset(path.join(__dirname, '../../lambda/DeviceAvailableCheckLambda/'));
@@ -68,8 +84,12 @@ export class ECRImageUtil {
         if (name == ECRRepoNameEnum.Lambda_SubmitQCTask) {
             if (usePreBuildImage) {
                 return lambda.DockerImageCode.fromEcr(
-                    ecr.Repository.fromRepositoryName(this.scope, 'lambda-submit-qc-task',
-                        `${this.props.prefix}/lambda-submit-qc-task`)
+                    // ecr.Repository.fromRepositoryName(this.scope, 'lambda-submit-qc-task',
+                    //     `${this.props.prefix}/lambda-submit-qc-task`)
+
+                    ecr.Repository.fromRepositoryArn(this.scope, 'lambda-submit-qc-task',
+                        `arn:aws:ecr:${this.props.region}:${this.ecr_account_id}:repository/${this.props.prefix}/lambda-submit-qc-task`
+                    )
                 );
             }
             return lambda.DockerImageCode.fromImageAsset(path.join(__dirname, '../../lambda/SubmitQCTaskLambda/'));
@@ -78,8 +98,12 @@ export class ECRImageUtil {
         if (name == ECRRepoNameEnum.Lambda_ParseBraketResult) {
             if (usePreBuildImage) {
                 return lambda.DockerImageCode.fromEcr(
-                    ecr.Repository.fromRepositoryName(this.scope, 'lambda-parse-braket-result',
-                        `${this.props.prefix}/lambda-parse-braket-result`)
+                    // ecr.Repository.fromRepositoryName(this.scope, 'lambda-parse-braket-result',
+                    //     `${this.props.prefix}/lambda-parse-braket-result`)
+
+                    ecr.Repository.fromRepositoryArn(this.scope, 'lambda-parse-braket-result',
+                        `arn:aws:ecr:${this.props.region}:${this.ecr_account_id}:repository/${this.props.prefix}/lambda-parse-braket-result`
+                    )
                 );
             }
             return lambda.DockerImageCode.fromImageAsset(path.join(__dirname, '../../lambda/ParseBraketResultLambda/'));
