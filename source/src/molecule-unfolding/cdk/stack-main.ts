@@ -1,10 +1,6 @@
 import * as cdk from '@aws-cdk/core'
 import * as s3 from '@aws-cdk/aws-s3'
 import setup_vpc_and_sg from './utils/vpc'
-// import {
-//   Asset
-// } from '@aws-cdk/aws-s3-assets'
-// const path = require('path')
 
 import {
   Aspects,

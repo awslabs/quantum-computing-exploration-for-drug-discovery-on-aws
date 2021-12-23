@@ -69,11 +69,11 @@ export class Notebook extends Construct {
             enableKeyRotation: true
         });
 
-        // const gitConfigProperty = {
-        //     // TODO:
-        //     // this will be set to the github repository of this project after open source
-        //     repositoryUrl: '',
-        // };
+        const gitConfigProperty = {
+            // TODO:
+            // this will be set to the github repository of this project after open source
+            repositoryUrl: 'https://github.com/amliuyong/test-public.git',
+        };
 
         const notebookInstnce = new CfnNotebookInstance(this, 'GCRQCLifeScienceNotebook', {
             instanceType: instanceTypeParam.valueAsString,
@@ -82,7 +82,7 @@ export class Notebook extends Construct {
             lifecycleConfigName: installBraketSdK.attrNotebookInstanceLifecycleConfigName,
             volumeSizeInGb: 50,
             kmsKeyId: qcNotebookKey.keyId,
-           // defaultCodeRepository: gitConfigProperty.repositoryUrl
+            defaultCodeRepository: gitConfigProperty.repositoryUrl
         });
 
         
