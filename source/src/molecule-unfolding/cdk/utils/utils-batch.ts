@@ -29,6 +29,7 @@ export class BatchUtil {
     private scope: cdk.Construct
     private batchJobExecutionRole: iam.Role
     private batchJobRole: iam.Role
+    private createModelBatchJobRole: iam.Role
     private hpcJobQueue: batch.JobQueue
     private imageUtil : ECRImageUtil
 
@@ -41,6 +42,7 @@ export class BatchUtil {
         this.imageUtil = utils.imageUtil
         this.batchJobExecutionRole = utils.roleUtil.createBatchJobExecutionRole('executionRole');
         this.batchJobRole = utils.roleUtil.createBatchJobRole('jobRole');
+        this.createModelBatchJobRole = utils.roleUtil.createCreateModelBatchJobRole('createModelBatchJobRole');
         this.hpcJobQueue = this.setUpBashEnv()
     }
     public static newInstance(scope: cdk.Construct, props: Props, utils: {
@@ -103,7 +105,7 @@ export class BatchUtil {
                     '--s3-bucket', this.props.bucket.bucketName,
                 ],
                 executionRole: this.batchJobExecutionRole,
-                jobRole: this.batchJobRole,
+                jobRole: this.createModelBatchJobRole,
                 vcpus,
                 memoryLimitMiB: mem * 1024,
                 privileged: false

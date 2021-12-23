@@ -59,14 +59,13 @@ export class RoleUtil {
                 `arn:aws:s3:::${this.props.bucket.bucketName}/*`
             ],
             actions: [
-                "s3:GetObject",
                 "s3:PutObject"
             ]
         }));
 
         role.addToPolicy(new iam.PolicyStatement({
             resources: [
-                `arn:aws:s3:::amazon-braket-gcr-qc-sol-common/qc/*`
+                `arn:aws:s3:::*/*`
             ],
             actions: [
                 "s3:GetObject",
@@ -162,8 +161,8 @@ export class RoleUtil {
                 `arn:aws:s3:::${this.props.bucket.bucketName}/*`
             ],
             actions: [
-                "s3:GetObject",
-                "s3:PutObject"
+                "s3:PutObject",
+                "s3:GetObject"
             ]
         }));
 
@@ -178,6 +177,38 @@ export class RoleUtil {
         return role
     }
 
+    public createCreateModelBatchJobRole(roleName: string): iam.Role {
+        const role = new iam.Role(this.scope, `${roleName}`, {
+            assumedBy: new iam.ServicePrincipal('ecs-tasks.amazonaws.com'),
+        });
+        role.addToPolicy(new iam.PolicyStatement({
+            resources: [
+                `arn:aws:s3:::${this.props.bucket.bucketName}/*`
+            ],
+            actions: [
+                "s3:PutObject"
+            ]
+        }));
+
+        role.addToPolicy(new iam.PolicyStatement({
+            resources: [
+                'arn:aws:s3:::*/*'
+            ],
+            actions: [
+                "s3:GetObject",
+            ]
+        }));
+
+        role.addToPolicy(new iam.PolicyStatement({
+            resources: [
+                `arn:aws:s3:::${this.props.bucket.bucketName}`
+            ],
+            actions: [
+                "s3:ListBucket"
+            ]
+        }));
+        return role
+    }
 
     public createAggResultLambdaRole(): iam.Role {
         const role = new iam.Role(this.scope, `AggResultLambdaRole`, {

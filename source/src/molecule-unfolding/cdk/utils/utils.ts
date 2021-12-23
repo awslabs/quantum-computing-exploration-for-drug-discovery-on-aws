@@ -51,6 +51,7 @@ export class AddCfnNag implements IAspect {
                 }, ],
             });
         } else if (node.node.path.endsWith('/jobRole/DefaultPolicy/Resource') ||
+            node.node.path.endsWith('/createModelBatchJobRole/DefaultPolicy/Resource') ||
             node.node.path.endsWith('/executionRole/DefaultPolicy/Resource') ||
             node.node.path.endsWith('/TaskParametersLambdaRole/DefaultPolicy/Resource') ||
             node.node.path.endsWith('/DeviceAvailableCheckLambdaRole/DefaultPolicy/Resource') ||
@@ -63,7 +64,7 @@ export class AddCfnNag implements IAspect {
             (node as cdk.CfnResource).addMetadata('cfn_nag', {
                 rules_to_suppress: [{
                     id: 'W12',
-                    reason: 'some permissions are not resource-level permissions',
+                    reason: 'some permissions are not resource-level permissions or the program need to read objects from any s3 bucket',
                 }, ],
             });
         } else if (node.node.path.endsWith('/HPCStateMachine/Role/DefaultPolicy/Resource') ||

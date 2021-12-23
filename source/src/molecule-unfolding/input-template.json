@@ -1,7 +1,7 @@
 {
     "version": "1",
     "runMode": "HPC|QC|ALL",
-    "molFile": "s3://amazon-braket-qcstack-080766874269-us-east-1/raw/Aspirin.mol2",
+    "molFile": "s3://amazon-braket-gcr-qc-sol-common/qc/raw_model/117_ideal.mol2",
     "modelVersion": "v1",
     "experimentName": "test",
     "optParams": {
@@ -10,7 +10,7 @@
             "embed_method": "default"
         },
         "sa": {
-            "shots": 1000,
+            "shots": 100,
             "notes": "benchmarking"
         }
     },
