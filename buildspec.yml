@@ -8,7 +8,9 @@ phases:
     commands:
       - ./deployment/build-s3-dist.sh ${DIST_OUTPUT_BUCKET} ${SOLUTION_NAME} ${VERSION}
       - mkdir -p deployment/open-source/ && touch deployment/open-source/.empty
-      - ./source/src/molecule-unfolding/build.sh
+      - curr_dir=$(pwd)
+      - cd ./source/src/molecule-unfolding/ && ./build.sh
+      - cd $curr_dir
   post_build:
     commands:
       - aws s3 cp s3://solutions-build-assets/changelog-spec.yml buildspec.yml
