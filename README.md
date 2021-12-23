@@ -113,3 +113,8 @@ npm run deploy
 ### More 
  - [Benchmark Experiment](./docs/en/benchmark.md) 
  - [Notebook Experiment](./docs/en/notebook.md) 
+
+
+
+## License
+This project is licensed under the Apache-2.0 License.
