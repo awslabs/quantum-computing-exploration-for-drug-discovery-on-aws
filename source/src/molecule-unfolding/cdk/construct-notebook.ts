@@ -26,6 +26,7 @@ export interface Props {
     account: string;
     bucket: s3.Bucket;
     prefix: string;
+    stackName: string
 }
 
 export class Notebook extends Construct {
@@ -39,12 +40,7 @@ export class Notebook extends Construct {
         this.props = props
         const INSTANCE_TYPE = 'ml.c5.xlarge'
 
-        this.roleUtil = RoleUtil.newInstance(this, {
-            account: this.props.account,
-            region: this.props.region,
-            bucket: this.props.bucket,
-            prefix: this.props.prefix
-        });
+        this.roleUtil = RoleUtil.newInstance(this, props);
 
         const instanceTypeParam = new cdk.CfnParameter(this, "NotebookInstanceType", {
             type: "String",

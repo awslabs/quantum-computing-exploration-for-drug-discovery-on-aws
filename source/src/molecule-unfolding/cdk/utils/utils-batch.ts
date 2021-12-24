@@ -28,9 +28,11 @@ export class BatchUtil {
     private props: Props
     private scope: cdk.Construct
     private batchJobExecutionRole: iam.Role
-    private batchJobRole: iam.Role
+    private hpcBatchJobRole: iam.Role
+    private qcBatchJobRole: iam.Role
     private createModelBatchJobRole: iam.Role
     private hpcJobQueue: batch.JobQueue
+    private fragetJobQueue: batch.JobQueue
     private imageUtil : ECRImageUtil
 
     private constructor(scope: cdk.Construct, props: Props, utils: {
@@ -40,10 +42,12 @@ export class BatchUtil {
         this.props = props
         this.scope = scope 
         this.imageUtil = utils.imageUtil
-        this.batchJobExecutionRole = utils.roleUtil.createBatchJobExecutionRole('executionRole');
-        this.batchJobRole = utils.roleUtil.createBatchJobRole('jobRole');
+        this.batchJobExecutionRole = utils.roleUtil.createBatchJobExecutionRole('batchExecutionRole');
+        this.hpcBatchJobRole = utils.roleUtil.createHPCBatchJobRole('hpcBatchJobRole');
+        this.qcBatchJobRole = utils.roleUtil.createQCBatchJobRole('qcBatchJobRole');
         this.createModelBatchJobRole = utils.roleUtil.createCreateModelBatchJobRole('createModelBatchJobRole');
-        this.hpcJobQueue = this.setUpBashEnv()
+        this.hpcJobQueue = this.setUpHPCBashEnv()
+        this.fragetJobQueue = this.setUpFragetBashEnv()
     }
     public static newInstance(scope: cdk.Construct, props: Props, utils: {
         roleUtil: RoleUtil,
@@ -52,7 +56,7 @@ export class BatchUtil {
         return new this(scope, props, utils);
     }
 
-    private setUpBashEnv(): batch.JobQueue {
+    private setUpHPCBashEnv(): batch.JobQueue {
         const hpcIstanceTypes = [
             ec2.InstanceType.of(ec2.InstanceClass.C5, ec2.InstanceSize.LARGE), // 2 vcpus, 4G mem
             ec2.InstanceType.of(ec2.InstanceClass.C5, ec2.InstanceSize.XLARGE), // 4 vcpus, 8G mem
@@ -84,8 +88,35 @@ export class BatchUtil {
         })
     }
 
+    private setUpFragetBashEnv(): batch.JobQueue {
+        const vpc = this.props.vpc
+        const batchSg = this.props.batchSg
+
+        const batchFragetEnvironment = new batch.ComputeEnvironment(this.scope, 'Batch-Fraget-Compute-Env', {
+            computeResources: {
+                type: batch.ComputeResourceType.FARGATE,
+                vpc,
+                vpcSubnets: vpc.selectSubnets({
+                    subnetType: ec2.SubnetType.PRIVATE_WITH_NAT
+                }),
+                securityGroups: [batchSg]
+            }
+        });
+
+        return new batch.JobQueue(this.scope, 'fragetJobQueue', {
+            computeEnvironments: [{
+                computeEnvironment: batchFragetEnvironment,
+                order: 1,
+            }, ],
+        })
+    }
+
     public getHpcJobQueue(): batch.JobQueue {
         return this.hpcJobQueue
+    }
+
+    public getFragetJobQueue(): batch.JobQueue {
+        return this.fragetJobQueue
     }
 
     public createCreateModelJobDef(): batch.JobDefinition {
@@ -96,7 +127,7 @@ export class BatchUtil {
         const resource = this.getResourceDescription(vcpus, mem)
 
         return new batch.JobDefinition(this.scope, 'CreateModelJobDef', {
-            platformCapabilities: [batch.PlatformCapabilities.EC2],
+            platformCapabilities: [batch.PlatformCapabilities.FARGATE],
             container: {
                 image,
                 command: [
@@ -114,8 +145,7 @@ export class BatchUtil {
             retryAttempts: 1
         });
     }
-
-
+    
     public createHPCBatchJobDef(defName: string, vcpus: number, mem: number): batch.JobDefinition {
 
         const image = this.imageUtil.getECRImage(ECRRepoNameEnum.Batch_Sa_Optimizer) as ecs.ContainerImage
@@ -132,7 +162,7 @@ export class BatchUtil {
                     '--s3-bucket', this.props.bucket.bucketName,
                 ],
                 executionRole: this.batchJobExecutionRole,
-                jobRole: this.batchJobRole,
+                jobRole: this.hpcBatchJobRole,
                 vcpus,
                 memoryLimitMiB: mem * 1024,
                 privileged: false
@@ -140,8 +170,36 @@ export class BatchUtil {
             timeout: cdk.Duration.hours(2),
             retryAttempts: 1
         });
+
     }
 
+    public createQCSubmitBatchJobDef(defName: string): batch.JobDefinition {
+
+        const image = this.imageUtil.getECRImage(ECRRepoNameEnum.Batch_Qa_Optimizer) as ecs.ContainerImage
+        const vcpus = 2
+        const mem = 4
+        const resource = this.getResourceDescription(vcpus, mem)
+
+        return new batch.JobDefinition(this.scope, defName, {
+            platformCapabilities: [batch.PlatformCapabilities.FARGATE],
+            container: {
+                image,
+                command: [
+                    '--model-param', 'M=1&D=4&A=300&HQ=200',
+                    '--aws-region', this.props.region,
+                    '--resource', `${resource}`,
+                    '--s3-bucket', this.props.bucket.bucketName,
+                ],
+                executionRole: this.batchJobExecutionRole,
+                jobRole: this.qcBatchJobRole,
+                vcpus,
+                memoryLimitMiB: mem * 1024,
+                privileged: false
+            },
+            timeout: cdk.Duration.minutes(15),
+            retryAttempts: 1
+        });
+    }
 
     private getResourceDescription(vcpus: number, mem: number): string {
         return `vCpus${vcpus}_Mem_${mem}G`;

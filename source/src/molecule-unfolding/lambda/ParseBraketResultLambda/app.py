@@ -10,6 +10,7 @@ s3 = boto3.client('s3')
 step_func = boto3.client('stepfunctions')
 s3_prefix = None
 
+
 def download_file(bucket, key, dir="/tmp/"):
     file_name = dir + key.split("/")[-1]
 
@@ -35,7 +36,8 @@ def string_to_s3(content, bucket, key):
 
 
 def read_as_json(bucket, key):
-    print(f"read s3://{bucket}/{key}")
+    #print(f"read s3://{bucket}/{key}")
+    print(f"read_as_json bucket:'{bucket}' key:'{key}'")
     obj = s3.get_object(Bucket=bucket, Key=key)
     json_ = json.loads(obj['Body'].read())
     print(f"return: {json_}")
@@ -48,16 +50,22 @@ def del_local_file(path):
 
 def get_token_for_task_id(qc_task_id, s3_bucket):
     print("get_token_for_task_id()")
+    key = f"{s3_prefix}/qc_task_token/{qc_task_id}.json"
     n = 0
-    while n < 5:
+    while n < 20:
         try:
-            key = f"{s3_prefix}/qc_task_token/{qc_task_id}.json"
             return read_as_json(s3_bucket, key)
         except Exception as e:
-            print(repr(e))
-            n = n + 1
-            time.sleep(2 * n)
-    return None
+            if 'the specified key does not exist' in repr(e).lower():
+                n = n + 1
+                wait_sec = 3 * n + 7
+                print(f"sleep {wait_sec} ...")
+                time.sleep(wait_sec)
+            else:
+                print(f"Error when reading s3://{s3_bucket}/{key}")
+                print(repr(e))
+                raise e
+    raise Exception(f"error when call get_token_for_task_id: {qc_task_id}, key={key}")
 
 
 def read_context(execution_id, bucket, s3_prefix):
@@ -96,7 +104,7 @@ def get_result(path):
 
 
 def handler(event, context):
-    #print(f"event={event}")
+    # print(f"event={event}")
     aws_region = os.environ['AWS_REGION']
     # {'Records': [{'eventVersion': '2.1', 'eventSource': 'aws:s3', 'awsRegion': 'us-east-1', 'eventTime': '2021-11-29T05:17:52.234Z', 'eventName': 'ObjectCreated:Put', 'userIdentity': {'principalId': 'AWS:AROARFTQUWKOUWSYO5XRB:AWSServiceRoleForAmazonBraket'}, 'requestParameters': {'sourceIPAddress': '52.25.248.119'}, 'responseElements': {'x-amz-request-id': '1FQTNJ9HM86M7DMY', 'x-amz-id-2': 'UW1UEJKmwy6NcYRFnTafQSpD4sx05nAOxgs+YtEBH6ryx2MEGbXUj4nAW1ROIs6qtT2D12KCrcDMaKMnIDynCtLmwKAVQu8p'}, 's3': {'s3SchemaVersion': '1.0', 'configurationId': 'ZmNmMzBiZTktNTJiNi00YTllLTk1ODQtYjQyMWI1MzU2OTMw', 'bucket': {'name': 'amazon-braket-qcstack-main-080766874269-us-east-1', 'ownerIdentity': {'principalId': 'AKDTHGWL4N5KF'}, 'arn': 'arn:aws:s3:::amazon-braket-qcstack-main-080766874269-us-east-1'}, 'object': {'key': 'molecule-unfolding/qc_task_output/2fb927dc-32af-42a1-8517-b0872fa4e921/results.json', 'size': 16475, 'eTag': 'd86bf699fb617e1e03ea704695173f13', 'sequencer': '0061A462802499277F'}}}]}
     for rec in event['Records']:
@@ -105,7 +113,7 @@ def handler(event, context):
         print(f"parsing file: s3://{bucket}/{key}")
         global s3_prefix
         s3_prefix = key.split('/qc_task_output/')[0]
-        
+
         qc_task_id = key.split("/")[-2]
         print(f"qc_task_id: {qc_task_id}")
         prefix = "/".join(key.split("/")[:-2])
@@ -125,7 +133,7 @@ def handler(event, context):
 
         message = None
         try:
-           
+
             index = submit_result['index']
             model_info = submit_result['model_info']
             data_s3_path = model_info['data']

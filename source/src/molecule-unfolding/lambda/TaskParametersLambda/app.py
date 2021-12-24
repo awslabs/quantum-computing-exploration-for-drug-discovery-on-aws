@@ -41,6 +41,7 @@ max_vcpu, min_vcpu = 16, 1
 max_mem, min_mem = 30,  1
 max_shots, min_shots = 10000, 1
 
+MAX_M = 4
 
 def read_as_json(bucket, key):
     print(f"read s3://{bucket}/{key}")
@@ -57,6 +58,7 @@ def read_config(s3_bucket, s3_prefix):
     global default_model_params
     global default_devices_arns
     global default_opt_params
+    global MAX_M
     try:
         config = read_as_json(s3_bucket, config_file)
 
@@ -68,6 +70,8 @@ def read_config(s3_bucket, s3_prefix):
             default_devices_arns = config['devicesArns']
         if 'optParams' in config:
             default_opt_params = config['optParams']
+        if 'MAX_M' in config:
+            MAX_M = config['MAX_M']
     except Exception as e:
         print(f"cannot find {config_file}")
         pass
@@ -153,9 +157,9 @@ def validate_modelParams(input_dict: dict, errors: list):
         if p == 'HQ' and list_vals != [200]:
             errors.append(
                 f"invalid value for {p}, current only support '[ 200 ]'")
-        if p == 'M' and (max(list_vals) > 4 or min(list_vals) < 1):
+        if p == 'M' and (max(list_vals) > MAX_M or min(list_vals) < 1):
             errors.append(
-                f"invalid value for {p}: {list_vals}, current only support range: [1, 4], e.g [1, 2, 3, 4] ")
+                f"invalid value for {p}: {list_vals}, current only support range: [1, {MAX_M}], e.g [1, 2, 3, 4] ")
 
 
 def validate_hpcResources(input_dict: dict, errors: list):

@@ -22,6 +22,7 @@
     "build-docker": "cd ./src/ligand-unfolding/ && ./build.sh",
     "synth-dev": "cdk synth QCStack-dev",
     "deploy-dev": "cdk deploy QCStack-dev",
+    "destroy-dev": "cdk destroy QCStack-dev",
     "deploy-rs": "cdk deploy QCStack  -c quicksight_user=Admin/yonmzn-Isengard --profile liuyong_rs_ue1",
     "destroy-rs": "cdk destroy QCStack --profile liuyong_rs_ue1"
   },

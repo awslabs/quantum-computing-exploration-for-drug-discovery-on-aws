@@ -253,4 +253,62 @@ def submit_qc_task(s3, execution_id, device_arn, model_param, s3_bucket, s3_pref
     logging_info("submit_qc_task return: {}".format(res))
 
     return res
-    
+
+
+def save_sumbit_result(execution_id, batch_job_id,  qc_task_id, submit_result, s3_bucket):
+    print("save_sumbit_result() ")
+    key = f"{s3_prefix}/executions/{execution_id}/qa_batch_jobs/{batch_job_id}.json"
+    string_to_s3(s3, json.dumps({
+        "execution_id": execution_id,
+        "qc_task_id": qc_task_id,
+        "batch_job_id": batch_job_id,
+        "submit_result": submit_result
+    }), s3_bucket, key)
+    print(f"saved s3://{s3_bucket}/{key}")
+
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--s3-bucket', type=str)
+    parser.add_argument('--aws-region', type=str)
+    parser.add_argument('--device-arn', type=str),
+    parser.add_argument('--execution-id', type=str)
+    parser.add_argument('--model-param', type=str)
+    parser.add_argument('--index', type=str)
+    parser.add_argument('--s3_prefix', type=str)
+
+
+    args, _ = parser.parse_known_args()
+
+    aws_region = args.aws_region
+    device_arn = args.device_arn
+    s3_bucket = args.s3_bucket
+    execution_id = args.execution_id
+    index = args.index
+    s3_prefix = args.s3_prefix
+
+    model_param = args.model_param
+
+    logging.info("execution_id: {}, model_param:{}".format(
+        execution_id, model_param))
+
+    boto3.setup_default_session(region_name=aws_region)
+    s3 = boto3.client('s3')
+
+    submit_result = submit_qc_task(s3, execution_id, device_arn,
+                                model_param, s3_bucket, s3_prefix)
+    submit_result['index'] = index
+    # {"task_id": task_id, "model_name": model_name,  "mode_file_name": mode_file_name}
+    qc_task_id = submit_result['task_id']
+
+    print(f"qc_task_id={qc_task_id}")
+
+    batch_job_id = os.environ['AWS_BATCH_JOB_ID']
+
+    save_sumbit_result(execution_id, batch_job_id, qc_task_id,
+                           submit_result, s3_bucket)
+
+
+
+

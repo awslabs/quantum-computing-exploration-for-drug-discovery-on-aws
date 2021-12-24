@@ -7,6 +7,7 @@ interface Props {
     account: string;
     bucket: s3.Bucket;
     prefix: string;
+    stackName: string;
 }
 
 export class RoleUtil {
@@ -19,6 +20,32 @@ export class RoleUtil {
 
     public static newInstance(scope: cdk.Construct, props: Props) {
         return new this(scope, props);
+    }
+
+    private addLambdaCommonPolicy(role: iam.Role) {
+        role.addToPolicy(new iam.PolicyStatement({
+            effect: iam.Effect.ALLOW,
+            resources: [
+                '*'
+            ],
+            actions: [
+                "ec2:CreateNetworkInterface",
+                "ec2:DescribeNetworkInterfaces",
+                "ec2:DeleteNetworkInterface",
+                "ec2:AssignPrivateIpAddresses",
+                "ec2:UnassignPrivateIpAddresses"
+            ]
+        }));
+        role.addToPolicy(new iam.PolicyStatement({
+            resources: [
+                `arn:aws:logs:*:${this.props.account}:log-group:*`
+            ],
+            actions: [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "logs:CreateLogGroup"
+            ]
+        }));
     }
 
     public createNotebookIamRole(): iam.Role {
@@ -56,18 +83,12 @@ export class RoleUtil {
 
         role.addToPolicy(new iam.PolicyStatement({
             resources: [
-                `arn:aws:s3:::${this.props.bucket.bucketName}/*`
+                `arn:aws:s3:::${this.props.bucket.bucketName}/*`,
+                "arn:aws:s3:::braket-*/*",
+                "arn:aws:s3:::amazon-braket-*/*"
             ],
             actions: [
-                "s3:PutObject"
-            ]
-        }));
-
-        role.addToPolicy(new iam.PolicyStatement({
-            resources: [
-                `arn:aws:s3:::*/*`
-            ],
-            actions: [
+                "s3:PutObject",
                 "s3:GetObject",
             ]
         }));
@@ -152,7 +173,7 @@ export class RoleUtil {
         return role
     }
 
-    public createBatchJobRole(roleName: string): iam.Role {
+    public createHPCBatchJobRole(roleName: string): iam.Role {
         const role = new iam.Role(this.scope, `${roleName}`, {
             assumedBy: new iam.ServicePrincipal('ecs-tasks.amazonaws.com'),
         });
@@ -163,6 +184,55 @@ export class RoleUtil {
             actions: [
                 "s3:PutObject",
                 "s3:GetObject"
+            ]
+        }));
+
+        role.addToPolicy(new iam.PolicyStatement({
+            resources: [
+                `arn:aws:s3:::${this.props.bucket.bucketName}`
+            ],
+            actions: [
+                "s3:ListBucket"
+            ]
+        }));
+        return role
+    }
+
+
+    public createQCBatchJobRole(roleName: string): iam.Role {
+        const role = new iam.Role(this.scope, `${roleName}`, {
+            assumedBy: new iam.ServicePrincipal('ecs-tasks.amazonaws.com'),
+        });
+        role.addToPolicy(new iam.PolicyStatement({
+            resources: [
+                `arn:aws:s3:::${this.props.bucket.bucketName}/*`
+            ],
+            actions: [
+                "s3:PutObject",
+                "s3:GetObject"
+            ]
+        }));
+
+        role.addToPolicy(new iam.PolicyStatement({
+            resources: [
+                `arn:aws:braket:*:${this.props.account}:quantum-task/*`,
+            ],
+            actions: [
+                "braket:GetQuantumTask"
+            ]
+        }));
+
+        role.addToPolicy(new iam.PolicyStatement({
+            resources: [
+                '*'
+            ],
+            actions: [
+                //"braket:CreateJob",
+                "braket:GetDevice",
+                // "braket:SearchDevices",
+                "braket:CreateQuantumTask",
+                // "braket:SearchJobs",
+                //"braket:SearchQuantumTasks"
             ]
         }));
 
@@ -192,7 +262,9 @@ export class RoleUtil {
 
         role.addToPolicy(new iam.PolicyStatement({
             resources: [
-                'arn:aws:s3:::*/*'
+                `arn:aws:s3:::${this.props.bucket.bucketName}/*`,
+                "arn:aws:s3:::braket-*/*",
+                "arn:aws:s3:::amazon-braket-*/*"
             ],
             actions: [
                 "s3:GetObject",
@@ -214,12 +286,15 @@ export class RoleUtil {
         const role = new iam.Role(this.scope, `AggResultLambdaRole`, {
             assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
         });
+        const table_name1 = `${this.props.stackName}_qc_benchmark_metrics_hist`
+        const table_name2 = `${this.props.stackName}_qc_benchmark_metrics`
         role.addToPolicy(new iam.PolicyStatement({
             resources: [
-                `arn:aws:athena:*:${this.props.account}:workgroup/*`,
-                `arn:aws:athena:*:${this.props.account}:datacatalog/*`,
-                `arn:aws:glue:*:${this.props.account}:database/*`,
-                `arn:aws:glue:*:${this.props.account}:table/*/*`,
+                `arn:aws:athena:*:${this.props.account}:workgroup/primary`,
+                `arn:aws:athena:*:${this.props.account}:datacatalog/AwsDataCatalog`,
+                `arn:aws:glue:*:${this.props.account}:database/default`,
+                `arn:aws:glue:*:${this.props.account}:table/default/${table_name1}`,
+                `arn:aws:glue:*:${this.props.account}:table/default/${table_name2}`,
                 `arn:aws:glue:*:${this.props.account}:catalog`
             ],
             actions: [
@@ -261,60 +336,14 @@ export class RoleUtil {
             ]
         }));
 
-        role.addToPolicy(new iam.PolicyStatement({
-            effect: iam.Effect.ALLOW,
-            resources: [
-                '*'
-            ],
-            actions: [
-                "ec2:CreateNetworkInterface",
-                "ec2:DescribeNetworkInterfaces",
-                "ec2:DeleteNetworkInterface",
-                "ec2:AssignPrivateIpAddresses",
-                "ec2:UnassignPrivateIpAddresses"
-
-            ]
-        }));
-        role.addToPolicy(new iam.PolicyStatement({
-            resources: [
-                `arn:aws:logs:*:${this.props.account}:log-group:*`
-            ],
-            actions: [
-                "logs:CreateLogStream",
-                "logs:PutLogEvents",
-                "logs:CreateLogGroup"
-            ]
-        }));
+        this.addLambdaCommonPolicy(role)
         return role;
     }
 
-    public createSumitQCTaskLambdaRole(roleName: string): iam.Role {
+    public createWatiForTokenLambdaRole(roleName: string): iam.Role {
         const role = new iam.Role(this.scope, `${roleName}`, {
             assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
         });
-
-        role.addToPolicy(new iam.PolicyStatement({
-            resources: [
-                `arn:aws:braket:*:${this.props.account}:quantum-task/*`,
-            ],
-            actions: [
-                "braket:GetQuantumTask"
-            ]
-        }));
-
-        role.addToPolicy(new iam.PolicyStatement({
-            resources: [
-                '*'
-            ],
-            actions: [
-                //"braket:CreateJob",
-                "braket:GetDevice",
-                // "braket:SearchDevices",
-                "braket:CreateQuantumTask",
-                // "braket:SearchJobs",
-                //"braket:SearchQuantumTasks"
-            ]
-        }));
 
         role.addToPolicy(new iam.PolicyStatement({
             resources: [
@@ -326,30 +355,7 @@ export class RoleUtil {
             ]
         }));
 
-        role.addToPolicy(new iam.PolicyStatement({
-            resources: [
-                `arn:aws:logs:*:${this.props.account}:log-group:*`
-            ],
-            actions: [
-                "logs:CreateLogStream",
-                "logs:PutLogEvents",
-                "logs:CreateLogGroup"
-            ]
-        }));
-
-        role.addToPolicy(new iam.PolicyStatement({
-            effect: iam.Effect.ALLOW,
-            resources: [
-                '*'
-            ],
-            actions: [
-                "ec2:CreateNetworkInterface",
-                "ec2:DescribeNetworkInterfaces",
-                "ec2:DeleteNetworkInterface",
-                "ec2:AssignPrivateIpAddresses",
-                "ec2:UnassignPrivateIpAddresses"
-            ]
-        }));
+        this.addLambdaCommonPolicy(role)
 
         return role;
     }
@@ -368,30 +374,7 @@ export class RoleUtil {
             ]
         }));
 
-        role.addToPolicy(new iam.PolicyStatement({
-            resources: [
-                `arn:aws:logs:*:${this.props.account}:log-group:*`
-            ],
-            actions: [
-                "logs:CreateLogStream",
-                "logs:PutLogEvents",
-                "logs:CreateLogGroup"
-            ]
-        }));
-
-        role.addToPolicy(new iam.PolicyStatement({
-            effect: iam.Effect.ALLOW,
-            resources: [
-                '*'
-            ],
-            actions: [
-                "ec2:CreateNetworkInterface",
-                "ec2:DescribeNetworkInterfaces",
-                "ec2:DeleteNetworkInterface",
-                "ec2:AssignPrivateIpAddresses",
-                "ec2:UnassignPrivateIpAddresses"
-            ]
-        }));
+        this.addLambdaCommonPolicy(role)
 
         return role;
     }
@@ -410,29 +393,7 @@ export class RoleUtil {
             ]
         }));
 
-        role.addToPolicy(new iam.PolicyStatement({
-            effect: iam.Effect.ALLOW,
-            resources: [
-                '*'
-            ],
-            actions: [
-                "ec2:CreateNetworkInterface",
-                "ec2:DescribeNetworkInterfaces",
-                "ec2:DeleteNetworkInterface",
-                "ec2:AssignPrivateIpAddresses",
-                "ec2:UnassignPrivateIpAddresses"
-            ]
-        }));
-        role.addToPolicy(new iam.PolicyStatement({
-            resources: [
-                `arn:aws:logs:*:${this.props.account}:log-group:*`
-            ],
-            actions: [
-                "logs:CreateLogStream",
-                "logs:PutLogEvents",
-                "logs:CreateLogGroup"
-            ]
-        }));
+        this.addLambdaCommonPolicy(role)
 
         return role;
     }
@@ -447,33 +408,22 @@ export class RoleUtil {
                 `arn:aws:s3:::${this.props.bucket.bucketName}/*`
             ],
             actions: [
+                "s3:PutObject",
+                "s3:GetObject"
+            ]
+        }));
+
+        role.addToPolicy(new iam.PolicyStatement({
+            resources: [
+                "arn:aws:s3:::braket-*/*",
+                "arn:aws:s3:::amazon-braket-*/*"
+            ],
+            actions: [
                 "s3:GetObject",
-                "s3:PutObject"
             ]
         }));
-        role.addToPolicy(new iam.PolicyStatement({
-            effect: iam.Effect.ALLOW,
-            resources: [
-                '*'
-            ],
-            actions: [
-                "ec2:CreateNetworkInterface",
-                "ec2:DescribeNetworkInterfaces",
-                "ec2:DeleteNetworkInterface",
-                "ec2:AssignPrivateIpAddresses",
-                "ec2:UnassignPrivateIpAddresses"
-            ]
-        }));
-        role.addToPolicy(new iam.PolicyStatement({
-            resources: [
-                `arn:aws:logs:*:${this.props.account}:log-group:*`
-            ],
-            actions: [
-                "logs:CreateLogStream",
-                "logs:PutLogEvents",
-                "logs:CreateLogGroup"
-            ]
-        }));
+
+        this.addLambdaCommonPolicy(role)
 
         role.addToPolicy(new iam.PolicyStatement({
             actions: [
@@ -482,7 +432,7 @@ export class RoleUtil {
                 "states:SendTaskHeartbeat"
             ],
             resources: [
-                "arn:aws:states:*:*:*"
+                '*'
             ]
         }));
 

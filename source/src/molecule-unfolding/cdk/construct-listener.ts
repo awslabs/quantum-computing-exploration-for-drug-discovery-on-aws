@@ -22,6 +22,7 @@ interface Props {
     usePreBuildImage: boolean;
     vpc: ec2.Vpc;
     lambdaSg: ec2.SecurityGroup;
+    stackName: string
 }
 
 export class EventListener extends cdk.Construct {
@@ -43,7 +44,7 @@ export class EventListener extends cdk.Construct {
         const parseBraketResultLambda = new lambda.DockerImageFunction(this, 'ParseBraketResultLambda', {
             code,
             memorySize: 512,
-            timeout: cdk.Duration.seconds(120),
+            timeout: cdk.Duration.seconds(900),
             vpc,
             vpcSubnets: vpc.selectSubnets({
                 subnetType: ec2.SubnetType.PRIVATE_WITH_NAT

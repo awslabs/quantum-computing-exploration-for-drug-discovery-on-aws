@@ -54,6 +54,8 @@ export class Benchmark extends Construct {
     private lambdaUtil: LambdaUtil
     private batchUtil: BatchUtil
     private logKey: kms.Key
+    private taskParamLambda : lambda.Function
+    private watiForTokenLambda : lambda.Function
 
     // constructor 
     constructor(scope: Construct, id: string, props: BatchProps) {
@@ -75,13 +77,14 @@ export class Benchmark extends Construct {
         this.logKey = new kms.Key(scope, 'stepFuncsLogKey', {
             enableKeyRotation: true
         });
+        
+        this.taskParamLambda = this.lambdaUtil.createTaskParametersLambda()
+        this.watiForTokenLambda = this.lambdaUtil.createWatiForTokenLambda()
 
-        const taskParamLambda = this.lambdaUtil.createTaskParametersLambda()
-
-        const checkInputParamsStep = this.createCheckInputStep(taskParamLambda)
+        const checkInputParamsStep = this.createCheckInputStep()
         const createModelStep = this.createCreateModelStep();
-        const hpcStateMachine = this.createHPCStateMachine(taskParamLambda);
-        const qcStateMachine = this.createQCStateMachine(taskParamLambda)
+        const hpcStateMachine = this.createHPCStateMachine();
+        const qcStateMachine = this.createQCStateMachine()
         const qcAndHPCStateMachine = this.createHPCAndQCStateMachine(hpcStateMachine, qcStateMachine)
         const aggResultStep = this.createAggResultStep();
         const notifyStep = this.createSNSNotifyStep();
@@ -153,9 +156,9 @@ export class Benchmark extends Construct {
         });
     }
 
-    private createCheckInputStep(taskParamLambda: lambda.Function): tasks.LambdaInvoke {
+    private createCheckInputStep(): tasks.LambdaInvoke {
         return new tasks.LambdaInvoke(this, 'Check Input', {
-            lambdaFunction: taskParamLambda,
+            lambdaFunction: this.taskParamLambda,
             payload: sfn.TaskInput.fromObject({
                 "s3_bucket": this.props.bucket.bucketName,
                 "s3_prefix": this.props.prefix,
@@ -168,13 +171,13 @@ export class Benchmark extends Construct {
     }
 
     private createCreateModelStep(): tasks.BatchSubmitJob {
-        const hpcJobQueue = this.batchUtil.getHpcJobQueue()
+        const jobQueue = this.batchUtil.getFragetJobQueue()
         const createModelJobDef = this.batchUtil.createCreateModelJobDef()
 
         const createModelStep = new tasks.BatchSubmitJob(this, 'Create Model', {
             jobDefinitionArn: createModelJobDef.jobDefinitionArn,
             jobName: "createModelTask",
-            jobQueueArn: hpcJobQueue.jobQueueArn,
+            jobQueueArn: jobQueue.jobQueueArn,
             integrationPattern: sfn.IntegrationPattern.RUN_JOB,
             containerOverrides: {
                 command: sfn.JsonPath.listAt('$.params')
@@ -233,10 +236,10 @@ export class Benchmark extends Construct {
         return hpcAndQCStateMachine;
     }
 
-    private createQCStateMachine(parametersLambda: lambda.Function): sfn.StateMachine {
+    private createQCStateMachine(): sfn.StateMachine {
 
         const getDeviceListLambdaStep = new tasks.LambdaInvoke(this, 'Get Device List', {
-            lambdaFunction: parametersLambda,
+            lambdaFunction: this.taskParamLambda,
             payload: sfn.TaskInput.fromObject({
                 "s3_bucket": this.props.bucket.bucketName,
                 "s3_prefix": this.props.prefix,
@@ -247,7 +250,7 @@ export class Benchmark extends Construct {
             outputPath: '$.Payload'
         });
 
-        const runOnQCDeviceStateMachine = this.createRunOnQCDeviceStateMachine(parametersLambda)
+        const runOnQCDeviceStateMachine = this.createRunOnQCDeviceStateMachine()
 
         const runOnQCDeviceStateMachineStep = new tasks.StepFunctionsStartExecution(this, "Run On Device", {
             stateMachine: runOnQCDeviceStateMachine,
@@ -289,11 +292,11 @@ export class Benchmark extends Construct {
             },
         });
         logGroup.grantWrite(qcStateMachine)
-        
+
         return qcStateMachine;
     }
 
-    private createRunOnQCDeviceStateMachine(parametersLambda: lambda.Function): sfn.StateMachine {
+    private createRunOnQCDeviceStateMachine(): sfn.StateMachine {
 
         const checkQCDeviceLambda = this.lambdaUtil.createCheckQCDeviceLambda()
         const checkQCDeviceStep = new tasks.LambdaInvoke(this, "Check Device status", {
@@ -309,7 +312,7 @@ export class Benchmark extends Construct {
         });
 
         const getParametersLambdaStep = new tasks.LambdaInvoke(this, 'Get Task Paramters', {
-            lambdaFunction: parametersLambda,
+            lambdaFunction: this.taskParamLambda,
             payload: sfn.TaskInput.fromObject({
                 "s3_bucket": this.props.bucket.bucketName,
                 "s3_prefix": this.props.prefix,
@@ -320,8 +323,7 @@ export class Benchmark extends Construct {
             }),
             outputPath: '$.Payload'
         });
-
-        const submitQCTaskStep = this.submitQCTaskStep();
+        const submitQCTaskStep = this.submitQCTaskAndWaitForTokenStep();
 
         const parallelQCJobsMap = new sfn.Map(this, 'ParallelQCJobs', {
             maxConcurrency: 20,
@@ -366,9 +368,9 @@ export class Benchmark extends Construct {
         return qcDeviceStateMachine;
     }
 
-    private createHPCStateMachine(parametersLambda: lambda.Function): sfn.StateMachine {
+    private createHPCStateMachine(): sfn.StateMachine {
         const parametersLambdaStep = new tasks.LambdaInvoke(this, 'Get Task Parameters', {
-            lambdaFunction: parametersLambda,
+            lambdaFunction: this.taskParamLambda,
             payload: sfn.TaskInput.fromObject({
                 "s3_bucket": this.props.bucket.bucketName,
                 "s3_prefix": this.props.prefix,
@@ -484,30 +486,49 @@ export class Benchmark extends Construct {
         return aggResultStep;
     }
 
-    private submitQCTaskStep(): tasks.LambdaInvoke {
-        const submitQCTaskStepLambd = this.lambdaUtil.createSubmitQCTaskLambda()
-        const submitQCTaskStep = new tasks.LambdaInvoke(this, 'Submit QC Task', {
-            lambdaFunction: submitQCTaskStepLambd,
+    private submitQCTaskAndWaitForTokenStep(): sfn.Chain {
+        const jobDef = this.batchUtil.createQCSubmitBatchJobDef("QCJob_Template");
+        const batchQueue = this.batchUtil.getFragetJobQueue()
+
+        const submitQCTaskStep = new tasks.BatchSubmitJob(this, 'Submit QC Task', {
+            jobDefinitionArn: jobDef.jobDefinitionArn,
+            jobName: 'qcTaskSubmitJob',
+            jobQueueArn: batchQueue.jobQueueArn,
+            containerOverrides: {
+                command: sfn.JsonPath.listAt("$.ItemValue.params")
+            },
+            resultSelector: {
+                "JobId.$": "$.JobId",
+                "JobName.$": "$.JobName"
+            },
+            resultPath: '$.qcTaskSubmitJob',
+        });
+
+        const waitForTokenStep = new tasks.LambdaInvoke(this, 'Wait For Complete', {
+            lambdaFunction: this.watiForTokenLambda,
             payload: sfn.TaskInput.fromObject({
                 "execution_id": sfn.JsonPath.stringAt("$.execution_id"),
                 "task_token": sfn.JsonPath.taskToken,
                 "s3_bucket": this.props.bucket.bucketName,
                 "s3_prefix": this.props.prefix,
+                "batch_job_id": sfn.JsonPath.stringAt("$.qcTaskSubmitJob.JobId"),
                 "ItemValue": sfn.JsonPath.stringAt("$.ItemValue"),
                 "ItemIndex": sfn.JsonPath.stringAt("$.ItemIndex")
             }),
-            resultPath: '$.submitQCTaskStep',
+            resultPath: '$.watiForTokenStep',
             integrationPattern: sfn.IntegrationPattern.WAIT_FOR_TASK_TOKEN
         });
-        return submitQCTaskStep;
+        return submitQCTaskStep.next(waitForTokenStep);
     }
+
+
 
     private createSNSNotifyStep(): tasks.SnsPublish {
         const topic = new sns.Topic(this, 'SNS Topic', {
             displayName: 'QC Stepfunctions Execution Complete Topic',
             masterKey: kms.Alias.fromAliasName(this, 'snsKey', 'alias/aws/sns')
         });
-    
+
         topic.addToResourcePolicy(new iam.PolicyStatement({
             effect: iam.Effect.DENY,
             principals: [new iam.AnyPrincipal()],

@@ -50,9 +50,10 @@ export class AddCfnNag implements IAspect {
                     reason: 'the lambda already have the cloudwatch permission',
                 }, ],
             });
-        } else if (node.node.path.endsWith('/jobRole/DefaultPolicy/Resource') ||
+        } else if (node.node.path.endsWith('/hpcBatchJobRole/DefaultPolicy/Resource') ||
+            node.node.path.endsWith('/qcBatchJobRole/DefaultPolicy/Resource') ||
             node.node.path.endsWith('/createModelBatchJobRole/DefaultPolicy/Resource') ||
-            node.node.path.endsWith('/executionRole/DefaultPolicy/Resource') ||
+            node.node.path.endsWith('/batchExecutionRole/DefaultPolicy/Resource') ||
             node.node.path.endsWith('/TaskParametersLambdaRole/DefaultPolicy/Resource') ||
             node.node.path.endsWith('/DeviceAvailableCheckLambdaRole/DefaultPolicy/Resource') ||
             node.node.path.endsWith('/SubmitQCTaskLambdaRole/DefaultPolicy/Resource') ||

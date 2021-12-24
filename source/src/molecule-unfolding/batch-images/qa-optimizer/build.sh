@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e 
 
-repoName='molecule-unfolding/lambda-submit-qc-task'
+repoName='molecule-unfolding/qa-optimizer'
 
 rm -rf utility
 

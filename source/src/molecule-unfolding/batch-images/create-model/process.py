@@ -3,10 +3,11 @@ import logging
 from os.path import basename
 import boto3
 import pickle
-import botocore
 import json
 from utility.QMUQUBO import QMUQUBO
 from utility.MoleculeParser import MoleculeData
+
+PARAM_M_MAX = 4
 
 logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
                     datefmt='%Y-%m-%d:%H:%M:%S',
@@ -59,6 +60,10 @@ def upload_file(bucket, key, file_name):
 
 def create_qubo_model(mol_data, execution_id, version):
     logging.info("create_model() enter")
+
+    max_param_M = config.get('MAX_M', PARAM_M_MAX)
+    print(f"max_param_M={max_param_M}")
+
     init_param = {}
     method = ['pre-calc']
 
@@ -73,9 +78,11 @@ def create_qubo_model(mol_data, execution_id, version):
     # parameters
     num_rotation_bond = mol_data.bond_graph.rb_num
 
+    print(f"num_rotation_bond: {num_rotation_bond}")
+
     method = 'pre-calc'
     model_param[method] = {}
-    model_param[method]['M'] = range(1, num_rotation_bond+1)
+    model_param[method]['M'] = range(1, min(num_rotation_bond+1, max_param_M + 1))
     # model_param[method]['M'] = [4]
     model_param[method]['D'] = [4]
     model_param[method]['A'] = [300]
@@ -128,6 +135,19 @@ def read_context(execution_id, bucket, s3_prefix):
     return context
 
 
+def read_config(s3_bucket, s3_prefix):
+    config_file = f"{s3_prefix}/config/default.json"
+    config = {}
+    try:
+        obj = s3.get_object(Bucket=s3_bucket, Key=config_file)
+        config = json.loads(obj['Body'].read())
+    except Exception as e:
+        print(f"cannot find {config_file}")
+        pass
+    logging.info("read: s3://{}/{}, return '{}'".format(s3_bucket, config_file, config))
+    return config 
+
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--s3-bucket', type=str)
@@ -157,6 +177,8 @@ if __name__ == '__main__':
     version = user_input['user_input'].get("modelVersion", 'latest')
 
     logging.info(f"create model, modelVersion:{version}")
+
+    config = read_config(s3_bucket, s3_prefix)
 
     molecule_data, raw_s3_path, data_s3_path = prepare_molecule_data(
         mol_file, execution_id, version)

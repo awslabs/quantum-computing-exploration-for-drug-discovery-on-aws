@@ -65,7 +65,7 @@ export class LambdaUtil {
                 subnetType: ec2.SubnetType.PRIVATE_WITH_NAT
             }),
             role: aggLambdaRole,
-            reservedConcurrentExecutions: 10,
+            reservedConcurrentExecutions: 30,
             securityGroups: [lambdaSg]
         });
     }
@@ -85,19 +85,20 @@ export class LambdaUtil {
                 subnetType: ec2.SubnetType.PRIVATE_WITH_NAT
             }),
             role: checkLambdaRole,
-            reservedConcurrentExecutions: 10,
+            reservedConcurrentExecutions: 30,
             securityGroups: [lambdaSg]
         })
     }
 
-    public createSubmitQCTaskLambda(): lambda.Function {
-        const lambdaRole = this.roleUtil.createSumitQCTaskLambdaRole('SubmitQCTaskLambdaRole')
-        const code = this.imageUtil.getECRImage(ECRRepoNameEnum.Lambda_SubmitQCTask) as lambda.DockerImageCode
+    public createWatiForTokenLambda(): lambda.Function {
+        const lambdaRole = this.roleUtil.createWatiForTokenLambdaRole('WatiForTokenLambdaRole')
         const vpc = this.props.vpc;
         const lambdaSg = this.props.lambdaSg;
 
-        return new lambda.DockerImageFunction(this.scope, 'SubmitQCTaskLambda', {
-            code,
+        return new lambda.Function(this.scope, 'WatiForTokenLambda', {
+            runtime: lambda.Runtime.PYTHON_3_9,
+            code: lambda.Code.fromAsset(path.join(__dirname, '../../lambda/WatiForTokenLambda/')),
+            handler: 'app.handler',
             memorySize: 512,
             timeout: cdk.Duration.seconds(120),
             vpc,
@@ -105,7 +106,7 @@ export class LambdaUtil {
                 subnetType: ec2.SubnetType.PRIVATE_WITH_NAT
             }),
             role: lambdaRole,
-            reservedConcurrentExecutions: 20,
+            reservedConcurrentExecutions: 30,
             securityGroups: [lambdaSg]
         });
 
@@ -127,7 +128,7 @@ export class LambdaUtil {
                 subnetType: ec2.SubnetType.PRIVATE_WITH_NAT
             }),
             role: lambdaRole,
-            reservedConcurrentExecutions: 10,
+            reservedConcurrentExecutions: 30,
             securityGroups: [lambdaSg]
         })
     }

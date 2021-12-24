@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>24/24</span>
+                <span class='fraction'>22/22</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>1/1</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>23/23</span>
+                <span class='fraction'>21/21</span>
             </div>
         
             
@@ -157,7 +157,10 @@
 <a name='L92'></a><a href='#L92'>92</a>
 <a name='L93'></a><a href='#L93'>93</a>
 <a name='L94'></a><a href='#L94'>94</a>
-<a name='L95'></a><a href='#L95'>95</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">5x</span>
+<a name='L95'></a><a href='#L95'>95</a>
+<a name='L96'></a><a href='#L96'>96</a>
+<a name='L97'></a><a href='#L97'>97</a>
+<a name='L98'></a><a href='#L98'>98</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -187,7 +190,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -215,10 +217,6 @@
 <span class="cline-any cline-yes">27x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">27x</span>
-<span class="cline-any cline-yes">27x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">27x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">27x</span>
 <span class="cline-any cline-yes">27x</span>
@@ -233,7 +231,15 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">27x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -277,7 +283,6 @@ import {
 export interface Props {
     region: string;
     account: string;
-    usePreBuildImage: boolean
     bucket: s3.Bucket;
     prefix: string;
 }
@@ -309,11 +314,7 @@ export class Notebook extends Construct {
         const notebookRole = this.roleUtil.createNotebookIamRole()
 &nbsp;
         let onStartContent = readFileSync(`${__dirname}/resources/onStart.template`, 'utf-8')
-        if (this.props.usePreBuildImage) {
-            //console.log('replace #_RUN_BUILD_#')
-            onStartContent = onStartContent.replace('#_RUN_BUILD_#', '')
-        }
-&nbsp;
+        
         const base64Encode = (str: string): string =&gt; Buffer.from(str, 'binary').toString('base64');
         const onStartContentBase64 = base64Encode(onStartContent)
 &nbsp;
@@ -327,15 +328,23 @@ export class Notebook extends Construct {
             enableKeyRotation: true
         });
 &nbsp;
+        // const gitConfigProperty = {
+        //     // TODO:
+        //     // this will be set to the github repository of this project after open source
+        //     repositoryUrl: 'https://github.com/amliuyong/test-public.git',
+        // };
+&nbsp;
         const notebookInstnce = new CfnNotebookInstance(this, 'GCRQCLifeScienceNotebook', {
             instanceType: instanceTypeParam.valueAsString,
             roleArn: notebookRole.roleArn,
             rootAccess: 'Enabled',
             lifecycleConfigName: installBraketSdK.attrNotebookInstanceLifecycleConfigName,
             volumeSizeInGb: 50,
-            kmsKeyId: qcNotebookKey.keyId
+            kmsKeyId: qcNotebookKey.keyId,
+            //defaultCodeRepository: gitConfigProperty.repositoryUrl
         });
 &nbsp;
+        
         // Output //////////////////////////
         const notebookUrl = `https://console.aws.amazon.com/sagemaker/home?region=${this.props.region}#/notebook-instances/openNotebook/${notebookInstnce.attrNotebookInstanceName}?view=classic`
 &nbsp;
@@ -352,7 +361,7 @@ export class Notebook extends Construct {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener">istanbul</a>
-                at Fri Dec 17 2021 17:44:25 GMT+0800 (China Standard Time)
+                at Thu Dec 23 2021 16:56:06 GMT+0800 (China Standard Time)
             </div>
         </div>
         <script src="../../../prettify.js"></script>

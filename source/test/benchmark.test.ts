@@ -14,20 +14,20 @@ describe("Benchmarak", () => {
         const app = new App();
         const stack = new MainStack(app, 'test');
         const template = Template.fromStack(stack);
-        template.resourceCountIs("AWS::Batch::ComputeEnvironment", 1)
+        template.resourceCountIs("AWS::Batch::ComputeEnvironment", 2)
     })
 
     test("has 1 batch JobQueue", () => {
         const app = new App();
         const stack = new MainStack(app, 'test');
         const template = Template.fromStack(stack);
-        template.resourceCountIs("AWS::Batch::JobQueue", 1)
+        template.resourceCountIs("AWS::Batch::JobQueue", 2)
     })
     test("has 2 batch JobDefinitions", () => {
         const app = new App();
         const stack = new MainStack(app, 'test');
         const template = Template.fromStack(stack);
-        template.resourceCountIs("AWS::Batch::JobDefinition", 2)
+        template.resourceCountIs("AWS::Batch::JobDefinition", 3)
     })
 
     test("has 1 SNS", () => {

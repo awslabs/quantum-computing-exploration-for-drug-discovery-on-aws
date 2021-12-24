@@ -91,7 +91,8 @@ export class MainStack extends SolutionStack {
       account: this.account,
       region: this.region,
       bucket: s3bucket,
-      prefix
+      prefix,
+      stackName
     });
 
     // Dashboard //////////////////////////
@@ -131,6 +132,7 @@ export class MainStack extends SolutionStack {
       usePreBuildImage,
       vpc,
       lambdaSg,
+      stackName
     });
     Aspects.of(this).add(new AddCfnNag());
   }
