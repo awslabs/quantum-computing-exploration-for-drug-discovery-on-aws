@@ -189,6 +189,16 @@ export class RoleUtil {
 
         role.addToPolicy(new iam.PolicyStatement({
             resources: [
+                "arn:aws:s3:::braket-*/*",
+                "arn:aws:s3:::amazon-braket-*/*"
+            ],
+            actions: [
+                "s3:GetObject",
+            ]
+        }));
+
+        role.addToPolicy(new iam.PolicyStatement({
+            resources: [
                 `arn:aws:s3:::${this.props.bucket.bucketName}`
             ],
             actions: [
@@ -256,13 +266,13 @@ export class RoleUtil {
                 `arn:aws:s3:::${this.props.bucket.bucketName}/*`
             ],
             actions: [
-                "s3:PutObject"
+                "s3:PutObject",
+                "s3:GetObject"
             ]
         }));
 
         role.addToPolicy(new iam.PolicyStatement({
             resources: [
-                `arn:aws:s3:::${this.props.bucket.bucketName}/*`,
                 "arn:aws:s3:::braket-*/*",
                 "arn:aws:s3:::amazon-braket-*/*"
             ],

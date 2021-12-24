@@ -41,7 +41,7 @@ export class AddCfnNag implements IAspect {
             node.node.path.endsWith('/AggResultLambda/Resource') ||
             node.node.path.endsWith('/TaskParametersLambda/Resource') ||
             node.node.path.endsWith('/DeviceAvailableCheckLambda/Resource') ||
-            node.node.path.endsWith('/SubmitQCTaskLambda/Resource') ||
+            node.node.path.endsWith('/WatiForTokenLambda/Resource') ||
             node.node.path.endsWith('/BraketTaskEventHanlder/ParseBraketResultLambda/Resource')
         ) {
             (node as cdk.CfnResource).addMetadata('cfn_nag', {
@@ -56,9 +56,9 @@ export class AddCfnNag implements IAspect {
             node.node.path.endsWith('/batchExecutionRole/DefaultPolicy/Resource') ||
             node.node.path.endsWith('/TaskParametersLambdaRole/DefaultPolicy/Resource') ||
             node.node.path.endsWith('/DeviceAvailableCheckLambdaRole/DefaultPolicy/Resource') ||
-            node.node.path.endsWith('/SubmitQCTaskLambdaRole/DefaultPolicy/Resource') ||
             node.node.path.endsWith('/ParseBraketResultLambdaRole/DefaultPolicy/Resource') ||
             node.node.path.endsWith('/AggResultLambdaRole/DefaultPolicy/Resource') ||
+            node.node.path.endsWith('/WatiForTokenLambdaRole/DefaultPolicy/Resource') ||
             node.node.path.endsWith('/MolUnfNotebook/NotebookRole/DefaultPolicy/Resource') ||
             node.node.path.endsWith('/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/DefaultPolicy/Resource')
         ) {
@@ -69,7 +69,6 @@ export class AddCfnNag implements IAspect {
                 }, ],
             });
         } else if (node.node.path.endsWith('/HPCStateMachine/Role/DefaultPolicy/Resource') ||
-            node.node.path.endsWith('/QCDeviceStateMachine/Role/DefaultPolicy/Resource') ||
             node.node.path.endsWith('/QCStateMachine/Role/DefaultPolicy/Resource')
         ) {
             (node as cdk.CfnResource).addMetadata('cfn_nag', {
@@ -80,7 +79,8 @@ export class AddCfnNag implements IAspect {
             });
         } else if (
             node.node.path.endsWith('/BenchmarkStateMachine/Role/DefaultPolicy/Resource') ||
-            node.node.path.endsWith('/RunHPCAndQCStateMachine/Role/DefaultPolicy/Resource')
+            node.node.path.endsWith('/RunHPCAndQCStateMachine/Role/DefaultPolicy/Resource') ||
+            node.node.path.endsWith('/QCDeviceStateMachine/Role/DefaultPolicy/Resource')
         ) {
             (node as cdk.CfnResource).addMetadata('cfn_nag', {
                 rules_to_suppress: [{
