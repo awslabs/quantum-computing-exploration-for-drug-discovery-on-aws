@@ -1,4 +1,4 @@
-The XXX solution helps customers.
+The quantum ready solution for drug discovery helps customers.
 
 This solution mainly includes the following features:
 
