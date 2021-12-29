@@ -1,18 +1,21 @@
 import boto3
 import datetime
 from braket.aws import AwsDevice
+import logging
 
+log = logging.getLogger()
+log.setLevel('INFO')
 
 def handler(event, context):
-    print(f"event={event}")
+    log.info(f"event={event}")
     device_arn = event['device_arn']
     if 'd-wave' in device_arn:
         boto3.setup_default_session(region_name='us-west-2')
 
     try:
         device = AwsDevice(device_arn)
-        print(f"device={device}, status: {device.status}")
-        print(f"device.properties={device.properties}")
+        log.info(f"device={device}, status: {device.status}")
+        log.info(f"device.properties={device.properties}")
 
         nextAvailableSeconds = getNextAvailable(device)
         currentTime = datetime.datetime.now(datetime.timezone.utc)
@@ -25,7 +28,7 @@ def handler(event, context):
             "deviceStatus": device.status
         }
     except Exception as e:
-        print(repr(e))
+        log.info(repr(e))
         return {
             "availableNow": False,
             "errorMsg": repr(e),
@@ -125,7 +128,7 @@ def getNextAvailable(device):
 
     if (min_time == None or calc_time < min_time):
         min_time = calc_time
-    print("calc time {}".format(calc_time))
+    log.info("calc time {}".format(calc_time))
     if min_time == None:
         return 0
     else:

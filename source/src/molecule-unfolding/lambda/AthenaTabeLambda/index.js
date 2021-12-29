@@ -4,7 +4,6 @@ const client = new AWS.Athena({})
 const bucket = process.env.BUCKET
 
 exports.handler = function (event, context, callback) {
-    //console.log("REQUEST RECEIVED:\n" + JSON.stringify(event))
     const s3_prefix = event['s3_prefix']
     const stackName = event['stackName']
     const execution_id = event['execution_id']

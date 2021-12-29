@@ -4,6 +4,10 @@ from collections import defaultdict
 import json
 import datetime
 import copy
+import logging
+
+log = logging.getLogger()
+log.setLevel('INFO')
 
 s3 = boto3.client('s3')
 
@@ -50,10 +54,10 @@ max_shots, min_shots = 10000, 1
 
 
 def read_as_json(bucket, key):
-    print(f"read s3://{bucket}/{key}")
+    log.info(f"read s3://{bucket}/{key}")
     obj = s3.get_object(Bucket=bucket, Key=key)
     json_ = json.loads(obj['Body'].read())
-    print(f"return: {json_}")
+    log.info(f"return: {json_}")
     return json_
 
 
@@ -79,7 +83,7 @@ def read_config(s3_bucket, s3_prefix):
         if 'MAX_M' in config:
             MAX_M = config['MAX_M']
     except Exception as e:
-        print(f"cannot find {config_file}")
+        log.info(f"cannot find {config_file}")
         pass
 
 
@@ -95,7 +99,7 @@ def read_user_input(execution_id, bucket, s3_prefix):
     key = f"{s3_prefix}/executions/{execution_id}/user_input.json"
     obj = s3.get_object(Bucket=bucket, Key=key)
     input = json.loads(obj['Body'].read())
-    print(f"user_input={input}")
+    log.info(f"user_input={input}")
     return input
 
 
@@ -107,7 +111,7 @@ def get_model_param_items(params_dict: dict):
         param_list.append(pvalues)
 
     result = get_all_param_list(copy.deepcopy(param_list))
-    print(f"get_param_items: {result}")
+    log.info(f"get_param_items: {result}")
     return result
 
 
@@ -229,7 +233,7 @@ def validate_optParams(input_dict: dict, errors: list):
 
 
 def validate_input(input_dict: dict):
-    print('validate_input')
+    log.info('validate_input')
     valid_keys = ['version', 'runMode', 'molFile', 'modelVersion', 'optParams',
                   'experimentName', 'modelParams', 'devicesArns', 'hpcResources', 'Comment']
     valid_keys_str = "|".join(valid_keys)
@@ -263,12 +267,12 @@ def validate_input(input_dict: dict):
     except Exception as e:
         errors.append(repr(e))
 
-    print(errors)
+    log.info(errors)
     return errors
 
 
 def handler(event, context):
-    # print(f"event={event}")
+    # log.info(f"event={event}")
     aws_region = os.environ['AWS_REGION']
     param_type = event['param_type']
     s3_bucket = event['s3_bucket']
@@ -295,6 +299,16 @@ def handler(event, context):
             user_input['optParams']['sa'] = default_opt_params['sa']
         elif user_input['optParams'].get('qa', None) is None:
             user_input['optParams']['qa'] = default_opt_params['qa']
+
+        if user_input.get('modelParams', None) is None:
+            user_input['modelParams'] = default_model_params
+
+        if user_input.get('hpcResources', None) is None:
+            user_input['hpcResources'] = default_hpc_resources
+
+        if user_input.get('devicesArns', None) is None:
+            user_input['devicesArns'] = default_devices_arns
+
 
         key = f"{s3_prefix}/executions/{execution_id}/user_input.json"
         string_to_s3(content=json.dumps({
@@ -327,9 +341,9 @@ def handler(event, context):
             model_params = default_model_params
             hpc_resources = default_model_params
 
-    print(f"devices_arns={devices_arns}")
-    print(f"model_params={model_params}")
-    print(f"hpc_resources={hpc_resources}")
+    log.info(f"devices_arns={devices_arns}")
+    log.info(f"model_params={model_params}")
+    log.info(f"hpc_resources={hpc_resources}")
 
     if param_type == 'QC_DEVICE_LIST':
         return {
@@ -379,11 +393,11 @@ def handler(event, context):
 
     if param_type == 'PARAMS_FOR_QC_DEVICE':
         device_arn = event['device_arn']
-        print(f"device_arn={device_arn}")
+        log.info(f"device_arn={device_arn}")
         if device_arn not in devices_arns:
             raise ValueError(f"unknown device_arn: {device_arn}")
 
-        print(qc_task_params)
+        log.info(qc_task_params)
         return {
             "qcTaskParams":  qc_task_params[device_arn],
             "execution_id": execution_id,

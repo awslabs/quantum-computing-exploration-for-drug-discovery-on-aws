@@ -68,7 +68,7 @@ export class Notebook extends Construct {
         // const gitConfigProperty = {
         //     // TODO:
         //     // this will be set to the github repository of this project after open source
-        //     repositoryUrl: 'https://github.com/amliuyong/test-public.git',
+        //     repositoryUrl: 'TBD',
         // };
 
         const notebookInstnce = new CfnNotebookInstance(this, 'Notebook', {
