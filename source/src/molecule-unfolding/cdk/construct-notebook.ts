@@ -71,7 +71,7 @@ export class Notebook extends Construct {
         //     repositoryUrl: 'https://github.com/amliuyong/test-public.git',
         // };
 
-        const notebookInstnce = new CfnNotebookInstance(this, 'GCRQCLifeScienceNotebook', {
+        const notebookInstnce = new CfnNotebookInstance(this, 'Notebook', {
             instanceType: instanceTypeParam.valueAsString,
             roleArn: notebookRole.roleArn,
             rootAccess: 'Enabled',
