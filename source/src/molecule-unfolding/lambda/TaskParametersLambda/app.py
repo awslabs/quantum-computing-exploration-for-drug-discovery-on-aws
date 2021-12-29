@@ -12,6 +12,13 @@ default_devices_arns = [
     'arn:aws:braket:::device/qpu/d-wave/Advantage_system4'
 ]
 
+MAX_M = 20
+
+# max_M_for_devices = {it[0]: it[1] for it in list(zip(default_devices_arns, [
+#     4,
+#     20
+# ]))}
+
 default_model_params = {
     "M": [1, 2, 3, 4],
     "D": [4],
@@ -41,7 +48,6 @@ max_vcpu, min_vcpu = 16, 1
 max_mem, min_mem = 30,  1
 max_shots, min_shots = 10000, 1
 
-MAX_M = 4
 
 def read_as_json(bucket, key):
     print(f"read s3://{bucket}/{key}")
@@ -135,6 +141,11 @@ def validate_modelParams(input_dict: dict, errors: list):
     k = 'modelParams'
     if not isinstance(input_dict[k], dict):
         errors.append(f"devicesArns must be a dict")
+
+    devices_arns = input_dict.get('devicesArns', default_devices_arns)
+    # global MAX_M
+    # for d in devices_arns:
+    #     MAX_M = min(MAX_M, max_M_for_devices.get(d, MAX_M))
 
     param_names = dict(input_dict[k]).keys()
     for p in param_names:

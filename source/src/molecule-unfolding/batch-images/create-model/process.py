@@ -7,7 +7,7 @@ import json
 from utility.QMUQUBO import QMUQUBO
 from utility.MoleculeParser import MoleculeData
 
-PARAM_M_MAX = 4
+PARAM_M_MAX = 20
 
 logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
                     datefmt='%Y-%m-%d:%H:%M:%S',

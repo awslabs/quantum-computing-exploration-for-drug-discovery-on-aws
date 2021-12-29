@@ -167,7 +167,7 @@ export class BatchUtil {
                 memoryLimitMiB: mem * 1024,
                 privileged: false
             },
-            timeout: cdk.Duration.hours(2),
+            timeout: cdk.Duration.hours(6),
             retryAttempts: 1
         });
 
@@ -196,7 +196,7 @@ export class BatchUtil {
                 memoryLimitMiB: mem * 1024,
                 privileged: false
             },
-            timeout: cdk.Duration.minutes(15),
+            timeout: cdk.Duration.hours(1),
             retryAttempts: 1
         });
     }
