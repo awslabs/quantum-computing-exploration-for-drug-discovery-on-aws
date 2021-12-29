@@ -4,7 +4,7 @@ We will run benchmark through AWS StepFunctions workflow and view the result via
 
 ### Get StepFunctions link from deployment output
 
-![deployment output](../images/deploy_output.png)
+![deployment output](./images/deploy_output.png)
 
 
 ### Start Execution
@@ -62,12 +62,10 @@ A typical and default(if input json is `{}`) input:
     "runMode": "ALL",
     "optParams": {
         "qa": {
-            "shots": 1000,
-            "embed_method": "default"
+            "shots": 1000
         },
         "sa": {
-            "shots": 1000,
-            "notes": "benchmarking"
+            "shots": 1000
         }
     },
 
@@ -97,7 +95,7 @@ Dashbaord [link](https://us-east-1.quicksight.aws.amazon.com/sn/dashboards/qcsta
 
 If you run StepFunctions multi-times, by default, the dashbaord average  metrics of all executions. You can click a item in the experiment hist table in the left-upper corner to view the result of a specific execution.  
 
-![dashboard](../images/quicksight_dashboard.png)
+![dashboard](./images/quicksight_dashboard.png)
 
 
 

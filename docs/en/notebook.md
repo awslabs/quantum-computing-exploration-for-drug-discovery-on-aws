@@ -4,7 +4,7 @@ This solution will deploy a Sagemaker notebook instance with braket SDK installe
 
 ### Get Notebook link from deployment output
 
-![deployment output](../images/deploy_output.png)
+![deployment output](./images/deploy_output.png)
 
 
 ### Expriment in notebook

@@ -6,7 +6,7 @@ AWS Solution Quantum-Ready Solution for Drug Discovery (abbrev. QRSDDSolution), 
 
 The overall architecture is shown as below:
 
-![architecture](./docs/images/architecture.png)
+![architecture](./docs/en/images/architecture.png)
 
 There are two types of Experiments of this solution: Benchmark experiment and Notebook experiment.
 
@@ -51,11 +51,11 @@ We use molecule data for this solution (source/src/molecule-unfolding/molecule-d
    - Choose `Enterprise`, click continue
    - In the `Create your QuickSight account` page, fill the necessary infomaiton:
    
-   ![create quicksight](./docs/images/create_quicksight.png) 
+   ![create quicksight](./docs/en/images/create_quicksight.png) 
    
    - Go to [quicksight admin](https://us-east-1.quicksight.aws.amazon.com/sn/admin), record your QuickSight username
    
-   ![quicksight username](./docs/images/quicksight_username.png)    
+   ![quicksight username](./docs/en/images/quicksight_username.png)    
 
 ### Update `cdk.context.json`
 
@@ -81,7 +81,7 @@ npm run deploy
 
  After deployment, go to [cloudformation](https://console.aws.amazon.com/cloudformation/home), find the statck `QCStack`, from the output, you will get related links for Notebook, stepFunctions to run benchmark tasks, and QuickSight dashboard URL
 
-![cloudformation output](./docs/images/deploy_output.png)   
+![cloudformation output](./docs/en/images/deploy_output.png)   
 
 
 ### Change QuickSight permissions
@@ -89,7 +89,7 @@ npm run deploy
  - Go to [quicksight admin](https://us-east-1.quicksight.aws.amazon.com/sn/admin#aws) 
  - In `QuickSight access to AWS services`, click 'Manage' button, select the S3 bucket create in step `deployment output`
 
-![quicksight permissions](./docs/images/quicksight_perm.png) 
+![quicksight permissions](./docs/en/images/quicksight_perm.png) 
 
  - Save the change 
 
