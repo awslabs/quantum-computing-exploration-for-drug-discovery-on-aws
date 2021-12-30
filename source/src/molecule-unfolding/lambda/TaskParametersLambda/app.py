@@ -16,12 +16,12 @@ default_devices_arns = [
     'arn:aws:braket:::device/qpu/d-wave/Advantage_system4'
 ]
 
-MAX_M = 20
+MAX_M = 7
 
-# max_M_for_devices = {it[0]: it[1] for it in list(zip(default_devices_arns, [
-#     4,
-#     20
-# ]))}
+max_M_for_devices = {it[0]: it[1] for it in list(zip(default_devices_arns, [
+    4,
+    7
+    ]))}
 
 default_model_params = {
     "M": [1, 2, 3, 4],
@@ -147,9 +147,9 @@ def validate_modelParams(input_dict: dict, errors: list):
         errors.append(f"devicesArns must be a dict")
 
     devices_arns = input_dict.get('devicesArns', default_devices_arns)
-    # global MAX_M
-    # for d in devices_arns:
-    #     MAX_M = min(MAX_M, max_M_for_devices.get(d, MAX_M))
+    global MAX_M
+    for d in devices_arns:
+        MAX_M = min(MAX_M, max_M_for_devices.get(d, MAX_M))
 
     param_names = dict(input_dict[k]).keys()
     for p in param_names:
