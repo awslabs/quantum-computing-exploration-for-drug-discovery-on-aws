@@ -1,0 +1,100 @@
+{
+  "name": "gcr-quantum-ready-for-drug-discovery",
+  "description": "AWS GRC solution: Quantum Ready For Drug Discovery",
+  "repository": {
+    "type": "git",
+    "url": "ssh://git.amazon.com/pkg/AWS-gcr-qc-life-science"
+  },
+  "scripts": {
+    "test": "rm -fr lib && npm run test:compile && jest --passWithNoTests --all --updateSnapshot && eslint",
+    "build": "npm run test && npm run synth",
+    "bump": "standard-version -i ../CHANGELOG.md",
+    "test:watch": "jest --watch",
+    "test:update": "jest --updateSnapshot",
+    "test:compile": "tsc --noEmit --project tsconfig.jest.json",
+    "watch": "tsc -w",
+    "eslint": "eslint --ext .ts,.tsx --fix --no-error-on-unmatched-pattern src test",
+    "cdk": "cdk ",
+    "diff": "cdk diff QCStack",
+    "synth": "cdk synth QCStack ",
+    "deploy": "cdk deploy QCStack",
+    "destroy": "cdk destroy QCStack",
+    "build-docker": "cd ./src/ligand-unfolding/ && ./build.sh",
+    "synth-dev": "cdk synth QCStack-dev",
+    "deploy-dev": "cdk deploy QCStack-dev",
+    "destroy-dev": "cdk destroy QCStack-dev",
+    "deploy-rs": "cdk deploy QCStack  -c quicksight_user=Admin/yonmzn-Isengard --profile liuyong_rs_ue1",
+    "destroy-rs": "cdk destroy QCStack --profile liuyong_rs_ue1",
+    "cfn-neg": "cdk synth -- --output /tmp/ && cfn_nag_scan --input-path  /tmp/QCStack.template.json"
+  },
+  "devDependencies": {
+    "@aws-cdk/assertions": "^1.116.0",
+    "@types/jest": "^27.0.3",
+    "@types/node": "14.17.7",
+    "@typescript-eslint/eslint-plugin": "^4.29.0",
+    "@typescript-eslint/parser": "^4.29.0",
+    "aws-cdk": "^1.116.0",
+    "eslint": "^7.32.0",
+    "eslint-import-resolver-node": "^0.3.4",
+    "eslint-import-resolver-typescript": "^2.4.0",
+    "eslint-plugin-import": "^2.23.4",
+    "jest": "^27.4.4",
+    "jest-junit": "^13.0.0",
+    "json-schema": "^0.4.0",
+    "standard-version": "^9.3.1",
+    "ts-jest": "^27.0.7",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.3.5"
+  },
+  "dependencies": {
+    "@aws-cdk/assert": "^1.116.0",
+    "@aws-cdk/aws-apigateway": "^1.116.0",
+    "@aws-cdk/aws-batch": "^1.116.0",
+    "@aws-cdk/aws-ec2": "^1.116.0",
+    "@aws-cdk/aws-events-targets": "^1.116.0",
+    "@aws-cdk/aws-kms": "^1.116.0",
+    "@aws-cdk/aws-lambda": "^1.116.0",
+    "@aws-cdk/aws-quicksight": "^1.116.0",
+    "@aws-cdk/aws-s3": "^1.116.0",
+    "@aws-cdk/aws-s3-notifications": "^1.116.0",
+    "@aws-cdk/aws-sagemaker": "^1.116.0",
+    "@aws-cdk/aws-sqs": "^1.116.0",
+    "@aws-cdk/aws-stepfunctions": "^1.116.0",
+    "@aws-cdk/aws-stepfunctions-tasks": "^1.116.0",
+    "@aws-cdk/core": "^1.116.0",
+    "cdk-bootstrapless-synthesizer": "^0.7.2"
+  },
+  "bundledDependencies": [],
+  "license": "Apache-2.0",
+  "version": "0.0.1",
+  "jest": {
+    "clearMocks": true,
+    "collectCoverage": true,
+    "coverageDirectory": "coverage",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "testMatch": [
+      "**/__tests__/**/*.ts?(x)",
+      "**/?(*.)+(spec|test).ts?(x)"
+    ],
+    "reporters": [
+      "default",
+      [
+        "jest-junit",
+        {
+          "outputDirectory": "test-reports"
+        }
+      ]
+    ],
+    "preset": "ts-jest",
+    "globals": {
+      "ts-jest": {
+        "tsconfig": "tsconfig.jest.json"
+      }
+    }
+  }
+}
