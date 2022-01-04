@@ -11,10 +11,12 @@ This solution mainly includes the following features:
 - Sample codes to show how to use quantum computing, classical computing or both to study the drug discovery problems 
 - The analytics data and diagrams are provided in BI service (Amazon QuickSight) to evaluate the experiment values (e.g. cost, performance, time)
 
-This implementation guide describes architectural considerations and configuration steps for deploying the XXX solution in the Amazon Web Services (AWS) cloud. It includes links to [CloudFormation][cloudformation] templates that launches and configures the AWS services required to deploy this solution using AWS best practices for security and availability.
+This implementation guide describes architectural considerations and configuration steps for deploying the quantum ready solution for drug discovery in the Amazon Web Services (AWS) cloud. It includes links to [CloudFormation][cloudformation] templates that launches and configures the AWS services required to deploy this solution using AWS best practices for security and availability.
 
 The guide is intended for IT architects, developers, DevOps, data scientists, and algorithm engineers with practical experience architecting in the AWS Cloud.
 
-[Batch]: https://aws.amazon.com/cn/batch/
-[Inferentia]: https://aws.amazon.com/cn/machine-learning/inferentia/
-[cloudformation]: https://aws.amazon.com/en/cloudformation/
+[Amazon Braket]: https://aws.amazon.com/braket/
+
+[Amazon Batch]: https://aws.amazon.com/batch/
+
+[Amazon QuickSight]: https://aws.amazon.com/quicksight/
