@@ -2,6 +2,9 @@ import * as cdk from '@aws-cdk/core'
 import * as s3 from '@aws-cdk/aws-s3'
 import * as ec2 from '@aws-cdk/aws-ec2'
 import * as lambda from '@aws-cdk/aws-lambda'
+import * as events from '@aws-cdk/aws-events'
+import * as targets from '@aws-cdk/aws-events-targets'
+
 
 import {
     ECRRepoNameEnum,
@@ -12,7 +15,7 @@ import {
     RoleUtil
 } from './utils/utils-role'
 
-const s3n = require('@aws-cdk/aws-s3-notifications')
+//const s3n = require('@aws-cdk/aws-s3-notifications')
 
 interface Props {
     region: string;
@@ -54,11 +57,25 @@ export class EventListener extends cdk.Construct {
             securityGroups: [lambdaSg]
         });
 
-        this.props.bucket.addEventNotification(s3.EventType.OBJECT_CREATED,
-            new s3n.LambdaDestination(parseBraketResultLambda), {
-                prefix: `${this.props.prefix}/qc_task_output/`,
-                suffix: 'results.json'
-            });
+        const rule = new events.Rule(this, 'braketEventrule', {
+            eventPattern: {
+                source: ["aws.braket"],
+                detailType: ["Braket Task State Change"]
+            },
+        });
+
+        rule.addTarget(new targets.LambdaFunction(parseBraketResultLambda, {
+            maxEventAge: cdk.Duration.hours(2),
+            retryAttempts: 3,
+        }));
+
+        // this.props.bucket.addEventNotification(s3.EventType.OBJECT_CREATED,
+        //     new s3n.LambdaDestination(parseBraketResultLambda), {
+        //         prefix: `${this.props.prefix}/qc_task_output/`,
+        //         suffix: 'results.json'
+        //     });
     }
+
+
 
 }

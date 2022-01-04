@@ -18,14 +18,17 @@ The whole cost consists of five types:
 
 | Cost Type| Service | Resource Size | Operating Condition | Cost |
 | :---: | :---: | :---: | :---: | :---: |
-| Notebook | Amazon Sagemaker Notebook | ?? | long run instance | ?? |
-| Compute | Amazon Braket | D-Wave 2000Q | 1 task, 10000 shots | ?? |
-| Compute | Amazon Braket | D-Wave Advantage | 1 task, 10000 shots | ?? |
-| Compute | Amazon Batch | ??| ?? minutes | ?? |
-| Compute | Amazon Batch | ??| ?? minutes | ?? |
-| Compute | Amazon Batch | ??| ?? minutes | ?? |
-| Storage | Amazon S3 | ??| ??| ?? |
-| Analysis | Amazon Athena | ??| ??| ?? |
-| Analysis | Amazon QuickSight | ??| ??| ?? |
-| Orchestration| AWS Step Functions | ??| ??| ?? |
-| Orchestration| AWS Lambda| ??| ??| ?? |
+| Notebook | Amazon Sagemaker Notebook | ml.c5.xlarge | long run instance | 4.90 USD/Day |
+| Compute | Amazon Braket | D-Wave 2000Q | 4 task, 1000 shots/task | 1.96 USD |
+| Compute | Amazon Braket | D-Wave Advantage | 4 task, 1000 shots/task | 1.96 USD |
+| Compute | Amazon Batch (Fargate) | 2 vcpu 4G mem | less than 20 minutes | 1.02 USD |
+| Compute | Amazon Batch (EC2) | c5.large| less than 60 minutes | 0.09 USD |
+| Compute | Amazon Batch (EC2) | c5.xlarge| less than  60 minutes | 0.17 USD|
+| Compute | Amazon Batch (EC2) | c5.2xlarge| less than  60 minutes | 0.34 USD |
+| Compute | Amazon Batch (EC2) | c5.4xlarge| less than  60 minutes | 0.68 USD |
+| Compute| AWS Lambda| - | less than 100 requests | 0 USD |
+| Storage | Amazon S3 | - | less than 1G | 0.02 USD |
+| Analysis | Amazon Athena | - | less than 20 queres,100M data | 0.29 USD |
+| Analysis | Amazon QuickSight | - | 1 reader | 8.00 USD/Month |
+| Orchestration| AWS Step Functions | - |  less than 100 transitions | 0 USD  |
+
