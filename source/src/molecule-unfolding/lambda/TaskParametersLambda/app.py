@@ -16,11 +16,11 @@ default_devices_arns = [
     'arn:aws:braket:::device/qpu/d-wave/Advantage_system4'
 ]
 
-MAX_M = 7
+MAX_M = 4
 
 max_M_for_devices = {it[0]: it[1] for it in list(zip(default_devices_arns, [
     4,
-    7
+    4
     ]))}
 
 default_model_params = {
@@ -280,6 +280,8 @@ def handler(event, context):
 
     read_config(s3_bucket, s3_prefix)
 
+    log.info(f"default_model_params: {default_model_params}")
+
     common_param = f"--aws_region,{aws_region},--s3-bucket,{s3_bucket},--s3_prefix,{s3_prefix}"
 
     if param_type == 'CHECK_INPUT':
@@ -339,7 +341,7 @@ def handler(event, context):
         else:
             devices_arns = default_devices_arns
             model_params = default_model_params
-            hpc_resources = default_model_params
+            hpc_resources = default_hpc_resources
 
     log.info(f"devices_arns={devices_arns}")
     log.info(f"model_params={model_params}")
