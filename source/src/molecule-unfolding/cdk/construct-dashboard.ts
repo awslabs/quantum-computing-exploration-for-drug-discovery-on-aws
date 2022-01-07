@@ -151,7 +151,7 @@ export class Dashboard extends cdk.Construct {
                     customSql: {
                         dataSourceArn: qcDataSource.attrArn,
                         name: 'all',
-                        sqlQuery: `SELECT * FROM "AwsDataCatalog"."default"."${this.props.stackName}_qc_benchmark_metrics"`,
+                        sqlQuery: `SELECT * FROM "AwsDataCatalog"."qc_db"."${this.props.stackName}_qc_benchmark_metrics"`,
                         columns
                     },
                 }

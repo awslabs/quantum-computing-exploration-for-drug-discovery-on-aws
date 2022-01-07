@@ -249,7 +249,13 @@ def parse_task_result(bucket, key, status='COMPLETED'):
 
 
 def handle_event_bridage_message(event):
+    region = os.environ['AWS_REGION']
     outputS3Bucket = event['detail']['outputS3Bucket']
+
+    if not str(outputS3Bucket).endswith(region):
+        log.info(f'reqeust is not from my resion: {region}, ignore message, outputS3Bucket: {outputS3Bucket}')
+        return 
+
     outputS3Directory = event['detail']['outputS3Directory']
     status = event['detail']['status']
     log.info(f"status={status}")

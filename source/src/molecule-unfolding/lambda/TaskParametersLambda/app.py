@@ -25,7 +25,7 @@ max_M_for_devices = {it[0]: it[1] for it in list(zip(default_devices_arns, [
 
 default_model_params = {
     "M": [1, 2, 3, 4],
-    "D": [4],
+    "D": [8],
     "A": [300],
     "HQ": [200]  # hubo_qubo_val
 }
@@ -163,9 +163,9 @@ def validate_modelParams(input_dict: dict, errors: list):
             if not isinstance(e, int):
                 errors.append(
                     f"invalid value {e}, value for {p} must be int")
-        if p == 'D' and list_vals != [4]:
+        if p == 'D' and list_vals != [8]:
             errors.append(
-                f"invalid value for {p}, current only support '[ 4 ]'")
+                f"invalid value for {p}, current only support '[ 8 ]'")
         if p == 'A' and list_vals != [300]:
             errors.append(
                 f"invalid value for {p}, current only support '[ 300 ]'")

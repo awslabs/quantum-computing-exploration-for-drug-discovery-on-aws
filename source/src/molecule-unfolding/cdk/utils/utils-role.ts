@@ -302,14 +302,17 @@ export class RoleUtil {
             resources: [
                 `arn:aws:athena:*:${this.props.account}:workgroup/primary`,
                 `arn:aws:athena:*:${this.props.account}:datacatalog/AwsDataCatalog`,
-                `arn:aws:glue:*:${this.props.account}:database/default`,
-                `arn:aws:glue:*:${this.props.account}:table/default/${table_name1}`,
-                `arn:aws:glue:*:${this.props.account}:table/default/${table_name2}`,
+                `arn:aws:glue:*:${this.props.account}:database/qc_db`,
+                `arn:aws:glue:*:${this.props.account}:table/qc_db/${table_name1}`,
+                `arn:aws:glue:*:${this.props.account}:table/qc_db/${table_name2}`,
                 `arn:aws:glue:*:${this.props.account}:catalog`
             ],
             actions: [
                 "athena:StartQueryExecution",
                 "athena:GetQueryResults",
+                "glue:UpdateDatabase",
+                "glue:DeleteDatabase",
+                "glue:CreateDatabase",
                 "glue:GetTable",
                 "glue:DeleteTable",
                 "glue:CreateTable",

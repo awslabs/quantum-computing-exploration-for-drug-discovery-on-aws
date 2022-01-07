@@ -84,7 +84,7 @@ def create_qubo_model(mol_data, execution_id, version, model_params):
     model_param[method] = {}
     model_param[method]['M'] = range(1, min(num_rotation_bond+1, max_param_M + 1))
     # model_param[method]['M'] = [4]
-    model_param[method]['D'] = [4]
+    model_param[method]['D'] = [8]
     model_param[method]['A'] = [300]
     model_param[method]['hubo_qubo_val'] = [200]
 
