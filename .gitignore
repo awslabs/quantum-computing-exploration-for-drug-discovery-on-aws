@@ -8,5 +8,6 @@ node_modules
 cdk.out
 .env
 .DS_Store
+my_sync_code.sh
 
 
