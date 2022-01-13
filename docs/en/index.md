@@ -1,4 +1,4 @@
-The quantum ready solution for drug discovery helps customers 
+AWS Quantum Ready Solution for Drug Discovery (AWS QRSDD) helps customers 
 study drug discovery problems using quantum computing (Amazon Braket), 
 such as molecular docking and protein folding. Customers can easily 
 leverage this solution to orchestrate workflows that run on both classical 

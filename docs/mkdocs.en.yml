@@ -6,8 +6,8 @@ theme:
 nav:
 
   - Welcome: index.md -done
-  - Cost: cost.md - 1. add total cost; 2. add working condition
-  - Architecture overview: architecture.md - done
+  - Cost: cost.md - 1. usage detail to be added
+  - Architecture overview: architecture.md - to be update image
   - Security: security.md
   - Supported regions: regions.md - done
   - AWS CloudFormation template: template.md
