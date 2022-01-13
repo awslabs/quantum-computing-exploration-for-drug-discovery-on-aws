@@ -2,6 +2,9 @@ node_modules
 !jest.config.js
 *.d.ts
 node_modules
+*.json
+*.mol2
+*.pickle
 
 # CDK asset staging directory
 .cdk.staging

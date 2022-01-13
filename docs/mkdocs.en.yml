@@ -5,13 +5,14 @@ theme:
   language: en
 nav:
 
-  - Welcome: index.md
-  - Cost: cost.md
-  - Architecture overview: architecture.md
+  - Welcome: index.md -done
+  - Cost: cost.md - 1. add total cost; 2. add working condition
+  - Architecture overview: architecture.md - done
   - Security: security.md
-  - Supported regions: regions.md
+  - Supported regions: regions.md - done (wait for cross-region check)
   - AWS CloudFormation template: template.md
   - Automated deployment: deployment.md
+  - Workshop: workshop.md
   - Additional resources: additional-resources.md
   - Uninstall the solution: uninstall.md
   - Source code: source.md

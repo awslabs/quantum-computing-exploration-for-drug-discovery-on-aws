@@ -76,7 +76,6 @@ class QMUQUBO():
                                                                                      theta_option)
                         hubo.update(hubo_constraints)
                         hubo.update(hubo_distances)
-                        # logging.info(f"hubo {hubo}")
                         # transfer hubo to qubo
                         # TODO why make_quadratic not work?
                         # qubo_raw = dimod.make_quadratic(

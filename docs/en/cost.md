@@ -31,4 +31,5 @@ The whole cost consists of five types:
 | Analysis | Amazon Athena | - | less than 20 queres,100M data | 0.29 USD |
 | Analysis | Amazon QuickSight | - | 1 reader | 8.00 USD/Month |
 | Orchestration| AWS Step Functions | - |  less than 100 transitions | 0 USD  |
+| Total | xxx to do|
 
