@@ -13,7 +13,7 @@ with needs to evaluate the possible useful cases of quantum computing in their i
 start to consider this new technology or on the way, you can use this solution to speed up the process, save
 time and cost. It is an open-source projects, anyone can contribute to features of adding more related solutions.
 
-![Application of Quantum Computing](/images/application-of-qc.png)
+![Application of Quantum Computing](../images/application-of-qc.png)
 
 Biology is one of the science categories that will be directly impacted by quantum. This technology will 
 impact industry verticals such as drug discovery, genetic engineering.
@@ -22,7 +22,7 @@ We are entering a fascinating period in the development of quantum computers.
 As this technology is still in such an early phase, it may be that its true impact is not even fully understood yet. 
 This makes this field even more fascinating to follow.
 
-![Drug Discovery](/images/drug-discovery.png)
+![Drug Discovery](../images/drug-discovery.png)
 
 Drug discovery is a high-risk and time-consuming field. The average R&D cost required to bring a 
 new, FDA approved medicine to patients is estimated to be $2.6 billion over the past decade 
@@ -35,7 +35,7 @@ Let's consider the case for Alzheimer's treatment. The new treatments approved b
 the onset of Alzheimer’s by five years would reduce the number of people with the disease 
 by approximately 40 percent and cost for care of patients by $367 billion a year by 2050. 
 
-![CADD](/images/cadd.png)
+![CADD](../images/cadd.png)
 
 Innovation and advancements in computer-aided drug design (CADD) helps increase the productivity in
 drug research and development. Breakthroughs in artificial intelligence (AI) still rely on statistical 
@@ -43,7 +43,7 @@ models running on classical computers. These devices are limited in modelling qu
 such as protein structures. However, hopes for a literal quantum leap in research productivity lie 
 in the development of quantum computers. 
 
-![CADD-QC](/images/cadd-qc.png)
+![CADD-QC](../images/cadd-qc.png)
 
 Researchers have listed the quantum techniques that can be applied to the components in the general workflow
 of drug discovery process. As the above image shown, both the structured-based methods and ligand-based methods
