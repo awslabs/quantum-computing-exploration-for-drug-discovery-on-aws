@@ -60,7 +60,9 @@ This automated AWS CloudFormation template deploys the solution in the AWS Cloud
 
 ### Setup AWS EventBright cross region event
 
-You need to perform blow steps to setup AWS EventBright cross region event if your deployment region is not `us-west-2`
+**If your deployment region is `us-west-2`, you can safely skip this section.**
+
+You need to perform blow steps to setup AWS EventBright cross region event if your deployment region is not `us-west-2`. 
 
 1.  Use the Region selector in the console navigation bar, switch your region to `us-west-2`.
 
