@@ -7,7 +7,7 @@ nav:
 
   - Welcome: index.md -done
   - Cost: cost.md - 1. usage detail to be added
-  - Architecture overview: architecture.md - to be update image
+  - Architecture overview: architecture.md - done
   - Security: security.md - done
   - Supported regions: regions.md - done
   - AWS CloudFormation template: template.md
