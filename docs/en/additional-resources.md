@@ -1,14 +1,19 @@
-- [Amazon API Gateway][api-gateway]
-- [Amazon Lambda][lambda]
-- [Amazon Batch][Batch]
+- [AWS SageMaker Notebook][sagemaker]
+- [Amazon Braket][braket]
+- [AWS Step Function][step function]
+- [AWS Batch][batch]
 - [Amazon S3][s3]
-- [Amazon EFS][efs]
-- [Amazon EC2 Inf1][inf1]
+- [Amazon EventBridge][eventbridge]
+- [AWS Lambda][lambda]
+- [Amazon Athena][athena]
+- [Amazon QuickSight][quicksight]
 
-
-[api-gateway]: https://aws.amazon.com/cn/api-gateway/
-[lambda]: https://aws.amazon.com/cn/lambda/
-[Batch]: https://aws.amazon.com/cn/batch/
-[s3]: https://aws.amazon.com/cn/s3/
-[efs]: https://aws.amazon.com/cn/efs/
-[inf1]: https://aws.amazon.com/cn/ec2/instance-types/inf1/
+[sagemaker]:(https://docs.aws.amazon.com/sagemaker/latest/dg/nbi.html),
+[braket]:(https://aws.amazon.com/braket/),
+[step function]:(https://aws.amazon.com/step-functions/),
+[batch]:(https://aws.amazon.com/batch/),
+[s3]: https://aws.amazon.com/s3/
+[eventbridge]:(https://aws.amazon.com/eventbridge/),
+[lambda]:(https://aws.amazon.com/lambda/),
+[athena]:(https://aws.amazon.com/athena/)
+[quicksight]:(https://aws.amazon.com/quicksight/),
