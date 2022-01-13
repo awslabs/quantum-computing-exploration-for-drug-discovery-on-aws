@@ -6,12 +6,16 @@ theme:
 nav:
 
   - Welcome: index.md -done
-  - Cost: cost.md - usage detail to be added/change instance type to resource
+  - Cost: cost.md - done
   - Architecture overview: architecture.md - done
   - Security: security.md - done
   - Supported regions: regions.md - done
   - AWS CloudFormation template: template.md - real link to be added
   - Automated deployment: deployment.md (should include workshop part)
+    1. deploy step
+    2. notebook experiment
+    3. batch test
+    4. test your own algorithm
   - Additional resources: additional-resources.md - done
   - Uninstall the solution: uninstall.md - done
   - Source code: source.md - done
