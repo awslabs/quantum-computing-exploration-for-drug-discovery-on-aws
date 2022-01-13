@@ -1,6 +1,9 @@
-import boto3
+# import boto3
 import datetime
 from braket.aws import AwsDevice
+from braket.aws.aws_session import AwsSession
+from boto3 import Session
+import os
 import logging
 
 log = logging.getLogger()
@@ -9,11 +12,18 @@ log.setLevel('INFO')
 def handler(event, context):
     log.info(f"event={event}")
     device_arn = event['device_arn']
+    device_region = os.environ['AWS_REGION']
+
     if 'd-wave' in device_arn:
-        boto3.setup_default_session(region_name='us-west-2')
+        #boto3.setup_default_session(region_name='us-west-2')
+        device_region = 'us-west-2'
+        
+    log.info(f"device_arn: {device_arn}, device_region: {device_region}")
+    boto_sess = Session(region_name=device_region)
 
     try:
-        device = AwsDevice(device_arn)
+        aws_session = AwsSession(boto_session=boto_sess)
+        device = AwsDevice(arn=device_arn, aws_session=aws_session)
         log.info(f"device={device}, status: {device.status}")
         log.info(f"device.properties={device.properties}")
 
