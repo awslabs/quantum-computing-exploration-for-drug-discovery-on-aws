@@ -13,8 +13,8 @@ nav:
   - AWS CloudFormation template: template.md - real link to be added
   - Automated deployment: deployment.md (should include workshop part)
   - Additional resources: additional-resources.md - done
-  - Uninstall the solution: uninstall.md
-  - Source code: source.md
-  - Revisions: revisions.md
-  - Notices: notices.md
+  - Uninstall the solution: uninstall.md - done
+  - Source code: source.md - done
+  - Revisions: revisions.md - done
+  - Notices: notices.md - done
 

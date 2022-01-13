@@ -63,52 +63,52 @@ The whole cost consists of five types:
     <tr>
     <tr>
         <td>Amazon Batch (Fargate) </td>
-        <td>2 vcpu 4G mem</td>
-        <td>less than 20 minutes for tasks like creating model</td>
+        <td>2 VCPU 4G MEM</td>
+        <td>Tasks like creating models, 8 minutes(< 20 minutes)</td>
         <td>1.02 USD</td>
     <tr>
     <tr>
         <td>Amazon Batch (EC2) </td>
-        <td>c5.large</td>
-        <td>4 tasks for different parameters, less than 60 minutes</td>
+        <td>2 VCPU 2G MEM</td>
+        <td>4 tasks for different parameters, 19 minutes(< 60 minutes)</td>
         <td>0.09 USD</td>
     <tr>
     <tr>
         <td>Amazon Batch (EC2) </td>
-        <td>c5.xlarge</td>
-        <td>4 tasks for different parameters, less than 60 minutes</td>
+        <td>4 VCPU 4G MEM</td>
+        <td>4 tasks for different parameters, 19 minutes(< 60 minutes)</td>
         <td>0.17 USD</td>
     <tr>
     <tr>
         <td>Amazon Batch (EC2) </td>
-        <td>c5.2xlarge</td>
-        <td>4 tasks for different parameters, less than 60 minutes</td>
+        <td>8 VCPU 8G MEM</td>
+        <td>4 tasks for different parameters, 19 minutes(< 60 minutes)</td>
         <td>0.34 USD</td>
     <tr>
     <tr>
         <td>Amazon Batch (EC2) </td>
-        <td>c5.4xlarge</td>
-        <td>4 tasks for different parameters, less than 60 minutes</td>
+        <td>16 VCPU 16G MEM</td>
+        <td>4 tasks for different parameters, 19 minutes(< 60 minutes)</td>
         <td>0.68 USD</td>
     <tr>
     <tr>
         <td>AWS Lambda </td>
         <td>-</td>
-        <td>less than 100 queries</td>
+        <td>< 100 queries</td>
         <td>0 USD</td>
     <tr>
     <tr>
         <td>Storage</td>
         <td>Amazon S3</td>
         <td>-</td>
-        <td>less than 1G</td>
+        <td>< 1G</td>
         <td>0.02 USD</td>
     <tr>
     <tr>
         <td rowspan='4'>Analysis</td>
         <td>Amazon Athena</td>
         <td>-</td>
-        <td>less than 20 queries, 100M data</td>
+        <td>< 20 queries, 100M data</td>
         <td>0.029 USD</td>
     <tr>
     <tr>
@@ -121,7 +121,7 @@ The whole cost consists of five types:
         <td>Orchestration</td>
         <td>AWS Step Functions</td>
         <td>-</td>
-        <td>less than 100 transitions</td>
+        <td>< 100 transitions</td>
         <td>0 USD</td>
     <tr>
     <tr>
