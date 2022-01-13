@@ -87,7 +87,7 @@ The whole cost consists of five types:
     <tr>
     <tr>
         <td>Amazon Batch (EC2) </td>
-        <td>c5.2xlarge</td>
+        <td>c5.4xlarge</td>
         <td>4 tasks for different parameters, less than 60 minutes</td>
         <td>0.68 USD</td>
     <tr>
