@@ -1,3 +1,4 @@
+from re import T
 import boto3
 import os
 from collections import defaultdict
@@ -11,17 +12,29 @@ log.setLevel('INFO')
 
 s3 = boto3.client('s3')
 
-default_devices_arns = [
+known_devices_arns = [
     'arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6',
     'arn:aws:braket:::device/qpu/d-wave/Advantage_system4'
 ]
 
+default_devices_arns = known_devices_arns
+
 MAX_M = 7
 
-max_M_for_devices = {it[0]: it[1] for it in list(zip(default_devices_arns, [
+max_M_for_devices_D8 = {it[0]: it[1] for it in list(zip(known_devices_arns, [
+    3,
+    4
+]))}
+
+max_M_for_devices_D4 = {it[0]: it[1] for it in list(zip(known_devices_arns, [
     4,
     7
-    ]))}
+]))}
+
+max_M_for_devices = {
+    8: max_M_for_devices_D8,
+    4: max_M_for_devices_D4
+}
 
 default_model_params = {
     "M": [1, 2, 3, 4],
@@ -74,14 +87,19 @@ def read_config(s3_bucket, s3_prefix):
 
         if 'hpcResources' in config:
             default_hpc_resources = config['hpcResources']
+            log.info(f"set default_hpc_resources={default_hpc_resources} by config")
         if 'modelParams' in config:
             default_model_params = config['modelParams']
+            log.info(f"set default_model_params={default_model_params} by config")
         if 'devicesArns' in config:
             default_devices_arns = config['devicesArns']
+            log.info(f"set default_devices_arns={default_devices_arns} by config")
         if 'optParams' in config:
             default_opt_params = config['optParams']
+            log.info(f"set default_opt_params={default_opt_params} by config")
         if 'MAX_M' in config:
             MAX_M = config['MAX_M']
+            log.info(f"set MAX_M={MAX_M} by config")
     except Exception as e:
         log.info(f"cannot find {config_file}")
         pass
@@ -133,12 +151,12 @@ def get_all_param_list(param_list):
     else:
         param_list_copy = copy.deepcopy(param_list)
         param_list_copy[index_i] = [first_l]
-        reslut_all = []
+        result_all = []
         result_list0 = get_all_param_list(param_list_copy)
         result_list1 = get_all_param_list(param_list)
-        reslut_all.extend(result_list0)
-        reslut_all.extend(result_list1)
-        return reslut_all
+        result_all.extend(result_list0)
+        result_all.extend(result_list1)
+        return result_all
 
 
 def validate_modelParams(input_dict: dict, errors: list):
@@ -146,10 +164,27 @@ def validate_modelParams(input_dict: dict, errors: list):
     if not isinstance(input_dict[k], dict):
         errors.append(f"devicesArns must be a dict")
 
+    molFile = input_dict.get('molFile', None)
+    if molFile is not None:
+        log.info(f"use your own model file {molFile}, skip check for modelParams")
+        return 
+
     devices_arns = input_dict.get('devicesArns', default_devices_arns)
+
+    D_val = input_dict[k].get('D', [8])[0]
     global MAX_M
+
+    log.info(f"MAX_M={MAX_M}")
+    log.info(f"max_M_for_devices: {max_M_for_devices}")
     for d in devices_arns:
-        MAX_M = min(MAX_M, max_M_for_devices.get(d, MAX_M))
+        max_val_for_device = max_M_for_devices.get(D_val, {}).get(d, MAX_M)
+        log.info(f"max_val_for_device={max_val_for_device}, {D_val}, {d}")
+        MAX_M = min(MAX_M, max_val_for_device)
+        if d not in known_devices_arns:
+            log.info(f"has_unknown_device {d}, skip modelParams check")
+            return
+
+    log.info(f"D_val={D_val}, MAX_M={MAX_M}")
 
     param_names = dict(input_dict[k]).keys()
     for p in param_names:
@@ -163,9 +198,9 @@ def validate_modelParams(input_dict: dict, errors: list):
             if not isinstance(e, int):
                 errors.append(
                     f"invalid value {e}, value for {p} must be int")
-        if p == 'D' and list_vals != [4]:
+        if p == 'D' and not (list_vals == [8] or list_vals == [4]):
             errors.append(
-                f"invalid value for {p}, current only support '[ 4 ]'")
+                f"invalid value for {p}, current only support '[ 8 ]' or '[ 4 ]'")
         if p == 'A' and list_vals != [300]:
             errors.append(
                 f"invalid value for {p}, current only support '[ 300 ]'")
@@ -174,7 +209,7 @@ def validate_modelParams(input_dict: dict, errors: list):
                 f"invalid value for {p}, current only support '[ 200 ]'")
         if p == 'M' and (max(list_vals) > MAX_M or min(list_vals) < 1):
             errors.append(
-                f"invalid value for {p}: {list_vals}, current only support range: [1, {MAX_M}], e.g [1, 2, 3, 4] ")
+                f"invalid value for {p}: {list_vals}, support range: [1, {MAX_M}] for the device ")
 
 
 def validate_hpcResources(input_dict: dict, errors: list):
@@ -234,6 +269,8 @@ def validate_optParams(input_dict: dict, errors: list):
 
 def validate_input(input_dict: dict):
     log.info('validate_input')
+    log.info("input_dict: {input_dict}")
+
     valid_keys = ['version', 'runMode', 'molFile', 'modelVersion', 'optParams',
                   'experimentName', 'modelParams', 'devicesArns', 'hpcResources', 'Comment']
     valid_keys_str = "|".join(valid_keys)
@@ -280,6 +317,8 @@ def handler(event, context):
 
     read_config(s3_bucket, s3_prefix)
 
+    log.info(f"default_model_params: {default_model_params}")
+
     common_param = f"--aws_region,{aws_region},--s3-bucket,{s3_bucket},--s3_prefix,{s3_prefix}"
 
     if param_type == 'CHECK_INPUT':
@@ -308,7 +347,6 @@ def handler(event, context):
 
         if user_input.get('devicesArns', None) is None:
             user_input['devicesArns'] = default_devices_arns
-
 
         key = f"{s3_prefix}/executions/{execution_id}/user_input.json"
         string_to_s3(content=json.dumps({
@@ -339,7 +377,7 @@ def handler(event, context):
         else:
             devices_arns = default_devices_arns
             model_params = default_model_params
-            hpc_resources = default_model_params
+            hpc_resources = default_hpc_resources
 
     log.info(f"devices_arns={devices_arns}")
     log.info(f"model_params={model_params}")

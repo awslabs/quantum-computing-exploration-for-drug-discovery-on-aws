@@ -12,7 +12,7 @@ interface DashBoardProps {
 
 export class Dashboard extends cdk.Construct {
     private props: DashBoardProps
-    outputDashboradUrl: cdk.CfnOutput
+    outputDashboardUrl: cdk.CfnOutput
 
     constructor(scope: cdk.Construct, id: string, props: DashBoardProps) {
         super(scope, id);
@@ -151,7 +151,7 @@ export class Dashboard extends cdk.Construct {
                     customSql: {
                         dataSourceArn: qcDataSource.attrArn,
                         name: 'all',
-                        sqlQuery: `SELECT * FROM "AwsDataCatalog"."default"."${this.props.stackName}_qc_benchmark_metrics"`,
+                        sqlQuery: `SELECT * FROM "AwsDataCatalog"."qc_db"."${this.props.stackName}_qc_benchmark_metrics"`,
                         columns
                     },
                 }
@@ -239,7 +239,7 @@ export class Dashboard extends cdk.Construct {
         });
 
         // Output //////////////////////////
-        this.outputDashboradUrl = new cdk.CfnOutput(this, "qcBenchmarkDashboardUrl", {
+        this.outputDashboardUrl = new cdk.CfnOutput(this, "qcBenchmarkDashboardUrl", {
             value: `https://${this.props.region}.quicksight.aws.amazon.com/sn/dashboards/${qcBenchmarkDashboard.dashboardId}`,
             description: "Quicksight Dashboard Url"
         });

@@ -90,14 +90,14 @@ describe("Benchmarak", () => {
         })
     })
 
-    test("has 7 lambdas", () => {
+    test("has 6 lambdas", () => {
         const app = new App();
         const stack = new MainStack(app, 'test');
         const template = Template.fromStack(stack);
         //const startAtCapture = new Capture();
         //const statesCapture = new Capture();
 
-        template.resourceCountIs("AWS::Lambda::Function", 7)
+        template.resourceCountIs("AWS::Lambda::Function", 6)
     
     })
 

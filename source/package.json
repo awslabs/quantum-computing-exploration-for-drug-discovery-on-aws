@@ -25,7 +25,7 @@
     "destroy-dev": "cdk destroy QCStack-dev",
     "deploy-rs": "cdk deploy QCStack  -c quicksight_user=Admin/yonmzn-Isengard --profile liuyong_rs_ue1",
     "destroy-rs": "cdk destroy QCStack --profile liuyong_rs_ue1",
-    "cfn-neg": "cdk synth -- --output /tmp/ && cfn_nag_scan --input-path  /tmp/QCStack.template.json"
+    "cfn-neg": "mkdir /tmp/cfn/ && cdk synth QCStack --output /tmp/cfn/ && cfn_nag_scan --input-path  /tmp/cfn/QCStack.template.json"
   },
   "devDependencies": {
     "@aws-cdk/assertions": "^1.116.0",

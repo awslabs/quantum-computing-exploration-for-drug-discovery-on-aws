@@ -6,4 +6,3 @@ dwave-ocean-sdk==4.3.0
 amazon-braket-sdk==1.11.1
 amazon-braket-ocean-plugin==1.0.7
 biopandas==0.2.9
-

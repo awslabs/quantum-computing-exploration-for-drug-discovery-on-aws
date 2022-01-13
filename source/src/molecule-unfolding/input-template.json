@@ -1,0 +1,34 @@
+{
+    "version": "1",
+    "runMode": "HPC|QC|ALL",
+    "molFile": "s3://amazon-braket-gcr-qc-sol-common/qc/raw_model/117_ideal.mol2",
+    "modelVersion": "v1",
+    "experimentName": "test",
+    "optParams": {
+        "qa": {
+            "shots": 1000,
+            "embed_method": "default"
+        },
+        "sa": {
+            "shots": 100,
+            "notes": "benchmarking"
+        }
+    },
+
+    "modelParams": {
+        "M": [1, 2, 3, 4],
+        "D": [4],
+        "A": [300],
+        "HQ": [200]
+    },
+    "devicesArns": [
+        "arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6",
+        "arn:aws:braket:::device/qpu/d-wave/Advantage_system4"
+    ],
+    "hpcResources": [
+        [2, 2],
+        [4, 4],
+        [8, 8],
+        [16, 16]
+    ]
+}

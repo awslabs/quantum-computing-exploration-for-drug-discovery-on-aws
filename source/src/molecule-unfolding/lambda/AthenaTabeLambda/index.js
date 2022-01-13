@@ -14,10 +14,10 @@ exports.handler = function (event, context, callback) {
     const location = `s3://${bucket}/${s3_prefix}/benchmark_metrics/`
     const tableName = `${stackName}_qc_benchmark_metrics_hist`
     const viewName = `${stackName}_qc_benchmark_metrics`
-
-    const dropTableSql = `DROP TABLE IF EXISTS ${tableName}`
+    const createDBSql = `CREATE DATABASE IF NOT EXISTS qc_db`
+    const dropTableSql = `DROP TABLE IF EXISTS qc_db.${tableName}`
     const createTableSql = `
-    CREATE EXTERNAL TABLE IF NOT EXISTS ${tableName} (
+    CREATE EXTERNAL TABLE IF NOT EXISTS qc_db.${tableName} (
         Execution_Id string,
         Compute_Type string,
         Resource string,
@@ -37,22 +37,22 @@ exports.handler = function (event, context, callback) {
     ) ROW FORMAT DELIMITED FIELDS TERMINATED BY '!' LINES TERMINATED BY '\\n' LOCATION '${location}' 
     `
     const createViewSql = `
-    CREATE OR REPLACE VIEW ${viewName} AS 
+    CREATE OR REPLACE VIEW qc_db.${viewName} AS 
     SELECT h1.*
     FROM
-    ${tableName} h1
+    qc_db.${tableName} h1
     , (
        SELECT DISTINCT
          Execution_Id
        , Start_Time
        FROM
-       ${tableName}
+       qc_db.${tableName}
        ORDER BY Start_Time DESC
        LIMIT 20
     )  h2
     WHERE (h1.Execution_Id = h2.Execution_Id)
 `
-    const querySql = `SELECT * FROM ${viewName}`
+    const querySql = `SELECT * FROM qc_db.${viewName}`
 
     const startAhenaQueryExecution = (queryInfo) => {
         return new Promise((resolve, reject) => {
@@ -66,12 +66,22 @@ exports.handler = function (event, context, callback) {
         });
     }
 
-    console.info("run sql:" + createTableSql)
+    console.info("run sql:" + createDBSql)
     startAhenaQueryExecution({
-        QueryString: dropTableSql,
+        QueryString: createDBSql,
         ResultConfiguration: {
             OutputLocation: ATHENA_OUTPUT_LOCATION
         },
+    }).then(result => {
+        setTimeout(() => {
+            console.info("run sql:" + dropTableSql)
+            startAhenaQueryExecution({
+                QueryString: dropTableSql,
+                ResultConfiguration: {
+                    OutputLocation: ATHENA_OUTPUT_LOCATION
+                },
+            })
+        }, 5000)
     }).then(result => {
         setTimeout(() => {
             console.info("run sql:" + createTableSql)

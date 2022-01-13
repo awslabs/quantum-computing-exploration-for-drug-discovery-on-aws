@@ -92,6 +92,8 @@ export class MainStack extends SolutionStack {
       region: this.region,
       bucket: s3bucket,
       prefix,
+      notebookSg: batchSg,
+      vpc,
       stackName
     });
 
@@ -105,13 +107,13 @@ export class MainStack extends SolutionStack {
     });
 
     // Benchmark StepFuncs //////////////////////////
-    const benchmarkStepFuncs = new Benchmark(this, 'MolUnfbenchmark', {
+    const benchmarkStepFuncs = new Benchmark(this, 'MolUnfBenchmark', {
       account: this.account,
       region: this.region,
       bucket: s3bucket,
       prefix,
       usePreBuildImage,
-      dashboardUrl: dashboard.outputDashboradUrl.value,
+      dashboardUrl: dashboard.outputDashboardUrl.value,
       vpc,
       batchSg,
       lambdaSg,
@@ -124,7 +126,7 @@ export class MainStack extends SolutionStack {
     }
 
     // Event Listener Lambda //////////////////////////
-    new EventListener(this, 'BraketTaskEventHanlder', {
+    new EventListener(this, 'BraketTaskEventHandler', {
       account: this.account,
       region: this.region,
       bucket: s3bucket,

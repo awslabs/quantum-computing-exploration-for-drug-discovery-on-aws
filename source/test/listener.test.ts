@@ -10,43 +10,25 @@ import {
     MainStack
 } from '../src/molecule-unfolding/cdk/stack-main';
 describe("Listener", () => {
-    test("has s3 notification", () => {
+    test("has 1 Events Rule", () => {
         const app = new App();
         const stack = new MainStack(app, 'test');
         const template = Template.fromStack(stack);
-        template.resourceCountIs("Custom::S3BucketNotifications", 1)
+        template.resourceCountIs("AWS::Events::Rule", 1)
     })
 
-    test("s3 notification is configed correctly", () => {
+    test("Events Rule is configed correctly", () => {
         const app = new App();
         const stack = new MainStack(app, 'test');
         const template = Template.fromStack(stack);
-        template.hasResourceProperties("Custom::S3BucketNotifications", {
-            NotificationConfiguration: Match.objectLike({
-                "LambdaFunctionConfigurations": [{
-                    "Events": [
-                        "s3:ObjectCreated:*"
-                    ],
-                    "Filter": {
-                        "Key": {
-                            "FilterRules": [{
-                                    "Name": "suffix",
-                                    "Value": "results.json"
-                                },
-                                {
-                                    "Name": "prefix",
-                                    "Value": "molecule-unfolding/qc_task_output/"
-                                }
-                            ]
-                        }
-                    },
-                    "LambdaFunctionArn": {
-                        "Fn::GetAtt": [
-                            Match.anyValue(),
-                            "Arn"
-                        ]
-                    }
-                }]
+        template.hasResourceProperties("AWS::Events::Rule", {
+            EventPattern: Match.objectLike({
+                "source": [
+                    "aws.braket"
+                  ],
+                "detail-type": [
+                    "Braket Task State Change"
+                ]
             })
         })
     })
