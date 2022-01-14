@@ -38,6 +38,15 @@ If you want to fully customize the test code, follow below steps to re-deploy th
 
 1. Check CloudFormation in your AWS account, make sure you do not have a stack named `QCStack` in your deployment region.
 
+1. Make sure you have AWS CDK install in your workspace. 
+
+    You can follow this doc [cdk getting_started](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html) to install and bootstrap CDK.
+
+1. Make sure you have docker running in your workspace.
+
+    You can follow this doc [docker install](https://docs.docker.com/engine/install/) to install docker.
+
+
 1. Deploy changes to your AWS account via CDK.
 
    ```sh
