@@ -36,6 +36,26 @@ export default (scope: Construct) => {
         Aspects.of(s).add(new ChangePublicSubnet())
     });
 
+    vpc.addGatewayEndpoint('S3Endpoint', {
+        service: ec2.GatewayVpcEndpointAwsService.S3
+    });
+
+    vpc.addInterfaceEndpoint('EcrDockerEndpoint', {
+        service: ec2.InterfaceVpcEndpointAwsService.ECR_DOCKER
+    });
+
+    vpc.addInterfaceEndpoint('AthenaEndpoint', {
+        service: ec2.InterfaceVpcEndpointAwsService.ATHENA
+    });
+
+    vpc.addInterfaceEndpoint('SageMakerNotebookEndpoint', {
+        service: ec2.InterfaceVpcEndpointAwsService.SAGEMAKER_NOTEBOOK
+    });
+
+    vpc.addInterfaceEndpoint('SNSEndpoint', {
+        service: ec2.InterfaceVpcEndpointAwsService.SNS
+    });
+
     const logKey = new kms.Key(scope, 'qcLogKey', {
         enableKeyRotation: true
     });

@@ -1,3 +1,4 @@
+from re import T
 import boto3
 import os
 from collections import defaultdict
@@ -11,19 +12,21 @@ log.setLevel('INFO')
 
 s3 = boto3.client('s3')
 
-default_devices_arns = [
+known_devices_arns = [
     'arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6',
     'arn:aws:braket:::device/qpu/d-wave/Advantage_system4'
 ]
 
+default_devices_arns = known_devices_arns
+
 MAX_M = 7
 
-max_M_for_devices_D8 = {it[0]: it[1] for it in list(zip(default_devices_arns, [
+max_M_for_devices_D8 = {it[0]: it[1] for it in list(zip(known_devices_arns, [
     3,
     4
 ]))}
 
-max_M_for_devices_D4 = {it[0]: it[1] for it in list(zip(default_devices_arns, [
+max_M_for_devices_D4 = {it[0]: it[1] for it in list(zip(known_devices_arns, [
     4,
     7
 ]))}
@@ -148,18 +151,23 @@ def get_all_param_list(param_list):
     else:
         param_list_copy = copy.deepcopy(param_list)
         param_list_copy[index_i] = [first_l]
-        reslut_all = []
+        result_all = []
         result_list0 = get_all_param_list(param_list_copy)
         result_list1 = get_all_param_list(param_list)
-        reslut_all.extend(result_list0)
-        reslut_all.extend(result_list1)
-        return reslut_all
+        result_all.extend(result_list0)
+        result_all.extend(result_list1)
+        return result_all
 
 
 def validate_modelParams(input_dict: dict, errors: list):
     k = 'modelParams'
     if not isinstance(input_dict[k], dict):
         errors.append(f"devicesArns must be a dict")
+
+    molFile = input_dict.get('molFile', None)
+    if molFile is not None:
+        log.info(f"use your own model file {molFile}, skip check for modelParams")
+        return 
 
     devices_arns = input_dict.get('devicesArns', default_devices_arns)
 
@@ -168,11 +176,14 @@ def validate_modelParams(input_dict: dict, errors: list):
 
     log.info(f"MAX_M={MAX_M}")
     log.info(f"max_M_for_devices: {max_M_for_devices}")
-
     for d in devices_arns:
         max_val_for_device = max_M_for_devices.get(D_val, {}).get(d, MAX_M)
         log.info(f"max_val_for_device={max_val_for_device}, {D_val}, {d}")
         MAX_M = min(MAX_M, max_val_for_device)
+        if d not in known_devices_arns:
+            log.info(f"has_unknown_device {d}, skip modelParams check")
+            return
+
     log.info(f"D_val={D_val}, MAX_M={MAX_M}")
 
     param_names = dict(input_dict[k]).keys()

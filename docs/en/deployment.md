@@ -43,6 +43,7 @@ This automated AWS CloudFormation template deploys the solution in the AWS Cloud
     | MolUnfNotebookNotebookInstanceType | ml.c5.xlarge |  Notebook instance type |
     | MolUnfDashboardquicksightTemplateAccountId | 522244679887 |  Quicksight dashboard template account Id |
     | MolUnfDashboardquickSightUser | | your AWS Quicksight user name |
+    | MolUnfNotebookdefaultCodeRepository | <To.Be.Update> | default code repository in notebook |
 
 
 1. Choose **Next**.
@@ -100,4 +101,7 @@ You need to perform blow steps to setup AWS EventBright cross region event if yo
 1. Click **Save**
 
 
+## Security
+
+1. We suggest using advanced managed services such as [Amazon Macie](https://aws.amazon.com/macie/) to assists in discovering personal data in the S3 bucket.
 

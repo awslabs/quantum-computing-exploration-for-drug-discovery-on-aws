@@ -1,17 +1,17 @@
-## Run Benchmark
+## Run Batch Test
 
-We will run benchmark through AWS StepFunctions workflow and view the result via AWS QuickSight dashboard
+We will run batch test through AWS Step Functions workflow and view the result via AWS QuickSight dashboard
 
-### Get StepFunctions link from deployment output
+### Get Step Functions link from deployment output
 
-![deployment output](./images/deploy_output.png)
+![deployment output](../../images/deploy_output.png)
 
 
 ### Start Execution
 
-All input fields of the input json is optional, but you can customize anything about model parameters, computing rescoures, QC devices, optimizer parameters. 
+All input fields of the input json is optional, but you can customize anything about model parameters, computing resources, QC devices, optimizer parameters. 
 
-The input scheam:
+The input schema:
 ```json
 {
     "version": "string",
@@ -91,23 +91,23 @@ A typical and default(if input json is `{}`) input:
 
 ### View dashboard
 
-Dashbaord [link](https://us-east-1.quicksight.aws.amazon.com/sn/dashboards/qcstack-qcBenchmark-Dashboard)
+Dashboard [link](https://us-east-1.quicksight.aws.amazon.com/sn/dashboards/qcstack-qcBenchmark-Dashboard)
 
-If you run StepFunctions multi-times, by default, the dashbaord average  metrics of all executions. You can click a item in the experiment hist table in the left-upper corner to view the result of a specific execution.  
+If you run Step Functions multi-times, by default, the dashboard average metrics of all executions. You can click a item in the experiment hist table in the left-upper corner to view the result of a specific execution.  
 
-![dashboard](./images/quicksight_dashboard.png)
+![dashboard](../../images/quicksight_dashboard.png)
 
 
 
 ### Trouble shooting
 
-1. StepFunctions failed becasue of "Check Input" step failed.
+1. Step Functions failed because of "Check Input" step failed.
 
     If the input json not is passed the input validation, this step fails. Check the `errorMessage` of the step, fix your input.
 
-1. StepFunctions failed becasue of `Lambda.TooManyRequestsException`.
+1. Step Functions failed because of `Lambda.TooManyRequestsException`.
 
-    If you run the StepFunctions with high a frequency, you may get this error, you can wait serveal seconds and retry.
+    If you run the StepFunctions with high a frequency, you may get this error, you can wait several seconds and retry.
 
 1. Dashboard can not be displayed, the error message complains permission error when accessing data in S3 bucket.
 
