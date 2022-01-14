@@ -11,6 +11,8 @@ node_modules
 cdk.out
 .env
 .DS_Store
+test-reports
+coverage
 my_sync_code.sh
 
 
