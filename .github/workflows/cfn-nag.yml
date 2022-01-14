@@ -19,8 +19,8 @@ jobs:
           cache: yarn
       - name: Install dependencies
         run: |
-          yarn install --check-files --frozen-lockfile
-          npx projen
+          cd source/
+          npm install
       - name: synth
         run: npx cdk synth --json --output default -q
       - uses: stelligent/cfn_nag@master
