@@ -1,10 +1,31 @@
-import * as cdk from '@aws-cdk/core'
-import * as s3 from '@aws-cdk/aws-s3'
-import * as ec2 from '@aws-cdk/aws-ec2'
-import * as lambda from '@aws-cdk/aws-lambda'
-import * as events from '@aws-cdk/aws-events'
-import * as targets from '@aws-cdk/aws-events-targets'
+import * as cdk from 'aws-cdk-lib'
 
+import {
+    aws_s3 as s3
+} from 'aws-cdk-lib'
+
+import {
+    aws_ec2 as ec2
+} from 'aws-cdk-lib'
+
+
+import {
+    aws_lambda as lambda
+} from 'aws-cdk-lib'
+
+
+import {
+    aws_events as events
+} from 'aws-cdk-lib'
+
+
+import {
+    aws_events_targets as targets
+} from 'aws-cdk-lib'
+
+import {
+    Construct
+} from 'constructs'
 
 import {
     ECRRepoNameEnum,
@@ -28,12 +49,12 @@ interface Props {
     stackName: string
 }
 
-export class EventListener extends cdk.Construct {
+export class EventListener extends Construct {
     private images: ECRImageUtil
     private roleUtil: RoleUtil
     private props: Props
 
-    constructor(scope: cdk.Construct, id: string, props: Props) {
+    constructor(scope: Construct, id: string, props: Props) {
         super(scope, id);
         this.props = props
         this.images = ECRImageUtil.newInstance(scope, this.props)
@@ -46,7 +67,7 @@ export class EventListener extends cdk.Construct {
         const code = this.images.getECRImage(ECRRepoNameEnum.Lambda_ParseBraketResult) as lambda.DockerImageCode
         const parseBraketResultLambda = new lambda.DockerImageFunction(this, 'ParseBraketResultLambda', {
             code,
-            memorySize: 512,
+            memorySize: 2048,
             timeout: cdk.Duration.seconds(900),
             vpc,
             vpcSubnets: vpc.selectSubnets({

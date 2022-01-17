@@ -2,7 +2,7 @@ import {
     Stack,
     CfnParameter,
     CfnParameterProps,
-} from '@aws-cdk/core';
+}  from 'aws-cdk-lib'
 
 export class SolutionStack extends Stack {
     private _paramGroup: {

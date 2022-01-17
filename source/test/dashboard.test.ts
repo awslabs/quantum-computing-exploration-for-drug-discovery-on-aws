@@ -1,14 +1,13 @@
 import {
     App
-} from '@aws-cdk/core';
-import {
-    // Capture,
-    // Match,
-    Template
-} from "@aws-cdk/assertions";
+} from 'aws-cdk-lib';
+
+import { Template } from "aws-cdk-lib/assertions";
+
 import {
     MainStack
 } from '../src/molecule-unfolding/cdk/stack-main';
+
 describe("Dashboard", () => {
     test("has 1 datasource", () => {
         const app = new App();

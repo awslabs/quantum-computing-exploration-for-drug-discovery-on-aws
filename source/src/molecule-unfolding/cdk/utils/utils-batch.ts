@@ -1,9 +1,20 @@
-import * as batch from '@aws-cdk/aws-batch'
-import * as cdk from '@aws-cdk/core'
-import * as ec2 from '@aws-cdk/aws-ec2'
-import * as iam from '@aws-cdk/aws-iam'
-import * as ecs from '@aws-cdk/aws-ecs'
-import * as s3 from '@aws-cdk/aws-s3'
+import * as batch from '@aws-cdk/aws-batch-alpha'
+import * as cdk from 'aws-cdk-lib'
+import {
+    aws_ec2 as ec2
+} from 'aws-cdk-lib'
+
+import {
+    aws_iam as iam
+} from 'aws-cdk-lib'
+
+import {
+    aws_ecs as ecs
+} from 'aws-cdk-lib'
+
+import {
+    aws_s3 as s3
+} from 'aws-cdk-lib'
 
 import {
     RoleUtil
@@ -14,6 +25,9 @@ import {
     ECRImageUtil
 } from './utils-images'
 
+import {
+    Construct
+} from 'constructs'
 
 interface Props {
     region: string;
@@ -26,16 +40,16 @@ interface Props {
 }
 export class BatchUtil {
     private props: Props
-    private scope: cdk.Construct
+    private scope: Construct
     private batchJobExecutionRole: iam.Role
     private hpcBatchJobRole: iam.Role
     private qcBatchJobRole: iam.Role
     private createModelBatchJobRole: iam.Role
     private hpcJobQueue: batch.JobQueue
-    private fragetJobQueue: batch.JobQueue
+    private fargateJobQueue: batch.JobQueue
     private imageUtil : ECRImageUtil
 
-    private constructor(scope: cdk.Construct, props: Props, utils: {
+    private constructor(scope: Construct, props: Props, utils: {
         roleUtil: RoleUtil,
         imageUtil: ECRImageUtil
     }) {
@@ -47,9 +61,9 @@ export class BatchUtil {
         this.qcBatchJobRole = utils.roleUtil.createQCBatchJobRole('qcBatchJobRole');
         this.createModelBatchJobRole = utils.roleUtil.createCreateModelBatchJobRole('createModelBatchJobRole');
         this.hpcJobQueue = this.setUpHPCBashEnv()
-        this.fragetJobQueue = this.setUpFragetBashEnv()
+        this.fargateJobQueue = this.setUpFargateBashEnv()
     }
-    public static newInstance(scope: cdk.Construct, props: Props, utils: {
+    public static newInstance(scope: Construct, props: Props, utils: {
         roleUtil: RoleUtil,
         imageUtil: ECRImageUtil
     }) {
@@ -88,11 +102,11 @@ export class BatchUtil {
         })
     }
 
-    private setUpFragetBashEnv(): batch.JobQueue {
+    private setUpFargateBashEnv(): batch.JobQueue {
         const vpc = this.props.vpc
         const batchSg = this.props.batchSg
 
-        const batchFragetEnvironment = new batch.ComputeEnvironment(this.scope, 'Batch-Fraget-Compute-Env', {
+        const batchFargateEnvironment = new batch.ComputeEnvironment(this.scope, 'Batch-Fargate-Compute-Env', {
             computeResources: {
                 type: batch.ComputeResourceType.FARGATE,
                 vpc,
@@ -103,9 +117,9 @@ export class BatchUtil {
             }
         });
 
-        return new batch.JobQueue(this.scope, 'fragetJobQueue', {
+        return new batch.JobQueue(this.scope, 'fargateJobQueue', {
             computeEnvironments: [{
-                computeEnvironment: batchFragetEnvironment,
+                computeEnvironment: batchFargateEnvironment,
                 order: 1,
             }, ],
         })
@@ -115,8 +129,8 @@ export class BatchUtil {
         return this.hpcJobQueue
     }
 
-    public getFragetJobQueue(): batch.JobQueue {
-        return this.fragetJobQueue
+    public getFargateJobQueue(): batch.JobQueue {
+        return this.fargateJobQueue
     }
 
     public createCreateModelJobDef(): batch.JobDefinition {

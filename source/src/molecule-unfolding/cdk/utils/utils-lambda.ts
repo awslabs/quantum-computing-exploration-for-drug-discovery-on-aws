@@ -1,8 +1,20 @@
-import * as cdk from '@aws-cdk/core'
-import * as s3 from '@aws-cdk/aws-s3'
-import * as lambda from '@aws-cdk/aws-lambda'
-import * as path from 'path'
-import * as ec2 from '@aws-cdk/aws-ec2'
+import * as cdk from 'aws-cdk-lib'
+import {
+    aws_lambda as lambda
+} from 'aws-cdk-lib'
+
+import {
+    aws_s3 as s3
+} from 'aws-cdk-lib'
+
+import {
+    aws_ec2 as ec2
+} from 'aws-cdk-lib'
+
+import {
+    Construct
+} from 'constructs'
+
 import {
     RoleUtil
 } from './utils-role'
@@ -12,6 +24,7 @@ import {
     ECRImageUtil
 } from './utils-images'
 
+import * as path from 'path'
 
 interface Props {
     region: string;
@@ -24,11 +37,11 @@ interface Props {
 
 export class LambdaUtil {
     private props: Props
-    private scope: cdk.Construct
+    private scope: Construct
     private roleUtil: RoleUtil
     private imageUtil: ECRImageUtil
 
-    private constructor(scope: cdk.Construct, props: Props,
+    private constructor(scope: Construct, props: Props,
         utils: {
             roleUtil: RoleUtil,
             imageUtil: ECRImageUtil
@@ -40,7 +53,7 @@ export class LambdaUtil {
         this.imageUtil = utils.imageUtil
     }
 
-    public static newInstance(scope: cdk.Construct, props: Props, utils: {
+    public static newInstance(scope: Construct, props: Props, utils: {
         roleUtil: RoleUtil,
         imageUtil: ECRImageUtil
     }) {
@@ -90,14 +103,14 @@ export class LambdaUtil {
         })
     }
 
-    public createWatiForTokenLambda(): lambda.Function {
-        const lambdaRole = this.roleUtil.createWatiForTokenLambdaRole('WatiForTokenLambdaRole')
+    public createWaitForTokenLambda(): lambda.Function {
+        const lambdaRole = this.roleUtil.createWaitForTokenLambdaRole('WaitForTokenLambdaRole')
         const vpc = this.props.vpc;
         const lambdaSg = this.props.lambdaSg;
 
-        return new lambda.Function(this.scope, 'WatiForTokenLambda', {
+        return new lambda.Function(this.scope, 'WaitForTokenLambda', {
             runtime: lambda.Runtime.PYTHON_3_9,
-            code: lambda.Code.fromAsset(path.join(__dirname, '../../lambda/WatiForTokenLambda/')),
+            code: lambda.Code.fromAsset(path.join(__dirname, '../../lambda/WaitForTokenLambda/')),
             handler: 'app.handler',
             memorySize: 512,
             timeout: cdk.Duration.seconds(120),
@@ -109,7 +122,6 @@ export class LambdaUtil {
             reservedConcurrentExecutions: 30,
             securityGroups: [lambdaSg]
         });
-
     }
 
     public createTaskParametersLambda(): lambda.Function {

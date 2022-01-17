@@ -19,13 +19,7 @@
     "synth": "cdk synth QCStack ",
     "deploy": "cdk deploy QCStack",
     "destroy": "cdk destroy QCStack",
-    "build-docker": "cd ./src/ligand-unfolding/ && ./build.sh",
-    "synth-dev": "cdk synth QCStack-dev",
-    "deploy-dev": "cdk deploy QCStack-dev",
-    "destroy-dev": "cdk destroy QCStack-dev",
-    "deploy-rs": "cdk deploy QCStack  -c quicksight_user=Admin/yonmzn-Isengard --profile liuyong_rs_ue1",
-    "destroy-rs": "cdk destroy QCStack --profile liuyong_rs_ue1",
-    "cfn-neg": "mkdir /tmp/cfn/ && cdk synth QCStack --output /tmp/cfn/ && cfn_nag_scan --input-path  /tmp/cfn/QCStack.template.json"
+    "cfn-nag": "mkdir /tmp/cfn/ && cdk synth QCStack --output /tmp/cfn/ && cfn_nag_scan --fail-on-warnings -b ../.cfn-nag-ignore-lists.yml --input-path  /tmp/cfn/QCStack.template.json"
   },
   "devDependencies": {
     "@aws-cdk/assertions": "^1.116.0",
@@ -33,7 +27,8 @@
     "@types/node": "14.17.7",
     "@typescript-eslint/eslint-plugin": "^4.29.0",
     "@typescript-eslint/parser": "^4.29.0",
-    "aws-cdk": "^1.116.0",
+    "aws-cdk": "2.8.0",
+    "cdk-bootstrapless-synthesizer": "^2.1.5",
     "eslint": "^7.32.0",
     "eslint-import-resolver-node": "^0.3.4",
     "eslint-import-resolver-typescript": "^2.4.0",
@@ -47,22 +42,11 @@
     "typescript": "^4.3.5"
   },
   "dependencies": {
-    "@aws-cdk/assert": "^1.116.0",
-    "@aws-cdk/aws-apigateway": "^1.116.0",
-    "@aws-cdk/aws-batch": "^1.116.0",
-    "@aws-cdk/aws-ec2": "^1.116.0",
-    "@aws-cdk/aws-events-targets": "^1.116.0",
-    "@aws-cdk/aws-kms": "^1.116.0",
-    "@aws-cdk/aws-lambda": "^1.116.0",
-    "@aws-cdk/aws-quicksight": "^1.116.0",
-    "@aws-cdk/aws-s3": "^1.116.0",
-    "@aws-cdk/aws-s3-notifications": "^1.116.0",
-    "@aws-cdk/aws-sagemaker": "^1.116.0",
-    "@aws-cdk/aws-sqs": "^1.116.0",
-    "@aws-cdk/aws-stepfunctions": "^1.116.0",
-    "@aws-cdk/aws-stepfunctions-tasks": "^1.116.0",
-    "@aws-cdk/core": "^1.116.0",
-    "cdk-bootstrapless-synthesizer": "^0.7.2"
+    "@aws-cdk/aws-batch-alpha": "^2.8.0-alpha.0",
+    "aws-cdk-lib": "2.8.0",
+    "cdk-bootstrapless-synthesizer": "^2.1.5",
+    "constructs": "^10.0.0",
+    "source-map-support": "^0.5.16"
   },
   "bundledDependencies": [],
   "license": "Apache-2.0",

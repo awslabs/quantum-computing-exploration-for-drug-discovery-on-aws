@@ -1,17 +1,48 @@
-import * as cdk from '@aws-cdk/core'
-import * as ec2 from '@aws-cdk/aws-ec2'
-import * as lambda from '@aws-cdk/aws-lambda'
-import * as iam from '@aws-cdk/aws-iam'
-import * as sfn from '@aws-cdk/aws-stepfunctions'
-import * as tasks from '@aws-cdk/aws-stepfunctions-tasks'
-import * as s3 from '@aws-cdk/aws-s3'
-import * as sns from '@aws-cdk/aws-sns'
-import * as kms from '@aws-cdk/aws-kms'
-import * as logs from '@aws-cdk/aws-logs'
+import * as cdk from 'aws-cdk-lib'
 
 import {
-    Construct,
-} from '@aws-cdk/core';
+    aws_ec2 as ec2
+} from 'aws-cdk-lib'
+
+import {
+    aws_lambda as lambda
+} from 'aws-cdk-lib'
+
+import {
+    aws_iam as iam
+} from 'aws-cdk-lib'
+
+import {
+    aws_stepfunctions as sfn
+} from 'aws-cdk-lib'
+
+import {
+    aws_stepfunctions_tasks as tasks
+} from 'aws-cdk-lib'
+
+import {
+    aws_s3 as s3
+} from 'aws-cdk-lib'
+
+import {
+    aws_sns as sns
+} from 'aws-cdk-lib'
+
+
+import {
+    aws_kms as kms
+} from 'aws-cdk-lib'
+
+
+import {
+    aws_logs as logs
+} from 'aws-cdk-lib'
+
+
+import {
+    Construct
+} from 'constructs'
+
 
 import {
     ECRImageUtil
@@ -55,7 +86,7 @@ export class Benchmark extends Construct {
     private batchUtil: BatchUtil
     private logKey: kms.Key
     private taskParamLambda : lambda.Function
-    private watiForTokenLambda : lambda.Function
+    private waitForTokenLambda : lambda.Function
 
     // constructor 
     constructor(scope: Construct, id: string, props: BatchProps) {
@@ -79,7 +110,7 @@ export class Benchmark extends Construct {
         });
         
         this.taskParamLambda = this.lambdaUtil.createTaskParametersLambda()
-        this.watiForTokenLambda = this.lambdaUtil.createWatiForTokenLambda()
+        this.waitForTokenLambda = this.lambdaUtil.createWaitForTokenLambda()
 
         const checkInputParamsStep = this.createCheckInputStep()
         const createModelStep = this.createCreateModelStep();
@@ -171,9 +202,8 @@ export class Benchmark extends Construct {
     }
 
     private createCreateModelStep(): tasks.BatchSubmitJob {
-        const jobQueue = this.batchUtil.getFragetJobQueue()
+        const jobQueue = this.batchUtil.getFargateJobQueue()
         const createModelJobDef = this.batchUtil.createCreateModelJobDef()
-
         const createModelStep = new tasks.BatchSubmitJob(this, 'Create Model', {
             jobDefinitionArn: createModelJobDef.jobDefinitionArn,
             jobName: "createModelTask",
@@ -488,7 +518,7 @@ export class Benchmark extends Construct {
 
     private submitQCTaskAndWaitForTokenStep(): sfn.Chain {
         const jobDef = this.batchUtil.createQCSubmitBatchJobDef("QCJob_Template");
-        const batchQueue = this.batchUtil.getFragetJobQueue()
+        const batchQueue = this.batchUtil.getFargateJobQueue()
 
         const submitQCTaskStep = new tasks.BatchSubmitJob(this, 'Submit QC Task', {
             jobDefinitionArn: jobDef.jobDefinitionArn,
@@ -505,7 +535,7 @@ export class Benchmark extends Construct {
         });
 
         const waitForTokenStep = new tasks.LambdaInvoke(this, 'Wait For Complete', {
-            lambdaFunction: this.watiForTokenLambda,
+            lambdaFunction: this.waitForTokenLambda,
             payload: sfn.TaskInput.fromObject({
                 "execution_id": sfn.JsonPath.stringAt("$.execution_id"),
                 "task_token": sfn.JsonPath.taskToken,

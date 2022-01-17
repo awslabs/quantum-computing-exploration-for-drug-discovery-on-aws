@@ -1,9 +1,13 @@
 import {
   App,
-} from '@aws-cdk/core';
+  Aspects
+} from 'aws-cdk-lib';
+
 import {
-  BootstraplessStackSynthesizer
+  BootstraplessStackSynthesizer,
+  CompositeECRRepositoryAspect
 } from 'cdk-bootstrapless-synthesizer';
+
 import {
   MainStack,
 } from './molecule-unfolding/cdk/stack-main';
@@ -13,6 +17,11 @@ const app = new App();
 new MainStack(app, "QCStack", {
   synthesizer: newSynthesizer()
 });
+
+// below lines are required if your application has Docker assets
+if (process.env.USE_BSS) {
+  Aspects.of(app).add(new CompositeECRRepositoryAspect());
+}
 
 app.synth();
 
