@@ -75,7 +75,7 @@ export class Notebook extends Construct {
         });
 
         let notebookInstance = null
-        if (defaultCodeRepositoryParam.valueAsString) {
+        if (defaultCodeRepositoryParam.valueAsString.startsWith('https://')) {
             notebookInstance = new CfnNotebookInstance(this, 'Notebook', {
                 instanceType: instanceTypeParam.valueAsString,
                 roleArn: notebookRole.roleArn,
