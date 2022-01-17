@@ -4,7 +4,7 @@ Before you launch the solution, review the architecture, supported regions, and 
 
 ## Deployment overview
 
-Use the following steps to deploy this solution on AWS. 
+Use the following steps to deploy this solution on AWS.
 
 - Check your QuickSight account
 - Launch the AWS CloudFormation template into your AWS account to deploy the solution.
@@ -21,16 +21,13 @@ Use the following steps to deploy this solution on AWS.
 
 1. Get your QuickSight username (not QuickSight account name).
 
-
-### Deploy solution 
+### Deploy solution
 
 This automated AWS CloudFormation template deploys the solution in the AWS Cloud.
 
-
-1. Use [Launch solution in AWS Standard Regions][launch-template] to launch the AWS CloudFormation template.   
+1. Use [Launch solution in AWS Standard Regions][launch-template] to launch the AWS CloudFormation template.
 
 1. The template launches in the US West 2 (Oregon) Region by default. To launch this solution in a different AWS Region, use the Region selector in the console navigation bar.
-
 
 1. On the **Create stack** page, verify that the correct template URL is shown in the **Amazon S3 URL** text box and choose **Next**.
 
@@ -45,7 +42,6 @@ This automated AWS CloudFormation template deploys the solution in the AWS Cloud
     | MolUnfDashboardquickSightUser | | your AWS Quicksight user name |
     | MolUnfNotebookdefaultCodeRepository | <To.Be.Update> | default code repository in notebook |
 
-
 1. Choose **Next**.
 
 1. On the **Configure stack options** page, choose **Next**.
@@ -58,23 +54,22 @@ This automated AWS CloudFormation template deploys the solution in the AWS Cloud
 
 1. If your deployment region is not `us-west-2`, need to perform more steps blow.  
 
-
 ### Setup AWS EventBright cross region event
 
 **If your deployment region is `us-west-2`, you can safely skip this section.**
 
-You need to perform blow steps to setup AWS EventBright cross region event if your deployment region is not `us-west-2`. 
+You need to perform blow steps to setup AWS EventBright cross region event if your deployment region is not `us-west-2`.
 
-1.  Use the Region selector in the console navigation bar, switch your region to `us-west-2`.
+1. Use the Region selector in the console navigation bar, switch your region to `us-west-2`.
 
-1. Use [Launch solution in AWS Standard Regions][launch-template] to launch the AWS CloudFormation template. 
+1. Use [Launch solution in AWS Standard Regions][launch-template] to launch the AWS CloudFormation template.
 
 1. Under **Parameters**, review the parameters for the template and modify them as necessary. This solution uses the following default values.
 
     |      Parameter      |    Default   |                                                      Description                                                      |
     |:-------------------:|:------------:|:--------------------------------------------------------------------------------------------------------------|
     | TargetRegion | us-east-1 |  the target region   |
-   
+
 1. Choose **Next**.
 
 1. On the **Configure stack options** page, choose **Next**.
@@ -84,7 +79,6 @@ You need to perform blow steps to setup AWS EventBright cross region event if yo
 1. Choose **Create stack** to deploy the stack.
 
     You can view the status of the stack in the AWS CloudFormation Console in the **Status** column. You should receive a CREATE_COMPLETE status less than [1] minute.
-
 
 ### Update QuickSight permissions
 
@@ -100,8 +94,6 @@ You need to perform blow steps to setup AWS EventBright cross region event if yo
 
 1. Click **Save**
 
-
 ## Security
 
 1. We suggest using advanced managed services such as [Amazon Macie](https://aws.amazon.com/macie/) to assists in discovering personal data in the S3 bucket.
-
