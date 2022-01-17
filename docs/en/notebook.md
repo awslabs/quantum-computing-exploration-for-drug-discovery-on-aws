@@ -12,4 +12,4 @@ This solution will deploy a Sagemaker notebook instance with AWS Braket SDK inst
 
 
 ### Experiment in notebook
- see [Note book explanation](./workshop/a-molecule-unfolding/notebook-experiment.md)
+ see [Experiment in notebook](./workshop/a-molecule-unfolding/notebook-experiment.md)
