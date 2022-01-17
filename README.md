@@ -1,6 +1,6 @@
 # Quantum Ready Solution For Drug Discovery
 
-## Overview 
+## Overview
 
 AWS Solution Quantum-Ready Solution for Drug Discovery (abbrev. QRSDDSolution), an open-sourced solution that helps customers study drug discovery problems using quantum computing (Amazon Braket), like molecular docking and protein folding. With QRSDD, customers use job management service (AWS Batch) and workflow service (AWS Step Functions) to orchestrate different kinds of computing resources. To be at the forefront of innovations in drug discovery, customers can tailor sample codes to reuse the pipeline for different problems.
 
@@ -10,7 +10,7 @@ The overall architecture is shown as below:
 
 There are two types of Experiments of this solution: Batch test experiment and Notebook experiment.
 
-### Batch Test Experiment:
+### Batch Test Experiment
 
 1. User triggers the batch test execution through AWS Step Functions from AWS console.
 
@@ -23,7 +23,7 @@ There are two types of Experiments of this solution: Batch test experiment and N
   
    - QC tasks
      1. Step Functions parallel launches various QC tasks through AWS lambda based on different QC devices (DW_2000Q_6/Advantage_system4) and different parameters of the algorithm.
-     1. Each lambda asynchronous submits the QC task as AWS Braket job/task to AWS Braket service. 
+     1. Each lambda asynchronous submits the QC task as AWS Braket job/task to AWS Braket service.
      1. Step Functions waits for completion callback to continue.
      1. When a Braket job/task completed, it saves its result to S3.
      1. An event from AWS EventBridge triggers the listener lambda.
@@ -36,9 +36,9 @@ There are two types of Experiments of this solution: Batch test experiment and N
 
 1. User views the batch test result through AWS Quicksight dashboard.
 
-### Notebook Experiment:
+### Notebook Experiment
 
-This solution also deploys SageMaker notebooks, user can run and study backend algorithms for drug discovery in notebook. The code is step-by-step guide user to build models, run them by HPC and Braket service and post process the result. 
+This solution also deploys SageMaker notebooks, user can run and study backend algorithms for drug discovery in notebook. The code is step-by-step guide user to build models, run them by HPC and Braket service and post process the result.
 
 ## Dataset
 
@@ -47,16 +47,17 @@ We use molecule data for this solution (source/src/molecule-unfolding/molecule-d
 ## Quick start
 
 ### Sign up for QuickSight
-   - Go to [quicksight](https://quicksight.aws.amazon.com/sn/start)
-   - Click "Sign uup for QuickSight"
-   - Choose `Enterprise`, click continue
-   - In the `Create your QuickSight account` page, fill the necessary information:
-   
-   ![create quicksight](./docs/en/images/create_quicksight.png) 
-   
-   - Go to [quicksight admin](https://us-east-1.quicksight.aws.amazon.com/sn/admin), record your QuickSight username
-   
-   ![quicksight username](./docs/en/images/quicksight_username.png)    
+
+- Go to [quicksight](https://quicksight.aws.amazon.com/sn/start)
+- Click "Sign uup for QuickSight"
+- Choose `Enterprise`, click continue
+- In the `Create your QuickSight account` page, fill the necessary information:
+
+   ![create quicksight](./docs/en/images/create_quicksight.png)
+
+- Go to [quicksight admin](https://us-east-1.quicksight.aws.amazon.com/sn/admin), record your QuickSight username
+
+   ![quicksight username](./docs/en/images/quicksight_username.png)
 
 ### Update `cdk.context.json`
 
@@ -68,7 +69,7 @@ cd source
 
 ```
 
-### Deploy 
+### Deploy
 
 ```shell
 cd source
@@ -82,41 +83,37 @@ npm run deploy
 
  After deployment, go to [cloudformation](https://console.aws.amazon.com/cloudformation/home), find the stack `QCStack`, from the output, you will get links for Notebook, Step Functions to run batch test tasks, and QuickSight dashboard URL
 
-![cloudformation output](./docs/en/images/deploy_output.png)   
-
+![cloudformation output](./docs/en/images/deploy_output.png)
 
 ### Update QuickSight permissions
 
- - Go to [quicksight admin](https://us-east-1.quicksight.aws.amazon.com/sn/admin#aws) 
- - In `QuickSight access to AWS services`, click 'Manage' button, select the S3 bucket create in step `deployment output`
+- Go to [quicksight admin](https://us-east-1.quicksight.aws.amazon.com/sn/admin#aws)
+- In `QuickSight access to AWS services`, click 'Manage' button, select the S3 bucket create in step `deployment output`
 
-![quicksight permissions](./docs/en/images/quicksight_perm.png) 
+![quicksight permissions](./docs/en/images/quicksight_perm.png)
 
- - Save the change 
-
+- Save the change
 
 ### Run batch test through Step Functions
 
- -  open Step Functions link in `deployment output`
- -  click the **Start Execution** button, click **Start Execution** to execute the Step Functions workflow
- -  wait the execution of Step Functions to complete
+- open Step Functions link in `deployment output`
+- click the **Start Execution** button, click **Start Execution** to execute the Step Functions workflow
+- wait the execution of Step Functions to complete
 
 ### View batch test dashboard
 
- - open the QuickSight dashboard link in step `deployment output`
+- open the QuickSight dashboard link in step `deployment output`
 
-### Notebook experiment 
+### Notebook experiment
 
- - open the Notebook link in step `deployment output`
+- open the Notebook link in step `deployment output`
 
+### More
 
-
-### More 
- - [Batch Test Experiment](./docs/en/workshop/a-molecule-unfolding/batch-test.md) 
- - [Notebook Experiment](./docs/en/notebook.md) 
- - [Workshop](./docs/en/workshop) 
-
-
+- [Batch Test Experiment](./docs/en/workshop/a-molecule-unfolding/batch-test.md)
+- [Notebook Experiment](./docs/en/notebook.md)
+- [Workshop](./docs/en/workshop)
 
 ## License
+
 This project is licensed under the Apache-2.0 License.

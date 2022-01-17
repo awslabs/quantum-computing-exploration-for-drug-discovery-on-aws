@@ -6,12 +6,12 @@ We will run batch test through AWS Step Functions workflow and view the result v
 
 ![deployment output](../../images/deploy_output.png)
 
-
 ### Start Execution
 
-All input fields of the input json is optional, but you can customize anything about model parameters, computing resources, QC devices, optimizer parameters. 
+All input fields of the input json is optional, but you can customize anything about model parameters, computing resources, QC devices, optimizer parameters.
 
 The input schema:
+
 ```json
 {
     "version": "string",
@@ -41,7 +41,8 @@ The input schema:
 }
 
 ```
-Definition: 
+
+Definition:
 
     version:  the version of input schema, current only support  value is: '1'
 
@@ -56,6 +57,7 @@ Definition:
     hpcResources: 2-d array, e.g: 2 vCPU/4GiB memory and 4 vCPU/8GiB memory : [[2, 4], [4, 8]] 
 
 A typical and default(if input json is `{}`) input:
+
 ```json
 {
     "version": "1",
@@ -97,8 +99,6 @@ If you run Step Functions multi-times, by default, the dashboard average metrics
 
 ![dashboard](../../images/quicksight_dashboard.png)
 
-
-
 ### Trouble shooting
 
 1. Step Functions failed because of "Check Input" step failed.
@@ -112,7 +112,3 @@ If you run Step Functions multi-times, by default, the dashboard average metrics
 1. Dashboard can not be displayed, the error message complains permission error when accessing data in S3 bucket.
 
     Go to [quicksight admin](https://us-east-1.quicksight.aws.amazon.com/sn/admin#aws), in `QuickSight access to AWS services`, make sure your S3 bucket is checked.
-
-
-
-
