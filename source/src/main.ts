@@ -14,10 +14,6 @@ new MainStack(app, "QCStack", {
   synthesizer: newSynthesizer()
 });
 
-new MainStack(app, "QCStack-dev", {
-  synthesizer: newSynthesizer()
-});
-
 app.synth();
 
 function newSynthesizer() {
