@@ -12,7 +12,7 @@ interface DashBoardProps {
 
 export class Dashboard extends cdk.Construct {
     private props: DashBoardProps
-    outputDashboradUrl: cdk.CfnOutput
+    outputDashboardUrl: cdk.CfnOutput
 
     constructor(scope: cdk.Construct, id: string, props: DashBoardProps) {
         super(scope, id);
@@ -239,7 +239,7 @@ export class Dashboard extends cdk.Construct {
         });
 
         // Output //////////////////////////
-        this.outputDashboradUrl = new cdk.CfnOutput(this, "qcBenchmarkDashboardUrl", {
+        this.outputDashboardUrl = new cdk.CfnOutput(this, "qcBenchmarkDashboardUrl", {
             value: `https://${this.props.region}.quicksight.aws.amazon.com/sn/dashboards/${qcBenchmarkDashboard.dashboardId}`,
             description: "Quicksight Dashboard Url"
         });

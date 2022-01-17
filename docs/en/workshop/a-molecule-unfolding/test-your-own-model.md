@@ -34,7 +34,7 @@ If you want to fully customize the test code, follow below steps to re-deploy th
 
 1. Clone the project to your own workspace, make changes to the source code.
 
-1. Update `quicksight_user` in file `source/cdk.context.json`.
+1. Update `quicksight_user` and `default_code_repository` in file `source/cdk.context.json`.
 
 1. Check CloudFormation in your AWS account, make sure you do not have a stack named `QCStack` in your deployment region.
 

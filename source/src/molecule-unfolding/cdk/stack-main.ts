@@ -92,6 +92,8 @@ export class MainStack extends SolutionStack {
       region: this.region,
       bucket: s3bucket,
       prefix,
+      notebookSg: batchSg,
+      vpc,
       stackName
     });
 
