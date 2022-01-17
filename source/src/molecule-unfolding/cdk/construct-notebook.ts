@@ -79,7 +79,7 @@ export class Notebook extends Construct {
             notebookInstance = new CfnNotebookInstance(this, 'Notebook', {
                 instanceType: instanceTypeParam.valueAsString,
                 roleArn: notebookRole.roleArn,
-                rootAccess: 'Enabled',
+                rootAccess: 'Enabled', // Lifecycle configurations need root access to be able to set up a notebook instance
                 lifecycleConfigName: installBraketSdk.attrNotebookInstanceLifecycleConfigName,
                 volumeSizeInGb: 50,
                 kmsKeyId: qcNotebookKey.keyId,
@@ -87,6 +87,7 @@ export class Notebook extends Construct {
                 subnetId: this.props.vpc.selectSubnets({
                     subnetType: ec2.SubnetType.PRIVATE_WITH_NAT
                 }).subnetIds[0],
+                directInternetAccess: 'Disabled',
                 defaultCodeRepository: defaultCodeRepositoryParam.valueAsString
             });
         } else {
@@ -101,6 +102,7 @@ export class Notebook extends Construct {
                 subnetId: this.props.vpc.selectSubnets({
                     subnetType: ec2.SubnetType.PRIVATE_WITH_NAT
                 }).subnetIds[0],
+                directInternetAccess: 'Disabled'
             });
         }
 
