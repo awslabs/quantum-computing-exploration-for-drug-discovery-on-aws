@@ -73,20 +73,36 @@ export class Notebook extends Construct {
         const qcNotebookKey = new kms.Key(this, 'qcNotebookKey', {
             enableKeyRotation: true
         });
-        
-        const notebookInstance = new CfnNotebookInstance(this, 'Notebook', {
-            instanceType: instanceTypeParam.valueAsString,
-            roleArn: notebookRole.roleArn,
-            rootAccess: 'Enabled',
-            lifecycleConfigName: installBraketSdK.attrNotebookInstanceLifecycleConfigName,
-            volumeSizeInGb: 50,
-            kmsKeyId: qcNotebookKey.keyId,
-            securityGroupIds: [this.props.notebookSg.securityGroupId],
-            subnetId: this.props.vpc.selectSubnets({
-                subnetType: ec2.SubnetType.PRIVATE_WITH_NAT
-            }).subnetIds[0],
-            defaultCodeRepository: defaultCodeRepositoryParam.valueAsString
-        });
+
+        let notebookInstance = null
+        if (defaultCodeRepositoryParam.valueAsString) {
+            notebookInstance = new CfnNotebookInstance(this, 'Notebook', {
+                instanceType: instanceTypeParam.valueAsString,
+                roleArn: notebookRole.roleArn,
+                rootAccess: 'Enabled',
+                lifecycleConfigName: installBraketSdK.attrNotebookInstanceLifecycleConfigName,
+                volumeSizeInGb: 50,
+                kmsKeyId: qcNotebookKey.keyId,
+                securityGroupIds: [this.props.notebookSg.securityGroupId],
+                subnetId: this.props.vpc.selectSubnets({
+                    subnetType: ec2.SubnetType.PRIVATE_WITH_NAT
+                }).subnetIds[0],
+                defaultCodeRepository: defaultCodeRepositoryParam.valueAsString
+            });
+        } else {
+            notebookInstance = new CfnNotebookInstance(this, 'Notebook', {
+                instanceType: instanceTypeParam.valueAsString,
+                roleArn: notebookRole.roleArn,
+                rootAccess: 'Enabled',
+                lifecycleConfigName: installBraketSdK.attrNotebookInstanceLifecycleConfigName,
+                volumeSizeInGb: 50,
+                kmsKeyId: qcNotebookKey.keyId,
+                securityGroupIds: [this.props.notebookSg.securityGroupId],
+                subnetId: this.props.vpc.selectSubnets({
+                    subnetType: ec2.SubnetType.PRIVATE_WITH_NAT
+                }).subnetIds[0],
+            });
+        }
 
 
         // Output //////////////////////////

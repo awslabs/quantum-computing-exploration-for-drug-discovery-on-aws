@@ -61,8 +61,6 @@ export class MainStack extends SolutionStack {
     });
 
     let usePreBuildImage = stackName.endsWith('dev')
-  
-    //console.log(`usePreBuildImage: ${usePreBuildImage}`)
 
     new cdk.CfnOutput(this, "bucketName", {
       value: s3bucket.bucketName,
@@ -76,18 +74,8 @@ export class MainStack extends SolutionStack {
     } = setup_vpc_and_sg(this)
 
 
-    // const codeAsset = new Asset(this, "Code", {
-    //   path: path.join(__dirname, "../../")
-    // });
-
-    // new cdk.CfnOutput(this, 'SourceCode', {
-    //   value: `s3://${codeAsset.s3BucketName}/${codeAsset.s3ObjectKey}`,
-    //   description: "SourceCode",
-    // });
-
-
     // Notebook //////////////////////////
-    const notebook = new Notebook(this, 'MolUnfNotebook', {
+    new Notebook(this, 'MolUnfNotebook', {
       account: this.account,
       region: this.region,
       bucket: s3bucket,
@@ -107,7 +95,7 @@ export class MainStack extends SolutionStack {
     });
 
     // Benchmark StepFuncs //////////////////////////
-    const benchmarkStepFuncs = new Benchmark(this, 'MolUnfBenchmark', {
+    new Benchmark(this, 'MolUnfBenchmark', {
       account: this.account,
       region: this.region,
       bucket: s3bucket,
@@ -120,10 +108,6 @@ export class MainStack extends SolutionStack {
       stackName
     });
 
-    if (usePreBuildImage) {
-      //console.log("add addDependency batchStepFuncs -> notebook")
-      benchmarkStepFuncs.node.addDependency(notebook)
-    }
 
     // Event Listener Lambda //////////////////////////
     new EventListener(this, 'BraketTaskEventHandler', {
@@ -136,6 +120,7 @@ export class MainStack extends SolutionStack {
       lambdaSg,
       stackName
     });
+
     Aspects.of(this).add(new AddCfnNag());
   }
 
