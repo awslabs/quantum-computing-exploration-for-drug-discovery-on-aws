@@ -64,7 +64,7 @@ export class Notebook extends Construct {
         const base64Encode = (str: string): string => Buffer.from(str, 'binary').toString('base64');
         const onStartContentBase64 = base64Encode(onStartContent)
 
-        const installBraketSdK = new CfnNotebookInstanceLifecycleConfig(this, 'install-braket-sdk', {
+        const installBraketSdk = new CfnNotebookInstanceLifecycleConfig(this, 'install-braket-sdk', {
             onStart: [{
                 "content": onStartContentBase64
             }]
@@ -80,7 +80,7 @@ export class Notebook extends Construct {
                 instanceType: instanceTypeParam.valueAsString,
                 roleArn: notebookRole.roleArn,
                 rootAccess: 'Enabled',
-                lifecycleConfigName: installBraketSdK.attrNotebookInstanceLifecycleConfigName,
+                lifecycleConfigName: installBraketSdk.attrNotebookInstanceLifecycleConfigName,
                 volumeSizeInGb: 50,
                 kmsKeyId: qcNotebookKey.keyId,
                 securityGroupIds: [this.props.notebookSg.securityGroupId],
@@ -94,7 +94,7 @@ export class Notebook extends Construct {
                 instanceType: instanceTypeParam.valueAsString,
                 roleArn: notebookRole.roleArn,
                 rootAccess: 'Enabled',
-                lifecycleConfigName: installBraketSdK.attrNotebookInstanceLifecycleConfigName,
+                lifecycleConfigName: installBraketSdk.attrNotebookInstanceLifecycleConfigName,
                 volumeSizeInGb: 50,
                 kmsKeyId: qcNotebookKey.keyId,
                 securityGroupIds: [this.props.notebookSg.securityGroupId],
