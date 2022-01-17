@@ -4,7 +4,7 @@ set -e
 sync_dirs=(
     ./batch-images/create-model
     ./batch-images/sa-optimizer
-    ./lambda/SubmitQCTaskLambda/ 
+    ./batch-images/qa-optimizer
     ./lambda/ParseBraketResultLambda/
 )
 
