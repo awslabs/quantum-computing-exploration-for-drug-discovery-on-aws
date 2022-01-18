@@ -1,9 +1,20 @@
-import * as ecr from '@aws-cdk/aws-ecr'
-import * as ecs from '@aws-cdk/aws-ecs'
-import * as cdk from '@aws-cdk/core'
+import {
+    aws_ecr as ecr
+} from 'aws-cdk-lib'
+
+import {
+    aws_ecs as ecs
+} from 'aws-cdk-lib'
+
+import {
+    aws_lambda as lambda
+} from 'aws-cdk-lib'
+
+import {
+    Construct
+} from 'constructs'
 
 import * as path from 'path'
-import * as lambda from '@aws-cdk/aws-lambda'
 
 export enum ECRRepoNameEnum {
     Batch_Create_Model,
@@ -22,15 +33,15 @@ interface Props {
 
 export class ECRImageUtil {
     private props: Props
-    private scope: cdk.Construct
+    private scope: Construct
     private ecr_account_id: string
 
-    private constructor(scope: cdk.Construct, props: Props) {
+    private constructor(scope: Construct, props: Props) {
         this.props = props
         this.scope = scope
         this.ecr_account_id = this.props.account
     }
-    public static newInstance(scope: cdk.Construct, props: Props) {
+    public static newInstance(scope: Construct, props: Props) {
         return new this(scope, props);
     }
 

@@ -1,14 +1,13 @@
 import {
     App
-} from '@aws-cdk/core';
-import {
-    //Capture,
-    Match,
-    Template
-} from "@aws-cdk/assertions";
+} from 'aws-cdk-lib';
+
+import { Template, Match } from "aws-cdk-lib/assertions";
+
 import {
     MainStack
 } from '../src/molecule-unfolding/cdk/stack-main';
+
 describe("Listener", () => {
     test("has 1 Events Rule", () => {
         const app = new App();

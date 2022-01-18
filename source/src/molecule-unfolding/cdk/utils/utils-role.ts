@@ -1,6 +1,14 @@
-import * as cdk from '@aws-cdk/core'
-import * as iam from '@aws-cdk/aws-iam'
-import * as s3 from '@aws-cdk/aws-s3'
+import {
+    aws_iam as iam
+} from 'aws-cdk-lib'
+
+import {
+    aws_s3 as s3
+} from 'aws-cdk-lib'
+
+import {
+    Construct
+} from 'constructs'
 
 interface Props {
     region: string;
@@ -12,13 +20,13 @@ interface Props {
 
 export class RoleUtil {
     private props: Props
-    private scope: cdk.Construct
-    private constructor(scope: cdk.Construct, props: Props) {
+    private scope: Construct
+    private constructor(scope: Construct, props: Props) {
         this.props = props
         this.scope = scope
     }
 
-    public static newInstance(scope: cdk.Construct, props: Props) {
+    public static newInstance(scope: Construct, props: Props) {
         return new this(scope, props);
     }
 
@@ -353,7 +361,7 @@ export class RoleUtil {
         return role;
     }
 
-    public createWatiForTokenLambdaRole(roleName: string): iam.Role {
+    public createWaitForTokenLambdaRole(roleName: string): iam.Role {
         const role = new iam.Role(this.scope, `${roleName}`, {
             assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
         });
@@ -450,5 +458,5 @@ export class RoleUtil {
         }));
 
         return role;
-    }
+    }   
 }

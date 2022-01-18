@@ -1,12 +1,17 @@
-import * as cdk from '@aws-cdk/core'
-import * as s3 from '@aws-cdk/aws-s3'
+import * as cdk from 'aws-cdk-lib';
+import {
+  aws_s3 as s3
+} from 'aws-cdk-lib'
 import setup_vpc_and_sg from './utils/vpc'
 
 import {
   Aspects,
-  Construct,
   StackProps,
-} from '@aws-cdk/core'
+} from 'aws-cdk-lib';
+
+import {
+  Construct
+} from 'constructs'
 
 import {
   SolutionStack

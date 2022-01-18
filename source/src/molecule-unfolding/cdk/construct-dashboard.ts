@@ -1,6 +1,17 @@
-import * as cdk from '@aws-cdk/core'
-import * as s3 from '@aws-cdk/aws-s3'
-import * as quicksight from '@aws-cdk/aws-quicksight'
+import * as cdk from 'aws-cdk-lib'
+
+import {
+    aws_s3 as s3
+} from 'aws-cdk-lib'
+
+import {
+    aws_quicksight as quicksight
+} from 'aws-cdk-lib'
+
+import {
+    Construct
+} from 'constructs'
+
 
 interface DashBoardProps {
     region: string;
@@ -10,11 +21,11 @@ interface DashBoardProps {
     stackName: string;
 }
 
-export class Dashboard extends cdk.Construct {
+export class Dashboard extends Construct {
     private props: DashBoardProps
     outputDashboardUrl: cdk.CfnOutput
 
-    constructor(scope: cdk.Construct, id: string, props: DashBoardProps) {
+    constructor(scope: Construct, id: string, props: DashBoardProps) {
         super(scope, id);
         this.props = props
 
