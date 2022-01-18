@@ -52,18 +52,7 @@ export class Notebook extends Construct {
 
         this.roleUtil = RoleUtil.newInstance(this, props);
 
-        const instanceTypeParam = new cdk.CfnParameter(this, "NotebookInstanceType", {
-            type: "String",
-            default: INSTANCE_TYPE,
-            description: "Sagemaker notebook instance type"
-        });
-
-        const defaultCodeRepository = this.node.tryGetContext('default_code_repository')
-        const defaultCodeRepositoryParam = new cdk.CfnParameter(this, "defaultCodeRepository", {
-            type: "String",
-            default: defaultCodeRepository,
-            description: "default code repository in notebook"
-        });
+        const defaultCodeRepository = this.node.tryGetContext('default_code_repository') || 'https://github.com/awslabs/quantum-ready-solution-for-drug-discovery'
 
         const notebookRole = this.roleUtil.createNotebookIamRole()
 
@@ -83,9 +72,9 @@ export class Notebook extends Construct {
         });
 
         let notebookInstance = null
-        if (defaultCodeRepositoryParam.valueAsString.startsWith('https://')) {
+        if (defaultCodeRepository.startsWith('https://')) {
             notebookInstance = new CfnNotebookInstance(this, 'Notebook', {
-                instanceType: instanceTypeParam.valueAsString,
+                instanceType: INSTANCE_TYPE,
                 roleArn: notebookRole.roleArn,
                 rootAccess: 'Enabled', // Lifecycle configurations need root access to be able to set up a notebook instance
                 lifecycleConfigName: installBraketSdk.attrNotebookInstanceLifecycleConfigName,
@@ -96,11 +85,11 @@ export class Notebook extends Construct {
                     subnetType: ec2.SubnetType.PRIVATE_WITH_NAT
                 }).subnetIds[0],
                 directInternetAccess: 'Disabled',
-                defaultCodeRepository: defaultCodeRepositoryParam.valueAsString
+                defaultCodeRepository: defaultCodeRepository
             });
         } else {
             notebookInstance = new CfnNotebookInstance(this, 'Notebook', {
-                instanceType: instanceTypeParam.valueAsString,
+                instanceType: INSTANCE_TYPE,
                 roleArn: notebookRole.roleArn,
                 rootAccess: 'Enabled',
                 lifecycleConfigName: installBraketSdk.attrNotebookInstanceLifecycleConfigName,
