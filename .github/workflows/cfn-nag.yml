@@ -28,4 +28,4 @@ jobs:
         with:
           input_path: source/cdk.out/
           extra_args: >-
-            --template-pattern ..*.template.json --fail-on-warnings --print-suppression
+            --template-pattern ..*.template.json --fail-on-warnings -b .cfn-nag-ignore-lists.yml --print-suppression
