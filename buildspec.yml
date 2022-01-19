@@ -18,8 +18,8 @@ phases:
       # - git clone https://github.com/awslabs/realtime-fraud-detection-with-gnn-on-dgl.git -b main /tmp/repo
       # - rsync -av /tmp/repo/ ${CODEBUILD_SRC_DIR}/source --exclude=buildspec.yml
       - pwd
-      - ls -l 
-      - cp .cfn-nag-ignore-lists.yml .cfnnag_global_suppress_list
+      - ls -al
+      - cp ./.cfn-nag-ignore-lists.yml ./.cfnnag_global_suppress_list
       # - sed -i '9,$d' ${CODEBUILD_SRC_DIR}/source/docs/mkdocs.zh.yml
       # - echo '  - deployment-guide.md' >>${CODEBUILD_SRC_DIR}/source/docs/mkdocs.zh.yml
       # - cp -rf ${CODEBUILD_SRC_DIR}/source/docs ${CODEBUILD_SRC_DIR}/
