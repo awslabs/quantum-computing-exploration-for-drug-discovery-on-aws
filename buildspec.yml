@@ -27,6 +27,7 @@ phases:
       - export BUILD_VERSION=$(git -c pager.tag=false tag --points-at $(git rev-parse --short HEAD) | tail -1 || echo latest)
       - export CN_ASSETS='cn/'
       - export GLOBAL_ASSETS='custom-domain/,default/'
+      - echo "BUILD_VERSION: $BUILD_VERSION"
   build:
     commands:
       - ${CODEBUILD_SRC_DIR}/deployment/build-s3-dist.sh ${DIST_OUTPUT_BUCKET} ${SOLUTION_NAME} ${BUILD_VERSION}
