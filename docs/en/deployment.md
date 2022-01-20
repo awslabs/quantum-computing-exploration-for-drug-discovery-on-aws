@@ -37,9 +37,7 @@ This automated AWS CloudFormation template deploys the solution in the AWS Cloud
 
     |      Parameter      |    Default   |                                                      Description                                                      |
     |:-------------------:|:------------:|:--------------------------------------------------------------------------------------------------------------|
-    | MolUnfNotebookNotebookInstanceType | ml.c5.xlarge |  Notebook instance type |
     | MolUnfDashboardquickSightUser | | your AWS Quicksight user name |
-    | MolUnfNotebookdefaultCodeRepository | <To.Be.Update> | default code repository in notebook |
 
 1. Choose **Next**.
 
