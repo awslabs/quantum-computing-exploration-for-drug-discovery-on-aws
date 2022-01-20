@@ -28,26 +28,19 @@ export class Dashboard extends Construct {
     constructor(scope: Construct, id: string, props: DashBoardProps) {
         super(scope, id);
         this.props = props
-
-        const quicksightTemplateAccountId = this.node.tryGetContext('quicksight_template_account_id') || process.env.QUICKSIGHT_TEMPLATE_ACCOUNTID
-        const quicksightTemplateAccountIdParam = new cdk.CfnParameter(this, "quicksightTemplateAccountId", {
-            type: "String",
-            default: quicksightTemplateAccountId,
-            description: "The AWS account id to host quicksight template in region: us-east-1"
-        });
-
+        
         const defaultQuicksightUser = this.node.tryGetContext('quicksight_user') || process.env.QUICKSIGHT_USER;
         const quickSightUserParam = new cdk.CfnParameter(this, "quickSightUser", {
             type: "String",
             default: defaultQuicksightUser,
             description: "Quicksight User"
         });
-
-        const templateAccountId = quicksightTemplateAccountIdParam.valueAsString;
-        const templateRegion = this.node.tryGetContext('quicksight_template_region') || 'us-east-1'
-        const templateArn = `arn:aws:quicksight:${templateRegion}:${templateAccountId}:template/QC-benchmark-analysis-template/version/1`
-
         const quicksightUser = `arn:aws:quicksight:us-east-1:${this.props.account}:user/default/${quickSightUserParam.valueAsString}`;
+
+
+        const default_templateArn = `arn:aws:quicksight:us-east-1:522244679887:template/QC-benchmark-analysis-template/version/1`
+        const templateArn = this.node.tryGetContext('quicksight_template_arn') || default_templateArn
+
         const qcDataSource = new quicksight.CfnDataSource(this, "qcBenchmark-DataSource", {
             awsAccountId: this.props.account,
             dataSourceId: `${this.props.stackName}-qcBenchmark-Datasource`,
