@@ -42,7 +42,7 @@ export class MainStack extends SolutionStack {
   // constructor 
   constructor(scope: Construct, id: string, props: StackProps = {}) {
     super(scope, id, props);
-    this.setDescription('(SO8029) CDK for GCR solution: Quantum Ready For Drug Discovery');
+    this.setDescription('(SO8033) Quantum Ready Solution For Drug Discovery');
     const stackName = this.stackName.replace(/[^a-zA-Z0-9_]+/, '').toLocaleLowerCase()
 
     const prefix = 'molecule-unfolding'

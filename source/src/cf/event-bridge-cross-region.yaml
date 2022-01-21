@@ -1,6 +1,8 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: Cross region event bus for braket
 
+# https://amazon-braket-gcr-qc-sol-common.s3.us-east-1.amazonaws.com/template/event-bridge-cross-region.yaml
+
 Parameters:
   TargetRegion:
     Type: String

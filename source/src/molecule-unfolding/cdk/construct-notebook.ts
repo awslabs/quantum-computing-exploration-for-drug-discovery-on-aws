@@ -52,7 +52,7 @@ export class Notebook extends Construct {
 
         this.roleUtil = RoleUtil.newInstance(this, props);
 
-        const defaultCodeRepository = this.node.tryGetContext('default_code_repository') || ''
+        const defaultCodeRepository = this.node.tryGetContext('default_code_repository') || 'https://github.com/awslabs/quantum-ready-solution-for-drug-discovery'
 
         const notebookRole = this.roleUtil.createNotebookIamRole()
 
