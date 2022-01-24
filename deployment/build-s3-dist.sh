@@ -32,7 +32,7 @@ run rm -rf ${GLOBAL_S3_ASSETS_PATH} && run mkdir -p ${GLOBAL_S3_ASSETS_PATH}
 
 echo "BUCKET_NAME=${BUCKET_NAME}"
 echo "SOLUTION_NAME=${SOLUTION_NAME}"
-echo "BUILD_VERSION=${BUILD_VERSION}"
+echo "e=${BUILD_VERSION}"
 echo "${BUILD_VERSION}" > ${GLOBAL_S3_ASSETS_PATH}/version
 
 title "cdk synth"
