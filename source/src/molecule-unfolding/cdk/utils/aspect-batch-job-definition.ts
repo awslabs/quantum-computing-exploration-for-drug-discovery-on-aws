@@ -42,7 +42,7 @@ export class BatchJobDefinitionAspect extends ECRRepositoryAspect {
                 }
             }
         }
-        if (construct instanceof iam.Role && construct.node.path.endsWith('/batchExecutionRole')) {
+        if (construct instanceof iam.Role && construct.node.path.endsWith('/batchExecutionRole/Resource')) {
             const stack = construct.stack
             this._executionRole = construct
             while (this._repoNames.length > 0) {
