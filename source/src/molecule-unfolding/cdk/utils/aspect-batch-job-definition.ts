@@ -39,7 +39,7 @@ export class BatchJobDefinitionAspect extends ECRRepositoryAspect {
                     if (this._executionRole) {
                         this._executionRole.attachInlinePolicy(this.crossAccountECRPolicy(stack, repoName));
                         console.log("1 attachInlinePolicy " + repoName)
-                        console.log(repoName)
+                        console.log(this._executionRole.node.path)
                     } else {
                         this._repoNames.push(repoName)
                         console.log(`add ${repoName} to _repoNames[]`)
@@ -47,7 +47,7 @@ export class BatchJobDefinitionAspect extends ECRRepositoryAspect {
                 }
             }
         }
-        if (construct instanceof iam.Role) {
+        if (construct instanceof iam.Role && construct.node.path.endsWith('/batchExecutionRole')) {
             const stack = construct.stack
             this._executionRole = construct
             console.info('------------------>')
@@ -55,9 +55,8 @@ export class BatchJobDefinitionAspect extends ECRRepositoryAspect {
             console.info(construct.node.path)
             console.info(this._executionRole.roleId)
             console.info(this._executionRole.roleArn)
-            console.info('<------------------')
-
             console.log(`_repoNames[] length ` + this._repoNames.length)
+            console.info('<------------------')
             while (this._repoNames.length > 0) {
                 const repoName = this._repoNames.pop()
                 if (repoName) {
