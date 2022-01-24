@@ -29,13 +29,14 @@ export class BatchJobDefinitionAspect extends ECRRepositoryAspect {
             const stack = construct.stack
             const image = ((construct.node.defaultChild as batch_lib.CfnJobDefinition).containerProperties as batch_lib.CfnJobDefinition.ContainerPropertiesProperty).image
             const image_resolved = stack.resolve(image)
-            console.log(image_resolved)
+            console.log("image_resolved: " + image_resolved)
             if (FN_SUB in image_resolved) {
                 const repoName = this.getRepoName(image_resolved[FN_SUB]);
-                //console.log(repoName)
+                console.log("repoName: " + repoName)
                 if (repoName) {
                     if (this._executionRole) {
                         this._executionRole.attachInlinePolicy(this.crossAccountECRPolicy(stack, repoName));
+                        console.log("1 attachInlinePolicy " + repoName)
                     } else {
                         this._repoNames.push(repoName)
                     }
@@ -49,6 +50,7 @@ export class BatchJobDefinitionAspect extends ECRRepositoryAspect {
                 const repoName = this._repoNames.pop()
                 if (repoName) {
                     this._executionRole.attachInlinePolicy(this.crossAccountECRPolicy(stack, repoName));
+                    console.log("2 attachInlinePolicy " + repoName)
                 }
             }
         }
