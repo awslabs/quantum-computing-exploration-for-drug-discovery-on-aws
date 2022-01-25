@@ -60,14 +60,6 @@ export default (scope: Construct) => {
         service: ec2.InterfaceVpcEndpointAwsService.ATHENA
     });
 
-    vpc.addInterfaceEndpoint('SageMakerNotebookEndpoint', {
-        service: ec2.InterfaceVpcEndpointAwsService.SAGEMAKER_NOTEBOOK
-    });
-
-    vpc.addInterfaceEndpoint('SNSEndpoint', {
-        service: ec2.InterfaceVpcEndpointAwsService.SNS
-    });
-
     const logKey = new kms.Key(scope, 'qcLogKey', {
         enableKeyRotation: true
     });

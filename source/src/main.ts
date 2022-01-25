@@ -1,11 +1,14 @@
 import {
   App,
-  Aspects
+  Aspects,
 } from 'aws-cdk-lib';
 
 import {
+  BatchJobDefinitionAspect
+} from './molecule-unfolding/cdk/utils/aspect-batch-job-definition'
+
+import {
   BootstraplessStackSynthesizer,
-  CompositeECRRepositoryAspect
 } from 'cdk-bootstrapless-synthesizer';
 
 import {
@@ -20,7 +23,7 @@ new MainStack(app, "QCStack", {
 
 // below lines are required if your application has Docker assets
 if (process.env.USE_BSS) {
-  Aspects.of(app).add(new CompositeECRRepositoryAspect());
+  Aspects.of(app).add(new BatchJobDefinitionAspect());
 }
 
 app.synth();

@@ -51,8 +51,10 @@ export class Notebook extends Construct {
         const INSTANCE_TYPE = 'ml.c5.xlarge'
 
         this.roleUtil = RoleUtil.newInstance(this, props);
-
-        const defaultCodeRepository = this.node.tryGetContext('default_code_repository') || 'https://github.com/awslabs/quantum-ready-solution-for-drug-discovery'
+        
+        const githubRepo = 'https://github.com/awslabs/quantum-ready-solution-for-drug-discovery'
+        
+        const defaultCodeRepository = this.node.tryGetContext('default_code_repository') || githubRepo
 
         const notebookRole = this.roleUtil.createNotebookIamRole()
 

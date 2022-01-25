@@ -171,7 +171,7 @@ def validate_modelParams(input_dict: dict, errors: list):
 
     devices_arns = input_dict.get('devicesArns', default_devices_arns)
 
-    D_val = input_dict[k].get('D', [8])[0]
+    D_val = input_dict[k].get('D', default_model_params.get('D', [4]))[0]
     global MAX_M
 
     log.info(f"MAX_M={MAX_M}")
