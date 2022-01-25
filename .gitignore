@@ -14,5 +14,6 @@ cdk.out
 test-reports
 coverage
 my_sync_code.sh
+code_from_github.sh
 
 
