@@ -15,8 +15,9 @@ phases:
       nodejs: 14
   pre_build:
     commands:
-      # - git clone https://github.com/awslabs/realtime-fraud-detection-with-gnn-on-dgl.git -b main /tmp/repo
-      # - rsync -av /tmp/repo/ ${CODEBUILD_SRC_DIR}/source --exclude=buildspec.yml
+      - git clone git@github.com:awslabs/quantum-ready-solution-for-drug-discovery.git -b main /tmp/repo
+      - rsync -av /tmp/repo/source ${CODEBUILD_SRC_DIR}/
+      - rsync -av /tmp/repo/docs ${CODEBUILD_SRC_DIR}/
       - pwd
       - ls -al
       - cp ./.cfn-nag-ignore-lists.yml ./.cfnnag_global_suppress_list
