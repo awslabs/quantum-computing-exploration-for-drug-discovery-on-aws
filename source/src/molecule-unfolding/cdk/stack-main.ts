@@ -41,8 +41,9 @@ export class MainStack extends SolutionStack {
 
   // constructor 
   constructor(scope: Construct, id: string, props: StackProps = {}) {
+    const DESCRIPTION = '(SO8033) Quantum Ready Solution For Drug Discovery'
     super(scope, id, props);
-    this.setDescription('(SO8033) Quantum Ready Solution For Drug Discovery');
+    this.setDescription(DESCRIPTION);
     const stackName = this.stackName.replace(/[^a-zA-Z0-9_]+/, '').toLocaleLowerCase()
 
     const prefix = 'molecule-unfolding'
