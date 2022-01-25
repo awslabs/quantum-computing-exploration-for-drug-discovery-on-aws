@@ -18,8 +18,10 @@ const FN_SUB = 'Fn::Sub';
 
 export class BatchJobDefinitionAspect extends ECRRepositoryAspect {
     readonly _repoNames: string[]
-    _executionRole ? : iam.Role
-    constructor(props: ECRRepositoryAspectProps = {}) {
+    private _executionRole ? : iam.Role
+    private _executionRoleArn? : string 
+
+    constructor(props: ECRRepositoryAspectProps={}) {
         super(props);
         this._repoNames = []
     }
@@ -27,10 +29,9 @@ export class BatchJobDefinitionAspect extends ECRRepositoryAspect {
     public visit(construct: IConstruct): void {
         if (construct instanceof batch.JobDefinition) {
             const stack = construct.stack
+            this._executionRoleArn = ((construct.node.defaultChild as batch_lib.CfnJobDefinition).containerProperties as batch_lib.CfnJobDefinition.ContainerPropertiesProperty).executionRoleArn 
             const image = ((construct.node.defaultChild as batch_lib.CfnJobDefinition).containerProperties as batch_lib.CfnJobDefinition.ContainerPropertiesProperty).image
             const image_resolved = stack.resolve(image)
-            console.log("image_resolved: " + image_resolved)
-            console.log(image_resolved)
             if (FN_SUB in image_resolved) {
                 const repoName = this.getRepoName(image_resolved[FN_SUB]);
                 if (repoName) {
@@ -43,7 +44,7 @@ export class BatchJobDefinitionAspect extends ECRRepositoryAspect {
                 }
             }
         }
-        if (construct instanceof iam.Role && construct.node.path.endsWith('/batchExecutionRole')) {
+        if (construct instanceof iam.Role && construct.roleArn == this._executionRoleArn) {
             const stack = construct.stack
             this._executionRole = construct
             while (this._repoNames.length > 0) {
