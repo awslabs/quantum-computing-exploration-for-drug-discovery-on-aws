@@ -60,6 +60,13 @@ export default (scope: Construct) => {
         service: ec2.InterfaceVpcEndpointAwsService.ATHENA
     });
 
+    vpc.addInterfaceEndpoint('BraketEndpoint', {
+        service: {
+            name: `com.amazonaws.${cdk.Stack.of(scope).region}.braket`,
+            port: 443
+        }
+    });
+
     const logKey = new kms.Key(scope, 'qcLogKey', {
         enableKeyRotation: true
     });
