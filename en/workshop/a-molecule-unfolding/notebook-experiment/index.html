@@ -526,7 +526,7 @@
 <h1 id="background">Background</h1>
 <p>Molecular Docking (MD) is an important step of the drug discovery process which aims at calculating 
 the preferred position and shape of one molecule to a second when they are bound to each other. This step focuses on computationally simulating the molecular recognition process. It aims to achieve an optimized conformation for both the protein and ligand and relative orientation between protein and ligand such that the free energy of the overall system is minimized. </p>
-<p><img alt="Molecular Docking" src="../../images/molecule-docking.png" /></p>
+<p><img alt="Molecular Docking" src="../../../images/molecule-docking.png" /></p>
 <p>In this work, The protein or the pocket is considered as a rigid structure. The ligand is considered as a 
 flexible set of atoms. There are usually three main phases in MD:</p>
 <ul>
@@ -561,7 +561,7 @@ only a subset of them are rotatable. Because there are some rotatable bonds (tor
 the rightmost rotatable one, it splits the molecule into the left and right fragments. 
 These fragments can rotate independently from each other around the axis of the bond. This 
 idea is graphically reported in the following figure. </p>
-<p><img alt="Rotatable Bonds" src="../../images/rotatable-bonds.png" /></p>
+<p><img alt="Rotatable Bonds" src="../../../images/rotatable-bonds.png" /></p>
 <p>As it indicates, the objective of MU is to find the shape of the ligand that can maximizes 
  the molecular volume. The shape of the ligand can be expressed as the unfolded shape of the
   ligand (the torsion configuration of all the rotatable bonds).</p>
@@ -585,7 +585,7 @@ idea is graphically reported in the following figure. </p>
 <p>{{% /notice %}}</p>
 <p>Suppose the ligand has $ M $ torsions, from $ T_i $ to $ T_M $, and each torsion must have the angle 
 of rotation $\theta$.</p>
-<p><img alt="Multiple Torsion" src="../../images/multiple-torsion.png" /></p>
+<p><img alt="Multiple Torsion" src="../../../images/multiple-torsion.png" /></p>
 <p>The objective of this model is to find the unfolded torsion configuration $ {\Theta}^{unfold} $ which 
 can maximizes the sum of distances $ D(\Theta) $.</p>
 <p>$$ {\Theta}^{unfold} = [\theta^{unfold}_1,  \theta^{unfold}_2, ../..., \theta^{unfold}_M] $$</p>
@@ -593,7 +593,7 @@ can maximizes the sum of distances $ D(\Theta) $.</p>
 <p>The $ D_{a,b}(\theta)^2 $ is $ || \overrightarrow{a}_0 - R(\theta)\overrightarrow{b}_0||^2  $ . 
 This is the distance between fragment a and b. $ R(\theta) $ is the rotation matrix associated the torsion angle 
 $ \theta $.</p>
-<p><img alt="Two Frag One Tor" src="../../images/two-frag-one-torsion.png" /></p>
+<p><img alt="Two Frag One Tor" src="../../../images/two-frag-one-torsion.png" /></p>
 <p>Since this is the problem of portfolio optimization, the final configuration can be the combination of any 
 angle of any torsion. However, there are some constraints for applying it to real problem: </p>
 <ol>
@@ -624,11 +624,11 @@ means that we use the absolute distance instead:</p>
 <p>We have implemented this model in <strong>protein/ligand-unfolding/ligand_unfolding.ipynb</strong>.
 Suppose we have finished the parameter setting, we first initialize 
 the variables using the following code:</p>
-<p><img alt="Var Init" src="../../images/var-init.png" /></p>
+<p><img alt="Var Init" src="../../../images/var-init.png" /></p>
 <p>The above code indicates that we have 4 torsions from $ x_1_? $ to $ x_4_? $. Each torsion has four optional rotation angles from $ 0^o $ to $ 270^o $. For example, $ x_3_2 $ means that the torsion 3 rotates 
 $ 180^o $.</p>
 <p>For constraints, we use the following code to implement: </p>
-<p><img alt="Constraint" src="../../images/constraint.png" /></p>
+<p><img alt="Constraint" src="../../../images/constraint.png" /></p>
 <p>As we analyze before, the model does not which variables belong to 
 the same physical torsion. For example, $ x_1_1 , x_1_2, x_1_3 $ 
 and $ x_1_4 $ belong to the same torsion. The model cannot let only 
@@ -638,7 +638,7 @@ one variables of $x_1_?$ to become $ 1 $, we give it the punishment
 term $ 600 $. </p>
 <p>Most importantly, we use $ calc_distance_func $ to calculate
 $ |D_{ab} (\theta)| $ under different $ \theta $.</p>
-<p><img alt="Distance" src="../../images/distance.png" /></p>
+<p><img alt="Distance" src="../../../images/distance.png" /></p>
 <h2 id="quantum-annealing">Quantum Annealing</h2>
 <p>The quantum annealing (QA) can be seen as a variation of the simulated annealing (SA). Both QA and SA are meta-heuristic technique for address 
 challenging combinatorial problems. QA uses the quantum fluctuation to explore the configuration space instead of thermal effects. Here, we use 
@@ -649,11 +649,11 @@ unconstrained binary optimization (QUBO) can be solved using quantum annealer:</
  can be considered as the values encoding the optimization task when we use corresponding angles. However, in our task, it is common that there are 
  more than one torsion between fragments, we model it as the high-order quadratic unconstrained binary optimization (HUBO) problem:</p>
 <p>$$ O(x) = \displaystyle\sum\limits_i \alpha_i x_i + \displaystyle\sum_{i,j} \beta_{i,j} x_i x_j + \displaystyle\sum_{i,j,k} \gamma_{i,j,k} x_i x_j x_k + ../... $$</p>
-<p><img alt="Two Frag Mul Tor" src="../../images/two-frag-multiple-torsion.png" /></p>
+<p><img alt="Two Frag Mul Tor" src="../../../images/two-frag-multiple-torsion.png" /></p>
 <p>It is often possible to convert HUBOs to QUBOs by using some tricks, 
 like adding new ancillary binary variables to replace high-order term. 
 In practice, we use the API $ make _ quadratic() $ in D-Wave software package to make this conversion.</p>
-<p><img alt="HUBO QUBO" src="../../images/hubo-qubo.png" /></p>
+<p><img alt="HUBO QUBO" src="../../../images/hubo-qubo.png" /></p>
 <p>As the image shown, some high-order term of HUBO, like $ ('x_1_1','x_2_1','x_3_1') $, have been 
 transformed to binary terms in QUBO. We only highlight some of them.</p>
 <p>Congratulations! We have already prepared the model and it is time to test it.</p>
@@ -702,24 +702,24 @@ transformed to binary terms in QUBO. We only highlight some of them.</p>
 </tbody>
 </table>
 <p>We use the following code to set the parameters:</p>
-<p><img alt="Parameter" src="../../images/parameter.png" /></p>
+<p><img alt="Parameter" src="../../../images/parameter.png" /></p>
 <h2 id="run-optimizers">Run Optimizers</h2>
 <p>After setting the parameters, we can run the optimization on classic device and quantum device.</p>
 <h3 id="classical-optimizer-for-qubo">Classical Optimizer for QUBO</h3>
-<p><img alt="Classical" src="../../images/classical.png" /></p>
+<p><img alt="Classical" src="../../../images/classical.png" /></p>
 <h3 id="quantum-optimizer-for-qubo">Quantum Optimizer for QUBO</h3>
-<p><img alt="Quantum" src="../../images/quantum.png" /></p>
+<p><img alt="Quantum" src="../../../images/quantum.png" /></p>
 <h2 id="analyze-the-quality">Analyze The Quality</h2>
 <p>After some time, we get the results. As the result indicates, the best answer of quantum annealer only 
 occurs once.</p>
-<p><img alt="OneTimeQA" src="../../images/one-time-qa.png" /></p>
+<p><img alt="OneTimeQA" src="../../../images/one-time-qa.png" /></p>
 <p>This does not always indicate an error. It is actually the characteristic of the problem or how the problem 
 is formulated. Because we have different linear and quadratic terms that vary by many orders of magnitude. If we 
 set change value of $A$ to some smaller number, like 10 or 100, more occurrences of the best answer will be observed. 
 However, these answers usually break the constraints. For more information about this phenomenon, please refer to this 
 <a href="https://support.dwavesys.com/hc/en-us/community/posts/1500000698522-Number-of-occurrences-?input_string=number%20occurance">Link</a>.</p>
 <p>After that, we need some postprocessing to get the results. What we really want are the desired angles of all the torsion.</p>
-<p><img alt="Postprocess" src="../../images/PostProcess.png" /></p>
+<p><img alt="Postprocess" src="../../../images/PostProcess.png" /></p>
 <p>We test different values of $M$, and we find that when $M &gt; 5$, the quantum annealer can not embed it into its quantum circuit. When 
 $M &lt; 3$, we can get comparable results from quantum annealer. In other cases, the results from the quantum annealer are not stable. 
 This is interesting that we cannot get the similar results as the publication explains. Any discussion or help is welcome!</p>
