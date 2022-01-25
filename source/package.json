@@ -22,7 +22,6 @@
     "cfn-nag": "mkdir /tmp/cfn/ && cdk synth QCStack --output /tmp/cfn/ && cfn_nag_scan --fail-on-warnings -b ../.cfn-nag-ignore-lists.yml --input-path  /tmp/cfn/QCStack.template.json"
   },
   "devDependencies": {
-    "@aws-cdk/assertions": "^1.116.0",
     "@types/jest": "^27.0.3",
     "@types/node": "14.17.7",
     "@typescript-eslint/eslint-plugin": "^4.29.0",
