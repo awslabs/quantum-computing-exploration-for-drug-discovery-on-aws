@@ -3,13 +3,12 @@ Deploying this solution with the default parameters builds the following environ
 ![architecture](./images/architecture.png)
 *Figure 1: The quantum ready solution for drug discovery architecture on AWS*
 
-This solution deploys the Amazon CloudFormation template in your AWS Cloud account and completes the following settings.
+This solution deploys the Amazon CloudFormation template in your 
+AWS Cloud account and provides three URLs. One for **Visualization**.
+The others provide user with two approaches to study drug discovery 
+problems: **Notebook Experiment** and **Batch Test**:
 
-The AWS CloudFormation template deploys two approaches for user to do 
-experiments with drug discovery problems which are **Notebook Experiment** 
-and **Batch Test**:
-
-1. The solution deployed an instance for 
+1. The solution deploys an instance for 
 [AWS SageMaker Notebook](https://docs.aws.amazon.com/sagemaker/latest/dg/nbi.html). 
 The user can do **Notebook Experiment** for drug discovery on classical computing and 
 quantum computing in this notebook.
@@ -25,7 +24,7 @@ AWS services:  [Amazon ECR](https://aws.amazon.com/ecr/),
 [Amazon S3](https://aws.amazon.com/s3/),
 and [Amazon Braket](https://aws.amazon.com/braket/).
 
-4. The solution also deployed 
+4. The solution also deploys 
 [AWS Step Function](https://aws.amazon.com/step-functions/) for user to do 
 **Batch Test**. 
 
@@ -40,7 +39,7 @@ between quantum annealer and simulated annealer can be figured out.
 7. The images for **Batch Test** have been built in Amazon ECR. For customizing 
 the logic for **Batch Test**, please refer to the instructions in workshop page.
 
-8. The **Batch Test** deployed [VPC Endpoints](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints.html) to ensure secure connection to AWS 
+8. The **Batch Test** deploys [VPC Endpoints](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints.html) to ensure secure connection to AWS 
 services: AWS Step Function, [Amazon SNS](https://aws.amazon.com/sns/), 
 Amazon ECR, Amazon S3, Amazon Braket and 
 [Amazon EventBridge](https://aws.amazon.com/eventbridge/).
