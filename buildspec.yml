@@ -22,6 +22,7 @@ phases:
       - ls -al
       - cp ./.cfn-nag-ignore-lists.yml ./.cfnnag_global_suppress_list
       - sync_dirs=(lambda/ParseBraketResultLambda batch-images/create-model batch-images/qa-optimizer batch-images/sa-optimizer) && for d in ${sync_dirs[@]}; do echo sync $d; cp -r ${CODEBUILD_SRC_DIR}/source/src/molecule-unfolding/utility ${CODEBUILD_SRC_DIR}/source/src/molecule-unfolding/${d}; done
+      - rm ./source/cdk.context.json
       # - sed -i '9,$d' ${CODEBUILD_SRC_DIR}/source/docs/mkdocs.zh.yml
       # - echo '  - deployment-guide.md' >>${CODEBUILD_SRC_DIR}/source/docs/mkdocs.zh.yml
       # - cp -rf ${CODEBUILD_SRC_DIR}/source/docs ${CODEBUILD_SRC_DIR}/
