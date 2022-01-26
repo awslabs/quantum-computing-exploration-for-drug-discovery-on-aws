@@ -1,9 +1,9 @@
 {
   "name": "gcr-quantum-ready-for-drug-discovery",
-  "description": "AWS GRC solution: Quantum Ready For Drug Discovery",
+  "description": "Quantum Ready Solution For Drug Discovery",
   "repository": {
     "type": "git",
-    "url": "ssh://git.amazon.com/pkg/AWS-gcr-qc-life-science"
+    "url": "https://github.com/awslabs/quantum-ready-solution-for-drug-discovery.git"
   },
   "scripts": {
     "test": "rm -fr lib && npm run test:compile && jest --passWithNoTests --all --updateSnapshot && eslint",
@@ -19,7 +19,7 @@
     "clean-code": "sync_dirs=(lambda/ParseBraketResultLambda batch-images/create-model batch-images/qa-optimizer batch-images/sa-optimizer) && for d in ${sync_dirs[@]}; do echo clean $d; rm -r ./src/molecule-unfolding/${d}/utility > /dev/null 2>&1 || true; done", 
     "diff": "cdk diff QCStack",
     "synth": "cdk synth QCStack ",
-    "deploy": "npm run sync-code && cdk deploy QCStack",
+    "deploy": "npm run sync-code && cdk deploy QCStack && npm run clean-code",
     "destroy": "cdk destroy QCStack",
     "cfn-nag": "mkdir /tmp/cfn/ && cdk synth QCStack --output /tmp/cfn/ && cfn_nag_scan --fail-on-warnings -b ../.cfn-nag-ignore-lists.yml --input-path  /tmp/cfn/QCStack.template.json"
   },
