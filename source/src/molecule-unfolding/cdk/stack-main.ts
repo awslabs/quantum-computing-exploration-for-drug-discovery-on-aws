@@ -3,6 +3,7 @@ import {
   aws_s3 as s3
 } from 'aws-cdk-lib'
 import setup_vpc_and_sg from './utils/vpc'
+import create_custom_resources from './utils/custom-resource'
 
 import {
   Aspects,
@@ -48,9 +49,11 @@ export class MainStack extends SolutionStack {
 
     const prefix = 'molecule-unfolding'
 
+    create_custom_resources(this);
+
     const logS3bucket = new s3.Bucket(this, 'AccessLogS3Bucket', {
-      removalPolicy: cdk.RemovalPolicy.RETAIN,
-      //autoDeleteObjects: true,
+      removalPolicy: cdk.RemovalPolicy.DESTROY,
+      autoDeleteObjects: true,
       enforceSSL: true,
       encryption: s3.BucketEncryption.S3_MANAGED,
     });
@@ -65,6 +68,7 @@ export class MainStack extends SolutionStack {
       serverAccessLogsBucket: logS3bucket,
       serverAccessLogsPrefix: `accesslogs/${bucketName}/`
     });
+    s3bucket.node.addDependency(logS3bucket)
 
     let usePreBuildImage = stackName.endsWith('dev')
 
@@ -126,7 +130,7 @@ export class MainStack extends SolutionStack {
       lambdaSg,
       stackName
     });
-
+    
     Aspects.of(this).add(new AddCfnNag());
   }
 
