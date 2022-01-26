@@ -503,42 +503,83 @@
 <p>Deploying this solution with the default parameters builds the following environment in the AWS Cloud.</p>
 <p><img alt="architecture" src="../images/architecture.png" />
 <em>Figure 1: The quantum ready solution for drug discovery architecture on AWS</em></p>
-<p>This solution deploys the Amazon CloudFormation template in your AWS Cloud account and completes the following settings.</p>
-<p>The AWS CloudFormation template deploys the following workflows and service:</p>
-<ul>
-<li>Notebook Experiment <ol>
-<li>The user deploys the solution into their AWS account and 
-open the deployed <a href="https://docs.aws.amazon.com/sagemaker/latest/dg/nbi.html">AWS SageMaker Notebook</a>. The user can run and study sample 
-codes for drug discovery, following the step-by-step guide in <strong>ZAY workshop md</strong></li>
-<li>When the user want to modify the default algorithms and update the 
-images of <a href="https://aws.amazon.com/ecr/">Amazon ECR</a> for the 
-following batch test, they can find the step-by-step guide in <strong>ZAY deployment md</strong></li>
-</ol>
+<p>This solution deploys the Amazon CloudFormation template in your 
+AWS Cloud account and provides three URLs. One for <strong>Visualization</strong>.
+The others provide user with two approaches to study drug discovery 
+problems: <strong>Notebook Experiment</strong> and <strong>Batch Evaluation</strong>:</p>
+<ol>
+<li>
+<p>The solution deploys an instance for 
+<a href="https://docs.aws.amazon.com/sagemaker/latest/dg/nbi.html">AWS SageMaker Notebook</a>. 
+The user can do <strong>Notebook Experiment</strong> for drug discovery on classical computing and 
+quantum computing in this notebook.</p>
 </li>
 <li>
-<p>Batch Test</p>
-<ol>
-<li>The user can open the deployed <a href="https://aws.amazon.com/step-functions/">AWS Step Function</a> for batch test the same problem 
-in drug discovery using classical computers and quantum computers. </li>
-<li>The AWS Step Function launches various classical computing tasks through <a href="https://aws.amazon.com/batch/">AWS Batch</a> jobs based on different resources.</li>
-<li>AWS Batch save results to <a href="https://aws.amazon.com/s3/">Amazon S3</a>.</li>
-<li>At the same time as step 2, AWS Step Function parallelly launches various quantum computing tasks based on different quantum computing devices.</li>
-<li>Each batch job asynchronously submits the quantum computing jobs/tasks 
-through <a href="https://aws.amazon.com/braket/">Amazon Braket</a></li>
-<li>When quantum computing jobs/tasks complete, the results are saved to 
-Amazon S3. </li>
-<li><a href="https://aws.amazon.com/eventbridge/">Amazon EventBridge</a> triggers 
-the lisener <a href="https://aws.amazon.com/lambda/">AWS Lambda</a></li>
-<li>The lisener lambda sends a callback token to the step function</li>
-<li>When all the steps complete, a SNS notification is send out by 
-<a href="https://aws.amazon.com/sns/">Amazon SNS</a>.</li>
-<li>The Athena table is created by <a href="https://aws.amazon.com/athena/">Amazon Athena</a>
- based on metrics data in Amazon S3.</li>
-<li>The user can view the batch test results(e.g. cost, performance and time) 
-through <a href="https://aws.amazon.com/quicksight/">Amazon QuickSight</a></li>
-</ol>
+<p>The notebook comes with prepared sample code for different problems 
+in drug discovery, like molecule unfolding, molecule simulation and so on. 
+The user can learn how to study these problems based on classical 
+or quantum computing resource through 
+<a href="https://aws.amazon.com/braket/">Amazon Braket</a>. The step-by-step guide is 
+provided in the workshop page.</p>
 </li>
-</ul>
+<li>
+<p>The notebook provides the user with the public network access to download 
+necessary software for experiments.</p>
+</li>
+<li>
+<p>The solution also deploys 
+<a href="https://aws.amazon.com/step-functions/">AWS Step Function</a> for user to do 
+<strong>Batch Evaluation</strong>. </p>
+</li>
+<li>
+<p>The AWS Step Function launches various computing tasks through 
+    <a href="https://aws.amazon.com/batch/">AWS Batch</a> jobs based on different resources.</p>
+</li>
+<li>
+<p>Instances launched by AWS Batch try to evaluate a particular problem based 
+on different computing resources , classical computing or quantum computing. 
+For example, for the problem of molecule unfolding, the performance difference 
+between quantum annealer and simulated annealer can be figured out. </p>
+</li>
+<li>
+<p>The images for <strong>Batch Evaluation</strong> have been built in 
+<a href="https://aws.amazon.com/ecr/">Amazon ECR</a>. For customizing
+the logic for <strong>Batch Evaluation</strong>, please refer to the instructions in workshop page.</p>
+</li>
+<li>
+<p>The <strong>Batch Evaluation</strong> deploys <a href="https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints.html">VPC Endpoints</a> to ensure secure connection to AWS 
+services: AWS Step Function, <a href="https://aws.amazon.com/sns/">Amazon SNS</a>, 
+Amazon ECR, Amazon S3, Amazon Braket and 
+<a href="https://aws.amazon.com/eventbridge/">Amazon EventBridge</a>.</p>
+</li>
+<li>
+<p>The batch job for testing quantum algorithm submits the quantum computing 
+jobs/tasks through Amazon Braket.</p>
+</li>
+<li>
+<p>Either classical computing task or quantum computing jobs/tasks complete, 
+the results will be saved to 
+<a href="https://aws.amazon.com/s3/">Amazon S3</a>,</p>
+</li>
+<li>
+<p>When quantum computing jobs/tasks complete, Amazon EventBridge triggers 
+the listener <a href="https://aws.amazon.com/lambda/">AWS Lambda</a>.</p>
+</li>
+<li>
+<p>The listener lambda sends a callback to the step function.</p>
+</li>
+<li>
+<p>When all the steps complete, a notification is send out by Amazon SNS.</p>
+</li>
+<li>
+<p>The Glue table is created by Amazon Athena based on metrics data in 
+Amazon S3.</p>
+</li>
+<li>
+<p>The user can view the <strong>Batch Evaluation</strong> results(e.g. cost, performance) 
+through <a href="https://aws.amazon.com/quicksight/">Amazon QuickSight</a></p>
+</li>
+</ol>
 
               
             </article>
