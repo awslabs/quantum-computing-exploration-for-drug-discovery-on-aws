@@ -15,9 +15,11 @@
     "watch": "tsc -w",
     "eslint": "eslint --ext .ts,.tsx --fix --no-error-on-unmatched-pattern src test",
     "cdk": "cdk ",
+    "sync-code": "sync_dirs=(lambda/ParseBraketResultLambda batch-images/create-model batch-images/qa-optimizer batch-images/sa-optimizer) && for d in ${sync_dirs[@]}; do echo sync $d; rm -r ./src/molecule-unfolding/${d}/utility > /dev/null 2>&1 || true; cp -r ./src/molecule-unfolding/utility ./src/molecule-unfolding/${d}/; done", 
+    "clean-code": "sync_dirs=(lambda/ParseBraketResultLambda batch-images/create-model batch-images/qa-optimizer batch-images/sa-optimizer) && for d in ${sync_dirs[@]}; do echo clean $d; rm -r ./src/molecule-unfolding/${d}/utility > /dev/null 2>&1 || true; done", 
     "diff": "cdk diff QCStack",
     "synth": "cdk synth QCStack ",
-    "deploy": "cdk deploy QCStack",
+    "deploy": "npm run sync-code && cdk deploy QCStack",
     "destroy": "cdk destroy QCStack",
     "cfn-nag": "mkdir /tmp/cfn/ && cdk synth QCStack --output /tmp/cfn/ && cfn_nag_scan --fail-on-warnings -b ../.cfn-nag-ignore-lists.yml --input-path  /tmp/cfn/QCStack.template.json"
   },
