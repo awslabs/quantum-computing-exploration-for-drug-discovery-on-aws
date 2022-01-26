@@ -8,37 +8,67 @@ The overall architecture is shown as below:
 
 ![architecture](./docs/en/images/architecture.png)
 
-There are two types of Experiments of this solution: Batch test experiment and Notebook experiment.
+This solution deploys the Amazon CloudFormation template in your 
+AWS Cloud account and provides three URLs. One for **Visualization**.
+The others provide user with two approaches to study drug discovery 
+problems: **Notebook Experiment** and **Batch Evaluation**:
 
-### Batch Test Experiment
+1. The solution deploys an instance for 
+[AWS SageMaker Notebook](https://docs.aws.amazon.com/sagemaker/latest/dg/nbi.html). 
+The user can do **Notebook Experiment** for drug discovery on classical computing and 
+quantum computing in this notebook.
 
-1. User triggers the batch test execution through AWS Step Functions from AWS console.
+2. The notebook comes with prepared sample code for different problems 
+in drug discovery, like molecule unfolding, molecule simulation and so on. 
+The user can learn how to study these problems based on classical 
+or quantum computing resource through 
+[Amazon Braket](https://aws.amazon.com/braket/). The step-by-step guide is 
+provided in the workshop page.
 
-1. The Step Functions parallel runs HPC tasks and QC tasks.
+3. The notebook provides the user with the public network access to download 
+necessary software for experiments.
 
-   - HPC tasks
-      1. Step Functions synchronous parallel launches various HPC tasks through AWS batch jobs based on different resources (vcpu and memory) and different parameters of the algorithm.
-      1. Batch jobs save result to S3.
-      1. Step Functions continues to next step.
-  
-   - QC tasks
-     1. Step Functions parallel launches various QC tasks through AWS lambda based on different QC devices (DW_2000Q_6/Advantage_system4) and different parameters of the algorithm.
-     1. Each lambda asynchronous submits the QC task as AWS Braket job/task to AWS Braket service.
-     1. Step Functions waits for completion callback to continue.
-     1. When a Braket job/task completed, it saves its result to S3.
-     1. An event from AWS EventBridge triggers the listener lambda.
-     1. The listener lambda sends a callback token to Step Functions.
-     1. When Step Functions gets all callback tokens, it moves forward to next step.
 
-1. An Athena table is created based on metrics data in S3.
+4. The solution also deploys 
+[AWS Step Function](https://aws.amazon.com/step-functions/) for user to do 
+**Batch Evaluation**. 
 
-1. A SNS notification is sent out when all HPC and QC tasks completed.
+5. The AWS Step Function launches various computing tasks through 
+    [AWS Batch](https://aws.amazon.com/batch/) jobs based on different resources.
 
-1. User views the batch test result through AWS Quicksight dashboard.
+6. Instances launched by AWS Batch try to evaluate a particular problem based 
+on different computing resources , classical computing or quantum computing. 
+For example, for the problem of molecule unfolding, the performance difference 
+between quantum annealer and simulated annealer can be figured out. 
 
-### Notebook Experiment
+7. The images for **Batch Evaluation** have been built in 
+[Amazon ECR](https://aws.amazon.com/ecr/). For customizing
+the logic for **Batch Evaluation**, please refer to the instructions in workshop page.
 
-This solution also deploys SageMaker notebooks, user can run and study backend algorithms for drug discovery in notebook. The code is step-by-step guide user to build models, run them by HPC and Braket service and post process the result.
+8. The **Batch Evaluation** deploys [VPC Endpoints](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints.html) to ensure secure connection to AWS 
+services: AWS Step Function, [Amazon SNS](https://aws.amazon.com/sns/), 
+Amazon ECR, Amazon S3, Amazon Braket and 
+[Amazon EventBridge](https://aws.amazon.com/eventbridge/).
+
+9. The batch job for testing quantum algorithm submits the quantum computing 
+jobs/tasks through Amazon Braket.
+
+10. Either classical computing task or quantum computing jobs/tasks complete, 
+the results will be saved to 
+[Amazon S3](https://aws.amazon.com/s3/),
+
+11. When quantum computing jobs/tasks complete, Amazon EventBridge triggers 
+the listener [AWS Lambda](https://aws.amazon.com/lambda/).
+
+12. The listener lambda sends a callback to the step function.
+
+13. When all the steps complete, a notification is send out by Amazon SNS.
+
+14. The Glue table is created by Amazon Athena based on metrics data in 
+Amazon S3.
+
+15. The user can view the **Batch Evaluation** results(e.g. cost, performance) 
+through [Amazon QuickSight](https://aws.amazon.com/quicksight/)
 
 ## Dataset
 
