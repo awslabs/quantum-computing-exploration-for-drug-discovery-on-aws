@@ -1,4 +1,7 @@
-## Run Batch Test
+---
+title: Run Batch Test
+weight: 12
+---
 
 We will run batch test through AWS Step Functions workflow and view the result via AWS QuickSight dashboard
 
