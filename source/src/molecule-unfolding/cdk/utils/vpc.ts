@@ -61,14 +61,22 @@ export default (scope: Construct) => {
         service: ec2.InterfaceVpcEndpointAwsService.ATHENA
     });
 
-    if (['us-east-1', 'us-west-1', 'us-west-2'].indexOf(region) >= 0) {
-        vpc.addInterfaceEndpoint('BraketEndpoint', {
-            service: {
-                name: `com.amazonaws.${region}.braket`,
-                port: 443
-            }
-        }); 
-    }
+    const braketEndpointRegionCondition = new cdk.CfnCondition(scope, 'BraketEndpointRegionCondition', {
+        expression: cdk.Fn.conditionOr(
+            cdk.Fn.conditionEquals(cdk.Stack.of(scope).region, 'us-west-1'),
+            cdk.Fn.conditionEquals(cdk.Stack.of(scope).region, 'us-west-2'),
+            cdk.Fn.conditionEquals(cdk.Stack.of(scope).region, 'us-east-1')
+        ),
+    });
+
+    const braketEndpoint = vpc.addInterfaceEndpoint('BraketEndpoint', {
+        service: {
+            name: `com.amazonaws.${region}.braket`,
+            port: 443
+        }
+    });
+
+    (braketEndpoint.node.defaultChild as ec2.CfnVPCEndpoint).cfnOptions.condition = braketEndpointRegionCondition
 
     const logKey = new kms.Key(scope, 'qcLogKey', {
         enableKeyRotation: true
