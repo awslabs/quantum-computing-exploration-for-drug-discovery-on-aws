@@ -27,6 +27,7 @@ import {
 
 
 export default (scope: Construct) => {
+    const region = cdk.Stack.of(scope).region
 
     const vpc = new ec2.Vpc(scope, 'VPC', {
         cidr: '10.1.0.0/16',
@@ -60,17 +61,15 @@ export default (scope: Construct) => {
         service: ec2.InterfaceVpcEndpointAwsService.ATHENA
     });
 
-    vpc.addInterfaceEndpoint('CloudWatchEventEndpoint', {
-        service: ec2.InterfaceVpcEndpointAwsService.CLOUDWATCH_EVENTS
-    });
+    if (['us-east-1', 'us-west-1', 'us-west-2'].indexOf(region) >= 0) {
+        vpc.addInterfaceEndpoint('BraketEndpoint', {
+            service: {
+                name: `com.amazonaws.${region}.braket`,
+                port: 443
+            }
+        }); 
+    }
 
-    vpc.addInterfaceEndpoint('BraketEndpoint', {
-        service: {
-            name: `com.amazonaws.${cdk.Stack.of(scope).region}.braket`,
-            port: 443
-        }
-    });
-    
     const logKey = new kms.Key(scope, 'qcLogKey', {
         enableKeyRotation: true
     });
