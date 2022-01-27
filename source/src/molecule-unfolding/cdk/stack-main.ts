@@ -93,7 +93,7 @@ export class MainStack extends SolutionStack {
       notebookSg: batchSg,
       vpc,
       stackName
-    });
+    })
 
     // Dashboard //////////////////////////
     const dashboard = new Dashboard(this, 'MolUnfDashboard', {
@@ -130,7 +130,6 @@ export class MainStack extends SolutionStack {
       lambdaSg,
       stackName
     });
-    
     Aspects.of(this).add(new AddCfnNag());
   }
 

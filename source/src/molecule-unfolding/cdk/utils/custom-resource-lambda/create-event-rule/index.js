@@ -49,11 +49,12 @@ async function _handler(event, context) {
         region: "us-west-2"
     });
 
-    const roleName = 'QCBraketEventCrossRegion-' + currentRegion;
-    const policyName = "QCBraketEventCrossRegion-" + currentRegion;
+    const randomStr = 'NKF6EIW'
+    const roleName = `QCBraketEventCrossRegion${randomStr}-` + currentRegion;
+    const policyName = `QCBraketEventCrossRegion${randomStr}-` + currentRegion;
     const policyArn = `arn:aws:iam::${awsAccountId}:policy/${policyName}`;
-    const ruleName = 'QCBraketRule' + currentRegionShort;
-    const targetId = 'CrossRegionDestinationBusId';
+    const ruleName = `QCBraketRule${randomStr}` + currentRegionShort;
+    const targetId = `CrossRegionDestinationBusId${randomStr}`;
     const detachAttachPolicyInput = {
         PolicyArn: policyArn,
         RoleName: roleName
