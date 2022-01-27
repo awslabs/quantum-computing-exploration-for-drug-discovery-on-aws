@@ -1,5 +1,5 @@
 site_name: Quantum Ready Solution for Drug Discovery
-site_url: https://example.com/
+site_url: https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/
 repo_url: https://github.com/awslabs/quantum-ready-solution-for-drug-discovery
 theme:
   name: material

@@ -18,7 +18,7 @@ in drug discovery, like molecular unfolding, molecule simulation and so on.
 The user can learn how to study these problems based on classical 
 or quantum computing resource through 
 [Amazon Braket](https://aws.amazon.com/braket/). The step-by-step guide is 
-provided in the [Workshop Page](https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/en/workshop/).
+provided in the [Workshop Page](workshop/background.md).
 
 3. The notebook provides the user with the public network access to download 
 necessary software for experiments.
@@ -39,7 +39,7 @@ between quantum annealer and simulated annealer can be compared.
 7. The images for **Batch Evaluation** have been built in 
 [Amazon ECR](https://aws.amazon.com/ecr/). For customizing
 the logic for **Batch Evaluation**, please refer to 
-[Batch Evaluate Your Own Model Page](https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/en/workshop/a-molecule-unfolding/batch-test/).
+[Batch Evaluate Your Own Model Page](workshop/a-molecule-unfolding/test-your-own-model.md).
 
 8. The **Batch Evaluation** deploys [VPC Endpoints](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints.html) to ensure secure connection to AWS 
 services:
