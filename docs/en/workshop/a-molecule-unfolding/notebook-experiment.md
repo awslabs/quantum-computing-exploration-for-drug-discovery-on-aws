@@ -249,8 +249,5 @@ number of shots (1000), the quantum annealer has really nice scaling ability for
 still much space for improvement in the SA implemented by D-Wave. More strict bench mark is needed.
 
 
-### 性能比较图 - 1
 
 If we change the number of shots for SA to 1, we get another group data for efficiency. 
-
-### 性能比较图 - 2

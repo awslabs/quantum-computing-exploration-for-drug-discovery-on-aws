@@ -1,11 +1,11 @@
-## Batch Test Your Own Model
+## Batch Evaluate Your Own Model
 
 You have two options to batch test your own model
 
-- Batch test your own mol2 file with out code changes
+- Batch Evaluate your own mol2 file with out code changes
 - Fully customize the test code
 
-## Batch test your own mol2 file with out code changes
+## Batch Evaluate your own mol2 file with out code changes
 
 If you have your own mol2 file, you want to batch test it, you can follow below steps:
 
