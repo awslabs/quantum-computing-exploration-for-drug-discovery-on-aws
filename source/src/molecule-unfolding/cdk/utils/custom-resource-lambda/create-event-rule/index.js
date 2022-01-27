@@ -25,7 +25,7 @@ exports.handler = async function (event, context) {
 }
 
 async function _handler(event, context) {
-    console.log("EVENT: \n" + JSON.stringify(event, null, 2))
+    //console.log("EVENT: \n" + JSON.stringify(event, null, 2))
     const awsAccountId = context.invokedFunctionArn.split(':')[4]
     const currentRegion = process.env.AWS_REGION
     const RequestType = event['RequestType']

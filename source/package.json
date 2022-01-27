@@ -21,7 +21,7 @@
     "synth": "cdk synth QCStack ",
     "deploy": "npm run sync-code && cdk deploy QCStack && npm run clean-code",
     "destroy": "cdk destroy QCStack",
-    "cfn-nag": "mkdir /tmp/cfn/ && cdk synth QCStack --output /tmp/cfn/ && cfn_nag_scan --fail-on-warnings -b ../.cfn-nag-ignore-lists.yml --input-path  /tmp/cfn/QCStack.template.json"
+    "cfn-nag": "rm -rf /tmp/cfn > /dev/null 2>&1  && mkdir /tmp/cfn/ && cdk synth QCStack --output /tmp/cfn/ && cfn_nag_scan --fail-on-warnings -b ../.cfn-nag-ignore-lists.yml --input-path  /tmp/cfn/QCStack.template.json"
   },
   "devDependencies": {
     "@types/jest": "^27.0.3",

@@ -8,7 +8,7 @@ export default (scope: Construct) => {
     const account_id = Stack.of(scope).account
     const region = Stack.of(scope).region
 
-    if (region == 'us-west-2') {
+    if (region == 'us-west-2' && !process.env.USE_BSS) {
         return
     }
     
