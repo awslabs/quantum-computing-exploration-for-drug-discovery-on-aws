@@ -35,39 +35,40 @@ This automated AWS CloudFormation template deploys the solution in the AWS Cloud
 * Use 
 [Launch solution in AWS Standard Regions](https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/new?stackName=qrsdd-stack) to launch the AWS CloudFormation template.
 
-1. The template launches in the US West 2 (Oregon) Region by default. To launch this solution in a different AWS Region, use the Region selector in the console navigation bar.
+* The template launches in the US West 2 (Oregon) Region by default. To launch this solution in a different AWS Region, use the Region selector in the console navigation bar.
 
-1. On the **Create stack** page, verify that the correct template URL is shown in the **Amazon S3 URL** text box and choose **Next**.
+* On the **Create stack** page, verify that the correct [quantum-ready-solution-for-drug-discovery.template](template.md) is shown in the **Amazon S3 URL** text box and choose **Next**.
 
-1. Under **Parameters**, review the parameters for the template and modify them as necessary. This solution uses the following default values.
+* Under **Parameters**, review the parameters for the template and modify them as necessary. This solution uses the following values. Choose **Next**.
 
     |      Parameter      |                                                         Description                                                      |
     |:-------------------:|:----:|
-    | MolUnfDashboardquickSightUser | your AWS Quicksight user name |
+    | MolUnfDashboardquickSightUser | **Quicksight Username** |
 
-1. Choose **Next**.
 
-1. On the **Configure stack options** page, choose **Next**.
+* On the **Configure stack options** page, choose **Next**.
 
-1. On the **Review** page, review and confirm the settings. Check the box acknowledging that the template will create AWS Identity and Access Management (IAM) resources.
+* On the **Review** page, review and confirm the settings. Check the box acknowledging that the template will create AWS Identity and Access Management (IAM) resources.
 
-1. Choose **Create stack** to deploy the stack.
+* Choose **Create stack** to deploy the stack.
 
-    You can view the status of the stack in the AWS CloudFormation Console in the **Status** column. You should receive a CREATE_COMPLETE status in approximately 10 minutes.
+
+You can view the status of the stack in the AWS CloudFormation Console in the **Status** column. You should receive a CREATE_COMPLETE status in approximately 10 minutes.
 
 
 ### Update QuickSight permissions
 
-1. Navigate to Quicksight [admin page](https://us-east-1.quicksight.aws.amazon.com/sn/admin#aws){target=_blank}
+* Navigate to Quicksight [admin page](https://us-east-1.quicksight.aws.amazon.com/sn/admin#aws)
 
-1. Click **Manage**
+* Click **Manage**
+![mange quicksight](./images/manage_quicksight.png)
 
-1. Click **Select S3 Buckets**
+* Click **Select S3 Buckets**
+![select s3 quicksight](./images/select_s3_bucket.png)
 
-1. Check the bucket `amazon-braket-qcstack-<AWS account>-<region>`
+* Check the bucket `amazon-braket-qcstack-<AWS account>-<region>`
+![choose s3 quicksight](./images/choose_s3_bucket.png)
 
-1. Click **Finish**
-
-1. Click **Save**
+* Click **Finish** and then **Save**
 
 
