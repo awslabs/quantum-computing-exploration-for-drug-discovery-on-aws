@@ -15,8 +15,8 @@
     "watch": "tsc -w",
     "eslint": "eslint --ext .ts,.tsx --fix --no-error-on-unmatched-pattern src test",
     "cdk": "cdk ",
-    "sync-code": "sync_dirs=(lambda/ParseBraketResultLambda batch-images/create-model batch-images/qa-optimizer batch-images/sa-optimizer) && for d in ${sync_dirs[@]}; do echo sync $d; rm -r ./src/molecule-unfolding/${d}/utility > /dev/null 2>&1 || true; cp -r ./src/molecule-unfolding/utility ./src/molecule-unfolding/${d}/; done", 
-    "clean-code": "sync_dirs=(lambda/ParseBraketResultLambda batch-images/create-model batch-images/qa-optimizer batch-images/sa-optimizer) && for d in ${sync_dirs[@]}; do echo clean $d; rm -r ./src/molecule-unfolding/${d}/utility > /dev/null 2>&1 || true; done", 
+    "sync-code": "sync_dirs=(lambda/ParseBraketResultLambda batch-images/create-model batch-images/qa-optimizer batch-images/sa-optimizer) && for d in ${sync_dirs[@]}; do echo sync $d; rm -r ./src/molecule-unfolding/${d}/utility > /dev/null 2>&1 || true; cp -r ./src/molecule-unfolding/utility ./src/molecule-unfolding/${d}/; done",
+    "clean-code": "sync_dirs=(lambda/ParseBraketResultLambda batch-images/create-model batch-images/qa-optimizer batch-images/sa-optimizer) && for d in ${sync_dirs[@]}; do echo clean $d; rm -r ./src/molecule-unfolding/${d}/utility > /dev/null 2>&1 || true; done",
     "diff": "cdk diff QCStack",
     "synth": "cdk synth QCStack ",
     "deploy": "cdk deploy QCStack",
@@ -44,6 +44,7 @@
   },
   "dependencies": {
     "@aws-cdk/aws-batch-alpha": "^2.8.0-alpha.0",
+    "@aws-sdk/client-cloudformation": "^3.48.0",
     "aws-cdk-lib": "2.8.0",
     "cdk-bootstrapless-synthesizer": "^2.1.5",
     "constructs": "^10.0.0",
