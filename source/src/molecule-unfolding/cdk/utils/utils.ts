@@ -178,3 +178,19 @@ export function grantKmsKeyPerm(key: kms.IKey, logGroupName ? : string): void {
         },
     }));
 }
+
+export class AddCondition implements IAspect {
+    private condition: cdk.CfnCondition
+    constructor(condition: cdk.CfnCondition) {
+        this.condition = condition
+    }
+    visit(node: IConstruct): void {
+        if (node.node.path.endsWith('/CreateEventRuleFuncRole/DefaultPolicy/Resource')
+        || (node.node.path.indexOf('/EventRuleCustomResourceProvider/framework-onEvent/') > -1)
+        ) {
+            if ((node as cdk.CfnResource).cfnOptions) {
+              (node as cdk.CfnResource).cfnOptions.condition = this.condition
+            }
+        }
+    }
+}

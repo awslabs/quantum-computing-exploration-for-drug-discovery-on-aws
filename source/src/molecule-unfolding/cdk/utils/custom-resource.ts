@@ -97,20 +97,17 @@ function createCustomResourceLambdaRole(scope: Construct, roleName: string): iam
 }
 
 
-export default (scope: Construct) => {
+export default (scope: Construct,  crossEventRegionCondition: cdk.CfnCondition) => {
+
   const template_file = 'src/molecule-unfolding/cdk/utils/custom-resource-lambda/create-event-rule/template.json'
-  const crossEventRegionCondition = new cdk.CfnCondition(scope, 'CrossEventRegionCondition', {
-    expression: cdk.Fn.conditionNot(
-      cdk.Fn.conditionEquals(cdk.Stack.of(scope).region, 'us-west-2'),
-    ),
-  });
+  
   const role = createCustomResourceLambdaRole(scope, 'CreateEventRuleFuncRole')
   const createEventRuleFunc = new NodejsFunction(scope, 'CreateEventRuleFunc', {
     entry: `${__dirname}/custom-resource-lambda/create-event-rule/index.js`,
     handler: 'handler',
     timeout: cdk.Duration.minutes(5),
     memorySize: 256,
-    runtime: Runtime.NODEJS_14_X,
+    runtime: Runtime.NODEJS_12_X,
     reservedConcurrentExecutions: 5,
     role,
     bundling: {
@@ -145,5 +142,4 @@ export default (scope: Construct) => {
   (createEventRuleCustomResource.node.defaultChild as cdk.CfnCustomResource).cfnOptions.condition = crossEventRegionCondition;
   (createEventRuleFunc.node.defaultChild as cdk.CfnCustomResource).cfnOptions.condition = crossEventRegionCondition;
   (role.node.defaultChild as cdk.CfnCustomResource).cfnOptions.condition = crossEventRegionCondition;
-
 }

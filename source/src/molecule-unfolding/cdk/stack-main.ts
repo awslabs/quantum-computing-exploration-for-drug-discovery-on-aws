@@ -19,7 +19,8 @@ import {
 } from '../../stack'
 
 import {
-  AddCfnNag
+  AddCfnNag,
+  AddCondition
 } from './utils/utils'
 
 import {
@@ -49,7 +50,14 @@ export class MainStack extends SolutionStack {
 
     const prefix = 'molecule-unfolding'
 
-    create_custom_resources(this);
+    const crossEventRegionCondition = new cdk.CfnCondition(this, 'CrossEventRegionCondition', {
+      expression: cdk.Fn.conditionNot(
+        cdk.Fn.conditionEquals(this.region, 'us-west-2'),
+      )
+    });
+
+    create_custom_resources(this, crossEventRegionCondition);
+    Aspects.of(this).add(new AddCondition(crossEventRegionCondition));
 
     const logS3bucket = new s3.Bucket(this, 'AccessLogS3Bucket', {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
