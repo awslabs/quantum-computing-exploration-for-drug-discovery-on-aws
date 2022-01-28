@@ -57,7 +57,7 @@ export class EventListener extends Construct {
     constructor(scope: Construct, id: string, props: Props) {
         super(scope, id);
         this.props = props
-        this.images = ECRImageUtil.newInstance(scope, this.props)
+        this.images = ECRImageUtil.newInstance()
         this.roleUtil = RoleUtil.newInstance(scope, this.props)
         this.createEventListener(this.props.vpc, this.props.lambdaSg)
     }
