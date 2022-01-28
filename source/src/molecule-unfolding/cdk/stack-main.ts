@@ -51,8 +51,6 @@ export class MainStack extends SolutionStack {
 
     create_custom_resources(this);
 
-    return
-
     const logS3bucket = new s3.Bucket(this, 'AccessLogS3Bucket', {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       autoDeleteObjects: true,
