@@ -9,8 +9,8 @@ nav:
   - Architecture Overview: architecture.md
   - Automated Deployment: deployment.md
   - Workshop: 
-    - Background: workshop/background.md
-    - Molecule Unfolding: 
+    - Overview: workshop/background.md
+    - Molecular Unfolding: 
       - Background: workshop/a-molecule-unfolding/molecule-unfolding.md
       - Notebook Experiment: workshop/a-molecule-unfolding/notebook-experiment.md
       - Batch Test: workshop/a-molecule-unfolding/batch-test.md

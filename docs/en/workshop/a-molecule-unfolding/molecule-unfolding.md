@@ -1,5 +1,5 @@
 ---
-title: Molecule Unfolding
+title: Molecular Unfolding
 weight: 10
 ---
 
@@ -9,4 +9,4 @@ or reports.
 ## References
 
 - [Publication: Quantum Molecular Unfolding](https://arxiv.org/abs/2107.13607)
-- [Video: Molecule Unfolding with Quantum Annealing](https://www.youtube.com/watch?v=1NmAXIHAF2Y)
+- [Video: Molecular Unfolding with Quantum Annealing](https://www.youtube.com/watch?v=1NmAXIHAF2Y)

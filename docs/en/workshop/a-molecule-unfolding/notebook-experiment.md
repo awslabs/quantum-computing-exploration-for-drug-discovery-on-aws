@@ -25,7 +25,7 @@ flexible set of atoms. There are usually three main phases in MD:
     * Use of the rotatable bonds to modify the ligand shape and to match the protein pocket
     * Docking score maximization
 
-In this work, actually the first phase, ligand expansion or the molecule unfolding (MU), is focused and 
+In this work, actually the first phase, ligand expansion or the molecular unfolding (MU), is focused and 
 implemented using quantum annealer. This phase is important for improving docking. In fact, an initial
 pose of the ligand that is set a priori may introduce shape bias affecting the final quality of the
 docking. MU is the technology used for removing such initial bias.
@@ -59,7 +59,7 @@ idea is graphically reported in the following figure.
  3.  many experiments on a ligand dataset compared with Random Search and GeoDock Search
  4. dealing with the elaboration of .MOL2 file for rotatable bonds i
 
- In this workshop, we only focus on the constructing of equation for molecule unfolding and 
+ In this workshop, we only focus on the constructing of equation for molecular unfolding and 
  the application of it in quantum annealer. We make the following assumptions:
 
  1. The elaboration of rotatable bonds is already finished
@@ -191,7 +191,7 @@ We have our QUBO model for experiments. There are some parameters we should defi
 |hubo_qubo_val | energy penalty of make_quadratic() |5|
 |n_c | number of shots for simulated annealing in local instance | 1000|
 |n_q | number of shots for quantum annealing in QPU | 1000|
-|M | number of torsions for molecule unfolding| [1, all the torsions] |
+|M | number of torsions for molecular unfolding| [1, all the torsions] |
 |D| angle precision of rotation| 8|
 
 We use the following code to set the parameters:
