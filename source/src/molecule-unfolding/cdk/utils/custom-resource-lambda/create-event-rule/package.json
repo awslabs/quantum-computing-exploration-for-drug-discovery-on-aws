@@ -9,7 +9,6 @@
   "author": "yongmzn@",
   "license": "Apache-2.0",
   "dependencies": {
-    "@aws-sdk/client-eventbridge": "^3.48.0",
-    "@aws-sdk/client-iam": "^3.48.0"
+    "@aws-sdk/client-cloudformation": "^3.48.0"
   }
 }

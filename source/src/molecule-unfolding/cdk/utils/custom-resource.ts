@@ -46,12 +46,29 @@ export default (scope: Construct) => {
           `arn:aws:events:*:${account_id}:rule/*`
         ],
         Action: [
+          "events:DescribeRule",
           "events:DeleteRule",
           "events:PutTargets",
           "events:EnableRule",
           "events:PutRule",
           "events:RemoveTargets",
           "events:DisableRule"
+        ]
+      },
+      {
+        Effect: 'Allow',
+        Resource: [
+          `arn:aws:cloudformation:*:${account_id}:stack/*/*`
+        ],
+        Action: [
+          "cloudformation:CreateChangeSet",
+          "cloudformation:DeleteChangeSet",
+          "cloudformation:UpdateStack",
+          "cloudformation:DescribeChangeSet",
+          "cloudformation:ExecuteChangeSet",
+          "cloudformation:CreateStack",
+          "cloudformation:DeleteStack",
+          "cloudformation:DescribeStacks"
         ]
       }
     ]

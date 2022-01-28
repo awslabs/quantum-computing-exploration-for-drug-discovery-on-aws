@@ -9,12 +9,9 @@ cdk.out
 .env
 .DS_Store
 
-source/package_code.sh
-source/src/clean.sh
-source/src/molecule-unfolding/sync_code.sh
-source/src/molecule-unfolding/build.sh
 source/test-reports
 source/coverage
 buildspec.yml
 deployment
+__entrypoint__.js
 

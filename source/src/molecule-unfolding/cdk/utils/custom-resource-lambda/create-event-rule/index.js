@@ -1,174 +1,113 @@
 const {
-    EventBridgeClient,
-    PutRuleCommand,
-    DeleteRuleCommand,
-    PutTargetsCommand,
-    RemoveTargetsCommand
-} = require("@aws-sdk/client-eventbridge");
-
+    CloudFormationClient,
+    CreateStackCommand,
+    UpdateStackCommand,
+    DeleteStackCommand,
+    DescribeStacksCommand
+} = require("@aws-sdk/client-cloudformation");
 const {
-    IAMClient,
-    CreateRoleCommand,
-    CreatePolicyCommand,
-    AttachRolePolicyCommand,
-    GetRoleCommand,
-    GetPolicyCommand,
-    DeleteRoleCommand,
-    DeletePolicyCommand,
-    DetachRolePolicyCommand
-} = require("@aws-sdk/client-iam");
+    readFileSync
+} = require('fs');
 
 exports.handler = async function (event, context) {
     await _handler(event, context).then(() => {
         console.log("=== complete ===")
-    }).catch((e) => console.log(e))
+    }).catch((e) => {
+        console.log(e);
+        throw e
+    })
+}
+
+function sleep(millis) {
+    return new Promise(resolve => setTimeout(resolve, millis));
 }
 
 async function _handler(event, context) {
-    //console.log("EVENT: \n" + JSON.stringify(event, null, 2))
-    const awsAccountId = context.invokedFunctionArn.split(':')[4]
     const currentRegion = process.env.AWS_REGION
     const RequestType = event['RequestType']
 
-    console.log("awsAccountId:" + awsAccountId)
     console.log("currentRegion: " + currentRegion)
     console.log("RequestType: " + RequestType)
-
-    const currentRegionShort = currentRegion.replace(/-/g, '')
 
     if (currentRegion == "us-west-2") {
         console.log('ignore creating event rule')
         return
     }
-
-    const iam_client = new IAMClient({
+    const config = {
         region: "us-west-2"
-    });
-
-    const event_client = new EventBridgeClient({
-        region: "us-west-2"
-    });
-
-    const randomStr = 'NKF6EIW'
-    const roleName = `QCBraketEventCrossRegion${randomStr}-` + currentRegion;
-    const policyName = `QCBraketEventCrossRegion${randomStr}-` + currentRegion;
-    const policyArn = `arn:aws:iam::${awsAccountId}:policy/${policyName}`;
-    const ruleName = `QCBraketRule${randomStr}` + currentRegionShort;
-    const targetId = `CrossRegionDestinationBusId${randomStr}`;
-    const detachAttachPolicyInput = {
-        PolicyArn: policyArn,
-        RoleName: roleName
+    }
+    const cf_client = new CloudFormationClient(config);
+    let templateBody = readFileSync(`${__dirname}/template.json`, 'utf-8')
+    const stackName = `QRSFDD-BraketEventTo${currentRegion}`
+    const createStackInput = {
+        StackName: stackName,
+        Capabilities: ['CAPABILITY_NAMED_IAM'],
+        Parameters: [{
+            ParameterKey: 'TargetRegion',
+            ParameterValue: currentRegion
+        }],
+        TemplateBody: templateBody
     }
 
-    console.log("GetRoleCommand ...")
-    await iam_client.send(new GetRoleCommand({
-        RoleName: roleName
-    })).catch((e) => console.log(e))
+    const describeCommand = new DescribeStacksCommand({
+        StackName: stackName
+    });
 
-    console.log("DetachRolePolicyCommand ...")
-    await iam_client.send(new DetachRolePolicyCommand(detachAttachPolicyInput))
-        .catch((e) => console.log(e));
+    let stackExists = true
+    await cf_client.send(describeCommand).catch(e => {
+        if (e.message.indexOf('does not exist') > 0) {
+            stackExists = false
+        } else {
+            console.log(e.message);
+            throw e;
+        }
+    });
 
-    console.log("DeleteRoleCommand ...")
-    await iam_client.send(new DeleteRoleCommand({
-        RoleName: roleName
-    })).catch((e) => console.log(e));
+    console.log("stackExists: " + stackExists)
 
-    console.log("GetPolicyCommand ...")
-    await iam_client.send(new GetPolicyCommand({
-        PolicyArn: policyArn
-    })).then(() => {
-        console.log("DeletePolicyCommand ..." + ruleName)
-        iam_client.send(new DeletePolicyCommand({
-            PolicyArn: policyArn
-        }))
-    }).catch((e) => console.log(e));
-
-    console.log("RemoveTargetsCommand ..." + ruleName)
-    await event_client.send(new RemoveTargetsCommand({
-        Ids: [targetId],
-        Rule: ruleName
-    })).catch((e) => console.log(e));
-
-    console.log("DeleteRuleCommand ..." + ruleName)
-    await event_client.send(new DeleteRuleCommand({
-        Name: ruleName
-    })).catch((e) => console.log(e));
-
-    if (RequestType == "Delete") {
+    if (!stackExists && RequestType == "Delete") {
+        console.log("stack already deleted")
         return
     }
 
-    ////////////////////////////////////////////////////////////
+    let command = undefined;
 
-    const createRoleInput = {
-        AssumeRolePolicyDocument: JSON.stringify({
-            Version: "2012-10-17",
-            Statement: [{
-                Effect: "Allow",
-                Principal: {
-                    Service: "events.amazonaws.com"
-                },
-                Action: "sts:AssumeRole"
-            }]
-        }),
-        Path: "/",
-        RoleName: roleName
-    }
-
-    const createPolicyInput = {
-        PolicyName: policyName,
-        PolicyDocument: JSON.stringify({
-            Version: "2012-10-17",
-            Statement: [{
-                Effect: "Allow",
-                Action: ['events:PutEvents'],
-                Resource: [`arn:aws:events:${currentRegion}:${awsAccountId}:event-bus/default`]
-            }]
+    if (RequestType != "Delete") {
+        if (stackExists) {
+            console.log("UpdateStackCommand ... ")
+            command = new UpdateStackCommand(createStackInput);
+        } else {
+            console.log("CreateStackCommand ... ")
+            command = new CreateStackCommand(createStackInput);
+        }
+    } else {
+        console.log("DeleteStackCommand ... ")
+        command = new DeleteStackCommand({
+            StackName: stackName
         })
     }
 
-    console.log("CreateRoleCommand ..." + JSON.stringify(createRoleInput))
-    const createRoleOutput = await iam_client.send(new CreateRoleCommand(createRoleInput))
-    const roleArn = createRoleOutput.Role.Arn;
+    await cf_client.send(command);
 
-    console.log("CreatePolicyCommand ..." + JSON.stringify(createPolicyInput))
-    await iam_client.send(new CreatePolicyCommand(createPolicyInput))
+    // Wait for complete
+    let response = undefined;
+    let stackStatus = ''
+    do {
+        response = undefined;
+        response = await cf_client.send(describeCommand).catch(e => {
+            console.log(e.message);
+            if (RequestType == "Delete" && e.message.indexOf('does not exist') > 0) {
+                stackStatus = 'complete'
+            }
+        });
+        if (response && stackStatus != 'complete') {
+            stackStatus = response['Stacks'][0]['StackStatus']
+            console.log(`${stackStatus}`)
+            await sleep(5000);
+        }
 
-    console.log("AttachRolePolicyCommand ..." + JSON.stringify(detachAttachPolicyInput))
-    await iam_client.send(new AttachRolePolicyCommand(detachAttachPolicyInput))
+    } while (stackStatus.indexOf('IN_PROGRESS') > 0)
 
+    return response
 
-    const eventPattern = {
-        "source": ["aws.braket"],
-        "detail-type": ['Braket Task State Change']
-    }
-
-    const ruleInput = {
-        Name: ruleName,
-        Description: 'Routes to targetRegion event bus',
-        EventBusName: 'default',
-        EventPattern: JSON.stringify(eventPattern),
-        State: 'ENABLED'
-    }
-    const ruleCommand = new PutRuleCommand(ruleInput);
-
-    console.log("PutRuleCommand ... " + JSON.stringify(ruleInput))
-    const ruleOutput = await event_client.send(ruleCommand);
-    console.log(`ruleOutput.RuleArn: ${ruleOutput.RuleArn}`)
-
-    const targetInput = {
-        EventBusName: 'default',
-        Rule: ruleName,
-        Targets: [{
-            Arn: `arn:aws:events:${currentRegion}:${awsAccountId}:event-bus/default`,
-            Id: targetId,
-            RoleArn: roleArn
-        }]
-    }
-    const targetCommand = new PutTargetsCommand(targetInput);
-    console.log("PutTargetsCommand ..." + JSON.stringify(targetInput))
-    const targetOutput = await event_client.send(targetCommand);
-
-    return targetOutput
 }
