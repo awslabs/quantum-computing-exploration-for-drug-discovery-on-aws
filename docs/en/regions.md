@@ -7,7 +7,6 @@ As of March 2022, this solution is supported in the following Amazon Web Service
 | Region Name | Region ID |
 |----------|--------|
 | US East (N. Virginia) | us-east-1
-| US West (N. California) | us-west-1
 | US West (Oregon) | us-west-2
 <!-- | Asia Pacific (Mumbai) | ap-south-1
 | Asia Pacific (Tokyo) | ap-northeast-1
