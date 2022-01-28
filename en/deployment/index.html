@@ -246,8 +246,68 @@
   
   
     <li class="md-nav__item">
+      <a href="../cost/" class="md-nav__link">
+        Cost
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../architecture/" class="md-nav__link">
         Architecture Overview
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../security/" class="md-nav__link">
+        Security
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../regions/" class="md-nav__link">
+        Supported regions
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../template/" class="md-nav__link">
+        AWS CloudFormation template
       </a>
     </li>
   
@@ -320,13 +380,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#setup-aws-eventbright-cross-region-event" class="md-nav__link">
-    Setup AWS EventBright cross region event
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#update-quicksight-permissions" class="md-nav__link">
     Update QuickSight permissions
   </a>
@@ -357,18 +410,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4" type="checkbox" id="__nav_4" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_4">
+        <label class="md-nav__link" for="__nav_8">
           Workshop
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Workshop" data-md-level="1">
-        <label class="md-nav__title" for="__nav_4">
+        <label class="md-nav__title" for="__nav_8">
           <span class="md-nav__icon md-icon"></span>
           Workshop
         </label>
@@ -381,7 +434,7 @@
   
     <li class="md-nav__item">
       <a href="../workshop/background/" class="md-nav__link">
-        Background
+        Overview
       </a>
     </li>
   
@@ -397,18 +450,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_4_2" type="checkbox" id="__nav_4_2" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_2" type="checkbox" id="__nav_8_2" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_4_2">
+        <label class="md-nav__link" for="__nav_8_2">
           Molecule Unfolding
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Molecule Unfolding" data-md-level="2">
-        <label class="md-nav__title" for="__nav_4_2">
+        <label class="md-nav__title" for="__nav_8_2">
           <span class="md-nav__icon md-icon"></span>
           Molecule Unfolding
         </label>
@@ -449,7 +502,7 @@
   
     <li class="md-nav__item">
       <a href="../workshop/a-molecule-unfolding/batch-test/" class="md-nav__link">
-        Batch Test
+        Batch Evaluation
       </a>
     </li>
   
@@ -463,7 +516,7 @@
   
     <li class="md-nav__item">
       <a href="../workshop/a-molecule-unfolding/test-your-own-model/" class="md-nav__link">
-        Test Your Own Model
+        Evaluate Your Own Model
       </a>
     </li>
   
@@ -479,66 +532,6 @@
           
         </ul>
       </nav>
-    </li>
-  
-
-    
-      
-      
-      
-
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../cost/" class="md-nav__link">
-        Cost
-      </a>
-    </li>
-  
-
-    
-      
-      
-      
-
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../security/" class="md-nav__link">
-        Security
-      </a>
-    </li>
-  
-
-    
-      
-      
-      
-
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../regions/" class="md-nav__link">
-        Supported regions
-      </a>
-    </li>
-  
-
-    
-      
-      
-      
-
-  
-  
-  
-    <li class="md-nav__item">
-      <a href="../template/" class="md-nav__link">
-        AWS CloudFormation template
-      </a>
     </li>
   
 
@@ -672,13 +665,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#setup-aws-eventbright-cross-region-event" class="md-nav__link">
-    Setup AWS EventBright cross region event
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#update-quicksight-permissions" class="md-nav__link">
     Update QuickSight permissions
   </a>
@@ -710,64 +696,65 @@
   <h1>Automated Deployment</h1>
 
 <p>Before you launch the solution, review the architecture, supported regions, and other considerations discussed in this guide. Follow the step-by-step instructions in this section to configure and deploy the solution into your account.</p>
-<p><strong>Time to deploy</strong>: Approximately [10] minutes</p>
+<p><strong>Time to deploy</strong>: Approximately 10 minutes</p>
 <h2 id="deployment-overview">Deployment overview</h2>
 <p>Use the following steps to deploy this solution on AWS.</p>
 <ul>
 <li>Check your QuickSight account</li>
 <li>Launch the AWS CloudFormation template into your AWS account to deploy the solution.</li>
-<li>Setup AWS EventBright cross region event if deployment region is not <code>us-west-2</code></li>
 <li>Update QuickSight permissions</li>
 </ul>
 <h2 id="deployment">Deployment</h2>
 <h3 id="check-your-quicksight">Check your QuickSight</h3>
-<ol>
+<ul>
 <li>
-<p>Sign in to the AWS Management Console, navigate to <a href="https://quicksight.aws.amazon.com/">QuickSight</a>{target=_blank}</p>
+<p>Sign in to the AWS Management Console, navigate to
+<a href="https://quicksight.aws.amazon.com/">QuickSight</a></p>
 </li>
 <li>
 <p>If you did not have a QuickSight account, you need to sign up for QuickSight.</p>
 </li>
 <li>
-<p>Get your QuickSight username (not QuickSight account name).</p>
+<p>Choose <strong>Enterprise</strong>, click continue</p>
 </li>
-</ol>
+<li>
+<p>In the <strong>Create your QuickSight account</strong> page, fill the necessary information:
+<img alt="Fill information for quicksight" src="../images/create_quicksight.png" /></p>
+</li>
+<li>
+<p>Go to <a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin">quicksight admin</a>, record your <strong>QuickSight Username</strong>(not QuickSight account name).</p>
+</li>
+</ul>
+<p><img alt="quicksight username" src="../images/quicksight_username.png" /></p>
 <h3 id="deploy-solution">Deploy solution</h3>
 <p>This automated AWS CloudFormation template deploys the solution in the AWS Cloud.</p>
-<ol>
+<ul>
 <li>
-<p>Use [Launch solution in AWS Standard Regions][launch-template] to launch the AWS CloudFormation template.</p>
+<p>Use 
+<a href="https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/new?stackName=qrsdd-stack">Launch solution in AWS Standard Regions</a> to launch the AWS CloudFormation template.</p>
 </li>
 <li>
 <p>The template launches in the US West 2 (Oregon) Region by default. To launch this solution in a different AWS Region, use the Region selector in the console navigation bar.</p>
 </li>
 <li>
-<p>On the <strong>Create stack</strong> page, verify that the correct template URL is shown in the <strong>Amazon S3 URL</strong> text box and choose <strong>Next</strong>.</p>
+<p>On the <strong>Create stack</strong> page, verify that the correct <a href="../template/">quantum-ready-solution-for-drug-discovery.template</a> is shown in the <strong>Amazon S3 URL</strong> text box and choose <strong>Next</strong>.</p>
 </li>
 <li>
-<p>On the <strong>Specify stack details</strong> page, assign a valid and account level unique name to your solution stack. For information about naming character limitations, refer to [IAM and STS Limits][iam-limit] in the <code>AWS Identity and Access Management User Guide</code>.</p>
-</li>
-<li>
-<p>Under <strong>Parameters</strong>, review the parameters for the template and modify them as necessary. This solution uses the following default values.</p>
+<p>Under <strong>Parameters</strong>, review the parameters for the template and modify them as necessary. This solution uses the following values. Choose <strong>Next</strong>.</p>
 <table>
 <thead>
 <tr>
 <th align="center">Parameter</th>
-<th align="center">Default</th>
-<th align="left">Description</th>
+<th align="center">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td align="center">MolUnfDashboardquickSightUser</td>
-<td align="center"></td>
-<td align="left">your AWS Quicksight user name</td>
+<td align="center"><strong>Quicksight Username</strong></td>
 </tr>
 </tbody>
 </table>
-</li>
-<li>
-<p>Choose <strong>Next</strong>.</p>
 </li>
 <li>
 <p>On the <strong>Configure stack options</strong> page, choose <strong>Next</strong>.</p>
@@ -777,76 +764,30 @@
 </li>
 <li>
 <p>Choose <strong>Create stack</strong> to deploy the stack.</p>
-<p>You can view the status of the stack in the AWS CloudFormation Console in the <strong>Status</strong> column. You should receive a CREATE_COMPLETE status in approximately [10] minutes.</p>
 </li>
-<li>
-<p>If your deployment region is not <code>us-west-2</code>, need to perform more steps blow.  </p>
-</li>
-</ol>
-<h3 id="setup-aws-eventbright-cross-region-event">Setup AWS EventBright cross region event</h3>
-<p><strong>If your deployment region is <code>us-west-2</code>, you can safely skip this section.</strong></p>
-<p>You need to perform blow steps to setup AWS EventBright cross region event if your deployment region is not <code>us-west-2</code>.</p>
-<ol>
-<li>
-<p>Use the Region selector in the console navigation bar, switch your region to <code>us-west-2</code>.</p>
-</li>
-<li>
-<p>Use [Launch solution in AWS Standard Regions][launch-template] to launch the AWS CloudFormation template.</p>
-</li>
-<li>
-<p>Under <strong>Parameters</strong>, review the parameters for the template and modify them as necessary. This solution uses the following default values.</p>
-<table>
-<thead>
-<tr>
-<th align="center">Parameter</th>
-<th align="center">Default</th>
-<th align="left">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td align="center">TargetRegion</td>
-<td align="center">us-east-1</td>
-<td align="left">the target region</td>
-</tr>
-</tbody>
-</table>
-</li>
-<li>
-<p>Choose <strong>Next</strong>.</p>
-</li>
-<li>
-<p>On the <strong>Configure stack options</strong> page, choose <strong>Next</strong>.</p>
-</li>
-<li>
-<p>On the <strong>Review</strong> page, review and confirm the settings. Check the box acknowledging that the template will create AWS Identity and Access Management (IAM) resources.</p>
-</li>
-<li>
-<p>Choose <strong>Create stack</strong> to deploy the stack.</p>
-<p>You can view the status of the stack in the AWS CloudFormation Console in the <strong>Status</strong> column. You should receive a CREATE_COMPLETE status less than [1] minute.</p>
-</li>
-</ol>
+</ul>
+<p>You can view the status of the stack in the AWS CloudFormation Console in the <strong>Status</strong> column. You should receive a CREATE_COMPLETE status in approximately 10 minutes.</p>
 <h3 id="update-quicksight-permissions">Update QuickSight permissions</h3>
-<ol>
+<ul>
 <li>
-<p>Navigate to Quicksight <a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin#aws">admin page</a>{target=_blank}</p>
+<p>Navigate to Quicksight <a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin#aws">admin page</a></p>
 </li>
 <li>
-<p>Click <strong>Manage</strong></p>
+<p>Click <strong>Manage</strong>
+<img alt="mange quicksight" src="../images/manage_quicksight.png" /></p>
 </li>
 <li>
-<p>Click <strong>Select S3 Buckets</strong></p>
+<p>Click <strong>Select S3 Buckets</strong>
+<img alt="select s3 quicksight" src="../images/select_s3_bucket.png" /></p>
 </li>
 <li>
-<p>Check the bucket <code>amazon-braket-qcstack-&lt;AWS account&gt;-&lt;region&gt;</code></p>
+<p>Check the bucket <code>amazon-braket-qcstack-&lt;AWS account&gt;-&lt;region&gt;</code>
+<img alt="choose s3 quicksight" src="../images/choose_s3_bucket.png" /></p>
 </li>
 <li>
-<p>Click <strong>Finish</strong></p>
+<p>Click <strong>Finish</strong> and then <strong>Save</strong></p>
 </li>
-<li>
-<p>Click <strong>Save</strong></p>
-</li>
-</ol>
+</ul>
 
               
             </article>
@@ -860,7 +801,7 @@
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
         
-        <a href="../architecture/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Architecture Overview" rel="prev">
+        <a href="../template/" class="md-footer__link md-footer__link--prev" aria-label="Previous: AWS CloudFormation template" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -869,20 +810,20 @@
               <span class="md-footer__direction">
                 Previous
               </span>
-              Architecture Overview
+              AWS CloudFormation template
             </div>
           </div>
         </a>
       
       
         
-        <a href="../workshop/background/" class="md-footer__link md-footer__link--next" aria-label="Next: Background" rel="next">
+        <a href="../workshop/background/" class="md-footer__link md-footer__link--next" aria-label="Next: Overview" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Background
+              Overview
             </div>
           </div>
           <div class="md-footer__button md-icon">
