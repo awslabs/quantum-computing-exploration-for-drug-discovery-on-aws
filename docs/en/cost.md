@@ -1,4 +1,4 @@
-You are responsible for the cost of Amazon cloud technology services used when running this solution. As of November 2021, the estimated cost for the solution 
+You are responsible for the cost of Amazon cloud technology services used when running this solution. As of January 2022, the estimated cost for the solution 
 is 25.12 USD per day.
 
 The whole cost consists of five types:
