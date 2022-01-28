@@ -8,11 +8,13 @@ nav:
   - Welcome: index.md
   - Architecture Overview: architecture.md
   - Automated Deployment: deployment.md
-  - Workshop: workshop/background.md
-  - Molecule Unfolding: workshop/a-molecule-unfolding/molecule-unfolding.md
-  - Notebook Experiment: workshop/a-molecule-unfolding/notebook-experiment.md
-  - Batch Test: workshop/a-molecule-unfolding/batch-test.md
-  - Test Your Own Model: workshop/a-molecule-unfolding/test-your-own-model.md
+  - Workshop: 
+    - Background: workshop/background.md
+    - Molecule Unfolding: 
+      - Background: workshop/a-molecule-unfolding/molecule-unfolding.md
+      - Notebook Experiment: workshop/a-molecule-unfolding/notebook-experiment.md
+      - Batch Test: workshop/a-molecule-unfolding/batch-test.md
+      - Test Your Own Model: workshop/a-molecule-unfolding/test-your-own-model.md
   - Cost: cost.md
   - Security: security.md
   - Supported regions: regions.md

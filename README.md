@@ -8,111 +8,57 @@ The overall architecture is shown as below:
 
 ![architecture](./docs/en/images/architecture.png)
 
-There are two types of Experiments of this solution: Batch test experiment and Notebook experiment.
+This solution deploys the Amazon CloudFormation template in your 
+AWS Cloud account and provides three URLs. One for **Visualization**.
+The others provide user with two approaches to study drug discovery 
+problems: **Notebook Experiment** and **Batch Evaluation**:
 
-### Batch Test Experiment
+* Notebook Experiment
 
-1. User triggers the batch test execution through AWS Step Functions from AWS console.
+The solution deploys the notebook for user to study different drug discovery 
+problems. 
+These problems will be studied using classical computing or quantum 
+computing.
 
-1. The Step Functions parallel runs HPC tasks and QC tasks.
+* Batch Evaluation
 
-   - HPC tasks
-      1. Step Functions synchronous parallel launches various HPC tasks through AWS batch jobs based on different resources (vcpu and memory) and different parameters of the algorithm.
-      1. Batch jobs save result to S3.
-      1. Step Functions continues to next step.
-  
-   - QC tasks
-     1. Step Functions parallel launches various QC tasks through AWS lambda based on different QC devices (DW_2000Q_6/Advantage_system4) and different parameters of the algorithm.
-     1. Each lambda asynchronous submits the QC task as AWS Braket job/task to AWS Braket service.
-     1. Step Functions waits for completion callback to continue.
-     1. When a Braket job/task completed, it saves its result to S3.
-     1. An event from AWS EventBridge triggers the listener lambda.
-     1. The listener lambda sends a callback token to Step Functions.
-     1. When Step Functions gets all callback tokens, it moves forward to next step.
+The solution provides user the way to evaluate a particular problem based 
+on different computing resources , classical computing or quantum computing. 
+For example, for the problem of molecule unfolding, the performance difference 
+between quantum annealer and simulated annealer can be compared.
 
-1. An Athena table is created based on metrics data in S3.
+* Visualization
 
-1. A SNS notification is sent out when all HPC and QC tasks completed.
+The solution provides user the way to visualize the comparing results of 
+batch evaluation (e.g. performance, time)
 
-1. User views the batch test result through AWS Quicksight dashboard.
+For detailed description of architecture, please refer to the 
+[Architecture Page](https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/en/architecture/)
 
-### Notebook Experiment
+## Drug Discovery Problems
+<table border='1' style="text-align: center">
+    <tr>
+        <td><B>Problem Name</B></td>
+        <td><B>Methods</td>
+        <td colspan='2'><B>Function</td>
+        <td><B>Dataset</td>
+        <td><B>Reference</td>
+    <tr>
+    <tr>
+        <td rowspan='4'>Molecular Unfolding </td>
+        <td rowspan='4'>QUBO</td>
+        <td><span>single solver</span></td>
+        <td><span>&#10004;</span></td>
+        <td rowspan='4'><a href="https://www.rcsb.org/ligand/117">117 mol2</a></td>
+        <td rowspan='4'><a href="https://arxiv.org/abs/2107.13607">Quantum Molecular Unfolding(2021)</a></td>
+    <tr>
+    <tr>
+        <td><span>hybrid solver</span></td>
+        <td><span><span></td>
+</table>
+All the data in the solution follow the CC0 License
 
-This solution also deploys SageMaker notebooks, user can run and study backend algorithms for drug discovery in notebook. The code is step-by-step guide user to build models, run them by HPC and Braket service and post process the result.
 
-## Dataset
-
-We use molecule data for this solution (source/src/molecule-unfolding/molecule-data/117_ideal.mol2). These data comes from the PDB protein data bank which is under [CC0 license](https://www.rcsb.org/pages/usage-policy). Please refer to the link for [117 mol file](https://www.rcsb.org/ligand/117)
-
-## Quick start
-
-### Sign up for QuickSight
-
-- Go to [quicksight](https://quicksight.aws.amazon.com/sn/start)
-- Click "Sign uup for QuickSight"
-- Choose `Enterprise`, click continue
-- In the `Create your QuickSight account` page, fill the necessary information:
-
-   ![create quicksight](./docs/en/images/create_quicksight.png)
-
-- Go to [quicksight admin](https://us-east-1.quicksight.aws.amazon.com/sn/admin), record your QuickSight username
-
-   ![quicksight username](./docs/en/images/quicksight_username.png)
-
-### Update `cdk.context.json`
-
-```shell
-cd source
-
-# edit cdk.context.json
-# fill `quicksight_user` in previous step
-
-```
-
-### Deploy
-
-```shell
-cd source
-
-npm install
-npm run deploy
-
-```
-
-### Deployment output
-
- After deployment, go to [cloudformation](https://console.aws.amazon.com/cloudformation/home), find the stack `QCStack`, from the output, you will get links for Notebook, Step Functions to run batch test tasks, and QuickSight dashboard URL
-
-![cloudformation output](./docs/en/images/deploy_output.png)
-
-### Update QuickSight permissions
-
-- Go to [quicksight admin](https://us-east-1.quicksight.aws.amazon.com/sn/admin#aws)
-- In `QuickSight access to AWS services`, click 'Manage' button, select the S3 bucket create in step `deployment output`
-
-![quicksight permissions](./docs/en/images/quicksight_perm.png)
-
-- Save the change
-
-### Run batch test through Step Functions
-
-- open Step Functions link in `deployment output`
-- click the **Start Execution** button, click **Start Execution** to execute the Step Functions workflow
-- wait the execution of Step Functions to complete
-
-### View batch test dashboard
-
-- open the QuickSight dashboard link in step `deployment output`
-
-### Notebook experiment
-
-- open the Notebook link in step `deployment output`
-
-### More
-
-- [Batch Test Experiment](./docs/en/workshop/a-molecule-unfolding/batch-test.md)
-- [Notebook Experiment](./docs/en/notebook.md)
-- [Workshop](./docs/en/workshop)
 
 ## License
 
