@@ -72,3 +72,10 @@ test("has output - bucketName", () => {
     const template = Template.fromStack(stack);
     template.hasOutput('bucketName', {})
 })
+
+test("has - 1 CustomResource", () => {
+    const app = new App();
+    const stack = new MainStack(app, 'test');
+    const template = Template.fromStack(stack);
+    template.hasResource('AWS::CloudFormation::CustomResource', 1)
+})
