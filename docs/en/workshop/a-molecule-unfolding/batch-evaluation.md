@@ -122,6 +122,7 @@ In this sheet, you can view batch evaluation result by each resource and QPU dev
    
     This table is the same as the table in [Sheet 1](#sheet-1-view-result-by-each-experiment).
 
+
 ### Input specification
 
 You can customize parameters of the evaluation by using a json input.
@@ -185,6 +186,7 @@ Definition:
       
   * **hpcResources**: memory(first element) in GiB and vCPU(second element), e.g. 4GiB memory and 2 vCPU is: `[4, 2]`
 
+
 A typical (the default) input:
 
 ```json
@@ -215,5 +217,3 @@ A typical (the default) input:
         [16, 16]
     ]
 }
-
-```
