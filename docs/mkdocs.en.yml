@@ -18,7 +18,7 @@ nav:
     - Molecular Unfolding: 
       - Background: workshop/a-molecule-unfolding/molecule-unfolding.md
       - Notebook Experiment: workshop/a-molecule-unfolding/notebook-experiment.md
-      - Batch Evaluation: workshop/a-molecule-unfolding/batch-test.md
+      - Batch Evaluation: workshop/a-molecule-unfolding/batch-evaluation.md
       - Evaluate Your Own Model: workshop/a-molecule-unfolding/test-your-own-model.md
   - Additional resources: additional-resources.md
   - Uninstall the solution: uninstall.md
