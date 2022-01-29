@@ -56,9 +56,6 @@ export class MainStack extends SolutionStack {
       )
     });
 
-    create_custom_resources(this, crossEventRegionCondition);
-    Aspects.of(this).add(new AddCondition(crossEventRegionCondition));
-
     const logS3bucket = new s3.Bucket(this, 'AccessLogS3Bucket', {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       autoDeleteObjects: true,
@@ -91,6 +88,12 @@ export class MainStack extends SolutionStack {
       lambdaSg
     } = setup_vpc_and_sg(this)
 
+    create_custom_resources(this, {
+      vpc,
+      sg: lambdaSg,
+      crossEventRegionCondition
+    });
+    Aspects.of(this).add(new AddCondition(crossEventRegionCondition));
 
     // Notebook //////////////////////////
     new Notebook(this, 'MolUnfNotebook', {

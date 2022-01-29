@@ -11,6 +11,10 @@ import {
 } from 'aws-cdk-lib'
 
 import {
+  aws_ec2 as ec2
+} from 'aws-cdk-lib'
+
+import {
   NodejsFunction
 } from 'aws-cdk-lib/aws-lambda-nodejs';
 
@@ -29,6 +33,20 @@ function createCustomResourceLambdaRole(scope: Construct, roleName: string): iam
   const role = new iam.Role(scope, `${roleName}`, {
     assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
   });
+
+  role.addToPolicy(new iam.PolicyStatement({
+    effect: iam.Effect.ALLOW,
+    resources: [
+      '*'
+    ],
+    actions: [
+      "ec2:CreateNetworkInterface",
+      "ec2:DescribeNetworkInterfaces",
+      "ec2:DeleteNetworkInterface",
+      "ec2:AssignPrivateIpAddresses",
+      "ec2:UnassignPrivateIpAddresses"
+    ]
+  }));
 
   role.addToPolicy(new iam.PolicyStatement({
     resources: [
@@ -96,12 +114,18 @@ function createCustomResourceLambdaRole(scope: Construct, roleName: string): iam
   return role;
 }
 
+interface Props {
+  crossEventRegionCondition: cdk.CfnCondition;
+  vpc: ec2.Vpc;
+  sg: ec2.SecurityGroup
+}
 
-export default (scope: Construct,  crossEventRegionCondition: cdk.CfnCondition) => {
+export default (scope: Construct, props: Props) => {
 
   const template_file = 'src/molecule-unfolding/cdk/utils/custom-resource-lambda/create-event-rule/template.json'
-  
+
   const role = createCustomResourceLambdaRole(scope, 'CreateEventRuleFuncRole')
+
   const createEventRuleFunc = new NodejsFunction(scope, 'CreateEventRuleFunc', {
     entry: `${__dirname}/custom-resource-lambda/create-event-rule/index.js`,
     handler: 'handler',
@@ -110,6 +134,12 @@ export default (scope: Construct,  crossEventRegionCondition: cdk.CfnCondition) 
     runtime: Runtime.NODEJS_12_X,
     reservedConcurrentExecutions: 5,
     role,
+    vpc: props.vpc,
+    securityGroups: [props.sg],
+    vpcSubnets: props.vpc.selectSubnets({
+      subnetType: ec2.SubnetType.PRIVATE_WITH_NAT
+    }),
+
     bundling: {
       commandHooks: {
         beforeBundling(inputDir: string, outputDir: string): string[] {
@@ -139,7 +169,7 @@ export default (scope: Construct,  crossEventRegionCondition: cdk.CfnCondition) 
     serviceToken: provider.serviceToken
   });
 
-  (createEventRuleCustomResource.node.defaultChild as cdk.CfnCustomResource).cfnOptions.condition = crossEventRegionCondition;
-  (createEventRuleFunc.node.defaultChild as cdk.CfnCustomResource).cfnOptions.condition = crossEventRegionCondition;
-  (role.node.defaultChild as cdk.CfnCustomResource).cfnOptions.condition = crossEventRegionCondition;
+  (createEventRuleCustomResource.node.defaultChild as cdk.CfnCustomResource).cfnOptions.condition = props.crossEventRegionCondition;
+  (createEventRuleFunc.node.defaultChild as cdk.CfnCustomResource).cfnOptions.condition = props.crossEventRegionCondition;
+  (role.node.defaultChild as cdk.CfnCustomResource).cfnOptions.condition = props.crossEventRegionCondition;
 }
