@@ -139,8 +139,8 @@ The input schema:
 Definition:
 
   * **version**:  the version of input schema, current only support value is: '1'
-  * **runModel**:  ALL|HPC|QC, default: 'ALL'
-  * **molFile**: s3 url of the mol2 file
+  * **runMode**:  run mode, value can be `ALL`, `HPC` or `QC`, default: 'ALL'; `HPC` - only run HPC tasks, `QC` only run QC tasks, `ALL` - run both tasks
+  * **molFile**: S3 url of the mol2 file
   * **modelVersion**: model version, default: 'latest'
   * **experimentName**: the name of the batch evaluation
   * **modelParams**: model parameters, M: number of torsions, D: angle precision of rotation. Please refer to [Notebook Experiment](./notebook-experiment.md) for detail
