@@ -112,6 +112,7 @@ In this sheet, you can view batch evaluation result by each resource and QPU dev
    
     It lists all resources in batch evaluation, for QC - resources are QPU devices, for HPC - resources are memory and vCPU. Items in the table are clickable, when you click one item (meaning you select it),  metrics in this sheet are switched to that item. If no item selected, it shows averaged metrics.
 
+
 * Experiment hist chart
     
     It shows execution time (Y-axis) for selected resource by experiment name (X-axis, ordered by time) using different model parameters.
