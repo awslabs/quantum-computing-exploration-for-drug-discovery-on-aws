@@ -7,7 +7,6 @@ You have two options to batch evaluate your own model
 
 ## Batch evaluate your own mol2 file without code changes
 
-
 If you have your own mol2 file, you want to batch evaluate it, you can follow below steps:
 
 1. Upload your mol2 file to the S3 bucket in CloudFormation output, or your own S3 bucket. If you want to use your own S3 bucket, the bucket name must be follow pattern:  `braket-*` or `amazon-braket-*`.
