@@ -2,10 +2,10 @@
 
 You have two options to batch evaluate your own model
 
-- Batch evaluate your own mol2 file with out code changes
+- Batch evaluate your own mol2 file without code changes
 - Fully customize evaluation code
 
-## Batch evaluate your own mol2 file with out code changes
+## Batch evaluate your own mol2 file without code changes
 
 If you have your own mol2 file, you want to batch evaluate it, you can follow below steps:
 
