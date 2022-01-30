@@ -17,7 +17,7 @@ In your AWS Step Functions console, click **Start execution** button, the screen
 1. (optional) Input evaluation input
 
      - It will use default input if you do not input anything.
-     - If you want to customize the batch evaluation, please refer to the **Input specification** in this section.
+     - If you want to customize the batch evaluation, please refer to the [Input specification](#input-specification) in this section.
 
 1. Click **Start execution**, start batch evaluation
     
@@ -47,6 +47,8 @@ There are two sheets in the dashboard, you can click to switch.
 ![dashboard sheets](../../images/quicksight-sheets.png)
 
 #### Sheet 1: view result by each experiment
+
+In this sheet, you can view batch evaluation result by experiment.
 
 ![dashboard Experiments hist](../../images/quicksight-sheet1-hist.png)
 
@@ -102,8 +104,23 @@ In this sheet, you can view the batch evaluation result by each experiment, rows
 
 #### Sheet 2: view result by each resource
 
+In this sheet, you can view batch evaluation result by each resource and QPU device
 
+![by resource sheet](../../images/quicksight-by-resource.png)
 
+* Compute type and resource table
+   
+    It lists all resources in batch evaluation, for QC - resources are QPU devices, for HPC - resources are memory and vCPU. Items in the table are clickable, when you click one item (meaning you select it),  metrics in this sheet are switched to that item. If no item selected, it shows averaged metrics.
+
+* Experiment hist chart
+    
+    It shows execution time (Y-axis) for selected resource by experiment name (X-axis, ordered by time) using different model parameters.
+
+    ![experiment hist](../../images/quicksight-experiment-hist.png)  
+
+* Records table
+   
+    This table is the same as the table in [Sheet 1](#sheet-1-view-result-by-each-experiment).
 
 ### Input specification
 
@@ -143,9 +160,30 @@ Definition:
   * **molFile**: S3 url of the mol2 file
   * **modelVersion**: model version, default: 'latest'
   * **experimentName**: the name of the batch evaluation
-  * **modelParams**: model parameters, M: number of torsions, D: angle precision of rotation. Please refer to [Notebook Experiment](./notebook-experiment.md) for detail
-  * **devicesArns**: QPU device arn
-  * **hpcResources**: memory and vCPU
+  * **modelParams**: model parameters, M: number of torsions, D: angle precision of rotation. Please refer to [Notebook Experiment](./notebook-experiment.md) for detail.  Valid values: 
+
+         M: [1, 2, 3, 4, 5, 6, 7]
+         D: [4] or [8]
+
+    Note: the max value of M is depended on the value of D, QPU device and input molFile. 
+    
+    If you use the default molFile (meaning `molFile` is not provided in the input), the max value combinations are listed in below table: 
+    
+    |Device | D | Max M |
+    |--- |--- |--- |
+    |  arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6  | 4 | 4 |
+    |  arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6  | 8 | 3 |
+    |  arn:aws:braket:::device/qpu/d-wave/Advantage_system4  | 4 | 7 |
+    |  arn:aws:braket:::device/qpu/d-wave/Advantage_system4  | 8 | 4 |
+
+    If you use your own molFile, the input validation will be skipped, if the value exceeds the device capacity, the execution will be failed. 
+   
+  * **devicesArns**: QPU device arn. Valid values:
+  
+        arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6
+        arn:aws:braket:::device/qpu/d-wave/Advantage_system4
+      
+  * **hpcResources**: memory(first element) in GiB and vCPU(second element), e.g. 4GiB memory and 2 vCPU is: `[4, 2]`
 
 A typical (the default) input:
 
@@ -179,17 +217,3 @@ A typical (the default) input:
 }
 
 ```
-
-### Trouble shooting
-
-1. Step Functions failed because of "Check Input" step failed.
-
-    If the input json not is passed the input validation, this step fails. Check the `errorMessage` of the step, fix your input.
-
-1. Step Functions failed because of `Lambda.TooManyRequestsException`.
-
-    If you run the StepFunctions with high a frequency, you may get this error, you can wait several seconds and retry.
-
-1. Dashboard can not be displayed, the error message complains permission error when accessing data in S3 bucket.
-
-    Go to [quicksight admin](https://us-east-1.quicksight.aws.amazon.com/sn/admin#aws), in `QuickSight access to AWS services`, make sure your S3 bucket is checked.
