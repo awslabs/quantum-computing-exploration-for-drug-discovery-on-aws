@@ -1,0 +1,39 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [{
+            "Effect": "Allow",
+            "NotAction": [
+                "iam:DetachRolePolicy",
+                "iam:DeleteRolePolicy",
+                "iam:CreateRole",
+                "iam:DeleteRole",
+                "iam:AttachRolePolicy",
+                "iam:UpdateRole",
+                "iam:PutRolePolicy",
+                "iam:CreatePolicy",
+                "iam:DeletePolicy",
+                "iam:GetRole",
+                "iam:GetPolicy",
+                "iam:PassRole"
+            ],
+            "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "NotAction": [
+                "s3:*",
+                "ec2:*",
+                "logs:*",
+                "braket:*",
+                "ecr:*",
+                "athena:*",
+                "glue:*",
+                "states:*",
+                "lambda:*",
+                "events:*",
+                "cloudformation:*"
+            ],
+            "Resource": "*"
+        }
+    ]
+}
