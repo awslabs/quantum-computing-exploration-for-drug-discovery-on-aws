@@ -1,6 +1,7 @@
 site_name: Quantum Ready Solution for Drug Discovery
 site_url: https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/
 repo_url: https://github.com/awslabs/quantum-ready-solution-for-drug-discovery
+
 theme:
   name: material
   features:
@@ -9,6 +10,7 @@ theme:
     - search.highlight
 plugins:
   - search
+
 extra:
   alternate:
     - name: English
@@ -17,3 +19,15 @@ extra:
     - name: 中文
       link: /mkdocs-playground/zh/
       lang: zh
+
+markdown_extensions:
+  - pymdownx.arithmatex:
+      generic: true
+
+extra_javascript:
+  - javascripts/mathjax.js
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+
+

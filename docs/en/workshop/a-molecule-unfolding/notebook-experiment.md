@@ -70,21 +70,22 @@ idea is graphically reported in the following figure.
 
 {{% /notice %}}
 
-Suppose the ligand has $ M $ torsions, from $ T_i $ to $ T_M $, and each torsion must have the angle 
+Suppose the ligand has $M$ torsions, from $T_i$ to $T_M$, and each torsion must have the angle 
 of rotation $\theta$.
 
 ![Multiple Torsion](../../images/multiple-torsion.png)
 
-The objective of this model is to find the unfolded torsion configuration $ {\Theta}^{unfold} $ which 
-can maximizes the sum of distances $ D(\Theta) $.
+The objective of this model is to find the unfolded torsion configuration 
+${\Theta}^{unfold}$ which 
+can maximizes the sum of distances $D(\Theta)$.
 
 $$ {\Theta}^{unfold} = [\theta^{unfold}_1,  \theta^{unfold}_2, ../..., \theta^{unfold}_M] $$
 
 $$ D(\Theta) = \sum_{a,b}D_{a,b}(\theta)^2 $$
 
-The $ D_{a,b}(\theta)^2 $ is $ || \overrightarrow{a}_0 - R(\theta)\overrightarrow{b}_0||^2  $ . 
-This is the distance between fragment a and b. $ R(\theta) $ is the rotation matrix associated the torsion angle 
-$ \theta $.
+The $D_{a,b}(\theta)^2$ is $|| \overrightarrow{a}_0 - R(\theta)\overrightarrow{b}_0||^2$ . 
+This is the distance between fragment a and b. $R(\theta)$ is the rotation matrix associated the torsion angle 
+$\theta$.
 
 ![Two Frag One Tor](../../images/two-frag-one-torsion.png)
 
@@ -92,23 +93,26 @@ Since this is the problem of portfolio optimization, the final configuration can
 angle of any torsion. However, there are some constraints for applying it to real problem: 
 
 1. In terms of the limitation of computation resource, the torsion cannot have the rotation with infinitely small 
-precision. This means that there are limited candidates of rotation angles for each torsion. Suppose we have $ M $ 
-torsions and they have the same precision of rotation angle : $ \Delta\theta $ . This means that we need $ d $ variables 
+precision. This means that there are limited candidates of rotation angles for each torsion. Suppose we have 
+$M$ torsions and they have the same precision of rotation angle : 
+$\Delta\theta$ . This means that we need $d$ variables 
 for each torsion:
 
 $$ d = \frac{2\pi}{\Delta\theta} $$
-For the whole model, we need $ n = d \times M $ binary variables $ x_{ik} $ to represent all the combinations. 
-For example, for the torsion $ T_i $, its torsion angle $ \theta_i $ can have $ d $ possible values:
+For the whole model, we need $n = d \times M$ binary variables $x_{ik}$ to represent all the combinations. 
+For example, for the torsion $T_i$, its torsion angle $\theta_i$ can have 
+$d$ possible values:
 
-$$ \theta_i = [\theta_i^1,\theta_i^2,\theta_i^3, ../..., \theta_i^d] $$
+$$ \theta_i = [\theta_i^1,\theta_i^2,\theta_i^3, ..., \theta_i^d] $$
 
 2. If we only consider the distance, the final result or configuration may have multiple results from the same torsion as long 
-as this combination means smaller distance. For example, there may be two binary variables of the same torsion, $ T_i $, in the 
+as this combination means smaller distance. For example, there may be two binary variables of the same torsion, $T_i$, in the 
 final result:
 
 $$ {\Theta}^{unfold} = [\theta^2_1,  \theta^4_1, ../..., \theta^3_M] $$
 
-This cannot happen in real world. $ T_1 $ can only have one of $ d $ angles finally. So we need to integrate the following constraint into our final model:
+This cannot happen in real world. $T_1$ can only have one of 
+$d$ angles finally. So we need to integrate the following constraint into our final model:
 
 $$ \displaystyle\sum\limits_{k=1}^{d} x_{ik} = 1 $$
 
@@ -116,7 +120,7 @@ With these two constraints, this problem can be formulated as the high-order unc
 
 $$ O(x_{ik}) = A\displaystyle\sum\limits_i (\displaystyle\sum\limits_{k=1}^d x_{ik}-1)^2 - \displaystyle\sum\limits_{a,b} D_{ab} (\theta)^2 $$
 
-The first part is the constraint for each torsion. If one torsion has more than one angles at last, we will add the punishment term $ A $. 
+The first part is the constraint for each torsion. If one torsion has more than one angles at last, we will add the punishment term $A$. 
 However, in this implementation we calculate the distance-pair under different configuration in advance. This 
 means that we use the absolute distance instead:
 
@@ -130,23 +134,25 @@ the variables using the following code:
 
 ![Var Init](../../images/var-init.png)
 
-The above code indicates that we have 4 torsions from $ x_1_? $ to $ x_4_? $. Each torsion has four optional rotation angles from $ 0^o $ to $ 270^o $. For example, $ x_3_2 $ means that the torsion 3 rotates 
-$ 180^o $.
+The above code indicates that we have 4 torsions from $x\_1\_?$ 
+to $x\_4\_?$. Each torsion has four optional rotation angles from $0^o$ to 
+$270^o$. For example, $x\_3\_2$ means that the torsion 3 rotates 
+$180^o$.
 
 For constraints, we use the following code to implement: 
 
 ![Constraint](../../images/constraint.png)
 
 As we analyze before, the model does not which variables belong to 
-the same physical torsion. For example, $ x_1_1 , x_1_2, x_1_3 $ 
-and $ x_1_4 $ belong to the same torsion. The model cannot let only 
-one of them become $ 1 $. If the model choose multiple of them, we 
+the same physical torsion. For example, $x\_1\_1$ , $x\_1\_2$, $x\_1\_3$ 
+and  $x\_1\_4$ belong to the same torsion. The model cannot let only 
+one of them become $1$. If the model choose multiple of them, we 
 must punish it. As the figure shown, when the model choose more than 
-one variables of $x_1_?$ to become $ 1 $, we give it the punishment 
-term $ 600 $. 
+one variables of $x\_1\_?$ to become $1$, we give it the punishment 
+term $600$. 
 
-Most importantly, we use $ calc_distance_func $ to calculate
-$ |D_{ab} (\theta)| $ under different $ \theta $.
+Most importantly, we use $calc\_distance\_func$ to calculate
+$|D_{ab} (\theta)|$ under different $\theta$.
 
 ![Distance](../../images/distance.png)
 
@@ -159,7 +165,7 @@ unconstrained binary optimization (QUBO) can be solved using quantum annealer:
 
 $$ O(x) = \displaystyle\sum\limits_i h_i x_i + \displaystyle\sum_{i>j} J_{i,j} x_i x_j $$
 
-In QUBO form, $ x_i \in \{0, 1\} $ are binary variables. We can consider it as the angle that we choose for a particular torsion. $h_i$ and $J_{i,j}$
+In QUBO form, $x_i \in \{0, 1\}$ are binary variables. We can consider it as the angle that we choose for a particular torsion. $h_i$ and $J_{i,j}$
  can be considered as the values encoding the optimization task when we use corresponding angles. However, in our task, it is common that there are 
  more than one torsion between fragments, we model it as the high-order quadratic unconstrained binary optimization (HUBO) problem:
 
@@ -169,15 +175,15 @@ $$ O(x) = \displaystyle\sum\limits_i \alpha_i x_i + \displaystyle\sum_{i,j} \bet
 
 It is often possible to convert HUBOs to QUBOs by using some tricks, 
 like adding new ancillary binary variables to replace high-order term. 
-In practice, we use the API $ make \_ quadratic() $ in D-Wave software package to make this conversion.
+In practice, we use the API $make \_ quadratic()$ in D-Wave software package to make this conversion.
 
 ![HUBO QUBO](../../images/hubo-qubo.png)
 
-As the image shown, some high-order term of HUBO, like $ ('x\_1\_1','x\_2\_1','x\_3\_1') $, have been 
+As the image shown, some high-order term of HUBO, like $('x\_1\_1','x\_2\_1','x\_3\_1')$, have been 
 transformed to binary terms in QUBO. We only highlight some of them.
 
 
-Congratulations! We have already prepared the model and it is time to test it.
+Congratulations! We have already prepared the model and it is time to evaluate.
 
 # Optimization
 
@@ -242,11 +248,13 @@ This is interesting that we cannot get the similar results as the publication ex
 
 ## Analyze The Efficiency
 
-In this workshop, we have test the efficiency of model with different complexity, $ M * d $, on different devices. We test SA on ml.c5.4xlarge, 
+In this workshop, we have test the efficiency of model with different complexity, $M * d$, on different devices. We test SA on ml.c5.4xlarge, 
 ml.m5.4xlarge, and ml.r5.4xlarge. We also test QA on DW_2000Q_6 and Advantage_system1.1. The result shows that, if the tasks run with the same 
-number of shots (1000), the quantum annealer has really nice scaling ability for solving combinatorial problems. The Advantage_system1.1 only needs 
-3 minutes to solve the QUBO model ($M=5, d=8$), while all the classic computing instance needs over 3 hours. However, there's suspicion that there is 
-still much space for improvement in the SA implemented by D-Wave. More strict bench mark is needed.
+number of shots (1000), the quantum annealer has really nice scaling ability for solving combinatorial problems. 
+The Advantage_system1.1 only needs 
+3 minutes to solve the QUBO model ($M=5, d=8$), 
+while all the classic computing instance needs over 3 hours. However, there's suspicion that there is 
+still much space for improvement in the SA implemented by D-Wave. More strict evaluation is needed.
 
 
 
