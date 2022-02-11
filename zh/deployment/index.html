@@ -324,22 +324,42 @@
       
         <li class="md-nav__item">
   <a href="#_1" class="md-nav__link">
-    前提条件
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
     部署概述
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
     部署步骤
   </a>
+  
+    <nav class="md-nav" aria-label="部署步骤">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#quicksight" class="md-nav__link">
+    检查您的QuickSight账户
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    部署您的解决方案
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quicksight_1" class="md-nav__link">
+    更新QuickSight的权限
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -497,22 +517,42 @@
       
         <li class="md-nav__item">
   <a href="#_1" class="md-nav__link">
-    前提条件
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
     部署概述
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#_3" class="md-nav__link">
+  <a href="#_2" class="md-nav__link">
     部署步骤
   </a>
+  
+    <nav class="md-nav" aria-label="部署步骤">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#quicksight" class="md-nav__link">
+    检查您的QuickSight账户
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    部署您的解决方案
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#quicksight_1" class="md-nav__link">
+    更新QuickSight的权限
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -536,20 +576,92 @@
   <h1>Deployment</h1>
 
 <p>在部署解决方案之前，建议您先查看本指南中有关架构图和区域支持等信息。然后按照下面的说明配置解决方案并将其部署到您的帐户中。</p>
-<p>部署时间：约 XX 分钟</p>
-<h2 id="_1">前提条件</h2>
-<h2 id="_2">部署概述</h2>
+<p><strong>部署时间</strong>：约 10 分钟。</p>
+<h2 id="_1">部署概述</h2>
 <p>在亚马逊云科技上部署本解决方案主要包括以下过程：</p>
 <ul>
-<li>步骤1：在您的亚马逊云科技账户中启动Amazon CloudFormation模板。</li>
-<li>步骤2：</li>
+<li>步骤1：检查您的QuickSight账户</li>
+<li>步骤2：在您的亚马逊云科技账户中启动Amazon CloudFormation模板。</li>
+<li>步骤3：更新您的QuickSight权限</li>
 </ul>
-<h2 id="_3">部署步骤</h2>
-<p>此自动化Amazon CloudFormation模板在亚马逊云科技中部署解决方案。</p>
-<ol>
-<li></li>
-<li></li>
-</ol>
+<h2 id="_2">部署步骤</h2>
+<h3 id="quicksight">检查您的QuickSight账户</h3>
+<ul>
+<li>
+<p>登录到AWS控制台，并找到<a href="https://quicksight.aws.amazon.com/">QuickSight</a></p>
+</li>
+<li>
+<p>如果您还没有QuickSight账户，您需要先注册一个。</p>
+</li>
+<li>
+<p>选择 <strong>Enterprise</strong>，点击 continue。</p>
+</li>
+<li>
+<p>在 <strong>Create your QuickSight account</strong> 页面填写必要的信息:
+<img alt="Fill information for quicksight" src="../images/create_quicksight.png" /></p>
+</li>
+</ul>
+<h3 id="_3">部署您的解决方案</h3>
+<p>我们将AWS CloudFormation的模板部署在了AWS Cloud上。</p>
+<ul>
+<li>
+<p>使用<a href="https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/new?stackName=qrsdd-stack">Launch solution in AWS Standard Regions</a>来启动AWS CloudFormation模板。</p>
+</li>
+<li>
+<p>模板默认使用US West 2 (Oregon) Region 启动. 如果想要更换启动模板的 AWS Region, 请在控制台的导航栏中使用 Region selector进行更改。</p>
+</li>
+<li>
+<p>在 <strong>Create stack</strong> 页面中, 请您检查<strong>Amazon S3 URL</strong> 文本框中<a href="../template/">quantum-ready-solution-for-drug-discovery.template</a>是否正确，如正确，请选则<strong>Next</strong>按钮。</p>
+</li>
+<li>
+<p>在<strong>Parameters</strong>下方, 检查模板的参数并将其设置为necessary。解决方案采用已下的参数值. 选择 <strong>Next</strong>.</p>
+<table>
+<thead>
+<tr>
+<th align="center">Parameter(参数值）</th>
+<th align="center">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">MolUnfDashboardquickSightUser</td>
+<td align="center"><strong>Quicksight Username</strong></td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>在 <strong>Configure stack options</strong> 页面中, 选择 <strong>Next</strong>.</p>
+</li>
+<li>
+<p>在 <strong>Review</strong> 页面中，检查并确认设置。 检查 box acknowledging 确保模板将会创建AWS Identity和Access Management (IAM)资源.</p>
+</li>
+<li>
+<p>选择 <strong>Create stack</strong> 来部署stack.</p>
+</li>
+</ul>
+<p>您可以在AWS CloudFormation控制台中<strong>Status</strong>栏中查看stack的状态。您在大约十分钟内应该看到CREATE_COMPLETE的状态。</p>
+<h3 id="quicksight_1">更新QuickSight的权限</h3>
+<ul>
+<li>
+<p>定位到Quicksight <a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin#aws">admin page</a></p>
+</li>
+<li>
+<p>点击 <strong>Manage</strong>
+<img alt="mange quicksight" src="./images/manage_quicksight.png" /></p>
+</li>
+<li>
+<p>点击<strong>Select S3 Buckets</strong>
+<img alt="select s3 quicksight" src="./images/select_s3_bucket.png" /></p>
+</li>
+<li>
+<p>检查S3桶 <code>amazon-braket-qcstack-&lt;AWS account&gt;-&lt;region&gt;</code>
+<img alt="choose s3 quicksight" src="./images/choose_s3_bucket.png" /></p>
+</li>
+<li>
+<p>点击 <strong>Finish</strong> 并选择 <strong>Save</strong></p>
+</li>
+</ul>
 
               
             </article>
