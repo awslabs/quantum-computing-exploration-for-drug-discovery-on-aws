@@ -20,7 +20,7 @@ import {
 
 
 exports.handler = async function (event: CloudFormationCustomResourceEvent, context: Context) {
-    await _handler(event, context).then(() => {
+    await _handler(event).then(() => {
         console.log("=== complete ===")
     }).catch((e: Error) => {
         console.error(e.message);
@@ -32,7 +32,7 @@ function sleep(millis: number) {
     return new Promise(resolve => setTimeout(resolve, millis));
 }
 
-async function _handler(event: CloudFormationCustomResourceEvent, context: Context) {
+async function _handler(event: CloudFormationCustomResourceEvent) {
     const currentRegion = process.env.AWS_REGION
     let RequestType =  event.RequestType
     
