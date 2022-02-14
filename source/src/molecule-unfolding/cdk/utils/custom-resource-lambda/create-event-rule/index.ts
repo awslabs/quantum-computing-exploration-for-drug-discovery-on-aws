@@ -15,18 +15,15 @@ import {
  } from './handler';
 
  import {
-    CloudFormationCustomResourceEventCommon
+    CloudFormationCustomResourceEvent,
  }  from './cloudformation-custom-resource';
 
-import { Logger } from '@aws-lambda-powertools/logger';
 
-const logger = new Logger();
-
-exports.handler = async function (event: CloudFormationCustomResourceEventCommon, context: Context) {
+exports.handler = async function (event: CloudFormationCustomResourceEvent, context: Context) {
     await _handler(event, context).then(() => {
-        logger.info("=== complete ===")
+        console.log("=== complete ===")
     }).catch((e: Error) => {
-        logger.error(e.message);
+        console.error(e.message);
         throw e
     })
 }
@@ -35,16 +32,15 @@ function sleep(millis: number) {
     return new Promise(resolve => setTimeout(resolve, millis));
 }
 
-async function _handler(event: CloudFormationCustomResourceEventCommon, context: Context) {
+async function _handler(event: CloudFormationCustomResourceEvent, context: Context) {
     const currentRegion = process.env.AWS_REGION
-    const RequestType =  event.ResourceType
-    logger.addContext(context);
+    let RequestType =  event.RequestType
     
-    logger.info("currentRegion: " + currentRegion)
-    logger.info("RequestType: " + RequestType)
+    console.log("currentRegion: " + currentRegion)
+    console.log("RequestType: " + RequestType)
 
     if (currentRegion == "us-west-2") {
-        logger.info('ignore creating event rule')
+        console.log('ignore creating event rule')
         return
     }
     const config = {
@@ -79,15 +75,15 @@ async function _handler(event: CloudFormationCustomResourceEventCommon, context:
         if (e.message.indexOf('does not exist') > 0) {
             stackExists = false
         } else {
-            logger.info(e.message);
+            console.log(e.message);
             throw e;
         }
     });
 
-    logger.info("stackExists: " + stackExists)
+    console.log("stackExists: " + stackExists)
 
     if (!stackExists && RequestType == "Delete") {
-        logger.info("stack already deleted")
+        console.log("stack already deleted")
         return
     }
 
@@ -95,14 +91,14 @@ async function _handler(event: CloudFormationCustomResourceEventCommon, context:
 
     if (RequestType != "Delete") {
         if (stackExists) {
-            logger.info("UpdateStackCommand ... ")
+            console.log("UpdateStackCommand ... ")
             command = new UpdateStackCommand(createStackInput);
         } else {
-            logger.info("CreateStackCommand ... ")
+            console.log("CreateStackCommand ... ")
             command = new CreateStackCommand(createStackInput);
         }
     } else {
-        logger.info("DeleteStackCommand ... ")
+        console.log("DeleteStackCommand ... ")
         command = new DeleteStackCommand({
             StackName: stackName
         })
@@ -116,14 +112,14 @@ async function _handler(event: CloudFormationCustomResourceEventCommon, context:
     do {
         response = undefined;
         response = await cf_client.send(describeCommand).catch((e: Error) => {
-            logger.info(e.message);
+            console.log(e.message);
             if (RequestType == "Delete" && e.message.indexOf('does not exist') > 0) {
                 stackStatus = 'complete'
             }
         });
         if (response && stackStatus != 'complete') {
             stackStatus = response['Stacks'][0]['StackStatus']
-            logger.info(`${stackStatus}`)
+            console.log(`${stackStatus}`)
             await sleep(5000);
         }
 
