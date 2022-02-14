@@ -10,11 +10,19 @@ const {
     readFileSync
 } = require('fs');
 
+import {
+    Context
+ } from './handler';
+
+ import {
+    CloudFormationCustomResourceEventCommon
+ }  from './cloudformation-custom-resource';
+
 import { Logger } from '@aws-lambda-powertools/logger';
 
 const logger = new Logger();
 
-exports.handler = async function (event, context) {
+exports.handler = async function (event: CloudFormationCustomResourceEventCommon, context: Context) {
     await _handler(event, context).then(() => {
         logger.info("=== complete ===")
     }).catch((e) => {
@@ -23,14 +31,13 @@ exports.handler = async function (event, context) {
     })
 }
 
-function sleep(millis) {
+function sleep(millis: number) {
     return new Promise(resolve => setTimeout(resolve, millis));
 }
 
-async function _handler(event, context) {
+async function _handler(event: CloudFormationCustomResourceEventCommon, context: Context) {
     const currentRegion = process.env.AWS_REGION
-
-    const RequestType = event['RequestType']
+    const RequestType =  event.ResourceType
     logger.addContext(context);
     
     logger.info("currentRegion: " + currentRegion)

@@ -149,7 +149,7 @@ export default (scope: Construct, props: Props) => {
   const role = createCustomResourceLambdaRole(scope, 'CreateEventRuleFuncRole')
 
   const createEventRuleFunc = new NodejsFunction(scope, 'CreateEventRuleFunc', {
-    entry: `${__dirname}/custom-resource-lambda/create-event-rule/index.js`,
+    entry: `${__dirname}/custom-resource-lambda/create-event-rule/index.ts`,
     handler: 'handler',
     timeout: cdk.Duration.minutes(5),
     memorySize: 256,
