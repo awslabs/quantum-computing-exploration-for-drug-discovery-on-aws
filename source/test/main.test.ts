@@ -73,9 +73,20 @@ test("has output - bucketName", () => {
     template.hasOutput('bucketName', {})
 })
 
-test("has - 1 CustomResource", () => {
+test("has 1 CustomResource", () => {
     const app = new App();
     const stack = new MainStack(app, 'test');
     const template = Template.fromStack(stack);
     template.hasResource('AWS::CloudFormation::CustomResource', 1)
 })
+
+test("The CustomResource has Condition", () => {
+    const app = new App();
+    const stack = new MainStack(app, 'test');
+    const template = Template.fromStack(stack);
+   
+    template.hasResource('AWS::CloudFormation::CustomResource', {
+        "Condition": "CrossEventRegionCondition"
+    })
+})
+
