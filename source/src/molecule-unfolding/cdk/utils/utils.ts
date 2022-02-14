@@ -187,6 +187,7 @@ export class AddCondition implements IAspect {
     }
     visit(node: IConstruct): void {
         if (node.node.path.endsWith('/CreateEventRuleFuncRole/DefaultPolicy/Resource') ||
+            node.node.path.endsWith('/EventBridgeRole/DefaultPolicy/Resource') ||
             (node.node.path.indexOf('/EventRuleCustomResourceProvider/framework-onEvent/') > -1)
         ) {
             if ((node as cdk.CfnResource).cfnOptions) {
