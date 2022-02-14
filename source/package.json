@@ -44,6 +44,7 @@
     "@aws-cdk/aws-batch-alpha": "^2.8.0-alpha.0",
     "@aws-lambda-powertools/logger": "^0.5.1",
     "@aws-sdk/client-cloudformation": "^3.48.0",
+    "@middy/core": "^2.5.7",
     "aws-cdk-lib": "2.8.0",
     "cdk-bootstrapless-synthesizer": "^2.1.5",
     "constructs": "^10.0.0",

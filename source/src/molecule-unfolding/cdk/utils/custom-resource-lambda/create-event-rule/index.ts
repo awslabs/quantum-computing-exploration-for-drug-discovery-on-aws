@@ -25,8 +25,8 @@ const logger = new Logger();
 exports.handler = async function (event: CloudFormationCustomResourceEventCommon, context: Context) {
     await _handler(event, context).then(() => {
         logger.info("=== complete ===")
-    }).catch((e) => {
-        logger.error(e);
+    }).catch((e: Error) => {
+        logger.error(e.message);
         throw e
     })
 }
@@ -75,7 +75,7 @@ async function _handler(event: CloudFormationCustomResourceEventCommon, context:
     });
 
     let stackExists = true
-    await cf_client.send(describeCommand).catch(e => {
+    await cf_client.send(describeCommand).catch((e: Error) => {
         if (e.message.indexOf('does not exist') > 0) {
             stackExists = false
         } else {
@@ -115,7 +115,7 @@ async function _handler(event: CloudFormationCustomResourceEventCommon, context:
     let stackStatus = ''
     do {
         response = undefined;
-        response = await cf_client.send(describeCommand).catch(e => {
+        response = await cf_client.send(describeCommand).catch((e: Error) => {
             logger.info(e.message);
             if (RequestType == "Delete" && e.message.indexOf('does not exist') > 0) {
                 stackStatus = 'complete'
