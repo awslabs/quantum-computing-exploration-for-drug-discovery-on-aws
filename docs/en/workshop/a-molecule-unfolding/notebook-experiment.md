@@ -3,8 +3,6 @@ title: Notebook Experiment
 weight: 10
 ---
 
-# Background
-
 Molecular Docking (MD) is an important step of the drug discovery process which aims at calculating 
 the preferred position and shape of one molecule to a second when they are bound to each other. This step focuses on computationally simulating the molecular recognition process. It aims to achieve an optimized conformation for both the protein and ligand and relative orientation between protein and ligand such that the free energy of the overall system is minimized. 
 
@@ -30,7 +28,26 @@ implemented using quantum annealer. This phase is important for improving dockin
 pose of the ligand that is set a priori may introduce shape bias affecting the final quality of the
 docking. MU is the technology used for removing such initial bias.
 
-# Build The Model
+# Notebook Overview
+
+Go to the deployment output page in your cloudformation
+and open the link for your notebook
+
+![deployment output](../../images/deploy_output_notebook.png)
+
+Please open the notebook 
+(source/src/molecule-folding/molecule_unfolding.ipynb) 
+and you can find that the whole notebook consists of 4 steps:
+
+* [Prepare Data](#prepare)
+* [Build Model](#buildmodel)
+* [Optimize Configuration](#optimize)
+* [PostProcess Result](#postprocess)
+
+
+# <span id="prepare">Prepare Data</span>
+
+# <span id="buildmodel">Build Model</span>
 
 ## Problem Definition
 
@@ -43,6 +60,7 @@ These fragments can rotate independently from each other around the axis of the 
 idea is graphically reported in the following figure. 
 
  ![Rotatable Bonds](../../images/rotatable-bonds.png)
+ <center>Rotatable Bonds [<sup>1</sup>](#qmu-paper)</center>
 
  As it indicates, the objective of MU is to find the shape of the ligand that can maximizes 
  the molecular volume. The shape of the ligand can be expressed as the unfolded shape of the
@@ -185,7 +203,7 @@ transformed to binary terms in QUBO. We only highlight some of them.
 
 Congratulations! We have already prepared the model and it is time to evaluate.
 
-# Optimization
+# <span id="optimize">Optimize Configuration</span>
 
 ## Adjust Parameters For Optimization
 
@@ -246,6 +264,8 @@ This is interesting that we cannot get the similar results as the publication ex
    |5|4|Not Stable|
    |>5|4|Not Available (Embedding Fail)|
 
+# <span id="postprocess">Post-Process Result</span>
+
 ## Analyze The Efficiency
 
 In this workshop, we have test the efficiency of model with different complexity, $M * d$, on different devices. We test SA on ml.c5.4xlarge, 
@@ -259,3 +279,10 @@ still much space for improvement in the SA implemented by D-Wave. More strict ev
 
 
 If we change the number of shots for SA to 1, we get another group data for efficiency. 
+
+# References
+
+<div id='qmu-paper'></div>
+- [1] [Publication: Quantum Molecular Unfolding](https://arxiv.org/abs/2107.13607)
+<div id='qmu-video'></div>
+- [2] [Video: Molecular Unfolding with Quantum Annealing](https://www.youtube.com/watch?v=1NmAXIHAF2Y)
