@@ -83,7 +83,8 @@ export class AddCfnNag implements IAspect {
             node.node.path.endsWith('/AggResultLambdaRole/DefaultPolicy/Resource') ||
             node.node.path.endsWith('/WaitForTokenLambdaRole/DefaultPolicy/Resource') ||
             node.node.path.endsWith('/MolUnfNotebook/NotebookRole/DefaultPolicy/Resource') ||
-            node.node.path.endsWith('/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/DefaultPolicy/Resource')
+            node.node.path.endsWith('/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/DefaultPolicy/Resource') ||
+            node.node.path.endsWith('/CreateEventRuleFuncRole/DefaultPolicy/Resource')
         ) {
             (node as cdk.CfnResource).addMetadata('cfn_nag', {
                 rules_to_suppress: [{
@@ -185,11 +186,11 @@ export class AddCondition implements IAspect {
         this.condition = condition
     }
     visit(node: IConstruct): void {
-        if (node.node.path.endsWith('/CreateEventRuleFuncRole/DefaultPolicy/Resource')
-        || (node.node.path.indexOf('/EventRuleCustomResourceProvider/framework-onEvent/') > -1)
+        if (node.node.path.endsWith('/CreateEventRuleFuncRole/DefaultPolicy/Resource') ||
+            (node.node.path.indexOf('/EventRuleCustomResourceProvider/framework-onEvent/') > -1)
         ) {
             if ((node as cdk.CfnResource).cfnOptions) {
-              (node as cdk.CfnResource).cfnOptions.condition = this.condition
+                (node as cdk.CfnResource).cfnOptions.condition = this.condition
             }
         }
     }
