@@ -14,5 +14,4 @@ source/test-reports
 source/coverage
 buildspec.yml
 deployment
-__entrypoint__.js
 

@@ -10,11 +10,15 @@ const {
     readFileSync
 } = require('fs');
 
+import { Logger } from '@aws-lambda-powertools/logger';
+
+const logger = new Logger();
+
 exports.handler = async function (event, context) {
     await _handler(event, context).then(() => {
-        console.log("=== complete ===")
+        logger.info("=== complete ===")
     }).catch((e) => {
-        console.log(e);
+        logger.error(e);
         throw e
     })
 }
@@ -25,28 +29,37 @@ function sleep(millis) {
 
 async function _handler(event, context) {
     const currentRegion = process.env.AWS_REGION
-    const RequestType = event['RequestType']
 
-    console.log("currentRegion: " + currentRegion)
-    console.log("RequestType: " + RequestType)
+    const RequestType = event['RequestType']
+    logger.addContext(context);
+    
+    logger.info("currentRegion: " + currentRegion)
+    logger.info("RequestType: " + RequestType)
 
     if (currentRegion == "us-west-2") {
-        console.log('ignore creating event rule')
+        logger.info('ignore creating event rule')
         return
     }
     const config = {
         region: "us-west-2"
     }
+
     const cf_client = new CloudFormationClient(config);
     let templateBody = readFileSync(`${__dirname}/template.json`, 'utf-8')
     const stackName = `QRSFDD-BraketEventTo${currentRegion}`
+    const eventBridgeRoleArn = process.env.EVENT_BRIDGE_ROLE_ARN
     const createStackInput = {
         StackName: stackName,
         Capabilities: ['CAPABILITY_NAMED_IAM'],
         Parameters: [{
             ParameterKey: 'TargetRegion',
             ParameterValue: currentRegion
-        }],
+        },
+        {
+            ParameterKey: 'EventBridgeRoleArn',
+            ParameterValue: eventBridgeRoleArn
+        }
+        ],
         TemplateBody: templateBody
     }
 
@@ -59,15 +72,15 @@ async function _handler(event, context) {
         if (e.message.indexOf('does not exist') > 0) {
             stackExists = false
         } else {
-            console.log(e.message);
+            logger.info(e.message);
             throw e;
         }
     });
 
-    console.log("stackExists: " + stackExists)
+    logger.info("stackExists: " + stackExists)
 
     if (!stackExists && RequestType == "Delete") {
-        console.log("stack already deleted")
+        logger.info("stack already deleted")
         return
     }
 
@@ -75,14 +88,14 @@ async function _handler(event, context) {
 
     if (RequestType != "Delete") {
         if (stackExists) {
-            console.log("UpdateStackCommand ... ")
+            logger.info("UpdateStackCommand ... ")
             command = new UpdateStackCommand(createStackInput);
         } else {
-            console.log("CreateStackCommand ... ")
+            logger.info("CreateStackCommand ... ")
             command = new CreateStackCommand(createStackInput);
         }
     } else {
-        console.log("DeleteStackCommand ... ")
+        logger.info("DeleteStackCommand ... ")
         command = new DeleteStackCommand({
             StackName: stackName
         })
@@ -96,14 +109,14 @@ async function _handler(event, context) {
     do {
         response = undefined;
         response = await cf_client.send(describeCommand).catch(e => {
-            console.log(e.message);
+            logger.info(e.message);
             if (RequestType == "Delete" && e.message.indexOf('does not exist') > 0) {
                 stackStatus = 'complete'
             }
         });
         if (response && stackStatus != 'complete') {
             stackStatus = response['Stacks'][0]['StackStatus']
-            console.log(`${stackStatus}`)
+            logger.info(`${stackStatus}`)
             await sleep(5000);
         }
 

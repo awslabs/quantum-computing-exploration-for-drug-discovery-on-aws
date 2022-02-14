@@ -114,6 +114,26 @@ function createCustomResourceLambdaRole(scope: Construct, roleName: string): iam
   return role;
 }
 
+function createEventBridgeRole(scope: Construct): iam.Role {
+  const account_id = Stack.of(scope).account
+  const region = Stack.of(scope).region
+
+  const role = new iam.Role(scope, 'EventBridgeRole', {
+    assumedBy: new iam.ServicePrincipal('events.amazonaws.com'),
+  });
+
+  role.addToPolicy(new iam.PolicyStatement({
+    resources: [
+      `arn:aws:events:${region}:${account_id}:event-bus/default`
+    ],
+    actions: [
+      "events:PutEvents"
+    ]
+  }));
+
+  return role
+}
+
 interface Props {
   crossEventRegionCondition: cdk.CfnCondition;
   vpc: ec2.Vpc;
@@ -123,6 +143,8 @@ interface Props {
 export default (scope: Construct, props: Props) => {
 
   const template_file = 'src/molecule-unfolding/cdk/utils/custom-resource-lambda/create-event-rule/template.json'
+
+  const eventBridgeRole = createEventBridgeRole(scope);
 
   const role = createCustomResourceLambdaRole(scope, 'CreateEventRuleFuncRole')
 
@@ -139,6 +161,9 @@ export default (scope: Construct, props: Props) => {
     vpcSubnets: props.vpc.selectSubnets({
       subnetType: ec2.SubnetType.PRIVATE_WITH_NAT
     }),
+    environment: {
+      'EVENT_BRIDGE_ROLE_ARN': eventBridgeRole.roleArn
+    },
 
     bundling: {
       commandHooks: {

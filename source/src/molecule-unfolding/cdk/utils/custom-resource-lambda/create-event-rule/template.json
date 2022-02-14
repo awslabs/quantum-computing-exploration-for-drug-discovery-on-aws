@@ -6,6 +6,10 @@
             "Type": "String",
             "Description": "Target Region",
             "Default": "us-east-1"
+        },
+        "EventBridgeRoleArn": {
+            "Type": "String",
+            "Description": "EventBridge IAM Role Arn"
         }
     },
     "Resources": {
@@ -30,51 +34,7 @@
                         },
                         "Id": "CrossRegionDestinationBus",
                         "RoleArn": {
-                            "Fn::GetAtt": [
-                                "EventBridgeIAMrole",
-                                "Arn"
-                            ]
-                        }
-                    }
-                ]
-            }
-        },
-        "EventBridgeIAMrole": {
-            "Type": "AWS::IAM::Role",
-            "Properties": {
-                "AssumeRolePolicyDocument": {
-                    "Version": "2012-10-17",
-                    "Statement": [
-                        {
-                            "Effect": "Allow",
-                            "Principal": {
-                                "Service": {
-                                    "Fn::Sub": "events.amazonaws.com"
-                                }
-                            },
-                            "Action": "sts:AssumeRole"
-                        }
-                    ]
-                },
-                "Path": "/",
-                "Policies": [
-                    {
-                        "PolicyName": "PutEventsDestinationBus",
-                        "PolicyDocument": {
-                            "Version": "2012-10-17",
-                            "Statement": [
-                                {
-                                    "Effect": "Allow",
-                                    "Action": [
-                                        "events:PutEvents"
-                                    ],
-                                    "Resource": [
-                                        {
-                                            "Fn::Sub": "arn:aws:events:${TargetRegion}:${AWS::AccountId}:event-bus/default"
-                                        }
-                                    ]
-                                }
-                            ]
+                            "Ref": "EventBridgeRoleArn"
                         }
                     }
                 ]
