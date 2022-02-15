@@ -29,6 +29,7 @@ import {
 
 function createCustomResourceLambdaRole(scope: Construct, roleName: string): iam.Role {
   const account_id = Stack.of(scope).account
+  const region = Stack.of(scope).region
 
   const role = new iam.Role(scope, `${roleName}`, {
     assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
@@ -50,7 +51,12 @@ function createCustomResourceLambdaRole(scope: Construct, roleName: string): iam
 
   role.addToPolicy(new iam.PolicyStatement({
     resources: [
-      `arn:aws:logs:*:${account_id}:log-group:*`
+      cdk.Arn.format({
+        service: 'logs',
+        resource: 'log-group',
+        resourceName: '*',
+        arnFormat: cdk.ArnFormat.COLON_RESOURCE_NAME,
+      }, cdk.Stack.of(scope))
     ],
     actions: [
       "logs:CreateLogStream",
@@ -61,28 +67,15 @@ function createCustomResourceLambdaRole(scope: Construct, roleName: string): iam
 
   role.addToPolicy(new iam.PolicyStatement({
     resources: [
-      `arn:aws:iam::${account_id}:role/*`,
-      `arn:aws:iam::${account_id}:policy/*`
-    ],
-    actions: [
-      "iam:DetachRolePolicy",
-      "iam:DeleteRolePolicy",
-      "iam:CreateRole",
-      "iam:DeleteRole",
-      "iam:AttachRolePolicy",
-      "iam:UpdateRole",
-      "iam:PutRolePolicy",
-      "iam:CreatePolicy",
-      "iam:DeletePolicy",
-      "iam:GetRole",
-      "iam:GetPolicy",
-      "iam:PassRole",
-    ]
-  }));
+      cdk.Arn.format({
+        service: 'events',
+        region: 'us-west-2',
+        resource: 'rule',
+        account: account_id,
+        resourceName: '*',
+        arnFormat: cdk.ArnFormat.COLON_RESOURCE_NAME,
+      }, cdk.Stack.of(scope))
 
-  role.addToPolicy(new iam.PolicyStatement({
-    resources: [
-      `arn:aws:events:*:${account_id}:rule/*`
     ],
     actions: [
       "events:DescribeRule",
@@ -97,7 +90,15 @@ function createCustomResourceLambdaRole(scope: Construct, roleName: string): iam
 
   role.addToPolicy(new iam.PolicyStatement({
     resources: [
-      `arn:aws:cloudformation:*:${account_id}:stack/*/*`
+      // `arn:aws:cloudformation:us-west-2:${account_id}:stack/QRSFDD-BraketEventTo${region}/*`
+      cdk.Arn.format({
+        service: 'cloudformation',
+        region: 'us-west-2',
+        resource: 'stack',
+        account: account_id,
+        resourceName: `/QRSFDD-BraketEventTo${region}/*`,
+        arnFormat: cdk.ArnFormat.COLON_RESOURCE_NAME,
+      }, cdk.Stack.of(scope))
     ],
     actions: [
       "cloudformation:CreateChangeSet",
@@ -124,7 +125,15 @@ function createEventBridgeRole(scope: Construct): iam.Role {
 
   role.addToPolicy(new iam.PolicyStatement({
     resources: [
-      `arn:aws:events:${region}:${account_id}:event-bus/default`
+     // `arn:aws:events:${region}:${account_id}:event-bus/default`
+     cdk.Arn.format({
+      service: 'events',
+      resource: 'event-bus',
+      region: region,
+      account: account_id,
+      resourceName: 'default',
+      arnFormat: cdk.ArnFormat.COLON_RESOURCE_NAME,
+    }, cdk.Stack.of(scope))
     ],
     actions: [
       "events:PutEvents"
