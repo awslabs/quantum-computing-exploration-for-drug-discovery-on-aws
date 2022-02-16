@@ -15,7 +15,7 @@ phases:
       nodejs: 14
   pre_build:
     commands:
-      - git clone https://github.com/awslabs/quantum-ready-solution-for-drug-discovery.git -b dev /tmp/repo
+      - git clone https://github.com/awslabs/quantum-ready-solution-for-drug-discovery.git -b feature/cdk /tmp/repo
       - rsync -av /tmp/repo/source ${CODEBUILD_SRC_DIR}/
       - rsync -av /tmp/repo/docs ${CODEBUILD_SRC_DIR}/
       - pwd
