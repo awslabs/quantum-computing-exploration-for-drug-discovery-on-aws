@@ -1,6 +1,6 @@
 ---
 title: Notebook Experiment
-weight: 10
+weight: 11
 ---
 
 # Background
@@ -56,7 +56,7 @@ idea is graphically reported in the following figure.
 
  1. elaboration of .MOL2 file for rotatable bonds
  2. the sorting method based on the betweeness centrality 
- 3.  many experiments on a ligand dataset compared with Random Search and GeoDock Search
+ 3. many experiments on a ligand dataset compared with Random Search and GeoDock Search
  4. dealing with the elaboration of .MOL2 file for rotatable bonds i
 
  In this workshop, we only focus on the constructing of equation for molecule unfolding and 

@@ -1,4 +1,9 @@
-## Batch Test Your Own Model
+---
+title: Batch Test Your Own Model
+weight: 13
+---
+
+## Prepare your own model
 
 You have two options to batch test your own model
 
