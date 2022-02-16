@@ -157,7 +157,7 @@ export default (scope: Construct, props: Props) => {
     handler: 'handler',
     timeout: cdk.Duration.minutes(5),
     memorySize: 256,
-    runtime: Runtime.NODEJS_12_X,
+    runtime: Runtime.NODEJS_14_X,
     reservedConcurrentExecutions: 5,
     role,
     vpc: props.vpc,
