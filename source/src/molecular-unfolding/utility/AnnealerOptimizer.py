@@ -19,6 +19,7 @@ s3_client = boto3.client("s3")
 log = logging.getLogger()
 log.setLevel('INFO')
 
+
 class Annealer():
 
     def __init__(self, model, method, **param):
@@ -47,7 +48,8 @@ class Annealer():
             self.sampler = dimod.SimulatedAnnealingSampler()
         elif method == "dwave-qa":
             self.my_bucket = param["bucket"]  # the name of the bucket
-            self.my_prefix = param["prefix"]  # the name of the folder in the bucket
+            # the name of the folder in the bucket
+            self.my_prefix = param["prefix"]
             s3_folder = (self.my_bucket, self.my_prefix)
             # async implementation
             self.sampler = BraketSampler(s3_folder, param["device"])
@@ -93,15 +95,18 @@ class Annealer():
         elif self.method == "dwave-qa":
             task_id = self.get_task_id()
             self.save("/tmp/qa_result.pickle")
-            response = self._upload_result_json(task_id, "/tmp/qa_result.pickle")
+            response = self._upload_result_json(
+                task_id, "/tmp/qa_result.pickle")
             logging.info(f"{self.method} save to s3 - {task_id}: {response}")
         return result
 
     def _upload_result_json(self, task_id, file_name):
         base_file_name = basename(file_name)
         key = f"{self.my_prefix}/{task_id}/{base_file_name}"
-        logging.info(f"_upload_result_json, bucket={self.my_bucket}, key={key}")
-        response = s3_client.upload_file(file_name, Bucket=self.my_bucket, Key=key)
+        logging.info(
+            f"_upload_result_json, bucket={self.my_bucket}, key={key}")
+        response = s3_client.upload_file(
+            file_name, Bucket=self.my_bucket, Key=key)
         return response
 
     def get_task_id(self):

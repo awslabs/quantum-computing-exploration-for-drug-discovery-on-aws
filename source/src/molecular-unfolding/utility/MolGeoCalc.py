@@ -8,6 +8,7 @@ import logging
 log = logging.getLogger()
 log.setLevel('INFO')
 
+
 def sub_list(l1, l2):
     result = []
     for n in range(len(l1)):
@@ -139,14 +140,14 @@ def update_pts_dict(target_name, pts_dict, rotate_pts, rotate_bd):
 def calc_distance_between_pts(pts1, pts2):
     pts1_middle = np.array(tuple(list(np.mean(np.array(pts1), axis=0))))
     pts2_middle = np.array(tuple(list(np.mean(np.array(pts2), axis=0))))
-    
+
 #     sum_distance = []
 #     for pt_a in pts1:
 #         for pt_b in pts2:
 #             sum_distance.append(np.linalg.norm(np.array(pt_a)-np.array(pt_b)))
-    
+
 #     return min(sum_distance)
-            
+
     return np.linalg.norm(pts1_middle-pts2_middle)
 
 
@@ -175,6 +176,7 @@ def pts_pos_list(pts_dict_list):
         pts_list.append(pt_dict['pts'])
     return pts_list
 
+
 def update_pts_distance(atom_pos_data, rb_set, tor_list, var_rb_map, theta_option, update_local_pts=False, update_distance=False):
     def _gen_pts_pos_list(pt_set, atom_pos_data):
         return [atom_pos_data[pt]['pts'] for pt in pt_set]
@@ -198,9 +200,11 @@ def update_pts_distance(atom_pos_data, rb_set, tor_list, var_rb_map, theta_optio
     distance = None
     if update_distance == True:
         # calculate distance
-        distance = calc_distance_between_pts(_gen_pts_pos_list(rb_set['f_0_set'], atom_pos_data), _gen_pts_pos_list(rb_set['f_1_set'], atom_pos_data))
+        distance = calc_distance_between_pts(_gen_pts_pos_list(
+            rb_set['f_0_set'], atom_pos_data), _gen_pts_pos_list(rb_set['f_1_set'], atom_pos_data))
 
     return distance
+
 
 def atom_distance_func(rotate_values, mol_data, var_rb_map, theta_option, M):
     # save temp results for pts
@@ -318,13 +322,13 @@ def mol_distance_func(atom_pos_data, check, set):
                 check_radius_distance = atom_pos_data[left_key]['vdw-radius'] + \
                     atom_pos_data[right_key]['vdw-radius']
                 if check_radius_distance > distance:
-                    map_set.add((left_key,right_key))
+                    map_set.add((left_key, right_key))
                     logging.debug(
                         f"!!!!!!!!!!!! initial van der waals check fail at {left_key} and {right_key} with check: {check_radius_distance} v.s. real {distance}")
             if check == 'test':
                 check_radius_distance = atom_pos_data[left_key]['vdw-radius'] + \
                     atom_pos_data[right_key]['vdw-radius']
-                if check_radius_distance > distance and (left_key,right_key) not in map_set:
+                if check_radius_distance > distance and (left_key, right_key) not in map_set:
                     logging.debug(
                         f"!!!!!!!!!!!! found van der waals check fail at {left_key} and {right_key} with check: {check_radius_distance} v.s. real {distance}")
 

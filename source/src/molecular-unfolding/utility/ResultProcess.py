@@ -10,14 +10,14 @@ import datetime
 import logging
 import re
 
-from .MolGeoCalc import atom_distance_func, calc_distance_between_pts, update_pts, update_pts_distance
-from .MolGeoCalc import mol_distance_func
+from .MolGeoCalc import update_pts_distance
 from .MoleculeParser import MoleculeData
 
 s3_client = boto3.client("s3")
 
 log = logging.getLogger()
 log.setLevel('INFO')
+
 
 class ResultParser():
     def __init__(self, method, **param):
@@ -86,10 +86,11 @@ class ResultParser():
         logging.info("_init_mol_file")
         for pt, info in self.mol_data.atom_data.items():
             self.atom_pos_data_temp[pt] = {}
-            self.atom_pos_data_temp[pt]['pts'] = [info['x'], info['y'], info['z']]
+            self.atom_pos_data_temp[pt]['pts'] = [
+                info['x'], info['y'], info['z']]
             self.atom_pos_data_temp[pt]['idx'] = ([0, 0, 0], [0, 0, 0])
             self.atom_pos_data_temp[pt]['vdw-radius'] = info['vdw-radius']
-   
+
     def _read_result_obj(self, bucket, prefix, task_id, file_name):
         logging.info("_read_result_obj")
         key = f"{prefix}/{task_id}/{file_name}"
@@ -148,13 +149,13 @@ class ResultParser():
     def _parse_model_info(self):
         logging.info("_parse_model_info")
 #         logging.info("_parse_model_info() model_info = {}".format(self.raw_result["model_info"]))
-        
+
         self.rb_var_map = self.raw_result["model_info"]["rb_var_map"]
         self.var_rb_map = self.raw_result["model_info"]["var_rb_map"]
 
         # parse D from model_name
         model_name = self.raw_result["model_info"]["model_name"]
-        
+
         self.M = int(model_name.split("_")[0])
         self.D = int(model_name.split("_")[1])
         self.theta_option = [x * 360/self.D for x in range(self.D)]
@@ -176,51 +177,54 @@ class ResultParser():
         pddf_best_result = pddf_sample_result.iloc[pddf_sample_result['energy'].idxmin(
         ), :]
 
-        logging.debug("generate_optimize_pts model_info={}".format(self.raw_result["model_info"]))
-
+        logging.debug("generate_optimize_pts model_info={}".format(
+            self.raw_result["model_info"]))
 
         best_config = pddf_best_result.filter(items=self.valid_var_name)
 
         chosen_var = best_config[best_config == 1].index.tolist()
-         
+
         # change chose var to dict
         var_dict = {}
         for valid_var in chosen_var:
             var_dict[valid_var.split("_")[1]] = valid_var.split("_")[2]
-        
+
         logging.debug(f"var_dict is {var_dict}")
-        
+
         # calculate optimized position
         f_distances_raw = {}
         f_distances_optimize = {}
-        
+
         for ris in self.mol_data.bond_graph.sort_ris_data[str(self.M)].keys():
             # ris: '30+31', '29+30', '30+31,29+30'
-#             atom_pos_data_temp = self.atom_pos_data_raw.copy()
+            #             atom_pos_data_temp = self.atom_pos_data_raw.copy()
             self._init_mol_file(self.atom_pos_data_temp)
             logging.debug(f"ris group {ris} ")
             torsion_group = ris.split(",")
             # update points
             rb_set = self.mol_data.bond_graph.sort_ris_data[str(
                 self.M)][ris]
-                             
+
             tor_list = []
             for rb_name in torsion_group:
                 var_name = self.rb_var_map[rb_name]
                 tor_list.append(f'X_{var_name}_{var_dict[var_name]}')
-            
+
             logging.debug(f"theta_option {self.theta_option}")
             logging.debug(f"rb_set {rb_set}")
-                             
-            optimize_distance = update_pts_distance(self.atom_pos_data_temp, rb_set, tor_list, self.var_rb_map, self.theta_option, True, True)
-            raw_distance = update_pts_distance(self.atom_pos_data_raw, rb_set, None, None, None, False, True)
-            
-            update_pts_distance(self.atom_pos_data, rb_set, tor_list, self.var_rb_map, self.theta_option, True, False)    
 
-                         
+            optimize_distance = update_pts_distance(
+                self.atom_pos_data_temp, rb_set, tor_list, self.var_rb_map, self.theta_option, True, True)
+            raw_distance = update_pts_distance(
+                self.atom_pos_data_raw, rb_set, None, None, None, False, True)
+
+            update_pts_distance(self.atom_pos_data, rb_set, tor_list,
+                                self.var_rb_map, self.theta_option, True, False)
+
             f_distances_optimize[tuple(ris)] = optimize_distance
             f_distances_raw[tuple(ris)] = raw_distance
-            self.parameters["volume"]["optimize"] = self.parameters["volume"]["optimize"] + optimize_distance
+            self.parameters["volume"]["optimize"] = self.parameters["volume"]["optimize"] + \
+                optimize_distance
             self.parameters["volume"]["initial"] = self.parameters["volume"]["initial"] + raw_distance
         logging.debug(f"finish update optimize points for {chosen_var}")
         logging.debug(f_distances_optimize)
@@ -235,7 +239,7 @@ class ResultParser():
             self.parameters["volume"]["initial"]
         # update optimized results
         self.parameters["volume"]["unfolding_results"] = chosen_var
-        
+
         return 0
 
     def save_mol_file(self, save_name):

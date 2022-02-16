@@ -2,7 +2,7 @@
 #   The following class is the construction of QUBO model
 ########################################################################################################################
 import dimod
-from .MolGeoCalc import atom_distance_func, calc_distance_between_pts, update_pts, update_pts_distance
+from .MolGeoCalc import update_pts_distance
 
 from collections import defaultdict
 import time
@@ -12,6 +12,7 @@ import os
 
 log = logging.getLogger()
 log.setLevel('INFO')
+
 
 class QMUQUBO():
 
@@ -95,7 +96,8 @@ class QMUQUBO():
                         self.model_qubo["pre-calc"][model_name]["rb_var_map"] = self.rb_var_map
                         self.model_qubo["pre-calc"][model_name]["time"] = end-start
                         self.model_qubo["pre-calc"][model_name]["model_name"] = model_name
-                        ris_name = list(self.mol_data.bond_graph.sort_ris_data[str(M)].keys()).copy()
+                        ris_name = list(
+                            self.mol_data.bond_graph.sort_ris_data[str(M)].keys()).copy()
                         valid_rb_name = []
                         for name in ris_name:
                             if len(name.split(',')) == 1:
@@ -113,7 +115,7 @@ class QMUQUBO():
 
         for key, value in qubo_raw[0].items():
             qubo[key] = value
-        
+
         return qubo
 
     def _check_duplicate(self, values, names, method):
@@ -197,18 +199,6 @@ class QMUQUBO():
     def _build_qubo_pre_calc(self, mol_data, M, D, A, var, rb_var_map, var_rb_map, theta_option):
         # initial constraint
         hubo_constraints = {}
-        # for m in range(M):
-        #     for d1 in range(D):
-        #         var_1 = var[str(m+1)][str(d1+1)]
-        #         for d2 in range(D):
-        #             var_2 = var[str(m+1)][str(d2+1)]
-        #             if (var_2, var_1) in hubo_constraints.keys():
-        #                 hubo_constraints[(var_2, var_1)] = hubo_constraints[(
-        #                     var_2, var_1)] + A
-        #             elif var_1 == var_2:
-        #                 hubo_constraints[(var_1, var_1)] = -A
-        #             else:
-        #                 hubo_constraints[(var_1, var_2)] = A
 
         def update_constraint(ris, hubo_constraints):
             for d1 in range(D):
@@ -251,25 +241,16 @@ class QMUQUBO():
 
                     # update temp points and distance
                     self._init_mol_file()
-                    
-                    rb_set = self.mol_data.bond_graph.sort_ris_data[str(M)][ris]
-                    
-                    distance = update_pts_distance(self.atom_pos_data, rb_set, final_list, var_rb_map, theta_option, True, True)
-#                     for var_name in final_list:
-#                         d = var_name.split('_')[2]
-#                         rb_name = var_rb_map[var_name.split('_')[1]]
-#                         # update points
-#                         start_pts = self.atom_pos_data[rb_name.split('+')[0]]
-#                         end_pts = self.atom_pos_data[rb_name.split('+')[1]]
-#                         rotate_list = update_pts([start_pts], [end_pts], _gen_pts_list(
-#                         rb_set['f_1_set'], self.atom_pos_data), theta_option[int(d)-1])
-#                         for pt_name, pt_value in zip(rb_set['f_1_set'], rotate_list):
-#                             self.atom_pos_data[pt_name]['pts'] = pt_value
-                    # calculate distance
-#                     distance = -calc_distance_between_pts(_gen_pts_pos_list(rb_set['f_0_set'], self.atom_pos_data), _gen_pts_pos_list(rb_set['f_1_set'], self.atom_pos_data))
-                    
+
+                    rb_set = self.mol_data.bond_graph.sort_ris_data[str(
+                        M)][ris]
+
+                    distance = update_pts_distance(
+                        self.atom_pos_data, rb_set, final_list, var_rb_map, theta_option, True, True)
+
                     hubo_distances[tuple(final_list_name)] = -distance
-                    logging.debug(f"final list {final_list} with distance {distance}")
+                    logging.debug(
+                        f"final list {final_list} with distance {distance}")
             else:
                 for d in range(D):
                     final_list = up_list + \
