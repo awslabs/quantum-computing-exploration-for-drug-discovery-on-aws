@@ -8,8 +8,19 @@ theme:
     - tabs
     - search.suggest
     - search.highlight
+
 plugins:
   - search
+
+# markdown_extensions:
+#   - admonition
+#   - codehilite
+#   - pymdownx.arithmatex:
+#       generic: true
+# extra_javascript:
+#   - ./mathjax.js
+#   - https://polyfill.io/v3/polyfill.js?features=es6
+#   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
 
 extra:
   alternate:
@@ -20,13 +31,5 @@ extra:
       link: /mkdocs-playground/zh/
       lang: zh
 
-markdown_extensions:
-  - pymdownx.arithmatex:
-      generic: true
-
-extra_javascript:
-  - javascripts/mathjax.js
-  - https://polyfill.io/v3/polyfill.min.js?features=es6
-  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
 
 

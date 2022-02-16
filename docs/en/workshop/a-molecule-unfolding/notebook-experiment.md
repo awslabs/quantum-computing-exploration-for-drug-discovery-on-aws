@@ -98,6 +98,10 @@ the angle to become $45^o$, so we set the **D** to 8
 (i.e., $8=360^o/45^o$). The **A** and **hubo_qubo_val** are 
 test from experiments. 
 
+The homomorphism $f$ is injective if and only if its kernel is only the 
+singleton set $e_G$, because otherwise $\exists a,b\in G$ with $a\neq b$ such 
+that $f(a)=f(b)$.
+
 We can use the following method to check the properties of 
 model. This way, we can build many models conveniently. 
 After that, we save the model and update the value of 
