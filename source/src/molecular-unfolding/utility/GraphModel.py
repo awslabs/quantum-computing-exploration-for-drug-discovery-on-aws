@@ -7,6 +7,8 @@ import math
 
 import logging
 
+log = logging.getLogger()
+log.setLevel('INFO')
 
 class BuildMolGraph():
 

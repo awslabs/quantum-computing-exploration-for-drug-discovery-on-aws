@@ -2,7 +2,7 @@
 #   The following class is the construction of QUBO model
 ########################################################################################################################
 import dimod
-from .MolGeoCalc import atom_distance_func
+from .MolGeoCalc import atom_distance_func, calc_distance_between_pts, update_pts, update_pts_distance
 
 from collections import defaultdict
 import time
@@ -10,6 +10,8 @@ import logging
 import pickle
 import os
 
+log = logging.getLogger()
+log.setLevel('INFO')
 
 class QMUQUBO():
 
@@ -26,6 +28,7 @@ class QMUQUBO():
         # init model_qubo to store the qubo for model of different methods
         self.model_info = {}
         self.model_qubo = {}
+        self.atom_pos_data = {}
         # define vars/var_rb_map/rb_var_map for different models
         self.var = None
         self.var_rb_map = None
@@ -184,6 +187,13 @@ class QMUQUBO():
 
         return var, var_rb_map, rb_var_map
 
+    def _init_mol_file(self):
+        for pt, info in self.mol_data.atom_data.items():
+            self.atom_pos_data[pt] = {}
+            self.atom_pos_data[pt]['pts'] = [info['x'], info['y'], info['z']]
+            self.atom_pos_data[pt]['idx'] = ([0, 0, 0], [0, 0, 0])
+            self.atom_pos_data[pt]['vdw-radius'] = info['vdw-radius']
+
     def _build_qubo_pre_calc(self, mol_data, M, D, A, var, rb_var_map, var_rb_map, theta_option):
         # initial constraint
         hubo_constraints = {}
@@ -216,7 +226,13 @@ class QMUQUBO():
         # update distance term
         hubo_distances = {}
 
-        def update_hubo(torsion_group, up_list):
+        def _gen_pts_pos_list(pt_set, atom_pos_data):
+            return [atom_pos_data[pt]['pts'] for pt in pt_set]
+
+        def _gen_pts_list(pt_set, atom_pos_data):
+            return [atom_pos_data[pt] for pt in pt_set]
+
+        def update_hubo(torsion_group, up_list, ris):
             if len(torsion_group) == 1:
                 #         print(tor_group)
                 for d in range(D):
@@ -229,14 +245,36 @@ class QMUQUBO():
                     else:
                         final_list_name = final_list
 #                     hubo_distances[tuple(final_list_name)] = -1
-                    distance = -atom_distance_func(tuple(final_list), mol_data, var_rb_map, theta_option, M)
-                    hubo_distances[tuple(final_list_name)] = distance
+                    # distance = -atom_distance_func(tuple(final_list), mol_data, var_rb_map, theta_option, M)
+                    # hubo_distances[tuple(final_list_name)] = distance
+                    # logging.debug(f"final list {final_list} with distance {distance}")
+
+                    # update temp points and distance
+                    self._init_mol_file()
+                    
+                    rb_set = self.mol_data.bond_graph.sort_ris_data[str(M)][ris]
+                    
+                    distance = update_pts_distance(self.atom_pos_data, rb_set, final_list, var_rb_map, theta_option, True, True)
+#                     for var_name in final_list:
+#                         d = var_name.split('_')[2]
+#                         rb_name = var_rb_map[var_name.split('_')[1]]
+#                         # update points
+#                         start_pts = self.atom_pos_data[rb_name.split('+')[0]]
+#                         end_pts = self.atom_pos_data[rb_name.split('+')[1]]
+#                         rotate_list = update_pts([start_pts], [end_pts], _gen_pts_list(
+#                         rb_set['f_1_set'], self.atom_pos_data), theta_option[int(d)-1])
+#                         for pt_name, pt_value in zip(rb_set['f_1_set'], rotate_list):
+#                             self.atom_pos_data[pt_name]['pts'] = pt_value
+                    # calculate distance
+#                     distance = -calc_distance_between_pts(_gen_pts_pos_list(rb_set['f_0_set'], self.atom_pos_data), _gen_pts_pos_list(rb_set['f_1_set'], self.atom_pos_data))
+                    
+                    hubo_distances[tuple(final_list_name)] = -distance
                     logging.debug(f"final list {final_list} with distance {distance}")
             else:
                 for d in range(D):
                     final_list = up_list + \
                         [var[rb_var_map[torsion_group[0]]][str(d+1)]]
-                    update_hubo(torsion_group[1:], final_list)
+                    update_hubo(torsion_group[1:], final_list, ris)
 
         for ris in mol_data.bond_graph.sort_ris_data[str(M)].keys():
             start = time.time()
@@ -246,9 +284,9 @@ class QMUQUBO():
             if len(torsion_group) == 1:
                 # update constraint
                 update_constraint(ris, hubo_constraints)
-            logging.info(torsion_group)
+            logging.debug(torsion_group)
             # update hubo terms
-            update_hubo(torsion_group, [])
+            update_hubo(torsion_group, [], ris)
             logging.debug(
                 f"elapsed time for torsion group {ris} : {(end-start)/60} min")
 

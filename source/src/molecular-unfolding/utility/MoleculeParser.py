@@ -14,6 +14,8 @@ import os
 
 from .GraphModel import BuildMolGraph
 
+log = logging.getLogger()
+log.setLevel('INFO')
 
 class MoleculeData():
 

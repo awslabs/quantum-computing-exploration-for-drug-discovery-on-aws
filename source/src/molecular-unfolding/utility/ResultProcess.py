@@ -1,6 +1,7 @@
 ########################################################################################################################
 #   The following class is for different kinds of annealing optimizer
 ########################################################################################################################
+from pickletools import optimize
 import boto3
 import json
 import pickle
@@ -9,13 +10,14 @@ import datetime
 import logging
 import re
 
-from .MolGeoCalc import atom_distance_func, update_pts
+from .MolGeoCalc import atom_distance_func, calc_distance_between_pts, update_pts, update_pts_distance
 from .MolGeoCalc import mol_distance_func
 from .MoleculeParser import MoleculeData
 
 s3_client = boto3.client("s3")
 
-logging_info = print
+log = logging.getLogger()
+log.setLevel('INFO')
 
 class ResultParser():
     def __init__(self, method, **param):
@@ -33,10 +35,15 @@ class ResultParser():
         self.result = None
         # initial mol file
         self.atom_pos_data = {}
+        self.atom_pos_data_raw = {}
+        self.atom_pos_data_temp = {}
         self.mol_file_name = param["raw_path"]
-        logging_info("MoleculeData.load()")
+        logging.info("MoleculeData.load()")
         self.mol_data = MoleculeData.load(param["data_path"])
-        self._init_mol_file()
+        logging.info("init mol data for final position")
+        self._init_mol_file(self.atom_pos_data)
+        logging.info("init mol data for raw position")
+        self._init_mol_file(self.atom_pos_data_raw)
         # parse model_info
         self.rb_var_map = None
         self.var_rb_map = None
@@ -50,45 +57,55 @@ class ResultParser():
         self._init_parameters()
 
         if self.method == "dwave-sa":
-            logging_info("parse simulated annealer result")
+            logging.info("parse simulated annealer result")
             self.result = None
         elif self.method == "dwave-qa":
-            logging_info("parse quantum annealer result")
+            logging.info("parse quantum annealer result")
             obj = self._read_result_obj(
                 self.bucket, self.prefix, self.task_id, "results.json")
             self.result = json.loads(obj["Body"].read())
 
     def _init_parameters(self):
-        logging_info("_init_parameters")
+        logging.info("_init_parameters")
         van_der_waals_check = 'initial'
+        # self.parameters["volume"] = {}
+        # self.parameters["volume"]["initial"], _, self.set = mol_distance_func(
+        #     self.atom_pos_data, van_der_waals_check, self.set)
         self.parameters["volume"] = {}
-        self.parameters["volume"]["initial"], _, self.set = mol_distance_func(
-            self.atom_pos_data, van_der_waals_check, self.set)
+        self.parameters["volume"]["optimize"] = 0
+        self.parameters["volume"]["initial"] = 0
 
-    def _init_mol_file(self):
-        logging_info("_init_mol_file")
+    def _init_mol_file(self, pos_data):
         for pt, info in self.mol_data.atom_data.items():
-            self.atom_pos_data[pt] = {}
-            self.atom_pos_data[pt]['pts'] = [info['x'], info['y'], info['z']]
-            self.atom_pos_data[pt]['idx'] = ([0, 0, 0], [0, 0, 0])
-            self.atom_pos_data[pt]['vdw-radius'] = info['vdw-radius']
+            pos_data[pt] = {}
+            pos_data[pt]['pts'] = [info['x'], info['y'], info['z']]
+            pos_data[pt]['idx'] = ([0, 0, 0], [0, 0, 0])
+            pos_data[pt]['vdw-radius'] = info['vdw-radius']
 
+    def _init_temp_mol_file(self):
+        logging.info("_init_mol_file")
+        for pt, info in self.mol_data.atom_data.items():
+            self.atom_pos_data_temp[pt] = {}
+            self.atom_pos_data_temp[pt]['pts'] = [info['x'], info['y'], info['z']]
+            self.atom_pos_data_temp[pt]['idx'] = ([0, 0, 0], [0, 0, 0])
+            self.atom_pos_data_temp[pt]['vdw-radius'] = info['vdw-radius']
+   
     def _read_result_obj(self, bucket, prefix, task_id, file_name):
-        logging_info("_read_result_obj")
+        logging.info("_read_result_obj")
         key = f"{prefix}/{task_id}/{file_name}"
-        print(f"_read_result_obj: {key}")
+        logging.info(f"_read_result_obj: {key}")
         obj = s3_client.get_object(Bucket=bucket, Key=key)
         return obj
 
     def _load_raw_result(self):
-        logging_info("_load_raw_result")
+        logging.info("_load_raw_result")
         if self.method == "dwave-sa":
-            logging_info("load simulated annealer raw result")
+            logging.info("load simulated annealer raw result")
             full_path = "./sa_result.pickle"
             with open(full_path, "rb") as f:
                 self.raw_result = pickle.load(f)
         elif self.method == "dwave-qa":
-            logging_info("load quantum annealer raw result")
+            logging.info("load quantum annealer raw result")
             obj = self._read_result_obj(
                 self.bucket, self.prefix, self.task_id, "qa_result.pickle")
             self.raw_result = pickle.loads(obj["Body"].read())
@@ -125,12 +142,12 @@ class ResultParser():
             return local_time, task_time, qa_total_time, qa_access_time
         else:
             local_time = self.raw_result["time"]
-            logging_info("sa only has local_time!")
+            logging.info("sa only has local_time!")
             return local_time, None, None, None
 
     def _parse_model_info(self):
-        logging_info("_parse_model_info")
-        logging_info("_parse_model_info() model_info = {}".format(self.raw_result["model_info"]))
+        logging.info("_parse_model_info")
+#         logging.info("_parse_model_info() model_info = {}".format(self.raw_result["model_info"]))
         
         self.rb_var_map = self.raw_result["model_info"]["rb_var_map"]
         self.var_rb_map = self.raw_result["model_info"]["var_rb_map"]
@@ -146,12 +163,12 @@ class ResultParser():
             var = self.rb_var_map[rb]
             for d in range(self.D):
                 self.valid_var_name.append(f'x_{var}_{d+1}')
-        logging_info(f"valid var for this model is {self.valid_var_name}")
+#         logging.info(f"valid var for this model is {self.valid_var_name}")
 
         return 0
 
     def generate_optimize_pts(self):
-        logging_info("generate_optimize_pts()")
+        logging.info("generate_optimize_pts()")
         # get best configuration
         pddf_sample_result = self.raw_result["response"].aggregate(
         ).to_pandas_dataframe()
@@ -159,44 +176,70 @@ class ResultParser():
         pddf_best_result = pddf_sample_result.iloc[pddf_sample_result['energy'].idxmin(
         ), :]
 
-        logging_info("generate_optimize_pts model_info={}".format(self.raw_result["model_info"]))
+        logging.debug("generate_optimize_pts model_info={}".format(self.raw_result["model_info"]))
 
-        #logging_info(self.raw_result["response"].variables)
 
         best_config = pddf_best_result.filter(items=self.valid_var_name)
 
-        def _gen_pts_list(pt_set, atom_pos_data):
-            return [atom_pos_data[pt] for pt in pt_set]
-
         chosen_var = best_config[best_config == 1].index.tolist()
+         
+        # change chose var to dict
+        var_dict = {}
         for valid_var in chosen_var:
-            var = valid_var.split("_")[1]
-            d = valid_var.split("_")[2]
-            rb_name = self.var_rb_map[var]
+            var_dict[valid_var.split("_")[1]] = valid_var.split("_")[2]
+        
+        logging.debug(f"var_dict is {var_dict}")
+        
+        # calculate optimized position
+        f_distances_raw = {}
+        f_distances_optimize = {}
+        
+        for ris in self.mol_data.bond_graph.sort_ris_data[str(self.M)].keys():
+            # ris: '30+31', '29+30', '30+31,29+30'
+#             atom_pos_data_temp = self.atom_pos_data_raw.copy()
+            self._init_mol_file(self.atom_pos_data_temp)
+            logging.debug(f"ris group {ris} ")
+            torsion_group = ris.split(",")
+            # update points
             rb_set = self.mol_data.bond_graph.sort_ris_data[str(
-                self.M)][rb_name]
-            print(valid_var)
-            start_pts = self.atom_pos_data[rb_name.split('+')[0]]
-            end_pts = self.atom_pos_data[rb_name.split('+')[1]]
-            rotate_list = update_pts([start_pts], [end_pts], _gen_pts_list(
-                rb_set['f_1_set'], self.atom_pos_data), self.theta_option[int(d)-1])
-            for pt_name, pt_value in zip(rb_set['f_1_set'], rotate_list):
-                self.atom_pos_data[pt_name]['pts'] = pt_value
+                self.M)][ris]
+                             
+            tor_list = []
+            for rb_name in torsion_group:
+                var_name = self.rb_var_map[rb_name]
+                tor_list.append(f'X_{var_name}_{var_dict[var_name]}')
+            
+            logging.debug(f"theta_option {self.theta_option}")
+            logging.debug(f"rb_set {rb_set}")
+                             
+            optimize_distance = update_pts_distance(self.atom_pos_data_temp, rb_set, tor_list, self.var_rb_map, self.theta_option, True, True)
+            raw_distance = update_pts_distance(self.atom_pos_data_raw, rb_set, None, None, None, False, True)
+            
+            update_pts_distance(self.atom_pos_data, rb_set, tor_list, self.var_rb_map, self.theta_option, True, False)    
 
-        logging_info(f"finish update optimize points for {chosen_var}")
+                         
+            f_distances_optimize[tuple(ris)] = optimize_distance
+            f_distances_raw[tuple(ris)] = raw_distance
+            self.parameters["volume"]["optimize"] = self.parameters["volume"]["optimize"] + optimize_distance
+            self.parameters["volume"]["initial"] = self.parameters["volume"]["initial"] + raw_distance
+        logging.debug(f"finish update optimize points for {chosen_var}")
+        logging.debug(f_distances_optimize)
+        logging.debug(f_distances_raw)
 
         # update mol distance metrics
-        van_der_waals_check = 'test'
-        self.parameters["volume"]["optimize"], _, _ = mol_distance_func(
-            self.atom_pos_data, van_der_waals_check, self.set)
+        # van_der_waals_check = 'test'
+        # self.parameters["volume"]["optimize"], _, _ = mol_distance_func(
+        #     self.atom_pos_data, van_der_waals_check, self.set)
         # update relative improvement
         self.parameters["volume"]["gain"] = self.parameters["volume"]["optimize"] / \
             self.parameters["volume"]["initial"]
-
+        # update optimized results
+        self.parameters["volume"]["unfolding_results"] = chosen_var
+        
         return 0
 
     def save_mol_file(self, save_name):
-        logging_info(f"save_mol_file {save_name}")
+        logging.info(f"save_mol_file {save_name}")
         raw_f = open(self.mol_file_name, "r")
         lines = raw_f.readlines()
 
@@ -250,6 +293,6 @@ class ResultParser():
         with open(file_save_name, "w") as outfile:
             json.dump(self.parameters, outfile)
 
-        logging_info(f"finish save {mol_save_name} and {file_save_name}")
+        logging.info(f"finish save {mol_save_name} and {file_save_name}")
 
         return [mol_save_name, file_save_name]
