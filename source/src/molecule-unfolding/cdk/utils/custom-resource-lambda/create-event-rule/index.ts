@@ -12,20 +12,21 @@ const {
 
 import {
     Context
- } from './handler';
+} from './handler';
 
- import {
+import {
     CloudFormationCustomResourceEvent,
- }  from './cloudformation-custom-resource';
+} from './cloudformation-custom-resource';
 
 
 exports.handler = async function (event: CloudFormationCustomResourceEvent, context: Context) {
-    await _handler(event, context).then(() => {
+    try {
+        await _handler(event, context)
         console.log("=== complete ===")
-    }).catch((e: Error) => {
+    } catch (e: any) {
         console.error(e.message);
         throw e
-    })
+    }
 }
 
 function sleep(millis: number) {
@@ -34,7 +35,7 @@ function sleep(millis: number) {
 
 async function _handler(event: CloudFormationCustomResourceEvent, context: Context) {
     const currentRegion = process.env.AWS_REGION
-    let RequestType =  event.RequestType
+    let RequestType = event.RequestType
 
     console.log("functionName: " + context.functionName)
     console.log("currentRegion: " + currentRegion)
@@ -56,13 +57,13 @@ async function _handler(event: CloudFormationCustomResourceEvent, context: Conte
         StackName: stackName,
         Capabilities: ['CAPABILITY_NAMED_IAM'],
         Parameters: [{
-            ParameterKey: 'TargetRegion',
-            ParameterValue: currentRegion
-        },
-        {
-            ParameterKey: 'EventBridgeRoleArn',
-            ParameterValue: eventBridgeRoleArn
-        }
+                ParameterKey: 'TargetRegion',
+                ParameterValue: currentRegion
+            },
+            {
+                ParameterKey: 'EventBridgeRoleArn',
+                ParameterValue: eventBridgeRoleArn
+            }
         ],
         TemplateBody: templateBody
     }
@@ -72,14 +73,16 @@ async function _handler(event: CloudFormationCustomResourceEvent, context: Conte
     });
 
     let stackExists = true
-    await cf_client.send(describeCommand).catch((e: Error) => {
+    try {
+        await cf_client.send(describeCommand)
+    } catch (e: any) {
         if (e.message.indexOf('does not exist') > 0) {
             stackExists = false
         } else {
-            console.log(e.message);
+            console.error(e.message);
             throw e;
         }
-    });
+    }
 
     console.log("stackExists: " + stackExists)
 
@@ -112,12 +115,16 @@ async function _handler(event: CloudFormationCustomResourceEvent, context: Conte
     let stackStatus = ''
     do {
         response = undefined;
-        response = await cf_client.send(describeCommand).catch((e: Error) => {
-            console.log(e.message);
+        try {
+            response = await cf_client.send(describeCommand)
+        } catch (e: any) {
             if (RequestType == "Delete" && e.message.indexOf('does not exist') > 0) {
                 stackStatus = 'complete'
+            } else {
+                console.error(e.message);
             }
-        });
+        }
+
         if (response && stackStatus != 'complete') {
             stackStatus = response['Stacks'][0]['StackStatus']
             console.log(`${stackStatus}`)
