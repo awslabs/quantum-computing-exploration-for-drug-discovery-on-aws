@@ -70,9 +70,8 @@ function createCustomResourceLambdaRole(scope: Construct, roleName: string): iam
       cdk.Arn.format({
         service: 'events',
         region: 'us-west-2',
-        resource: 'rule',
+        resource: 'rule/*',
         account: account_id,
-        resourceName: '*',
         arnFormat: cdk.ArnFormat.COLON_RESOURCE_NAME,
       }, cdk.Stack.of(scope))
 
@@ -90,28 +89,25 @@ function createCustomResourceLambdaRole(scope: Construct, roleName: string): iam
 
   role.addToPolicy(new iam.PolicyStatement({
     resources: [
-      // `arn:aws:cloudformation:us-west-2:${account_id}:stack/QRSFDD-BraketEventTo${region}/*`
       cdk.Arn.format({
         service: 'cloudformation',
         region: 'us-west-2',
-        resource: 'stack',
+        resource: `stack/QRSFDD-BraketEventTo${region}/*`,
         account: account_id,
-        resourceName: `/QRSFDD-BraketEventTo${region}/*`,
         arnFormat: cdk.ArnFormat.COLON_RESOURCE_NAME,
       }, cdk.Stack.of(scope))
     ],
     actions: [
       "cloudformation:CreateChangeSet",
       "cloudformation:DeleteChangeSet",
-      "cloudformation:UpdateStack",
       "cloudformation:DescribeChangeSet",
       "cloudformation:ExecuteChangeSet",
-      "cloudformation:CreateStack",
+      "cloudformation:UpdateStack",
       "cloudformation:DeleteStack",
+      "cloudformation:CreateStack",
       "cloudformation:DescribeStacks"
     ]
   }));
-
   return role;
 }
 
@@ -125,15 +121,13 @@ function createEventBridgeRole(scope: Construct): iam.Role {
 
   role.addToPolicy(new iam.PolicyStatement({
     resources: [
-     // `arn:aws:events:${region}:${account_id}:event-bus/default`
-     cdk.Arn.format({
-      service: 'events',
-      resource: 'event-bus',
-      region: region,
-      account: account_id,
-      resourceName: 'default',
-      arnFormat: cdk.ArnFormat.COLON_RESOURCE_NAME,
-    }, cdk.Stack.of(scope))
+      cdk.Arn.format({
+        service: 'events',
+        resource: 'event-bus/default',
+        region: region,
+        account: account_id,
+        arnFormat: cdk.ArnFormat.COLON_RESOURCE_NAME,
+      }, cdk.Stack.of(scope))
     ],
     actions: [
       "events:PutEvents"
@@ -154,8 +148,9 @@ export default (scope: Construct, props: Props) => {
   const template_file = 'src/molecule-unfolding/cdk/utils/custom-resource-lambda/create-event-rule/template.json'
 
   const eventBridgeRole = createEventBridgeRole(scope);
-
   const role = createCustomResourceLambdaRole(scope, 'CreateEventRuleFuncRole')
+
+  eventBridgeRole.grantPassRole(role)
 
   const createEventRuleFunc = new NodejsFunction(scope, 'CreateEventRuleFunc', {
     entry: `${__dirname}/custom-resource-lambda/create-event-rule/index.ts`,
@@ -189,8 +184,9 @@ export default (scope: Construct, props: Props) => {
         },
       },
     }
-
   });
+
+  createEventRuleFunc.node.addDependency(props.vpc)
 
   const provider = new Provider(
     scope,
