@@ -7,6 +7,7 @@ Molecular Docking (MD) is an important step of the drug discovery process which 
 the preferred position and shape of one molecule to a second when they are bound to each other. This step focuses on computationally simulating the molecular recognition process. It aims to achieve an optimized conformation for both the protein and ligand and relative orientation between protein and ligand such that the free energy of the overall system is minimized. 
 
 ![Molecular Docking](../../images/molecule-docking.png)
+ <center>Molecular Docking[<sup>1</sup>](#wiki-docking)</center>
 
 In this work, The protein or the pocket is considered as a rigid structure. The ligand is considered as a 
 flexible set of atoms. There are usually three main phases in MD:
@@ -36,18 +37,75 @@ and open the link for your notebook
 ![deployment output](../../images/deploy_output_notebook.png)
 
 Please open the notebook 
-(source/src/molecule-folding/molecule_unfolding.ipynb) 
-and you can find that the whole notebook consists of 4 steps:
+(source/src/molecule-folding/molecule_unfolding.ipynb) and make sure that the kernel for this notebook is **qcenv**.
 
-* [Prepare Data](#prepare)
-* [Build Model](#buildmodel)
-* [Optimize Configuration](#optimize)
-* [PostProcess Result](#postprocess)
+![qcenv](../../images/qcenv.png)
+
+Navigate the whole notebook and you can find 
+that it consists of four Steps:
+
+|Steps|Contents|
+|:--|:--|
+|[Step1: Prepare Data](#prepare)|prepare molecular data for experiments|
+|[Step2: Build Model](#buildmodel)|build model for molecular unfolding|
+|[Step3: Optimize Configuration](#optimize)|run optimization to find the configuration|
+|[Step4: PostProcess Result](#postprocess)|post process the results for evaluation and visualization|
 
 
 # <span id="prepare">Prepare Data</span>
 
+In this part, we load the raw molecule data for experiment.
+The [117 ligand](http://www.rcsb.org/ligand/117) was 
+put in the repository. We assign the relative 
+path to **raw_path**.
+The **s3_bucket** and **prefix** are used to store the 
+optimization results. We can use the one created with the 
+cloudformation for convenience.
+
+![prepare-data](../../images/prepare-data.png)
+
+ <center>Process Molecule Data</center>
+
+After running this block, the processed data 
+will be saved as **qmu_117_ideal_data_latest.pickle**
+and **data_path** will be updated. We can see that this 
+molecule has 23 rotatable bonds.
+
 # <span id="buildmodel">Build Model</span>
+
+In this part, we build the Quadratic Unconstrained 
+Binary Optimization (QUBO) model for molecular unfolding.
+
+First, we set the following parameters and 
+initialize the QMUQUBO object. 
+
+| Parameter | Description | Value |
+|--- |--- |--- |
+|A | penalty scalar |300|
+|hubo_qubo_val | energy penalty of make_quadratic() |200|
+|M | number of torsions for molecular unfolding| [1, max number of rotatable bonds] |
+|D| angle precision of rotation| 8|
+|method| the method of building model| 'pre-calc': calculate the score in advance|
+
+![build-model](../../images/build-model.png)
+
+ <center>Build QUBO Model</center>
+
+We can see from the image that we use the 'pre-calc' method 
+to build the model. This molecule has 23 rotatable bonds and 
+we only test 2 of them, so we set the **M** to 2. And we want 
+the angle to become $45^o$, so we set the **D** to 8 
+(i.e., $8=360^o/45^o$). The **A** and **hubo_qubo_val** are 
+test from experiments. 
+
+We can use the following method to check the properties of 
+model. This way, we can build many models conveniently. 
+After that, we save the model and update the value of 
+**model_path**.
+
+![describe-model](../../images/describe-save-model.png)
+
+ <center>Describe and Save QUBO Model</center>
 
 ## Problem Definition
 
@@ -205,34 +263,66 @@ Congratulations! We have already prepared the model and it is time to evaluate.
 
 # <span id="optimize">Optimize Configuration</span>
 
-## Adjust Parameters For Optimization
+In this part, we use SA and QA to find the optimized configuration of molecular unfolding.
+At first, we load the model file using **QMUQUBO** object.
 
-We have our QUBO model for experiments. There are some parameters we should define for optimization.
+![load model](../../images/load-model.png)
+
+ <center>Load model file with one QUBO model</center>
+
+We can see the parameters of this model, with M equaling 2, D equaling 8, 
+A equaling 300 and hubo_qubo_val equaling 200. 
+Actually, we can contain multiple models in this file just 
+by giving multiple values for one parameter when creating models.
+
+![load multiple model](../../images/load-multiple-model.png)
+
+ <center>Load model file with two QUBO models</center>
+
+ This time, we can see that this model file contains two QUBO models with different M 
+ values. Then, we need use **model_name** to get the model for experiments.
+
+![get model](../../images/get-model.png)
+
+ <center>Get model using the model name</center>
+
+ We can see that we want to carry out experiment with the QUBO model with M equaling 2.
+ After that, we set the parameters for optimization.
 
 | Parameter | Description | Value |
 |--- |--- |--- |
-|A | penalty scalar |1000 |
-|hubo_qubo_val | energy penalty of make_quadratic() |5|
-|n_c | number of shots for simulated annealing in local instance | 1000|
-|n_q | number of shots for quantum annealing in QPU | 1000|
-|M | number of torsions for molecular unfolding| [1, all the torsions] |
-|D| angle precision of rotation| 8|
+|method | annealing method for QUBO problem |'dwave-sa': use the simulated annealer in ocean toolkit<br> 'dwave-qa': use the quantum annealer|
+|shots| number of reads, refer to [dwave-sa](https://docs.ocean.dwavesys.com/projects/neal/en/latest/reference/generated/neal.sampler.SimulatedAnnealingSampler.sample.html#neal.sampler.SimulatedAnnealingSampler.sample) and [dwave-qa](https://amazon-braket-ocean-plugin-python.readthedocs.io/en/latest/_apidoc/braket.ocean_plugin.braket_sampler.html) for details |1 to 10,000|
+|bucket | the s3 bucket to store your results | - |
+|prefix | the name of the folder in your s3 bucket | - |
+|device | the arn name to run your quantum annealing| 'arn:aws:braket:::device/qpu/d-wave/Advantage_system4' <br> 'arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6'|
 
-We use the following code to set the parameters:
+Then, we can run the SA for this problem:
 
-![Parameter](../../images/parameter.png)
+![OptimizeSA](../../images/optimize-sa.png)
 
-## Run Optimizers
+We can tell from the image that we set the number of shots for SA to 1000. 
+The result is saved as the local file **./sa_result.pickle.**
+Alternatively, we can use QA to solve this problem:
 
-After setting the parameters, we can run the optimization on classic device and quantum device.
+![OptimizeQA](../../images/optimize-qa.png)
 
-### Classical Optimizer for QUBO
+In this QA, we set the number of shots to 1000 and 
+choose the 
+[Advantage_System4.1](https://docs.dwavesys.com/docs/latest/doc_physical_properties.html)
+as the QPU. In addition, the results are saved to your bucket automatically and you 
+can get the task id for future process. 
+Finally, we can compare the execution time between SA and QA :
 
-![Classical](../../images/classical.png)
+![ExecuteTime](../../images/execute-time-qa-sa.png)
 
-### Quantum Optimizer for QUBO
+We can tell from the image that SA needs 174.2 seconds 
+and QA needs 7.7 seconds to find 
+solution.
 
-![Quantum](../../images/quantum.png)
+!!! warning
+
+    Be careful to increase the number of shots for SA to avoid long run time
 
 ## Analyze The Quality
 
@@ -243,46 +333,79 @@ occurs once.
 
 This does not always indicate an error. It is actually the characteristic of the problem or how the problem 
 is formulated. Because we have different linear and quadratic terms that vary by many orders of magnitude. If we 
-set change value of $A$ to some smaller number, like 10 or 100, more occurrences of the best answer will be observed. 
+set change value of A to some smaller number, like 10 or 100, more occurrences of the best answer will be observed. 
 However, these answers usually break the constraints. For more information about this phenomenon, please refer to this 
 [Link](https://support.dwavesys.com/hc/en-us/community/posts/1500000698522-Number-of-occurrences-?input_string=number%20occurance).
 
-After that, we need some postprocessing to get the results. What we really want are the desired angles of all the torsion.
-
-![Postprocess](../../images/PostProcess.png)
-
-We test different values of $M$, and we find that when $M > 5$, the quantum annealer can not embed it into its quantum circuit. When 
-$M < 3$, we can get comparable results from quantum annealer. In other cases, the results from the quantum annealer are not stable. 
-This is interesting that we cannot get the similar results as the publication explains. Any discussion or help is welcome!
-
-   |M |d | Results|
-   |--- |--- |--- |
-   |1|4|Comparable|
-   |2|4|Comparable|
-   |3|4|Comparable|
-   |4|4|Not Stable|
-   |5|4|Not Stable|
-   |>5|4|Not Available (Embedding Fail)|
-
 # <span id="postprocess">Post-Process Result</span>
 
-## Analyze The Efficiency
+In this part, we post process the optimizing results for evaluation and visualization.
+At first, we prepare the following parameters:
 
-In this workshop, we have test the efficiency of model with different complexity, $M * d$, on different devices. We test SA on ml.c5.4xlarge, 
-ml.m5.4xlarge, and ml.r5.4xlarge. We also test QA on DW_2000Q_6 and Advantage_system1.1. The result shows that, if the tasks run with the same 
-number of shots (1000), the quantum annealer has really nice scaling ability for solving combinatorial problems. 
-The Advantage_system1.1 only needs 
-3 minutes to solve the QUBO model ($M=5, d=8$), 
-while all the classic computing instance needs over 3 hours. However, there's suspicion that there is 
-still much space for improvement in the SA implemented by D-Wave. More strict evaluation is needed.
+| Parameter | Description | Value |
+|--- |--- |--- |
+|method | annealing method for QUBO problem |'dwave-sa': use the simulated annealer in ocean toolkit<br> 'dwave-qa': use the quantum annealer|
+|raw_path| the path for the original molecule file| './molecule-data/117_ideal.mol2' in this example |
+|data_path| the path for the processed molecule file| './qmu_117_ideal_data_latest.mol2' in this example |
+|bucket | the s3 bucket to store your results | - |
+|prefix | the name of the folder in your s3 bucket | - |
+|task_id | the id for your quantum annealing task| '2b5a3b05-1a0e-443a-852c-4ec422a10e59' in this example |
 
+Then we can run the post-process using **ResultParser** object for SA:
 
+![Post-SA](../../images/post-sa.png)
 
-If we change the number of shots for SA to 1, we get another group data for efficiency. 
+ <center>Post process for SA</center>
+
+In the first block, we can see the **local time**
+for SA is around 174 seconds. 
+With the **generate_optimize_pts()** method, the final 3D 
+points after unfolding will be generated and saved as json file and mol2 files. The last 
+block shows the optimizing results which are also stored in json files. 
+It shows that the optimized result gains 
+1.0212x increase in volume. The value for **unfolding_results** indicates 
+that the rotatable bond 15 should rotate $270^o$ ($360/8*(7-1)$) and 
+the rotatable bond 14 should rotate $315^o$ ($360/8*(8-1)$).
+At the same time, you can run the post-process for QA:
+
+![Post-QA](../../images/post-qa.png)
+
+ <center>Post process for QA</center>
+
+In the first block, we can see that there many types of time metrics for running QA.
+This task has the **local time** of 7.7 s, which means the time between calling the api and 
+getting the annealing result. The **task time** time is the metric from the json file in 
+bucket. We can also see the **qpu total time** and **qpu access time** representing the 
+actual time running in the QPU. Please refer to [Operation and Timing](https://docs.dwavesys.com/docs/latest/c_qpu_timing.html)
+for details. In same way, the optimized results are translated the 3D points and saved 
+as local json and mol2 files. The result indicates that QA gains 
+1.021x increase in 
+volume. Finally, We can open folders for the optimized results:
+
+![optimize-results](../../images/optimize-results.png)
+
+ <center>Optimize Results</center>
+
+We can the json result and mol2 file of SA and QA are 
+stored in this place. If we carry out more 
+experiments, more results with time stamp are 
+stored incrementally. 
+For visualization, 
+we can upload the 
+result **117_ideal_dwave-qa_20220216-05.mol2** 
+into 
+[online viewer tool](https://www.rcsb.org/3d-view) 
+to see the result:
+
+![visual](../../images/visualization.png)
+
+ <center>Visualization</center>
+
 
 # References
-
+<div id='wiki-docking'></div>
+- [Wiki: Molecular Docking](https://en.wikipedia.org/wiki/Docking_(molecular))
 <div id='qmu-paper'></div>
-- [1] [Publication: Quantum Molecular Unfolding](https://arxiv.org/abs/2107.13607)
+- [Publication: Quantum Molecular Unfolding](https://arxiv.org/abs/2107.13607)
 <div id='qmu-video'></div>
-- [2] [Video: Molecular Unfolding with Quantum Annealing](https://www.youtube.com/watch?v=1NmAXIHAF2Y)
+- [Video: Molecular Unfolding with Quantum Annealing](https://www.youtube.com/watch?v=1NmAXIHAF2Y)
