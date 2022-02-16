@@ -21,7 +21,7 @@ phases:
       - pwd
       - ls -al
       - cp ./.cfn-nag-ignore-lists.yml ./.cfnnag_global_suppress_list
-      - rm ./source/cdk.context.json
+      - rm ./source/cdk.context.json source/src/molecule-unfolding/input-template.json
       # - sed -i '9,$d' ${CODEBUILD_SRC_DIR}/source/docs/mkdocs.zh.yml
       # - echo '  - deployment-guide.md' >>${CODEBUILD_SRC_DIR}/source/docs/mkdocs.zh.yml
       # - cp -rf ${CODEBUILD_SRC_DIR}/source/docs ${CODEBUILD_SRC_DIR}/
