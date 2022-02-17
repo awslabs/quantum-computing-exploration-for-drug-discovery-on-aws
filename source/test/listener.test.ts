@@ -6,7 +6,7 @@ import { Template, Match } from "aws-cdk-lib/assertions";
 
 import {
     MainStack
-} from '../src/molecule-unfolding/cdk/stack-main';
+} from '../src/molecular-unfolding/cdk/stack-main';
 
 describe("Listener", () => {
     test("has 1 Events Rule", () => {

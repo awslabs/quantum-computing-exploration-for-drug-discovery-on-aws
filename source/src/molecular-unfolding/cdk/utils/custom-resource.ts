@@ -145,7 +145,7 @@ interface Props {
 
 export default (scope: Construct, props: Props) => {
 
-  const template_file = 'src/molecule-unfolding/cdk/utils/custom-resource-lambda/create-event-rule/template.json'
+  const template_file = 'src/molecular-unfolding/cdk/utils/custom-resource-lambda/create-event-rule/template.json'
 
   const eventBridgeRole = createEventBridgeRole(scope);
   const role = createCustomResourceLambdaRole(scope, 'CreateEventRuleFuncRole')

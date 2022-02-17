@@ -48,7 +48,7 @@ export class MainStack extends SolutionStack {
     this.setDescription(DESCRIPTION);
     const stackName = this.stackName.replace(/[^a-zA-Z0-9_]+/, '').toLocaleLowerCase()
 
-    const prefix = 'molecule-unfolding'
+    const prefix = 'molecular-unfolding'
 
     const crossEventRegionCondition = new cdk.CfnCondition(this, 'CrossEventRegionCondition', {
       expression: cdk.Fn.conditionNot(

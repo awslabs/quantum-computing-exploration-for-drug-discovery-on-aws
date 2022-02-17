@@ -6,7 +6,7 @@ import { Template, Match } from "aws-cdk-lib/assertions";
 
 import {
     MainStack
-} from '../src/molecule-unfolding/cdk/stack-main';
+} from '../src/molecular-unfolding/cdk/stack-main';
 
 describe("Benchmark", () => {
     test("has 1 batch ComputeEnvironment", () => {
@@ -74,7 +74,7 @@ describe("Benchmark", () => {
                         {
                             "Ref": Match.anyValue()
                         },
-                        "\",\"s3_prefix\":\"molecule-unfolding\",\"param_type\":\"PARAMS_FOR_HPC\",\"execution_id.$\":\"$.execution_id\",\"context.$\":\"$$\"}}},\"ParallelHPCJobs\":{\"Type\":\"Map\",\"ResultPath\":\"$.parallelHPCJobsMap\",\"End\":true,\"Parameters\":{\"ItemIndex.$\":\"$$.Map.Item.Index\",\"ItemValue.$\":\"$$.Map.Item.Value\",\"execution_id.$\":\"$.execution_id\"},\"Iterator\":{\"StartAt\":\"Run HPC Batch Task\",\"States\":{\"Run HPC Batch Task\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:aws:states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
+                        "\",\"s3_prefix\":\"molecular-unfolding\",\"param_type\":\"PARAMS_FOR_HPC\",\"execution_id.$\":\"$.execution_id\",\"context.$\":\"$$\"}}},\"ParallelHPCJobs\":{\"Type\":\"Map\",\"ResultPath\":\"$.parallelHPCJobsMap\",\"End\":true,\"Parameters\":{\"ItemIndex.$\":\"$$.Map.Item.Index\",\"ItemValue.$\":\"$$.Map.Item.Value\",\"execution_id.$\":\"$.execution_id\"},\"Iterator\":{\"StartAt\":\"Run HPC Batch Task\",\"States\":{\"Run HPC Batch Task\":{\"End\":true,\"Type\":\"Task\",\"Resource\":\"arn:aws:states:::batch:submitJob.sync\",\"Parameters\":{\"JobDefinition\":\"",
                         {
                             "Ref": Match.anyValue()
                         },
