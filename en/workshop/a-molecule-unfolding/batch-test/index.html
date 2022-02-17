@@ -389,14 +389,14 @@
       
       
         <label class="md-nav__link" for="__nav_8_2">
-          Molecule Unfolding
+          Molecular Unfolding
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <nav class="md-nav" aria-label="Molecule Unfolding" data-md-level="2">
+      <nav class="md-nav" aria-label="Molecular Unfolding" data-md-level="2">
         <label class="md-nav__title" for="__nav_8_2">
           <span class="md-nav__icon md-icon"></span>
-          Molecule Unfolding
+          Molecular Unfolding
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
@@ -706,79 +706,80 @@
 <h3 id="start-execution">Start Execution</h3>
 <p>All input fields of the input json is optional, but you can customize anything about model parameters, computing resources, QC devices, optimizer parameters.</p>
 <p>The input schema:</p>
-<pre><code class="language-json">{
-    &quot;version&quot;: &quot;string&quot;,
-    &quot;runMode&quot;: &quot;string&quot;,
-    &quot;molFile&quot;: &quot;string&quot;,
-    &quot;modelVersion&quot;: &quot;string&quot;,
-    &quot;experimentName&quot;: &quot;string&quot;,
-    &quot;optParams&quot;: {
-        &quot;qa&quot;: {
-            &quot;shots&quot;: &quot;int&quot;,
-            &quot;embed_method&quot;: &quot;string&quot;
-        },
-        &quot;sa&quot;: {
-            &quot;shots&quot;: &quot;int&quot;,
-            &quot;notes&quot;: &quot;string&quot;
-        }
-    },
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;runMode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;molFile&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;modelVersion&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;experimentName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;optParams&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;qa&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;shots&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;int&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;embed_method&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="p">},</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;sa&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;shots&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;int&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;notes&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
 
-    &quot;modelParams&quot;: {
-        &quot;M&quot;: &quot;int []&quot;,
-        &quot;D&quot;: &quot;int []&quot;,
-        &quot;A&quot;: &quot;int []&quot;,
-        &quot;HQ&quot;: &quot;int []&quot;,
-    },
-    &quot;devicesArns&quot;: &quot;string []&quot;,
-    &quot;hpcResources&quot;: &quot;[int, int] []&quot;,
-}
+<span class="w">    </span><span class="nt">&quot;modelParams&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;M&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;int []&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;D&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;int []&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;A&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;int []&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;HQ&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;int []&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;devicesArns&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string []&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;hpcResources&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;[int, int] []&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
 
-</code></pre>
 <p>Definition:</p>
-<pre><code>version:  the version of input schema, current only support  value is: '1'
+<div class="codehilite"><pre><span></span><code><span class="n">version</span><span class="o">:</span><span class="w">  </span><span class="n">the</span><span class="w"> </span><span class="n">version</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">input</span><span class="w"> </span><span class="n">schema</span><span class="o">,</span><span class="w"> </span><span class="n">current</span><span class="w"> </span><span class="n">only</span><span class="w"> </span><span class="n">support</span><span class="w">  </span><span class="n">value</span><span class="w"> </span><span class="k">is</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;1&#39;</span><span class="w"></span>
 
-runModel:  ALL|HPC|QC, default: 'ALL'
+<span class="n">runModel</span><span class="o">:</span><span class="w">  </span><span class="n">ALL</span><span class="o">|</span><span class="n">HPC</span><span class="o">|</span><span class="n">QC</span><span class="o">,</span><span class="w"> </span><span class="k">default</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;ALL&#39;</span><span class="w"></span>
 
-molFile: s3 url of the file
+<span class="n">molFile</span><span class="o">:</span><span class="w"> </span><span class="n">s3</span><span class="w"> </span><span class="n">url</span><span class="w"> </span><span class="n">of</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">file</span><span class="w"></span>
 
-modelVersion: any string, default: 'latest'
+<span class="n">modelVersion</span><span class="o">:</span><span class="w"> </span><span class="n">any</span><span class="w"> </span><span class="n">string</span><span class="o">,</span><span class="w"> </span><span class="k">default</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;latest&#39;</span><span class="w"></span>
 
-experimentName: any string
+<span class="n">experimentName</span><span class="o">:</span><span class="w"> </span><span class="n">any</span><span class="w"> </span><span class="n">string</span><span class="w"></span>
 
-hpcResources: 2-d array, e.g: 2 vCPU/4GiB memory and 4 vCPU/8GiB memory : [[2, 4], [4, 8]]
-</code></pre>
+<span class="n">hpcResources</span><span class="o">:</span><span class="w"> </span><span class="mi">2</span><span class="o">-</span><span class="n">d</span><span class="w"> </span><span class="n">array</span><span class="o">,</span><span class="w"> </span><span class="n">e</span><span class="o">.</span><span class="na">g</span><span class="o">:</span><span class="w"> </span><span class="mi">2</span><span class="w"> </span><span class="n">vCPU</span><span class="sr">/4GiB memory and 4 vCPU/</span><span class="mi">8</span><span class="n">GiB</span><span class="w"> </span><span class="n">memory</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="o">[[</span><span class="mi">2</span><span class="o">,</span><span class="w"> </span><span class="mi">4</span><span class="o">],</span><span class="w"> </span><span class="o">[</span><span class="mi">4</span><span class="o">,</span><span class="w"> </span><span class="mi">8</span><span class="o">]]</span><span class="w"></span>
+</code></pre></div>
+
 <p>A typical and default(if input json is <code>{}</code>) input:</p>
-<pre><code class="language-json">{
-    &quot;version&quot;: &quot;1&quot;,
-    &quot;runMode&quot;: &quot;ALL&quot;,
-    &quot;optParams&quot;: {
-        &quot;qa&quot;: {
-            &quot;shots&quot;: 1000
-        },
-        &quot;sa&quot;: {
-            &quot;shots&quot;: 1000
-        }
-    },
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;runMode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ALL&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;optParams&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;qa&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;shots&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="w"></span>
+<span class="w">        </span><span class="p">},</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;sa&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;shots&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
 
-    &quot;modelParams&quot;: {
-        &quot;M&quot;: [1, 2, 3, 4],
-        &quot;D&quot;: [4],
-        &quot;A&quot;: [300],
-        &quot;HQ&quot;: [200]
-    },
-    &quot;devicesArns&quot;: [
-        &quot;arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6&quot;,
-        &quot;arn:aws:braket:::device/qpu/d-wave/Advantage_system4&quot;
-    ],
-    &quot;hpcResources&quot;: [
-        [2, 2],
-        [4, 4],
-        [8, 8],
-        [16, 16]
-    ]
-}
+<span class="w">    </span><span class="nt">&quot;modelParams&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;M&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">],</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;D&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">4</span><span class="p">],</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;A&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">300</span><span class="p">],</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;HQ&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">200</span><span class="p">]</span><span class="w"></span>
+<span class="w">    </span><span class="p">},</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;devicesArns&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">        </span><span class="s2">&quot;arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="s2">&quot;arn:aws:braket:::device/qpu/d-wave/Advantage_system4&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">],</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;hpcResources&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">        </span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">],</span><span class="w"></span>
+<span class="w">        </span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">],</span><span class="w"></span>
+<span class="w">        </span><span class="p">[</span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">],</span><span class="w"></span>
+<span class="w">        </span><span class="p">[</span><span class="mi">16</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="p">]</span><span class="w"></span>
+<span class="w">    </span><span class="p">]</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
 
-</code></pre>
 <h3 id="view-dashboard">View dashboard</h3>
 <p>Dashboard <a href="https://us-east-1.quicksight.aws.amazon.com/sn/dashboards/qcstack-qcBenchmark-Dashboard">link</a></p>
 <p>If you run Step Functions multi-times, by default, the dashboard average metrics of all executions. You can click a item in the experiment hist table in the left-upper corner to view the result of a specific execution.  </p>
@@ -867,6 +868,12 @@ hpcResources: 2-d array, e.g: 2 vCPU/4GiB memory and 4 vCPU/8GiB memory : [[2, 4
     
     
       <script src="../../../assets/javascripts/bundle.5a9542cf.min.js"></script>
+      
+        <script src="../../../mathjax.js"></script>
+      
+        <script src="https://polyfill.io/v3/polyfill.js?features=es6"></script>
+      
+        <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
       
     
   </body>
