@@ -24,7 +24,7 @@ computing.
 
 The solution provides user the way to evaluate a particular problem based 
 on different computing resources , classical computing or quantum computing. 
-For example, for the problem of molecule unfolding, the performance difference 
+For example, for the problem of molecular unfolding, the performance difference 
 between quantum annealer and simulated annealer can be compared.
 
 * Visualization

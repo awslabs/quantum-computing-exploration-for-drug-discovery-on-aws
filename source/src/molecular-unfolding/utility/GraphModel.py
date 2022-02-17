@@ -7,6 +7,8 @@ import math
 
 import logging
 
+log = logging.getLogger()
+log.setLevel('INFO')
 
 class BuildMolGraph():
 
@@ -34,7 +36,7 @@ class BuildMolGraph():
                 nodes_list.append(node)
 
         def add_edge(edges_list, edge, rotatable_list, filter_by_type, bond_type):
-            if filter_by_type == True:
+            if filter_by_type :
                 if bond_type != 'ar':
                     rotatable_list.append(edge)
             if edge not in edges_list:

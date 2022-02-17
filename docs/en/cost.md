@@ -1,6 +1,8 @@
-You are responsible for the cost of Amazon cloud technology services used when running this solution. As of [November] 2021, the estimated cost for xx is xx.
+You are responsible for the cost of Amazon cloud technology services used when running this solution. As of January 2022, the estimated cost for the solution 
+is 25.12 USD per day.
 
 The whole cost consists of five types:
+
  * Notebook
  * Compute 
  * Storage
@@ -8,7 +10,7 @@ The whole cost consists of five types:
  * Orchestration
 
  The actual cost depends on the tasks performed and the complexity. Take 
- the molecule unfolding function for the prepared sample (117_idel.mol2) as 
+ the molecular unfolding function for the prepared sample (117_idel.mol2) as 
  an example. The following calculation is based on that customers use 
  the notebook to study sample code as well as use the solution to run 
  one complete batch test both on quantum computing resource and classical computing 

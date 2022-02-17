@@ -1,9 +1,9 @@
-name: CDK test
+name: Infra Build & Test
 'on':
   pull_request: {}
   workflow_dispatch: {}
 jobs:
-  cfn-nag:
+  build:
     runs-on: ubuntu-latest
     env:
       CI: 'true'
@@ -28,5 +28,3 @@ jobs:
         run: |
           cd source/
           npm run test
-          
-      
