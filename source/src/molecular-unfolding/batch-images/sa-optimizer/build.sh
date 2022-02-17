@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 set -e 
 
-repoName='molecule-unfolding/lambda-parse-braket-result'
+repoName='molecular-unfolding/sa-optimizer'
+
 rm -rf utility
 
 cp -r ../../utility . 

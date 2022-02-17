@@ -16,7 +16,9 @@ import boto3
 
 s3_client = boto3.client("s3")
 
-logging_info = print 
+log = logging.getLogger()
+log.setLevel('INFO')
+
 
 class Annealer():
 
@@ -42,15 +44,16 @@ class Annealer():
         self.my_prefix = None
 
         if method == "dwave-sa":
-            logging_info("use simulated annealer from dimod")
+            logging.info("use simulated annealer from dimod")
             self.sampler = dimod.SimulatedAnnealingSampler()
         elif method == "dwave-qa":
             self.my_bucket = param["bucket"]  # the name of the bucket
-            self.my_prefix = param["prefix"]  # the name of the folder in the bucket
+            # the name of the folder in the bucket
+            self.my_prefix = param["prefix"]
             s3_folder = (self.my_bucket, self.my_prefix)
             # async implementation
             self.sampler = BraketSampler(s3_folder, param["device"])
-            logging_info("use quantum annealer {} ".format(param["device"]))
+            logging.info("use quantum annealer {} ".format(param["device"]))
 
     def _update_model_info(self, model):
         self.model_info["model_name"] = model["model_name"]
@@ -60,7 +63,7 @@ class Annealer():
         self.model_info["rb_var_map"] = model["rb_var_map"]
 
     def fit(self):
-        logging_info("fit() ...")
+        logging.info("fit() ...")
         # self.pre_check()
         start = time.time()
         if self.method == "dwave-sa":
@@ -82,25 +85,28 @@ class Annealer():
         result["model_info"] = self.model_info
         self.result = result
 
-        #print(f"result={self.result}")
-        print("fit result.model_info={}".format(result["model_info"]))
+#         print(f"result={self.result}")
+#         print("fit result.model_info={}".format(result["model_info"]))
 
         # upload data
         if self.method == "dwave-sa":
-            logging_info(f"{self.method} save to local")
+            logging.info(f"{self.method} save to local")
             self.save("sa_result.pickle")
         elif self.method == "dwave-qa":
             task_id = self.get_task_id()
             self.save("/tmp/qa_result.pickle")
-            response = self._upload_result_json(task_id, "/tmp/qa_result.pickle")
-            logging_info(f"{self.method} save to s3 - {task_id}: {response}")
+            response = self._upload_result_json(
+                task_id, "/tmp/qa_result.pickle")
+            logging.info(f"{self.method} save to s3 - {task_id}: {response}")
         return result
 
     def _upload_result_json(self, task_id, file_name):
         base_file_name = basename(file_name)
         key = f"{self.my_prefix}/{task_id}/{base_file_name}"
-        print(f"_upload_result_json, bucket={self.my_bucket}, key={key}")
-        response = s3_client.upload_file(file_name, Bucket=self.my_bucket, Key=key)
+        logging.info(
+            f"_upload_result_json, bucket={self.my_bucket}, key={key}")
+        response = s3_client.upload_file(
+            file_name, Bucket=self.my_bucket, Key=key)
         return response
 
     def get_task_id(self):
@@ -122,7 +128,7 @@ class Annealer():
         with open(save_path, "wb") as f:
             pickle.dump(self.result, f)
 
-        logging_info(f"finish save {save_name}")
+        logging.info(f"finish save {save_name}")
 
         return save_path
 
@@ -139,10 +145,10 @@ class Annealer():
         elif self.method == "dwave-qa":
             self.time["time"] = self.time["optimize"] + \
                 self.time["embed"]
-        logging_info("method {} complte time {} minutes".format(
+        logging.info("method {} complte time {} minutes".format(
             self.method, self.time["time"]))
         if self.method == "dwave-qa":
-            logging_info("quantum annealer embed time {} minutes, optimize time {} minutes".format(
+            logging.info("quantum annealer embed time {} minutes, optimize time {} minutes".format(
                 self.time["embed"], self.time["optimize"]))
 
     def init_time(self):

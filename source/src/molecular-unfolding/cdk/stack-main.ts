@@ -46,7 +46,7 @@ export class MainStack extends SolutionStack {
     this.setDescription(DESCRIPTION);
     const stackName = this.stackName.replace(/[^a-zA-Z0-9_]+/, '').toLocaleLowerCase()
 
-    const prefix = 'molecule-unfolding'
+    const prefix = 'molecular-unfolding'
 
     const logS3bucket = new s3.Bucket(this, 'AccessLogS3Bucket', {
       removalPolicy: cdk.RemovalPolicy.RETAIN,

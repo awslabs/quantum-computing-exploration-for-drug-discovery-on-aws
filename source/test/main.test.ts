@@ -10,7 +10,7 @@ import {
 
 import {
     MainStack
-} from '../src/molecule-unfolding/cdk/stack-main';
+} from '../src/molecular-unfolding/cdk/stack-main';
 
 test('can create base stack', () => {
     const app = new App();

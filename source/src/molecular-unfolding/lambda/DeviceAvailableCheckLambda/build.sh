@@ -1,11 +1,7 @@
 #!/usr/bin/env bash
 set -e 
 
-repoName='molecule-unfolding/sa-optimizer'
-
-rm -rf utility
-
-cp -r ../../utility . 
+repoName='molecular-unfolding/lambda-device-available-check'
 
 docker build -t $repoName .
 

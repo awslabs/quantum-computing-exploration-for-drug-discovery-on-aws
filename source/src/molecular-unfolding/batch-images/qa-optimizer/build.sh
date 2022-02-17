@@ -1,13 +1,11 @@
 #!/usr/bin/env bash
 set -e 
 
-repoName='molecule-unfolding/create-model'
+repoName='molecular-unfolding/qa-optimizer'
 
 rm -rf utility
-rm -rf molecule-data
 
 cp -r ../../utility . 
-cp -r ../../molecule-data . 
 
 docker build -t $repoName .
 

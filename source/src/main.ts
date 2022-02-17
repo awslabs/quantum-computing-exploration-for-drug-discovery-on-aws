@@ -5,7 +5,7 @@ import {
 
 import {
   BatchJobDefinitionAspect
-} from './molecule-unfolding/cdk/utils/aspect-batch-job-definition'
+} from './molecular-unfolding/cdk/utils/aspect-batch-job-definition'
 
 import {
   BootstraplessStackSynthesizer,
@@ -13,7 +13,7 @@ import {
 
 import {
   MainStack,
-} from './molecule-unfolding/cdk/stack-main';
+} from './molecular-unfolding/cdk/stack-main';
 
 const app = new App();
 

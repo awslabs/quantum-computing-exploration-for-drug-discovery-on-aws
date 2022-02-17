@@ -6,7 +6,7 @@ import { Template } from "aws-cdk-lib/assertions";
 
 import {
     MainStack
-} from '../src/molecule-unfolding/cdk/stack-main';
+} from '../src/molecular-unfolding/cdk/stack-main';
 
 describe("Notebook", () => {
     test("has 1 notebook", () => {
