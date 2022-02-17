@@ -3,6 +3,7 @@ docs_dir: en
 site_dir: ./site/en
 theme:
   language: en
+
 nav:
 
   - Welcome: index.md
@@ -14,7 +15,7 @@ nav:
   - Automated Deployment: deployment.md
   - Workshop: 
     - Overview: workshop/background.md
-    - Molecule Unfolding: 
+    - Molecular Unfolding: 
       - Background: workshop/a-molecule-unfolding/molecule-unfolding.md
       - Notebook Experiment: workshop/a-molecule-unfolding/notebook-experiment.md
       - Batch Evaluation: workshop/a-molecule-unfolding/batch-test.md
@@ -24,5 +25,14 @@ nav:
   - Source code: source.md
   - Revisions: revisions.md
   - Notices: notices.md
-  # - FAQ: faq.md
 
+markdown_extensions:
+  - admonition
+  - codehilite
+  - pymdownx.arithmatex:
+      generic: true
+
+extra_javascript:
+  - ./mathjax.js
+  - https://polyfill.io/v3/polyfill.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
