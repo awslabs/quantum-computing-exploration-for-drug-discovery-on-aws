@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e 
 
-repoName='molecule-unfolding/create-model'
+repoName='molecular-unfolding/create-model'
 
 rm -rf utility
 rm -rf molecule-data

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e 
 
-repoName='molecule-unfolding/sa-optimizer'
+repoName='molecular-unfolding/sa-optimizer'
 
 rm -rf utility
 

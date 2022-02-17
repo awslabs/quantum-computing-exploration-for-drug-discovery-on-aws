@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e 
 
-repoName='molecule-unfolding/lambda-device-available-check'
+repoName='molecular-unfolding/lambda-device-available-check'
 
 docker build -t $repoName .
 

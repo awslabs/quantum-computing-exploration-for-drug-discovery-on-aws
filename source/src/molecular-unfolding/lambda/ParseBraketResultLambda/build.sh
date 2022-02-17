@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e 
 
-repoName='molecule-unfolding/lambda-parse-braket-result'
+repoName='molecular-unfolding/lambda-parse-braket-result'
 rm -rf utility
 
 cp -r ../../utility . 
