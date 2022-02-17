@@ -6,8 +6,11 @@ weight: 10
 Molecular Docking (MD) is an important step of the drug discovery process which aims at calculating 
 the preferred position and shape of one molecule to a second when they are bound to each other. This step focuses on computationally simulating the molecular recognition process. It aims to achieve an optimized conformation for both the protein and ligand and relative orientation between protein and ligand such that the free energy of the overall system is minimized. 
 
+<center>
 ![Molecular Docking](../../images/molecule-docking.png)
- <center>Molecular Docking[<sup>1</sup>](#wiki-docking)</center>
+
+ Molecular Docking[<sup>1</sup>](#wiki-docking)
+ </center>
 
 In this work, The protein or the pocket is considered as a rigid structure. The ligand is considered as a 
 flexible set of atoms. There are usually three main phases in MD:
@@ -34,15 +37,26 @@ docking. MU is the technology used for removing such initial bias.
 Go to the deployment output page in your cloudformation
 and open the link for your notebook
 
+<center>
 ![deployment output](../../images/deploy_output_notebook.png)
 
-Please open the notebook 
-(source/src/molecule-folding/molecule_unfolding.ipynb) and make sure that the kernel for this notebook is **qcenv**.
+Output of Cloudformation
+</center>
 
+Please open the notebook 
+in **source/src/molecular-folding/molecular_unfolding.ipynb** and make sure that the kernel for this notebook is **qcenv**.
+
+<center>
 ![qcenv](../../images/qcenv.png)
+
+Environment for Experiment
+</center>
+
 
 Navigate the whole notebook and you can find 
 that it consists of four Steps:
+
+<center>
 
 |Steps|Contents|
 |:--|:--|
@@ -50,6 +64,8 @@ that it consists of four Steps:
 |[Step2: Build Model](#buildmodel)|build model for molecular unfolding|
 |[Step3: Optimize Configuration](#optimize)|run optimization to find the configuration|
 |[Step4: PostProcess Result](#postprocess)|post process the results for evaluation and visualization|
+
+</center>
 
 
 # <span id="prepare">Prepare Data</span>
@@ -62,9 +78,11 @@ The **s3_bucket** and **prefix** are used to store the
 optimization results. We can use the one created with the 
 cloudformation for convenience.
 
+<center>
 ![prepare-data](../../images/prepare-data.png)
 
- <center>Process Molecule Data</center>
+ Process Molecule Data
+</center>
 
 After running this block, the processed data 
 will be saved as **qmu_117_ideal_data_latest.pickle**
@@ -79,6 +97,8 @@ Binary Optimization (QUBO) model for molecular unfolding.
 First, we set the following parameters and 
 initialize the QMUQUBO object. 
 
+<center>
+
 | Parameter | Description | Value |
 |--- |--- |--- |
 |A | penalty scalar |300|
@@ -87,9 +107,13 @@ initialize the QMUQUBO object.
 |D| angle precision of rotation| 8|
 |method| the method of building model| 'pre-calc': calculate the score in advance|
 
+ </center>
+
+<center>
 ![build-model](../../images/build-model.png)
 
- <center>Build QUBO Model</center>
+ Build QUBO Model
+ </center>
 
 We can see from the image that we use the 'pre-calc' method 
 to build the model. This molecule has 23 rotatable bonds and 
@@ -98,20 +122,24 @@ the angle to become $45^o$, so we set the **D** to 8
 (i.e., $8=360^o/45^o$). The **A** and **hubo_qubo_val** are 
 test from experiments. 
 
-The homomorphism $f$ is injective if and only if its kernel is only the 
-singleton set $e_G$, because otherwise $\exists a,b\in G$ with $a\neq b$ such 
-that $f(a)=f(b)$.
-
 We can use the following method to check the properties of 
 model. This way, we can build many models conveniently. 
 After that, we save the model and update the value of 
 **model_path**.
 
+<center>
+
 ![describe-model](../../images/describe-save-model.png)
 
- <center>Describe and Save QUBO Model</center>
+ Describe and Save QUBO Model
+ 
+ </center>
 
-## Problem Definition
+!!! notice
+
+    The following content is the technical details for building model
+
+### Problem Definition
 
 In this problem, the ligand is considered as a flexible set of atoms. Strictly speaking, 
 it can be seen as a set of chemical bonds (edges). These bonds have fixed length and 
@@ -121,39 +149,29 @@ the rightmost rotatable one, it splits the molecule into the left and right frag
 These fragments can rotate independently from each other around the axis of the bond. This 
 idea is graphically reported in the following figure. 
 
+<center>
+
  ![Rotatable Bonds](../../images/rotatable-bonds.png)
- <center>Rotatable Bonds [<sup>1</sup>](#qmu-paper)</center>
+ Rotatable Bonds [<sup>1</sup>](#qmu-paper)
+ 
+ </center>
 
  As it indicates, the objective of MU is to find the shape of the ligand that can maximizes 
  the molecular volume. The shape of the ligand can be expressed as the unfolded shape of the
   ligand (the torsion configuration of all the rotatable bonds).
 
-## Formulation
-
-{{% notice warning %}}
-
- The original paper has some work to make the story of molecular unfolding complete:
-
- 1. elaboration of .MOL2 file for rotatable bonds
- 2. the sorting method based on the betweeness centrality 
- 3.  many experiments on a ligand dataset compared with Random Search and GeoDock Search
- 4. dealing with the elaboration of .MOL2 file for rotatable bonds i
-
- In this workshop, we only focus on the constructing of equation for molecular unfolding and 
- the application of it in quantum annealer. We make the following assumptions:
-
- 1. The elaboration of rotatable bonds is already finished
- 2. The fragment is considered as the collections of atoms with fixed space 
- 3. The geometric center of the fragment is chosen as the distances of the atoms inside
-
- For more details, please refer to the original publication.
-
-{{% /notice %}}
+### Formulation
 
 Suppose the ligand has $M$ torsions, from $T_i$ to $T_M$, and each torsion must have the angle 
 of rotation $\theta$.
 
+<center>
+
 ![Multiple Torsion](../../images/multiple-torsion.png)
+
+Multiple Torsion
+
+</center>
 
 The objective of this model is to find the unfolded torsion configuration 
 ${\Theta}^{unfold}$ which 
@@ -167,25 +185,36 @@ The $D_{a,b}(\theta)^2$ is $|| \overrightarrow{a}_0 - R(\theta)\overrightarrow{b
 This is the distance between fragment a and b. $R(\theta)$ is the rotation matrix associated the torsion angle 
 $\theta$.
 
+<center>
+
 ![Two Frag One Tor](../../images/two-frag-one-torsion.png)
+
+Two Fragment with One Torsion
+
+</center>
 
 Since this is the problem of portfolio optimization, the final configuration can be the combination of any 
 angle of any torsion. However, there are some constraints for applying it to real problem: 
 
-1. In terms of the limitation of computation resource, the torsion cannot have the rotation with infinitely small 
+#### constraint-1
+
+In terms of the limitation of computation resource, the torsion cannot have the rotation with infinitely small 
 precision. This means that there are limited candidates of rotation angles for each torsion. Suppose we have 
 $M$ torsions and they have the same precision of rotation angle : 
 $\Delta\theta$ . This means that we need $d$ variables 
 for each torsion:
 
 $$ d = \frac{2\pi}{\Delta\theta} $$
+
 For the whole model, we need $n = d \times M$ binary variables $x_{ik}$ to represent all the combinations. 
 For example, for the torsion $T_i$, its torsion angle $\theta_i$ can have 
 $d$ possible values:
 
 $$ \theta_i = [\theta_i^1,\theta_i^2,\theta_i^3, ..., \theta_i^d] $$
 
-2. If we only consider the distance, the final result or configuration may have multiple results from the same torsion as long 
+#### constraint-2
+
+If we only consider the distance, the final result or configuration may have multiple results from the same torsion as long 
 as this combination means smaller distance. For example, there may be two binary variables of the same torsion, $T_i$, in the 
 final result:
 
@@ -206,22 +235,33 @@ means that we use the absolute distance instead:
 
 $$ O(x_{ik}) = A\displaystyle\sum\limits_i (\displaystyle\sum\limits_{k=1}^d x_{ik}-1)^2 - \displaystyle\sum\limits_{a,b} |D_{ab} (\theta)| $$
 
-## The Code for Model
+#### The Code for Model
+We have implemented this model in **source/src/molecualr-unfolding/untiliy/QMUQUBO.py**.
+We initialize 
+the variables using the following logic:
 
-We have implemented this model in **protein/ligand-unfolding/ligand_unfolding.ipynb**.
-Suppose we have finished the parameter setting, we first initialize 
-the variables using the following code:
+!!! notice
 
+    The following codes are for describing the ideas to build the model. We can find similar codes in the source code
+
+<center>
 ![Var Init](../../images/var-init.png)
+
+The Logic for Defining the Variables
+</center>
 
 The above code indicates that we have 4 torsions from $x\_1\_?$ 
 to $x\_4\_?$. Each torsion has four optional rotation angles from $0^o$ to 
 $270^o$. For example, $x\_3\_2$ means that the torsion 3 rotates 
 $180^o$.
 
-For constraints, we use the following code to implement: 
+For constraints, we use the following logic to implement: 
 
+<center>
 ![Constraint](../../images/constraint.png)
+
+The Logic for Defining the Constraints
+</center>
 
 As we analyze before, the model does not which variables belong to 
 the same physical torsion. For example, $x\_1\_1$ , $x\_1\_2$, $x\_1\_3$ 
@@ -234,9 +274,13 @@ term $600$.
 Most importantly, we use $calc\_distance\_func$ to calculate
 $|D_{ab} (\theta)|$ under different $\theta$.
 
+<center>
 ![Distance](../../images/distance.png)
 
-## Quantum Annealing
+The Logic for Calculating the Distance between Fragments.
+</center>
+
+### Quantum Annealing
 
 The quantum annealing (QA) can be seen as a variation of the simulated annealing (SA). Both QA and SA are meta-heuristic technique for address 
 challenging combinatorial problems. QA uses the quantum fluctuation to explore the configuration space instead of thermal effects. Here, we use 
@@ -251,7 +295,9 @@ In QUBO form, $x_i \in \{0, 1\}$ are binary variables. We can consider it as the
 
 $$ O(x) = \displaystyle\sum\limits_i \alpha_i x_i + \displaystyle\sum_{i,j} \beta_{i,j} x_i x_j + \displaystyle\sum_{i,j,k} \gamma_{i,j,k} x_i x_j x_k + ../... $$
 
+<center>
 ![Two Frag Mul Tor](../../images/two-frag-multiple-torsion.png)
+</center>
 
 It is often possible to convert HUBOs to QUBOs by using some tricks, 
 like adding new ancillary binary variables to replace high-order term. 
@@ -263,7 +309,7 @@ As the image shown, some high-order term of HUBO, like $('x\_1\_1','x\_2\_1','x\
 transformed to binary terms in QUBO. We only highlight some of them.
 
 
-Congratulations! We have already prepared the model and it is time to evaluate.
+Congratulations! We have already prepared the model and it is time to find the optimized configuration.
 
 # <span id="optimize">Optimize Configuration</span>
 
@@ -404,7 +450,6 @@ to see the result:
 ![visual](../../images/visualization.png)
 
  <center>Visualization</center>
-
 
 # References
 <div id='wiki-docking'></div>
