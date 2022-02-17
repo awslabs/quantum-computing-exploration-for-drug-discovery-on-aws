@@ -184,7 +184,7 @@ def update_pts_distance(atom_pos_data, rb_set, tor_list, var_rb_map, theta_optio
     def _gen_pts_list(pt_set, atom_pos_data):
         return [atom_pos_data[pt] for pt in pt_set]
     # rb_set
-    if update_local_pts == True:
+    if update_local_pts :
         for var_name in tor_list:
             d = var_name.split('_')[2]
             rb_name = var_rb_map[var_name.split('_')[1]]
@@ -198,7 +198,7 @@ def update_pts_distance(atom_pos_data, rb_set, tor_list, var_rb_map, theta_optio
                 atom_pos_data[pt_name]['pts'] = pt_value
 
     distance = None
-    if update_distance == True:
+    if update_distance :
         # calculate distance
         distance = calc_distance_between_pts(_gen_pts_pos_list(
             rb_set['f_0_set'], atom_pos_data), _gen_pts_pos_list(rb_set['f_1_set'], atom_pos_data))

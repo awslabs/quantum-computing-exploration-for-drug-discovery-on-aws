@@ -224,7 +224,6 @@ class QMUQUBO():
 
         def update_hubo(torsion_group, up_list, ris):
             if len(torsion_group) == 1:
-                #         print(tor_group)
                 for d in range(D):
                     final_list = up_list + \
                         [var[rb_var_map[torsion_group[0]]][str(d+1)]]
@@ -234,10 +233,6 @@ class QMUQUBO():
                         final_list_name = final_list + final_list
                     else:
                         final_list_name = final_list
-#                     hubo_distances[tuple(final_list_name)] = -1
-                    # distance = -atom_distance_func(tuple(final_list), mol_data, var_rb_map, theta_option, M)
-                    # hubo_distances[tuple(final_list_name)] = distance
-                    # logging.debug(f"final list {final_list} with distance {distance}")
 
                     # update temp points and distance
                     self._init_mol_file()

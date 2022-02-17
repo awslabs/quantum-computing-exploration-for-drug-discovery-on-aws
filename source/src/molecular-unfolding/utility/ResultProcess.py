@@ -67,7 +67,8 @@ class ResultParser():
 
     def _init_parameters(self):
         logging.info("_init_parameters")
-        van_der_waals_check = 'initial'
+        # TODO: leave for future post process
+        # van_der_waals_check = 'initial'
         # self.parameters["volume"] = {}
         # self.parameters["volume"]["initial"], _, self.set = mol_distance_func(
         #     self.atom_pos_data, van_der_waals_check, self.set)
