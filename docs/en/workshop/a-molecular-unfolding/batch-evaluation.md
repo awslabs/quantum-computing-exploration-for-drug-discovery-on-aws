@@ -1,6 +1,6 @@
 ## Run Batch Evaluation
 
-We will run batch evaluation through AWS Step Functions workflow and view the result via AWS QuickSight dashboard
+We will run batch evaluation through AWS Step Functions workflow and view the result via Amazon QuickSight dashboard
 
 ### Get Step Functions link from deployment output
 
@@ -155,6 +155,8 @@ The input schema:
 
 ```
 
+**Note**: all fields are optional.
+
 Definition:
 
   * **version**:  the version of input schema, current only support value is: '1'
@@ -202,7 +204,6 @@ A typical (the default) input:
             "shots": 1000
         }
     },
-
     "modelParams": {
         "M": [1, 2, 3, 4],
         "D": [4]
@@ -218,3 +219,4 @@ A typical (the default) input:
         [16, 16]
     ]
 }
+```

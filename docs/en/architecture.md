@@ -39,7 +39,7 @@ between quantum annealer and simulated annealer can be compared.
 7. The images for **Batch Evaluation** have been built in 
 [Amazon ECR](https://aws.amazon.com/ecr/). For customizing
 the logic for **Batch Evaluation**, please refer to 
-[Batch Evaluate Your Own Model Page](workshop/a-molecule-unfolding/test-your-own-model.md).
+[Batch Evaluate Your Own Model Page](workshop/a-molecular-unfolding/evaluate-your-own-model.md).
 
 8. The **Batch Evaluation** deploys [VPC Endpoints](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints.html) to ensure secure connection to AWS 
 services:

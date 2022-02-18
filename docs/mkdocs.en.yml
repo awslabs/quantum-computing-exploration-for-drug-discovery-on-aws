@@ -16,10 +16,10 @@ nav:
   - Workshop: 
     - Overview: workshop/background.md
     - Molecular Unfolding: 
-      - Background: workshop/a-molecule-unfolding/molecule-unfolding.md
-      - Notebook Experiment: workshop/a-molecule-unfolding/notebook-experiment.md
-      - Batch Evaluation: workshop/a-molecule-unfolding/batch-evaluation.md
-      - Evaluate Your Own Model: workshop/a-molecule-unfolding/evaluate-your-own-model.md
+      - Background: workshop/a-molecular-unfolding/molecular-unfolding.md
+      - Notebook Experiment: workshop/a-molecular-unfolding/notebook-experiment.md
+      - Batch Evaluation: workshop/a-molecular-unfolding/batch-evaluation.md
+      - Evaluate Your Own Model: workshop/a-molecular-unfolding/evaluate-your-own-model.md
   - Additional resources: additional-resources.md
   - Uninstall the solution: uninstall.md
   - Source code: source.md

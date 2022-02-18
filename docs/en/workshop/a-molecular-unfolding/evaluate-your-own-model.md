@@ -14,18 +14,21 @@ If you have your own mol2 file, you want to batch evaluate it, you can follow be
       ![S3 output bucket name](../../images/cloudformation-output-s3.png)
 
 1. Specify S3 uri of your mol2 file as the value of `molFile` in the Step Functions input
-  
+
+     
         {
             "molFile" : "<s3 uri of your mol2 file>"
         }
+   
 
-    e.g.
-
+       e.g.
+    
         {
            "molFile": "s3://amazon-braket-gcr-qc-sol-common/qc/raw_model/117_ideal.mol2"
-        }     
-        
-     The full input parameters and schema, please refer to [input specification](../batch-evaluation/#input-specification)
+        }
+
+    
+    The full input parameters and schema, please refer to [input specification](../batch-evaluation/#input-specification)
 
 1. Follow int steps in [Batch Evaluation](../batch-evaluation/#start-execution) to run the Step Functions
 
@@ -64,11 +67,12 @@ If you want to fully customize the evaluation code, follow below steps to make c
 1. Make changes to source code
 
 1. Update `quicksight_user` and `default_code_repository` in file `source/cdk.context.json`
-  
-         {
-           "quicksight_user": "<your QuickSight user>",
-           "default_code_repository": "<your github repository>"
-         }
+
+
+        {
+            "quicksight_user": "<your QuickSight user>",
+            "default_code_repository": "<your github repository>"
+        }
 
 
 ### Deploy stack to your AWS account from CDK
@@ -79,9 +83,10 @@ If you want to fully customize the evaluation code, follow below steps to make c
 
 1. Deploy changes to your AWS account from CDK
 
-        cd source
-        npm run deploy
         
+           cd source
+           npm run deploy
+              
  
 1. Wait for the deployment to complete
     
