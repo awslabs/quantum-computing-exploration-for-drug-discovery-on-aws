@@ -8,10 +8,10 @@
       
       
       
-        <link rel="canonical" href="https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/workshop/a-molecule-unfolding/test-your-own-model/">
+        <link rel="canonical" href="https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/workshop/a-molecular-unfolding/evaluate-your-own-model/">
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.1.11">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.2.1">
     
     
       
@@ -19,7 +19,7 @@
       
     
     
-      <link rel="stylesheet" href="../../../assets/stylesheets/main.50e68009.min.css">
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.e8d9bf0c.min.css">
       
         
         <link rel="stylesheet" href="../../../assets/stylesheets/palette.e6a45f82.min.css">
@@ -406,7 +406,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../molecule-unfolding/" class="md-nav__link">
+      <a href="../molecular-unfolding/" class="md-nav__link">
         Background
       </a>
     </li>
@@ -434,7 +434,7 @@
   
   
     <li class="md-nav__item">
-      <a href="../batch-test/" class="md-nav__link">
+      <a href="../batch-evaluation/" class="md-nav__link">
         Batch Evaluation
       </a>
     </li>
@@ -485,16 +485,43 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#batch-evaluate-your-own-mol2-file-with-out-code-changes" class="md-nav__link">
-    Batch Evaluate your own mol2 file with out code changes
+  <a href="#batch-evaluate-your-own-mol2-file-without-code-changes" class="md-nav__link">
+    Batch evaluate your own mol2 file without code changes
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#fully-customize-the-test-code" class="md-nav__link">
-    Fully customize the test code
+  <a href="#fully-customize-evaluation-code" class="md-nav__link">
+    Fully customize evaluation code
   </a>
+  
+    <nav class="md-nav" aria-label="Fully customize evaluation code">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    Prerequisites
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#customize-evaluation-code" class="md-nav__link">
+    Customize evaluation code
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deploy-stack-to-your-aws-account-from-cdk" class="md-nav__link">
+    Deploy stack to your AWS account from CDK
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -627,16 +654,43 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#batch-evaluate-your-own-mol2-file-with-out-code-changes" class="md-nav__link">
-    Batch Evaluate your own mol2 file with out code changes
+  <a href="#batch-evaluate-your-own-mol2-file-without-code-changes" class="md-nav__link">
+    Batch evaluate your own mol2 file without code changes
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#fully-customize-the-test-code" class="md-nav__link">
-    Fully customize the test code
+  <a href="#fully-customize-evaluation-code" class="md-nav__link">
+    Fully customize evaluation code
   </a>
+  
+    <nav class="md-nav" aria-label="Fully customize evaluation code">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#prerequisites" class="md-nav__link">
+    Prerequisites
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#customize-evaluation-code" class="md-nav__link">
+    Customize evaluation code
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deploy-stack-to-your-aws-account-from-cdk" class="md-nav__link">
+    Deploy stack to your AWS account from CDK
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -652,86 +706,129 @@
             <article class="md-content__inner md-typeset">
               
                 
-<a href="https://github.com/awslabs/quantum-ready-solution-for-drug-discovery/edit/master/docs/workshop/a-molecule-unfolding/test-your-own-model.md" title="Edit this page" class="md-content__button md-icon">
+<a href="https://github.com/awslabs/quantum-ready-solution-for-drug-discovery/edit/master/docs/workshop/a-molecular-unfolding/evaluate-your-own-model.md" title="Edit this page" class="md-content__button md-icon">
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25z"/></svg>
 </a>
+
 
 
   <h1>Evaluate Your Own Model</h1>
 
 <h2 id="batch-evaluate-your-own-model">Batch Evaluate Your Own Model</h2>
-<p>You have two options to batch test your own model</p>
+<p>You have two options to batch evaluate your own model</p>
 <ul>
-<li>Batch Evaluate your own mol2 file with out code changes</li>
-<li>Fully customize the test code</li>
+<li>Batch evaluate your own mol2 file without code changes</li>
+<li>Fully customize evaluation code</li>
 </ul>
-<h2 id="batch-evaluate-your-own-mol2-file-with-out-code-changes">Batch Evaluate your own mol2 file with out code changes</h2>
-<p>If you have your own mol2 file, you want to batch test it, you can follow below steps:</p>
+<h2 id="batch-evaluate-your-own-mol2-file-without-code-changes">Batch evaluate your own mol2 file without code changes</h2>
+<p>If you have your own mol2 file, you want to batch evaluate it, you can follow below steps:</p>
 <ol>
 <li>
-<p>Upload your mol2 file to a S3 bucket, bucket name must be <code>braket-*</code> or <code>amazon-braket-*</code>.</p>
+<p>Upload your mol2 file to the S3 bucket in CloudFormation output, or your own S3 bucket. If you want to use your own S3 bucket, the bucket name must be follow pattern:  <code>braket-*</code> or <code>amazon-braket-*</code>.</p>
+<p><img alt="S3 output bucket name" src="../../../images/cloudformation-output-s3.png" /></p>
 </li>
 <li>
-<p>Specify S3 uri of your mol2 file as the value of <code>molFile</code> in the Step Functions input json</p>
-<p><code>json
-{
-    "molFile" : "&lt;s3 uri of your mol2 file&gt;"
-}</code></p>
-<p>The full input parameters and schema, please refer to <a href="../batch-test/">batch test</a></p>
+<p>Specify S3 uri of your mol2 file as the value of <code>molFile</code> in the Step Functions input</p>
+<div class="codehilite"><pre><span></span><code>{
+    &quot;molFile&quot; : &quot;&lt;s3 uri of your mol2 file&gt;&quot;
+}
+</code></pre></div>
+
+<p>e.g.</p>
+<div class="codehilite"><pre><span></span><code>{
+   &quot;molFile&quot;: &quot;s3://amazon-braket-gcr-qc-sol-common/qc/raw_model/117_ideal.mol2&quot;
+}
+</code></pre></div>
+
+<p>The full input parameters and schema, please refer to <a href="../batch-evaluation/#input-specification">input specification</a></p>
 </li>
 <li>
-<p>Then <strong>Start Execution</strong> the Step functions.</p>
+<p>Follow int steps in <a href="../batch-evaluation/#start-execution">Batch Evaluation</a> to run the Step Functions</p>
 </li>
 </ol>
-<h2 id="fully-customize-the-test-code">Fully customize the test code</h2>
+<h2 id="fully-customize-evaluation-code">Fully customize evaluation code</h2>
 <p>This solution is an open source project under Apache License Version 2.0. You can leverage it as your base code, make changes on it.</p>
-<p>If you want to fully customize the test code, follow below steps to re-deploy the whole stack from CDK.</p>
+<p>If you want to fully customize the evaluation code, follow below steps to make changes and re-deploy the whole stack from CDK.</p>
+<h3 id="prerequisites">Prerequisites</h3>
 <ol>
 <li>
-<p>Fork the github repository of this solution to your own git repository.</p>
+<p>Make sure you have AWS CLI and AWS CDK install in your workspace</p>
+<blockquote>
+<p>You can follow this doc <a href="https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html">AWS CLI</a> to install AWS CLI.</p>
+<p>You can follow this document <a href="https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_prerequisites">CDK Getting Started</a> to install and bootstrap CDK</p>
+</blockquote>
 </li>
 <li>
-<p>Clone the project to your own workspace, make changes to the source code.</p>
+<p>Permissions</p>
+<p>Your AWS user must have at least <a href="../permissions.json">permissions</a></p>
 </li>
 <li>
-<p>Update <code>quicksight_user</code> and <code>default_code_repository</code> in file <code>source/cdk.context.json</code>.</p>
+<p>QuickSight account</p>
+<p>Check your QuickSight account <a href="../../../deployment/#check-your-quicksight">check your quicksight</a></p>
 </li>
 <li>
-<p>Check CloudFormation in your AWS account, make sure you do not have a stack named <code>QCStack</code> in your deployment region.</p>
-</li>
-<li>
-<p>Make sure you have AWS CDK install in your workspace.</p>
-<p>You can follow this doc <a href="https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html">cdk getting_started</a> to install and bootstrap CDK.</p>
-</li>
-<li>
-<p>Make sure you have docker running in your workspace.</p>
-<p>You can follow this doc <a href="https://docs.docker.com/engine/install/">docker install</a> to install docker.</p>
-</li>
-<li>
-<p>Deploy changes to your AWS account via CDK.</p>
+<p>Make sure you have docker running in your workspace</p>
+<blockquote>
+<p>You can follow this document <a href="https://docs.docker.com/engine/install/">Docker Install</a> to install docker.</p>
+</blockquote>
 </li>
 </ol>
-<p>```sh
-   cd source</p>
-<p>npm run deploy</p>
-<p>```</p>
+<h3 id="customize-evaluation-code">Customize evaluation code</h3>
 <ol>
 <li>
-<p>Wait for the deployment to complete.</p>
+<p>Fork the github repository of this solution to your own git repository</p>
+</li>
+<li>
+<p>Clone the project to your own workspace</p>
+</li>
+<li>
+<p>Make changes to source code</p>
+</li>
+<li>
+<p>Update <code>quicksight_user</code> and <code>default_code_repository</code> in file <code>source/cdk.context.json</code></p>
+<div class="codehilite"><pre><span></span><code>{
+    &quot;quicksight_user&quot;: &quot;&lt;your QuickSight user&gt;&quot;,
+    &quot;default_code_repository&quot;: &quot;&lt;your github repository&gt;&quot;
+}
+</code></pre></div>
+
+</li>
+</ol>
+<h3 id="deploy-stack-to-your-aws-account-from-cdk">Deploy stack to your AWS account from CDK</h3>
+<ol>
+<li>
+<p>Check CloudFormation in your AWS account, make sure you do not have a stack named <code>QCStack</code> in your deployment region</p>
+</li>
+<li>
+<p>Check your S3 bucket, make sure no bucket named <code>amazon-braket-qcstack-&lt;your aws account&gt;-&lt;deployment region&gt;</code></p>
+</li>
+<li>
+<p>Deploy changes to your AWS account from CDK</p>
+<div class="codehilite"><pre><span></span><code>   cd source
+   npm run deploy
+</code></pre></div>
+
+</li>
+<li>
+<p>Wait for the deployment to complete</p>
+<blockquote>
+<p>deployment will take about 10 minutes </p>
+</blockquote>
 </li>
 <li>
 <p>Get output links from CloudFormation output, the links include:</p>
-</li>
+<ul>
 <li>Step Functions URL</li>
 <li>QuickSight Dashboard link</li>
-<li>
-<p>Notebook URL</p>
+<li>Notebook URL</li>
+<li>S3 Bucket name</li>
+</ul>
 </li>
 <li>
-<p>Run Step Functions via your custom parameters.</p>
+<p>Follow steps in <a href="../batch-evaluation/">Batch Evaluation</a> to run your own code with appropriate input</p>
 </li>
 <li>
-<p>View result through QuickSight dashboard.</p>
+<p><a href="../batch-evaluation/#view-dashboard">View result</a> through QuickSight dashboard</p>
 </li>
 </ol>
 
@@ -747,7 +844,7 @@
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
         
-        <a href="../batch-test/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Batch Evaluation" rel="prev">
+        <a href="../batch-evaluation/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Batch Evaluation" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -799,10 +896,10 @@
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "../../..", "features": ["tabs", "search.suggest", "search.highlight"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.092fa1f6.min.js"}</script>
+    <script id="__config" type="application/json">{"base": "../../..", "features": ["tabs", "search.suggest", "search.highlight"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.bd0b6b67.min.js"}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.5a9542cf.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.8aa65030.min.js"></script>
       
         <script src="../../../mathjax.js"></script>
       
