@@ -26,6 +26,7 @@
                 "logs:*",
                 "braket:*",
                 "ecr:*",
+                "sns:*",
                 "athena:*",
                 "glue:*",
                 "states:*",
