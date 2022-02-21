@@ -1,20 +1,20 @@
 import {
-  App
+  App,
 } from 'aws-cdk-lib';
 
 import {
   Template,
   Match,
-  Capture
-} from "aws-cdk-lib/assertions";
+  Capture,
+} from 'aws-cdk-lib/assertions';
 
 import {
-  SolutionStack
+  MainStack,
+} from '../src/molecular-unfolding/cdk/stack-main';
+import {
+  SolutionStack,
 } from '../src/stack';
 
-import {
-  MainStack
-} from '../src/molecular-unfolding/cdk/stack-main';
 
 test('can create base stack', () => {
   const app = new App();
@@ -25,100 +25,100 @@ test('can create base stack', () => {
 test('can create MainStack', () => {
   const app = new App();
   const stack = new MainStack(app, 'test');
-  expect(stack).not.toBeNull()
+  expect(stack).not.toBeNull();
 });
 
-test("synthesizes the way we expect", () => {
+test('synthesizes the way we expect', () => {
   const app = new App();
   const stack = new MainStack(app, 'test');
   const template = Template.fromStack(stack);
-  expect(template).toBeTruthy()
-})
+  expect(template).toBeTruthy();
+});
 
-test("has 1 s3 bucket", () => {
+test('has 1 s3 bucket', () => {
   const app = new App();
   const stack = new MainStack(app, 'test');
   const template = Template.fromStack(stack);
-  template.hasResource('AWS::S3::Bucket', 1)
-})
+  template.hasResource('AWS::S3::Bucket', 1);
+});
 
-test("s3 bucket can be deleted", () => {
+test('s3 bucket can be deleted', () => {
   const app = new App();
   const stack = new MainStack(app, 'test');
   const template = Template.fromStack(stack);
-  template.hasResource('Custom::S3AutoDeleteObjects', 1)
-})
+  template.hasResource('Custom::S3AutoDeleteObjects', 1);
+});
 
-test("has 1 vpc", () => {
+test('has 1 vpc', () => {
   const app = new App();
   const stack = new MainStack(app, 'test');
   const template = Template.fromStack(stack);
-  template.hasResource('AWS::EC2::VPC', 1)
-})
+  template.hasResource('AWS::EC2::VPC', 1);
+});
 
-test("has 4 subnets", () => {
+test('has 4 subnets', () => {
   const app = new App();
   const stack = new MainStack(app, 'test');
   const template = Template.fromStack(stack);
-  template.hasResource("AWS::EC2::Subnet", 4)
-})
+  template.hasResource('AWS::EC2::Subnet', 4);
+});
 
-test("has 1 flowLog", () => {
+test('has 1 flowLog', () => {
   const app = new App();
   const stack = new MainStack(app, 'test');
   const template = Template.fromStack(stack);
-  template.hasResource("AWS::EC2::FlowLog", 1)
-})
+  template.hasResource('AWS::EC2::FlowLog', 1);
+});
 
-test("has output - bucketName", () => {
+test('has output - bucketName', () => {
   const app = new App();
   const stack = new MainStack(app, 'test');
   const template = Template.fromStack(stack);
-  template.hasOutput('bucketName', {})
-})
+  template.hasOutput('bucketName', {});
+});
 
-test("has 1 CustomResource", () => {
+test('has 1 CustomResource', () => {
   const app = new App();
   const stack = new MainStack(app, 'test');
   const template = Template.fromStack(stack);
-  template.hasResource('AWS::CloudFormation::CustomResource', 1)
-})
+  template.hasResource('AWS::CloudFormation::CustomResource', 1);
+});
 
-test("The CustomResource has Condition", () => {
+test('The CustomResource has Condition', () => {
   const app = new App();
   const stack = new MainStack(app, 'test');
   const template = Template.fromStack(stack);
 
   template.hasResource('AWS::CloudFormation::CustomResource', {
-    "Condition": "CrossEventRegionCondition"
-  })
-})
+    Condition: 'CrossEventRegionCondition',
+  });
+});
 
-test("CrossEventRegionCondition is for us-west-2", () => {
+test('CrossEventRegionCondition is for us-west-2', () => {
   const app = new App();
   const stack = new MainStack(app, 'test');
   const template = Template.fromStack(stack);
-  const conditionRegion = template.toJSON()['Conditions']['CrossEventRegionCondition']["Fn::Not"]
+  const conditionRegion = template.toJSON().Conditions.CrossEventRegionCondition['Fn::Not'];
   expect(conditionRegion).toEqual([{
-    "Fn::Equals": [{
-      "Ref": "AWS::Region"
-    }, "us-west-2"]
-  }])
-})
+    'Fn::Equals': [{
+      Ref: 'AWS::Region',
+    }, 'us-west-2'],
+  }]);
+});
 
 test('CreateEventRuleFunc has Environment Variables', () => {
   const app = new App();
   const stack = new MainStack(app, 'test');
   const template = Template.fromStack(stack);
   template.hasResourceProperties('AWS::Lambda::Function', {
-    "Environment": {
-      "Variables": {
-        "EVENT_BRIDGE_ROLE_ARN": Match.anyValue(),
-        "AWS_NODEJS_CONNECTION_REUSE_ENABLED": "1"
-      }
-    }
-  })
-})
+    Environment: {
+      Variables: {
+        EVENT_BRIDGE_ROLE_ARN: Match.anyValue(),
+        AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
+      },
+    },
+  });
+});
 
 
 test('EventBridgeRole has the right policy', () => {
@@ -126,35 +126,35 @@ test('EventBridgeRole has the right policy', () => {
   const stack = new MainStack(app, 'test');
   const template = Template.fromStack(stack);
   template.hasResourceProperties('AWS::IAM::Policy', {
-    "PolicyDocument": {
-      "Statement": [{
-        "Action": "events:PutEvents",
-        "Effect": "Allow",
-        "Resource": {
-          "Fn::Join": [
-            "",
+    PolicyDocument: {
+      Statement: [{
+        Action: 'events:PutEvents',
+        Effect: 'Allow',
+        Resource: {
+          'Fn::Join': [
+            '',
             [
-              "arn:",
+              'arn:',
               {
-                "Ref": "AWS::Partition"
+                Ref: 'AWS::Partition',
               },
-              ":events:",
+              ':events:',
               {
-                "Ref": "AWS::Region"
+                Ref: 'AWS::Region',
               },
-              ":",
+              ':',
               {
-                "Ref": "AWS::AccountId"
+                Ref: 'AWS::AccountId',
               },
-              ":event-bus/default"
-            ]
-          ]
-        }
+              ':event-bus/default',
+            ],
+          ],
+        },
       }],
-      "Version": "2012-10-17"
-    }
-  })
-})
+      Version: '2012-10-17',
+    },
+  });
+});
 
 test('CreateEventRuleFunc has the right policy', () => {
   const app = new App();
@@ -163,88 +163,88 @@ test('CreateEventRuleFunc has the right policy', () => {
 
   const template = Template.fromStack(stack);
   template.hasResourceProperties('AWS::IAM::Policy', {
-    "PolicyDocument": {
-      "Statement": [
+    PolicyDocument: {
+      Statement: [
         {
-          "Action": [
-            "events:DescribeRule",
-            "events:DeleteRule",
-            "events:PutTargets",
-            "events:EnableRule",
-            "events:PutRule",
-            "events:RemoveTargets",
-            "events:DisableRule"
+          Action: [
+            'events:DescribeRule',
+            'events:DeleteRule',
+            'events:PutTargets',
+            'events:EnableRule',
+            'events:PutRule',
+            'events:RemoveTargets',
+            'events:DisableRule',
           ],
-          "Effect": "Allow",
-          "Resource": {
-            "Fn::Join": [
-              "",
+          Effect: 'Allow',
+          Resource: {
+            'Fn::Join': [
+              '',
               [
-                "arn:",
+                'arn:',
                 {
-                  "Ref": "AWS::Partition"
+                  Ref: 'AWS::Partition',
                 },
-                ":events:us-west-2:",
+                ':events:us-west-2:',
                 {
-                  "Ref": "AWS::AccountId"
+                  Ref: 'AWS::AccountId',
                 },
-                ":rule/QRSFDD-BraketEventTo",
+                ':rule/QRSFDD-BraketEventTo',
                 {
-                  "Ref": "AWS::Region"
+                  Ref: 'AWS::Region',
                 },
-                "*"
-              ]
-            ]
-          }
+                '*',
+              ],
+            ],
+          },
         },
         {
-          "Action": [
-            "cloudformation:CreateChangeSet",
-            "cloudformation:DeleteChangeSet",
-            "cloudformation:DescribeChangeSet",
-            "cloudformation:ExecuteChangeSet",
-            "cloudformation:UpdateStack",
-            "cloudformation:DeleteStack",
-            "cloudformation:CreateStack",
-            "cloudformation:DescribeStacks"
+          Action: [
+            'cloudformation:CreateChangeSet',
+            'cloudformation:DeleteChangeSet',
+            'cloudformation:DescribeChangeSet',
+            'cloudformation:ExecuteChangeSet',
+            'cloudformation:UpdateStack',
+            'cloudformation:DeleteStack',
+            'cloudformation:CreateStack',
+            'cloudformation:DescribeStacks',
           ],
-          "Effect": "Allow",
-          "Resource": {
-            "Fn::Join": [
-              "",
+          Effect: 'Allow',
+          Resource: {
+            'Fn::Join': [
+              '',
               [
-                "arn:",
+                'arn:',
                 {
-                  "Ref": "AWS::Partition"
+                  Ref: 'AWS::Partition',
                 },
-                ":cloudformation:us-west-2:",
+                ':cloudformation:us-west-2:',
                 {
-                  "Ref": "AWS::AccountId"
+                  Ref: 'AWS::AccountId',
                 },
-                ":stack/QRSFDD-BraketEventTo",
+                ':stack/QRSFDD-BraketEventTo',
                 {
-                  "Ref": "AWS::Region"
+                  Ref: 'AWS::Region',
                 },
-                "/*"
-              ]
-            ]
-          }
+                '/*',
+              ],
+            ],
+          },
         },
         {
-          "Action": "iam:PassRole",
-          "Effect": "Allow",
-          "Resource": {
-            "Fn::GetAtt": [
+          Action: 'iam:PassRole',
+          Effect: 'Allow',
+          Resource: {
+            'Fn::GetAtt': [
               roleCapture,
-              "Arn"
-            ]
-          }
-        }
+              'Arn',
+            ],
+          },
+        },
       ],
-      "Version": "2012-10-17"
-    }
+      Version: '2012-10-17',
+    },
 
-  })
+  });
   expect(roleCapture.asString()).toEqual(expect.stringMatching(/^EventBridgeRole/));
 
-})
+});
