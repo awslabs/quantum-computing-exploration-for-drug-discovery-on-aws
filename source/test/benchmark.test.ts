@@ -89,17 +89,6 @@ describe("Benchmark", () => {
         })
     })
 
-    test("has 6 lambdas", () => {
-        const app = new App();
-        const stack = new MainStack(app, 'test');
-        const template = Template.fromStack(stack);
-        //const startAtCapture = new Capture();
-        //const statesCapture = new Capture();
-
-        template.resourceCountIs("AWS::Lambda::Function", 6)
-    
-    })
-
     test("has lambdas with image package type", () => {
         const app = new App();
         const stack = new MainStack(app, 'test');
