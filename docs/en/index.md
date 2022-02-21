@@ -6,7 +6,8 @@ and quantum as needed.
 
 This solution mainly includes the following features:
 
-- Launch a hybrid solution architecture with just 1-click
+- Launch a hybrid solution architecture with just 1-click, including quantum computing and 
+classical computing workflow
 - Flexibility for customers to use either quantum or classical compute resource or both in HPC architecture
 - Sample codes to show how to use quantum computing, classical computing or both to study the drug discovery problems 
 - The analytics data and diagrams are provided in BI service (Amazon QuickSight) to evaluate the experiment values (e.g. cost, performance, time)
