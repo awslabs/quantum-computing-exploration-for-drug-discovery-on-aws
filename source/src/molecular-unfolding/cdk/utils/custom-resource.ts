@@ -70,7 +70,7 @@ function createCustomResourceLambdaRole(scope: Construct, roleName: string): iam
       cdk.Arn.format({
         service: 'events',
         region: 'us-west-2',
-        resource: 'rule/*',
+        resource: `rule/QRSFDD-BraketEventTo${region}*`,
         account: account_id,
         arnFormat: cdk.ArnFormat.COLON_RESOURCE_NAME,
       }, cdk.Stack.of(scope))

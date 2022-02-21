@@ -11,12 +11,9 @@ const {
 } = require('fs');
 
 import {
-    Context
-} from './handler';
-
-import {
-    CloudFormationCustomResourceEvent,
-} from './cloudformation-custom-resource';
+    Context,
+    CloudFormationCustomResourceEvent
+} from "aws-lambda";
 
 
 exports.handler = async function (event: CloudFormationCustomResourceEvent, context: Context) {
