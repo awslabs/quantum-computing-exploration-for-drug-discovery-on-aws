@@ -164,45 +164,7 @@ test('CreateEventRuleFunc has the right policy', () => {
   const template = Template.fromStack(stack);
   template.hasResourceProperties('AWS::IAM::Policy', {
     "PolicyDocument": {
-      "Statement": [{
-          "Action": [
-            "ec2:CreateNetworkInterface",
-            "ec2:DescribeNetworkInterfaces",
-            "ec2:DeleteNetworkInterface",
-            "ec2:AssignPrivateIpAddresses",
-            "ec2:UnassignPrivateIpAddresses"
-          ],
-          "Effect": "Allow",
-          "Resource": "*"
-        },
-        {
-          "Action": [
-            "logs:CreateLogStream",
-            "logs:PutLogEvents",
-            "logs:CreateLogGroup"
-          ],
-          "Effect": "Allow",
-          "Resource": {
-            "Fn::Join": [
-              "",
-              [
-                "arn:",
-                {
-                  "Ref": "AWS::Partition"
-                },
-                ":logs:",
-                {
-                  "Ref": "AWS::Region"
-                },
-                ":",
-                {
-                  "Ref": "AWS::AccountId"
-                },
-                ":log-group:*"
-              ]
-            ]
-          }
-        },
+      "Statement": [
         {
           "Action": [
             "events:DescribeRule",

@@ -27,43 +27,9 @@ import {
 } from 'aws-cdk-lib/custom-resources';
 
 
-function createCustomResourceLambdaRole(scope: Construct, roleName: string): iam.Role {
+function addPolicyToCustomResourceLambdaRole(scope: Construct, role: iam.Role): iam.Role {
   const account_id = Stack.of(scope).account
   const region = Stack.of(scope).region
-
-  const role = new iam.Role(scope, `${roleName}`, {
-    assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
-  });
-
-  role.addToPolicy(new iam.PolicyStatement({
-    effect: iam.Effect.ALLOW,
-    resources: [
-      '*'
-    ],
-    actions: [
-      "ec2:CreateNetworkInterface",
-      "ec2:DescribeNetworkInterfaces",
-      "ec2:DeleteNetworkInterface",
-      "ec2:AssignPrivateIpAddresses",
-      "ec2:UnassignPrivateIpAddresses"
-    ]
-  }));
-
-  role.addToPolicy(new iam.PolicyStatement({
-    resources: [
-      cdk.Arn.format({
-        service: 'logs',
-        resource: 'log-group',
-        resourceName: '*',
-        arnFormat: cdk.ArnFormat.COLON_RESOURCE_NAME,
-      }, cdk.Stack.of(scope))
-    ],
-    actions: [
-      "logs:CreateLogStream",
-      "logs:PutLogEvents",
-      "logs:CreateLogGroup"
-    ]
-  }));
 
   role.addToPolicy(new iam.PolicyStatement({
     resources: [
@@ -148,9 +114,6 @@ export default (scope: Construct, props: Props) => {
   const template_file = 'src/molecular-unfolding/cdk/utils/custom-resource-lambda/create-event-rule/template.json'
 
   const eventBridgeRole = createEventBridgeRole(scope);
-  const role = createCustomResourceLambdaRole(scope, 'CreateEventRuleFuncRole')
-
-  eventBridgeRole.grantPassRole(role)
 
   const createEventRuleFunc = new NodejsFunction(scope, 'CreateEventRuleFunc', {
     entry: `${__dirname}/custom-resource-lambda/create-event-rule/index.ts`,
@@ -159,7 +122,6 @@ export default (scope: Construct, props: Props) => {
     memorySize: 256,
     runtime: Runtime.NODEJS_14_X,
     reservedConcurrentExecutions: 5,
-    role,
     vpc: props.vpc,
     securityGroups: [props.sg],
     vpcSubnets: props.vpc.selectSubnets({
@@ -186,6 +148,10 @@ export default (scope: Construct, props: Props) => {
     }
   });
 
+  const lambdaRole = createEventRuleFunc.role as iam.Role;
+  addPolicyToCustomResourceLambdaRole(scope, lambdaRole)
+  eventBridgeRole.grantPassRole(lambdaRole);
+
   createEventRuleFunc.node.addDependency(props.vpc)
 
   const provider = new Provider(
@@ -201,6 +167,6 @@ export default (scope: Construct, props: Props) => {
 
   (createEventRuleCustomResource.node.defaultChild as cdk.CfnCustomResource).cfnOptions.condition = props.crossEventRegionCondition;
   (createEventRuleFunc.node.defaultChild as cdk.CfnCustomResource).cfnOptions.condition = props.crossEventRegionCondition;
-  (role.node.defaultChild as cdk.CfnCustomResource).cfnOptions.condition = props.crossEventRegionCondition;
+  (lambdaRole.node.defaultChild as cdk.CfnCustomResource).cfnOptions.condition = props.crossEventRegionCondition;
   (eventBridgeRole.node.defaultChild as cdk.CfnCustomResource).cfnOptions.condition = props.crossEventRegionCondition;
 }
