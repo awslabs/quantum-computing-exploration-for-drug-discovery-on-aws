@@ -1,9 +1,9 @@
 {
   "name": "gcr-quantum-ready-for-drug-discovery",
-  "description": "AWS GRC solution: Quantum Ready For Drug Discovery",
+  "description": "Quantum Ready Solution For Drug Discovery",
   "repository": {
     "type": "git",
-    "url": "ssh://git.amazon.com/pkg/AWS-gcr-qc-life-science"
+    "url": "https://github.com/awslabs/quantum-ready-solution-for-drug-discovery.git"
   },
   "scripts": {
     "test": "rm -fr lib && npm run test:compile && jest --passWithNoTests --all --updateSnapshot && eslint",
@@ -15,13 +15,11 @@
     "watch": "tsc -w",
     "eslint": "eslint --ext .ts,.tsx --fix --no-error-on-unmatched-pattern src test",
     "cdk": "cdk ",
-    "sync-code": "sync_dirs=(lambda/ParseBraketResultLambda batch-images/create-model batch-images/qa-optimizer batch-images/sa-optimizer) && for d in ${sync_dirs[@]}; do echo sync $d; rm -r ./src/molecular-unfolding/${d}/utility > /dev/null 2>&1 || true; cp -r ./src/molecular-unfolding/utility ./src/molecular-unfolding/${d}/; done", 
-    "clean-code": "sync_dirs=(lambda/ParseBraketResultLambda batch-images/create-model batch-images/qa-optimizer batch-images/sa-optimizer) && for d in ${sync_dirs[@]}; do echo clean $d; rm -r ./src/molecular-unfolding/${d}/utility > /dev/null 2>&1 || true; done", 
     "diff": "cdk diff QCStack",
     "synth": "cdk synth QCStack ",
-    "deploy": "npm run sync-code && cdk deploy QCStack",
+    "deploy": "cdk deploy QCStack",
     "destroy": "cdk destroy QCStack",
-    "cfn-nag": "mkdir /tmp/cfn/ && cdk synth QCStack --output /tmp/cfn/ && cfn_nag_scan --fail-on-warnings -b ../.cfn-nag-ignore-lists.yml --input-path  /tmp/cfn/QCStack.template.json"
+    "cfn-nag": "rm -rf /tmp/cfn > /dev/null 2>&1  && mkdir /tmp/cfn/ && cdk synth QCStack --output /tmp/cfn/ && cfn_nag_scan --fail-on-warnings -b ../.cfn-nag-ignore-lists.yml --input-path  /tmp/cfn/QCStack.template.json"
   },
   "devDependencies": {
     "@types/jest": "^27.0.3",
@@ -39,10 +37,12 @@
     "standard-version": "^9.3.1",
     "ts-jest": "^27.0.7",
     "ts-node": "^9.1.1",
-    "typescript": "^4.3.5"
+    "typescript": "^4.3.5",
+    "@types/aws-lambda": "^8.10.92"
   },
   "dependencies": {
     "@aws-cdk/aws-batch-alpha": "^2.8.0-alpha.0",
+    "@aws-sdk/client-cloudformation": "^3.48.0",
     "aws-cdk-lib": "2.8.0",
     "cdk-bootstrapless-synthesizer": "^2.1.5",
     "constructs": "^10.0.0",

@@ -27,6 +27,7 @@ import {
 
 
 export default (scope: Construct) => {
+    const region = cdk.Stack.of(scope).region
 
     const vpc = new ec2.Vpc(scope, 'VPC', {
         cidr: '10.1.0.0/16',
@@ -62,7 +63,7 @@ export default (scope: Construct) => {
 
     vpc.addInterfaceEndpoint('BraketEndpoint', {
         service: {
-            name: `com.amazonaws.${cdk.Stack.of(scope).region}.braket`,
+            name: `com.amazonaws.${region}.braket`,
             port: 443
         }
     });

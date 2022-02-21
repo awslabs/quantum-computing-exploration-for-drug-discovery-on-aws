@@ -92,7 +92,7 @@ export class Benchmark extends Construct {
     constructor(scope: Construct, id: string, props: BatchProps) {
         super(scope, id);
         this.props = props;
-        this.images = ECRImageUtil.newInstance(scope, this.props)
+        this.images = ECRImageUtil.newInstance()
         this.roleUtil = RoleUtil.newInstance(scope, this.props)
 
         this.lambdaUtil = LambdaUtil.newInstance(scope, this.props, {
