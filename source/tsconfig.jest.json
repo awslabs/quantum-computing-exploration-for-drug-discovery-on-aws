@@ -25,6 +25,8 @@
   },
   "include": [
     "src/molecular-unfolding/cdk/**/*.ts",
+    "src/main.ts",
+    "src/stack.ts",
     "test/**/*.ts"
   ],
   "exclude": [

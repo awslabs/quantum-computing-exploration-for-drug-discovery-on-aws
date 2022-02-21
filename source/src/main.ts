@@ -3,9 +3,6 @@ import {
   Aspects,
 } from 'aws-cdk-lib';
 
-import {
-  BatchJobDefinitionAspect
-} from './molecular-unfolding/cdk/utils/aspect-batch-job-definition'
 
 import {
   BootstraplessStackSynthesizer,
@@ -14,11 +11,14 @@ import {
 import {
   MainStack,
 } from './molecular-unfolding/cdk/stack-main';
+import {
+  BatchJobDefinitionAspect,
+} from './molecular-unfolding/cdk/utils/aspect-batch-job-definition';
 
 const app = new App();
 
-new MainStack(app, "QCStack", {
-  synthesizer: newSynthesizer()
+new MainStack(app, 'QCStack', {
+  synthesizer: newSynthesizer(),
 });
 
 // below lines are required if your application has Docker assets

@@ -1,85 +1,84 @@
-import * as cdk from 'aws-cdk-lib';
 import {
-  Stack
+  aws_iam as iam,
+  aws_ec2 as ec2,
+  Stack,
+  Arn,
+  ArnFormat,
+  CfnCondition,
+  CustomResource,
+  CfnCustomResource,
+  Duration,
 } from 'aws-cdk-lib';
-import {
-  Construct
-} from 'constructs'
 
 import {
-  aws_iam as iam
-} from 'aws-cdk-lib'
-
+  Runtime,
+} from 'aws-cdk-lib/aws-lambda';
 import {
-  aws_ec2 as ec2
-} from 'aws-cdk-lib'
-
-import {
-  NodejsFunction
+  NodejsFunction,
 } from 'aws-cdk-lib/aws-lambda-nodejs';
 
-import {
-  Runtime
-} from 'aws-cdk-lib/aws-lambda';
 
 import {
-  Provider
+  Provider,
 } from 'aws-cdk-lib/custom-resources';
+import {
+  Construct,
+} from 'constructs';
 
 
 function addPolicyToCustomResourceLambdaRole(scope: Construct, role: iam.Role): iam.Role {
-  const account_id = Stack.of(scope).account
-  const region = Stack.of(scope).region
+  const account_id = Stack.of(scope).account;
+  const region = Stack.of(scope).region;
 
   role.addToPolicy(new iam.PolicyStatement({
     resources: [
-      cdk.Arn.format({
+      Arn.format({
         service: 'events',
         region: 'us-west-2',
         resource: `rule/QRSFDD-BraketEventTo${region}*`,
         account: account_id,
-        arnFormat: cdk.ArnFormat.COLON_RESOURCE_NAME,
-      }, cdk.Stack.of(scope))
+        arnFormat: ArnFormat.COLON_RESOURCE_NAME,
+      }, Stack.of(scope)),
 
     ],
     actions: [
-      "events:DescribeRule",
-      "events:DeleteRule",
-      "events:PutTargets",
-      "events:EnableRule",
-      "events:PutRule",
-      "events:RemoveTargets",
-      "events:DisableRule"
-    ]
+      'events:DescribeRule',
+      'events:DeleteRule',
+      'events:PutTargets',
+      'events:EnableRule',
+      'events:PutRule',
+      'events:RemoveTargets',
+      'events:DisableRule',
+    ],
   }));
 
   role.addToPolicy(new iam.PolicyStatement({
     resources: [
-      cdk.Arn.format({
+      Arn.format({
         service: 'cloudformation',
         region: 'us-west-2',
         resource: `stack/QRSFDD-BraketEventTo${region}/*`,
         account: account_id,
-        arnFormat: cdk.ArnFormat.COLON_RESOURCE_NAME,
-      }, cdk.Stack.of(scope))
+        arnFormat: ArnFormat.COLON_RESOURCE_NAME,
+      }, Stack.of(scope)),
     ],
     actions: [
-      "cloudformation:CreateChangeSet",
-      "cloudformation:DeleteChangeSet",
-      "cloudformation:DescribeChangeSet",
-      "cloudformation:ExecuteChangeSet",
-      "cloudformation:UpdateStack",
-      "cloudformation:DeleteStack",
-      "cloudformation:CreateStack",
-      "cloudformation:DescribeStacks"
-    ]
+      'cloudformation:CreateChangeSet',
+      'cloudformation:DeleteChangeSet',
+      'cloudformation:DescribeChangeSet',
+      'cloudformation:ExecuteChangeSet',
+      'cloudformation:UpdateStack',
+      'cloudformation:DeleteStack',
+      'cloudformation:CreateStack',
+      'cloudformation:DescribeStacks',
+    ],
   }));
   return role;
 }
 
 function createEventBridgeRole(scope: Construct): iam.Role {
-  const account_id = Stack.of(scope).account
-  const region = Stack.of(scope).region
+  const account_id = Stack.of(scope).account;
+  const region = Stack.of(scope).region;
 
   const role = new iam.Role(scope, 'EventBridgeRole', {
     assumedBy: new iam.ServicePrincipal('events.amazonaws.com'),
@@ -87,48 +86,48 @@ function createEventBridgeRole(scope: Construct): iam.Role {
 
   role.addToPolicy(new iam.PolicyStatement({
     resources: [
-      cdk.Arn.format({
+      Arn.format({
         service: 'events',
         resource: 'event-bus/default',
         region: region,
         account: account_id,
-        arnFormat: cdk.ArnFormat.COLON_RESOURCE_NAME,
-      }, cdk.Stack.of(scope))
+        arnFormat: ArnFormat.COLON_RESOURCE_NAME,
+      }, Stack.of(scope)),
     ],
     actions: [
-      "events:PutEvents"
-    ]
+      'events:PutEvents',
+    ],
   }));
 
-  return role
+  return role;
 }
 
 interface Props {
-  crossEventRegionCondition: cdk.CfnCondition;
+  crossEventRegionCondition: CfnCondition;
   vpc: ec2.Vpc;
-  sg: ec2.SecurityGroup
+  sg: ec2.SecurityGroup;
 }
 
 export default (scope: Construct, props: Props) => {
 
-  const template_file = 'src/molecular-unfolding/cdk/utils/custom-resource-lambda/create-event-rule/template.json'
+  const template_file = 'src/molecular-unfolding/cdk/utils/custom-resource-lambda/create-event-rule/template.json';
 
   const eventBridgeRole = createEventBridgeRole(scope);
 
   const createEventRuleFunc = new NodejsFunction(scope, 'CreateEventRuleFunc', {
     entry: `${__dirname}/custom-resource-lambda/create-event-rule/index.ts`,
     handler: 'handler',
-    timeout: cdk.Duration.minutes(5),
+    timeout: Duration.minutes(5),
     memorySize: 256,
     runtime: Runtime.NODEJS_14_X,
     reservedConcurrentExecutions: 5,
     vpc: props.vpc,
     securityGroups: [props.sg],
     vpcSubnets: props.vpc.selectSubnets({
-      subnetType: ec2.SubnetType.PRIVATE_WITH_NAT
+      subnetType: ec2.SubnetType.PRIVATE_WITH_NAT,
     }),
     environment: {
-      'EVENT_BRIDGE_ROLE_ARN': eventBridgeRole.roleArn
+      EVENT_BRIDGE_ROLE_ARN: eventBridgeRole.roleArn,
     },
 
     bundling: {
@@ -145,28 +144,28 @@ export default (scope: Construct, props: Props) => {
           return [];
         },
       },
-    }
+    },
   });
 
   const lambdaRole = createEventRuleFunc.role as iam.Role;
-  addPolicyToCustomResourceLambdaRole(scope, lambdaRole)
+  addPolicyToCustomResourceLambdaRole(scope, lambdaRole);
   eventBridgeRole.grantPassRole(lambdaRole);
 
-  createEventRuleFunc.node.addDependency(props.vpc)
+  createEventRuleFunc.node.addDependency(props.vpc);
 
   const provider = new Provider(
     scope,
     'EventRuleCustomResourceProvider', {
-      onEventHandler: createEventRuleFunc
+      onEventHandler: createEventRuleFunc,
     },
   );
 
-  const createEventRuleCustomResource = new cdk.CustomResource(scope, 'CreateEventRuleCustomResource', {
-    serviceToken: provider.serviceToken
+  const createEventRuleCustomResource = new CustomResource(scope, 'CreateEventRuleCustomResource', {
+    serviceToken: provider.serviceToken,
   });
 
-  (createEventRuleCustomResource.node.defaultChild as cdk.CfnCustomResource).cfnOptions.condition = props.crossEventRegionCondition;
-  (createEventRuleFunc.node.defaultChild as cdk.CfnCustomResource).cfnOptions.condition = props.crossEventRegionCondition;
-  (lambdaRole.node.defaultChild as cdk.CfnCustomResource).cfnOptions.condition = props.crossEventRegionCondition;
-  (eventBridgeRole.node.defaultChild as cdk.CfnCustomResource).cfnOptions.condition = props.crossEventRegionCondition;
-}
+  (createEventRuleCustomResource.node.defaultChild as CfnCustomResource).cfnOptions.condition = props.crossEventRegionCondition;
+  (createEventRuleFunc.node.defaultChild as CfnCustomResource).cfnOptions.condition = props.crossEventRegionCondition;
+  (lambdaRole.node.defaultChild as CfnCustomResource).cfnOptions.condition = props.crossEventRegionCondition;
+  (eventBridgeRole.node.defaultChild as CfnCustomResource).cfnOptions.condition = props.crossEventRegionCondition;
+};
