@@ -3,7 +3,7 @@ name: Run eslint
   pull_request: {}
   workflow_dispatch: {}
 jobs:
-  build:
+  eslint:
     runs-on: ubuntu-latest
     env:
       CI: 'true'
