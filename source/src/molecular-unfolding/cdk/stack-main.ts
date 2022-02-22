@@ -7,6 +7,7 @@ import {
   Fn,
   RemovalPolicy,
   CfnOutput,
+  CfnRule
 } from 'aws-cdk-lib';
 
 
@@ -49,6 +50,13 @@ export class MainStack extends SolutionStack {
     super(scope, id, props);
     this.setDescription(DESCRIPTION);
     const stackName = this.stackName.replace(/[^a-zA-Z0-9_]+/, '').toLocaleLowerCase();
+
+    new CfnRule(this, 'deploymentRegionRules', {
+      'assertions': [{
+        'assert': Fn.conditionContains(['us-west-2', 'us-east-1'], this.region),
+        'assertDescription': 'deployment regions'
+      }]
+    });
 
     const prefix = 'molecular-unfolding';
 
