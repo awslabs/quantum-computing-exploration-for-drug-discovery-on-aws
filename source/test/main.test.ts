@@ -3,8 +3,8 @@ import {
 } from 'aws-cdk-lib';
 
 import {
-  Template,
   Match,
+  Template,
   Capture,
 } from 'aws-cdk-lib/assertions';
 
@@ -248,3 +248,23 @@ test('CreateEventRuleFunc has the right policy', () => {
   expect(roleCapture.asString()).toEqual(expect.stringMatching(/^EventBridgeRole/));
 
 });
+
+
+test('CreateEventRuleFuncServiceRole has CrossEventRegionCondition', () => {
+  const app = new App();
+  const stack = new MainStack(app, 'test');
+  const template = Template.fromStack(stack);
+  const findRoles = template.findResources('AWS::IAM::Role', {
+    DependsOn: Match.anyValue(),
+    Condition: 'CrossEventRegionCondition',
+  });
+  let conditionSet = false;
+  for (const p in findRoles) {
+    if (p.startsWith('CreateEventRuleFuncServiceRole')) {
+      conditionSet = true;
+      break;
+    }
+  }
+  expect(conditionSet).toBeTruthy();
+});
+
