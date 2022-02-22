@@ -6,14 +6,13 @@ import {
 
 import {
   BootstraplessStackSynthesizer,
+  BatchJobDefinition,
 } from 'cdk-bootstrapless-synthesizer';
 
 import {
   MainStack,
 } from './molecular-unfolding/cdk/stack-main';
-import {
-  BatchJobDefinitionAspect,
-} from './molecular-unfolding/cdk/utils/aspect-batch-job-definition';
+
 
 const app = new App();
 
@@ -23,7 +22,7 @@ new MainStack(app, 'QCStack', {
 
 // below lines are required if your application has Docker assets
 if (process.env.USE_BSS) {
-  Aspects.of(app).add(new BatchJobDefinitionAspect());
+  Aspects.of(app).add(new BatchJobDefinition());
 }
 
 app.synth();
