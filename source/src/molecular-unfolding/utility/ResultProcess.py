@@ -16,7 +16,7 @@ from .MoleculeParser import MoleculeData
 s3_client = boto3.client("s3")
 
 log = logging.getLogger()
-log.setLevel('INFO')
+log.setLevel('DEBUG')
 
 
 class ResultParser():
@@ -236,10 +236,18 @@ class ResultParser():
         # self.parameters["volume"]["optimize"], _, _ = mol_distance_func(
         #     self.atom_pos_data, van_der_waals_check, self.set)
         # update relative improvement
-        self.parameters["volume"]["gain"] = self.parameters["volume"]["optimize"] / \
+        optimize_gain = self.parameters["volume"]["optimize"] / \
             self.parameters["volume"]["initial"]
-        # update optimized results
-        self.parameters["volume"]["unfolding_results"] = chosen_var
+
+        if optimize_gain < 1.0:
+            logging.info("Fail to find optimized shape, return to original one")
+            self.parameters["volume"]["gain"] = 1.0
+            self.parameters["volume"]["unfolding_results"] = chosen_var
+        else:
+            self.parameters["volume"]["gain"] = optimize_gain
+            # update optimized results
+            self.parameters["volume"]["unfolding_results"] = chosen_var
+
 
         return 0
 
