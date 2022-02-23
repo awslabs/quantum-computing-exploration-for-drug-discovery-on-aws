@@ -1,6 +1,7 @@
 下图展示的是使用默认参数部署本解决方案在亚马逊云科技中构建的环境。
 
-![architecture](./images/arch.png)
+![architecture](./images/architecture.png)
+*Figure 1: The quantum ready solution for drug discovery architecture on AWS*
       
 图：方案架构
 
