@@ -14,4 +14,6 @@ source/test-reports
 source/coverage
 buildspec.yml
 deployment
+.pytest_cache
+__pycache__
 
