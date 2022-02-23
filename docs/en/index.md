@@ -14,7 +14,7 @@ classical computing workflow
 
 This implementation guide describes architectural considerations and configuration steps for deploying the quantum ready solution for drug discovery in the Amazon Web Services (AWS) cloud. It includes links to [CloudFormation][cloudformation] templates that launches and configures the AWS services required to deploy this solution using AWS best practices for security and availability.
 
-The guide is intended for IT architects, developers, DevOps, data scientists, and algorithm engineers with practical experience architecting in the AWS Cloud.
+The guide is intended for IT architects, developers, DevOps, data scientists, and algorithm engineers with architecture  hands-on experience in the AWS Cloud.
 
 [Amazon Braket]: https://aws.amazon.com/braket/
 
