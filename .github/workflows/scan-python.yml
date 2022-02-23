@@ -1,0 +1,26 @@
+name: Scan Python code with bandit
+'on':
+  pull_request: {}
+  workflow_dispatch: {}
+jobs:
+  bandit:
+    runs-on: ubuntu-latest
+    env:
+      CI: 'true'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+        with:
+          ref: '${{ github.event.pull_request.head.ref }}'
+          repository: '${{ github.event.pull_request.head.repo.full_name }}'
+      - uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+      - name: Install dependencies
+        run: |
+          pip3 install bandit
+
+      - name: scan python code
+        run: |
+          cd source/src/molecular-unfolding
+          bandit -r .

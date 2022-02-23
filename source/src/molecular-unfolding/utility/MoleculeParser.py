@@ -9,7 +9,7 @@ import numpy as np
 import re
 
 import logging
-import pickle
+import pickle #nosec
 import os
 
 from .GraphModel import BuildMolGraph
@@ -90,4 +90,4 @@ class MoleculeData():
     @classmethod
     def load(cls, filename):
         with open(filename, "rb") as f:
-            return pickle.load(f)
+            return pickle.load(f) #nosec
