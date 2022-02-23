@@ -1,7 +1,9 @@
 Deploying this solution with the default parameters builds the following environment in the AWS Cloud.
 
+<center>
 ![architecture](./images/architecture.png)
 *Figure 1: The quantum ready solution for drug discovery architecture on AWS*
+</center>
 
 This solution deploys the Amazon CloudFormation template in your 
 AWS Cloud account and provides three URLs. One for **Visualization**.
@@ -11,7 +13,7 @@ problems: **Notebook Experiment** and **Batch Evaluation**:
 1. The solution deploys an instance for 
 [AWS SageMaker Notebook](https://docs.aws.amazon.com/sagemaker/latest/dg/nbi.html). 
 The user can do **Notebook Experiment** for drug discovery on classical computing and 
-quantum computing in this notebook.
+quantum computing.
 
 2. The notebook comes with prepared sample code for different problems 
 in drug discovery, like molecular unfolding, molecule simulation and so on. 
@@ -31,7 +33,8 @@ necessary software for experiments.
 5. The AWS Step Function launches various computing tasks through 
     [AWS Batch](https://aws.amazon.com/batch/) jobs based on different resources.
 
-6. Instances launched by AWS Batch try to evaluate a particular problem based 
+6. Instances launched by AWS Batch try to evaluate a particular 
+drug discovery problem based 
 on different computing resources , classical computing or quantum computing. 
 For example, for the problem of molecular unfolding, the performance difference 
 between quantum annealer and simulated annealer can be compared. 
@@ -61,8 +64,9 @@ the listener [AWS Lambda](https://aws.amazon.com/lambda/).
 13. When all the steps complete, a notification is send out by 
 [Amazon SNS](https://aws.amazon.com/sns/).
 
-14. The Glue table is created by Amazon Athena based on metrics data in 
+14. The Glue table is created by [Amazon Athena](https://aws.amazon.com/athena) 
+based on metrics data in 
 Amazon S3.
 
-15. The user can view the **Batch Evaluation** results(e.g. cost, performance) 
+15. The user can view the **Batch Evaluation** results(e.g. time, performance) 
 through [Amazon QuickSight](https://aws.amazon.com/quicksight/)
