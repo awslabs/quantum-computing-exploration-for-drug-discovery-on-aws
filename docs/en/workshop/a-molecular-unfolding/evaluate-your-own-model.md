@@ -61,11 +61,14 @@ If you want to fully customize the evaluation code, follow below steps to make c
 
 1. Make changes to source code
 
-1. Update `quicksight_user` and `default_code_repository` in file `source/cdk.context.json`
+1. Set environment variable `QUICKSIGHT_USER_NAME` to your QuickSight user
+        
+        export QUICKSIGHT_USER_NAME=<your QuickSight user>
+
+1. Add `default_code_repository` in file `source/cdk.context.json`
 
 
         {
-            "quicksight_user": "<your QuickSight user>",
             "default_code_repository": "<your github repository>"
         }
 

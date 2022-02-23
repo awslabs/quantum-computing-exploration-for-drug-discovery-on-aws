@@ -8,6 +8,7 @@ import {
   RemovalPolicy,
   CfnOutput,
   CfnRule,
+  CfnParameter,
 } from 'aws-cdk-lib';
 
 
@@ -67,6 +68,13 @@ export class MainStack extends SolutionStack {
       ),
     });
 
+    const quickSightUserParam = new CfnParameter(this, 'quickSightUser', {
+      type: 'String',
+      description: 'Quicksight User',
+      minLength: 1,
+      allowedPattern: '[\u0020-\u00FF]+',
+    });
+
     const logS3bucket = new s3.Bucket(this, 'AccessLogS3Bucket', {
       removalPolicy: RemovalPolicy.DESTROY,
       autoDeleteObjects: true,
@@ -124,6 +132,7 @@ export class MainStack extends SolutionStack {
       bucket: s3bucket,
       prefix,
       stackName,
+      quicksightUser: quickSightUserParam.valueAsString,
     });
 
     // Benchmark StepFuncs //////////////////////////
