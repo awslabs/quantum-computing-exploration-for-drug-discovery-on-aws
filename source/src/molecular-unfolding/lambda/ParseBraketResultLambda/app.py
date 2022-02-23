@@ -15,7 +15,7 @@ step_func = boto3.client('stepfunctions')
 s3_prefix = None
 
 
-def download_file(bucket, key, dir="/tmp/"):
+def download_file(bucket, key, dir="/tmp/"): #nosec
     file_name = dir + key.split("/")[-1]
 
     with open(file_name, 'wb') as f:

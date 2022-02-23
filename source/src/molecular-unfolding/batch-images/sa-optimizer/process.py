@@ -47,7 +47,7 @@ def read_user_input(execution_id, bucket, s3_prefix):
     return json.loads(obj['Body'].read())
 
 
-def download_file(bucket, key, dir="/tmp/"):
+def download_file(bucket, key, dir="/tmp/"): #nosec
     file_name = dir + key.split("/")[-1]
 
     with open(file_name, 'wb') as f:
