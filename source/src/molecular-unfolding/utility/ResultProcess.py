@@ -183,18 +183,25 @@ class ResultParser():
 
         best_config = pddf_best_result.filter(items=self.valid_var_name)
 
-        chosen_var = best_config[best_config == 1].index.tolist()
+        chosen_var = set(best_config[best_config == 1].index.tolist())
+        initial_var = set()
 
         # change chose var to dict
         var_dict = {}
         for valid_var in chosen_var:
-            var_dict[valid_var.split("_")[1]] = valid_var.split("_")[2]
+            var_name = valid_var.split("_")[1]
+            var_angle = valid_var.split("_")[2]
+            var_dict[var_name] = var_angle
+            initial_name = f"X_{var_name}_1"
+            initial_var.add(initial_name)
 
         logging.debug(f"var_dict is {var_dict}")
 
         # calculate optimized position
         f_distances_raw = {}
         f_distances_optimize = {}
+
+        missing_var = set()
 
         for ris in self.mol_data.bond_graph.sort_ris_data[str(self.M)].keys():
             # ris: '30+31', '29+30', '30+31,29+30'
@@ -209,7 +216,16 @@ class ResultParser():
             tor_list = []
             for rb_name in torsion_group:
                 var_name = self.rb_var_map[rb_name]
-                tor_list.append(f'X_{var_name}_{var_dict[var_name]}')
+                var_angle = 1
+                if var_name in var_dict.keys():
+                    var_angle = var_dict[var_name]
+                else:
+                    logging.info(f"missing result for {var_name}")
+                    missing_var.add(f"X_{var_name}_1")
+                    initial_var.add(f"X_{var_name}_1")
+                    chosen_var.add(f"X_{var_name}_1")
+
+                tor_list.append(f'X_{var_name}_{var_angle}')
 
             logging.debug(f"theta_option {self.theta_option}")
             logging.debug(f"rb_set {rb_set}")
@@ -236,10 +252,25 @@ class ResultParser():
         # self.parameters["volume"]["optimize"], _, _ = mol_distance_func(
         #     self.atom_pos_data, van_der_waals_check, self.set)
         # update relative improvement
-        self.parameters["volume"]["gain"] = self.parameters["volume"]["optimize"] / \
+        optimize_gain = self.parameters["volume"]["optimize"] / \
             self.parameters["volume"]["initial"]
-        # update optimized results
-        self.parameters["volume"]["unfolding_results"] = chosen_var
+
+        optimize_state = False
+        if optimize_gain < 1.0:
+            logging.info("Fail to find optimized shape, return to original one")
+            self.parameters["volume"]["optimize"] = self.parameters["volume"]["initial"]
+            self.parameters["volume"]["gain"] = 1.0
+            self.parameters["volume"]["unfolding_results"] = list(initial_var)
+            optimize_state = False
+        else:
+            self.parameters["volume"]["gain"] = optimize_gain
+            # update optimized results
+            self.parameters["volume"]["unfolding_results"] = list(chosen_var)
+            optimize_state = True
+        
+        self.parameters["volume"]["optimize_info"] = {}
+        self.parameters["volume"]["optimize_info"]["missing_var"] = list(missing_var)
+        self.parameters["volume"]["optimize_info"]["optimize_state"] = optimize_state
 
         return 0
 
