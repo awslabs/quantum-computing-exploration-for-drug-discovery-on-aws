@@ -18,6 +18,10 @@ The whole cost consists of five types:
  customers only used solution to study the sample code, the cost for 
  notebook and the compute from Amazon Braket were considered.
 
+!!! notice
+
+    It's good practice to set a billing alarm before deploying this solution. Refer to this [link](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/monitor_estimated_charges_with_cloudwatch.html)
+
 <!-- | Cost Type| Service | Resource Size | Operating Condition | Cost |
 | :---: | :---: | :---: | :---: | :---: |
 | Notebook | Amazon Sagemaker Notebook | ml.c5.xlarge | long run instance | 4.90 USD/Day |
