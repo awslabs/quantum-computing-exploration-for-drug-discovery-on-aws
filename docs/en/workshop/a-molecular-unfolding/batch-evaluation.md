@@ -16,12 +16,7 @@ Click the Step Functions link, you will be navigated to AWS Step Functions conso
 
 In your AWS Step Functions console, click **Start execution** button, the screen is shown as below:
 
-<<<<<<< HEAD
-<center>
-![ start execution step function ](../../images/batch-start-execution.png)
-=======
 ![ start execution step functions ](../../images/batch-start-execution.png)
->>>>>>> 576f129 (docs: initial zh documentation without workshop (#58))
 
 Figure 2: Execute the workflow
 </center>
@@ -34,12 +29,7 @@ Figure 2: Execute the workflow
 1. Click **Start execution**, start batch evaluation
     
     The screen is shown as below:
-<<<<<<< HEAD
-    <center>
-    ![ execution step function ](../../images/batch-execution.png)
-=======
     ![ execution step functions ](../../images/batch-execution.png)
->>>>>>> 576f129 (docs: initial zh documentation without workshop (#58))
 
     Figure 3: Execute batch evaluation
     </center>
@@ -48,13 +38,7 @@ Figure 2: Execute the workflow
    > The default batch evaluation will take about 15 minutes.
 
     The screen is shown as below when the evaluation is finished.
-<<<<<<< HEAD
-    <center>
-    ![ execution step function complete](../../images/batch-execution-complete.png)
-    Figure 4: Complete batch evaluation
-=======
     ![ execution step functions complete](../../images/batch-execution-complete.png)
->>>>>>> 576f129 (docs: initial zh documentation without workshop (#58))
     
     </center>
 
