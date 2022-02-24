@@ -23,6 +23,9 @@
 * 在 **Create your QuickSight account** 页面填写必要的信息:
 ![Fill information for quicksight](./images/create_quicksight.png)
 
+* 进入[quicksight admin](https://us-east-1.quicksight.aws.amazon.com/sn/admin), 并记录您的**QuickSight Username**(不是QuickSight account name).
+
+![quicksight username](./images/quicksight_username.png)
 ### 部署您的解决方案
 
 我们将AWS CloudFormation的模板部署在了AWS Cloud上。

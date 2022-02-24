@@ -6,9 +6,9 @@ Before you launch the solution, review the architecture, supported regions, and 
 
 Use the following steps to deploy this solution on AWS.
 
-- Check your QuickSight account
-- Launch the AWS CloudFormation template into your AWS account to deploy the solution.
-- Update QuickSight permissions
+- Step1: Check your QuickSight account
+- Step2: Launch the AWS CloudFormation template into your AWS account to deploy the solution.
+- Step3: Update QuickSight permissions
 
 ## Deployment
 
