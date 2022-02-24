@@ -1,4 +1,4 @@
-You are responsible for the cost of Amazon cloud technology services used when running this solution. As of January 2022, the estimated cost for the solution 
+You are responsible for the cost of Amazon cloud technology services used when running this solution. As of March 2022, the estimated cost for the solution 
 is 25.12 USD per day.
 
 The whole cost consists of five types:
@@ -17,6 +17,10 @@ The whole cost consists of five types:
  resource in order to visualize the results in Amazon QuickSight. If the 
  customers only used solution to study the sample code, the cost for 
  notebook and the compute from Amazon Braket were considered.
+
+!!! notice
+
+    It's good practice to set a billing alarm before deploying this solution. Refer to this [link](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/monitor_estimated_charges_with_cloudwatch.html)
 
 <!-- | Cost Type| Service | Resource Size | Operating Condition | Cost |
 | :---: | :---: | :---: | :---: | :---: |
@@ -37,7 +41,7 @@ The whole cost consists of five types:
 
 <table border='1' style="text-align: center">
     <tr>
-        <td><B>Cost Type</B></td>
+        <td><B>Type</B></td>
         <td><B>Service</td>
         <td><B>Resource Size</td>
         <td><B>Operating Condition</td>
