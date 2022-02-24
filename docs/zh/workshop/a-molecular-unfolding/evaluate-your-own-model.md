@@ -153,13 +153,6 @@
             "quicksight_user": "<your QuickSight user>",
             "default_code_repository": "<your github repository>"
         }
-### 将堆栈从 CDK 部署到您的 AWS 账户
-
-1. 检查您的 AWS 账户中的 CloudFormation，确保您的部署区域中没有名为“QCStack”的堆栈
-
-1. 检查您的 S3 存储桶，确保没有名为 `amazon-braket-qcstack-<your aws account>-<deployment region>` 的存储桶
-
-1. 利用 CDK 将更改部署到您的 AWS 账户
 
 ### 将堆栈从 CDK 部署到您的 AWS 账户
 
@@ -168,11 +161,7 @@
 1. 检查您的 S3 存储桶，确保没有名为 `amazon-braket-qcstack-<your aws account>-<deployment region>` 的存储桶
 
 1. 利用 CDK 将更改部署到您的 AWS 账户
-        
-           cd source
-           npm run deploy
-              
- 
+
 1. 等待部署完成
     
     > 部署大约需要 10 分钟

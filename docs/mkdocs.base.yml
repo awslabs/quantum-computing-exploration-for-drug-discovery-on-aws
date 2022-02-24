@@ -13,23 +13,7 @@ plugins:
   - search
   - mkdocs-jupyter:
       ignore_h1_titles: True
-<<<<<<< HEAD
-=======
 
-<<<<<<< HEAD
-# markdown_extensions:
-#   - admonition
-#   - codehilite
-#   - pymdownx.arithmatex:
-#       generic: true
-# extra_javascript:
-#   - ./mathjax.js
-#   - https://polyfill.io/v3/polyfill.js?features=es6
-#   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
->>>>>>> 7691828 (finish zh draft)
-
-=======
->>>>>>> a68793f (docs: initial zh documentation without workshop (#58))
 extra:
   alternate:
     - name: English
