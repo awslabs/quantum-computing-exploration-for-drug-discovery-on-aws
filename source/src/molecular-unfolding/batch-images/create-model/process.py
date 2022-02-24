@@ -2,7 +2,6 @@ import argparse
 import logging
 from os.path import basename
 import boto3
-import pickle
 import json
 from utility.QMUQUBO import QMUQUBO
 from utility.MoleculeParser import MoleculeData
@@ -13,7 +12,7 @@ logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname)-8s [%(filename)s:
                     level=logging.INFO)
 
 
-def download_file(bucket, key, dir="/tmp/"):
+def download_file(bucket, key, dir="/tmp/"): #nosec
     file_name = dir + key.split("/")[-1]
 
     with open(file_name, 'wb') as f:

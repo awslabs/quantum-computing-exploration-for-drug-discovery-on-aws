@@ -1,0 +1,18 @@
+name: "Bandit Check for Python code"
+
+on:
+  pull_request: {}
+
+jobs:
+  bandit:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Run bandit
+      uses: tj-actions/bandit@v4.1
+      with:
+        version: "1.7.0"
+        targets: |
+          source/src/molecular-unfolding/
+        options: "-r -s B301 -ll"

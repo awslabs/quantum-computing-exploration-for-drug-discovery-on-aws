@@ -8,7 +8,7 @@ from braket.ocean_plugin import BraketDWaveSampler
 from braket.ocean_plugin import BraketSampler
 
 import time
-import pickle
+import pickle #nosec
 import os
 import logging
 import json
@@ -94,9 +94,9 @@ class Annealer():
             self.save("sa_result.pickle")
         elif self.method == "dwave-qa":
             task_id = self.get_task_id()
-            self.save("/tmp/qa_result.pickle")
+            self.save("/tmp/qa_result.pickle") #nosec
             response = self._upload_result_json(
-                task_id, "/tmp/qa_result.pickle")
+                task_id, "/tmp/qa_result.pickle") #nosec
             logging.info(f"{self.method} save to s3 - {task_id}: {response}")
         return result
 

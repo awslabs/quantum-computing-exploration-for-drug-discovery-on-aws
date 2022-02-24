@@ -1,4 +1,3 @@
-from re import T
 import boto3
 import os
 from collections import defaultdict

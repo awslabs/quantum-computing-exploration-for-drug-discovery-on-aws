@@ -7,7 +7,7 @@ from .MolGeoCalc import update_pts_distance
 from collections import defaultdict
 import time
 import logging
-import pickle
+import pickle #nosec
 import os
 
 log = logging.getLogger()
@@ -171,7 +171,7 @@ class QMUQUBO():
     @classmethod
     def load(cls, filename):
         with open(filename, "rb") as f:
-            return pickle.load(f)
+            return pickle.load(f) #nosec
 
     def _prepare_var(self, mol_data, D):
 

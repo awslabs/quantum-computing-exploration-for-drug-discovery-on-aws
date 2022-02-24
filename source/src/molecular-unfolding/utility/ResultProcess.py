@@ -1,10 +1,10 @@
 ########################################################################################################################
 #   The following class is for different kinds of annealing optimizer
 ########################################################################################################################
-from pickletools import optimize
+from pickletools import optimize #nosec
 import boto3
 import json
-import pickle
+import pickle #nosec
 import os
 import datetime
 import logging
@@ -105,12 +105,12 @@ class ResultParser():
             logging.info("load simulated annealer raw result")
             full_path = "./sa_result.pickle"
             with open(full_path, "rb") as f:
-                self.raw_result = pickle.load(f)
+                self.raw_result = pickle.load(f) #nosec
         elif self.method == "dwave-qa":
             logging.info("load quantum annealer raw result")
             obj = self._read_result_obj(
-                self.bucket, self.prefix, self.task_id, "qa_result.pickle")
-            self.raw_result = pickle.loads(obj["Body"].read())
+                self.bucket, self.prefix, self.task_id, "qa_result.pickle") #nosec
+            self.raw_result = pickle.loads(obj["Body"].read()) #nosec
 
     def get_all_result(self):
         return self.raw_result, self.result

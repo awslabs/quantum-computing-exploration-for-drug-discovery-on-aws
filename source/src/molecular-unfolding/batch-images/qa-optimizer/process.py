@@ -1,10 +1,8 @@
 import argparse
 import logging
-import pickle
 import boto3
 import json
 import time
-import datetime
 import os
 import uuid
 from utility.AnnealerOptimizer import Annealer
@@ -21,7 +19,7 @@ DEFAULT_AWS_REGION = 'us-east-1'
 logging_info = print
 
 
-def download_file(s3, bucket, key, dir="/tmp/"):
+def download_file(s3, bucket, key, dir="/tmp/"): #nosec
     file_name = dir + key.split("/")[-1]
 
     with open(file_name, 'wb') as f:
