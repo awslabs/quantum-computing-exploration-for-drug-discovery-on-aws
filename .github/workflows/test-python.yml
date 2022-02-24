@@ -3,7 +3,7 @@ name: pyTest for Python code
   pull_request: {}
   workflow_dispatch: {}
 jobs:
-  test:
+  py-test:
     runs-on: ubuntu-latest
     env:
       CI: 'true'
