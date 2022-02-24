@@ -61,10 +61,6 @@ If you want to fully customize the evaluation code, follow below steps to make c
 
 1. Make changes to source code
 
-1. Set environment variable `QUICKSIGHT_USER_NAME` to your QuickSight user
-        
-        export QUICKSIGHT_USER_NAME=<your QuickSight user>
-
 1. Add `default_code_repository` in file `source/cdk.context.json`
 
 
@@ -83,7 +79,7 @@ If you want to fully customize the evaluation code, follow below steps to make c
 
         
            cd source
-           npm run deploy
+           cdk deploy QCStack --parameters quickSightUser=<your QuickSight user>
               
  
 1. Wait for the deployment to complete. Deployment will take about 10 minutes 
