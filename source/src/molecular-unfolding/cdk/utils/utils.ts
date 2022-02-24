@@ -188,3 +188,14 @@ export class AddCondition implements IAspect {
     }
   }
 }
+
+export class AddSSMPolicyToRole implements IAspect {
+  //arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+  visit(node: IConstruct): void {
+    if (node instanceof iam.Role && node.node.path.endsWith('/Ecs-Instance-Role')) {
+      node.addManagedPolicy(
+        iam.ManagedPolicy.fromAwsManagedPolicyName('AmazonSSMManagedInstanceCore'),
+      );
+    }
+  }
+}

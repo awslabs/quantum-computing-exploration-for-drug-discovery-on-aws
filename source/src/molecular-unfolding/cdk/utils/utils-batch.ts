@@ -6,12 +6,16 @@ import {
   aws_ecs as ecs,
   aws_s3 as s3,
   Duration,
+  Aspects,
 } from 'aws-cdk-lib';
 
 import {
   Construct,
 } from 'constructs';
 
+import {
+  AddSSMPolicyToRole,
+} from './utils';
 import {
   ECRRepoNameEnum,
   ECRImageUtil,
@@ -88,6 +92,8 @@ export class BatchUtil {
         securityGroups: [batchSg],
       },
     });
+
+    Aspects.of(batchHPCEnvironment).add(new AddSSMPolicyToRole());
 
     return new batch.JobQueue(this.scope, 'hpcJobQueue', {
       computeEnvironments: [{
