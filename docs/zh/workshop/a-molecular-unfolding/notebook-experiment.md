@@ -3,13 +3,16 @@ title: Notebook Experiment
 weight: 10
 ---
 
-Molecular Docking (MD) is an important step of the drug discovery process which aims at calculating 
-the preferred position and shape of one molecule to a second when they are bound to each other. This step focuses on computationally simulating the molecular recognition process. It aims to achieve an optimized conformation for both the protein and ligand and relative orientation between protein and ligand such that the free energy of the overall system is minimized. 
+分子对接（MD）是药物发现过程中的一个重要步骤，旨在计算
+当它们彼此结合时，一个分子对第二个分子的优选位置和形状。
+此步骤侧重于计算模拟分子识别过程。
+它旨在实现蛋白质和配体的优化构象以及蛋白质和配体之间的相对方向，
+从而使整个系统的自由能最小化。
 
 <center>
 ![Molecular Docking](../../images/molecule-docking.png)
 
-Figure 1: Molecular Docking[<sup>1</sup>](#wiki-docking)
+图 1: 分子对接[<sup>1</sup>](#wiki-docking)
  </center>
 
 In this work, The protein or the pocket is considered as a rigid structure. The ligand is considered as a 

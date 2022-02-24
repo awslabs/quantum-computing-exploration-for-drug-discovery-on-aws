@@ -1,10 +1,9 @@
 ---
-title: Background
+title: 背景
 weight: 10
 ---
 
-We are trying to implement an important process in drug discovery according to following publication, video
-or reports.
+根据以下的出版物和视频，我们尝试实现药物发现过程中的重要一步。
 
 ## References
 
