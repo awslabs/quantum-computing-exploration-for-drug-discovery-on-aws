@@ -112,4 +112,33 @@ describe('Benchmark', () => {
       VpcConfig: Match.anyValue(),
     });
   });
+
+  test('BatchEcsInstanceRole has SSM permission', ()=> {
+    const app = new App();
+    const stack = new MainStack(app, 'test');
+    const template = Template.fromStack(stack);
+    const findRoles = template.findResources('AWS::IAM::Role', {
+      DependsOn: Match.anyValue(),
+      Properties: {
+        AssumeRolePolicyDocument: Match.anyValue(),
+        ManagedPolicyArns: Match.anyValue(),
+      },
+    });
+
+    let SSMSet = false;
+    for (const role in findRoles ) {
+      if (role.startsWith('BatchHPCComputeEnvEcsInstanceRole')) {
+        for (const arn of findRoles[role].Properties.ManagedPolicyArns) {
+          if ('Fn::Join' in arn) {
+            const policyName = arn['Fn::Join'][1][2];
+            if (policyName.indexOf(':iam::aws:policy/AmazonSSMManagedInstanceCore') > -1) {
+              SSMSet = true;
+            }
+          }
+        }
+      }
+    }
+    expect(SSMSet).toBeTruthy();
+  });
+
 });
