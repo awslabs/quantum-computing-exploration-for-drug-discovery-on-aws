@@ -7,7 +7,7 @@ To automate deployment, this solution uses the following AWS CloudFormation temp
 [AWS Step Function](https://aws.amazon.com/step-functions/),
 [AWS Batch](https://aws.amazon.com/batch/),
 [Amazon EventBridge](https://aws.amazon.com/eventbridge/),
-[AWS Lambda](https://aws.amazon.com/lambda/),:
+[AWS Lambda](https://aws.amazon.com/lambda/),
 [Amazon Athena](https://aws.amazon.com/athena/) and 
 [Amazon QuickSight](https://aws.amazon.com/quicksight/),
 but you can customize the template to meet your specific needs.
