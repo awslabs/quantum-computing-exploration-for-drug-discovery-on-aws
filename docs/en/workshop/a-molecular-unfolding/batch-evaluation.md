@@ -42,7 +42,7 @@ Figure 2: Execute the workflow
     The screen is shown as below when the evaluation is finished.
 
     <center>
-    ![ execution step function complete](../../images/batch-execution-complete.png)
+    ![ execution step functions complete](../../images/batch-execution-complete.png)
     Figure 4: Complete batch evaluation
     </center>
 
