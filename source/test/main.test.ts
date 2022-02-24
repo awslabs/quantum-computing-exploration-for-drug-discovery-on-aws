@@ -249,6 +249,22 @@ test('CreateEventRuleFunc has the right policy', () => {
 
 });
 
+test('SupportedRegionsRule config correctly', () => {
+  const app = new App();
+  const stack = new MainStack(app, 'test');
+  const template = Template.fromStack(stack);
+
+  const supportedRegions = template.toJSON().Rules.SupportedRegionsRule.Assertions;
+  expect(supportedRegions).toEqual(
+    [
+      {
+        Assert: { 'Fn::Contains': [['us-west-2', 'us-east-1'], { Ref: 'AWS::Region' }] },
+        AssertDescription: 'supported regions are us-west-2, us-east-1',
+      },
+    ],
+  );
+
+});
 
 test('CreateEventRuleFuncServiceRole has CrossEventRegionCondition', () => {
   const app = new App();
