@@ -1,4 +1,5 @@
 INHERIT: ./mkdocs.base.yml
+site_name: 药物研发量子计算解决方案
 docs_dir: zh
 site_dir: ./site/zh
 theme:

@@ -1,7 +1,7 @@
 您需要承担运行此解决方案时使用亚马逊云科技服务的费用。截至2022年3月，运行此解决方案，
-成本约为每小时¥158.98。
+成本约为每小时25.12美金。
 
-整个话费包含5种类型：
+整个花费包含5种类型：
 
 * 笔记本
 * 计算
@@ -31,86 +31,86 @@
         <td>Amazon Sagemaker Notebook</td>
         <td>ml.c5.xlarge</td>
         <td>长时间运行</td>
-        <td>每小时¥31.0</td>
+        <td>每天4.90美金</td>
     <tr>
     <tr>
         <td rowspan="16">计算</td>
         <td>Amazon Braket</td>
         <td>D-Wave - DW_2000Q_6</td>
         <td>4个包含不同参数的任务, 每个任务10000次执行</td>
-        <td>¥55.64</td>
+        <td>8.8美金</td>
     <tr>
     <tr>
         <td>Amazon Braket</td>
         <td>D-Wave - Advantage_system4.1</td>
         <td>4个包含不同参数的任务, 每个任务10000次执行</td>
-        <td>¥55.64</td>
+        <td>8.8美金</td>
     <tr>
     <tr>
         <td>Amazon Batch (Fargate) </td>
         <td>2 VCPU 4G MEM</td>
         <td>比如像构建模型的任务, 8分钟(小于20分钟)</td>
-        <td>¥6.45</td>
+        <td>1.02美金</td>
     <tr>
     <tr>
         <td>Amazon Batch (EC2) </td>
         <td>2 VCPU 2G MEM</td>
         <td>4个包含不同参数的任务, 19分钟(小于60分钟)</td>
-        <td>¥0.57</td>
+        <td>0.09美金</td>
     <tr>
     <tr>
         <td>Amazon Batch (EC2) </td>
         <td>4 VCPU 4G MEM</td>
-        <td>4个包含不同参数的任务, 19分钟(小于60分钟)</td>
-        <td>¥1.07</td>
+        <td>4个不同参数的任务, 19分钟(小于60分钟)</td>
+        <td>0.17美金</td>
     <tr>
     <tr>
         <td>Amazon Batch (EC2) </td>
         <td>8 VCPU 8G MEM</td>
         <td>4个包含不同参数的任务, 19分钟(小于60分钟)</td>
-        <td>¥2.15</td>
+        <td>0.34美金</td>
     <tr>
     <tr>
         <td>Amazon Batch (EC2) </td>
         <td>16 VCPU 16G MEM</td>
         <td>4个包含不同参数的任务, 19分钟(小于60分钟)</td>
-        <td>¥4.30</td>
+        <td>0.68美金</td>
     <tr>
     <tr>
         <td>AWS Lambda </td>
         <td>-</td>
         <td>小于100次调用</td>
-        <td>¥0</td>
+        <td>0</td>
     <tr>
     <tr>
         <td>存储</td>
         <td>Amazon S3</td>
         <td>-</td>
         <td>小于1G</td>
-        <td>¥0.13</td>
+        <td>0.02美金</td>
     <tr>
     <tr>
         <td rowspan='4'>分析</td>
         <td>Amazon Athena</td>
         <td>-</td>
         <td>小于20次调用, 100M数据</td>
-        <td>¥0.18</td>
+        <td>0.029美金</td>
     <tr>
     <tr>
         <td>Amazon QuickSight</td>
         <td>1个读取器</td>
         <td>长时间运行</td>
-        <td>每个月¥50.58</td>
+        <td>每个月8美金</td>
     <tr>
     <tr>
         <td>任务调度</td>
         <td>AWS Step Functions</td>
         <td>-</td>
         <td>小于100运行</td>
-        <td>¥0</td>
+        <td>0</td>
     <tr>
     <tr>
         <td colspan='4'>总花费</td>
-        <td>每天¥158.82</td>
+        <td>每天25.12美金</td>
     <tr>
 </table>

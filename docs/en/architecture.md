@@ -2,11 +2,9 @@ Deploying this solution with the default parameters builds the following environ
 
 <center>
 
- 
-
 ![architecture](./images/architecture.png)
 
- <figcaption>Figure 1: The quantum ready solution for drug discovery architecture</figcaption>
+ Figure 1: The quantum ready solution for drug discovery architecture
 
 </center>
 
@@ -29,6 +27,8 @@ provided in the [Workshop Page](workshop/background.md).
 
 03. The notebook provides the user with the public network access to download 
 necessary software for experiments.
+
+03. User can access the internet through the notebook.
 
 04. The solution also deploys 
 [AWS Step Functions](https://aws.amazon.com/step-functions/) for user to do 

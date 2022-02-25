@@ -4,9 +4,7 @@
 
 ![architecture](./images/architecture.png)
 
-      
-
-<figcaption>图1：药物研发量子计算解决方架构图</figcaption>
+图1：药物研发量子计算解决方案架构图
 
 </center>
 
@@ -22,10 +20,10 @@ AWS 云帐户并提供三个 URL。一个用于**可视化**。
 02. 笔记本附带针对不同药物研发问题的示例代码，如分子展开、分子模拟等。
 用户可以学习如何利用经典计算或通过访问
 [Amazon Braket](https://aws.amazon.com/braket/)
-利用量子计算研究这些问题。请参考[动手实验页面](workshop/background.md)
+利用量子计算研究这些问题。请参考[动手实验](workshop/background.md)
 中的指南。
 
-03. 笔记本为用户提供公网访问，用来下载实验依赖的软件包。
+03. 用户可以通过该笔记本访问公网。
 
 04. 该解决方案部署了
 [AWS Step Functions](https://aws.amazon.com/step-functions/) 。这可以让
@@ -41,7 +39,7 @@ AWS 云帐户并提供三个 URL。一个用于**可视化**。
 
 07. **批量评估**的镜像已经内置在[Amazon ECR](https://aws.amazon.com/ecr/). 
 如果需要定制批量 **批量评估** 的逻辑, 请参考 
-[批量评估您自己的模型页面](workshop/a-molecular-unfolding/evaluate-your-own-model.md)。
+[批量评估您自己的模型](workshop/a-molecular-unfolding/evaluate-your-own-model.md)。
 
 08. **批量评估** 部署了 [VPC Endpoints](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints.html) 
 能够实现VPC与相迎AWS服务的连接:
@@ -55,7 +53,7 @@ Amazon ECR, Amazon S3, Amazon Braket。
 11. 当量子计算工作/任务结束，
 [Amazon EventBridge](https://aws.amazon.com/eventbridge/) 会触发监听者[AWS Lambda](https://aws.amazon.com/lambda/)。
 
-12. 监听者Lambda会将一个回调发送给step function。
+12. 监听者Lambda函数会将一个回调发送给step functions。
 
 13. 当所有步骤完成时,
 [Amazon SNS](https://aws.amazon.com/sns/) 会发出一个通知
