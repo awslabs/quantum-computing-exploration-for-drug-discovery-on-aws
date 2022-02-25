@@ -10,16 +10,26 @@ nav:
   - Cost: cost.md
   - Architecture Overview: architecture.md
   - Security: security.md
-  - Supported regions: regions.md
-  - AWS CloudFormation template: template.md
+  - Supported Regions: regions.md
+  - AWS CloudFormation Template: template.md
   - Automated Deployment: deployment.md
   - Workshop: 
     - Overview: workshop/background.md
     - Molecular Unfolding: 
-      - Background: workshop/a-molecular-unfolding/molecular-unfolding.md
-      - Notebook Experiment: workshop/a-molecular-unfolding/notebook-experiment.md
-      - Batch Evaluation: workshop/a-molecular-unfolding/batch-evaluation.md
-      - Evaluate Your Own Model: workshop/a-molecular-unfolding/evaluate-your-own-model.md
+      # - Background: workshop/a-molecular-unfolding/molecular-unfolding.md
+      # - Notebook Experiment: workshop/a-molecular-unfolding/notebook-experiment.md
+      # - Batch Evaluation: workshop/a-molecular-unfolding/batch-evaluation.md
+      # - Evaluate Your Own Model: workshop/a-molecular-unfolding/evaluate-your-own-model.md
+      - Notebook Experiment:
+        - Background: workshop/a-molecular-unfolding/notebook-experiment.md
+        - Prepare Data: workshop/a-molecular-unfolding/prepare-data.ipynb
+        - Build Model: workshop/a-molecular-unfolding/build-model.ipynb
+        - Build Model(Technical Details): workshop/a-molecular-unfolding/build-model-detail.md
+        - Optimize Configuration: workshop/a-molecular-unfolding/optimize-config.ipynb
+        - Post Process: workshop/a-molecular-unfolding/post-process.ipynb
+      - Batch Evaluation: 
+        - Standard Images: workshop/a-molecular-unfolding/batch-evaluation.md
+        - Customize Images: workshop/a-molecular-unfolding/evaluate-your-own-model.md
   - Additional resources: additional-resources.md
   - Uninstall the solution: uninstall.md
   - Source code: source.md
