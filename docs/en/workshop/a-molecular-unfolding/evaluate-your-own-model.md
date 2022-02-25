@@ -11,7 +11,12 @@ If you have your own mol2 file, you want to batch evaluate it, you can follow be
 
 1. Upload your mol2 file to the S3 bucket in CloudFormation output, or your own S3 bucket. If you want to use your own S3 bucket, the bucket name must be follow pattern:  `braket-*` or `amazon-braket-*`.
 
+    <center>
       ![S3 output bucket name](../../images/cloudformation-output-s3.png)
+    
+    Figure 1: S3 path
+    </center>
+    
 
 1. Specify S3 uri of your mol2 file as the value of `molFile` in the Step Functions input
 
@@ -30,7 +35,7 @@ If you have your own mol2 file, you want to batch evaluate it, you can follow be
     
     The full input parameters and schema, please refer to [input specification](../batch-evaluation/#input-specification)
 
-1. Follow int steps in [Batch Evaluation](../batch-evaluation/#start-execution) to run the Step Functions
+1. Follow the steps in [Batch Evaluation](../batch-evaluation/#start-execution) to run the Step Functions
 
 ## Fully customize evaluation code
 

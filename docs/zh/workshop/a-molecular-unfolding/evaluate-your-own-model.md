@@ -1,72 +1,77 @@
-## Batch Evaluate Your Own Model
+## 批量评估您自己的模型
 
-You have two options to batch evaluate your own model
+您有两个选项来批量评估您自己的模型
 
-- Batch evaluate your own mol2 file without code changes
-- Fully customize evaluation code
+- 批量评估您自己的 mol2 文件，无需更改代码
+- 完全自定义评估代码
 
-## Batch evaluate your own mol2 file without code changes
+## 批量评估您自己的 mol2 文件，无需更改代码
 
-If you have your own mol2 file, you want to batch evaluate it, you can follow below steps:
+如果您有自己的 mol2 文件，想要批量评估它，您可以按照以下步骤操作：
 
-1. Upload your mol2 file to the S3 bucket in CloudFormation output, or your own S3 bucket. If you want to use your own S3 bucket, the bucket name must be follow pattern:  `braket-*` or `amazon-braket-*`.
+1. 将您的 mol2 文件上传到 CloudFormation 输出中的 S3 存储桶，或您自己的 S3 存储桶。如果您想使用自己的 S3 存储桶，存储桶名称必须遵循以下模式：`braket-*` 或 `amazon-braket-*`。
 
-      ![S3 output bucket name](../../images/cloudformation-output-s3.png)
+    <center>
+      ![S3 输出存储桶名称](../../images/cloudformation-output-s3.png)
 
-1. Specify S3 uri of your mol2 file as the value of `molFile` in the Step Functions input
+    图 1: S3 路径
+    </center>
+
+1. 在 Step Functions 输入中将 mol2 文件的 S3 uri 指定为 `molFile` 的值
 
      
         {
-            "molFile" : "<s3 uri of your mol2 file>"
+            "molFile" : "<你的 mol2 文件的 s3 uri>"
         }
    
 
-       e.g.
+       例如
     
         {
-           "molFile": "s3://amazon-braket-gcr-qc-sol-common/qc/raw_model/117_ideal.mol2"
+           “molFile”：“s3://amazon-braket-gcr-qc-sol-common/qc/raw_model/117_ideal.mol2”
         }
 
     
-    The full input parameters and schema, please refer to [input specification](../batch-evaluation/#input-specification)
+    完整的输入参数和架构，请参考[输入规范](../batch-evaluation/#输入规范)
 
-1. Follow int steps in [Batch Evaluation](../batch-evaluation/#start-execution) to run the Step Functions
+1. 按照 [批量评估](../batch-evaluation/#start-execution) 中的步骤运行 Step Functions
 
-## Fully customize evaluation code
+## 完全自定义评估代码
 
-This solution is an open source project under Apache License Version 2.0. You can leverage it as your base code, make changes on it.
 
-If you want to fully customize the evaluation code, follow below steps to make changes and re-deploy the whole stack from CDK.
+该解决方案是 Apache License Version 2.0 下的开源项目。您可以利用它作为您的基本代码，对其进行更改。
 
-### Prerequisites
+如果您想完全自定义评估代码，请按照以下步骤进行更改并从 CDK 重新部署整个堆栈。
 
-1. Make sure you have AWS CLI and AWS CDK install in your workspace
+### 先决条件
+
+1. 确保您的工作区中安装了 AWS CLI 和 AWS CDK
     
-    > You can follow this doc [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) to install AWS CLI.
+    > 您可以按照此文档 [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) 安装 AWS CLI。
    
-    > You can follow this document [CDK Getting Started](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_prerequisites) to install and bootstrap CDK
+    > 您可以按照本文档 [CDK 入门](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_prerequisites) 安装和引导 CDK
 
-1. Permissions
+1. 权限
    
-    Your AWS user must have at least [permissions](./permissions.json)
+    您的 AWS 用户必须至少拥有 [permissions](./permissions.json)
 
-1. QuickSight account
+1. QuickSight 账号
     
-    Check your QuickSight account [check your quicksight](../../../deployment/#check-your-quicksight)
+    检查您的 QuickSight 帐户 [检查您的 quicksight](../../../deployment/#check-your-quicksight)
 
-1. Make sure you have docker running in your workspace
+1. 确保您的工作区中运行了 docker
 
-    > You can follow this document [Docker Install](https://docs.docker.com/engine/install/) to install docker.
+    > 可以按照本文档【Docker Install】（https://docs.docker.com/engine/install/）安装docker。
 
-### Customize evaluation code
+### 自定义评估代码
 
-1. Fork the github repository of this solution to your own git repository
+1. 将本方案的github仓库fork到自己的git仓库
 
-1. Clone the project to your own workspace
+1. 将项目克隆到自己的工作区
 
-1. Make changes to source code
+1. 修改源代码
 
-1. Update `quicksight_user` and `default_code_repository` in file `source/cdk.context.json`
+1. 更新文件 `source/cdk.context.json` 中的 `quicksight_user` 和 `default_code_repository`
 
 
         {
@@ -75,29 +80,33 @@ If you want to fully customize the evaluation code, follow below steps to make c
         }
 
 
-### Deploy stack to your AWS account from CDK
+### 将堆栈从 CDK 部署到您的 AWS 账户
 
-1. Check CloudFormation in your AWS account, make sure you do not have a stack named `QCStack` in your deployment region
+1. 检查您的 AWS 账户中的 CloudFormation，确保您的部署区域中没有名为“QCStack”的堆栈
 
-1. Check your S3 bucket, make sure no bucket named `amazon-braket-qcstack-<your aws account>-<deployment region>`
+1. 检查您的 S3 存储桶，确保没有名为 `amazon-braket-qcstack-<your aws account>-<deployment region>` 的存储桶
 
-1. Deploy changes to your AWS account from CDK
+1. 利用 CDK 将更改部署到您的 AWS 账户
 
         
            cd source
            npm run deploy
               
  
-1. Wait for the deployment to complete
+1. 等待部署完成
     
-    > deployment will take about 10 minutes 
+    > 部署大约需要 10 分钟
 
-1. Get output links from CloudFormation output, the links include:
+1. 从CloudFormation输出中获取输出链接，链接包括：
     - Step Functions URL
-    - QuickSight Dashboard link
-    - Notebook URL
-    - S3 Bucket name
+    - QuickSight 仪表板链接
+    - 笔记本网址
+    - S3 存储桶名称
 
 1. Follow steps in [Batch Evaluation](../batch-evaluation/) to run your own code with appropriate input
 
 1. [View result](../batch-evaluation/#view-dashboard) through QuickSight dashboard
+
+1. 按照 [批量评估](../batch-evaluation/) 中的步骤运行您自己的代码
+
+1. 通过 QuickSight 仪表板 [查看结果](../batch-evaluation/#view-dashboard)

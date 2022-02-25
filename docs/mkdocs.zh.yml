@@ -15,10 +15,16 @@ nav:
   - 动手实验: 
     - 概览: workshop/background.md
     - 分子展开: 
-      - 背景: workshop/a-molecular-unfolding/molecular-unfolding.md
-      - 笔记本实验: workshop/a-molecular-unfolding/notebook-experiment.md
-      - 批量验证: workshop/a-molecular-unfolding/batch-evaluation.md
-      - 自定义模型验证: workshop/a-molecular-unfolding/evaluate-your-own-model.md
+      - 笔记本实验:
+        - 背景: workshop/a-molecular-unfolding/notebook-experiment.md
+        - 准备数据: workshop/a-molecular-unfolding/prepare-data.ipynb
+        - 建立模型: workshop/a-molecular-unfolding/build-model.ipynb
+        - 建立模型(技术细节): workshop/a-molecular-unfolding/build-model-detail.md
+        - 优化构型: workshop/a-molecular-unfolding/optimize-config.ipynb
+        - 后处理: workshop/a-molecular-unfolding/post-process.ipynb
+      - 批量验证: 
+        - 标准镜像: workshop/a-molecular-unfolding/batch-evaluation.md
+        - 自定义镜像: workshop/a-molecular-unfolding/evaluate-your-own-model.md
   - 更多资源: additional-resources.md
   - 卸载解决方案: uninstall.md
   - 源代码: source.md

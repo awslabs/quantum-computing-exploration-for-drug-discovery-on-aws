@@ -9,7 +9,7 @@ the preferred position and shape of one molecule to a second when they are bound
 <center>
 ![Molecular Docking](../../images/molecule-docking.png)
 
-Figure 1: Molecular Docking[<sup>1</sup>](#wiki-docking)
+Figure 1: Molecular docking[<sup>1</sup>](#wiki-docking)
  </center>
 
 In this work, The protein or the pocket is considered as a rigid structure. The ligand is considered as a 
@@ -40,16 +40,16 @@ and open the link for your notebook
 <center>
 ![deployment output](../../images/deploy_output_notebook.png)
 
-Output of Cloudformation
+Figure 2: The notebook link in the output of cloudformation
 </center>
 
 Please open the notebook 
-in **source/src/molecular-folding/molecular_unfolding.ipynb** and make sure that the kernel for this notebook is **qcenv**.
+(**source/src/molecular-folding/molecular_unfolding.ipynb**) and make sure that the kernel for this notebook is **qcenv**.
 
 <center>
 ![qcenv](../../images/qcenv.png)
 
-Environment for Experiment
+Figure 3: Environment for experiment
 </center>
 
 
