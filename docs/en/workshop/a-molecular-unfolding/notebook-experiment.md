@@ -78,4 +78,3 @@ that it consists of four Steps:
 # References
 <div id='wiki-docking'></div>
 - 1.[Wiki: Molecular Docking](https://en.wikipedia.org/wiki/Docking_(molecular))
-<div id='qmu-paper'></div>
