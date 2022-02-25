@@ -45,6 +45,7 @@ Figure 2: Execute the workflow
     Figure 4: Complete batch evaluation
     
     </center>
+
 ### View dashboard
 
 When the batch evaluation is completed, you can view the result in AWS QuickSight dashboard.

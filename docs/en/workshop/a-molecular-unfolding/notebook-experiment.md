@@ -66,10 +66,10 @@ that it consists of four Steps:
 
 |Steps|Contents|
 |:--|:--|
-|[Step1: Prepare Data](#prepare)|prepare molecular data for experiments|
-|[Step2: Build Model](#buildmodel)|build model for molecular unfolding|
-|[Step3: Optimize Configuration](#optimize)|run optimization to find the configuration|
-|[Step4: PostProcess Result](#postprocess)|post process the results for evaluation and visualization|
+|Step1: Prepare Data|prepare molecular data for experiments|
+|Step2: Build Model|build model for molecular unfolding|
+|Step3: Optimize Configuration|run optimization to find the configuration|
+|Step4: PostProcess Result|post process the results for evaluation and visualization|
 
 </center>
 
