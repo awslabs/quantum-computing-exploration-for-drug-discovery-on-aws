@@ -41,6 +41,7 @@ Figure 2: Execute the workflow
     ![ execution step functions complete](../../images/batch-execution-complete.png)
     
     </center>
+
 ### View dashboard
 
 When the batch evaluation is completed, you can view the result in AWS QuickSight dashboard.

@@ -21,7 +21,7 @@
 
      
         {
-            "molFile" : "<你的 mol2 文件的 s3 uri>"
+            "molFile" : "<您的 mol2 文件的 s3 uri>"
         }
    
 
@@ -102,10 +102,6 @@
     - QuickSight 仪表板链接
     - 笔记本网址
     - S3 存储桶名称
-
-1. Follow steps in [Batch Evaluation](../batch-evaluation/) to run your own code with appropriate input
-
-1. [View result](../batch-evaluation/#view-dashboard) through QuickSight dashboard
 
 1. 按照 [批量评估](../batch-evaluation/) 中的步骤运行您自己的代码
 
