@@ -34,6 +34,7 @@ Figure 2: Execute the workflow
     ![ execution step functions ](../../images/batch-execution.png)
 
     Figure 3: Execute batch evaluation
+    </center>
 
 1. Wait for complete
    > The default batch evaluation will take about 15 minutes.
