@@ -44,6 +44,7 @@ MU是用于消除这种初始偏差的技术。
 转到 cloudformation 中的部署输出页面
 并打开笔记本的链接
 
+
 <center>
 ![deployment output](../../images/deploy_output_notebook.png)
 
@@ -54,8 +55,6 @@ MU是用于消除这种初始偏差的技术。
 (**source/src/molecular-folding/molecular_unfolding.ipynbn**)
 并确保笔记本的核是
 **qcenv**.
-
-
 
 <center>
 ![qcenv](../../images/qcenv.png)

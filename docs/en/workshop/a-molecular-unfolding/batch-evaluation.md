@@ -43,8 +43,8 @@ Figure 2: Execute the workflow
 
     <center>
     ![ execution step functions complete](../../images/batch-execution-complete.png)
+
     Figure 4: Complete batch evaluation
-    
     </center>
 
 ### View dashboard
