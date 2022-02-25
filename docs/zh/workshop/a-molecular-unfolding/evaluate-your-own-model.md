@@ -186,17 +186,3 @@
 1. 按照 [批量评估](../batch-evaluation/) 中的步骤运行您自己的代码
 
 1. 通过 QuickSight 仪表板 [查看结果](../batch-evaluation/#view-dashboard)
-
-1. 等待部署完成
-    
-    > 部署大约需要 10 分钟
-
-1. 从CloudFormation输出中获取输出链接，链接包括：
-    - Step Functions URL
-    - QuickSight 仪表板链接
-    - 笔记本网址
-    - S3 存储桶名称
-
-1. 按照 [批量评估](../batch-evaluation/) 中的步骤运行您自己的代码
-
-1. 通过 QuickSight 仪表板 [查看结果](../batch-evaluation/#view-dashboard)
