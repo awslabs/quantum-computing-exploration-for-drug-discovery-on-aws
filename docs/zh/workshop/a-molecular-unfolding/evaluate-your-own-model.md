@@ -181,7 +181,6 @@
         
            cd source
            npm run deploy
-
 1. 等待部署完成
     
     > 部署大约需要 10 分钟
