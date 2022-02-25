@@ -190,18 +190,8 @@ for ris in mol_data.bond_graph.sort_ris_data[str(M)].keys():
 
 ### 量子退火
 
-<<<<<<< HEAD
 量子退火（QA）可以看作是模拟退火（SA）的一种变体。 QA 和 SA 都是通过启发式技术来解决
 具有挑战性的组合问题。 QA 使用量子涨落（quantum fluctuation）而不是热效应来探索组合空间。在这里，我们使用
-=======
-The quantum annealing (QA) can be seen as a variation of the simulated annealing (SA). Both QA and SA are meta-heuristic technique for address 
-challenging combinatorial problems. QA uses the quantum fluctuation to explore the configuration space instead of thermal effects. Here, we use 
-Amazon Braket API to access the Canadian company D-Wave. This annealer is implemented using superconductive qubits. Natively, the quadratic 
-unconstrained binary optimization (QUBO) can be solved using quantum annealer:
-
-量子退火（QA）可以看作是模拟退火（SA）的一种变体。 QA 和 SA 都是通过启发式技术来解决
-具有挑战性的组合问题。 QA 使用量子涨落（quantum fluctuation）而不是热效应来探索配置空间。在这里，我们使用
->>>>>>> 09c9510 (finish zh draft)
 用于访问加拿大公司 D-Wave 的 Amazon Braket API。该退火器是使用超导量子比特实现的。原生地，QUBO可以使用量子退火器解决：
 
 $$ O(x) = \displaystyle\sum\limits_i h_i x_i + \displaystyle\sum_{i>j} J_{i,j} x_i x_j $$
@@ -235,10 +225,6 @@ $$ O(x) = \displaystyle\sum\limits_i \alpha_i x_i + \displaystyle\sum_{i,j} \bet
 
 恭喜！我们已经准备好模型，是时候寻找优化构型了。
 
-<<<<<<< HEAD
 # 参考
-=======
-# 引用
->>>>>>> 09c9510 (finish zh draft)
 <div id='qmu-paper'></div>
 - 1.Mato, Kevin, et al. "Quantum Molecular Unfolding." arXiv preprint arXiv:2107.13607 (2021).
