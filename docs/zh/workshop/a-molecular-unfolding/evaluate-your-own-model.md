@@ -24,6 +24,7 @@
      
         {
             "molFile" : "<您的 mol2 文件的 s3 uri>"
+<<<<<<< HEAD
         }
    
 
@@ -74,11 +75,8 @@
 1. 修改源代码
 
 1. 更新文件 `source/cdk.context.json` 中的 `quicksight_user` 和 `default_code_repository`
-=======
-## Batch Evaluate Your Own Model
-=======
+
 ## 批量评估您自己的模型
->>>>>>> 09c9510 (finish zh draft)
 
 您有两个选项来批量评估您自己的模型
 
@@ -151,22 +149,13 @@
 
 1. 修改源代码
 
-<<<<<<< HEAD
-1. Update `quicksight_user` and `default_code_repository` in file `source/cdk.context.json`
->>>>>>> 1b37d28 (update images for workshop)
-=======
 1. 更新文件 `source/cdk.context.json` 中的 `quicksight_user` 和 `default_code_repository`
->>>>>>> 09c9510 (finish zh draft)
 
 
         {
             "quicksight_user": "<your QuickSight user>",
             "default_code_repository": "<your github repository>"
         }
-
-
-<<<<<<< HEAD
-<<<<<<< HEAD
 ### 将堆栈从 CDK 部署到您的 AWS 账户
 
 1. 检查您的 AWS 账户中的 CloudFormation，确保您的部署区域中没有名为“QCStack”的堆栈
@@ -174,30 +163,19 @@
 1. 检查您的 S3 存储桶，确保没有名为 `amazon-braket-qcstack-<your aws account>-<deployment region>` 的存储桶
 
 1. 利用 CDK 将更改部署到您的 AWS 账户
-=======
-### Deploy stack to your AWS account from CDK
-=======
+
 ### 将堆栈从 CDK 部署到您的 AWS 账户
->>>>>>> 09c9510 (finish zh draft)
 
 1. 检查您的 AWS 账户中的 CloudFormation，确保您的部署区域中没有名为“QCStack”的堆栈
 
 1. 检查您的 S3 存储桶，确保没有名为 `amazon-braket-qcstack-<your aws account>-<deployment region>` 的存储桶
 
-<<<<<<< HEAD
-1. Deploy changes to your AWS account from CDK
->>>>>>> 1b37d28 (update images for workshop)
-=======
 1. 利用 CDK 将更改部署到您的 AWS 账户
->>>>>>> 09c9510 (finish zh draft)
-
         
            cd source
            npm run deploy
               
  
-<<<<<<< HEAD
-<<<<<<< HEAD
 1. 等待部署完成
     
     > 部署大约需要 10 分钟
@@ -211,11 +189,8 @@
 1. 按照 [批量评估](../batch-evaluation/) 中的步骤运行您自己的代码
 
 1. 通过 QuickSight 仪表板 [查看结果](../batch-evaluation/#view-dashboard)
-=======
-1. Wait for the deployment to complete
-=======
+
 1. 等待部署完成
->>>>>>> 09c9510 (finish zh draft)
     
     > 部署大约需要 10 分钟
 
@@ -225,14 +200,6 @@
     - 笔记本网址
     - S3 存储桶名称
 
-1. Follow steps in [Batch Evaluation](../batch-evaluation/) to run your own code with appropriate input
-
-1. [View result](../batch-evaluation/#view-dashboard) through QuickSight dashboard
-<<<<<<< HEAD
->>>>>>> 1b37d28 (update images for workshop)
-=======
-
 1. 按照 [批量评估](../batch-evaluation/) 中的步骤运行您自己的代码
 
 1. 通过 QuickSight 仪表板 [查看结果](../batch-evaluation/#view-dashboard)
->>>>>>> 09c9510 (finish zh draft)

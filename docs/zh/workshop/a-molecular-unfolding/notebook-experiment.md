@@ -171,7 +171,7 @@ Environment for Experiment
 </center>
 
 
-浏览整个笔记本，你可以找到
+浏览整个笔记本，您可以找到
 它由四个步骤组成：
 
 <center>
@@ -192,7 +192,7 @@ Environment for Experiment
 </center>
 
 
-# 引用
+# 参考
 <div id='wiki-docking'></div>
 <<<<<<< HEAD
 - 1.[Wiki: Molecular Docking](https://en.wikipedia.org/wiki/Docking_(molecular))
