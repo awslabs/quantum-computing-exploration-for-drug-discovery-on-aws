@@ -10,9 +10,14 @@
 - 步骤2：在您的亚马逊云科技账户中启动Amazon CloudFormation模板。
 - 步骤3：更新您的QuickSight权限
 
+!!! 注意
+
+    在初次部署时，每个帐户只需进行一次步骤1和步骤3。重复部署时不必这样做
+
 ## 部署步骤
 
-### 检查您的QuickSight账户
+### 步骤1: 检查您的QuickSight账户
+
 
 * 登录到AWS控制台，并找到[QuickSight](https://quicksight.aws.amazon.com/)
 
@@ -26,7 +31,8 @@
 * 进入[quicksight admin](https://us-east-1.quicksight.aws.amazon.com/sn/admin), 并记录您的**QuickSight Username**(不是QuickSight account name).
 
 ![quicksight username](./images/quicksight_username.png)
-### 部署您的解决方案
+
+### 步骤2: 部署您的解决方案
 
 我们将AWS CloudFormation的模板部署在了AWS Cloud上。
 
@@ -52,7 +58,7 @@
 您可以在AWS CloudFormation控制台中**Status**栏中查看stack的状态。您在大约十分钟内应该看到CREATE_COMPLETE的状态。
 
 
-### 更新QuickSight的权限
+### 步骤3: 更新QuickSight的权限
 
 * 定位到Quicksight [admin page](https://us-east-1.quicksight.aws.amazon.com/sn/admin#aws)
 

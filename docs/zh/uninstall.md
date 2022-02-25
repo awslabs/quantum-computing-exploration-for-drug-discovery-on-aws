@@ -6,7 +6,7 @@
 
 1. 登陆
 [AWS CloudFormation][cloudformation-console]界面。
-2. 选择此解决方案的安装父堆栈。
+2. 选择此解决方案的安装栈。
 3. 选择 **Delete**。
 
 ## 使用CLI删除堆栈
@@ -19,13 +19,13 @@
 aws cloudformation delete-stack --stack-name <installation-stack-name> --region <aws-region>
 ```
 
-[cloudformation-console]: https://console.aws.amazon.com/cloudformation/home
-[aws-cli]: https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html
-
-## 删除QuickSight账户
+## 删除QuickSight账户（可选项）
 
 进入[quicksight admin](https://us-east-1.quicksight.aws.amazon.com/sn/admin) 的 **Account settings**，并点击 **Delete account**。
 
 !!! Warning
 
     这个操作可能会影响该QuickSight账户下的其他数据，请注意检查
+
+[cloudformation-console]: https://console.aws.amazon.com/cloudformation/home
+[aws-cli]: https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html

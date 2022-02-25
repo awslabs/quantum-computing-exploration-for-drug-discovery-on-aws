@@ -4,8 +4,11 @@
 使用此模板启动解决方案和所有相关组件。
 默认配置部署 
 [AWS SageMaker Notebook](https://docs.aws.amazon.com/sagemaker/latest/dg/nbi.html)，
+[Amazon S3](https://aws.amazon.com/s3/)
+[AWS Identity and Access Management(IAM)](https://aws.amazon.com/iam/)
+[Amazon Virtual Private Cloud(Amazon VPC)](https://aws.amazon.com/vpc/)
 [Amazon Braket](https://aws.amazon.com/braket/)，
-[AWS Step Function](https://aws.amazon.com/step-functions/)，
+[AWS Step Functions](https://aws.amazon.com/step-functions/)，
 [AWS Batch](https://aws.amazon.com/batch/)，
 [Amazon EventBridge](https://aws.amazon.com/eventbridge/)，
 [AWS Lambda](https://aws.amazon.com/lambda/)，

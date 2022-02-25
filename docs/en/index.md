@@ -10,7 +10,7 @@ This solution mainly includes the following features:
 classical computing workflow
 - Flexibility for customers to use either quantum or classical compute resource or both 
 - Sample codes to show how to use quantum computing, classical computing or both to study the drug discovery problems 
-- The analytics data and diagrams are provided in BI service (Amazon QuickSight) to evaluate the experiment values (e.g. performance, time)
+- The analytics data and diagrams are provided in BI service (Amazon QuickSight) to evaluate the experiment values (e.g. performance)
 
 This implementation guide describes architectural considerations and configuration steps for deploying the quantum ready solution for drug discovery in the Amazon Web Services (AWS) cloud. It includes links to [CloudFormation][cloudformation] templates that launches and configures the AWS services required to deploy this solution using AWS best practices for security and availability.
 

@@ -1,3 +1,3 @@
-| Date          | Change            |
+| Version          | Change            |
 |---------------|-------------------|
-| [March] 2022 | Intitial release  |
+| v1.0.0 | Initial release  |

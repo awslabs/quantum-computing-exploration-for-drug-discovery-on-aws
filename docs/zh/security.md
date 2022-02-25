@@ -31,7 +31,7 @@
 
 如果在通过命令行界面或 API 访问 AWS 时需要经过 FIPS 140-2 验证的加密模块，请使用 FIPS 终端节点。有关可用的 FIPS 端点的更多信息，请参阅美国联邦信息处理标准 (FIPS) 第 140-2 版。
 
-### 数据保留
+### [数据保留](https://docs.aws.amazon.com/braket/latest/developerguide/security.html)
 
 90 天后，Amazon Braket 会自动删除与您的任务关联的所有任务 ID 和其他元数据。由于此数据保留策略，这些任务和结果不能再通过从 Amazon Braket 控制台进行搜索来检索，尽管它们仍存储在 S3 存储桶中。
 

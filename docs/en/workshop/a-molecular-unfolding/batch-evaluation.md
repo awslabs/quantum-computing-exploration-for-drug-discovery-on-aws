@@ -12,7 +12,7 @@ Click the Step Functions link, you will be navigated to AWS Step Functions conso
 
 In your AWS Step Functions console, click **Start execution** button, the screen is shown as below:
 
-![ start execution step function ](../../images/batch-start-execution.png)
+![ start execution step functions ](../../images/batch-start-execution.png)
 
 1. (optional) Input evaluation input
 
@@ -22,13 +22,13 @@ In your AWS Step Functions console, click **Start execution** button, the screen
 1. Click **Start execution**, start batch evaluation
     
     The screen is shown as below:
-    ![ execution step function ](../../images/batch-execution.png)
+    ![ execution step functions ](../../images/batch-execution.png)
 
 1. Wait for complete
    > The default batch evaluation will take about 15 minutes.
 
     The screen is shown as below when the evaluation is finished.
-    ![ execution step function complete](../../images/batch-execution-complete.png)
+    ![ execution step functions complete](../../images/batch-execution-complete.png)
     
 ### View dashboard
 
