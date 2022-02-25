@@ -11,6 +11,8 @@ theme:
 
 plugins:
   - search
+  - mkdocs-jupyter:
+      ignore_h1_titles: True
 
 extra:
   alternate:

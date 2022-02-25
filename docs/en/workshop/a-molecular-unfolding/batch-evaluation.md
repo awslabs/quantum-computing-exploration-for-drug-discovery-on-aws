@@ -4,7 +4,11 @@ We will run batch evaluation through AWS Step Functions workflow and view the re
 
 ### Get Step Functions link from deployment output
 
+<center>
 ![deployment output](../../images/deploy-output-stepfunc.png)
+
+Figure 1: The workflow link from the output of deployment
+</center>
 
 Click the Step Functions link, you will be navigated to AWS Step Functions console.
 
@@ -13,6 +17,9 @@ Click the Step Functions link, you will be navigated to AWS Step Functions conso
 In your AWS Step Functions console, click **Start execution** button, the screen is shown as below:
 
 ![ start execution step functions ](../../images/batch-start-execution.png)
+
+Figure 2: Execute the workflow
+</center>
 
 1. (optional) Input evaluation input
 
@@ -24,33 +31,57 @@ In your AWS Step Functions console, click **Start execution** button, the screen
     The screen is shown as below:
     ![ execution step functions ](../../images/batch-execution.png)
 
+    Figure 3: Execute batch evaluation
+    </center>
+
 1. Wait for complete
    > The default batch evaluation will take about 15 minutes.
 
     The screen is shown as below when the evaluation is finished.
     ![ execution step functions complete](../../images/batch-execution-complete.png)
     
+    </center>
 ### View dashboard
 
 When the batch evaluation is completed, you can view the result in AWS QuickSight dashboard.
 
 * Get dashboard link form CloudFormation output:
+<center>
 ![ dashboard link](../../images/quicksight-link.png)
+Figure 5: Dashboard link
+</center>
 
 * Click the link, you will be navigated to the dashboard, shown as below:
 
+<center>
 ![dashboard](../../images/quicksight-dashboard.png)
 
+Figure 6: Dashboard
+</center>
+
+<center>
 ![dashboard data](../../images/quicksight-dashboard-table.png)
 
+Figure 7: Dashboard data
+</center>
+
 There are two sheets in the dashboard, you can click to switch.
+
+<center>
 ![dashboard sheets](../../images/quicksight-sheets.png)
+
+Figure 8: Dashboard data switch
+</center>
 
 #### Sheet 1: view result by each experiment
 
 In this sheet, you can view batch evaluation result by experiment.
 
+<center>
 ![dashboard Experiments hist](../../images/quicksight-sheet1-hist.png)
+
+Figure 9: Watch batch evaluation
+</center>
 
 * Experiments hist table
 
@@ -64,7 +95,11 @@ In this sheet, you can view the batch evaluation result by each experiment, rows
 
     Below two charts show the performance of QC vs. HPC tasks
 
+    <center>
     ![dashboard qc vs hpc](../../images/quicksight-qc-hpc-avg.png)
+
+    Figure 10: Performance of HPC v.s. QC
+    </center>
     
     * **QC vs. HPC average**  - compares the average execution time (Y-axis) of QC and HPC tasks by different model parameters (X-axis)
      * **QC vs. HPC by resource**  - compares the execution time (Y-axis) of QC and HPC tasks by different model parameters (X-axis) using different resources(for QC that is different QPU devices, for HPC that is different memory-vCPU)
@@ -73,19 +108,31 @@ In this sheet, you can view the batch evaluation result by each experiment, rows
 
     It compares execution time (Y-axis) of different QPU devices by different model parameters (X-axis)
 
+    <center>
     ![dashboard qc device](../../images/quicksight-qc-device.png)
+
+    Figure 11: Results by QPU
+    </center>
 
 * HPC: by resources
 
     It compares execution time (Y-axis) of different HPC resources (memory and vCPU) by different model parameters (X-axis)
 
+    <center>
     ![dashboard qc device](../../images/quicksight-hpc-resource.png)
+
+    Figure 12: Results by HPC resources
+    </center>
 
 * Records table
    
     It lists the detail information of each task in the selected experiment (if no experiment selected, it lists all)
 
+    <center>
     ![dashboard records table](../../images/quicksight-records-table.png)
+
+    Figure 13: Dashboard records table
+    </center>
 
     Fields in this table:
 
@@ -106,7 +153,11 @@ In this sheet, you can view the batch evaluation result by each experiment, rows
 
 In this sheet, you can view batch evaluation result by each resource and QPU device
 
+<center>
 ![by resource sheet](../../images/quicksight-by-resource.png)
+
+Figure 14: Results by resource
+</center>
 
 * Compute type and resource table
    
@@ -117,11 +168,15 @@ In this sheet, you can view batch evaluation result by each resource and QPU dev
     
     It shows execution time (Y-axis) for selected resource by experiment name (X-axis, ordered by time) using different model parameters.
 
+    <center>
     ![experiment hist](../../images/quicksight-experiment-hist.png)  
+
+    Figure 15: Results by model parameters
+    <center>
 
 * Records table
    
-    This table is the same as the table in [Sheet 1](#sheet-1-view-result-by-each-experiment).
+    This table is the same as the table in **Sheet 1**.
 
 
 ### Input specification
@@ -155,7 +210,9 @@ The input schema:
 
 ```
 
-**Note**: all fields are optional.
+!!! notice
+
+    all fields are optional.
 
 Definition:
 
@@ -169,7 +226,9 @@ Definition:
          M: [1, 2, 3, 4, 5, 6, 7]
          D: [4] or [8]
 
-    Note: the max value of M is depended on the value of D, QPU device and input molFile. 
+!!! notice
+
+    The max value of M is depended on the value of D, QPU device and input molFile. 
     
     If you use the default molFile (meaning `molFile` is not provided in the input), the max value combinations are listed in below table: 
     
