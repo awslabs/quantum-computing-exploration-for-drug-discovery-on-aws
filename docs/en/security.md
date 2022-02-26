@@ -28,7 +28,7 @@ For data protection purposes, we recommend that you protect AWS account credenti
 
 If you require FIPS 140-2 validated cryptographic modules when accessing AWS through a command line interface or an API, use a FIPS endpoint. For more information about the available FIPS endpoints, see Federal Information Processing Standard (FIPS) 140-2.
 
-### Data retention
+### [Data retention](https://docs.aws.amazon.com/braket/latest/developerguide/security.html)
 
 After 90 days, Amazon Braket automatically removes all task IDs and other metadata associated with your tasks. As a result of this data retention policy, these tasks and results are no longer retrievable by search from the Amazon Braket console, although they remain stored in your S3 bucket.
 

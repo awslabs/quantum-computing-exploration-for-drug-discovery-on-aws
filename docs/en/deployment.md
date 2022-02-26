@@ -6,13 +6,17 @@ Before you launch the solution, review the architecture, supported regions, and 
 
 Use the following steps to deploy this solution on AWS.
 
-- Check your QuickSight account
-- Launch the AWS CloudFormation template into your AWS account to deploy the solution.
-- Update QuickSight permissions
+* Step1: Check your QuickSight account
+* Step2: Launch the AWS CloudFormation template into your AWS account to deploy the solution.
+* Step3: Update QuickSight permissions
+
+!!! notice
+
+    Step1 and Step3 are one time setup per account when deploying this solution for the first time. You don't have to do them when repeating deployment
 
 ## Deployment
 
-### Check your QuickSight
+### Step1: Check your QuickSight
 
 * Sign in to the AWS Management Console, navigate to
 [QuickSight](https://quicksight.aws.amazon.com/)
@@ -22,13 +26,14 @@ Use the following steps to deploy this solution on AWS.
 * Choose **Enterprise**, click continue
 
 * In the **Create your QuickSight account** page, fill the necessary information:
+
 ![Fill information for quicksight](./images/create_quicksight.png)
 
 * Go to [quicksight admin](https://us-east-1.quicksight.aws.amazon.com/sn/admin), record your **QuickSight Username**(not QuickSight account name).
 
 ![quicksight username](./images/quicksight_username.png)
 
-### Deploy solution
+### Step2: Deploy solution
 
 This automated AWS CloudFormation template deploys the solution in the AWS Cloud.
 
@@ -43,8 +48,7 @@ This automated AWS CloudFormation template deploys the solution in the AWS Cloud
 
     |      Parameter      |                                                         Description                                                      |
     |:-------------------:|:----:|
-    | MolUnfDashboardquickSightUser | **Quicksight Username** |
-
+    | MolUnfDashboardquickSightUser | **QuickSight Username** |
 
 * On the **Configure stack options** page, choose **Next**.
 
@@ -52,23 +56,22 @@ This automated AWS CloudFormation template deploys the solution in the AWS Cloud
 
 * Choose **Create stack** to deploy the stack.
 
-
 You can view the status of the stack in the AWS CloudFormation Console in the **Status** column. You should receive a CREATE_COMPLETE status in approximately 10 minutes.
 
+### Step3: Update QuickSight permissions
 
-### Update QuickSight permissions
-
-* Navigate to Quicksight [admin page](https://us-east-1.quicksight.aws.amazon.com/sn/admin#aws)
+* Navigate to QuickSight [admin page](https://us-east-1.quicksight.aws.amazon.com/sn/admin#aws)
 
 * Click **Manage**
+
 ![mange quicksight](./images/manage_quicksight.png)
 
 * Click **Select S3 Buckets**
+
 ![select s3 quicksight](./images/select_s3_bucket.png)
 
 * Check the bucket `amazon-braket-qcstack-<AWS account>-<region>`
+
 ![choose s3 quicksight](./images/choose_s3_bucket.png)
 
 * Click **Finish** and then **Save**
-
-
