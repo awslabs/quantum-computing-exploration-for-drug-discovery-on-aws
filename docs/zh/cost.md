@@ -14,7 +14,7 @@
 一次完整的对量子计算和经典计算整的批量评估，以及在 Amazon QuickSight 中可视化结果。
 如果客户仅使用解决方案来研究示例代码，成本为笔记本和来自 Amazon Braket 的计算。
 
-!!! notice
+!!! 注意
 
     在部署此解决方案之前创建账单告警是一种很好的做法。参考这个 [链接](https://docs.aws.amazon.com/zh_cn/AmazonCloudWatch/latest/monitoring/monitor_estimated_charges_with_cloudwatch.html)
 

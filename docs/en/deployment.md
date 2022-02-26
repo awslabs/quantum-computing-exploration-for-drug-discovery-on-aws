@@ -27,11 +27,23 @@ Use the following steps to deploy this solution on AWS.
 
 * In the **Create your QuickSight account** page, fill the necessary information:
 
+<center>
 ![Fill information for quicksight](./images/create_quicksight.png)
+
+<figcaption>Figure 1: Fill information for quicksight
+</figcaption>
+
+</center>
 
 * Go to [quicksight admin](https://us-east-1.quicksight.aws.amazon.com/sn/admin), record your **QuickSight Username**(not QuickSight account name).
 
+<center>
 ![quicksight username](./images/quicksight_username.png)
+
+<figcaption>Figure 2: Quicksight username
+</figcaption>
+
+</center>
 
 ### Step2: Deploy solution
 
@@ -46,9 +58,13 @@ This automated AWS CloudFormation template deploys the solution in the AWS Cloud
 
 * Under **Parameters**, review the parameters for the template and modify them as necessary. This solution uses the following values. Choose **Next**.
 
-    |      Parameter      |                                                         Description                                                      |
-    |:-------------------:|:----:|
-    | MolUnfDashboardquickSightUser | **QuickSight Username** |
+<center>
+
+|      Parameter      |   Description |
+|:-------------------:|:----:|
+| MolUnfDashboardquickSightUser | **QuickSight Username** |
+
+</center>
 
 * On the **Configure stack options** page, choose **Next**.
 
@@ -64,14 +80,33 @@ You can view the status of the stack in the AWS CloudFormation Console in the **
 
 * Click **Manage**
 
+<center>
 ![mange quicksight](./images/manage_quicksight.png)
+
+<figcaption>Figure 3: Manage quicksight
+</figcaption>
+
+</center>
 
 * Click **Select S3 Buckets**
 
+<center>
 ![select s3 quicksight](./images/select_s3_bucket.png)
+
+<figcaption>Figure 4: Check s3 in quicksight
+</figcaption>
+
+</center>
 
 * Check the bucket `amazon-braket-qcstack-<AWS account>-<region>`
 
+<center>
 ![choose s3 quicksight](./images/choose_s3_bucket.png)
 
+<figcaption>Figure 5: Select s3 in quicksight
+</figcaption>
+
+</center>
+
 * Click **Finish** and then **Save**
+

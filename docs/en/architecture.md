@@ -4,7 +4,8 @@ Deploying this solution with the default parameters builds the following environ
 
 ![architecture](./images/architecture.png)
 
- Figure 1: The quantum ready solution for drug discovery architecture
+<figcaption>Figure 1: The quantum ready solution for drug discovery architecture
+</figcaption>
 
 </center>
 
@@ -24,9 +25,6 @@ The user can learn how to study these problems based on classical
 or quantum computing resource through 
 [Amazon Braket](https://aws.amazon.com/braket/). The step-by-step guide is 
 provided in the [Workshop Page](workshop/background.md).
-
-03. The notebook provides the user with the public network access to download 
-necessary software for experiments.
 
 03. User can access the internet through the notebook.
 
