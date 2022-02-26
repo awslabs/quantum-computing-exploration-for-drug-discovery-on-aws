@@ -15,7 +15,7 @@
     
     
       
-        <title>Uninstall the solution - Quantum Ready Solution for Drug Discovery</title>
+        <title>Uninstall the solution - Quantum Ready Architecture for Drug Discovery</title>
       
     
     
@@ -74,7 +74,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Quantum Ready Solution for Drug Discovery" class="md-header__button md-logo" aria-label="Quantum Ready Solution for Drug Discovery" data-md-component="logo">
+    <a href=".." title="Quantum Ready Architecture for Drug Discovery" class="md-header__button md-logo" aria-label="Quantum Ready Architecture for Drug Discovery" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
@@ -87,7 +87,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Quantum Ready Solution for Drug Discovery
+            Quantum Ready Architecture for Drug Discovery
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -111,13 +111,13 @@
             <ul class="md-select__list">
               
                 <li class="md-select__item">
-                  <a href="/mkdocs-playground/en/" hreflang="en" class="md-select__link">
+                  <a href="/quantum-ready-solution-for-drug-discovery/en/" hreflang="en" class="md-select__link">
                     English
                   </a>
                 </li>
                 
                 <li class="md-select__item">
-                  <a href="/mkdocs-playground/zh/" hreflang="zh" class="md-select__link">
+                  <a href="/quantum-ready-solution-for-drug-discovery/zh/" hreflang="zh" class="md-select__link">
                     中文
                   </a>
                 </li>
@@ -200,13 +200,13 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Quantum Ready Solution for Drug Discovery" class="md-nav__button md-logo" aria-label="Quantum Ready Solution for Drug Discovery" data-md-component="logo">
+    <a href=".." title="Quantum Ready Architecture for Drug Discovery" class="md-nav__button md-logo" aria-label="Quantum Ready Architecture for Drug Discovery" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
 
     </a>
-    Quantum Ready Solution for Drug Discovery
+    Quantum Ready Architecture for Drug Discovery
   </label>
   
     <div class="md-nav__source">
@@ -531,6 +531,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#delete-quicksight-account-optional" class="md-nav__link">
+    Delete QuickSight Account (Optional)
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -622,6 +629,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#delete-quicksight-account-optional" class="md-nav__link">
+    Delete QuickSight Account (Optional)
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -642,18 +656,27 @@
 
   <h1>Uninstall the solution</h1>
 
-<p>To uninstall the AWS QRSDD solution, you must delete the AWS CloudFormation stack. </p>
+<p>To uninstall the AWS QRADD solution, you must delete the AWS CloudFormation stack. </p>
 <p>You can use either the AWS Management Console or the AWS Command Line Interface (AWS CLI) to delete the CloudFormation stack.</p>
 <h2 id="uninstall-the-stack-using-the-aws-management-console">Uninstall the stack using the AWS Management Console</h2>
 <ol>
 <li>Sign in to the <a href="https://console.aws.amazon.com/cloudformation/home">AWS CloudFormation</a> console.</li>
-<li>Select this solution’s installation parent stack.</li>
+<li>Select this solution’s installation stack.</li>
 <li>Choose <strong>Delete</strong>.</li>
 </ol>
 <h2 id="uninstall-the-stack-using-aws-command-line-interface">Uninstall the stack using AWS Command Line Interface</h2>
 <p>Determine whether the AWS Command Line Interface (AWS CLI) is available in your environment. For installation instructions, refer to <a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html">What Is the AWS Command Line Interface</a> in the <em>AWS CLI User Guide</em>. After confirming that the AWS CLI is available, run the following command.</p>
 <div class="codehilite"><pre><span></span><code>aws cloudformation delete-stack --stack-name &lt;installation-stack-name&gt; --region &lt;aws-region&gt;
 </code></pre></div>
+
+<h2 id="delete-quicksight-account-optional">Delete QuickSight Account (Optional)</h2>
+<p>Go to the <strong>Account settings</strong> of 
+<a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin">quicksight admin</a> and click <strong>Delete account</strong>。</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This action may influence other data under this QuickSight Account. 
+Please check in advance.</p>
+</div>
 
               
             </article>

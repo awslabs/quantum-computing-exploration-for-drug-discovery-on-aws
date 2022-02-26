@@ -15,7 +15,7 @@
     
     
       
-        <title>Architecture Overview - Quantum Ready Solution for Drug Discovery</title>
+        <title>Architecture Overview - Quantum Ready Architecture for Drug Discovery</title>
       
     
     
@@ -69,7 +69,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Quantum Ready Solution for Drug Discovery" class="md-header__button md-logo" aria-label="Quantum Ready Solution for Drug Discovery" data-md-component="logo">
+    <a href=".." title="Quantum Ready Architecture for Drug Discovery" class="md-header__button md-logo" aria-label="Quantum Ready Architecture for Drug Discovery" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
@@ -82,7 +82,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Quantum Ready Solution for Drug Discovery
+            Quantum Ready Architecture for Drug Discovery
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -106,13 +106,13 @@
             <ul class="md-select__list">
               
                 <li class="md-select__item">
-                  <a href="/mkdocs-playground/en/" hreflang="en" class="md-select__link">
+                  <a href="/quantum-ready-solution-for-drug-discovery/en/" hreflang="en" class="md-select__link">
                     English
                   </a>
                 </li>
                 
                 <li class="md-select__item">
-                  <a href="/mkdocs-playground/zh/" hreflang="zh" class="md-select__link">
+                  <a href="/quantum-ready-solution-for-drug-discovery/zh/" hreflang="zh" class="md-select__link">
                     中文
                   </a>
                 </li>
@@ -195,13 +195,13 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Quantum Ready Solution for Drug Discovery" class="md-nav__button md-logo" aria-label="Quantum Ready Solution for Drug Discovery" data-md-component="logo">
+    <a href=".." title="Quantum Ready Architecture for Drug Discovery" class="md-nav__button md-logo" aria-label="Quantum Ready Architecture for Drug Discovery" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
 
     </a>
-    Quantum Ready Solution for Drug Discovery
+    Quantum Ready Architecture for Drug Discovery
   </label>
   
     <div class="md-nav__source">
@@ -564,8 +564,10 @@
   <h1>Architecture Overview</h1>
 
 <p>Deploying this solution with the default parameters builds the following environment in the AWS Cloud.</p>
-<p><img alt="architecture" src="../images/architecture.png" />
-<em>Figure 1: The quantum ready solution for drug discovery architecture on AWS</em></p>
+<p><center></p>
+<p><img alt="architecture" src="../images/architecture.png" /></p>
+<p>Figure 1: The quantum ready solution for drug discovery architecture</p>
+<p></center></p>
 <p>This solution deploys the Amazon CloudFormation template in your 
 AWS Cloud account and provides three URLs. One for <strong>Visualization</strong>.
 The others provide user with two approaches to study drug discovery 
@@ -575,7 +577,7 @@ problems: <strong>Notebook Experiment</strong> and <strong>Batch Evaluation</str
 <p>The solution deploys an instance for 
 <a href="https://docs.aws.amazon.com/sagemaker/latest/dg/nbi.html">AWS SageMaker Notebook</a>. 
 The user can do <strong>Notebook Experiment</strong> for drug discovery on classical computing and 
-quantum computing in this notebook.</p>
+quantum computing.</p>
 </li>
 <li>
 <p>The notebook comes with prepared sample code for different problems 
@@ -590,8 +592,11 @@ provided in the <a href="../workshop/background/">Workshop Page</a>.</p>
 necessary software for experiments.</p>
 </li>
 <li>
+<p>User can access the internet through the notebook.</p>
+</li>
+<li>
 <p>The solution also deploys 
-<a href="https://aws.amazon.com/step-functions/">AWS Step Function</a> for user to do 
+<a href="https://aws.amazon.com/step-functions/">AWS Step Functions</a> for user to do 
 <strong>Batch Evaluation</strong>. </p>
 </li>
 <li>
@@ -599,7 +604,8 @@ necessary software for experiments.</p>
     <a href="https://aws.amazon.com/batch/">AWS Batch</a> jobs based on different resources.</p>
 </li>
 <li>
-<p>Instances launched by AWS Batch try to evaluate a particular problem based 
+<p>Instances launched by AWS Batch try to evaluate a particular 
+drug discovery problem based 
 on different computing resources , classical computing or quantum computing. 
 For example, for the problem of molecular unfolding, the performance difference 
 between quantum annealer and simulated annealer can be compared. </p>
@@ -611,8 +617,8 @@ the logic for <strong>Batch Evaluation</strong>, please refer to
 <a href="../workshop/a-molecular-unfolding/evaluate-your-own-model/">Batch Evaluate Your Own Model Page</a>.</p>
 </li>
 <li>
-<p>The <strong>Batch Evaluation</strong> deploys <a href="https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints.html">VPC Endpoints</a> to ensure secure connection to AWS 
-services:
+<p>The <strong>Batch Evaluation</strong> deploys <a href="https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints.html">VPC Endpoints</a> to enable connections between VPC and
+ supported AWS services:
 Amazon ECR, Amazon S3, Amazon Braket.</p>
 </li>
 <li>
@@ -622,7 +628,7 @@ jobs/tasks through Amazon Braket.</p>
 <li>
 <p>Either classical computing task or quantum computing jobs/tasks complete, 
 the results will be saved to 
-<a href="https://aws.amazon.com/s3/">Amazon S3</a>,</p>
+<a href="https://aws.amazon.com/s3/">Amazon S3</a>.</p>
 </li>
 <li>
 <p>When quantum computing jobs/tasks complete, 
@@ -630,18 +636,19 @@ the results will be saved to
 the listener <a href="https://aws.amazon.com/lambda/">AWS Lambda</a>.</p>
 </li>
 <li>
-<p>The listener lambda sends a callback to the step function.</p>
+<p>The listener Lambda sends a callback to the Step Functions.</p>
 </li>
 <li>
 <p>When all the steps complete, a notification is send out by 
 <a href="https://aws.amazon.com/sns/">Amazon SNS</a>.</p>
 </li>
 <li>
-<p>The Glue table is created by Amazon Athena based on metrics data in 
+<p>The Glue table is created by <a href="https://aws.amazon.com/athena">Amazon Athena</a> 
+based on metrics data in 
 Amazon S3.</p>
 </li>
 <li>
-<p>The user can view the <strong>Batch Evaluation</strong> results(e.g. cost, performance) 
+<p>The user can view the <strong>Batch Evaluation</strong> results(e.g. performance) 
 through <a href="https://aws.amazon.com/quicksight/">Amazon QuickSight</a></p>
 </li>
 </ol>
