@@ -4,10 +4,8 @@ As of March 2022, this solution is supported in the following Amazon Web Service
 
 ## Supported regions for deployment in AWS Standard Regions
 
-| Region Name | Region ID |
-|----------|--------|
-| US East (N. Virginia) | us-east-1
-| US West (Oregon) | us-west-2
+- US East (N. Virginia) Region:  us-east-1
+- US West (Oregon) Region:  us-west-2
 <!-- | Asia Pacific (Mumbai) | ap-south-1
 | Asia Pacific (Tokyo) | ap-northeast-1
 | Asia Pacific (Seoul) | ap-northeast-2

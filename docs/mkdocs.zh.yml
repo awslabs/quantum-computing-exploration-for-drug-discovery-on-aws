@@ -1,10 +1,10 @@
 INHERIT: ./mkdocs.base.yml
+site_name: 药物研发量子计算解决方案
 docs_dir: zh
 site_dir: ./site/zh
 theme:
   language: zh
 nav:
-
   - 概述: index.md
   - 成本预估: cost.md
   - 架构概览: architecture.md
@@ -30,7 +30,6 @@ nav:
   - 源代码: source.md
   - 文档发布说明: revisions.md
   - 注意事项: notices.md
-
 markdown_extensions:
   - admonition
   - codehilite
