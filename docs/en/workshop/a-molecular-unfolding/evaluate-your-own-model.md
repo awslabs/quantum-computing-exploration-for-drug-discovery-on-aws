@@ -45,23 +45,13 @@ If you want to fully customize the evaluation code, follow below steps to make c
 
 ### Prerequisites
 
-1. Make sure you have AWS CLI and AWS CDK install in your workspace
-    
-    > You can follow this doc [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) to install AWS CLI.
-   
-    > You can follow this document [CDK Getting Started](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_prerequisites) to install and bootstrap CDK
+1. Make sure you have AWS CLI and AWS CDK install in your workspace. You can follow this doc [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) to install AWS CLI. You can follow this document [CDK Getting Started](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_prerequisites) to install and bootstrap CDK
 
-1. Permissions
-   
-    Your AWS user must have at least [permissions](./permissions.json)
+1. Your AWS user must have at least [permissions](./permissions.json)
 
-1. QuickSight account
-    
-    Check your QuickSight account [check your quicksight](../../../deployment/#check-your-quicksight)
+1. Check your QuickSight account [check your quicksight](../../../deployment/#check-your-quicksight)
 
-1. Make sure you have docker running in your workspace
-
-    > You can follow this document [Docker Install](https://docs.docker.com/engine/install/) to install docker.
+1. Make sure you have docker running in your workspace. You can follow this document [Docker Install](https://docs.docker.com/engine/install/) to install docker.
 
 ### Customize evaluation code
 
@@ -93,9 +83,7 @@ If you want to fully customize the evaluation code, follow below steps to make c
            npm run deploy
               
  
-1. Wait for the deployment to complete
-    
-    > deployment will take about 10 minutes 
+1. Wait for the deployment to complete. Deployment will take about 10 minutes 
 
 1. Get output links from CloudFormation output, the links include:
     - Step Functions URL

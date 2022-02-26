@@ -30,8 +30,7 @@
 <center>
 ![Fill information for quicksight](./images/create_quicksight.png)
 
-<figcaption>图 1: 在Quicksight填写信息
-</figcaption>
+图 1: 在Quicksight填写信息
 
 </center>
 
@@ -40,8 +39,7 @@
 <center>
 ![quicksight username](./images/quicksight_username.png)
 
-<figcaption>图 2: Quicksight用户名
-</figcaption>
+图 2: Quicksight用户名
 
 </center>
 
@@ -84,8 +82,7 @@
 <center>
 ![mange quicksight](./images/manage_quicksight.png)
 
-<figcaption>图 3: 管理quicksight
-</figcaption>
+图 3: 管理quicksight
 
 </center>
 
@@ -94,8 +91,8 @@
 <center>
 ![select s3 quicksight](./images/select_s3_bucket.png)
 
-<figcaption>图 4: 在quicksight里检查s3
-</figcaption>
+图 4: 在quicksight里检查s3
+
 </center>
 
 * 检查S3桶 `amazon-braket-qcstack-<AWS account>-<region>`
@@ -103,8 +100,8 @@
 <center>
 ![choose s3 quicksight](./images/choose_s3_bucket.png)
 
-<figcaption>图 5: 在quicksight里选择s3
-</figcaption>
+图 5: 在quicksight里选择s3
+
 </center>
 
 * 点击 **Finish** 并选择 **Save**

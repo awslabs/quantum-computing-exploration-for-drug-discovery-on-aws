@@ -30,8 +30,7 @@ Use the following steps to deploy this solution on AWS.
 <center>
 ![Fill information for quicksight](./images/create_quicksight.png)
 
-<figcaption>Figure 1: Fill information for quicksight
-</figcaption>
+Figure 1: Fill information for quicksight
 
 </center>
 
@@ -40,8 +39,7 @@ Use the following steps to deploy this solution on AWS.
 <center>
 ![quicksight username](./images/quicksight_username.png)
 
-<figcaption>Figure 2: Quicksight username
-</figcaption>
+Figure 2: Quicksight username
 
 </center>
 
@@ -83,8 +81,7 @@ You can view the status of the stack in the AWS CloudFormation Console in the **
 <center>
 ![mange quicksight](./images/manage_quicksight.png)
 
-<figcaption>Figure 3: Manage quicksight
-</figcaption>
+Figure 3: Manage quicksight
 
 </center>
 
@@ -93,8 +90,7 @@ You can view the status of the stack in the AWS CloudFormation Console in the **
 <center>
 ![select s3 quicksight](./images/select_s3_bucket.png)
 
-<figcaption>Figure 4: Check s3 in quicksight
-</figcaption>
+Figure 4: Check s3 in quicksight
 
 </center>
 
@@ -103,8 +99,7 @@ You can view the status of the stack in the AWS CloudFormation Console in the **
 <center>
 ![choose s3 quicksight](./images/choose_s3_bucket.png)
 
-<figcaption>Figure 5: Select s3 in quicksight
-</figcaption>
+Figure 5: Select s3 in quicksight
 
 </center>
 

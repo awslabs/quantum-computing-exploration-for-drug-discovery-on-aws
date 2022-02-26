@@ -4,7 +4,7 @@
 
 ![architecture](./images/architecture.png)
 
-<figcaption>图1：药物研发量子计算解决方案架构图</figcaption>
+图1：药物研发量子计算解决方案架构图
 
 </center>
 

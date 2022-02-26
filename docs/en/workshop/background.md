@@ -42,7 +42,9 @@ by approximately 40 percent and cost for care of patients by $367 billion a year
 
 <center>
 ![CADD](../images/cadd.png)
+
 Figure 2: CADD[<sup>2</sup>](#cadd)
+
 </center>
 
 Innovation and advancements in computer-aided drug design (CADD) helps increase the productivity in
@@ -53,7 +55,9 @@ in the development of quantum computers.
 
 <center>
 ![CADD-QC](../images/cadd-qc.png)
-图 3: CADD-QC[<sup>3</sup>](#cadd)
+
+Figure 3: CADD-QC[<sup>3</sup>](#cadd)
+
 </center>
 
 Researchers have listed the quantum techniques that can be applied to the components in the general workflow

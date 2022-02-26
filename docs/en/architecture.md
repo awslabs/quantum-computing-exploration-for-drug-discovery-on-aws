@@ -4,8 +4,7 @@ Deploying this solution with the default parameters builds the following environ
 
 ![architecture](./images/architecture.png)
 
-<figcaption>Figure 1: The quantum ready solution for drug discovery architecture
-</figcaption>
+Figure 1: The quantum ready solution for drug discovery architecture
 
 </center>
 
