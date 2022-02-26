@@ -46,7 +46,7 @@
 
     | Parameter(参数值）   |                                                         Description                                                      |
     |:-------------------:|:----:|
-    | MolUnfDashboardquickSightUser | **Quicksight Username** |
+    | MolUnfDashboardquickSightUser | **QuickSight Username** |
     
 
 * 在 **Configure stack options** 页面中, 选择 **Next**.

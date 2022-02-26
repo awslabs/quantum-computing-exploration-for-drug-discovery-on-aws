@@ -48,7 +48,7 @@ This automated AWS CloudFormation template deploys the solution in the AWS Cloud
 
     |      Parameter      |                                                         Description                                                      |
     |:-------------------:|:----:|
-    | MolUnfDashboardquickSightUser | **Quicksight Username** |
+    | MolUnfDashboardquickSightUser | **QuickSight Username** |
 
 * On the **Configure stack options** page, choose **Next**.
 
@@ -60,7 +60,7 @@ You can view the status of the stack in the AWS CloudFormation Console in the **
 
 ### Step3: Update QuickSight permissions
 
-* Navigate to Quicksight [admin page](https://us-east-1.quicksight.aws.amazon.com/sn/admin#aws)
+* Navigate to QuickSight [admin page](https://us-east-1.quicksight.aws.amazon.com/sn/admin#aws)
 
 * Click **Manage**
 

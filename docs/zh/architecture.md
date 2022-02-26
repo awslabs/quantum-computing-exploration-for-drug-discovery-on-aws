@@ -53,7 +53,7 @@ Amazon ECR, Amazon S3, Amazon Braket。
 11. 当量子计算工作/任务结束，
 [Amazon EventBridge](https://aws.amazon.com/eventbridge/) 会触发监听者[AWS Lambda](https://aws.amazon.com/lambda/)。
 
-12. 监听者Lambda函数会将一个回调发送给step functions。
+12. 监听者Lambda函数会将一个回调发送给Step Functions。
 
 13. 当所有步骤完成时,
 [Amazon SNS](https://aws.amazon.com/sns/) 会发出一个通知

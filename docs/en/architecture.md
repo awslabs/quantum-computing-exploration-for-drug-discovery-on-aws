@@ -63,7 +63,7 @@ the results will be saved to
 [Amazon EventBridge](https://aws.amazon.com/eventbridge/) triggers
 the listener [AWS Lambda](https://aws.amazon.com/lambda/).
 
-12. The listener Lambda sends a callback to the step functions.
+12. The listener Lambda sends a callback to the Step Functions.
 
 13. When all the steps complete, a notification is send out by 
 [Amazon SNS](https://aws.amazon.com/sns/).
