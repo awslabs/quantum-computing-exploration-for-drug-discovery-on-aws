@@ -16,6 +16,7 @@ plugins:
 <<<<<<< HEAD
 =======
 
+<<<<<<< HEAD
 # markdown_extensions:
 #   - admonition
 #   - codehilite
@@ -27,6 +28,8 @@ plugins:
 #   - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
 >>>>>>> 7691828 (finish zh draft)
 
+=======
+>>>>>>> a68793f (docs: initial zh documentation without workshop (#58))
 extra:
   alternate:
     - name: English

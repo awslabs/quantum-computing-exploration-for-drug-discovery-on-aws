@@ -30,7 +30,6 @@ nav:
   - 源代码: source.md
   - 文档发布说明: revisions.md
   - 注意事项: notices.md
-
 markdown_extensions:
   - admonition
   - codehilite
