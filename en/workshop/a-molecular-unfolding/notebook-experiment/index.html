@@ -11,7 +11,7 @@
         <link rel="canonical" href="https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/workshop/a-molecular-unfolding/notebook-experiment/">
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.2.1">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.2.3">
     
     
       
@@ -31,7 +31,7 @@
       
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
@@ -292,7 +292,7 @@
   
     <li class="md-nav__item">
       <a href="../../../regions/" class="md-nav__link">
-        Supported regions
+        Supported Regions
       </a>
     </li>
   
@@ -307,7 +307,7 @@
   
     <li class="md-nav__item">
       <a href="../../../template/" class="md-nav__link">
-        AWS CloudFormation template
+        AWS CloudFormation Template
       </a>
     </li>
   
@@ -404,15 +404,29 @@
               
   
   
+    
   
-    <li class="md-nav__item">
-      <a href="../molecular-unfolding/" class="md-nav__link">
-        Background
-      </a>
-    </li>
   
-
-            
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_2_1" type="checkbox" id="__nav_8_2_1" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8_2_1">
+          Notebook Experiment
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Notebook Experiment" data-md-level="3">
+        <label class="md-nav__title" for="__nav_8_2_1">
+          <span class="md-nav__icon md-icon"></span>
+          Notebook Experiment
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
           
             
               
@@ -430,7 +444,7 @@
       
       
       <a href="./" class="md-nav__link md-nav__link--active">
-        Notebook Experiment
+        Background
       </a>
       
     </li>
@@ -444,8 +458,111 @@
   
   
     <li class="md-nav__item">
+      <a href="../prepare-data/" class="md-nav__link">
+        Prepare Data
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build-model/" class="md-nav__link">
+        Build Model
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build-model-detail/" class="md-nav__link">
+        Build Model(Technical Details)
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../optimize-config/" class="md-nav__link">
+        Optimize Configuration
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../post-process/" class="md-nav__link">
+        Post Process
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_2_2" type="checkbox" id="__nav_8_2_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8_2_2">
+          Batch Evaluation
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Batch Evaluation" data-md-level="3">
+        <label class="md-nav__title" for="__nav_8_2_2">
+          <span class="md-nav__icon md-icon"></span>
+          Batch Evaluation
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../batch-evaluation/" class="md-nav__link">
-        Batch Evaluation
+        Standard Images
       </a>
     </li>
   
@@ -459,8 +576,15 @@
   
     <li class="md-nav__item">
       <a href="../evaluate-your-own-model/" class="md-nav__link">
-        Evaluate Your Own Model
+        Customize Images
       </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -590,11 +714,16 @@
 
 
 
+<p>We are trying to implement the work from the publication 
+<a href="https://arxiv.org/abs/2107.13607">Quantum Molecular Unfolding</a>
+and
+video <a href="https://www.youtube.com/watch?v=1NmAXIHAF2Y">Molecular Unfolding with Quantum Annealing</a>
+in Amazon Braket.</p>
 <p>Molecular Docking (MD) is an important step of the drug discovery process which aims at calculating 
 the preferred position and shape of one molecule to a second when they are bound to each other. This step focuses on computationally simulating the molecular recognition process. It aims to achieve an optimized conformation for both the protein and ligand and relative orientation between protein and ligand such that the free energy of the overall system is minimized. </p>
 <p><center>
 <img alt="Molecular Docking" src="../../../images/molecule-docking.png" /></p>
-<p>Molecular Docking<a href="#wiki-docking"><sup>1</sup></a>
+<p>Figure 1: Molecular docking<a href="#wiki-docking"><sup>1</sup></a>
  </center></p>
 <p>In this work, The protein or the pocket is considered as a rigid structure. The ligand is considered as a 
 flexible set of atoms. There are usually three main phases in MD:</p>
@@ -626,13 +755,13 @@ docking. MU is the technology used for removing such initial bias.</p>
 and open the link for your notebook</p>
 <p><center>
 <img alt="deployment output" src="../../../images/deploy_output_notebook.png" /></p>
-<p>Output of Cloudformation
+<p>Figure 2: The notebook link in the output of cloudformation
 </center></p>
 <p>Please open the notebook 
-in <strong>source/src/molecular-folding/molecular_unfolding.ipynb</strong> and make sure that the kernel for this notebook is <strong>qcenv</strong>.</p>
+(<strong>source/src/molecular-folding/molecular_unfolding.ipynb</strong>) and make sure that the kernel for this notebook is <strong>qcenv</strong>.</p>
 <p><center>
 <img alt="qcenv" src="../../../images/qcenv.png" /></p>
-<p>Environment for Experiment
+<p>Figure 3: Environment for experiment
 </center></p>
 <p>Navigate the whole notebook and you can find 
 that it consists of four Steps:</p>
@@ -646,396 +775,28 @@ that it consists of four Steps:</p>
 </thead>
 <tbody>
 <tr>
-<td align="left"><a href="#prepare">Step1: Prepare Data</a></td>
+<td align="left">Step1: Prepare Data</td>
 <td align="left">prepare molecular data for experiments</td>
 </tr>
 <tr>
-<td align="left"><a href="#buildmodel">Step2: Build Model</a></td>
+<td align="left">Step2: Build Model</td>
 <td align="left">build model for molecular unfolding</td>
 </tr>
 <tr>
-<td align="left"><a href="#optimize">Step3: Optimize Configuration</a></td>
+<td align="left">Step3: Optimize Configuration</td>
 <td align="left">run optimization to find the configuration</td>
 </tr>
 <tr>
-<td align="left"><a href="#postprocess">Step4: PostProcess Result</a></td>
+<td align="left">Step4: PostProcess Result</td>
 <td align="left">post process the results for evaluation and visualization</td>
 </tr>
 </tbody>
 </table>
 <p></center></p>
-<h1 id="prepare-data"><span id="prepare">Prepare Data</span></h1>
-<p>In this part, we load the raw molecule data for experiment.
-The <a href="http://www.rcsb.org/ligand/117">117 ligand</a> was 
-put in the repository. We assign the relative 
-path to <strong>raw_path</strong>.
-The <strong>s3_bucket</strong> and <strong>prefix</strong> are used to store the 
-optimization results. We can use the one created with the 
-cloudformation for convenience.</p>
-<p><center>
-<img alt="prepare-data" src="../../../images/prepare-data.png" /></p>
-<p>Process Molecule Data
-</center></p>
-<p>After running this block, the processed data 
-will be saved as <strong>qmu_117_ideal_data_latest.pickle</strong>
-and <strong>data_path</strong> will be updated. We can see that this 
-molecule has 23 rotatable bonds.</p>
-<h1 id="build-model"><span id="buildmodel">Build Model</span></h1>
-<p>In this part, we build the Quadratic Unconstrained 
-Binary Optimization (QUBO) model for molecular unfolding.</p>
-<p>First, we set the following parameters and 
-initialize the QMUQUBO object. </p>
-<p><center></p>
-<table>
-<thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-<th>Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>A</td>
-<td>penalty scalar</td>
-<td>300</td>
-</tr>
-<tr>
-<td>hubo_qubo_val</td>
-<td>energy penalty of make_quadratic()</td>
-<td>200</td>
-</tr>
-<tr>
-<td>M</td>
-<td>number of torsions for molecular unfolding</td>
-<td>[1, max number of rotatable bonds]</td>
-</tr>
-<tr>
-<td>D</td>
-<td>angle precision of rotation</td>
-<td>8</td>
-</tr>
-<tr>
-<td>method</td>
-<td>the method of building model</td>
-<td>'pre-calc': calculate the score in advance</td>
-</tr>
-</tbody>
-</table>
-<p></center></p>
-<p><center>
-<img alt="build-model" src="../../../images/build-model.png" /></p>
-<p>Build QUBO Model
- </center></p>
-<p>We can see from the image that we use the 'pre-calc' method 
-to build the model. This molecule has 23 rotatable bonds and 
-we only test 2 of them, so we set the <strong>M</strong> to 2. And we want 
-the angle to become <span class="arithmatex">\(45^o\)</span>, so we set the <strong>D</strong> to 8 
-(i.e., <span class="arithmatex">\(8=360^o/45^o\)</span>). The <strong>A</strong> and <strong>hubo_qubo_val</strong> are 
-test from experiments. </p>
-<p>We can use the following method to check the properties of 
-model. This way, we can build many models conveniently. 
-After that, we save the model and update the value of 
-<strong>model_path</strong>.</p>
-<p><center></p>
-<p><img alt="describe-model" src="../../../images/describe-save-model.png" /></p>
-<p>Describe and Save QUBO Model</p>
-<p></center></p>
-<div class="admonition notice">
-<p class="admonition-title">Notice</p>
-<p>The following content is the technical details for building model</p>
-</div>
-<h3 id="problem-definition">Problem Definition</h3>
-<p>In this problem, the ligand is considered as a flexible set of atoms. Strictly speaking, 
-it can be seen as a set of chemical bonds (edges). These bonds have fixed length and 
-only a subset of them are rotatable. Because there are some rotatable bonds (torsions)
-, the molecule is split into different disjointed fragments. Take one bond for instance, 
-the rightmost rotatable one, it splits the molecule into the left and right fragments. 
-These fragments can rotate independently from each other around the axis of the bond. This 
-idea is graphically reported in the following figure. </p>
-<p><center></p>
-<p><img alt="Rotatable Bonds" src="../../../images/rotatable-bonds.png" />
- Rotatable Bonds <a href="#qmu-paper"><sup>1</sup></a></p>
-<p></center></p>
-<p>As it indicates, the objective of MU is to find the shape of the ligand that can maximizes 
- the molecular volume. The shape of the ligand can be expressed as the unfolded shape of the
-  ligand (the torsion configuration of all the rotatable bonds).</p>
-<h3 id="formulation">Formulation</h3>
-<p>Suppose the ligand has <span class="arithmatex">\(M\)</span> torsions, from <span class="arithmatex">\(T_i\)</span> to <span class="arithmatex">\(T_M\)</span>, and each torsion must have the angle 
-of rotation <span class="arithmatex">\(\theta\)</span>.</p>
-<p><center></p>
-<p><img alt="Multiple Torsion" src="../../../images/multiple-torsion.png" /></p>
-<p>Multiple Torsion</p>
-<p></center></p>
-<p>The objective of this model is to find the unfolded torsion configuration 
-<span class="arithmatex">\({\Theta}^{unfold}\)</span> which 
-can maximizes the sum of distances <span class="arithmatex">\(D(\Theta)\)</span>.</p>
-<div class="arithmatex">\[ {\Theta}^{unfold} = [\theta^{unfold}_1,  \theta^{unfold}_2, ../..., \theta^{unfold}_M] \]</div>
-<div class="arithmatex">\[ D(\Theta) = \sum_{a,b}D_{a,b}(\theta)^2 \]</div>
-<p>The <span class="arithmatex">\(D_{a,b}(\theta)^2\)</span> is <span class="arithmatex">\(|| \overrightarrow{a}_0 - R(\theta)\overrightarrow{b}_0||^2\)</span> . 
-This is the distance between fragment a and b. <span class="arithmatex">\(R(\theta)\)</span> is the rotation matrix associated the torsion angle 
-<span class="arithmatex">\(\theta\)</span>.</p>
-<p><center></p>
-<p><img alt="Two Frag One Tor" src="../../../images/two-frag-one-torsion.png" /></p>
-<p>Two Fragment with One Torsion</p>
-<p></center></p>
-<p>Since this is the problem of portfolio optimization, the final configuration can be the combination of any 
-angle of any torsion. However, there are some constraints for applying it to real problem: </p>
-<h4 id="constraint-1">constraint-1</h4>
-<p>In terms of the limitation of computation resource, the torsion cannot have the rotation with infinitely small 
-precision. This means that there are limited candidates of rotation angles for each torsion. Suppose we have 
-<span class="arithmatex">\(M\)</span> torsions and they have the same precision of rotation angle : 
-<span class="arithmatex">\(\Delta\theta\)</span> . This means that we need <span class="arithmatex">\(d\)</span> variables 
-for each torsion:</p>
-<div class="arithmatex">\[ d = \frac{2\pi}{\Delta\theta} \]</div>
-<p>For the whole model, we need <span class="arithmatex">\(n = d \times M\)</span> binary variables <span class="arithmatex">\(x_{ik}\)</span> to represent all the combinations. 
-For example, for the torsion <span class="arithmatex">\(T_i\)</span>, its torsion angle <span class="arithmatex">\(\theta_i\)</span> can have 
-<span class="arithmatex">\(d\)</span> possible values:</p>
-<div class="arithmatex">\[ \theta_i = [\theta_i^1,\theta_i^2,\theta_i^3, ..., \theta_i^d] \]</div>
-<h4 id="constraint-2">constraint-2</h4>
-<p>If we only consider the distance, the final result or configuration may have multiple results from the same torsion as long 
-as this combination means smaller distance. For example, there may be two binary variables of the same torsion, <span class="arithmatex">\(T_i\)</span>, in the 
-final result:</p>
-<div class="arithmatex">\[ {\Theta}^{unfold} = [\theta^2_1,  \theta^4_1, ../..., \theta^3_M] \]</div>
-<p>This cannot happen in real world. <span class="arithmatex">\(T_1\)</span> can only have one of 
-<span class="arithmatex">\(d\)</span> angles finally. So we need to integrate the following constraint into our final model:</p>
-<div class="arithmatex">\[ \displaystyle\sum\limits_{k=1}^{d} x_{ik} = 1 \]</div>
-<p>With these two constraints, this problem can be formulated as the high-order unconstrained binary optimization (HUBO).</p>
-<div class="arithmatex">\[ O(x_{ik}) = A\displaystyle\sum\limits_i (\displaystyle\sum\limits_{k=1}^d x_{ik}-1)^2 - \displaystyle\sum\limits_{a,b} D_{ab} (\theta)^2 \]</div>
-<p>The first part is the constraint for each torsion. If one torsion has more than one angles at last, we will add the punishment term <span class="arithmatex">\(A\)</span>. 
-However, in this implementation we calculate the distance-pair under different configuration in advance. This 
-means that we use the absolute distance instead:</p>
-<div class="arithmatex">\[ O(x_{ik}) = A\displaystyle\sum\limits_i (\displaystyle\sum\limits_{k=1}^d x_{ik}-1)^2 - \displaystyle\sum\limits_{a,b} |D_{ab} (\theta)| \]</div>
-<h4 id="the-code-for-model">The Code for Model</h4>
-<p>We have implemented this model in <strong>source/src/molecualr-unfolding/untiliy/QMUQUBO.py</strong>.
-We initialize 
-the variables using the following logic:</p>
-<div class="admonition notice">
-<p class="admonition-title">Notice</p>
-<p>The following codes are for describing the ideas to build the model. We can find similar codes in the source code</p>
-</div>
-<p><center>
-<img alt="Var Init" src="../../../images/var-init.png" /></p>
-<p>The Logic for Defining the Variables
-</center></p>
-<p>The above code indicates that we have 4 torsions from <span class="arithmatex">\(x\_1\_?\)</span> 
-to <span class="arithmatex">\(x\_4\_?\)</span>. Each torsion has four optional rotation angles from <span class="arithmatex">\(0^o\)</span> to 
-<span class="arithmatex">\(270^o\)</span>. For example, <span class="arithmatex">\(x\_3\_2\)</span> means that the torsion 3 rotates 
-<span class="arithmatex">\(180^o\)</span>.</p>
-<p>For constraints, we use the following logic to implement: </p>
-<p><center>
-<img alt="Constraint" src="../../../images/constraint.png" /></p>
-<p>The Logic for Defining the Constraints
-</center></p>
-<p>As we analyze before, the model does not which variables belong to 
-the same physical torsion. For example, <span class="arithmatex">\(x\_1\_1\)</span> , <span class="arithmatex">\(x\_1\_2\)</span>, <span class="arithmatex">\(x\_1\_3\)</span> 
-and  <span class="arithmatex">\(x\_1\_4\)</span> belong to the same torsion. The model cannot let only 
-one of them become <span class="arithmatex">\(1\)</span>. If the model choose multiple of them, we 
-must punish it. As the figure shown, when the model choose more than 
-one variables of <span class="arithmatex">\(x\_1\_?\)</span> to become <span class="arithmatex">\(1\)</span>, we give it the punishment 
-term <span class="arithmatex">\(600\)</span>. </p>
-<p>Most importantly, we use <span class="arithmatex">\(calc\_distance\_func\)</span> to calculate
-<span class="arithmatex">\(|D_{ab} (\theta)|\)</span> under different <span class="arithmatex">\(\theta\)</span>.</p>
-<p><center>
-<img alt="Distance" src="../../../images/distance.png" /></p>
-<p>The Logic for Calculating the Distance between Fragments.
-</center></p>
-<h3 id="quantum-annealing">Quantum Annealing</h3>
-<p>The quantum annealing (QA) can be seen as a variation of the simulated annealing (SA). Both QA and SA are meta-heuristic technique for address 
-challenging combinatorial problems. QA uses the quantum fluctuation to explore the configuration space instead of thermal effects. Here, we use 
-Amazon Braket API to access the Canadian company D-Wave. This annealer is implemented using superconductive qubits. Natively, the quadratic 
-unconstrained binary optimization (QUBO) can be solved using quantum annealer:</p>
-<div class="arithmatex">\[ O(x) = \displaystyle\sum\limits_i h_i x_i + \displaystyle\sum_{i&gt;j} J_{i,j} x_i x_j \]</div>
-<p>In QUBO form, <span class="arithmatex">\(x_i \in \{0, 1\}\)</span> are binary variables. We can consider it as the angle that we choose for a particular torsion. <span class="arithmatex">\(h_i\)</span> and <span class="arithmatex">\(J_{i,j}\)</span>
- can be considered as the values encoding the optimization task when we use corresponding angles. However, in our task, it is common that there are 
- more than one torsion between fragments, we model it as the high-order quadratic unconstrained binary optimization (HUBO) problem:</p>
-<div class="arithmatex">\[ O(x) = \displaystyle\sum\limits_i \alpha_i x_i + \displaystyle\sum_{i,j} \beta_{i,j} x_i x_j + \displaystyle\sum_{i,j,k} \gamma_{i,j,k} x_i x_j x_k + ../... \]</div>
-<p><center>
-<img alt="Two Frag Mul Tor" src="../../../images/two-frag-multiple-torsion.png" />
-</center></p>
-<p>It is often possible to convert HUBOs to QUBOs by using some tricks, 
-like adding new ancillary binary variables to replace high-order term. 
-In practice, we use the API <span class="arithmatex">\(make \_ quadratic()\)</span> in D-Wave software package to make this conversion.</p>
-<p><img alt="HUBO QUBO" src="../../../images/hubo-qubo.png" /></p>
-<p>As the image shown, some high-order term of HUBO, like <span class="arithmatex">\(('x\_1\_1','x\_2\_1','x\_3\_1')\)</span>, have been 
-transformed to binary terms in QUBO. We only highlight some of them.</p>
-<p>Congratulations! We have already prepared the model and it is time to find the optimized configuration.</p>
-<h1 id="optimize-configuration"><span id="optimize">Optimize Configuration</span></h1>
-<p>In this part, we use SA and QA to find the optimized configuration of molecular unfolding.
-At first, we load the model file using <strong>QMUQUBO</strong> object.</p>
-<p><img alt="load model" src="../../../images/load-model.png" /></p>
-<p><center>Load model file with one QUBO model</center></p>
-<p>We can see the parameters of this model, with M equaling 2, D equaling 8, 
-A equaling 300 and hubo_qubo_val equaling 200. 
-Actually, we can contain multiple models in this file just 
-by giving multiple values for one parameter when creating models.</p>
-<p><img alt="load multiple model" src="../../../images/load-multiple-model.png" /></p>
-<p><center>Load model file with two QUBO models</center></p>
-<p>This time, we can see that this model file contains two QUBO models with different M 
- values. Then, we need use <strong>model_name</strong> to get the model for experiments.</p>
-<p><img alt="get model" src="../../../images/get-model.png" /></p>
-<p><center>Get model using the model name</center></p>
-<p>We can see that we want to carry out experiment with the QUBO model with M equaling 2.
- After that, we set the parameters for optimization.</p>
-<table>
-<thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-<th>Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>method</td>
-<td>annealing method for QUBO problem</td>
-<td>'dwave-sa': use the simulated annealer in ocean toolkit<br> 'dwave-qa': use the quantum annealer</td>
-</tr>
-<tr>
-<td>shots</td>
-<td>number of reads, refer to <a href="https://docs.ocean.dwavesys.com/projects/neal/en/latest/reference/generated/neal.sampler.SimulatedAnnealingSampler.sample.html#neal.sampler.SimulatedAnnealingSampler.sample">dwave-sa</a> and <a href="https://amazon-braket-ocean-plugin-python.readthedocs.io/en/latest/_apidoc/braket.ocean_plugin.braket_sampler.html">dwave-qa</a> for details</td>
-<td>1 to 10,000</td>
-</tr>
-<tr>
-<td>bucket</td>
-<td>the s3 bucket to store your results</td>
-<td>-</td>
-</tr>
-<tr>
-<td>prefix</td>
-<td>the name of the folder in your s3 bucket</td>
-<td>-</td>
-</tr>
-<tr>
-<td>device</td>
-<td>the arn name to run your quantum annealing</td>
-<td>'arn:aws:braket:::device/qpu/d-wave/Advantage_system4' <br> 'arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6'</td>
-</tr>
-</tbody>
-</table>
-<p>Then, we can run the SA for this problem:</p>
-<p><img alt="OptimizeSA" src="../../../images/optimize-sa.png" /></p>
-<p>We can tell from the image that we set the number of shots for SA to 1000. 
-The result is saved as the local file <strong>./sa_result.pickle.</strong>
-Alternatively, we can use QA to solve this problem:</p>
-<p><img alt="OptimizeQA" src="../../../images/optimize-qa.png" /></p>
-<p>In this QA, we set the number of shots to 1000 and 
-choose the 
-<a href="https://docs.dwavesys.com/docs/latest/doc_physical_properties.html">Advantage_System4.1</a>
-as the QPU. In addition, the results are saved to your bucket automatically and you 
-can get the task id for future process. 
-Finally, we can compare the execution time between SA and QA :</p>
-<p><img alt="ExecuteTime" src="../../../images/execute-time-qa-sa.png" /></p>
-<p>We can tell from the image that SA needs 174.2 seconds 
-and QA needs 7.7 seconds to find 
-solution.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>Be careful to increase the number of shots for SA to avoid long run time</p>
-</div>
-<h2 id="analyze-the-quality">Analyze The Quality</h2>
-<p>After some time, we get the results. As the result indicates, the best answer of quantum annealer only 
-occurs once.</p>
-<p><img alt="OneTimeQA" src="../../../images/one-time-qa.png" /></p>
-<p>This does not always indicate an error. It is actually the characteristic of the problem or how the problem 
-is formulated. Because we have different linear and quadratic terms that vary by many orders of magnitude. If we 
-set change value of A to some smaller number, like 10 or 100, more occurrences of the best answer will be observed. 
-However, these answers usually break the constraints. For more information about this phenomenon, please refer to this 
-<a href="https://support.dwavesys.com/hc/en-us/community/posts/1500000698522-Number-of-occurrences-?input_string=number%20occurance">Link</a>.</p>
-<h1 id="post-process-result"><span id="postprocess">Post-Process Result</span></h1>
-<p>In this part, we post process the optimizing results for evaluation and visualization.
-At first, we prepare the following parameters:</p>
-<table>
-<thead>
-<tr>
-<th>Parameter</th>
-<th>Description</th>
-<th>Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>method</td>
-<td>annealing method for QUBO problem</td>
-<td>'dwave-sa': use the simulated annealer in ocean toolkit<br> 'dwave-qa': use the quantum annealer</td>
-</tr>
-<tr>
-<td>raw_path</td>
-<td>the path for the original molecule file</td>
-<td>'./molecule-data/117_ideal.mol2' in this example</td>
-</tr>
-<tr>
-<td>data_path</td>
-<td>the path for the processed molecule file</td>
-<td>'./qmu_117_ideal_data_latest.mol2' in this example</td>
-</tr>
-<tr>
-<td>bucket</td>
-<td>the s3 bucket to store your results</td>
-<td>-</td>
-</tr>
-<tr>
-<td>prefix</td>
-<td>the name of the folder in your s3 bucket</td>
-<td>-</td>
-</tr>
-<tr>
-<td>task_id</td>
-<td>the id for your quantum annealing task</td>
-<td>'2b5a3b05-1a0e-443a-852c-4ec422a10e59' in this example</td>
-</tr>
-</tbody>
-</table>
-<p>Then we can run the post-process using <strong>ResultParser</strong> object for SA:</p>
-<p><img alt="Post-SA" src="../../../images/post-sa.png" /></p>
-<p><center>Post process for SA</center></p>
-<p>In the first block, we can see the <strong>local time</strong>
-for SA is around 174 seconds. 
-With the <strong>generate_optimize_pts()</strong> method, the final 3D 
-points after unfolding will be generated and saved as json file and mol2 files. The last 
-block shows the optimizing results which are also stored in json files. 
-It shows that the optimized result gains 
-1.0212x increase in volume. The value for <strong>unfolding_results</strong> indicates 
-that the rotatable bond 15 should rotate <span class="arithmatex">\(270^o\)</span> (<span class="arithmatex">\(360/8*(7-1)\)</span>) and 
-the rotatable bond 14 should rotate <span class="arithmatex">\(315^o\)</span> (<span class="arithmatex">\(360/8*(8-1)\)</span>).
-At the same time, you can run the post-process for QA:</p>
-<p><img alt="Post-QA" src="../../../images/post-qa.png" /></p>
-<p><center>Post process for QA</center></p>
-<p>In the first block, we can see that there many types of time metrics for running QA.
-This task has the <strong>local time</strong> of 7.7 s, which means the time between calling the api and 
-getting the annealing result. The <strong>task time</strong> time is the metric from the json file in 
-bucket. We can also see the <strong>qpu total time</strong> and <strong>qpu access time</strong> representing the 
-actual time running in the QPU. Please refer to <a href="https://docs.dwavesys.com/docs/latest/c_qpu_timing.html">Operation and Timing</a>
-for details. In same way, the optimized results are translated the 3D points and saved 
-as local json and mol2 files. The result indicates that QA gains 
-1.021x increase in 
-volume. Finally, We can open folders for the optimized results:</p>
-<p><img alt="optimize-results" src="../../../images/optimize-results.png" /></p>
-<p><center>Optimize Results</center></p>
-<p>We can the json result and mol2 file of SA and QA are 
-stored in this place. If we carry out more 
-experiments, more results with time stamp are 
-stored incrementally. 
-For visualization, 
-we can upload the 
-result <strong>117_ideal_dwave-qa_20220216-05.mol2</strong> 
-into 
-<a href="https://www.rcsb.org/3d-view">online viewer tool</a> 
-to see the result:</p>
-<p><img alt="visual" src="../../../images/visualization.png" /></p>
-<p><center>Visualization</center></p>
 <h1 id="references">References</h1>
 <div id='wiki-docking'></div>
 <ul>
-<li><a href="https://en.wikipedia.org/wiki/Docking_(molecular)">Wiki: Molecular Docking</a></li>
-</ul>
-<div id='qmu-paper'></div>
-<ul>
-<li><a href="https://arxiv.org/abs/2107.13607">Publication: Quantum Molecular Unfolding</a></li>
-</ul>
-<div id='qmu-video'></div>
-<ul>
-<li><a href="https://www.youtube.com/watch?v=1NmAXIHAF2Y">Video: Molecular Unfolding with Quantum Annealing</a></li>
+<li>1.<a href="https://en.wikipedia.org/wiki/Docking_(molecular)">Wiki: Molecular Docking</a></li>
 </ul>
 
               
@@ -1050,7 +811,7 @@ to see the result:</p>
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
         
-        <a href="../molecular-unfolding/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Background" rel="prev">
+        <a href="../../background/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Overview" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -1059,20 +820,20 @@ to see the result:</p>
               <span class="md-footer__direction">
                 Previous
               </span>
-              Background
+              Overview
             </div>
           </div>
         </a>
       
       
         
-        <a href="../batch-evaluation/" class="md-footer__link md-footer__link--next" aria-label="Next: Batch Evaluation" rel="next">
+        <a href="../prepare-data/" class="md-footer__link md-footer__link--next" aria-label="Next: Prepare Data" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Batch Evaluation
+              Prepare Data
             </div>
           </div>
           <div class="md-footer__button md-icon">
@@ -1105,7 +866,7 @@ to see the result:</p>
     <script id="__config" type="application/json">{"base": "../../..", "features": ["tabs", "search.suggest", "search.highlight"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.bd0b6b67.min.js"}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.8aa65030.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.b88e97c5.min.js"></script>
       
         <script src="../../../mathjax.js"></script>
       

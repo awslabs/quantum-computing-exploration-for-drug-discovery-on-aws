@@ -11,11 +11,11 @@
         <link rel="canonical" href="https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/workshop/a-molecular-unfolding/batch-evaluation/">
       
       <link rel="icon" href="../../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.2.1">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.2.3">
     
     
       
-        <title>Batch Evaluation - Quantum Ready Architecture for Drug Discovery</title>
+        <title>Standard Images - Quantum Ready Architecture for Drug Discovery</title>
       
     
     
@@ -31,7 +31,7 @@
       
         
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,400i,700%7CRoboto+Mono&display=fallback">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
         <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
       
     
@@ -93,7 +93,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Batch Evaluation
+              Standard Images
             
           </span>
         </div>
@@ -292,7 +292,7 @@
   
     <li class="md-nav__item">
       <a href="../../../regions/" class="md-nav__link">
-        Supported regions
+        Supported Regions
       </a>
     </li>
   
@@ -307,7 +307,7 @@
   
     <li class="md-nav__item">
       <a href="../../../template/" class="md-nav__link">
-        AWS CloudFormation template
+        AWS CloudFormation Template
       </a>
     </li>
   
@@ -405,8 +405,34 @@
   
   
   
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_2_1" type="checkbox" id="__nav_8_2_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8_2_1">
+          Notebook Experiment
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Notebook Experiment" data-md-level="3">
+        <label class="md-nav__title" for="__nav_8_2_1">
+          <span class="md-nav__icon md-icon"></span>
+          Notebook Experiment
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
     <li class="md-nav__item">
-      <a href="../molecular-unfolding/" class="md-nav__link">
+      <a href="../notebook-experiment/" class="md-nav__link">
         Background
       </a>
     </li>
@@ -420,13 +446,104 @@
   
   
     <li class="md-nav__item">
-      <a href="../notebook-experiment/" class="md-nav__link">
-        Notebook Experiment
+      <a href="../prepare-data/" class="md-nav__link">
+        Prepare Data
       </a>
     </li>
   
 
             
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build-model/" class="md-nav__link">
+        Build Model
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../build-model-detail/" class="md-nav__link">
+        Build Model(Technical Details)
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../optimize-config/" class="md-nav__link">
+        Optimize Configuration
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../post-process/" class="md-nav__link">
+        Post Process
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+    
+  
+  
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_2_2" type="checkbox" id="__nav_8_2_2" checked>
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_8_2_2">
+          Batch Evaluation
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="Batch Evaluation" data-md-level="3">
+        <label class="md-nav__title" for="__nav_8_2_2">
+          <span class="md-nav__icon md-icon"></span>
+          Batch Evaluation
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
           
             
               
@@ -442,12 +559,12 @@
       
       
         <label class="md-nav__link md-nav__link--active" for="__toc">
-          Batch Evaluation
+          Standard Images
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
-        Batch Evaluation
+        Standard Images
       </a>
       
         
@@ -540,8 +657,15 @@
   
     <li class="md-nav__item">
       <a href="../evaluate-your-own-model/" class="md-nav__link">
-        Evaluate Your Own Model
+        Customize Images
       </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
     </li>
   
 
@@ -738,16 +862,22 @@
 
 
 
-  <h1>Batch Evaluation</h1>
+  <h1>Standard Images</h1>
 
 <h2 id="run-batch-evaluation">Run Batch Evaluation</h2>
 <p>We will run batch evaluation through AWS Step Functions workflow and view the result via Amazon QuickSight dashboard</p>
 <h3 id="get-step-functions-link-from-deployment-output">Get Step Functions link from deployment output</h3>
-<p><img alt="deployment output" src="../../../images/deploy-output-stepfunc.png" /></p>
+<p><center>
+<img alt="deployment output" src="../../../images/deploy-output-stepfunc.png" /></p>
+<p>Figure 1: The workflow link from the output of deployment
+</center></p>
 <p>Click the Step Functions link, you will be navigated to AWS Step Functions console.</p>
 <h3 id="start-execution">Start Execution</h3>
 <p>In your AWS Step Functions console, click <strong>Start execution</strong> button, the screen is shown as below:</p>
-<p><img alt=" start execution step functions " src="../../../images/batch-start-execution.png" /></p>
+<p><center>
+<img alt=" start execution step functions " src="../../../images/batch-start-execution.png" /></p>
+<p>Figure 2: Execute the workflow
+</center></p>
 <ol>
 <li>
 <p>(optional) Input evaluation input</p>
@@ -759,15 +889,21 @@
 <li>
 <p>Click <strong>Start execution</strong>, start batch evaluation</p>
 <p>The screen is shown as below:
+<center>
 <img alt=" execution step functions " src="../../../images/batch-execution.png" /></p>
+<p>Figure 3: Execute batch evaluation
+</center></p>
 </li>
 <li>
 <p>Wait for complete</p>
 <blockquote>
 <p>The default batch evaluation will take about 15 minutes.</p>
 </blockquote>
-<p>The screen is shown as below when the evaluation is finished.
+<p>The screen is shown as below when the evaluation is finished.</p>
+<p><center>
 <img alt=" execution step functions complete" src="../../../images/batch-execution-complete.png" /></p>
+<p>Figure 4: Complete batch evaluation
+</center></p>
 </li>
 </ol>
 <h3 id="view-dashboard">View dashboard</h3>
@@ -775,19 +911,34 @@
 <ul>
 <li>
 <p>Get dashboard link form CloudFormation output:
-<img alt=" dashboard link" src="../../../images/quicksight-link.png" /></p>
+<center>
+<img alt=" dashboard link" src="../../../images/quicksight-link.png" />
+Figure 5: Dashboard link
+</center></p>
 </li>
 <li>
 <p>Click the link, you will be navigated to the dashboard, shown as below:</p>
 </li>
 </ul>
-<p><img alt="dashboard" src="../../../images/quicksight-dashboard.png" /></p>
-<p><img alt="dashboard data" src="../../../images/quicksight-dashboard-table.png" /></p>
-<p>There are two sheets in the dashboard, you can click to switch.
+<p><center>
+<img alt="dashboard" src="../../../images/quicksight-dashboard.png" /></p>
+<p>Figure 6: Dashboard
+</center></p>
+<p><center>
+<img alt="dashboard data" src="../../../images/quicksight-dashboard-table.png" /></p>
+<p>Figure 7: Dashboard data
+</center></p>
+<p>There are two sheets in the dashboard, you can click to switch.</p>
+<p><center>
 <img alt="dashboard sheets" src="../../../images/quicksight-sheets.png" /></p>
+<p>Figure 8: Dashboard data switch
+</center></p>
 <h4 id="sheet-1-view-result-by-each-experiment">Sheet 1: view result by each experiment</h4>
 <p>In this sheet, you can view batch evaluation result by experiment.</p>
-<p><img alt="dashboard Experiments hist" src="../../../images/quicksight-sheet1-hist.png" /></p>
+<p><center>
+<img alt="dashboard Experiments hist" src="../../../images/quicksight-sheet1-hist.png" /></p>
+<p>Figure 9: Watch batch evaluation
+</center></p>
 <ul>
 <li>Experiments hist table</li>
 </ul>
@@ -803,7 +954,10 @@
 <li>
 <p>QC vs. HPC charts</p>
 <p>Below two charts show the performance of QC vs. HPC tasks</p>
-<p><img alt="dashboard qc vs hpc" src="../../../images/quicksight-qc-hpc-avg.png" /></p>
+<p><center>
+<img alt="dashboard qc vs hpc" src="../../../images/quicksight-qc-hpc-avg.png" /></p>
+<p>Figure 10: Performance of HPC v.s. QC
+</center></p>
 <ul>
 <li><strong>QC vs. HPC average</strong>  - compares the average execution time (Y-axis) of QC and HPC tasks by different model parameters (X-axis)</li>
 <li><strong>QC vs. HPC by resource</strong>  - compares the execution time (Y-axis) of QC and HPC tasks by different model parameters (X-axis) using different resources(for QC that is different QPU devices, for HPC that is different memory-vCPU)</li>
@@ -812,17 +966,26 @@
 <li>
 <p>QC: by devices chart </p>
 <p>It compares execution time (Y-axis) of different QPU devices by different model parameters (X-axis)</p>
-<p><img alt="dashboard qc device" src="../../../images/quicksight-qc-device.png" /></p>
+<p><center>
+<img alt="dashboard qc device" src="../../../images/quicksight-qc-device.png" /></p>
+<p>Figure 11: Results by QPU
+</center></p>
 </li>
 <li>
 <p>HPC: by resources</p>
 <p>It compares execution time (Y-axis) of different HPC resources (memory and vCPU) by different model parameters (X-axis)</p>
-<p><img alt="dashboard qc device" src="../../../images/quicksight-hpc-resource.png" /></p>
+<p><center>
+<img alt="dashboard qc device" src="../../../images/quicksight-hpc-resource.png" /></p>
+<p>Figure 12: Results by HPC resources
+</center></p>
 </li>
 <li>
 <p>Records table</p>
 <p>It lists the detail information of each task in the selected experiment (if no experiment selected, it lists all)</p>
-<p><img alt="dashboard records table" src="../../../images/quicksight-records-table.png" /></p>
+<p><center>
+<img alt="dashboard records table" src="../../../images/quicksight-records-table.png" /></p>
+<p>Figure 13: Dashboard records table
+</center></p>
 <p>Fields in this table:</p>
 <ul>
 <li><strong>compute_type</strong>: compute type, HPC or QC</li>
@@ -841,7 +1004,10 @@
 </ul>
 <h4 id="sheet-2-view-result-by-each-resource">Sheet 2: view result by each resource</h4>
 <p>In this sheet, you can view batch evaluation result by each resource and QPU device</p>
-<p><img alt="by resource sheet" src="../../../images/quicksight-by-resource.png" /></p>
+<p><center>
+<img alt="by resource sheet" src="../../../images/quicksight-by-resource.png" /></p>
+<p>Figure 14: Results by resource
+</center></p>
 <ul>
 <li>
 <p>Compute type and resource table</p>
@@ -850,11 +1016,14 @@
 <li>
 <p>Experiment hist chart</p>
 <p>It shows execution time (Y-axis) for selected resource by experiment name (X-axis, ordered by time) using different model parameters.</p>
-<p><img alt="experiment hist" src="../../../images/quicksight-experiment-hist.png" />  </p>
+<p><center>
+<img alt="experiment hist" src="../../../images/quicksight-experiment-hist.png" />  </p>
+<p>Figure 15: Results by model parameters
+<center></p>
 </li>
 <li>
 <p>Records table</p>
-<p>This table is the same as the table in <a href="#sheet-1-view-result-by-each-experiment">Sheet 1</a>.</p>
+<p>This table is the same as the table in <strong>Sheet 1</strong>.</p>
 </li>
 </ul>
 <h3 id="input-specification">Input specification</h3>
@@ -883,7 +1052,10 @@
 <span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
-<p><strong>Note</strong>: all fields are optional.</p>
+<div class="admonition notice">
+<p class="admonition-title">Notice</p>
+<p>all fields are optional.</p>
+</div>
 <p>Definition:</p>
 <ul>
 <li><strong>version</strong>:  the version of input schema, current only support value is: '1'</li>
@@ -891,13 +1063,15 @@
 <li><strong>molFile</strong>: S3 url of the mol2 file</li>
 <li><strong>modelVersion</strong>: model version, default: 'latest'</li>
 <li><strong>experimentName</strong>: the name of the batch evaluation</li>
-<li>
-<p><strong>modelParams</strong>: model parameters, M: number of torsions, D: angle precision of rotation. Please refer to <a href="../notebook-experiment/">Notebook Experiment</a> for detail.  Valid values: </p>
-<div class="codehilite"><pre><span></span><code> M: [1, 2, 3, 4, 5, 6, 7]
+<li><strong>modelParams</strong>: model parameters, M: number of torsions, D: angle precision of rotation. Please refer to <a href="../notebook-experiment/">Notebook Experiment</a> for detail.  Valid values: <div class="codehilite"><pre><span></span><code> M: [1, 2, 3, 4, 5, 6, 7]
  D: [4] or [8]
 </code></pre></div>
 
-<p>Note: the max value of M is depended on the value of D, QPU device and input molFile. </p>
+</li>
+</ul>
+<div class="admonition notice">
+<p class="admonition-title">Notice</p>
+<p>The max value of M is depended on the value of D, QPU device and input molFile. </p>
 <p>If you use the default molFile (meaning <code>molFile</code> is not provided in the input), the max value combinations are listed in below table: </p>
 <table>
 <thead>
@@ -931,7 +1105,8 @@
 </tbody>
 </table>
 <p>If you use your own molFile, the input validation will be skipped, if the value exceeds the device capacity, the execution will be failed. </p>
-</li>
+</div>
+<ul>
 <li>
 <p><strong>devicesArns</strong>: QPU device arn. Valid values:</p>
 <div class="codehilite"><pre><span></span><code><span class="n">arn</span><span class="o">:</span><span class="n">aws</span><span class="o">:</span><span class="n">braket</span><span class="o">:::</span><span class="n">device</span><span class="sr">/qpu/d-wave/</span><span class="n">DW_2000Q_6</span><span class="w"></span>
@@ -984,7 +1159,7 @@
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
         
-        <a href="../notebook-experiment/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Notebook Experiment" rel="prev">
+        <a href="../post-process/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Post Process" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -993,20 +1168,20 @@
               <span class="md-footer__direction">
                 Previous
               </span>
-              Notebook Experiment
+              Post Process
             </div>
           </div>
         </a>
       
       
         
-        <a href="../evaluate-your-own-model/" class="md-footer__link md-footer__link--next" aria-label="Next: Evaluate Your Own Model" rel="next">
+        <a href="../evaluate-your-own-model/" class="md-footer__link md-footer__link--next" aria-label="Next: Customize Images" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Evaluate Your Own Model
+              Customize Images
             </div>
           </div>
           <div class="md-footer__button md-icon">
@@ -1039,7 +1214,7 @@
     <script id="__config" type="application/json">{"base": "../../..", "features": ["tabs", "search.suggest", "search.highlight"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../../../assets/javascripts/workers/search.bd0b6b67.min.js"}</script>
     
     
-      <script src="../../../assets/javascripts/bundle.8aa65030.min.js"></script>
+      <script src="../../../assets/javascripts/bundle.b88e97c5.min.js"></script>
       
         <script src="../../../mathjax.js"></script>
       
