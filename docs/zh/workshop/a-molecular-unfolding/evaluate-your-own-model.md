@@ -49,7 +49,7 @@
    
 1. 您的 AWS 用户必须至少拥有 [permissions](./permissions.json)
 
-1. 检查您的 QuickSight 帐户 [检查您的 quicksight](../../../deployment/#check-your-quicksight)
+1. [检查您的 quicksight 账户](../../../deployment/#check-your-quicksight)
 
 1. 确保您的工作区中运行了 docker。可以按照本文档 [Docker Install](https://docs.docker.com/engine/install/)安装docker。
 

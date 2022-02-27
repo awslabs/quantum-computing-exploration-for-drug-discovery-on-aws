@@ -49,7 +49,7 @@ If you want to fully customize the evaluation code, follow below steps to make c
 
 1. Your AWS user must have at least [permissions](./permissions.json)
 
-1. Check your QuickSight account [check your quicksight](../../../deployment/#check-your-quicksight)
+1. [Check your quicksight account](../../../deployment/#check-your-quicksight)
 
 1. Make sure you have docker running in your workspace. You can follow this document [Docker Install](https://docs.docker.com/engine/install/) to install docker.
 
