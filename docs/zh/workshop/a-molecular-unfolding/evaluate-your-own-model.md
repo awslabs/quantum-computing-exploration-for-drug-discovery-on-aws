@@ -47,7 +47,7 @@
 
 1. 确保您的工作区中安装了 AWS CLI 和 AWS CDK。您可以按照此文档 [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) 安装 AWS CLI。
    
-1. 您的 AWS 用户必须至少拥有 [permissions](./permissions.json)
+1. 执行部署的用户或 IAM 角色必须至少拥有 [permissions](./permissions.json)
 
 1. [检查您的 quicksight 账户](../../../deployment/#check-your-quicksight)
 

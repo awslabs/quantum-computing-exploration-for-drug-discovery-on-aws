@@ -47,7 +47,7 @@ If you want to fully customize the evaluation code, follow below steps to make c
 
 1. Make sure you have AWS CLI and AWS CDK install in your workspace. You can follow this doc [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) to install AWS CLI. You can follow this document [CDK Getting Started](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_prerequisites) to install and bootstrap CDK
 
-1. Your AWS user must have at least [permissions](./permissions.json)
+1. The user or IAM role that performed the deployment must have at least [permissions](./permissions.json)
 
 1. [Check your quicksight account](../../../deployment/#check-your-quicksight)
 
