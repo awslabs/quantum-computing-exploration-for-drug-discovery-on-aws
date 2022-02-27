@@ -2,7 +2,7 @@ When you build systems on AWS infrastructure, security responsibilities are shar
 
 ## Security best practices
 
-AWS QRSDD is designed with security best practices in mind. However, the security of a solution differs based on your specific use case, and sometimes adding additional security measures will add to the cost of the solution. Th following are additional recommendations to enhance the security posture of AWS QRSDD in production environments.
+AWS QRADD is designed with security best practices in mind. However, the security of a solution differs based on your specific use case, and sometimes adding additional security measures will add to the cost of the solution. Th following are additional recommendations to enhance the security posture of AWS QRADD in production environments.
 
 ### IAM roles
 

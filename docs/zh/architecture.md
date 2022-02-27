@@ -20,8 +20,7 @@ AWS 云帐户并提供三个 URL。一个用于**可视化**。
 02. 笔记本附带针对不同药物研发问题的示例代码，如分子展开、分子模拟等。
 用户可以学习如何利用经典计算或通过访问
 [Amazon Braket](https://aws.amazon.com/braket/)
-利用量子计算研究这些问题。请参考[动手实验][workshop-background]
-中的指南。
+利用量子计算研究这些问题。请参考[动手实验](workshop/background.md)中的指南。
 
 03. 用户可以通过该笔记本访问公网。
 
@@ -39,10 +38,10 @@ AWS 云帐户并提供三个 URL。一个用于**可视化**。
 
 07. **批量评估**的镜像已经内置在[Amazon ECR](https://aws.amazon.com/ecr/). 
 如果需要定制批量 **批量评估** 的逻辑, 请参考 
-[批量评估您自己的模型][evaluate-your-own-model]。
+[批量评估您自己的模型](workshop/a-molecular-unfolding/evaluate-your-own-model.md)
 
 08. **批量评估** 部署了 [VPC Endpoints](https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints.html) 
-能够实现VPC与相迎AWS服务的连接:
+能够实现VPC与相应AWS服务的连接:
 Amazon ECR, Amazon S3, Amazon Braket。
 
 09. 通过Amazon Braket递交工作/任务来测试量子计算算法。

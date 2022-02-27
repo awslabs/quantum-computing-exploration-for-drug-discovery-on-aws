@@ -26,11 +26,22 @@
 * 选择 **Enterprise**，点击 continue。
 
 * 在 **Create your QuickSight account** 页面填写必要的信息:
+
+<center>
 ![Fill information for quicksight](./images/create_quicksight.png)
+
+图 1: 在Quicksight填写信息
+
+</center>
 
 * 进入[quicksight admin](https://us-east-1.quicksight.aws.amazon.com/sn/admin), 并记录您的**QuickSight Username**(不是QuickSight account name).
 
+<center>
 ![quicksight username](./images/quicksight_username.png)
+
+图 2: Quicksight用户名
+
+</center>
 
 ### 步骤2: 部署您的解决方案
 
@@ -44,9 +55,13 @@
 
 * 在**Parameters**下方, 检查模板的参数并将其设置为necessary。解决方案采用已下的参数值. 选择 **Next**.
 
-    | Parameter(参数值）   |                                                         Description                                                      |
-    |:-------------------:|:----:|
-    | MolUnfDashboardquickSightUser | **QuickSight Username** |
+<center>
+
+| 参数   | 描述 |
+|:-------------------:|:----:|
+| MolUnfDashboardquickSightUser | **QuickSight Username** |
+
+</center>
     
 
 * 在 **Configure stack options** 页面中, 选择 **Next**.
@@ -63,13 +78,31 @@
 * 定位到Quicksight [admin page](https://us-east-1.quicksight.aws.amazon.com/sn/admin#aws)
 
 * 点击 **Manage**
+
+<center>
 ![mange quicksight](./images/manage_quicksight.png)
 
+图 3: 管理quicksight
+
+</center>
+
 * 点击**Select S3 Buckets**
+
+<center>
 ![select s3 quicksight](./images/select_s3_bucket.png)
 
+图 4: 在quicksight里检查s3
+
+</center>
+
 * 检查S3桶 `amazon-braket-qcstack-<AWS account>-<region>`
+
+<center>
 ![choose s3 quicksight](./images/choose_s3_bucket.png)
+
+图 5: 在quicksight里选择s3
+
+</center>
 
 * 点击 **Finish** 并选择 **Save**
 
