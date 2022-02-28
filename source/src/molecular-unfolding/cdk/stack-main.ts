@@ -70,7 +70,7 @@ export class MainStack extends SolutionStack {
 
     const quickSightUserParam = new CfnParameter(this, 'QuickSightUser', {
       type: 'String',
-      description: 'Quicksight User, find user name from https://us-east-1.quicksight.aws.amazon.com/sn/admin',
+      description: 'QuickSight User, find user name from https://us-east-1.quicksight.aws.amazon.com/sn/admin',
       minLength: 1,
       allowedPattern: '[\u0020-\u00FF]+',
       constraintDescription: 'Any printable ASCII character ranging from the space character (\u0020) through the end of the ASCII character range',

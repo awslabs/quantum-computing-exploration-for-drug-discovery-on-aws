@@ -70,10 +70,11 @@ If you want to fully customize the evaluation code, follow below steps to make c
 
 1. Deploy changes to your AWS account from CDK
 
-     
-           cd source
-           npx cdk deploy QCStack --parameters quickSightUser=<your QuickSight user>
-              
+```bash
+cd source
+npm install
+npx cdk deploy QCStack --parameters QuickSightUser=<your QuickSight user>
+```              
  
 1. Wait for the deployment to complete. Deployment will take about 10 minutes 
 

@@ -49,12 +49,10 @@ Figure 2: Quicksight username
 
 This automated AWS CloudFormation template deploys the solution in the AWS Cloud.
 
-* Use 
-[Launch solution in AWS Standard Regions](https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/new?stackName=qrsdd-stack) to launch the AWS CloudFormation template.
+* [Launch solution in AWS Standard Regions][template-url] to deploy solution via the AWS CloudFormation template.
 
-* The template launches in the US West 2 (Oregon) Region by default. To launch this solution in a different AWS Region, use the Region selector in the console navigation bar.
-
-* On the **Create stack** page, verify that the correct [quantum-ready-solution-for-drug-discovery.template](template.md) is shown in the **Amazon S3 URL** text box and choose **Next**.
+* The template launches in the US West(Oregon) by default. To launch this solution in a different AWS Region(for example `us-east-1`), 
+use the Region selector in the console navigation bar.
 
 * Under **Parameters**, review the parameters for the template and modify them as necessary. This solution uses the following values. Choose **Next**.
 
@@ -108,3 +106,4 @@ Figure 5: Select s3 in quicksight
 
 * Click **Finish** and then **Save**
 
+[template-url]: https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/create/template?stackName=QRADDStack&templateURL=https://aws-gcr-solutions.s3.amazonaws.com/AWS-gcr-qc-life-science/v0.8.2/default/QCStack.template.json
