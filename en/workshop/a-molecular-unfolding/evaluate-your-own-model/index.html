@@ -913,11 +913,14 @@
 </li>
 <li>
 <p>Deploy changes to your AWS account from CDK</p>
-<div class="codehilite"><pre><span></span><code>   cd source
-   npx cdk deploy QCStack --parameters quickSightUser=&lt;your QuickSight user&gt;
+</li>
+</ol>
+<div class="codehilite"><pre><span></span><code><span class="nb">cd</span> <span class="nb">source</span>
+npm install
+npx cdk deploy QCStack --parameters <span class="nv">QuickSightUser</span><span class="o">=</span>&lt;your QuickSight user&gt;
 </code></pre></div>
 
-</li>
+<ol>
 <li>
 <p>Wait for the deployment to complete. Deployment will take about 10 minutes </p>
 </li>
