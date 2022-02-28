@@ -3,11 +3,10 @@
 
 ## Regions
 
-  [regions](../docs/en/regions.md)
-
-## Quick deployment
-
-  [deployment](../docs/en/deployment.md)
+| Region Name | Region ID |
+|----------|--------|
+| US East (N. Virginia) | us-east-1
+| US West (Oregon) | us-west-2
 
 ## Deploy from source
 
@@ -20,7 +19,7 @@ Deploy solution to your AWS account by [AWS CDK](https://docs.aws.amazon.com/cdk
 - Install Docker Engine
 - Install the dependencies of solution via executing command `npm install`
 - Initialize the CDK toolkit stack into AWS environment(only for deploying via AWS CDK first time, [doc](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_install))
-- Enable Amazon Quicksight account in your AWS account
+- Enable Amazon Quicksight account in your AWS account([doc](https://docs.aws.amazon.com/quicksight/latest/user/signing-in.html))
 
 ### Deploy solution by AWS CDK
    

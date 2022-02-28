@@ -61,13 +61,6 @@ If you want to fully customize the evaluation code, follow below steps to make c
 
 1. Make changes to source code
 
-1. Add `default_code_repository` in file `source/cdk.context.json`
-
-
-        {
-            "default_code_repository": "<your github repository>"
-        }
-
 
 ### Deploy stack to your AWS account from CDK
 
