@@ -70,7 +70,7 @@
 1. 利用 CDK 将更改部署到您的 AWS 账户
         
            cd source
-           npx cdk deploy QCStack --parameters quickSightUser=<your QuickSight user>
+           npx cdk deploy QCStack --parameters QuickSightUser=<your QuickSight user>
  
            
 1. 等待部署完成，部署大约需要 10 分钟

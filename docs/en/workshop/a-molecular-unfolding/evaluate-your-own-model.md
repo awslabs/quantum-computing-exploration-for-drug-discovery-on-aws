@@ -72,7 +72,7 @@ If you want to fully customize the evaluation code, follow below steps to make c
 
      
            cd source
-           npx cdk deploy QCStack --parameters quickSightUser=<your QuickSight user>
+           npx cdk deploy QCStack --parameters QuickSightUser=<your QuickSight user>
               
  
 1. Wait for the deployment to complete. Deployment will take about 10 minutes 

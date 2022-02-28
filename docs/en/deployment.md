@@ -54,7 +54,7 @@ This automated AWS CloudFormation template deploys the solution in the AWS Cloud
 
 * The template launches in the US West 2 (Oregon) Region by default. To launch this solution in a different AWS Region, use the Region selector in the console navigation bar.
 
-* On the **Create stack** page, verify that the correct [quantum-ready-solution-for-drug-discovery.template](template.md) is shown in the **Amazon S3 URL** text box and choose **Next**.
+* On the **Create stack** page, verify that the correct [quantum-ready-solution-for-drug-discovery.template](https://aws-gcr-solutions.s3.amazonaws.com/AWS-gcr-qc-life-science/v0.8.2/default/QCStack.template.json) is shown in the **Amazon S3 URL** text box and choose **Next**.
 
 * Under **Parameters**, review the parameters for the template and modify them as necessary. This solution uses the following values. Choose **Next**.
 

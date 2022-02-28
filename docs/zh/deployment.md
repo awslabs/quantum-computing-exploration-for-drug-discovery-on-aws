@@ -51,7 +51,7 @@
  
 * 模板默认使用US West 2 (Oregon) Region 启动. 如果想要更换启动模板的 AWS Region, 请在控制台的导航栏中使用 Region selector进行更改。
 
-* 在 **Create stack** 页面中, 请您检查**Amazon S3 URL** 文本框中[quantum-ready-solution-for-drug-discovery.template](template.md)是否正确，如正确，请选则**Next**按钮。
+* 在 **Create stack** 页面中, 请您检查**Amazon S3 URL** 文本框中[quantum-ready-solution-for-drug-discovery.template](https://aws-gcr-solutions.s3.amazonaws.com/AWS-gcr-qc-life-science/v0.8.2/default/QCStack.template.json)是否正确，如正确，请选则**Next**按钮。
 
 * 在**Parameters**下方, 检查模板的参数并将其设置为necessary。解决方案采用已下的参数值. 选择 **Next**.
 
