@@ -68,7 +68,7 @@ export class MainStack extends SolutionStack {
       ),
     });
 
-    const quickSightUserParam = new CfnParameter(this, 'quickSightUser', {
+    const quickSightUserParam = new CfnParameter(this, 'QuickSightUser', {
       type: 'String',
       description: 'Quicksight User, find user name from https://us-east-1.quicksight.aws.amazon.com/sn/admin',
       minLength: 1,

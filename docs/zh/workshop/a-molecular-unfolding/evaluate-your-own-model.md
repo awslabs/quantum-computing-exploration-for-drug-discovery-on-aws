@@ -61,13 +61,6 @@
 
 1. 修改源代码
 
-1. 更新文件 `source/cdk.context.json` 中的 `quicksight_user` 和 `default_code_repository`
-
-        {
-            "quicksight_user": "<your QuickSight user>",
-            "default_code_repository": "<your github repository>"
-        }
-
 ### 将堆栈从 CDK 部署到您的 AWS 账户
 
 1. 检查您的 AWS 账户中的 CloudFormation，确保您的部署区域中没有名为“QCStack”的堆栈
@@ -77,8 +70,9 @@
 1. 利用 CDK 将更改部署到您的 AWS 账户
         
            cd source
-           npm run deploy
-
+           npx cdk deploy QCStack --parameters quickSightUser=<your QuickSight user>
+ 
+           
 1. 等待部署完成，部署大约需要 10 分钟
 
 1. 从CloudFormation输出中获取输出链接，链接包括：

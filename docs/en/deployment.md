@@ -22,7 +22,7 @@ Use the following steps to deploy this solution on AWS.
 * Sign in to the AWS Management Console, navigate to
 [QuickSight](https://quicksight.aws.amazon.com/)
 
-* If you did not have a QuickSight account, you need to sign up for QuickSight.
+* If you did not have a QuickSight account, you need to sign up for QuickSight(you need Administrator permission to sign up, [doc](https://docs.aws.amazon.com/quicksight/latest/user/setting-up-create-iam-user.html)).
 
 * Choose **Enterprise**, click continue
 
@@ -47,7 +47,6 @@ Figure 2: Quicksight username
 
 ### Step2: Deploy solution
 
-
 This automated AWS CloudFormation template deploys the solution in the AWS Cloud.
 
 * Use 
@@ -63,7 +62,7 @@ This automated AWS CloudFormation template deploys the solution in the AWS Cloud
 
 |      Parameter      |   Description |
 |:-------------------:|:----:|
-| quickSightUser | **QuickSight Username** |
+| QuickSightUser | **QuickSight Username** |
 
 </center>
 

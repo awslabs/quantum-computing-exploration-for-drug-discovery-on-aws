@@ -21,7 +21,7 @@
 
 * 登录到AWS控制台，并找到[QuickSight](https://quicksight.aws.amazon.com/)
 
-* 如果您还没有QuickSight账户，您需要先注册一个。
+* 如果您还没有QuickSight账户，您需要先注册一个（您需要管理员权限注册QuickSight账户，[参考文档](https://docs.aws.amazon.com/quicksight/latest/user/setting-up-create-iam-user.html))。
 
 * 选择 **Enterprise**，点击 continue。
 
@@ -59,7 +59,7 @@
 
 | 参数   | 描述 |
 |:-------------------:|:----:|
-| MolUnfDashboardquickSightUser | **QuickSight Username** |
+| QuickSightUser | **QuickSight Username** |
 
 </center>
     

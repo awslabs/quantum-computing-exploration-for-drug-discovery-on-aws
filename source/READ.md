@@ -19,7 +19,7 @@ Deploy solution to your AWS account by [AWS CDK](https://docs.aws.amazon.com/cdk
 - Install Docker Engine
 - Install the dependencies of solution via executing command `npm install`
 - Initialize the CDK toolkit stack into AWS environment(only for deploying via AWS CDK first time, [doc](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_install))
-- Enable Amazon Quicksight account in your AWS account([doc](https://docs.aws.amazon.com/quicksight/latest/user/signing-in.html))
+- Check Amazon Quicksight account in your AWS account([doc](https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/en/deployment/#step1-check-your-quicksight))
 
 ### Deploy solution by AWS CDK
    
@@ -29,7 +29,7 @@ Deploy solution to your AWS account by [AWS CDK](https://docs.aws.amazon.com/cdk
 
 ```sh
     cd source
-    cdk deploy QCStack --parameters quickSightUser=<your QuickSight user>
+    npx cdk deploy QCStack --parameters QuickSightUser=<your QuickSight user>
 ```
 
 The output messages show status of the deployment, it takes approximately 10 minutes for the whole process.
