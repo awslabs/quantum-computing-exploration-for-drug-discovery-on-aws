@@ -902,15 +902,6 @@
 <li>
 <p>修改源代码</p>
 </li>
-<li>
-<p>更新文件 <code>source/cdk.context.json</code> 中的 <code>quicksight_user</code> 和 <code>default_code_repository</code></p>
-<div class="codehilite"><pre><span></span><code>{
-    &quot;quicksight_user&quot;: &quot;&lt;your QuickSight user&gt;&quot;,
-    &quot;default_code_repository&quot;: &quot;&lt;your github repository&gt;&quot;
-}
-</code></pre></div>
-
-</li>
 </ol>
 <h3 id="cdk-aws">将堆栈从 CDK 部署到您的 AWS 账户</h3>
 <ol>
@@ -923,7 +914,7 @@
 <li>
 <p>利用 CDK 将更改部署到您的 AWS 账户</p>
 <div class="codehilite"><pre><span></span><code>   cd source
-   npm run deploy
+   npx cdk deploy QCStack --parameters quickSightUser=&lt;your QuickSight user&gt;
 </code></pre></div>
 
 </li>
