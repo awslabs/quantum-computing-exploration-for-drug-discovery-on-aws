@@ -47,11 +47,9 @@
 
 我们将AWS CloudFormation的模板部署在了AWS Cloud上。
 
-* 使用[Launch solution in AWS Standard Regions](https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/new?stackName=qrsdd-stack)来启动AWS CloudFormation模板。
+* 点此通过 AWS CloudFormation模板来[部署解决方案][template-url]。
  
-* 模板默认使用US West 2 (Oregon) Region 启动. 如果想要更换启动模板的 AWS Region, 请在控制台的导航栏中使用 Region selector进行更改。
-
-* 在 **Create stack** 页面中, 请您检查**Amazon S3 URL** 文本框中[quantum-ready-solution-for-drug-discovery.template](https://aws-gcr-solutions.s3.amazonaws.com/AWS-gcr-qc-life-science/v0.8.2/default/QCStack.template.json)是否正确，如正确，请选则**Next**按钮。
+* 模板默认使用US West(Oregon) 启动. 如果想要更换启动模板的 AWS Region, 请在控制台的导航栏中使用 Region selector进行更改。
 
 * 在**Parameters**下方, 检查模板的参数并将其设置为necessary。解决方案采用已下的参数值. 选择 **Next**.
 
@@ -107,3 +105,4 @@
 * 点击 **Finish** 并选择 **Save**
 
 
+[template-url]: https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/create/template?stackName=QRADDStack&templateURL=https://aws-gcr-solutions.s3.amazonaws.com/AWS-gcr-qc-life-science/v0.8.2/default/QCStack.template.json
