@@ -15,13 +15,13 @@ phases:
       nodejs: 14
   pre_build:
     commands:
-      - git clone https://github.com/awslabs/quantum-ready-solution-for-drug-discovery.git -b main /tmp/repo
+      - git clone https://github.com/awslabs/quantum-ready-solution-for-drug-discovery.git -b enhance/qs_username /tmp/repo
       - rsync -av /tmp/repo/source ${CODEBUILD_SRC_DIR}/
       #- rsync -av /tmp/repo/docs ${CODEBUILD_SRC_DIR}/
       - pwd
       - ls -al
       - cp ./.cfn-nag-ignore-lists.yml ./.cfnnag_global_suppress_list
-      - rm ./source/cdk.context.json source/src/molecular-unfolding/input-template.json
+      - rm source/src/molecular-unfolding/input-template.json
       # - sed -i '9,$d' ${CODEBUILD_SRC_DIR}/source/docs/mkdocs.zh.yml
       # - echo '  - deployment-guide.md' >>${CODEBUILD_SRC_DIR}/source/docs/mkdocs.zh.yml
       # - cp -rf ${CODEBUILD_SRC_DIR}/source/docs ${CODEBUILD_SRC_DIR}/
