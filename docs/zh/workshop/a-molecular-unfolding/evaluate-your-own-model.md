@@ -68,10 +68,12 @@
 1. 检查您的 S3 存储桶，确保没有名为 `amazon-braket-qcstack-<your aws account>-<deployment region>` 的存储桶
 
 1. 利用 CDK 将更改部署到您的 AWS 账户
-        
-           cd source
-           npx cdk deploy QCStack --parameters QuickSightUser=<your QuickSight user>
- 
+
+```bash
+cd source
+npm install
+npx cdk deploy QCStack --parameters QuickSightUser=<your QuickSight user>
+```
            
 1. 等待部署完成，部署大约需要 10 分钟
 
