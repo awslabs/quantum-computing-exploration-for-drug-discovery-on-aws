@@ -3,7 +3,6 @@ import {
   aws_s3 as s3,
   aws_quicksight as quicksight,
   CfnOutput,
-  CfnParameter,
 } from 'aws-cdk-lib';
 
 import {
@@ -17,6 +16,7 @@ interface DashBoardProps {
   bucket: s3.Bucket;
   prefix: string;
   stackName: string;
+  quicksightUser: string;
 }
 
 export class Dashboard extends Construct {
@@ -27,14 +27,7 @@ export class Dashboard extends Construct {
     super(scope, id);
     this.props = props;
 
-    const defaultQuicksightUser = this.node.tryGetContext('quicksight_user') || process.env.QUICKSIGHT_USER;
-    const quickSightUserParam = new CfnParameter(this, 'quickSightUser', {
-      type: 'String',
-      default: defaultQuicksightUser,
-      description: 'Quicksight User',
-    });
-    const quicksightUser = `arn:aws:quicksight:us-east-1:${this.props.account}:user/default/${quickSightUserParam.valueAsString}`;
-
+    const quicksightUser = `arn:aws:quicksight:us-east-1:${this.props.account}:user/default/${this.props.quicksightUser}`;
 
     const default_templateArn = 'arn:aws:quicksight:us-east-1:522244679887:template/QC-benchmark-analysis-template/version/1';
     const templateArn = this.node.tryGetContext('quicksight_template_arn') || default_templateArn;

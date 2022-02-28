@@ -61,14 +61,6 @@ If you want to fully customize the evaluation code, follow below steps to make c
 
 1. Make changes to source code
 
-1. Update `quicksight_user` and `default_code_repository` in file `source/cdk.context.json`
-
-
-        {
-            "quicksight_user": "<your QuickSight user>",
-            "default_code_repository": "<your github repository>"
-        }
-
 
 ### Deploy stack to your AWS account from CDK
 
@@ -78,9 +70,9 @@ If you want to fully customize the evaluation code, follow below steps to make c
 
 1. Deploy changes to your AWS account from CDK
 
-        
+     
            cd source
-           npm run deploy
+           npx cdk deploy QCStack --parameters quickSightUser=<your QuickSight user>
               
  
 1. Wait for the deployment to complete. Deployment will take about 10 minutes 

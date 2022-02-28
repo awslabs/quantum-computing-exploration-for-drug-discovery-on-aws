@@ -10,6 +10,7 @@ Use the following steps to deploy this solution on AWS.
 * Step2: Launch the AWS CloudFormation template into your AWS account to deploy the solution.
 * Step3: Update QuickSight permissions
 
+
 !!! notice
 
     Step1 and Step3 are one time setup per account when deploying this solution for the first time. You don't have to do them when repeating deployment
@@ -21,7 +22,7 @@ Use the following steps to deploy this solution on AWS.
 * Sign in to the AWS Management Console, navigate to
 [QuickSight](https://quicksight.aws.amazon.com/)
 
-* If you did not have a QuickSight account, you need to sign up for QuickSight.
+* If you did not have a QuickSight account, you need to sign up for QuickSight(you need Administrator permission to sign up, [doc](https://docs.aws.amazon.com/quicksight/latest/user/setting-up-create-iam-user.html)).
 
 * Choose **Enterprise**, click continue
 
@@ -38,6 +39,7 @@ Figure 1: Fill information for quicksight
 
 <center>
 ![quicksight username](./images/quicksight_username.png)
+
 
 Figure 2: Quicksight username
 
@@ -60,7 +62,7 @@ This automated AWS CloudFormation template deploys the solution in the AWS Cloud
 
 |      Parameter      |   Description |
 |:-------------------:|:----:|
-| MolUnfDashboardquickSightUser | **QuickSight Username** |
+| QuickSightUser | **QuickSight Username** |
 
 </center>
 
@@ -73,6 +75,7 @@ This automated AWS CloudFormation template deploys the solution in the AWS Cloud
 You can view the status of the stack in the AWS CloudFormation Console in the **Status** column. You should receive a CREATE_COMPLETE status in approximately 10 minutes.
 
 ### Step3: Update QuickSight permissions
+
 
 * Navigate to QuickSight [admin page](https://us-east-1.quicksight.aws.amazon.com/sn/admin#aws)
 

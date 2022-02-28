@@ -18,7 +18,6 @@
     "cdk": "cdk ",
     "diff": "cdk diff QCStack",
     "synth": "cdk synth QCStack ",
-    "deploy": "cdk deploy QCStack",
     "destroy": "cdk destroy QCStack",
     "cfn-nag": "rm -rf /tmp/cfn > /dev/null 2>&1  && mkdir /tmp/cfn/ && cdk synth QCStack --output /tmp/cfn/ && cfn_nag_scan --fail-on-warnings -b ../.cfn-nag-ignore-lists.yml --input-path  /tmp/cfn/QCStack.template.json"
   },
