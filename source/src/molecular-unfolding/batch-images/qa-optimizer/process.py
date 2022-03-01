@@ -142,7 +142,7 @@ def run_on_device(s3, input_params):
 
     # metrics = ",".join(metrics_items)
     # logging_info("metrics='{}'".format(metrics))
-    # metrics_key = f"{s3_prefix}/benchmark_metrics/{execution_id}-QC-{device_name}-{model_name}-{task_id}-{int(time.time())}.csv"
+    # metrics_key = f"{s3_prefix}/batch_evaluation_metrics/{execution_id}-QC-{device_name}-{model_name}-{task_id}-{int(time.time())}.csv"
     # string_to_s3(s3, metrics, s3_bucket, metrics_key)
 
     logging_info(

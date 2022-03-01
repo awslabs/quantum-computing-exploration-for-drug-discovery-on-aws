@@ -31,10 +31,10 @@ export class Dashboard extends Construct {
 
     const templateArn = 'arn:aws:quicksight:us-east-1:366590864501:template/qc-batch-evaluation-analysis-template/version/1';
 
-    const qcDataSource = new quicksight.CfnDataSource(this, 'qcBenchmark-DataSource', {
+    const qcDataSource = new quicksight.CfnDataSource(this, 'qcBatchEvaluation-DataSource', {
       awsAccountId: this.props.account,
-      dataSourceId: `${this.props.stackName}-qcBenchmark-Datasource`,
-      name: `${this.props.stackName}-qcBenchmark-Datasource`,
+      dataSourceId: `${this.props.stackName}-qcBatchEvaluation-Datasource`,
+      name: `${this.props.stackName}-qcBatchEvaluation-Datasource`,
       type: 'ATHENA',
       dataSourceParameters: {
         athenaParameters: {
@@ -119,7 +119,7 @@ export class Dashboard extends Construct {
       type: 'STRING',
     }];
 
-    const qcDataset = new quicksight.CfnDataSet(this, 'qcBenchmark-DataSet', {
+    const qcDataset = new quicksight.CfnDataSet(this, 'qcBatchEvaluation-DataSet', {
       permissions: [{
         principal: quicksightUser,
         actions: [
@@ -136,15 +136,15 @@ export class Dashboard extends Construct {
         ],
       }],
       awsAccountId: this.props.account,
-      dataSetId: `${this.props.stackName}-qcBenchmark-DataSet`,
-      name: `${this.props.stackName}-qcBenchmark-DataSet`,
+      dataSetId: `${this.props.stackName}-qcBatchEvaluation-DataSet`,
+      name: `${this.props.stackName}-qcBatchEvaluation-DataSet`,
       importMode: 'DIRECT_QUERY',
       physicalTableMap: {
         ATHENATable: {
           customSql: {
             dataSourceArn: qcDataSource.attrArn,
             name: 'all',
-            sqlQuery: `SELECT * FROM "AwsDataCatalog"."qc_db"."${this.props.stackName}_qc_benchmark_metrics"`,
+            sqlQuery: `SELECT * FROM "AwsDataCatalog"."qc_db"."${this.props.stackName}_qc_batch_evaluation_metrics"`,
             columns,
           },
         },
@@ -152,10 +152,10 @@ export class Dashboard extends Construct {
     });
 
 
-    const qcAnaTemplate = new quicksight.CfnTemplate(this, 'qcBenchmark-QSTemplate', {
+    const qcAnaTemplate = new quicksight.CfnTemplate(this, 'qcBatchEvaluation-QSTemplate', {
       awsAccountId: this.props.account,
-      templateId: `${this.props.stackName}-qcBenchmark-QSTemplate`,
-      name: `${this.props.stackName}-qcBenchmark-QSTemplate`,
+      templateId: `${this.props.stackName}-qcBatchEvaluation-QSTemplate`,
+      name: `${this.props.stackName}-qcBatchEvaluation-QSTemplate`,
       permissions: [{
         principal: quicksightUser,
         actions: ['quicksight:DescribeTemplate'],
@@ -167,9 +167,9 @@ export class Dashboard extends Construct {
       },
     });
 
-    const qcBenchmarkDashboard = new quicksight.CfnDashboard(this, 'qcBenchmark-Dashboard', {
-      dashboardId: `${this.props.stackName}-qcBenchmark-Dashboard`,
-      name: `${this.props.stackName}-qcBenchmark-Dashboard`,
+    const qcBatchEvaluationDashboard = new quicksight.CfnDashboard(this, 'qcBatchEvaluation-Dashboard', {
+      dashboardId: `${this.props.stackName}-qcBatchEvaluation-Dashboard`,
+      name: `${this.props.stackName}-qcBatchEvaluation-Dashboard`,
       awsAccountId: this.props.account,
       permissions: [{
         principal: quicksightUser,
@@ -202,9 +202,9 @@ export class Dashboard extends Construct {
 
     });
 
-    const qcBenchmarkAnalysis = new quicksight.CfnAnalysis(this, 'qcBenchmark-Analysis', {
-      analysisId: `${this.props.stackName}-qcBenchmark-Analysis`,
-      name: `${this.props.stackName}-qcBenchmark-Analysis`,
+    const qcBatchEvaluationAnalysis = new quicksight.CfnAnalysis(this, 'qcBatchEvaluation-Analysis', {
+      analysisId: `${this.props.stackName}-qcBatchEvaluation-Analysis`,
+      name: `${this.props.stackName}-qcBatchEvaluation-Analysis`,
       awsAccountId: this.props.account,
       permissions: [{
         principal: quicksightUser,
@@ -232,13 +232,13 @@ export class Dashboard extends Construct {
     });
 
     // Output //////////////////////////
-    this.outputDashboardUrl = new CfnOutput(this, 'qcBenchmarkDashboardUrl', {
-      value: `https://${this.props.region}.quicksight.aws.amazon.com/sn/dashboards/${qcBenchmarkDashboard.dashboardId}`,
+    this.outputDashboardUrl = new CfnOutput(this, 'qcBatchEvaluationDashboardUrl', {
+      value: `https://${this.props.region}.quicksight.aws.amazon.com/sn/dashboards/${qcBatchEvaluationDashboard.dashboardId}`,
       description: 'Quicksight Dashboard Url',
     });
 
-    new CfnOutput(this, 'qcBenchmarkAnalysis', {
-      value: qcBenchmarkAnalysis.analysisId,
+    new CfnOutput(this, 'qcBatchEvaluationAnalysis', {
+      value: qcBatchEvaluationAnalysis.analysisId,
       description: 'Quicksight Analysis Id',
     });
   }

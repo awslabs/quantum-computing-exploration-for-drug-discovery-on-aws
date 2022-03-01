@@ -180,7 +180,7 @@ export class RoleUtil {
     return role;
   }
 
-  public createHPCBatchJobRole(roleName: string): iam.Role {
+  public createCCBatchJobRole(roleName: string): iam.Role {
     const role = new iam.Role(this.scope, `${roleName}`, {
       assumedBy: new iam.ServicePrincipal('ecs-tasks.amazonaws.com'),
     });
@@ -299,8 +299,8 @@ export class RoleUtil {
     const role = new iam.Role(this.scope, 'AggResultLambdaRole', {
       assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
     });
-    const table_name1 = `${this.props.stackName}_qc_benchmark_metrics_hist`;
-    const table_name2 = `${this.props.stackName}_qc_benchmark_metrics`;
+    const table_name1 = `${this.props.stackName}_qc_batch_evaluation_metrics_hist`;
+    const table_name2 = `${this.props.stackName}_qc_batch_evaluation_metrics`;
     role.addToPolicy(new iam.PolicyStatement({
       resources: [
         `arn:aws:athena:*:${this.props.account}:workgroup/primary`,

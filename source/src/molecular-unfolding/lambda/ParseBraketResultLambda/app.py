@@ -214,7 +214,7 @@ def parse_task_result(bucket, key, status='COMPLETED'):
 
         metrics = "!".join(metrics_items)
         log.info("metrics='{}'".format(metrics))
-        metrics_key = f"{s3_prefix}/benchmark_metrics/{execution_id}-QC-{device_name}-{model_name}-{index}-{qc_task_id}.csv"
+        metrics_key = f"{s3_prefix}/batch_evaluation_metrics/{execution_id}-QC-{device_name}-{model_name}-{index}-{qc_task_id}.csv"
         string_to_s3(metrics, bucket, metrics_key)
         string_to_s3("Done", bucket,
                      key=f"{s3_prefix}/done_task/{execution_id}_{qc_task_id}")

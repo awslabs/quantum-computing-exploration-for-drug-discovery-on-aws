@@ -8,7 +8,7 @@ import {
   MainStack,
 } from '../src/molecular-unfolding/cdk/stack-main';
 
-describe('Benchmark', () => {
+describe('BatchEvaluation', () => {
   test('has 1 batch ComputeEnvironment', () => {
     const app = new App();
     const stack = new MainStack(app, 'test');
@@ -59,7 +59,7 @@ describe('Benchmark', () => {
         'Fn::Join': [
           '',
           [
-            '{"StartAt":"Get Task Parameters","States":{"Get Task Parameters":{"Next":"ParallelHPCJobs","Retry":[{"ErrorEquals":["Lambda.ServiceException","Lambda.AWSLambdaException","Lambda.SdkClientException"],"IntervalSeconds":2,"MaxAttempts":6,"BackoffRate":2}],"Type":"Task","OutputPath":"$.Payload","Resource":"arn:',
+            '{"StartAt":"Get Task Parameters","States":{"Get Task Parameters":{"Next":"ParallelCCJobs","Retry":[{"ErrorEquals":["Lambda.ServiceException","Lambda.AWSLambdaException","Lambda.SdkClientException"],"IntervalSeconds":2,"MaxAttempts":6,"BackoffRate":2}],"Type":"Task","OutputPath":"$.Payload","Resource":"arn:',
             {
               Ref: 'AWS::Partition',
             },
@@ -74,15 +74,15 @@ describe('Benchmark', () => {
             {
               Ref: Match.anyValue(),
             },
-            '","s3_prefix":"molecular-unfolding","param_type":"PARAMS_FOR_HPC","execution_id.$":"$.execution_id","context.$":"$$"}}},"ParallelHPCJobs":{"Type":"Map","ResultPath":"$.parallelHPCJobsMap","End":true,"Parameters":{"ItemIndex.$":"$$.Map.Item.Index","ItemValue.$":"$$.Map.Item.Value","execution_id.$":"$.execution_id"},"Iterator":{"StartAt":"Run HPC Batch Task","States":{"Run HPC Batch Task":{"End":true,"Type":"Task","Resource":"arn:aws:states:::batch:submitJob.sync","Parameters":{"JobDefinition":"',
+            '","s3_prefix":"molecular-unfolding","param_type":"PARAMS_FOR_CC","execution_id.$":"$.execution_id","context.$":"$$"}}},"ParallelCCJobs":{"Type":"Map","ResultPath":"$.parallelCCJobsMap","End":true,"Parameters":{"ItemIndex.$":"$$.Map.Item.Index","ItemValue.$":"$$.Map.Item.Value","execution_id.$":"$.execution_id"},"Iterator":{"StartAt":"Run CC Batch Task","States":{"Run CC Batch Task":{"End":true,"Type":"Task","Resource":"arn:aws:states:::batch:submitJob.sync","Parameters":{"JobDefinition":"',
             {
               Ref: Match.anyValue(),
             },
-            "\",\"JobName.$\":\"States.Format('HPCTask{}-{}', $.ItemIndex, $.ItemValue.task_name)\",\"JobQueue\":\"",
+            "\",\"JobName.$\":\"States.Format('CCTask{}-{}', $.ItemIndex, $.ItemValue.task_name)\",\"JobQueue\":\"",
             {
               Ref: Match.anyValue(),
             },
-            "\",\"ContainerOverrides\":{\"Command.$\":\"$.ItemValue.params\",\"ResourceRequirements\":[{\"Type\":\"VCPU\",\"Value.$\":\"States.Format('{}',$.ItemValue.vcpus)\"},{\"Type\":\"MEMORY\",\"Value.$\":\"States.Format('{}', $.ItemValue.memory)\"}]}},\"ResultSelector\":{\"JobId.$\":\"$.JobId\",\"JobName.$\":\"$.JobName\"}}}},\"ItemsPath\":\"$.hpcTaskParams\",\"MaxConcurrency\":20}}}",
+            "\",\"ContainerOverrides\":{\"Command.$\":\"$.ItemValue.params\",\"ResourceRequirements\":[{\"Type\":\"VCPU\",\"Value.$\":\"States.Format('{}',$.ItemValue.vcpus)\"},{\"Type\":\"MEMORY\",\"Value.$\":\"States.Format('{}', $.ItemValue.memory)\"}]}},\"ResultSelector\":{\"JobId.$\":\"$.JobId\",\"JobName.$\":\"$.JobName\"}}}},\"ItemsPath\":\"$.ccTaskParams\",\"MaxConcurrency\":20}}}",
           ],
         ],
       }),
@@ -127,7 +127,7 @@ describe('Benchmark', () => {
 
     let SSMSet = false;
     for (const role in findRoles ) {
-      if (role.startsWith('BatchHPCComputeEnvEcsInstanceRole')) {
+      if (role.startsWith('BatchCCComputeEnvEcsInstanceRole')) {
         for (const arn of findRoles[role].Properties.ManagedPolicyArns) {
           if ('Fn::Join' in arn) {
             const policyName = arn['Fn::Join'][1][2];

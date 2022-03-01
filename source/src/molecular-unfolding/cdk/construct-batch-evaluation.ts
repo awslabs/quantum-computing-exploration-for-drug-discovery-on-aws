@@ -49,7 +49,7 @@ export interface BatchProps {
   stackName: string;
 }
 
-export class Benchmark extends Construct {
+export class BatchEvaluation extends Construct {
 
   private props: BatchProps;
   private images: ECRImageUtil
@@ -86,21 +86,21 @@ export class Benchmark extends Construct {
 
     const checkInputParamsStep = this.createCheckInputStep();
     const createModelStep = this.createCreateModelStep();
-    const hpcStateMachine = this.createHPCStateMachine();
+    const ccStateMachine = this.createCCStateMachine();
     const qcStateMachine = this.createQCStateMachine();
-    const qcAndHPCStateMachine = this.createHPCAndQCStateMachine(hpcStateMachine, qcStateMachine);
+    const qcAndCCStateMachine = this.createCCAndQCStateMachine(ccStateMachine, qcStateMachine);
     const aggResultStep = this.createAggResultStep();
     const notifyStep = this.createSNSNotifyStep();
     const postSteps = sfn.Chain.start(aggResultStep).next(notifyStep);
 
-    const hpcBranch = new tasks.StepFunctionsStartExecution(this, 'Run HPC', {
-      stateMachine: hpcStateMachine,
+    const ccBranch = new tasks.StepFunctionsStartExecution(this, 'Run CC', {
+      stateMachine: ccStateMachine,
       integrationPattern: sfn.IntegrationPattern.RUN_JOB,
       associateWithParent: true,
       input: sfn.TaskInput.fromObject({
         execution_id: sfn.JsonPath.stringAt('$.execution_id'),
       }),
-      resultPath: '$.hpcBranch',
+      resultPath: '$.ccBranch',
     }).next(postSteps);
 
     const qcBranch = new tasks.StepFunctionsStartExecution(this, 'Run QC', {
@@ -113,36 +113,36 @@ export class Benchmark extends Construct {
       resultPath: '$.qcBranch',
     }).next(postSteps);
 
-    const qcAndHpcBranch = new tasks.StepFunctionsStartExecution(this, 'Run QC and HPC', {
-      stateMachine: qcAndHPCStateMachine,
+    const qcAndCcBranch = new tasks.StepFunctionsStartExecution(this, 'Run QC and CC', {
+      stateMachine: qcAndCCStateMachine,
       integrationPattern: sfn.IntegrationPattern.RUN_JOB,
       associateWithParent: true,
       input: sfn.TaskInput.fromObject({
         execution_id: sfn.JsonPath.stringAt('$.execution_id'),
       }),
-      resultPath: '$.qcAndHpcBranch',
+      resultPath: '$.qcAndCcBranch',
     }).next(postSteps);
 
     const choiceStep = new sfn.Choice(this, 'Select Running Mode')
-      .when(sfn.Condition.isNotPresent('$.runMode'), qcAndHpcBranch)
-      .when(sfn.Condition.stringEquals('$.runMode', 'HPC'), hpcBranch)
+      .when(sfn.Condition.isNotPresent('$.runMode'), qcAndCcBranch)
+      .when(sfn.Condition.stringEquals('$.runMode', 'CC'), ccBranch)
       .when(sfn.Condition.stringEquals('$.runMode', 'QC'), qcBranch)
-      .otherwise(qcAndHpcBranch);
+      .otherwise(qcAndCcBranch);
 
     const statchMachineChain = sfn.Chain.start(checkInputParamsStep).next(createModelStep)
       .next(choiceStep);
 
-    const logGroupName = `${this.props.stackName}-BenchmarkStateMachineLogGroup`;
+    const logGroupName = `${this.props.stackName}-BatchEvaluationStateMachineLogGroup`;
     grantKmsKeyPerm(this.logKey, logGroupName);
 
-    const logGroup = new logs.LogGroup(this, 'BenchmarkStateMachineLogGroup', {
+    const logGroup = new logs.LogGroup(this, 'BatchEvaluationStateMachineLogGroup', {
       encryptionKey: this.logKey,
       logGroupName,
       removalPolicy: RemovalPolicy.DESTROY,
       retention: logs.RetentionDays.THREE_MONTHS,
     });
 
-    const benchmarkStateMachine = new sfn.StateMachine(this, 'BenchmarkStateMachine', {
+    const batchEvaluationStateMachine = new sfn.StateMachine(this, 'BatchEvaluationStateMachine', {
       definition: statchMachineChain,
       timeout: Duration.hours(36),
       logs: {
@@ -150,11 +150,11 @@ export class Benchmark extends Construct {
         level: sfn.LogLevel.ALL,
       },
     });
-    logGroup.grantWrite(benchmarkStateMachine);
+    logGroup.grantWrite(batchEvaluationStateMachine);
 
     // Output //////////////////////////
     new CfnOutput(this, 'stateMachineURL', {
-      value: `https://console.aws.amazon.com/states/home?region=${this.props.region}#/statemachines/view/${benchmarkStateMachine.stateMachineArn}`,
+      value: `https://console.aws.amazon.com/states/home?region=${this.props.region}#/statemachines/view/${batchEvaluationStateMachine.stateMachineArn}`,
       description: 'State Machine URL',
     });
   }
@@ -192,14 +192,14 @@ export class Benchmark extends Construct {
     return createModelStep;
   }
 
-  private createHPCAndQCStateMachine(hpcStateMachine: sfn.StateMachine, qcStateMachine: sfn.StateMachine): sfn.StateMachine {
-    const hpcStateMachineStep = new tasks.StepFunctionsStartExecution(this, 'Run HPC StateMachine', {
-      stateMachine: hpcStateMachine,
+  private createCCAndQCStateMachine(ccStateMachine: sfn.StateMachine, qcStateMachine: sfn.StateMachine): sfn.StateMachine {
+    const ccStateMachineStep = new tasks.StepFunctionsStartExecution(this, 'Run CC StateMachine', {
+      stateMachine: ccStateMachine,
       integrationPattern: sfn.IntegrationPattern.RUN_JOB,
       input: sfn.TaskInput.fromObject({
         execution_id: sfn.JsonPath.stringAt('$.execution_id'),
       }),
-      resultPath: '$.hpcStateMachineStep',
+      resultPath: '$.ccStateMachineStep',
       associateWithParent: true,
     });
 
@@ -213,29 +213,29 @@ export class Benchmark extends Construct {
       resultPath: '$.qcStateMachineStep',
     });
 
-    const hpcAndQCParallel = new sfn.Parallel(this, 'hpcAndQCParallel');
-    hpcAndQCParallel.branch(hpcStateMachineStep);
-    hpcAndQCParallel.branch(qcStateMachineStep);
+    const ccAndQCParallel = new sfn.Parallel(this, 'ccAndQCParallel');
+    ccAndQCParallel.branch(ccStateMachineStep);
+    ccAndQCParallel.branch(qcStateMachineStep);
 
-    const logGroupName = `${this.props.stackName}-RunHPCAndQCStateMachineLogGroup`;
+    const logGroupName = `${this.props.stackName}-RunCCAndQCStateMachineLogGroup`;
     grantKmsKeyPerm(this.logKey, logGroupName);
 
-    const logGroup = new logs.LogGroup(this, 'RunHPCAndQCStateMachineLogGroup', {
+    const logGroup = new logs.LogGroup(this, 'RunCCAndQCStateMachineLogGroup', {
       encryptionKey: this.logKey,
       logGroupName,
       removalPolicy: RemovalPolicy.DESTROY,
       retention: logs.RetentionDays.THREE_MONTHS,
     });
 
-    const hpcAndQCStateMachine = new sfn.StateMachine(this, 'RunHPCAndQCStateMachine', {
-      definition: hpcAndQCParallel,
+    const ccAndQCStateMachine = new sfn.StateMachine(this, 'RunCCAndQCStateMachine', {
+      definition: ccAndQCParallel,
       logs: {
         destination: logGroup,
         level: sfn.LogLevel.ALL,
       },
     });
-    logGroup.grantWrite(hpcAndQCStateMachine);
-    return hpcAndQCStateMachine;
+    logGroup.grantWrite(ccAndQCStateMachine);
+    return ccAndQCStateMachine;
   }
 
   private createQCStateMachine(): sfn.StateMachine {
@@ -370,20 +370,20 @@ export class Benchmark extends Construct {
     return qcDeviceStateMachine;
   }
 
-  private createHPCStateMachine(): sfn.StateMachine {
+  private createCCStateMachine(): sfn.StateMachine {
     const parametersLambdaStep = new tasks.LambdaInvoke(this, 'Get Task Parameters', {
       lambdaFunction: this.taskParamLambda,
       payload: sfn.TaskInput.fromObject({
         's3_bucket': this.props.bucket.bucketName,
         's3_prefix': this.props.prefix,
-        'param_type': 'PARAMS_FOR_HPC',
+        'param_type': 'PARAMS_FOR_CC',
         'execution_id': sfn.JsonPath.stringAt('$.execution_id'),
         'context.$': '$$',
       }),
       outputPath: '$.Payload',
     });
-    const hpcJobQueue = this.batchUtil.getHpcJobQueue();
-    const jobDef = this.batchUtil.createHPCBatchJobDef('HPCJob_Template', 2, 4);
+    const ccJobQueue = this.batchUtil.getCcJobQueue();
+    const jobDef = this.batchUtil.createCCBatchJobDef('CCJob_Template', 2, 4);
 
     const stateJson = {
       End: true,
@@ -391,8 +391,8 @@ export class Benchmark extends Construct {
       Resource: 'arn:aws:states:::batch:submitJob.sync',
       Parameters: {
         'JobDefinition': jobDef.jobDefinitionArn,
-        'JobName.$': "States.Format('HPCTask{}-{}', $.ItemIndex, $.ItemValue.task_name)",
-        'JobQueue': hpcJobQueue.jobQueueArn,
+        'JobName.$': "States.Format('CCTask{}-{}', $.ItemIndex, $.ItemValue.task_name)",
+        'JobQueue': ccJobQueue.jobQueueArn,
         'ContainerOverrides': {
           'Command.$': '$.ItemValue.params',
           'ResourceRequirements': [{
@@ -411,44 +411,44 @@ export class Benchmark extends Construct {
       },
     };
 
-    const customBatchSubmitJob = new sfn.CustomState(this, 'Run HPC Batch Task', {
+    const customBatchSubmitJob = new sfn.CustomState(this, 'Run CC Batch Task', {
       stateJson,
     });
 
-    const parallelHPCJobsMap = new sfn.Map(this, 'ParallelHPCJobs', {
+    const parallelCCJobsMap = new sfn.Map(this, 'ParallelCCJobs', {
       maxConcurrency: 20,
-      itemsPath: sfn.JsonPath.stringAt('$.hpcTaskParams'),
+      itemsPath: sfn.JsonPath.stringAt('$.ccTaskParams'),
       parameters: {
         'ItemIndex.$': '$$.Map.Item.Index',
         'ItemValue.$': '$$.Map.Item.Value',
         'execution_id.$': '$.execution_id',
       },
-      resultPath: '$.parallelHPCJobsMap',
+      resultPath: '$.parallelCCJobsMap',
     });
-    parallelHPCJobsMap.iterator(customBatchSubmitJob);
+    parallelCCJobsMap.iterator(customBatchSubmitJob);
 
-    const chain = sfn.Chain.start(parametersLambdaStep).next(parallelHPCJobsMap);
+    const chain = sfn.Chain.start(parametersLambdaStep).next(parallelCCJobsMap);
 
-    const logGroupName = `${this.props.stackName}-HPCStateMachineLogGroup`;
+    const logGroupName = `${this.props.stackName}-CCStateMachineLogGroup`;
     grantKmsKeyPerm(this.logKey, logGroupName);
 
-    const logGroup = new logs.LogGroup(this, 'HPCStateMachineLogGroup', {
+    const logGroup = new logs.LogGroup(this, 'CCStateMachineLogGroup', {
       encryptionKey: this.logKey,
       logGroupName,
       removalPolicy: RemovalPolicy.DESTROY,
       retention: logs.RetentionDays.THREE_MONTHS,
     });
 
-    const hpcStateMachine = new sfn.StateMachine(this, 'HPCStateMachine', {
+    const ccStateMachine = new sfn.StateMachine(this, 'CCStateMachine', {
       definition: chain,
       logs: {
         destination: logGroup,
         level: sfn.LogLevel.ALL,
       },
     });
-    logGroup.grantWrite(hpcStateMachine);
+    logGroup.grantWrite(ccStateMachine);
 
-    hpcStateMachine.role.addToPrincipalPolicy(new iam.PolicyStatement({
+    ccStateMachine.role.addToPrincipalPolicy(new iam.PolicyStatement({
       resources: [
         `arn:aws:batch:${this.props.region}:${this.props.account}:job-definition/*`,
         `arn:aws:batch:${this.props.region}:${this.props.account}:job-queue/*`,
@@ -457,7 +457,7 @@ export class Benchmark extends Construct {
         'batch:SubmitJob',
       ],
     }));
-    hpcStateMachine.role.addToPrincipalPolicy(new iam.PolicyStatement({
+    ccStateMachine.role.addToPrincipalPolicy(new iam.PolicyStatement({
       resources: [
         `arn:aws:events:${this.props.region}:${this.props.account}:rule/*`,
       ],
@@ -467,7 +467,7 @@ export class Benchmark extends Construct {
         'events:DescribeRule',
       ],
     }));
-    return hpcStateMachine;
+    return ccStateMachine;
   }
 
   private createAggResultStep(): tasks.LambdaInvoke {

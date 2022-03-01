@@ -67,7 +67,7 @@ export class AddCfnNag implements IAspect {
           reason: 'the lambda already have the cloudwatch permission',
         }],
       });
-    } else if (node.node.path.endsWith('/hpcBatchJobRole/DefaultPolicy/Resource') ||
+    } else if (node.node.path.endsWith('/ccBatchJobRole/DefaultPolicy/Resource') ||
             node.node.path.endsWith('/qcBatchJobRole/DefaultPolicy/Resource') ||
             node.node.path.endsWith('/createModelBatchJobRole/DefaultPolicy/Resource') ||
             node.node.path.endsWith('/batchExecutionRole/DefaultPolicy/Resource') ||
@@ -86,7 +86,7 @@ export class AddCfnNag implements IAspect {
           reason: 'some permissions are not resource-level permissions',
         }],
       });
-    } else if (node.node.path.endsWith('/HPCStateMachine/Role/DefaultPolicy/Resource') ||
+    } else if (node.node.path.endsWith('/CCStateMachine/Role/DefaultPolicy/Resource') ||
             node.node.path.endsWith('/QCStateMachine/Role/DefaultPolicy/Resource')
     ) {
       (node as CfnResource).addMetadata('cfn_nag', {
@@ -96,8 +96,8 @@ export class AddCfnNag implements IAspect {
         }],
       });
     } else if (
-      node.node.path.endsWith('/BenchmarkStateMachine/Role/DefaultPolicy/Resource') ||
-            node.node.path.endsWith('/RunHPCAndQCStateMachine/Role/DefaultPolicy/Resource') ||
+      node.node.path.endsWith('/batchEvaluationStateMachine/Role/DefaultPolicy/Resource') ||
+            node.node.path.endsWith('/RunCCAndQCStateMachine/Role/DefaultPolicy/Resource') ||
             node.node.path.endsWith('/QCDeviceStateMachine/Role/DefaultPolicy/Resource')
     ) {
       (node as CfnResource).addMetadata('cfn_nag', {
