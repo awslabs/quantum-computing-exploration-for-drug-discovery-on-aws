@@ -2,6 +2,11 @@
 
 We will run batch evaluation through AWS Step Functions workflow and view the result via Amazon QuickSight dashboard
 
+### Terms Abbreviation
+
+- **CC**: Classic computing
+- **QC**: Quantum computing
+
 ### Get Step Functions link from deployment output
 
 <center>
@@ -97,18 +102,18 @@ In this sheet, you can view the batch evaluation result by each experiment, rows
     * It shows total tasks count of the experiment if you select an experiment in **Experiments hist** table.
     * It shows total tasks count of all experiments if no experiment is selected.
 
-* QC vs. HPC charts
+* QC vs. CC charts
 
-    Below two charts show the performance of QC vs. HPC tasks
+    Below two charts show the performance of QC vs. CC tasks
 
     <center>
-    ![dashboard qc vs hpc](../../images/quicksight-qc-hpc-avg.png)
+    ![dashboard qc vs cc](../../images/quicksight-qc-cc-avg.png)
 
-    Figure 10: Performance of HPC v.s. QC
+    Figure 10: Performance of CC v.s. QC
     </center>
     
-    * **QC vs. HPC average**  - compares the average execution time (Y-axis) of QC and HPC tasks by different model parameters (X-axis)
-     * **QC vs. HPC by resource**  - compares the execution time (Y-axis) of QC and HPC tasks by different model parameters (X-axis) using different resources(for QC that is different QPU devices, for HPC that is different memory-vCPU)
+    * **QC vs. CC average**  - compares the average execution time (Y-axis) of QC and CC tasks by different model parameters (X-axis)
+     * **QC vs. CC by resource**  - compares the execution time (Y-axis) of QC and CC tasks by different model parameters (X-axis) using different resources(for QC that is different QPU devices, for CC that is different memory-vCPU)
     
 * QC: by devices chart 
 
@@ -120,14 +125,14 @@ In this sheet, you can view the batch evaluation result by each experiment, rows
     Figure 11: Results by QPU
     </center>
 
-* HPC: by resources
+* CC: by resources
 
-    It compares execution time (Y-axis) of different HPC resources (memory and vCPU) by different model parameters (X-axis)
+    It compares execution time (Y-axis) of different CC resources (memory and vCPU) by different model parameters (X-axis)
 
     <center>
-    ![dashboard qc device](../../images/quicksight-hpc-resource.png)
+    ![dashboard qc device](../../images/quicksight-cc-resource.png)
 
-    Figure 12: Results by HPC resources
+    Figure 12: Results by CC resources
     </center>
 
 * Records table
@@ -142,15 +147,15 @@ In this sheet, you can view the batch evaluation result by each experiment, rows
 
     Fields in this table:
 
-    * **compute_type**: compute type, HPC or QC
-    * **resource**: resource name, for QC that is different QPU devices, for HPC that is different memory-vCPU
+    * **compute_type**: compute type, CC or QC
+    * **resource**: resource name, for QC that is different QPU devices, for CC that is different memory-vCPU
     * **param**: model parameters. **M**: number of torsions; **D**: angle precision of rotation; **HQ**: hubo-qubo value, energy penalty; **A**: penalty scalar
     * **opt_params**: optimizer parameters
     * **task_duration**: task execution time in seconds
-    * **time_info**: for QC, different dimensions of QC task time, `total_time` is the **task_duration** , for HPC, `local_time` is the **task_duration**
+    * **time_info**: for QC, different dimensions of QC task time, `total_time` is the **task_duration** , for CC, `local_time` is the **task_duration**
     * **execution_id**: the Step Functions execution id
     * **experiment_name**: the experiment name, if input `experimentName` is not empty, it is `execution start time + input experimentName`, otherwise, it is `execution start time + execution_id`
-    * **task_id**: for Qc task, it is Braket task id, for HPC, it is empty
+    * **task_id**: for Qc task, it is Braket task id, for CC, it is empty
     * **result_detail**: the volume size of molecule before and after unfolding
     * **result_location**: the molecule mol2 file after unfolding
 
@@ -167,7 +172,7 @@ Figure 14: Results by resource
 
 * Compute type and resource table
    
-    It lists all resources in batch evaluation, for QC - resources are QPU devices, for HPC - resources are memory and vCPU. Items in the table are clickable, when you click one item (meaning you select it),  metrics in this sheet are switched to that item. If no item selected, it shows averaged metrics.
+    It lists all resources in batch evaluation, for QC - resources are QPU devices, for CC - resources are memory and vCPU. Items in the table are clickable, when you click one item (meaning you select it),  metrics in this sheet are switched to that item. If no item selected, it shows averaged metrics.
 
 
 * Experiment hist chart
@@ -211,7 +216,7 @@ The input schema:
         "D": "int []"
     },
     "devicesArns": "string []",
-    "hpcResources": "[int, int] []",
+    "ccResources": "[int, int] []",
 }
 
 ```
@@ -223,7 +228,7 @@ The input schema:
 Definition:
 
   * **version**:  the version of input schema, current only support value is: '1'
-  * **runMode**:  run mode, value can be `ALL`, `HPC` or `QC`, default: 'ALL'; `HPC` - only run HPC tasks, `QC` only run QC tasks, `ALL` - run both tasks
+  * **runMode**:  run mode, value can be `ALL`, `CC` or `QC`, default: 'ALL'; `CC` - only run CC tasks, `QC` only run QC tasks, `ALL` - run both tasks
   * **molFile**: S3 url of the mol2 file
   * **modelVersion**: model version, default: 'latest'
   * **experimentName**: the name of the batch evaluation
@@ -252,7 +257,7 @@ Definition:
         arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6
         arn:aws:braket:::device/qpu/d-wave/Advantage_system4
       
-  * **hpcResources**: memory(first element) in GiB and vCPU(second element), e.g. 4GiB memory and 2 vCPU is: `[4, 2]`
+  * **ccResources**: memory(first element) in GiB and vCPU(second element), e.g. 4GiB memory and 2 vCPU is: `[4, 2]`
 
 
 A typical (the default) input:
@@ -277,7 +282,7 @@ A typical (the default) input:
         "arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6",
         "arn:aws:braket:::device/qpu/d-wave/Advantage_system4"
     ],
-    "hpcResources": [
+    "ccResources": [
         [2, 2],
         [4, 4],
         [8, 8],

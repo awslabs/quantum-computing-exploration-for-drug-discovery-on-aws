@@ -22,8 +22,8 @@ import {
 
 
 import {
-  Benchmark,
-} from './construct-benchmark';
+  BatchEvaluation,
+} from './construct-batch-evaluation';
 
 import {
   Dashboard,
@@ -136,8 +136,8 @@ export class MainStack extends SolutionStack {
       quicksightUser: quickSightUserParam.valueAsString,
     });
 
-    // Benchmark StepFuncs //////////////////////////
-    new Benchmark(this, 'MolUnfBenchmark', {
+    // BatchEvaluation StepFuncs //////////////////////////
+    new BatchEvaluation(this, 'MolUnfBatchEvaluation', {
       account: this.account,
       region: this.region,
       bucket: s3bucket,

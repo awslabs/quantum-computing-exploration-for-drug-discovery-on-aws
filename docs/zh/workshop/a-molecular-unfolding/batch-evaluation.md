@@ -2,6 +2,11 @@
 
 我们将通过 AWS Step Functions 工作流程运行批量评估，并通过 Amazon QuickSight 控制面板查看结果
 
+### 术语缩写
+
+- **CC**: Classic computing
+- **QC**: Quantum computing
+
 ### 从部署输出中获取 Step Functions 链接
 
 <center>
@@ -100,17 +105,17 @@ Dashboard里面有两张sheet，可以点击切换。
     * 如果您在 **Experiments hist** 表中选择一个实验，它会显示实验的总任务数。
     * 如果没有选择实验，它会显示所有实验的总任务数。
 
-* QC 与 HPC 图表
+* QC 与 CC 图表
 
-    下面两个图表显示了 QC 与 HPC 任务的性能
+    下面两个图表显示了 QC 与 CC 任务的性能
 
     <center>
-    ![仪表板 qc 与 hpc](../../images/quicksight-qc-hpc-avg.png)
-    图 10: HPC与QC的运行性能
+    ![仪表板 qc 与 cc](../../images/quicksight-qc-cc-avg.png)
+    图 10: CC与QC的运行性能
     </center>
     
-    * **QC vs. HPC average** - 通过不同模型参数（X 轴）比较 QC 和 HPC 任务的平均执行时间（Y 轴）
-     * **QC vs. HPC by resource** - 通过不同模型参数（X 轴）使用不同资源比较 QC 和 HPC 任务的执行时间（Y 轴）（对于 QC 是不同 QPU 设备，对于 HPC是不同的内存-vCPU）   
+    * **QC vs. CC average** - 通过不同模型参数（X 轴）比较 QC 和 CC 任务的平均执行时间（Y 轴）
+     * **QC vs. CC by resource** - 通过不同模型参数（X 轴）使用不同资源比较 QC 和 CC 任务的执行时间（Y 轴）（对于 QC 是不同 QPU 设备，对于CC是不同的内存-vCPU）   
 
 * QC：按设备列表
 
@@ -122,14 +127,14 @@ Dashboard里面有两张sheet，可以点击切换。
     图 11: 按照QC设备统计的结果
     </center>
 
-* HPC：按资源
+* CC：按资源
 
-    它通过不同的模型参数（X 轴）比较不同 HPC 资源（内存和 vCPU）的执行时间（Y 轴）
+    它通过不同的模型参数（X 轴）比较不同 CC 资源（内存和 vCPU）的执行时间（Y 轴）
 
     <center>
-    ![仪表板质量控制设备](../../images/quicksight-hpc-resource.png)
+    ![仪表板质量控制设备](../../images/quicksight-cc-resource.png)
 
-    图 12: 按照HPC资源统计的结果
+    图 12: 按照CC资源统计的结果
     </center>
 
 * 记录表
@@ -144,17 +149,17 @@ Dashboard里面有两张sheet，可以点击切换。
 
     此表中的字段：
 
-    * **compute_type**：计算类型、HPC 或 QC
-    * **resource**：资源名称，对于不同QPU设备的QC，对于不同内存-vCPU的HPC
+    * **compute_type**：计算类型、CC 或 QC
+    * **resource**：资源名称，对于不同QPU设备的QC，对于不同内存-vCPU的CC
     * **param**：模型参数。 **M**：扭转次数； **D**：旋转角度精度； **HQ**：hubo-qubo 值，能量惩罚； **A**：惩罚项
     * **opt_params**：优化器参数
     * **task_duration**：任务执行时间，以秒为单位
-    * **time_info**：对于QC，不同维度的QC任务时间，`total_time`是**task_duration**，对于HPC，`local_time`是**task_duration**
+    * **time_info**：对于QC，不同维度的QC任务时间，`total_time`是**task_duration**，对于CC，`local_time`是**task_duration**
     * **execution_id**：Step Functions 执行 ID
     * **experiment_name**：实验名称，如果输入`experimentName`不为空，则为
     `execution start time + input experimentName`，
     否则为`execution start time +execution_id`
-    * **task_id**：对于QC任务，为Braket任务id，对于HPC，为空
+    * **task_id**：对于QC任务，为Braket任务id，对于CC，为空
     * **result_detail**：分子展开前后的体积大小
     * **result_location**：展开后的分子mol2文件
 
@@ -170,7 +175,7 @@ Dashboard里面有两张sheet，可以点击切换。
 
 * 计算类型和资源表
    
-    它列出了批处理评估中的所有资源，对于 QC - 资源是 QPU 设备，对于 HPC - 资源是内存和 vCPU。表格中的项目是可点击的，当您单击一个项目（意味着您选择它）时，此工作表中的指标将切换到该项目。如果未选择任何项目，则显示平均指标。
+    它列出了批处理评估中的所有资源，对于 QC - 资源是 QPU 设备，对于 CC - 资源是内存和 vCPU。表格中的项目是可点击的，当您单击一个项目（意味着您选择它）时，此工作表中的指标将切换到该项目。如果未选择任何项目，则显示平均指标。
 
 
 * 实验历史图
@@ -213,7 +218,7 @@ Dashboard里面有两张sheet，可以点击切换。
         "D": "int []"
     },
     "devicesArns": "string []",
-    "hpcResources": "[int, int] []",
+    "ccResources": "[int, int] []",
 }
 
 ```
@@ -222,21 +227,10 @@ Dashboard里面有两张sheet，可以点击切换。
 
     所有字段都是可选的
 
-Definition:
-
-  * **version**:  the version of input schema, current only support value is: '1'
-  * **runMode**:  run mode, value can be `ALL`, `HPC` or `QC`, default: 'ALL'; `HPC` - only run HPC tasks, `QC` only run QC tasks, `ALL` - run both tasks
-  * **molFile**: S3 url of the mol2 file
-  * **modelVersion**: model version, default: 'latest'
-  * **experimentName**: the name of the batch evaluation
-  * **modelParams**: model parameters, M: number of torsions, D: angle precision of rotation. Please refer to [Notebook Experiment](./notebook-experiment.md) for detail.  Valid values: 
-
-         M: [1, 2, 3, 4, 5, 6, 7]
-         D: [4] or [8]
 定义：
 
   * **version**：输入模式的版本，当前仅支持值为：'1'
-  * **runMode**：运行模式，值可以是`ALL`、`HPC`或`QC`，默认：'ALL'； `HPC` - 仅运行 HPC 任务，`QC` 仅运行 QC 任务，`ALL` - 运行两个任务
+  * **runMode**：运行模式，值可以是`ALL`、`CC`或`QC`，默认：'ALL'； `CC` - 仅运行 CC 任务，`QC` 仅运行 QC 任务，`ALL` - 运行两个任务
   * **mol2文件**: mol2 文件的 S3 url
   * **modelVersion**：模型版本，默认：'latest'
   * **experimentName**：批次评估的名称
@@ -266,7 +260,7 @@ Definition:
         arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6
         arn:aws:braket:::device/qpu/d-wave/Advantage_system4
       
-  * **hpcResources**：GiB 中的内存（第一个元素）和 vCPU（第二个元素），例如4GiB 内存和 2 个 vCPU 是：`[4, 2]`
+  * **ccResources**：GiB 中的内存（第一个元素）和 vCPU（第二个元素），例如4GiB 内存和 2 个 vCPU 是：`[4, 2]`
 
 典型（默认）输入：
 
@@ -290,7 +284,7 @@ Definition:
         "arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6",
         "arn:aws:braket:::device/qpu/d-wave/Advantage_system4"
     ],
-    "hpcResources": [
+    "ccResources": [
         [2, 2],
         [4, 4],
         [8, 8],

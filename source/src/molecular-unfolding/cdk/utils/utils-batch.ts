@@ -47,10 +47,10 @@ export class BatchUtil {
   private props: Props
   private scope: Construct
   private batchJobExecutionRole: iam.Role
-  private hpcBatchJobRole: iam.Role
+  private ccBatchJobRole: iam.Role
   private qcBatchJobRole: iam.Role
   private createModelBatchJobRole: iam.Role
-  private hpcJobQueue: batch.JobQueue
+  private ccJobQueue: batch.JobQueue
   private fargateJobQueue: batch.JobQueue
   private imageUtil : ECRImageUtil
 
@@ -62,15 +62,15 @@ export class BatchUtil {
     this.scope = scope;
     this.imageUtil = utils.imageUtil;
     this.batchJobExecutionRole = utils.roleUtil.createBatchJobExecutionRole('batchExecutionRole');
-    this.hpcBatchJobRole = utils.roleUtil.createHPCBatchJobRole('hpcBatchJobRole');
+    this.ccBatchJobRole = utils.roleUtil.createCCBatchJobRole('ccBatchJobRole');
     this.qcBatchJobRole = utils.roleUtil.createQCBatchJobRole('qcBatchJobRole');
     this.createModelBatchJobRole = utils.roleUtil.createCreateModelBatchJobRole('createModelBatchJobRole');
-    this.hpcJobQueue = this.setUpHPCBashEnv();
+    this.ccJobQueue = this.setUpCCBashEnv();
     this.fargateJobQueue = this.setUpFargateBashEnv();
   }
 
-  private setUpHPCBashEnv(): batch.JobQueue {
-    const hpcIstanceTypes = [
+  private setUpCCBashEnv(): batch.JobQueue {
+    const ccIstanceTypes = [
       ec2.InstanceType.of(ec2.InstanceClass.C5, ec2.InstanceSize.LARGE), // 2 vcpus, 4G mem
       ec2.InstanceType.of(ec2.InstanceClass.C5, ec2.InstanceSize.XLARGE), // 4 vcpus, 8G mem
       ec2.InstanceType.of(ec2.InstanceClass.C5, ec2.InstanceSize.XLARGE2), // 8 vcpus, 16G mem
@@ -80,7 +80,7 @@ export class BatchUtil {
     const vpc = this.props.vpc;
     const batchSg = this.props.batchSg;
 
-    const batchHPCEnvironment = new batch.ComputeEnvironment(this.scope, 'Batch-HPC-Compute-Env', {
+    const batchCCEnvironment = new batch.ComputeEnvironment(this.scope, 'Batch-CC-Compute-Env', {
       computeResources: {
         type: batch.ComputeResourceType.ON_DEMAND,
         vpc,
@@ -88,16 +88,16 @@ export class BatchUtil {
           subnetType: ec2.SubnetType.PRIVATE_WITH_NAT,
         }),
         allocationStrategy: batch.AllocationStrategy.BEST_FIT,
-        instanceTypes: hpcIstanceTypes,
+        instanceTypes: ccIstanceTypes,
         securityGroups: [batchSg],
       },
     });
 
-    Aspects.of(batchHPCEnvironment).add(new AddSSMPolicyToRole());
+    Aspects.of(batchCCEnvironment).add(new AddSSMPolicyToRole());
 
-    return new batch.JobQueue(this.scope, 'hpcJobQueue', {
+    return new batch.JobQueue(this.scope, 'ccJobQueue', {
       computeEnvironments: [{
-        computeEnvironment: batchHPCEnvironment,
+        computeEnvironment: batchCCEnvironment,
         order: 1,
       }],
     });
@@ -126,8 +126,8 @@ export class BatchUtil {
     });
   }
 
-  public getHpcJobQueue(): batch.JobQueue {
-    return this.hpcJobQueue;
+  public getCcJobQueue(): batch.JobQueue {
+    return this.ccJobQueue;
   }
 
   public getFargateJobQueue(): batch.JobQueue {
@@ -161,7 +161,7 @@ export class BatchUtil {
     });
   }
 
-  public createHPCBatchJobDef(defName: string, vcpus: number, mem: number): batch.JobDefinition {
+  public createCCBatchJobDef(defName: string, vcpus: number, mem: number): batch.JobDefinition {
 
     const image = this.imageUtil.getECRImage(ECRRepoNameEnum.Batch_Sa_Optimizer) as ecs.ContainerImage;
     const resource = this.getResourceDescription(vcpus, mem);
@@ -177,7 +177,7 @@ export class BatchUtil {
           '--s3-bucket', this.props.bucket.bucketName,
         ],
         executionRole: this.batchJobExecutionRole,
-        jobRole: this.hpcBatchJobRole,
+        jobRole: this.ccBatchJobRole,
         vcpus,
         memoryLimitMiB: mem * 1024,
         privileged: false,

@@ -41,7 +41,7 @@ default_model_params = {
     "A": [300],
     "HQ": [200]  # hubo_qubo_val
 }
-default_hpc_resources = [
+default_cc_resources = [
     # vcpu, memory_in_GB
     [2, 2],
     [4, 4],
@@ -56,7 +56,7 @@ default_opt_params = {
     },
     "sa": {
         "shots": 1000,
-        "notes": "benchmarking"
+        "notes": "batch evaluation"
     }
 }
 
@@ -76,7 +76,7 @@ def read_as_json(bucket, key):
 def read_config(s3_bucket, s3_prefix):
     config_file = f"{s3_prefix}/config/default.json"
     config = None
-    global default_hpc_resources
+    global default_cc_resources
     global default_model_params
     global default_devices_arns
     global default_opt_params
@@ -84,9 +84,9 @@ def read_config(s3_bucket, s3_prefix):
     try:
         config = read_as_json(s3_bucket, config_file)
 
-        if 'hpcResources' in config:
-            default_hpc_resources = config['hpcResources']
-            log.info(f"set default_hpc_resources={default_hpc_resources} by config")
+        if 'ccResources' in config:
+            default_cc_resources = config['ccResources']
+            log.info(f"set default_cc_resources={default_cc_resources} by config")
         if 'modelParams' in config:
             default_model_params = config['modelParams']
             log.info(f"set default_model_params={default_model_params} by config")
@@ -211,14 +211,14 @@ def validate_modelParams(input_dict: dict, errors: list):
                 f"invalid value for {p}: {list_vals}, support range: [1, {MAX_M}] for the device ")
 
 
-def validate_hpcResources(input_dict: dict, errors: list):
-    k = 'hpcResources'
+def validate_ccResources(input_dict: dict, errors: list):
+    k = 'ccResources'
     if not isinstance(input_dict[k], list):
-        errors.append(f"hpcResources must be an array")
+        errors.append(f"ccResources must be an array")
     for c_m in list(input_dict[k]):
         if not isinstance(c_m, list) or len(c_m) != 2:
             errors.append(
-                f"element in hpcResources must be an array with size=2")
+                f"element in ccResources must be an array with size=2")
         for e in c_m:
             if not (isinstance(e, int)):
                 errors.append(
@@ -271,7 +271,7 @@ def validate_input(input_dict: dict):
     log.info("input_dict: {input_dict}")
 
     valid_keys = ['version', 'runMode', 'molFile', 'modelVersion', 'optParams',
-                  'experimentName', 'modelParams', 'devicesArns', 'hpcResources', 'Comment']
+                  'experimentName', 'modelParams', 'devicesArns', 'ccResources', 'Comment']
     valid_keys_str = "|".join(valid_keys)
     errors = []
 
@@ -296,8 +296,8 @@ def validate_input(input_dict: dict):
                         errors.append(f"unknown devices arn: {arn}")
             if 'modelParams' == k:
                 validate_modelParams(input_dict, errors)
-            if 'hpcResources' == k:
-                validate_hpcResources(input_dict, errors)
+            if 'ccResources' == k:
+                validate_ccResources(input_dict, errors)
             if 'optParams' == k:
                 validate_optParams(input_dict, errors)
     except Exception as e:
@@ -341,8 +341,8 @@ def handler(event, context):
         if user_input.get('modelParams', None) is None:
             user_input['modelParams'] = default_model_params
 
-        if user_input.get('hpcResources', None) is None:
-            user_input['hpcResources'] = default_hpc_resources
+        if user_input.get('ccResources', None) is None:
+            user_input['ccResources'] = default_cc_resources
 
         if user_input.get('devicesArns', None) is None:
             user_input['devicesArns'] = default_devices_arns
@@ -371,16 +371,16 @@ def handler(event, context):
                 'devicesArns', default_devices_arns)
             model_params = user_input['user_input'].get(
                 'modelParams', default_model_params)
-            hpc_resources = user_input['user_input'].get(
-                'hpcResources', default_hpc_resources)
+            cc_resources = user_input['user_input'].get(
+                'ccResources', default_cc_resources)
         else:
             devices_arns = default_devices_arns
             model_params = default_model_params
-            hpc_resources = default_hpc_resources
+            cc_resources = default_cc_resources
 
     log.info(f"devices_arns={devices_arns}")
     log.info(f"model_params={model_params}")
-    log.info(f"hpc_resources={hpc_resources}")
+    log.info(f"cc_resources={cc_resources}")
 
     if param_type == 'QC_DEVICE_LIST':
         return {
@@ -408,22 +408,22 @@ def handler(event, context):
                 "index": qc_index,
                 "device_arn": device_arn})
 
-    hpc_task_params = []
-    hpc_index = 0
-    for resource in hpc_resources:
+    cc_task_params = []
+    cc_index = 0
+    for resource in cc_resources:
         resource_name = f"Vcpu{resource[0]}_Mem{resource[1]}G"
         if '.' in resource_name:
             resource_name = resource_name.replace(r'.', '_')
         for param_item in model_param_items:
-            hpc_index += 1
+            cc_index += 1
             param_item_name = str(param_item).replace(
                 "&", '').replace("=", '')
-            hpc_task_params.append({
-                "params": f"--model-param,{param_item},--resource,{resource_name},--index,{hpc_index},{common_param}".split(","),
+            cc_task_params.append({
+                "params": f"--model-param,{param_item},--resource,{resource_name},--index,{cc_index},{common_param}".split(","),
                 "resource_name": resource_name,
                 "task_name": f"{resource_name}_{param_item_name}",
                 "model_param": param_item,
-                "index": hpc_index,
+                "index": cc_index,
                 "vcpus": resource[0],
                 "memory": resource[1] * 1024
             })
@@ -440,8 +440,8 @@ def handler(event, context):
             "execution_id": execution_id,
         }
 
-    if param_type == 'PARAMS_FOR_HPC':
+    if param_type == 'PARAMS_FOR_CC':
         return {
-            "hpcTaskParams": hpc_task_params,
+            "ccTaskParams": cc_task_params,
             "execution_id": execution_id
         }

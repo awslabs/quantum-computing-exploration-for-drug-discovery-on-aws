@@ -11,9 +11,9 @@ exports.handler = function (event, context, callback) {
     console.log(`stackName: ${stackName}, s3_prefix: ${s3_prefix}`)
 
     const ATHENA_OUTPUT_LOCATION = `s3://${bucket}/${s3_prefix}/athena-out/`
-    const location = `s3://${bucket}/${s3_prefix}/benchmark_metrics/`
-    const tableName = `${stackName}_qc_benchmark_metrics_hist`
-    const viewName = `${stackName}_qc_benchmark_metrics`
+    const location = `s3://${bucket}/${s3_prefix}/batch_evaluation_metrics/`
+    const tableName = `${stackName}_qc_batch_evaluation_metrics_hist`
+    const viewName = `${stackName}_qc_batch_evaluation_metrics`
     const createDBSql = `CREATE DATABASE IF NOT EXISTS qc_db`
     const dropTableSql = `DROP TABLE IF EXISTS qc_db.${tableName}`
     const createTableSql = `

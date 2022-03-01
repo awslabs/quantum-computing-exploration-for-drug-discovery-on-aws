@@ -67,7 +67,7 @@ def upload_result_files(execution_id, param_info, res_files: list, bucket):
     keys = []
     for f in res_files:
         name = basename(f)
-        key = f"{s3_prefix}/executions/{execution_id}/result/HPC/{param_info}/{name}"
+        key = f"{s3_prefix}/executions/{execution_id}/result/CC/{param_info}/{name}"
         print(f"upload {f} -> {key}")
         s3.upload_file(f, bucket, key)
         keys.append(f"s3://{bucket}/{key}")
@@ -79,13 +79,13 @@ def sa_optimizer(qubo_model, model_file_info, param_info):
     optimizer_param = {}
 
     optimizer_param['shots'] =  1000
-    optimizer_param['notes'] =  'benchmarking'
+    optimizer_param['notes'] =  'batch evaluation'
 
     optimizer_params = context['user_input'].get('optParams', None)
     if optimizer_params and optimizer_params.get('sa', None):
         user_optimizer_param = optimizer_params.get('sa')
         optimizer_param['shots'] = user_optimizer_param.get('shots', 1000)
-        optimizer_param['notes'] =  user_optimizer_param.get('notes', 'benchmarking')
+        optimizer_param['notes'] =  user_optimizer_param.get('notes', 'batch evaluation')
     
     sa_optimizer = Annealer(qubo_model, method, **optimizer_param)
     sa_optimize_result = sa_optimizer.fit()
@@ -231,7 +231,7 @@ if __name__ == '__main__':
     #result_file_info = json.dumps(result_s3_files)
 
     metrics_items = [execution_id,
-                     "HPC",
+                     "CC",
                      str(resource),
                      model_param,
                      json.dumps(optimizer_param),
@@ -250,6 +250,6 @@ if __name__ == '__main__':
     metrics = "!".join(metrics_items)
     logging.info("metrics='{}'".format(metrics))
 
-    metrics_key = f"{s3_prefix}/benchmark_metrics/{execution_id}-HPC-{resource}-{model_name}-{index}-{int(time.time())}.csv"
+    metrics_key = f"{s3_prefix}/batch_evaluation_metrics/{execution_id}-CC-{resource}-{model_name}-{index}-{int(time.time())}.csv"
     string_to_s3(metrics, s3_bucket, metrics_key)
     logging.info("Done")
