@@ -29,8 +29,7 @@ export class Dashboard extends Construct {
 
     const quicksightUser = `arn:aws:quicksight:us-east-1:${this.props.account}:user/default/${this.props.quicksightUser}`;
 
-    const default_templateArn = 'arn:aws:quicksight:us-east-1:522244679887:template/QC-benchmark-analysis-template/version/1';
-    const templateArn = this.node.tryGetContext('quicksight_template_arn') || default_templateArn;
+    const templateArn = 'arn:aws:quicksight:us-east-1:366590864501:template/qc-batch-evaluation-analysis-template/version/1';
 
     const qcDataSource = new quicksight.CfnDataSource(this, 'qcBenchmark-DataSource', {
       awsAccountId: this.props.account,
