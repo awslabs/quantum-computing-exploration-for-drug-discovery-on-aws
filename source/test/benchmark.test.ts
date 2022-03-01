@@ -2,7 +2,11 @@ import {
   App,
 } from 'aws-cdk-lib';
 
-import { Template, Match } from 'aws-cdk-lib/assertions';
+import {
+  Template,
+  Match,
+  Capture,
+} from 'aws-cdk-lib/assertions';
 
 import {
   MainStack,
@@ -139,6 +143,120 @@ describe('BatchEvaluation', () => {
       }
     }
     expect(SSMSet).toBeTruthy();
+  });
+
+
+  test('AWS Events Rule is configed for stepFunctions', ()=> {
+    const app = new App();
+    const stack = new MainStack(app, 'test');
+    const template = Template.fromStack(stack);
+    const nameCapture = new Capture();
+    template.hasResourceProperties('AWS::Events::Rule', {
+      EventPattern: {
+        'source': [
+          'aws.states',
+        ],
+        'detail-type': [
+          'Step Functions Execution Status Change',
+        ],
+        'detail': {
+          status: [
+            'FAILED',
+            'TIMED_OUT',
+            'ABORTED',
+          ],
+          stateMachineArn: [
+            {
+              Ref: nameCapture,
+            },
+          ],
+        },
+      },
+    });
+
+    expect(nameCapture.asString()).toEqual(expect.stringMatching(/BatchEvaluationStateMachine/));
+
+  });
+
+  test('SNS Key permission is configed correctly', ()=> {
+    const app = new App();
+    const stack = new MainStack(app, 'test');
+    const template = Template.fromStack(stack);
+    template.hasResourceProperties('AWS::KMS::Key', {
+      KeyPolicy: {
+        Statement: [
+          {
+            Action: 'kms:*',
+            Effect: 'Allow',
+            Principal: {
+              AWS: {
+                'Fn::Join': [
+                  '',
+                  [
+                    'arn:',
+                    {
+                      Ref: 'AWS::Partition',
+                    },
+                    ':iam::',
+                    {
+                      Ref: 'AWS::AccountId',
+                    },
+                    ':root',
+                  ],
+                ],
+              },
+            },
+            Resource: '*',
+          },
+          {
+            Action: [
+              'kms:Decrypt',
+              'kms:GenerateDataKey',
+            ],
+            Effect: 'Allow',
+            Principal: {
+              Service: 'events.amazonaws.com',
+            },
+            Resource: '*',
+          },
+          {
+            Action: [
+              'kms:Decrypt',
+              'kms:GenerateDataKey*',
+              'kms:CreateGrant',
+              'kms:ListGrants',
+              'kms:DescribeKey',
+            ],
+            Condition: {
+              StringEquals: {
+                'kms:ViaService': {
+                  'Fn::Join': [
+                    '',
+                    [
+                      'sns.',
+                      {
+                        Ref: 'AWS::Region',
+                      },
+                      '.amazonaws.com',
+                    ],
+                  ],
+                },
+                'kms:CallerAccount': {
+                  Ref: 'AWS::AccountId',
+                },
+              },
+            },
+            Effect: 'Allow',
+            Principal: {
+              AWS: '*',
+            },
+            Resource: '*',
+          },
+        ],
+        Version: '2012-10-17',
+      },
+    });
+
   });
 
 });

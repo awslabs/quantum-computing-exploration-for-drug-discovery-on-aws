@@ -1,4 +1,3 @@
-
 import {
   aws_iam as iam,
   aws_lambda as lambda,
@@ -9,6 +8,8 @@ import {
   aws_kms as kms,
   aws_logs as logs,
   aws_s3 as s3,
+  aws_events as events,
+  aws_events_targets as targets,
   CfnOutput,
   RemovalPolicy,
   Duration,
@@ -57,8 +58,8 @@ export class BatchEvaluation extends Construct {
   private lambdaUtil: LambdaUtil
   private batchUtil: BatchUtil
   private logKey: kms.Key
-  private taskParamLambda : lambda.Function
-  private waitForTokenLambda : lambda.Function
+  private taskParamLambda: lambda.Function
+  private waitForTokenLambda: lambda.Function
 
   // constructor
   constructor(scope: Construct, id: string, props: BatchProps) {
@@ -81,6 +82,42 @@ export class BatchEvaluation extends Construct {
       enableKeyRotation: true,
     });
 
+    const snsKey = new kms.Key(this, 'SNSKey', {
+      enableKeyRotation: true,
+    });
+
+    snsKey.addToResourcePolicy(new iam.PolicyStatement({
+      actions: [
+        'kms:Decrypt',
+        'kms:GenerateDataKey',
+      ],
+      principals: [new iam.ServicePrincipal('events.amazonaws.com')],
+      resources: ['*'],
+    }));
+
+    snsKey.addToResourcePolicy(new iam.PolicyStatement({
+      actions: [
+        'kms:Decrypt',
+        'kms:GenerateDataKey*',
+        'kms:CreateGrant',
+        'kms:ListGrants',
+        'kms:DescribeKey',
+      ],
+      principals: [new iam.AnyPrincipal()],
+      resources: ['*'],
+      conditions: {
+        StringEquals: {
+          'kms:ViaService': `sns.${props.region}.amazonaws.com`,
+          'kms:CallerAccount': `${props.account}`,
+        },
+      },
+    }));
+
+    const topic = new sns.Topic(this, 'SNS Topic', {
+      displayName: 'QC StepFunctions Workflow Execution Topic',
+      masterKey: snsKey,
+    });
+
     this.taskParamLambda = this.lambdaUtil.createTaskParametersLambda();
     this.waitForTokenLambda = this.lambdaUtil.createWaitForTokenLambda();
 
@@ -90,7 +127,7 @@ export class BatchEvaluation extends Construct {
     const qcStateMachine = this.createQCStateMachine();
     const qcAndCCStateMachine = this.createCCAndQCStateMachine(ccStateMachine, qcStateMachine);
     const aggResultStep = this.createAggResultStep();
-    const notifyStep = this.createSNSNotifyStep();
+    const notifyStep = this.createSNSNotifyStep(topic);
     const postSteps = sfn.Chain.start(aggResultStep).next(notifyStep);
 
     const ccBranch = new tasks.StepFunctionsStartExecution(this, 'Run CC', {
@@ -129,7 +166,7 @@ export class BatchEvaluation extends Construct {
       .when(sfn.Condition.stringEquals('$.runMode', 'QC'), qcBranch)
       .otherwise(qcAndCcBranch);
 
-    const statchMachineChain = sfn.Chain.start(checkInputParamsStep).next(createModelStep)
+    const stateMachineChain = sfn.Chain.start(checkInputParamsStep).next(createModelStep)
       .next(choiceStep);
 
     const logGroupName = `${this.props.stackName}-BatchEvaluationStateMachineLogGroup`;
@@ -143,7 +180,7 @@ export class BatchEvaluation extends Construct {
     });
 
     const batchEvaluationStateMachine = new sfn.StateMachine(this, 'BatchEvaluationStateMachine', {
-      definition: statchMachineChain,
+      definition: stateMachineChain,
       timeout: Duration.hours(36),
       logs: {
         destination: logGroup,
@@ -151,6 +188,21 @@ export class BatchEvaluation extends Construct {
       },
     });
     logGroup.grantWrite(batchEvaluationStateMachine);
+
+    const stepFuncFailureRule = new events.Rule(this, 'stepFuncFailureRule', {
+      eventPattern: {
+        source: ['aws.states'],
+        detailType: ['Step Functions Execution Status Change'],
+        detail: {
+          status: ['FAILED', 'TIMED_OUT', 'ABORTED'],
+          stateMachineArn: [batchEvaluationStateMachine.stateMachineArn],
+        },
+      },
+    });
+
+    stepFuncFailureRule.addTarget(new targets.SnsTopic(topic, {
+      message: events.RuleTargetInput.fromEventPath('$.detail'),
+    }));
 
     // Output //////////////////////////
     new CfnOutput(this, 'stateMachineURL', {
@@ -523,12 +575,7 @@ export class BatchEvaluation extends Construct {
   }
 
 
-  private createSNSNotifyStep(): tasks.SnsPublish {
-    const topic = new sns.Topic(this, 'SNS Topic', {
-      displayName: 'QC Stepfunctions Execution Complete Topic',
-      masterKey: kms.Alias.fromAliasName(this, 'snsKey', 'alias/aws/sns'),
-    });
-
+  private createSNSNotifyStep(topic: sns.Topic): tasks.SnsPublish {
     topic.addToResourcePolicy(new iam.PolicyStatement({
       effect: iam.Effect.DENY,
       principals: [new iam.AnyPrincipal()],
@@ -547,12 +594,13 @@ export class BatchEvaluation extends Construct {
     }));
     const snsStep = new tasks.SnsPublish(this, 'Notify Complete', {
       topic,
+      subject: 'QC Step Functions Workflow Execution Succeeded',
       message: sfn.TaskInput.fromObject({
-        execution_id: sfn.JsonPath.stringAt('$.execution_id'),
-        start_time: sfn.JsonPath.stringAt('$.start_time'),
-        end_time: sfn.JsonPath.stringAt('$.aggResultStep.Payload.endTime'),
+        status: 'SUCCEEDED',
+        name: sfn.JsonPath.stringAt('$.execution_id'),
+        startDate: sfn.JsonPath.stringAt('$.start_time'),
+        stopDate: sfn.JsonPath.stringAt('$.aggResultStep.Payload.endTime'),
         dashboard: this.props.dashboardUrl,
-        status: 'Complete',
       }),
       resultPath: '$.snsStep',
     });
