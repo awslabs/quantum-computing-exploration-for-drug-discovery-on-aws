@@ -12,7 +12,6 @@ nav:
   - Architecture Overview: architecture.md
   - Security: security.md
   - Supported Regions: regions.md
-  - AWS CloudFormation Template: template.md
   - Automated Deployment: deployment.md
   - Workshop: 
     - Overview: workshop/background.md

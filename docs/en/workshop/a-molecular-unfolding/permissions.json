@@ -32,7 +32,8 @@
                 "states:*",
                 "lambda:*",
                 "events:*",
-                "cloudformation:*"
+                "cloudformation:*",
+                "kms:*"
             ],
             "Resource": "*"
         }
