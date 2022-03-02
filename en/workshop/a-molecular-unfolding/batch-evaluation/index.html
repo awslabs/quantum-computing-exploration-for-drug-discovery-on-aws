@@ -589,6 +589,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#terms-abbreviation" class="md-nav__link">
+    Terms Abbreviation
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#get-step-functions-link-from-deployment-output" class="md-nav__link">
     Get Step Functions link from deployment output
   </a>
@@ -792,6 +799,13 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#terms-abbreviation" class="md-nav__link">
+    Terms Abbreviation
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#get-step-functions-link-from-deployment-output" class="md-nav__link">
     Get Step Functions link from deployment output
   </a>
@@ -866,6 +880,11 @@
 
 <h2 id="run-batch-evaluation">Run Batch Evaluation</h2>
 <p>We will run batch evaluation through AWS Step Functions workflow and view the result via Amazon QuickSight dashboard</p>
+<h3 id="terms-abbreviation">Terms Abbreviation</h3>
+<ul>
+<li><strong>CC</strong>: Classic computing</li>
+<li><strong>QC</strong>: Quantum computing</li>
+</ul>
 <h3 id="get-step-functions-link-from-deployment-output">Get Step Functions link from deployment output</h3>
 <p><center>
 <img alt="deployment output" src="../../../images/deploy-output-stepfunc.png" /></p>
@@ -952,15 +971,15 @@ Figure 5: Dashboard link
 </ul>
 </li>
 <li>
-<p>QC vs. HPC charts</p>
-<p>Below two charts show the performance of QC vs. HPC tasks</p>
+<p>QC vs. CC charts</p>
+<p>Below two charts show the performance of QC vs. CC tasks</p>
 <p><center>
-<img alt="dashboard qc vs hpc" src="../../../images/quicksight-qc-hpc-avg.png" /></p>
-<p>Figure 10: Performance of HPC v.s. QC
+<img alt="dashboard qc vs cc" src="../../../images/quicksight-qc-cc-avg.png" /></p>
+<p>Figure 10: Performance of CC v.s. QC
 </center></p>
 <ul>
-<li><strong>QC vs. HPC average</strong>  - compares the average execution time (Y-axis) of QC and HPC tasks by different model parameters (X-axis)</li>
-<li><strong>QC vs. HPC by resource</strong>  - compares the execution time (Y-axis) of QC and HPC tasks by different model parameters (X-axis) using different resources(for QC that is different QPU devices, for HPC that is different memory-vCPU)</li>
+<li><strong>QC vs. CC average</strong>  - compares the average execution time (Y-axis) of QC and CC tasks by different model parameters (X-axis)</li>
+<li><strong>QC vs. CC by resource</strong>  - compares the execution time (Y-axis) of QC and CC tasks by different model parameters (X-axis) using different resources(for QC that is different QPU devices, for CC that is different memory-vCPU)</li>
 </ul>
 </li>
 <li>
@@ -972,11 +991,11 @@ Figure 5: Dashboard link
 </center></p>
 </li>
 <li>
-<p>HPC: by resources</p>
-<p>It compares execution time (Y-axis) of different HPC resources (memory and vCPU) by different model parameters (X-axis)</p>
+<p>CC: by resources</p>
+<p>It compares execution time (Y-axis) of different CC resources (memory and vCPU) by different model parameters (X-axis)</p>
 <p><center>
-<img alt="dashboard qc device" src="../../../images/quicksight-hpc-resource.png" /></p>
-<p>Figure 12: Results by HPC resources
+<img alt="dashboard qc device" src="../../../images/quicksight-cc-resource.png" /></p>
+<p>Figure 12: Results by CC resources
 </center></p>
 </li>
 <li>
@@ -988,15 +1007,15 @@ Figure 5: Dashboard link
 </center></p>
 <p>Fields in this table:</p>
 <ul>
-<li><strong>compute_type</strong>: compute type, HPC or QC</li>
-<li><strong>resource</strong>: resource name, for QC that is different QPU devices, for HPC that is different memory-vCPU</li>
+<li><strong>compute_type</strong>: compute type, CC or QC</li>
+<li><strong>resource</strong>: resource name, for QC that is different QPU devices, for CC that is different memory-vCPU</li>
 <li><strong>param</strong>: model parameters. <strong>M</strong>: number of torsions; <strong>D</strong>: angle precision of rotation; <strong>HQ</strong>: hubo-qubo value, energy penalty; <strong>A</strong>: penalty scalar</li>
 <li><strong>opt_params</strong>: optimizer parameters</li>
 <li><strong>task_duration</strong>: task execution time in seconds</li>
-<li><strong>time_info</strong>: for QC, different dimensions of QC task time, <code>total_time</code> is the <strong>task_duration</strong> , for HPC, <code>local_time</code> is the <strong>task_duration</strong></li>
+<li><strong>time_info</strong>: for QC, different dimensions of QC task time, <code>total_time</code> is the <strong>task_duration</strong> , for CC, <code>local_time</code> is the <strong>task_duration</strong></li>
 <li><strong>execution_id</strong>: the Step Functions execution id</li>
 <li><strong>experiment_name</strong>: the experiment name, if input <code>experimentName</code> is not empty, it is <code>execution start time + input experimentName</code>, otherwise, it is <code>execution start time + execution_id</code></li>
-<li><strong>task_id</strong>: for Qc task, it is Braket task id, for HPC, it is empty</li>
+<li><strong>task_id</strong>: for Qc task, it is Braket task id, for CC, it is empty</li>
 <li><strong>result_detail</strong>: the volume size of molecule before and after unfolding</li>
 <li><strong>result_location</strong>: the molecule mol2 file after unfolding</li>
 </ul>
@@ -1011,7 +1030,7 @@ Figure 5: Dashboard link
 <ul>
 <li>
 <p>Compute type and resource table</p>
-<p>It lists all resources in batch evaluation, for QC - resources are QPU devices, for HPC - resources are memory and vCPU. Items in the table are clickable, when you click one item (meaning you select it),  metrics in this sheet are switched to that item. If no item selected, it shows averaged metrics.</p>
+<p>It lists all resources in batch evaluation, for QC - resources are QPU devices, for CC - resources are memory and vCPU. Items in the table are clickable, when you click one item (meaning you select it),  metrics in this sheet are switched to that item. If no item selected, it shows averaged metrics.</p>
 </li>
 <li>
 <p>Experiment hist chart</p>
@@ -1048,7 +1067,7 @@ Figure 5: Dashboard link
 <span class="w">        </span><span class="nt">&quot;D&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;int []&quot;</span><span class="w"></span>
 <span class="w">    </span><span class="p">},</span><span class="w"></span>
 <span class="w">    </span><span class="nt">&quot;devicesArns&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string []&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;hpcResources&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;[int, int] []&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;ccResources&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;[int, int] []&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
@@ -1059,7 +1078,7 @@ Figure 5: Dashboard link
 <p>Definition:</p>
 <ul>
 <li><strong>version</strong>:  the version of input schema, current only support value is: '1'</li>
-<li><strong>runMode</strong>:  run mode, value can be <code>ALL</code>, <code>HPC</code> or <code>QC</code>, default: 'ALL'; <code>HPC</code> - only run HPC tasks, <code>QC</code> only run QC tasks, <code>ALL</code> - run both tasks</li>
+<li><strong>runMode</strong>:  run mode, value can be <code>ALL</code>, <code>CC</code> or <code>QC</code>, default: 'ALL'; <code>CC</code> - only run CC tasks, <code>QC</code> only run QC tasks, <code>ALL</code> - run both tasks</li>
 <li><strong>molFile</strong>: S3 url of the mol2 file</li>
 <li><strong>modelVersion</strong>: model version, default: 'latest'</li>
 <li><strong>experimentName</strong>: the name of the batch evaluation</li>
@@ -1115,7 +1134,7 @@ Figure 5: Dashboard link
 
 </li>
 <li>
-<p><strong>hpcResources</strong>: memory(first element) in GiB and vCPU(second element), e.g. 4GiB memory and 2 vCPU is: <code>[4, 2]</code></p>
+<p><strong>ccResources</strong>: memory(first element) in GiB and vCPU(second element), e.g. 4GiB memory and 2 vCPU is: <code>[4, 2]</code></p>
 </li>
 </ul>
 <p>A typical (the default) input:</p>
@@ -1138,7 +1157,7 @@ Figure 5: Dashboard link
 <span class="w">        </span><span class="s2">&quot;arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="w">        </span><span class="s2">&quot;arn:aws:braket:::device/qpu/d-wave/Advantage_system4&quot;</span><span class="w"></span>
 <span class="w">    </span><span class="p">],</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;hpcResources&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;ccResources&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
 <span class="w">        </span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">],</span><span class="w"></span>
 <span class="w">        </span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">],</span><span class="w"></span>
 <span class="w">        </span><span class="p">[</span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">],</span><span class="w"></span>
