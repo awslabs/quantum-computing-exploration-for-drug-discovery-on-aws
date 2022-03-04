@@ -34,6 +34,9 @@ chapter: true
 </center>
 
 如图3所示，CADD有很多方法，基于结构的和基于配基的。量子计算有希望被应用到其中的一些具体环节以提高效率，而研究人员已经列出了对应的技术以及应用的环节。比如将VQE求解器应用到分子对接等。
+虽然我们还没有足够资源构造一个强大的量子计算机，即图3中的容错量子计算机（Fault-tolerant quantum computing, FTQC)。但是我们已经能够通过Amazon Braket访问嘈杂的中尺寸量子计算机（Noisy intermediate-scale quantum computing，NISQ）。这使得我们可以更方便开展药物发现与量子计算的研究课题，建立专业知识，和积累知识产权。
+start with QC to research application, to
+build expertise, and secure IP
 
 # 参考
 <div id='drug-discovery'></div>
