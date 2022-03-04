@@ -18,23 +18,6 @@ known_devices_arns = [
 
 default_devices_arns = known_devices_arns
 
-MAX_M = 7
-
-max_M_for_devices_D8 = {it[0]: it[1] for it in list(zip(known_devices_arns, [
-    3,
-    4
-]))}
-
-max_M_for_devices_D4 = {it[0]: it[1] for it in list(zip(known_devices_arns, [
-    4,
-    7
-]))}
-
-max_M_for_devices = {
-    8: max_M_for_devices_D8,
-    4: max_M_for_devices_D4
-}
-
 default_model_params = {
     "M": [1, 2, 3, 4],
     "D": [4],
@@ -62,8 +45,9 @@ default_opt_params = {
 
 max_vcpu, min_vcpu = 16, 1
 max_mem, min_mem = 30,  1
-max_shots, min_shots = 10000, 1
+min_shots = 1
 
+MAX_ITEM_IN_CCRESOURCES = 10
 
 def read_as_json(bucket, key):
     log.info(f"read s3://{bucket}/{key}")
@@ -71,37 +55,6 @@ def read_as_json(bucket, key):
     json_ = json.loads(obj['Body'].read())
     log.info(f"return: {json_}")
     return json_
-
-
-def read_config(s3_bucket, s3_prefix):
-    config_file = f"{s3_prefix}/config/default.json"
-    config = None
-    global default_cc_resources
-    global default_model_params
-    global default_devices_arns
-    global default_opt_params
-    global MAX_M
-    try:
-        config = read_as_json(s3_bucket, config_file)
-
-        if 'ccResources' in config:
-            default_cc_resources = config['ccResources']
-            log.info(f"set default_cc_resources={default_cc_resources} by config")
-        if 'modelParams' in config:
-            default_model_params = config['modelParams']
-            log.info(f"set default_model_params={default_model_params} by config")
-        if 'devicesArns' in config:
-            default_devices_arns = config['devicesArns']
-            log.info(f"set default_devices_arns={default_devices_arns} by config")
-        if 'optParams' in config:
-            default_opt_params = config['optParams']
-            log.info(f"set default_opt_params={default_opt_params} by config")
-        if 'MAX_M' in config:
-            MAX_M = config['MAX_M']
-            log.info(f"set MAX_M={MAX_M} by config")
-    except Exception as e:
-        log.info(f"cannot find {config_file}")
-        pass
 
 
 def string_to_s3(content, bucket, key):
@@ -168,23 +121,6 @@ def validate_modelParams(input_dict: dict, errors: list):
         log.info(f"use your own model file {molFile}, skip check for modelParams")
         return 
 
-    devices_arns = input_dict.get('devicesArns', default_devices_arns)
-
-    D_val = input_dict[k].get('D', default_model_params.get('D', [4]))[0]
-    global MAX_M
-
-    log.info(f"MAX_M={MAX_M}")
-    log.info(f"max_M_for_devices: {max_M_for_devices}")
-    for d in devices_arns:
-        max_val_for_device = max_M_for_devices.get(D_val, {}).get(d, MAX_M)
-        log.info(f"max_val_for_device={max_val_for_device}, {D_val}, {d}")
-        MAX_M = min(MAX_M, max_val_for_device)
-        if d not in known_devices_arns:
-            log.info(f"has_unknown_device {d}, skip modelParams check")
-            return
-
-    log.info(f"D_val={D_val}, MAX_M={MAX_M}")
-
     param_names = dict(input_dict[k]).keys()
     for p in param_names:
         if p not in ["M", "D", "A", "HQ"]:
@@ -197,6 +133,9 @@ def validate_modelParams(input_dict: dict, errors: list):
             if not isinstance(e, int):
                 errors.append(
                     f"invalid value {e}, value for {p} must be int")
+        if len(list_vals)==0:
+            errors.append(
+                    f"invalid value {p}, value for {p} is empty")
         if p == 'D' and not (list_vals == [8] or list_vals == [4]):
             errors.append(
                 f"invalid value for {p}, current only support '[ 8 ]' or '[ 4 ]'")
@@ -206,15 +145,19 @@ def validate_modelParams(input_dict: dict, errors: list):
         if p == 'HQ' and list_vals != [200]:
             errors.append(
                 f"invalid value for {p}, current only support '[ 200 ]'")
-        if p == 'M' and (max(list_vals) > MAX_M or min(list_vals) < 1):
+        if p == 'M' and (min(list_vals) < 1):
             errors.append(
-                f"invalid value for {p}: {list_vals}, support range: [1, {MAX_M}] for the device ")
+                f"invalid value for {p}: {list_vals}, the minimum value of M is '1'")
 
 
 def validate_ccResources(input_dict: dict, errors: list):
     k = 'ccResources'
     if not isinstance(input_dict[k], list):
         errors.append(f"ccResources must be an array")
+    
+    if len(list(input_dict[k])) > MAX_ITEM_IN_CCRESOURCES:
+        errors.append(f"max ccResources length is {MAX_ITEM_IN_CCRESOURCES}")
+
     for c_m in list(input_dict[k]):
         if not isinstance(c_m, list) or len(c_m) != 2:
             errors.append(
@@ -244,9 +187,9 @@ def validate_optParams(input_dict: dict, errors: list):
             if not isinstance(shots, int):
                 errors.append(
                     f"optParams[{p}][shots] must be int, invalid value: {shots}")
-            elif shots > max_shots or shots < min_shots:
+            elif shots < min_shots:
                 errors.append(
-                    f"optParams[{p}][shots], invalid shots value: {shots}, value range [{min_shots}, {max_shots}]")
+                    f"optParams[{p}][shots], min shots is: {min_shots}")
         if p == 'qa':
             for kk in input_dict[k][p].keys():
                 if kk not in ['shots', 'embed_method']:
@@ -313,8 +256,6 @@ def handler(event, context):
     param_type = event['param_type']
     s3_bucket = event['s3_bucket']
     s3_prefix = event['s3_prefix']
-
-    read_config(s3_bucket, s3_prefix)
 
     log.info(f"default_model_params: {default_model_params}")
 

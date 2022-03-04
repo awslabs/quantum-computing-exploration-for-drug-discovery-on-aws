@@ -234,6 +234,7 @@ Dashboard里面有两张sheet，可以点击切换。
   * **mol2文件**: mol2 文件的 S3 url
   * **modelVersion**：模型版本，默认：'latest'
   * **experimentName**：批次评估的名称
+  * **optParams**: 优化器参数, 为QC(qa)和CC(sa)任务设置shots值
   * **modelParams**：模型参数，M：扭转数，D：旋转角度精度。详细
   请参考[建立模型-技术细节](./build-model-detail.md)。有效值：
 
@@ -242,17 +243,9 @@ Dashboard里面有两张sheet，可以点击切换。
 
 !!! 注意
 
-    M 的最大值取决于 D、QPU 设备和输入 molFile 的值。
-    
-    如果您使用默认的 mol2文件（表示输入中未提供 `molFile`），则最大值组合如下表所示：
-    
-    |设备 | D |最大 M |
-    |--- |--- |--- |
-    | arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6 | 4 | 4 |
-    | arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6 | 8 | 3 |
-    | arn:aws:braket:::device/qpu/d-wave/Advantage_system4 | 4 | 7 |
-    | arn:aws:braket:::device/qpu/d-wave/Advantage_system4 | 8 | 4 |
-
+    M 的最大值取决于 D、QPU 设备和输入 molFile 的值。在输入校验中，M最大值为100。
+    在实际执行过程中，如果M值超过设备容量，执行会失败。
+        
     如果使用自己的mol2文件，会跳过输入校验，如果值超过设备容量，会执行失败。
 
 * **devicesArns**：QPU 设备 arn。有效值：
