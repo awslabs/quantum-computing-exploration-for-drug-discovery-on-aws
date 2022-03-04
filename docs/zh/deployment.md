@@ -1,11 +1,15 @@
 在部署解决方案之前，建议您先查看本指南中有关架构图和区域支持等信息。然后按照下面的说明配置解决方案并将其部署到您的帐户中。
 
+<<<<<<< HEAD
 !!! 注意
 
     在部署此解决方案之前创建账单告警是一种很好的做法。参考这个[链接](https://docs.aws.amazon.com/zh_cn/AmazonCloudWatch/latest/monitoring/monitor_estimated_charges_with_cloudwatch.html)
 
 
 **部署时间**：约 10 分钟。
+=======
+**部署时间**：约10分钟
+>>>>>>> f8708da (docs on-going)
 
 ## 先决条件
 ### 注册您的QuickSight账户
