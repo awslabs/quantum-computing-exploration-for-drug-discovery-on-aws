@@ -61,7 +61,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#deployment-overview" class="md-skip">
+        <a href="#prerequisites" class="md-skip">
           Skip to content
         </a>
       
@@ -305,21 +305,6 @@
 
   
   
-  
-    <li class="md-nav__item">
-      <a href="../template/" class="md-nav__link">
-        AWS CloudFormation Template
-      </a>
-    </li>
-  
-
-    
-      
-      
-      
-
-  
-  
     
   
   
@@ -352,9 +337,36 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#deployment-overview" class="md-nav__link">
-    Deployment overview
+  <a href="#prerequisites" class="md-nav__link">
+    Prerequisites
   </a>
+  
+    <nav class="md-nav" aria-label="Prerequisites">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sign-up-for-quicksight" class="md-nav__link">
+    Sign up for QuickSight
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update-quicksight-permissions" class="md-nav__link">
+    Update QuickSight permissions
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-quicksight-username" class="md-nav__link">
+    Get QuickSight Username
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -367,22 +379,28 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#step1-check-your-quicksight" class="md-nav__link">
-    Step1: Check your QuickSight
+  <a href="#launch-the-aws-cloudformation-template-into-your-aws-account-to-deploy-the-solution" class="md-nav__link">
+    Launch the AWS CloudFormation template into your AWS account to deploy the solution
   </a>
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#step2-deploy-solution" class="md-nav__link">
-    Step2: Deploy solution
-  </a>
+      </ul>
+    </nav>
   
 </li>
+      
+        <li class="md-nav__item">
+  <a href="#post-deployment" class="md-nav__link">
+    Post Deployment
+  </a>
+  
+    <nav class="md-nav" aria-label="Post Deployment">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#step3-update-quicksight-permissions" class="md-nav__link">
-    Step3: Update QuickSight permissions
+  <a href="#subscribe-sns-notification-optional" class="md-nav__link">
+    Subscribe SNS notification (optional)
   </a>
   
 </li>
@@ -411,18 +429,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_8">
+        <label class="md-nav__link" for="__nav_7">
           Workshop
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Workshop" data-md-level="1">
-        <label class="md-nav__title" for="__nav_8">
+        <label class="md-nav__title" for="__nav_7">
           <span class="md-nav__icon md-icon"></span>
           Workshop
         </label>
@@ -451,18 +469,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_2" type="checkbox" id="__nav_8_2" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7_2" type="checkbox" id="__nav_7_2" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_8_2">
+        <label class="md-nav__link" for="__nav_7_2">
           Molecular Unfolding
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Molecular Unfolding" data-md-level="2">
-        <label class="md-nav__title" for="__nav_8_2">
+        <label class="md-nav__title" for="__nav_7_2">
           <span class="md-nav__icon md-icon"></span>
           Molecular Unfolding
         </label>
@@ -477,18 +495,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_2_1" type="checkbox" id="__nav_8_2_1" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7_2_1" type="checkbox" id="__nav_7_2_1" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_8_2_1">
+        <label class="md-nav__link" for="__nav_7_2_1">
           Notebook Experiment
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Notebook Experiment" data-md-level="3">
-        <label class="md-nav__title" for="__nav_8_2_1">
+        <label class="md-nav__title" for="__nav_7_2_1">
           <span class="md-nav__icon md-icon"></span>
           Notebook Experiment
         </label>
@@ -594,18 +612,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_2_2" type="checkbox" id="__nav_8_2_2" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7_2_2" type="checkbox" id="__nav_7_2_2" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_8_2_2">
+        <label class="md-nav__link" for="__nav_7_2_2">
           Batch Evaluation
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Batch Evaluation" data-md-level="3">
-        <label class="md-nav__title" for="__nav_8_2_2">
+        <label class="md-nav__title" for="__nav_7_2_2">
           <span class="md-nav__icon md-icon"></span>
           Batch Evaluation
         </label>
@@ -759,9 +777,36 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#deployment-overview" class="md-nav__link">
-    Deployment overview
+  <a href="#prerequisites" class="md-nav__link">
+    Prerequisites
   </a>
+  
+    <nav class="md-nav" aria-label="Prerequisites">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#sign-up-for-quicksight" class="md-nav__link">
+    Sign up for QuickSight
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#update-quicksight-permissions" class="md-nav__link">
+    Update QuickSight permissions
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#get-quicksight-username" class="md-nav__link">
+    Get QuickSight Username
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -774,22 +819,28 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#step1-check-your-quicksight" class="md-nav__link">
-    Step1: Check your QuickSight
+  <a href="#launch-the-aws-cloudformation-template-into-your-aws-account-to-deploy-the-solution" class="md-nav__link">
+    Launch the AWS CloudFormation template into your AWS account to deploy the solution
   </a>
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#step2-deploy-solution" class="md-nav__link">
-    Step2: Deploy solution
-  </a>
+      </ul>
+    </nav>
   
 </li>
+      
+        <li class="md-nav__item">
+  <a href="#post-deployment" class="md-nav__link">
+    Post Deployment
+  </a>
+  
+    <nav class="md-nav" aria-label="Post Deployment">
+      <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#step3-update-quicksight-permissions" class="md-nav__link">
-    Step3: Update QuickSight permissions
+  <a href="#subscribe-sns-notification-optional" class="md-nav__link">
+    Subscribe SNS notification (optional)
   </a>
   
 </li>
@@ -820,55 +871,180 @@
   <h1>Automated Deployment</h1>
 
 <p>Before you launch the solution, review the architecture, supported regions, and other considerations discussed in this guide. Follow the step-by-step instructions in this section to configure and deploy the solution into your account.</p>
-<p><strong>Time to deploy</strong>: Approximately 10 minutes</p>
-<h2 id="deployment-overview">Deployment overview</h2>
-<p>Use the following steps to deploy this solution on AWS.</p>
-<ul>
-<li>Step1: Check your QuickSight account</li>
-<li>Step2: Launch the AWS CloudFormation template into your AWS account to deploy the solution.</li>
-<li>Step3: Update QuickSight permissions</li>
-</ul>
 <div class="admonition notice">
 <p class="admonition-title">Notice</p>
-<p>Step1 and Step3 are one time setup per account when deploying this solution for the first time. You don't have to do them when repeating deployment</p>
+<p>It's good practice to set a billing alarm before deploying this solution. Refer to this <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/monitor_estimated_charges_with_cloudwatch.html">link</a></p>
 </div>
-<h2 id="deployment">Deployment</h2>
-<h3 id="step1-check-your-quicksight">Step1: Check your QuickSight</h3>
+<p><strong>Time to deploy</strong>: Approximately 10 minutes</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<h3 id="sign-up-for-quicksight">Sign up for QuickSight</h3>
+<div class="admonition notice">
+<p class="admonition-title">Notice</p>
+<p>You need correct AWS Identity and Access Management (IAM) permissions to sign up for QuickSight, please refer to <a href="https://docs.aws.amazon.com/quicksight/latest/user/signing-up.html">Signing up for an Amazon QuickSight subscription</a></p>
+</div>
 <ul>
 <li>
-<p>Sign in to the AWS Management Console, navigate to
-<a href="https://quicksight.aws.amazon.com/">QuickSight</a></p>
+<p>Sign in to the AWS Management Console, navigate to <a href="https://quicksight.aws.amazon.com/">QuickSight</a>.</p>
 </li>
 <li>
-<p>If you did not have a QuickSight account, you need to sign up for QuickSight(you need Administrator permission to sign up, <a href="https://docs.aws.amazon.com/quicksight/latest/user/setting-up-create-iam-user.html">doc</a>).</p>
+<p>If you did not have a QuickSight account, you need to sign up for QuickSight.</p>
 </li>
 <li>
-<p>Choose <strong>Enterprise</strong>, click continue</p>
+<p>Choose <strong>Enterprise</strong>, click continue.</p>
 </li>
 <li>
 <p>In the <strong>Create your QuickSight account</strong> page, fill the necessary information:</p>
 </li>
 </ul>
+<p><center></p>
+<table>
+<thead>
+<tr>
+<th align="center">Field Name</th>
+<th align="center">Value</th>
+<th align="center">Comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">Authentication method</td>
+<td align="center">Choose <strong>Use IAM federated identities &amp; QuickSight-managed users</strong></td>
+<td align="center">The default value</td>
+</tr>
+<tr>
+<td align="center">Select a region</td>
+<td align="center">Choose <strong>US East(N.Virginia)</strong></td>
+<td align="center">The default value</td>
+</tr>
+<tr>
+<td align="center">QuickSight account name</td>
+<td align="center">Any string value</td>
+<td align="center">Unique QuickSight account name</td>
+</tr>
+<tr>
+<td align="center">Notification email address</td>
+<td align="center">your email</td>
+<td align="center"></td>
+</tr>
+<tr>
+<td align="center">IAM Role</td>
+<td align="center">Choose <strong>Use QuickSight-managed role (default)</strong></td>
+<td align="center">The default value</td>
+</tr>
+<tr>
+<td align="center">Allow access and autodiscovery for these resources</td>
+<td align="center">Choose  <strong>IAM</strong>, <strong>Amazon Athena</strong></td>
+<td align="center">The default value</td>
+</tr>
+</tbody>
+</table>
+<p></center></p>
+<h3 id="update-quicksight-permissions">Update QuickSight permissions</h3>
+<ul>
+<li>
+<p>Go to <a href="https://console.aws.amazon.com/iamv2/home?#/roles">IAM Roles</a>.</p>
+</li>
+<li>
+<p>Search role by prefix: <code>aws-quicksight-service-role</code>, you should find one result, e.g. <code>aws-quicksight-service-role-v0</code></p>
+</li>
+<li>
+<p>Click the role name.</p>
+</li>
+<li>
+<p>Click <strong>Ad permissions</strong>, in the drop down list, click <strong>Create inline policy</strong>.</p>
+</li>
+<li>
+<p>Click <strong>JSON</strong> tab, pasted below json into it.</p>
+</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;Version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2012-10-17&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="nt">&quot;Statement&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">         </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Allow&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;s3:ListAllMyBuckets&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;arn:aws:s3:::*&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="p">},</span><span class="w"></span>
+
+<span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;s3:ListBucket&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="p">],</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Allow&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;arn:aws:s3:::amazon-braket-qcstack-*&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="p">]</span><span class="w"></span>
+<span class="w">        </span><span class="p">},</span><span class="w"></span>
+
+<span class="w">         </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;s3:GetObject&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;s3:GetObjectVersion&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="p">],</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Allow&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;arn:aws:s3:::amazon-braket-qcstack-*/*&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="p">]</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">]</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
+
+<ul>
+<li>
+<p>Click <strong>Review policy</strong>.</p>
+</li>
+<li>
+<p>Fill <strong>Name</strong>: <code>QC-QuickSight-S3-Policy</code>.</p>
+</li>
+<li>
+<p>Click <strong>Create policy</strong>. </p>
+</li>
+<li>
+<p>Navigate to <a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin#aws">QuickSight Security &amp; permissions</a>.</p>
+</li>
+<li>
+<p>Click button <strong>Manage</strong>.</p>
+</li>
+<li>
+<p>Select <strong>Use an existing role</strong> for IAM Role.</p>
+</li>
+<li>
+<p>In the drop down list, select the role with prefix: <code>aws-quicksight-service-role</code></p>
+</li>
+<li>
+<p>Click <strong>Save</strong>.</p>
+</li>
+</ul>
+<h3 id="get-quicksight-username">Get QuickSight Username</h3>
+<ul>
+<li>(Optional) Navigate to <a href="https://quicksight.aws.amazon.com/">QuickSight</a>, fill your email in below screen</li>
+</ul>
+<div class="admonition notice">
+<p class="admonition-title">Notice</p>
+<p>This step is only necessary if you login your AWS console with different IAM user(not the user sign up with QuickSight).</p>
+</div>
 <p><center>
-<img alt="Fill information for quicksight" src="../images/create_quicksight.png" /></p>
-<p>Figure 1: Fill information for quicksight</p>
+<img alt="QuickSight email" src="../images/quicksight-no-admin-email.png" /></p>
+<p>Figure 3: QuickSight email</p>
 <p></center></p>
 <ul>
-<li>Go to <a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin">quicksight admin</a>, record your <strong>QuickSight Username</strong>(not QuickSight account name).</li>
+<li>Go to <a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin">QuickSight Admin</a>, record your <strong>QuickSight Username</strong>(not QuickSight account name) for your email.</li>
 </ul>
 <p><center>
-<img alt="quicksight username" src="../images/quicksight_username.png" /></p>
-<p>Figure 2: Quicksight username</p>
+<img alt="QuickSight username" src="../images/quicksight_username.png" /></p>
+<p>Figure 2: QuickSight username</p>
 <p></center></p>
-<h3 id="step2-deploy-solution">Step2: Deploy solution</h3>
+<h2 id="deployment">Deployment</h2>
+<p>Use the following steps to deploy this solution on AWS.</p>
+<h3 id="launch-the-aws-cloudformation-template-into-your-aws-account-to-deploy-the-solution">Launch the AWS CloudFormation template into your AWS account to deploy the solution</h3>
 <p>This automated AWS CloudFormation template deploys the solution in the AWS Cloud.</p>
 <ul>
 <li>
 <p><a href="https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/create/template?stackName=QRADDStack&amp;templateURL=https://aws-gcr-solutions.s3.amazonaws.com/AWS-gcr-qc-life-science/v0.8.2/default/QCStack.template.json">Launch solution in AWS Standard Regions</a> to deploy solution via the AWS CloudFormation template.</p>
 </li>
 <li>
-<p>The template launches in the US West(Oregon) by default. To launch this solution in a different AWS Region(for example <code>us-east-1</code>), 
-use the Region selector in the console navigation bar.</p>
+<p>The template launches in the US West(Oregon) by default. To launch this solution in a different AWS Region(for example <code>us-east-1</code>), use the Region selector in the console navigation bar.</p>
 </li>
 <li>
 <p>Under <strong>Parameters</strong>, review the parameters for the template and modify them as necessary. This solution uses the following values. Choose <strong>Next</strong>.</p>
@@ -902,36 +1078,52 @@ use the Region selector in the console navigation bar.</p>
 </li>
 </ul>
 <p>You can view the status of the stack in the AWS CloudFormation Console in the <strong>Status</strong> column. You should receive a CREATE_COMPLETE status in approximately 10 minutes.</p>
-<h3 id="step3-update-quicksight-permissions">Step3: Update QuickSight permissions</h3>
+<h2 id="post-deployment">Post Deployment</h2>
+<h3 id="subscribe-sns-notification-optional">Subscribe SNS notification (optional)</h3>
+<div class="admonition notice">
+<p class="admonition-title">Notice</p>
+<p>This step is optional.</p>
+</div>
+<p>Follow below steps to subscribe SNS notification via Email, you might subscribe the notification via <a href="https://docs.aws.amazon.com/sns/latest/dg/sns-mobile-phone-number-as-subscriber.html">text messages</a>.</p>
+<ul>
+<li>Get your SNS topic name in the CloudFormation deployment output</li>
+</ul>
+<p><center>
+<img alt="SNS name" src="../images/deploy-output-sns.png" /></p>
+<p>Figure 7: SNS topic name</p>
+<p></center></p>
 <ul>
 <li>
-<p>Navigate to QuickSight <a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin#aws">admin page</a></p>
+<p>Navigate to <a href="https://console.aws.amazon.com/sns/v3/home?region=us-east-1#/topics">SNS topics</a> AWS console.</p>
 </li>
 <li>
-<p>Click <strong>Manage</strong></p>
+<p>Click the SNS topic which is in CloudFormation deployment output.</p>
+</li>
+<li>
+<p>Click <strong>Create subscription</strong> button.</p>
+</li>
+<li>
+<p>Subscribe the SNS topic by email, fill <strong>Protocol</strong> and <strong>Endpoint</strong>, click <strong>Create subscription</strong>.</p>
+<ul>
+<li>Protocol: <strong>Email</strong></li>
+<li>Endpoint: <code>&lt;your-email-address&gt;</code></li>
+</ul>
 </li>
 </ul>
 <p><center>
-<img alt="mange quicksight" src="../images/manage_quicksight.png" /></p>
-<p>Figure 3: Manage quicksight</p>
+<img alt="SNS Subscribe" src="../images/deploy-sub-sns.png" /></p>
+<p>Figure 8: Subscribe SNS by email</p>
 <p></center></p>
 <ul>
-<li>Click <strong>Select S3 Buckets</strong></li>
+<li>
+<p>Confirm subscription.</p>
+<p>Check inbox of your email, you will get an email as below, click the <strong>Confirm subscription</strong> link to confirm the subscription.</p>
+</li>
 </ul>
 <p><center>
-<img alt="select s3 quicksight" src="../images/select_s3_bucket.png" /></p>
-<p>Figure 4: Check s3 in quicksight</p>
+<img alt="SNS Subscribe" src="../images/deploy-sns-email-confirm.png" /></p>
+<p>Figure 9: Confirm subscription</p>
 <p></center></p>
-<ul>
-<li>Check the bucket <code>amazon-braket-qcstack-&lt;AWS account&gt;-&lt;region&gt;</code></li>
-</ul>
-<p><center>
-<img alt="choose s3 quicksight" src="../images/choose_s3_bucket.png" /></p>
-<p>Figure 5: Select s3 in quicksight</p>
-<p></center></p>
-<ul>
-<li>Click <strong>Finish</strong> and then <strong>Save</strong></li>
-</ul>
 
               
             </article>
@@ -945,7 +1137,7 @@ use the Region selector in the console navigation bar.</p>
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
         
-        <a href="../template/" class="md-footer__link md-footer__link--prev" aria-label="Previous: AWS CloudFormation Template" rel="prev">
+        <a href="../regions/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Supported Regions" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -954,7 +1146,7 @@ use the Region selector in the console navigation bar.</p>
               <span class="md-footer__direction">
                 Previous
               </span>
-              AWS CloudFormation Template
+              Supported Regions
             </div>
           </div>
         </a>
