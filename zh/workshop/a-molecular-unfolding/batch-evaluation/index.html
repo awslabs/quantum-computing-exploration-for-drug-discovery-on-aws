@@ -1083,6 +1083,7 @@
 <li><strong>mol2文件</strong>: mol2 文件的 S3 url</li>
 <li><strong>modelVersion</strong>：模型版本，默认：'latest'</li>
 <li><strong>experimentName</strong>：批次评估的名称</li>
+<li><strong>optParams</strong>: 优化器参数, 为QC(qa)和CC(sa)任务设置shots值</li>
 <li><strong>modelParams</strong>：模型参数，M：扭转数，D：旋转角度精度。详细
   请参考<a href="../build-model-detail/">建立模型-技术细节</a>。有效值：<div class="codehilite"><pre><span></span><code> M: [1, 2, 3, 4, 5, 6, 7]
  D：[4] 或 [8]
@@ -1092,39 +1093,8 @@
 </ul>
 <div class="admonition 注意">
 <p class="admonition-title">注意</p>
-<p>M 的最大值取决于 D、QPU 设备和输入 molFile 的值。</p>
-<p>如果您使用默认的 mol2文件（表示输入中未提供 <code>molFile</code>），则最大值组合如下表所示：</p>
-<table>
-<thead>
-<tr>
-<th>设备</th>
-<th>D</th>
-<th>最大 M</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6</td>
-<td>4</td>
-<td>4</td>
-</tr>
-<tr>
-<td>arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6</td>
-<td>8</td>
-<td>3</td>
-</tr>
-<tr>
-<td>arn:aws:braket:::device/qpu/d-wave/Advantage_system4</td>
-<td>4</td>
-<td>7</td>
-</tr>
-<tr>
-<td>arn:aws:braket:::device/qpu/d-wave/Advantage_system4</td>
-<td>8</td>
-<td>4</td>
-</tr>
-</tbody>
-</table>
+<p>M 的最大值取决于 D、QPU 设备和输入 molFile 的值。在输入校验中，M最大值为100。
+在实际执行过程中，如果M值超过设备容量，执行会失败。</p>
 <p>如果使用自己的mol2文件，会跳过输入校验，如果值超过设备容量，会执行失败。</p>
 </div>
 <ul>
