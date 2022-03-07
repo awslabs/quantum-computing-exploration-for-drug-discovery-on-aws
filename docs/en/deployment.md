@@ -46,7 +46,7 @@ Before you launch the solution, review the architecture, supported regions, and 
 
 * Click the role name.
 
-* Click **Ad permissions**, in the drop down list, click **Create inline policy**.
+* Click **Add permissions**, in the drop down list, click **Create inline policy**.
 
 * Click **JSON** tab, pasted below json into it.
 
@@ -66,7 +66,7 @@ Before you launch the solution, review the architecture, supported regions, and 
             ],
             "Effect": "Allow",
             "Resource": [
-                "arn:aws:s3:::amazon-braket-qcstack-*",
+                "arn:aws:s3:::amazon-braket-qcstack-*"
             ]
         },
 
@@ -77,7 +77,7 @@ Before you launch the solution, review the architecture, supported regions, and 
             ],
             "Effect": "Allow",
             "Resource": [
-                "arn:aws:s3:::amazon-braket-qcstack-*/*",
+                "arn:aws:s3:::amazon-braket-qcstack-*/*"
             ]
         }
     ]
