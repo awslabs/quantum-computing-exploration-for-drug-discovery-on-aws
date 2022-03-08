@@ -52,7 +52,7 @@ export class MainStack extends SolutionStack {
     this.setDescription(DESCRIPTION);
     const stackName = this.stackName.replace(/[^a-zA-Z0-9_]+/, '').toLocaleLowerCase();
 
-    const supportRegions = ['us-west-2', 'us-east-1'];
+    const supportRegions = ['us-west-2', 'us-east-1', 'eu-west-2'];
     new CfnRule(this, 'SupportedRegionsRule', {
       assertions: [{
         assert: Fn.conditionContains(supportRegions, this.region),
