@@ -61,6 +61,9 @@ If you want to fully customize the evaluation code, follow below steps to make c
 
 1. Make changes to source code
 
+!!! notice
+     
+    The `githubRepo` in file `source/src/molecular-unfolding/cdk/construct-notebook.ts` should be changed to your repository
 
 ### Deploy stack to your AWS account from CDK
 

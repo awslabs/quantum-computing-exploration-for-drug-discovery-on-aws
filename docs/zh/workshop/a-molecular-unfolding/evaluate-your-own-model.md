@@ -61,6 +61,11 @@
 
 1. 修改源代码
 
+!!! notice
+     
+    文件 `source/src/molecular-unfolding/cdk/construct-notebook.ts`中变量`githubRepo`应该修改为您的git仓库
+
+
 ### 将堆栈从 CDK 部署到您的 AWS 账户
 
 1. 检查您的 AWS 账户中的 CloudFormation，确保您的部署区域中没有名为“QCStack”的堆栈
