@@ -1,21 +1,13 @@
 ## 运行批量评估
 
-<<<<<<< HEAD
 以下介绍通过AWS Step Functions工作流程运行批量评估，并通过Amazon QuickSight控制面板查看结果。
-=======
-您将通过AWS Step Functions工作流程运行批量评估，并通过Amazon QuickSight控制面板查看结果。
->>>>>>> 0bc099045fa074a877542bc2a7d310f07d309952
 
 ### 术语缩写
 
 - **CC**: Classic computing
 - **QC**: Quantum computing
 
-<<<<<<< HEAD
 ### 从部署输出中获取AWS Step Functions链接
-=======
-### 从部署输出中获取AWS Step Functions 链接
->>>>>>> 0bc099045fa074a877542bc2a7d310f07d309952
 
 <center>
 ![部署输出](../../images/deploy-output-stepfunc.png)
