@@ -137,19 +137,6 @@ def read_context(execution_id, bucket, s3_prefix):
     return context
 
 
-def read_config(s3_bucket, s3_prefix):
-    config_file = f"{s3_prefix}/config/default.json"
-    config = {}
-    try:
-        obj = s3.get_object(Bucket=s3_bucket, Key=config_file)
-        config = json.loads(obj['Body'].read())
-    except Exception as e:
-        print(f"cannot find {config_file}")
-        pass
-    logging.info("read: s3://{}/{}, return '{}'".format(s3_bucket, config_file, config))
-    return config 
-
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--s3-bucket', type=str)
@@ -180,8 +167,6 @@ if __name__ == '__main__':
     
 
     logging.info(f"create model, modelVersion:{version}")
-
-    config = read_config(s3_bucket, s3_prefix)
 
     modelParams = user_input['user_input']["modelParams"]
 

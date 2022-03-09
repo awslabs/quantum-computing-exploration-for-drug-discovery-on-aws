@@ -232,6 +232,7 @@ Definition:
   * **molFile**: S3 url of the mol2 file
   * **modelVersion**: model version, default: 'latest'
   * **experimentName**: the name of the batch evaluation
+  * **optParams**: the optimizer parameters, set shots for QC(qa) and CC(sa) tasks respectively
   * **modelParams**: model parameters, M: number of torsions, D: angle precision of rotation. Please refer to [Notebook Experiment](./notebook-experiment.md) for detail.  Valid values: 
 
          M: [1, 2, 3, 4, 5, 6, 7]
@@ -239,17 +240,8 @@ Definition:
 
 !!! notice
 
-    The max value of M is depended on the value of D, QPU device and input molFile. 
+    The max value of M is depended on the value of D, QPU device and input molFile, we set max M to 100 in input validation. If the value exceeds the device capacity in actual running, the execution will be failed.
     
-    If you use the default molFile (meaning `molFile` is not provided in the input), the max value combinations are listed in below table: 
-    
-    |Device | D | Max M |
-    |--- |--- |--- |
-    |  arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6  | 4 | 4 |
-    |  arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6  | 8 | 3 |
-    |  arn:aws:braket:::device/qpu/d-wave/Advantage_system4  | 4 | 7 |
-    |  arn:aws:braket:::device/qpu/d-wave/Advantage_system4  | 8 | 4 |
-
     If you use your own molFile, the input validation will be skipped, if the value exceeds the device capacity, the execution will be failed. 
    
   * **devicesArns**: QPU device arn. Valid values:
