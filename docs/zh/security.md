@@ -1,11 +1,8 @@
-当您在亚马逊云科技基础设施上构建解决方案时，安全责任由您和亚马逊云科技共同承担。此[共享模型](https://aws.amazon.com/compliance/shared-responsibility-model/)减少了您的操作负担，这是由于亚马逊云科技操作、管理和控制组件，包括主机操作系统、虚拟化层以及服务运行所在设施的物理安全性。有关亚马逊云科技安全的更多信息，请访问亚马逊云科技[云安全](http://aws.amazon.com/security/)。
+当您在亚马逊云科技基础设施上构建解决方案时，安全责任由您和亚马逊云科技共同承担。此[责任共享模型](https://aws.amazon.com/compliance/shared-responsibility-model/)减少了您的操作负担，这是由于亚马逊云科技操作、管理和控制组件，包括主机操作系统、虚拟化层以及服务运行所在设施的物理安全性。有关亚马逊云科技安全的更多信息，请访问亚马逊云科技[云安全](http://aws.amazon.com/security/)。
 
 ## 安全最佳实践
 
-亚马逊云科技药物研发量子计算解决方案在设计时考虑了安全最佳实践。
-但是，解决方案的安全性会根据您的具体用例而有所不同，
-有时添加额外的安全措施会增加解决方案的成本。
-以下是增强该解决方案在生产环境中的安全性的建议。
+药物研发量子计算解决方案在设计时考虑了安全最佳实践。但是，解决方案的安全性会根据您的具体用例而有所不同，有时添加额外的安全措施会增加解决方案的成本。以下是增强此解决方案在生产环境中的安全性的建议。
 
 ### IAM角色
 
@@ -17,19 +14,19 @@
 
 ### 数据保护
 
-出于数据保护目的，我们建议您保护 AWS 账户凭证并使用 AWS Identity and Access Management (IAM) 设置单独的用户账户。这仅向每个用户授予履行其工作职责所需的权限。我们还建议您通过以下方式保护您的数据：
+出于数据保护目的，我们建议您保护AWS账户凭证并使用AWS Identity and Access Management (IAM)设置单独的用户账户。这仅向每个用户授予履行其工作职责所需的权限。我们还建议您通过以下方式保护您的数据：
 
-* 对每个账户使用 Multi-Factor Authentication (MFA)
+* 对每个账户使用Multi-Factor Authentication (MFA)
 
-* 使用 SSL/TLS 与 AWS 资源进行通信。建议使用 TLS 1.2 或更高版本
+* 使用SSL/TLS与AWS资源进行通信。建议使用TLS 1.2或更高版本
 
-* 使用 AWS CloudTrail 设置 API 和用户活动日志记录
+* 使用AWS CloudTrail设置API和用户活动日志记录
 
-* 使用 AWS 加密解决方案以及 AWS 服务中的所有默认安全控制。
+* 使用AWS加密解决方案以及AWS服务中的所有默认安全控制。
 
-* 使用高级托管安全服务（例如 Amazon Macie），它有助于发现和保护存储在 Amazon S3 中的个人数据。
+* 使用高级托管安全服务（例如，Amazon Macie），它有助于发现和保护存储在Amazon S3中的个人数据。
 
-如果在通过命令行界面或 API 访问 AWS 时需要经过 FIPS 140-2 验证的加密模块，请使用 FIPS 终端节点。有关可用的 FIPS 端点的更多信息，请参阅美国联邦信息处理标准 (FIPS) 第 140-2 版。
+如果在通过命令行界面或API访问AWS时需要经过FIPS 140-2验证的加密模块，请使用FIPS终端节点。有关可用的FIPS端点的更多信息，请参阅美国联邦信息处理标准 (FIPS) 第 140-2 版。
 
 ### [数据保留](https://docs.aws.amazon.com/braket/latest/developerguide/security.html)
 

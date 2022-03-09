@@ -1,4 +1,4 @@
-部署解决方案之前，您可以下载解决方案使用的以下亚马逊云科技CloudFrormation模板。
+部署解决方案之前，您可以下载解决方案使用的以下亚马逊云科技CloudFormation模板。
 
  [quantum-ready-solution-for-drug-discovery.template](to be added)(to be added!): 
 使用此模板启动解决方案和所有相关组件。

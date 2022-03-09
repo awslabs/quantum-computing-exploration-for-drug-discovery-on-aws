@@ -3,14 +3,9 @@ title: Notebook Experiment
 weight: 10
 ---
 
-我们尝试在Amazon Braket上面实现出版物[Quantum Molecular Unfolding](https://arxiv.org/abs/2107.13607)和
-视频[Molecular Unfolding with Quantum Annealing](https://www.youtube.com/watch?v=1NmAXIHAF2Y)的工作。
+本实验尝试在Amazon Braket上面实现出版物[Quantum Molecular Unfolding](https://arxiv.org/abs/2107.13607)和视频[Molecular Unfolding with Quantum Annealing](https://www.youtube.com/watch?v=1NmAXIHAF2Y)的工作。
 
-分子对接（MD）是药物发现过程中的一个重要步骤，旨在计算
-当它们彼此结合时，一个分子对第二个分子的最优位置和形状。
-此步骤侧重于通过计算的方式模拟分子的识别过程。
-它旨在找到蛋白质和配体的优化构象以及蛋白质和配体之间的相对方向，
-从而最小化整个系统的自由能。
+分子对接（MD）是药物发现过程中的一个重要步骤，旨在计算当它们彼此结合时，一个分子对第二个分子的最优位置和形状。此步骤侧重于通过计算的方式模拟分子的识别过程。它旨在找到蛋白质和配体的优化构象以及蛋白质和配体之间的相对方向，从而最小化整个系统的自由能。
 
 <center>
 ![Molecular Docking](../../images/molecule-docking.png)
