@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+sudo -u ec2-user -i <<EOS
+python3 --version
+
+mkdir qcenv
+cd qcenv
+python3 -m venv qcenv
+source qcenv/bin/activate
+
+pip3 install numpy==1.21.5
+pip3 install boto3==1.20.18
+pip3 install dimod==0.10.10
+pip3 install networkx==2.6.3
+pip3 install dwave-ocean-sdk==4.3.0
+pip3 install amazon-braket-sdk==1.11.1
+pip3 install amazon-braket-ocean-plugin==1.0.7
+pip3 install biopandas==0.2.9
+
+
+pip3 install jupyter ipykernel
+
+python3 -m ipykernel install --user --name=qcenv
+
+EOS
+
+exit 0

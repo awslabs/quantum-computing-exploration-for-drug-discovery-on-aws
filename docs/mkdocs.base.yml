@@ -1,0 +1,24 @@
+site_name: Quantum Ready Architecture for Drug Discovery
+site_url: https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/
+repo_url: https://github.com/awslabs/quantum-ready-solution-for-drug-discovery/
+
+theme:
+  name: material
+  features:
+    - tabs
+    - search.suggest
+    - search.highlight
+
+plugins:
+  - search
+  - mkdocs-jupyter:
+      ignore_h1_titles: True
+
+extra:
+  alternate:
+    - name: English
+      link: /quantum-ready-solution-for-drug-discovery/en/
+      lang: en
+    - name: 中文
+      link: /quantum-ready-solution-for-drug-discovery/zh/
+      lang: zh
