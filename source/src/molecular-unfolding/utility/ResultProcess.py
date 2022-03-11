@@ -1,10 +1,10 @@
 ########################################################################################################################
 #   The following class is for different kinds of annealing optimizer
 ########################################################################################################################
-from pickletools import optimize #nosec
+from pickletools import optimize  # nosec
 import boto3
 import json
-import pickle #nosec
+import pickle  # nosec
 import os
 import datetime
 import logging
@@ -105,12 +105,12 @@ class ResultParser():
             logging.info("load simulated annealer raw result")
             full_path = "./sa_result.pickle"
             with open(full_path, "rb") as f:
-                self.raw_result = pickle.load(f) #nosec
+                self.raw_result = pickle.load(f)  # nosec
         elif self.method == "dwave-qa":
             logging.info("load quantum annealer raw result")
             obj = self._read_result_obj(
-                self.bucket, self.prefix, self.task_id, "qa_result.pickle") #nosec
-            self.raw_result = pickle.loads(obj["Body"].read()) #nosec
+                self.bucket, self.prefix, self.task_id, "qa_result.pickle")  # nosec
+            self.raw_result = pickle.loads(obj["Body"].read())  # nosec
 
     def get_all_result(self):
         return self.raw_result, self.result
@@ -233,25 +233,28 @@ class ResultParser():
 
             logging.debug(f"theta_option {self.theta_option}")
             logging.debug(f"rb_set {rb_set}")
-            
+
             # build map for affected tor
             tor_map = {}
             tor_len = len(tor_list)
             for base_idx in range(tor_len):
                 tor_name = tor_list[base_idx]
                 tor_map[tor_name] = set()
-                base_rb_name = self.var_rb_map[tor_list[base_idx].split('_')[1]]
+                base_rb_name = self.var_rb_map[tor_list[base_idx].split('_')[
+                    1]]
 
                 # get direction set
-                direction_set = get_same_direction_set(rb_set['f_1_set'],self.mol_data.bond_graph.rb_data,base_rb_name) 
-                
-                for candi_idx in range(base_idx,tor_len):
-                    candi_rb_name = self.var_rb_map[tor_list[candi_idx].split('_')[1]].split('+')
+                direction_set = get_same_direction_set(
+                    rb_set['f_1_set'], self.mol_data.bond_graph.rb_data, base_rb_name)
+
+                for candi_idx in range(base_idx, tor_len):
+                    candi_rb_name = self.var_rb_map[tor_list[candi_idx].split('_')[
+                        1]].split('+')
                     for rb in candi_rb_name:
                         if rb in direction_set:
                             tor_map[tor_name].add(rb)
-                            
-            logging.debug(f"tor_map {tor_map}")     
+
+            logging.debug(f"tor_map {tor_map}")
 
             optimize_distance = update_pts_distance(
                 self.atom_pos_data_temp, rb_set, tor_map, self.var_rb_map, self.theta_option, True, True)
@@ -263,32 +266,33 @@ class ResultParser():
             self.parameters["volume"]["optimize"] = self.parameters["volume"]["optimize"] + \
                 optimize_distance
             self.parameters["volume"]["initial"] = self.parameters["volume"]["initial"] + raw_distance
-            
+
             # update for final position
             current_ris_num = len(torsion_group)
             if current_ris_num >= max_ris_num:
                 max_ris_num = current_ris_num
                 max_ris = ris
                 max_tor_list = tor_list
-       
+
         # temp for debugging
 #         max_ris = '4+5,2+4,1+2,10+11'
 #         self.M = '4'
 #         max_tor_list = ['X_1_3','X_2_3','X_3_3','X_4_3']
         # update final position for visualization
         rb_set = self.mol_data.bond_graph.sort_ris_data[str(
-        self.M)][max_ris]
+            self.M)][max_ris]
         for tor in max_tor_list:
             tor_map = {}
             base_rb_name = self.var_rb_map[tor.split('_')[1]]
             # get direction set
-            tor_map[tor] = get_same_direction_set(rb_set['f_1_set'],self.mol_data.bond_graph.rb_data,base_rb_name)
-            
+            tor_map[tor] = get_same_direction_set(
+                rb_set['f_1_set'], self.mol_data.bond_graph.rb_data, base_rb_name)
+
 #             logging.debug(f"!!!!visulaize tor {tor} with rb_set {rb_set} and tor_map {tor_map} ")
-                
+
             update_pts_distance(self.atom_pos_data, rb_set, tor_map,
-                    self.var_rb_map, self.theta_option, True, False)
-        
+                                self.var_rb_map, self.theta_option, True, False)
+
         logging.debug(f"finish update optimize points for {chosen_var}")
         logging.debug(f_distances_optimize)
         logging.debug(f_distances_raw)
@@ -303,7 +307,8 @@ class ResultParser():
 
         optimize_state = False
         if optimize_gain < 1.0:
-            logging.info("Fail to find optimized shape, return to original one")
+            logging.info(
+                "Fail to find optimized shape, return to original one")
             self.parameters["volume"]["optimize"] = self.parameters["volume"]["initial"]
             self.parameters["volume"]["gain"] = 1.0
             self.parameters["volume"]["unfolding_results"] = list(initial_var)
@@ -313,9 +318,10 @@ class ResultParser():
             # update optimized results
             self.parameters["volume"]["unfolding_results"] = list(chosen_var)
             optimize_state = True
-        
+
         self.parameters["volume"]["optimize_info"] = {}
-        self.parameters["volume"]["optimize_info"]["missing_var"] = list(missing_var)
+        self.parameters["volume"]["optimize_info"]["missing_var"] = list(
+            missing_var)
         self.parameters["volume"]["optimize_info"]["optimize_state"] = optimize_state
 
         return 0
