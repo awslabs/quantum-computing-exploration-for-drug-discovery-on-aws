@@ -2,7 +2,7 @@
 #   The following class is the construction of QUBO model
 ########################################################################################################################
 import dimod
-from .MolGeoCalc import update_pts_distance
+from .MolGeoCalc import update_pts_distance, get_same_direction_set
 
 from collections import defaultdict
 import time
@@ -67,8 +67,9 @@ class QMUQUBO():
                         # prepare variables
                         self.var, self.var_rb_map, self.rb_var_map = self._prepare_var(
                             self.mol_data, D)
+                        model_name = f"{M}_{D}_{A}_{hubo_qubo_val}"
                         # check availability
-                        if self._check_duplicate([M, D, A, hubo_qubo_val], ["M", "D", "A", "hubo_qubo_val"], "pre-calc"):
+                        if model_name in self.model_qubo["pre-calc"].keys():
                             logging.info(
                                 f"duplicate model !! pass !! M:{M},D:{D},A:{A},hubo_qubo_val {hubo_qubo_val}")
                             continue
@@ -88,7 +89,7 @@ class QMUQUBO():
                             hubo, hubo_qubo_val, dimod.BINARY)
                         qubo = self._manual_qubo(qubo_raw.to_qubo())
                         end = time.time()
-                        model_name = f"{M}_{D}_{A}_{hubo_qubo_val}"
+                        
                         self.model_qubo["pre-calc"][model_name] = {}
                         self.model_qubo["pre-calc"][model_name]["qubo"] = qubo
                         self.model_qubo["pre-calc"][model_name]["var"] = self.var
@@ -225,27 +226,44 @@ class QMUQUBO():
         def update_hubo(torsion_group, up_list, ris):
             if len(torsion_group) == 1:
                 for d in range(D):
-                    final_list = up_list + \
+                    tor_list = up_list + \
                         [var[rb_var_map[torsion_group[0]]][str(d+1)]]
                     # distance
                     final_list_name = []
-                    if len(final_list) == 1:
-                        final_list_name = final_list + final_list
+                    if len(tor_list) == 1:
+                        final_list_name = tor_list + tor_list
                     else:
-                        final_list_name = final_list
+                        final_list_name = tor_list
 
                     # update temp points and distance
                     self._init_mol_file()
 
                     rb_set = self.mol_data.bond_graph.sort_ris_data[str(
                         M)][ris]
+                    
+                    # build map for affected tor
+                    tor_map = {}
+                    tor_len = len(tor_list)
+                    for base_idx in range(tor_len):
+                        tor_name = tor_list[base_idx]
+                        tor_map[tor_name] = set()
+                        base_rb_name = var_rb_map[tor_list[base_idx].split('_')[1]]
+                        
+                        # get direction set
+                        direction_set = get_same_direction_set(rb_set['f_1_set'],self.mol_data.bond_graph.rb_data,base_rb_name)
 
+                        for candi_idx in range(base_idx,tor_len):
+                            candi_rb_name = var_rb_map[tor_list[candi_idx].split('_')[1]].split('+')
+                            for rb in candi_rb_name:
+                                if rb in direction_set:
+                                    tor_map[tor_name].add(rb)
+                    
                     distance = update_pts_distance(
-                        self.atom_pos_data, rb_set, final_list, var_rb_map, theta_option, True, True)
+                        self.atom_pos_data, rb_set, tor_map, var_rb_map, theta_option, True, True)
 
                     hubo_distances[tuple(final_list_name)] = -distance
                     logging.debug(
-                        f"final list {final_list} with distance {distance}")
+                        f"final list {tor_list} with distance {distance}")
             else:
                 for d in range(D):
                     final_list = up_list + \

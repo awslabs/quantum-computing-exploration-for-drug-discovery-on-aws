@@ -177,7 +177,7 @@ def pts_pos_list(pts_dict_list):
     return pts_list
 
 
-def update_pts_distance(atom_pos_data, rb_set, tor_list, var_rb_map, theta_option, update_local_pts=False, update_distance=False):
+def update_pts_distance(atom_pos_data, rb_set, tor_map, var_rb_map, theta_option, update_local_pts=False, update_distance=False):
     def _gen_pts_pos_list(pt_set, atom_pos_data):
         return [atom_pos_data[pt]['pts'] for pt in pt_set]
 
@@ -185,24 +185,27 @@ def update_pts_distance(atom_pos_data, rb_set, tor_list, var_rb_map, theta_optio
         return [atom_pos_data[pt] for pt in pt_set]
     # rb_set
     if update_local_pts :
-        for var_name in tor_list:
+            
+        for var_name, affect_tor_pts_set in tor_map.items():
             d = var_name.split('_')[2]
             rb_name = var_rb_map[var_name.split('_')[1]]
             # update points
             start_pts = atom_pos_data[rb_name.split('+')[0]]
             end_pts = atom_pos_data[rb_name.split('+')[1]]
-            gen_pts = _gen_pts_list(rb_set['f_1_set'], atom_pos_data)
+            whole_set = set.union(rb_set['f_1_set'], affect_tor_pts_set)
+            gen_pts = _gen_pts_list(whole_set, atom_pos_data)
             theta = theta_option[int(d)-1]
             rotate_list = update_pts([start_pts], [end_pts], gen_pts, theta)
-            for pt_name, pt_value in zip(rb_set['f_1_set'], rotate_list):
+            for pt_name, pt_value in zip(whole_set, rotate_list):
                 atom_pos_data[pt_name]['pts'] = pt_value
+            
 
     distance = None
     if update_distance :
         # calculate distance
         distance = calc_distance_between_pts(_gen_pts_pos_list(
             rb_set['f_0_set'], atom_pos_data), _gen_pts_pos_list(rb_set['f_1_set'], atom_pos_data))
-
+        
     return distance
 
 
@@ -300,6 +303,19 @@ def atom_distance_func(rotate_values, mol_data, var_rb_map, theta_option, M):
 
     return distance
 
+def get_same_direction_set(candidate_set, rb_data, rb_name):
+    
+    # judge direction
+    f_0_set = rb_data[rb_name]['f_0_set']
+    f_1_set = rb_data[rb_name]['f_1_set']
+    
+    direction_set = 'initial'
+    if candidate_set.issubset(f_0_set):
+        direction_set = f_0_set
+    elif candidate_set.issubset(f_1_set):
+        direction_set = f_1_set
+    
+    return direction_set
 
 def mol_distance_func(atom_pos_data, check, set):
     max_idx = max([int(num) for num in atom_pos_data.keys()])
