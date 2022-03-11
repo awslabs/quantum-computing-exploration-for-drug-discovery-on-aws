@@ -10,7 +10,7 @@ import datetime
 import logging
 import re
 
-from .MolGeoCalc import update_pts_distance
+from .MolGeoCalc import update_pts_distance, get_same_direction_set
 from .MoleculeParser import MoleculeData
 
 s3_client = boto3.client("s3")
@@ -203,6 +203,10 @@ class ResultParser():
 
         missing_var = set()
 
+        # use to generate final position
+        max_tor_list = []
+        max_ris_num = 1
+        max_ris = None
         for ris in self.mol_data.bond_graph.sort_ris_data[str(self.M)].keys():
             # ris: '30+31', '29+30', '30+31,29+30'
             #             atom_pos_data_temp = self.atom_pos_data_raw.copy()
@@ -229,20 +233,62 @@ class ResultParser():
 
             logging.debug(f"theta_option {self.theta_option}")
             logging.debug(f"rb_set {rb_set}")
+            
+            # build map for affected tor
+            tor_map = {}
+            tor_len = len(tor_list)
+            for base_idx in range(tor_len):
+                tor_name = tor_list[base_idx]
+                tor_map[tor_name] = set()
+                base_rb_name = self.var_rb_map[tor_list[base_idx].split('_')[1]]
+
+                # get direction set
+                direction_set = get_same_direction_set(rb_set['f_1_set'],self.mol_data.bond_graph.rb_data,base_rb_name) 
+                
+                for candi_idx in range(base_idx,tor_len):
+                    candi_rb_name = self.var_rb_map[tor_list[candi_idx].split('_')[1]].split('+')
+                    for rb in candi_rb_name:
+                        if rb in direction_set:
+                            tor_map[tor_name].add(rb)
+                            
+            logging.debug(f"tor_map {tor_map}")     
 
             optimize_distance = update_pts_distance(
-                self.atom_pos_data_temp, rb_set, tor_list, self.var_rb_map, self.theta_option, True, True)
+                self.atom_pos_data_temp, rb_set, tor_map, self.var_rb_map, self.theta_option, True, True)
             raw_distance = update_pts_distance(
                 self.atom_pos_data_raw, rb_set, None, None, None, False, True)
-
-            update_pts_distance(self.atom_pos_data, rb_set, tor_list,
-                                self.var_rb_map, self.theta_option, True, False)
 
             f_distances_optimize[tuple(ris)] = optimize_distance
             f_distances_raw[tuple(ris)] = raw_distance
             self.parameters["volume"]["optimize"] = self.parameters["volume"]["optimize"] + \
                 optimize_distance
             self.parameters["volume"]["initial"] = self.parameters["volume"]["initial"] + raw_distance
+            
+            # update for final position
+            current_ris_num = len(torsion_group)
+            if current_ris_num >= max_ris_num:
+                max_ris_num = current_ris_num
+                max_ris = ris
+                max_tor_list = tor_list
+       
+        # temp for debugging
+#         max_ris = '4+5,2+4,1+2,10+11'
+#         self.M = '4'
+#         max_tor_list = ['X_1_3','X_2_3','X_3_3','X_4_3']
+        # update final position for visualization
+        rb_set = self.mol_data.bond_graph.sort_ris_data[str(
+        self.M)][max_ris]
+        for tor in max_tor_list:
+            tor_map = {}
+            base_rb_name = self.var_rb_map[tor.split('_')[1]]
+            # get direction set
+            tor_map[tor] = get_same_direction_set(rb_set['f_1_set'],self.mol_data.bond_graph.rb_data,base_rb_name)
+            
+#             logging.debug(f"!!!!visulaize tor {tor} with rb_set {rb_set} and tor_map {tor_map} ")
+                
+            update_pts_distance(self.atom_pos_data, rb_set, tor_map,
+                    self.var_rb_map, self.theta_option, True, False)
+        
         logging.debug(f"finish update optimize points for {chosen_var}")
         logging.debug(f_distances_optimize)
         logging.debug(f_distances_raw)
