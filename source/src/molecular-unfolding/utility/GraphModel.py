@@ -10,6 +10,7 @@ import logging
 log = logging.getLogger()
 log.setLevel('INFO')
 
+
 class BuildMolGraph():
 
     def __init__(self, df_bonds, atom_num):
@@ -36,7 +37,7 @@ class BuildMolGraph():
                 nodes_list.append(node)
 
         def add_edge(edges_list, edge, rotatable_list, filter_by_type, bond_type):
-            if filter_by_type :
+            if filter_by_type:
                 if bond_type != 'ar':
                     rotatable_list.append(edge)
             if edge not in edges_list:
@@ -116,12 +117,13 @@ class BuildMolGraph():
                 # update make pts pair set
         #         update_pts_pair(rb_data[rb_name])
             self.mol_ug.add_edge(rb[0], rb[1])
-        
+
         for invalid_rb, invalid_rb_name in zip(invalid_rb_list, invalid_rb_name_list):
             self.rb_list.remove(invalid_rb)
             del rb_data[invalid_rb_name]
 
-        sort_rb_data = {k: v for k, v in sorted(rb_data.items(), key=lambda rb: -rb[1]['bc_num'])}
+        sort_rb_data = {k: v for k, v in sorted(
+            rb_data.items(), key=lambda rb: -rb[1]['bc_num'])}
 
         rb_data_list = []
         for rb, data in sort_rb_data.items():

@@ -7,7 +7,7 @@ from .MolGeoCalc import update_pts_distance, get_same_direction_set
 from collections import defaultdict
 import time
 import logging
-import pickle #nosec
+import pickle  # nosec
 import os
 
 log = logging.getLogger()
@@ -89,7 +89,7 @@ class QMUQUBO():
                             hubo, hubo_qubo_val, dimod.BINARY)
                         qubo = self._manual_qubo(qubo_raw.to_qubo())
                         end = time.time()
-                        
+
                         self.model_qubo["pre-calc"][model_name] = {}
                         self.model_qubo["pre-calc"][model_name]["qubo"] = qubo
                         self.model_qubo["pre-calc"][model_name]["var"] = self.var
@@ -172,7 +172,7 @@ class QMUQUBO():
     @classmethod
     def load(cls, filename):
         with open(filename, "rb") as f:
-            return pickle.load(f) #nosec
+            return pickle.load(f)  # nosec
 
     def _prepare_var(self, mol_data, D):
 
@@ -240,24 +240,27 @@ class QMUQUBO():
 
                     rb_set = self.mol_data.bond_graph.sort_ris_data[str(
                         M)][ris]
-                    
+
                     # build map for affected tor
                     tor_map = {}
                     tor_len = len(tor_list)
                     for base_idx in range(tor_len):
                         tor_name = tor_list[base_idx]
                         tor_map[tor_name] = set()
-                        base_rb_name = var_rb_map[tor_list[base_idx].split('_')[1]]
-                        
-                        # get direction set
-                        direction_set = get_same_direction_set(rb_set['f_1_set'],self.mol_data.bond_graph.rb_data,base_rb_name)
+                        base_rb_name = var_rb_map[tor_list[base_idx].split('_')[
+                            1]]
 
-                        for candi_idx in range(base_idx,tor_len):
-                            candi_rb_name = var_rb_map[tor_list[candi_idx].split('_')[1]].split('+')
+                        # get direction set
+                        direction_set = get_same_direction_set(
+                            rb_set['f_1_set'], self.mol_data.bond_graph.rb_data, base_rb_name)
+
+                        for candi_idx in range(base_idx, tor_len):
+                            candi_rb_name = var_rb_map[tor_list[candi_idx].split('_')[
+                                1]].split('+')
                             for rb in candi_rb_name:
                                 if rb in direction_set:
                                     tor_map[tor_name].add(rb)
-                    
+
                     distance = update_pts_distance(
                         self.atom_pos_data, rb_set, tor_map, var_rb_map, theta_option, True, True)
 
