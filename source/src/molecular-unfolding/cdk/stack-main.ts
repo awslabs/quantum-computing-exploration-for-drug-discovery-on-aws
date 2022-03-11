@@ -1,6 +1,7 @@
 
 import {
   aws_s3 as s3,
+  aws_iam as iam,
   Aspects,
   StackProps,
   CfnCondition,
@@ -10,7 +11,6 @@ import {
   CfnRule,
   CfnParameter,
 } from 'aws-cdk-lib';
-
 
 import {
   Construct,
@@ -40,6 +40,7 @@ import create_custom_resources from './utils/custom-resource';
 import {
   AddCfnNag,
   AddCondition,
+  ChangePolicyName,
 } from './utils/utils';
 import setup_vpc_and_sg from './utils/vpc';
 
@@ -76,6 +77,16 @@ export class MainStack extends SolutionStack {
       constraintDescription: 'Any printable ASCII character ranging from the space character (\u0020) through the end of the ASCII character range',
     });
 
+    const quickSightRoleName = new CfnParameter(this, 'QuickSightRoleName', {
+      type: 'String',
+      description: 'QuickSight IAM role name',
+      minLength: 1,
+      maxLength: 64,
+      allowedPattern: '[a-zA-Z0-9+=,.@-]+',
+      constraintDescription: 'A string of characters consisting of upper and lowercase alphanumeric characters with no spaces. Length Constraints: Minimum length of 1. Maximum length of 64.',
+    });
+    const quicksightRole = iam.Role.fromRoleArn(this, 'QuickSightServiceRole', `arn:aws:iam::${this.account}:role/${quickSightRoleName.valueAsString}`);
+
     const logS3bucket = new s3.Bucket(this, 'AccessLogS3Bucket', {
       removalPolicy: RemovalPolicy.DESTROY,
       autoDeleteObjects: true,
@@ -94,6 +105,9 @@ export class MainStack extends SolutionStack {
       serverAccessLogsPrefix: `accesslogs/${bucketName}/`,
     });
     s3bucket.node.addDependency(logS3bucket);
+    s3bucket.grantRead(quicksightRole);
+
+    Aspects.of(this).add(new ChangePolicyName());
 
     let usePreBuildImage = stackName.endsWith('dev');
 

@@ -206,3 +206,14 @@ export class AddSSMPolicyToRole implements IAspect {
     }
   }
 }
+
+
+export class ChangePolicyName implements IAspect {
+  visit(node: IConstruct): void {
+    const region = Stack.of(node).region;
+    if (node instanceof iam.CfnPolicy && node.node.path.endsWith('QuickSightServiceRole/Policy/Resource')) {
+      node.policyName = node.policyName + '-' + region;
+    }
+  }
+}
+

@@ -19,12 +19,22 @@ aws cloudformation delete-stack --stack-name <installation-stack-name> --region 
 ## Delete QuickSight Account (Optional)
 
 Go to the **Account settings** of 
-[quicksight admin](https://us-east-1.quicksight.aws.amazon.com/sn/admin) and click **Delete account**。
+[QuickSight admin](https://us-east-1.quicksight.aws.amazon.com/sn/admin) and click **Delete account**。
 
 !!! Warning
 
     This action may influence other data under this QuickSight Account. 
     Please check in advance.
+
+## Delete QuickSight Role (Optional)
+
+1. Go to [IAM Role](https://console.aws.amazon.com/iamv2/home#/roles) AWS console.
+
+2. Search `qradd-quicksight-service-role`.
+
+3. Select the role.
+
+4. Choose **Delete**.
 
 [cloudformation-console]: https://console.aws.amazon.com/cloudformation/home
 [aws-cli]: https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html
