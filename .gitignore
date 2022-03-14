@@ -2,18 +2,19 @@ node_modules
 !jest.config.js
 *.d.ts
 node_modules
-*.json
-*.mol2
-*.pickle
 
 # CDK asset staging directory
 .cdk.staging
 cdk.out
 .env
 .DS_Store
-test-reports
-coverage
-my_sync_code.sh
-code_from_github.sh
+docs/site/
+
+source/test-reports
+source/coverage
+#buildspec.yml
+#deployment
+.pytest_cache
+__pycache__
 
 

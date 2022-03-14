@@ -1,0 +1,83 @@
+{
+  "name": "gcr-quantum-ready-for-drug-discovery",
+  "description": "Quantum Ready Solution For Drug Discovery",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/awslabs/quantum-ready-solution-for-drug-discovery.git"
+  },
+  "scripts": {
+    "test": "rm -fr lib && npm run test:compile && jest --passWithNoTests --all --updateSnapshot && eslint",
+    "build": "npm run test && npm run synth",
+    "bump": "standard-version -i ../CHANGELOG.md",
+    "test:watch": "jest --watch",
+    "test:update": "jest --updateSnapshot",
+    "test:compile": "tsc --noEmit --project tsconfig.jest.json",
+    "watch": "tsc -w",
+    "eslint-fix": "eslint --ext .ts,.tsx --fix --no-error-on-unmatched-pattern src test",
+    "eslint": "eslint --ext .ts,.tsx --no-error-on-unmatched-pattern src test",
+    "cdk": "cdk ",
+    "diff": "cdk diff QCStack",
+    "synth": "cdk synth QCStack ",
+    "destroy": "cdk destroy QCStack",
+    "cfn-nag": "rm -rf /tmp/cfn > /dev/null 2>&1  && mkdir /tmp/cfn/ && cdk synth QCStack --output /tmp/cfn/ && cfn_nag_scan --fail-on-warnings -b ../.cfn-nag-ignore-lists.yml --input-path  /tmp/cfn/QCStack.template.json"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.92",
+    "@types/jest": "^27.0.3",
+    "@types/node": "14.17.7",
+    "@typescript-eslint/eslint-plugin": "^4.29.0",
+    "@typescript-eslint/parser": "^4.29.0",
+    "eslint": "^7.32.0",
+    "eslint-import-resolver-node": "^0.3.4",
+    "eslint-import-resolver-typescript": "^2.4.0",
+    "eslint-plugin-import": "^2.23.4",
+    "jest": "^27.4.4",
+    "jest-junit": "^13.0.0",
+    "json-schema": "^0.4.0",
+    "standard-version": "^9.3.1",
+    "ts-jest": "^27.0.7",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.3.5"
+  },
+  "dependencies": {
+    "@aws-cdk/aws-batch-alpha": "^2.8.0-alpha.0",
+    "@aws-sdk/client-cloudformation": "^3.48.0",
+    "aws-cdk-lib": "2.8.0",
+    "cdk-bootstrapless-synthesizer": "^2.2.0",
+    "constructs": "^10.0.0",
+    "source-map-support": "^0.5.16"
+  },
+  "bundledDependencies": [],
+  "license": "Apache-2.0",
+  "version": "0.0.1",
+  "jest": {
+    "clearMocks": true,
+    "collectCoverage": true,
+    "coverageDirectory": "coverage",
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "testMatch": [
+      "**/__tests__/**/*.ts?(x)",
+      "**/?(*.)+(spec|test).ts?(x)"
+    ],
+    "reporters": [
+      "default",
+      [
+        "jest-junit",
+        {
+          "outputDirectory": "test-reports"
+        }
+      ]
+    ],
+    "preset": "ts-jest",
+    "globals": {
+      "ts-jest": {
+        "tsconfig": "tsconfig.jest.json"
+      }
+    }
+  }
+}
