@@ -25,6 +25,7 @@ jobs:
           python3 -m pip install mkdocs-material   # install material theme
           python3 -m pip install mkdocs-jupyter    # install plugin for jupyter notebook
           python3 -m pip install ipython_genutils
+          python3 -m pip install mkdocs-markdownextradata-plugin
       
       - name: Build mkdocs
         run: |
