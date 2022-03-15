@@ -646,6 +646,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#quicksightoptional" class="md-nav__link">
+    删除QuickSight角色(Optional)
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -744,6 +751,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#quicksightoptional" class="md-nav__link">
+    删除QuickSight角色(Optional)
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -781,11 +795,26 @@
 </code></pre></div>
 
 <h2 id="quicksight">删除QuickSight账户（可选项）</h2>
-<p>进入<a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin">quicksight admin</a> 的 <strong>Account settings</strong>，并点击 <strong>Delete account</strong>。</p>
+<p>进入<a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin">QuickSight admin</a> 的 <strong>Account settings</strong>，并点击 <strong>Delete account</strong>。</p>
 <div class="admonition warning">
 <p class="admonition-title">Warning</p>
 <p>这个操作可能会影响该QuickSight账户下的其他数据，请注意检查</p>
 </div>
+<h2 id="quicksightoptional">删除QuickSight角色(Optional)</h2>
+<ol>
+<li>
+<p>导航到<a href="https://console.aws.amazon.com/iamv2/home#/roles">IAM Role</a>AWS控制台。</p>
+</li>
+<li>
+<p>搜索<code>qradd-quicksight-service-role</code>。</p>
+</li>
+<li>
+<p>选中勾选框。</p>
+</li>
+<li>
+<p>点击<strong>删除</strong>。</p>
+</li>
+</ol>
 
               
             </article>

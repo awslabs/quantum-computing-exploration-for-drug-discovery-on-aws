@@ -61,7 +61,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#prerequisites" class="md-skip">
+        <a href="#deployment-overview" class="md-skip">
           Skip to content
         </a>
       
@@ -337,23 +337,37 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
-    Prerequisites
+  <a href="#deployment-overview" class="md-nav__link">
+    Deployment Overview
   </a>
   
-    <nav class="md-nav" aria-label="Prerequisites">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-1-prerequisites" class="md-nav__link">
+    Step 1: Prerequisites
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 1: Prerequisites">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#sign-up-for-quicksight" class="md-nav__link">
-    Sign up for QuickSight
+  <a href="#enable-amazon-braket-service" class="md-nav__link">
+    Enable Amazon Braket service
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#update-quicksight-permissions" class="md-nav__link">
-    Update QuickSight permissions
+  <a href="#create-iam-role-for-quicksight" class="md-nav__link">
+    Create IAM Role for QuickSight
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sign-up-for-quicksight" class="md-nav__link">
+    Sign up for QuickSight
   </a>
   
 </li>
@@ -371,36 +385,16 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#deployment" class="md-nav__link">
-    Deployment
+  <a href="#step-2-launch-the-aws-cloudformation-template-into-your-aws-account-to-deploy-the-solution" class="md-nav__link">
+    Step 2: Launch the AWS CloudFormation template into your AWS account to deploy the solution
   </a>
   
-    <nav class="md-nav" aria-label="Deployment">
+    <nav class="md-nav" aria-label="Step 2: Launch the AWS CloudFormation template into your AWS account to deploy the solution">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#launch-the-aws-cloudformation-template-into-your-aws-account-to-deploy-the-solution" class="md-nav__link">
-    Launch the AWS CloudFormation template into your AWS account to deploy the solution
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#post-deployment" class="md-nav__link">
-    Post Deployment
-  </a>
-  
-    <nav class="md-nav" aria-label="Post Deployment">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#subscribe-sns-notification-optional" class="md-nav__link">
-    Subscribe SNS notification (optional)
+  <a href="#step-3-subscribe-sns-notification-optional" class="md-nav__link">
+    Step 3: Subscribe SNS notification (optional)
   </a>
   
 </li>
@@ -777,23 +771,37 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#prerequisites" class="md-nav__link">
-    Prerequisites
+  <a href="#deployment-overview" class="md-nav__link">
+    Deployment Overview
   </a>
   
-    <nav class="md-nav" aria-label="Prerequisites">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-1-prerequisites" class="md-nav__link">
+    Step 1: Prerequisites
+  </a>
+  
+    <nav class="md-nav" aria-label="Step 1: Prerequisites">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#sign-up-for-quicksight" class="md-nav__link">
-    Sign up for QuickSight
+  <a href="#enable-amazon-braket-service" class="md-nav__link">
+    Enable Amazon Braket service
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#update-quicksight-permissions" class="md-nav__link">
-    Update QuickSight permissions
+  <a href="#create-iam-role-for-quicksight" class="md-nav__link">
+    Create IAM Role for QuickSight
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#sign-up-for-quicksight" class="md-nav__link">
+    Sign up for QuickSight
   </a>
   
 </li>
@@ -811,36 +819,16 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#deployment" class="md-nav__link">
-    Deployment
+  <a href="#step-2-launch-the-aws-cloudformation-template-into-your-aws-account-to-deploy-the-solution" class="md-nav__link">
+    Step 2: Launch the AWS CloudFormation template into your AWS account to deploy the solution
   </a>
   
-    <nav class="md-nav" aria-label="Deployment">
+    <nav class="md-nav" aria-label="Step 2: Launch the AWS CloudFormation template into your AWS account to deploy the solution">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#launch-the-aws-cloudformation-template-into-your-aws-account-to-deploy-the-solution" class="md-nav__link">
-    Launch the AWS CloudFormation template into your AWS account to deploy the solution
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#post-deployment" class="md-nav__link">
-    Post Deployment
-  </a>
-  
-    <nav class="md-nav" aria-label="Post Deployment">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#subscribe-sns-notification-optional" class="md-nav__link">
-    Subscribe SNS notification (optional)
+  <a href="#step-3-subscribe-sns-notification-optional" class="md-nav__link">
+    Step 3: Subscribe SNS notification (optional)
   </a>
   
 </li>
@@ -876,7 +864,194 @@
 <p>It's good practice to set a billing alarm before deploying this solution. Refer to this <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/monitor_estimated_charges_with_cloudwatch.html">link</a></p>
 </div>
 <p><strong>Time to deploy</strong>: Approximately 10 minutes</p>
-<h2 id="prerequisites">Prerequisites</h2>
+<h2 id="deployment-overview">Deployment Overview</h2>
+<ul>
+<li>
+<p>Step 1: Prerequisites</p>
+<ul>
+<li>Enable Amazon Braket service</li>
+<li>Create IAM Role for QuickSight</li>
+<li>Sign up for QuickSight</li>
+<li>Get QuickSight Username</li>
+</ul>
+</li>
+<li>
+<p>Step 2: Launch the AWS CloudFormation template into your AWS account to deploy the solution</p>
+</li>
+<li>Step 3: Subscribe SNS notification (optional)</li>
+</ul>
+<h2 id="step-1-prerequisites">Step 1: Prerequisites</h2>
+<h3 id="enable-amazon-braket-service">Enable Amazon Braket service</h3>
+<ol>
+<li>
+<p>Login AWS Console, find Amazon Braket.</p>
+</li>
+<li>
+<p>Open Amazon Braket, select <strong>I have read and accepted the above terms &amp; conditions</strong>.</p>
+</li>
+<li>
+<p>Click <strong>Enable Amazon Braket</strong>.</p>
+</li>
+</ol>
+<h3 id="create-iam-role-for-quicksight">Create IAM Role for QuickSight</h3>
+<ol>
+<li>
+<p>Go to <a href="https://console.aws.amazon.com/iamv2/home?#/policies">IAM Policies</a>.</p>
+</li>
+<li>
+<p>Click <strong>Create Policy</strong>.</p>
+</li>
+<li>
+<p>In Create policy page, click <strong>JSON</strong> tab, fill below QuickSight policy, this is the least policy that QuickSight can work in this solution.</p>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;Version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2012-10-17&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;Statement&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w"></span>
+<span class="w">            </span><span class="s2">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Allow&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="s2">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:BatchGetQueryExecution&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:CancelQueryExecution&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:GetCatalogs&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:GetExecutionEngine&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:GetExecutionEngines&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:GetNamespace&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:GetNamespaces&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:GetQueryExecution&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:GetQueryExecutions&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:GetQueryResults&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:GetQueryResultsStream&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:GetTable&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:GetTables&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:ListQueryExecutions&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:RunQuery&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:StartQueryExecution&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:StopQueryExecution&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:ListWorkGroups&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:ListEngineVersions&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:GetWorkGroup&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:GetDataCatalog&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:GetDatabase&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:GetTableMetadata&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:ListDataCatalogs&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:ListDatabases&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:ListTableMetadata&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="p">],</span><span class="w"></span>
+<span class="w">            </span><span class="s2">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;*&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="p">]</span><span class="w"></span>
+<span class="w">        </span><span class="p">},</span><span class="w"></span>
+<span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="s2">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Allow&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="s2">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;glue:CreateDatabase&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;glue:DeleteDatabase&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;glue:GetDatabase&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;glue:GetDatabases&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;glue:UpdateDatabase&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;glue:CreateTable&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;glue:DeleteTable&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;glue:BatchDeleteTable&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;glue:UpdateTable&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;glue:GetTable&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;glue:GetTables&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;glue:BatchCreatePartition&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;glue:CreatePartition&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;glue:DeletePartition&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;glue:BatchDeletePartition&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;glue:UpdatePartition&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;glue:GetPartition&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;glue:GetPartitions&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;glue:BatchGetPartition&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="p">],</span><span class="w"></span>
+<span class="w">            </span><span class="s2">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;*&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="p">]</span><span class="w"></span>
+<span class="w">        </span><span class="p">},</span><span class="w"></span>
+<span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="s2">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Allow&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="s2">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;s3:GetBucketLocation&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;s3:GetObject&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;s3:ListBucket&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;s3:ListBucketMultipartUploads&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;s3:ListMultipartUploadParts&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;s3:AbortMultipartUpload&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;s3:CreateBucket&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;s3:PutObject&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;s3:PutBucketPublicAccessBlock&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="p">],</span><span class="w"></span>
+<span class="w">            </span><span class="s2">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;arn:aws:s3:::aws-athena-query-results-*&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="p">]</span><span class="w"></span>
+<span class="w">        </span><span class="p">},</span><span class="w"></span>
+<span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="s2">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Allow&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="s2">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;lakeformation:GetDataAccess&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;iam:List*&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="p">],</span><span class="w"></span>
+<span class="w">            </span><span class="s2">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;*&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="p">]</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">]</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
+
+</li>
+<li>
+<p>Click <strong>Next:Tags</strong>.</p>
+</li>
+<li>
+<p>Click <strong>Next:Review</strong>.</p>
+</li>
+<li>
+<p>Fill <strong>Name</strong>: <code>qradd-quicksight-service-role-policy</code>.</p>
+</li>
+<li>
+<p>Click <strong>Create policy</strong>.</p>
+</li>
+<li>
+<p>Go to <a href="https://console.aws.amazon.com/iamv2/home?#/roles">IAM Roles</a>.</p>
+</li>
+<li>
+<p>Click <strong>Create Role</strong>.</p>
+</li>
+<li>
+<p>Select <strong>Custom trust policy</strong> in the Select trusted entity page, fill below trust policy in <strong>Custom trust policy</strong>.</p>
+<div class="codehilite"><pre><span></span><code>{
+    &quot;Version&quot;: &quot;2012-10-17&quot;,
+    &quot;Statement&quot;: [
+        {
+            &quot;Effect&quot;: &quot;Allow&quot;,
+            &quot;Principal&quot;: {
+                &quot;Service&quot;: &quot;quicksight.amazonaws.com&quot;
+            },
+            &quot;Action&quot;: &quot;sts:AssumeRole&quot;
+        }
+    ]
+}
+</code></pre></div>
+
+</li>
+<li>
+<p>Click <strong>Next</strong>.</p>
+</li>
+<li>
+<p>Enter <code>qradd-quicksight-service-role-policy</code> in <strong>Permissions policies</strong> search input.</p>
+</li>
+<li>
+<p>Select the policy, Click <strong>Next</strong>.</p>
+</li>
+<li>
+<p>Fill <strong>Role name</strong> : <code>qradd-quicksight-service-role</code>.</p>
+</li>
+<li>
+<p>Click <strong>Create role</strong>.</p>
+</li>
+<li>
+<p>Record the name of this role(will be used in deployment steps).</p>
+</li>
+</ol>
 <h3 id="sign-up-for-quicksight">Sign up for QuickSight</h3>
 <div class="admonition notice">
 <p class="admonition-title">Notice</p>
@@ -885,9 +1060,6 @@
 <ul>
 <li>
 <p>Sign in to the AWS Management Console, navigate to <a href="https://quicksight.aws.amazon.com/">QuickSight</a>.</p>
-</li>
-<li>
-<p>If you did not have a QuickSight account, you need to sign up for QuickSight.</p>
 </li>
 <li>
 <p>Choose <strong>Enterprise</strong>, click continue.</p>
@@ -900,173 +1072,96 @@
 <table>
 <thead>
 <tr>
-<th align="center">Field Name</th>
-<th align="center">Value</th>
-<th align="center">Comment</th>
+<th align="left">Field Name</th>
+<th align="left">Value</th>
+<th align="left">Comment</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="center">Authentication method</td>
-<td align="center">Choose <strong>Use IAM federated identities &amp; QuickSight-managed users</strong></td>
-<td align="center">The default value</td>
+<td align="left">Authentication method</td>
+<td align="left">Choose <strong>Use IAM federated identities &amp; QuickSight-managed users</strong></td>
+<td align="left">The default value</td>
 </tr>
 <tr>
-<td align="center">Select a region</td>
-<td align="center">Choose <strong>US East(N.Virginia)</strong></td>
-<td align="center">The default value</td>
+<td align="left">Select a region</td>
+<td align="left">Choose <strong>US East(N.Virginia)</strong></td>
+<td align="left">The default value</td>
 </tr>
 <tr>
-<td align="center">QuickSight account name</td>
-<td align="center">Any string value</td>
-<td align="center">Unique QuickSight account name</td>
+<td align="left">QuickSight account name</td>
+<td align="left">Any string value</td>
+<td align="left">Unique QuickSight account name</td>
 </tr>
 <tr>
-<td align="center">Notification email address</td>
-<td align="center">your email</td>
-<td align="center"></td>
+<td align="left">Notification email address</td>
+<td align="left">your email</td>
+<td align="left"></td>
 </tr>
 <tr>
-<td align="center">IAM Role</td>
-<td align="center">Choose <strong>Use QuickSight-managed role (default)</strong></td>
-<td align="center">The default value</td>
-</tr>
-<tr>
-<td align="center">Allow access and autodiscovery for these resources</td>
-<td align="center">Choose  <strong>IAM</strong>, <strong>Amazon Athena</strong></td>
-<td align="center">The default value</td>
+<td align="left">IAM Role</td>
+<td align="left">Choose <strong>Use an existing role</strong>, select the role: <code>qradd-quicksight-service-role</code></td>
+<td align="left"></td>
 </tr>
 </tbody>
 </table>
 <p></center></p>
-<h3 id="update-quicksight-permissions">Update QuickSight permissions</h3>
-<ul>
-<li>
-<p>Go to <a href="https://console.aws.amazon.com/iamv2/home?#/roles">IAM Roles</a>.</p>
-</li>
-<li>
-<p>Search role by prefix: <code>aws-quicksight-service-role</code>, you should find one result, e.g. <code>aws-quicksight-service-role-v0</code></p>
-</li>
-<li>
-<p>Click the role name.</p>
-</li>
-<li>
-<p>Click <strong>Add permissions</strong>, in the drop down list, click <strong>Create inline policy</strong>.</p>
-</li>
-<li>
-<p>Click <strong>JSON</strong> tab, pasted below json into it.</p>
-</li>
-</ul>
-<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;Version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2012-10-17&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;Statement&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
-<span class="w">         </span><span class="p">{</span><span class="w"></span>
-<span class="w">            </span><span class="nt">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Allow&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">            </span><span class="nt">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;s3:ListAllMyBuckets&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">            </span><span class="nt">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;arn:aws:s3:::*&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="p">},</span><span class="w"></span>
-
-<span class="w">        </span><span class="p">{</span><span class="w"></span>
-<span class="w">            </span><span class="nt">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;s3:ListBucket&quot;</span><span class="w"></span>
-<span class="w">            </span><span class="p">],</span><span class="w"></span>
-<span class="w">            </span><span class="nt">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Allow&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">            </span><span class="nt">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;arn:aws:s3:::amazon-braket-qcstack-*&quot;</span><span class="w"></span>
-<span class="w">            </span><span class="p">]</span><span class="w"></span>
-<span class="w">        </span><span class="p">},</span><span class="w"></span>
-
-<span class="w">         </span><span class="p">{</span><span class="w"></span>
-<span class="w">            </span><span class="nt">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;s3:GetObject&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;s3:GetObjectVersion&quot;</span><span class="w"></span>
-<span class="w">            </span><span class="p">],</span><span class="w"></span>
-<span class="w">            </span><span class="nt">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Allow&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">            </span><span class="nt">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;arn:aws:s3:::amazon-braket-qcstack-*/*&quot;</span><span class="w"></span>
-<span class="w">            </span><span class="p">]</span><span class="w"></span>
-<span class="w">        </span><span class="p">}</span><span class="w"></span>
-<span class="w">    </span><span class="p">]</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
-</code></pre></div>
-
-<ul>
-<li>
-<p>Click <strong>Review policy</strong>.</p>
-</li>
-<li>
-<p>Fill <strong>Name</strong>: <code>QC-QuickSight-S3-Policy</code>.</p>
-</li>
-<li>
-<p>Click <strong>Create policy</strong>. </p>
-</li>
-<li>
-<p>Navigate to <a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin#aws">QuickSight Security &amp; permissions</a>.</p>
-</li>
-<li>
-<p>Click button <strong>Manage</strong>.</p>
-</li>
-<li>
-<p>Select <strong>Use an existing role</strong> for IAM Role.</p>
-</li>
-<li>
-<p>In the drop down list, select the role with prefix: <code>aws-quicksight-service-role</code></p>
-</li>
-<li>
-<p>Click <strong>Save</strong>.</p>
-</li>
-</ul>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>If Quicksight service already used default role, you need to change it to the role created above in page <a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin#aws">QuickSight Security &amp; permissions</a>.
+This action may influence other data under this QuickSight Account. Please check in advance. 
+You can refer to this <a href="https://docs.aws.amazon.com/quicksight/latest/user/security_iam_service-with-iam.html#security-create-iam-role">document</a> to update Quicksight role and its policy.</p>
+</div>
 <h3 id="get-quicksight-username">Get QuickSight Username</h3>
 <ul>
-<li>(Optional) Navigate to <a href="https://quicksight.aws.amazon.com/">QuickSight</a>, fill your email in below screen</li>
-</ul>
-<div class="admonition notice">
-<p class="admonition-title">Notice</p>
-<p>This step is only necessary if you login your AWS console with different IAM user(not the user sign up with QuickSight).</p>
-</div>
-<p><center>
-<img alt="QuickSight email" src="../images/quicksight-no-admin-email.png" /></p>
-<p>Figure 3: QuickSight email</p>
-<p></center></p>
-<ul>
-<li>Go to <a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin">QuickSight Admin</a>, record your <strong>QuickSight Username</strong>(not QuickSight account name) for your email.</li>
-</ul>
-<p><center>
-<img alt="QuickSight username" src="../images/quicksight_username.png" /></p>
-<p>Figure 2: QuickSight username</p>
-<p></center></p>
-<h2 id="deployment">Deployment</h2>
-<p>Use the following steps to deploy this solution on AWS.</p>
-<h3 id="launch-the-aws-cloudformation-template-into-your-aws-account-to-deploy-the-solution">Launch the AWS CloudFormation template into your AWS account to deploy the solution</h3>
-<p>This automated AWS CloudFormation template deploys the solution in the AWS Cloud.</p>
-<ul>
 <li>
-<p><a href="https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/create/template?stackName=QRADDStack&amp;templateURL=https://aws-gcr-solutions.s3.amazonaws.com/AWS-gcr-qc-life-science/v0.8.2/default/QCStack.template.json">Launch solution in AWS Standard Regions</a> to deploy solution via the AWS CloudFormation template.</p>
+<p>(Optional) Navigate to <a href="https://quicksight.aws.amazon.com/">QuickSight</a>, fill your email if QuickSight user is not created for
+ your current AWS account.</p>
+</li>
+<li>
+<p>Go to <a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin">QuickSight Admin</a>, record your <strong>QuickSight Username</strong>(not QuickSight account name) for your email.</p>
+</li>
+</ul>
+<h2 id="step-2-launch-the-aws-cloudformation-template-into-your-aws-account-to-deploy-the-solution">Step 2: Launch the AWS CloudFormation template into your AWS account to deploy the solution</h2>
+<ol>
+<li>
+<p>Login AWS console, click <a href="https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/create/template?stackName=QRADDStack&amp;templateURL=https://aws-gcr-solutions.s3.amazonaws.com/AWS-gcr-qc-life-science/v0.8.8/default/QCStack.template.json">Launch Stack</a> to deploy solution via the AWS CloudFormation template.</p>
 </li>
 <li>
 <p>The template launches in the US West(Oregon) by default. To launch this solution in a different AWS Region(for example <code>us-east-1</code>), use the Region selector in the console navigation bar.</p>
 </li>
 <li>
-<p>Under <strong>Parameters</strong>, review the parameters for the template and modify them as necessary. This solution uses the following values. Choose <strong>Next</strong>.</p>
+<p>In the <strong>Create stack</strong> page, Amazon S3 URL should be filled with this <a href="https://aws-gcr-solutions.s3.amazonaws.com/AWS-gcr-qc-life-science/v0.8.8/default/QCStack.template.json">template URL</a> automatically, please review and confirm then click <strong>Next</strong>.</p>
 </li>
-</ul>
-<p><center></p>
+<li>
+<p>Under <strong>Parameters</strong>, review the parameters for the template and modify them as necessary.</p>
+</li>
+<li>
+<p>This solution uses the following values. Choose <strong>Next</strong>.</p>
+</li>
+</ol>
 <table>
 <thead>
 <tr>
-<th align="center">Parameter</th>
-<th align="center">Description</th>
+<th align="left">Parameter</th>
+<th align="left">Description</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td align="center">QuickSightUser</td>
-<td align="center"><strong>QuickSight Username</strong></td>
+<td align="left">QuickSightUser</td>
+<td align="left">QuickSight Username, get it from <a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin?#users">Manage users</a>.</td>
+</tr>
+<tr>
+<td align="left">QuickSightRoleName</td>
+<td align="left">QuickSight Service Role name, get it from <a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin?#aws">Security &amp; permissions</a>.</td>
 </tr>
 </tbody>
 </table>
-<p></center></p>
-<ul>
+<ol>
+<li>
+<p>Choose <strong>Next</strong>.</p>
+</li>
 <li>
 <p>On the <strong>Configure stack options</strong> page, choose <strong>Next</strong>.</p>
 </li>
@@ -1076,23 +1171,19 @@
 <li>
 <p>Choose <strong>Create stack</strong> to deploy the stack.</p>
 </li>
-</ul>
+</ol>
 <p>You can view the status of the stack in the AWS CloudFormation Console in the <strong>Status</strong> column. You should receive a CREATE_COMPLETE status in approximately 10 minutes.</p>
-<h2 id="post-deployment">Post Deployment</h2>
-<h3 id="subscribe-sns-notification-optional">Subscribe SNS notification (optional)</h3>
+<h3 id="step-3-subscribe-sns-notification-optional">Step 3: Subscribe SNS notification (optional)</h3>
 <div class="admonition notice">
 <p class="admonition-title">Notice</p>
 <p>This step is optional.</p>
 </div>
 <p>Follow below steps to subscribe SNS notification via Email, you might subscribe the notification via <a href="https://docs.aws.amazon.com/sns/latest/dg/sns-mobile-phone-number-as-subscriber.html">text messages</a>.</p>
-<ul>
-<li>Get your SNS topic name in the CloudFormation deployment output</li>
-</ul>
-<p><center>
-<img alt="SNS name" src="../images/deploy-output-sns.png" /></p>
-<p>Figure 7: SNS topic name</p>
-<p></center></p>
-<ul>
+<ol>
+<li>
+<p>Get your SNS topic name in the CloudFormation deployment output</p>
+<p><img alt="SNS name" src="../images/deploy-output-sns.png" /></p>
+</li>
 <li>
 <p>Navigate to <a href="https://console.aws.amazon.com/sns/v3/home?region=us-east-1#/topics">SNS topics</a> AWS console.</p>
 </li>
@@ -1103,27 +1194,18 @@
 <p>Click <strong>Create subscription</strong> button.</p>
 </li>
 <li>
-<p>Subscribe the SNS topic by email, fill <strong>Protocol</strong> and <strong>Endpoint</strong>, click <strong>Create subscription</strong>.</p>
-<ul>
-<li>Protocol: <strong>Email</strong></li>
-<li>Endpoint: <code>&lt;your-email-address&gt;</code></li>
-</ul>
+<p>Select Email in  <strong>Protocol</strong> list.</p>
 </li>
-</ul>
-<p><center>
-<img alt="SNS Subscribe" src="../images/deploy-sub-sns.png" /></p>
-<p>Figure 8: Subscribe SNS by email</p>
-<p></center></p>
-<ul>
 <li>
-<p>Confirm subscription.</p>
-<p>Check inbox of your email, you will get an email as below, click the <strong>Confirm subscription</strong> link to confirm the subscription.</p>
+<p>Fill your email in  <strong>Endpoint</strong>.</p>
 </li>
-</ul>
-<p><center>
-<img alt="SNS Subscribe" src="../images/deploy-sns-email-confirm.png" /></p>
-<p>Figure 9: Confirm subscription</p>
-<p></center></p>
+<li>
+<p>Click <strong>Create subscription</strong>.</p>
+</li>
+<li>
+<p>Check inbox of your email, you will get an email, click the <strong>Confirm subscription</strong> link to confirm the subscription.</p>
+</li>
+</ol>
 
               
             </article>
