@@ -96,7 +96,7 @@ export class AddCfnNag implements IAspect {
         }],
       });
     } else if (
-      node.node.path.endsWith('/batchEvaluationStateMachine/Role/DefaultPolicy/Resource') ||
+      node.node.path.endsWith('/BatchEvaluationStateMachine/Role/DefaultPolicy/Resource') ||
             node.node.path.endsWith('/RunCCAndQCStateMachine/Role/DefaultPolicy/Resource') ||
             node.node.path.endsWith('/QCDeviceStateMachine/Role/DefaultPolicy/Resource')
     ) {
@@ -142,6 +142,13 @@ export class AddCfnNag implements IAspect {
         }],
       });
 
+    } else if (node.node.path.endsWith('/SNSKey/Resource')) {
+      (node as CfnResource).addMetadata('cfn_nag', {
+        rules_to_suppress: [{
+          id: 'F76',
+          reason: 'Key for SNS, add constraint in conditions',
+        }],
+      });
     }
   }
 }
@@ -199,3 +206,14 @@ export class AddSSMPolicyToRole implements IAspect {
     }
   }
 }
+
+
+export class ChangePolicyName implements IAspect {
+  visit(node: IConstruct): void {
+    const region = Stack.of(node).region;
+    if (node instanceof iam.CfnPolicy && node.node.path.endsWith('QuickSightServiceRole/Policy/Resource')) {
+      node.policyName = node.policyName + '-' + region;
+    }
+  }
+}
+

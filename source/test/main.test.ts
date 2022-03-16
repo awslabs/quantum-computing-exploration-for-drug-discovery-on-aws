@@ -284,3 +284,12 @@ test('CreateEventRuleFuncServiceRole has CrossEventRegionCondition', () => {
   expect(conditionSet).toBeTruthy();
 });
 
+
+test('has parameter QuickSightRoleName', () => {
+  const app = new App();
+  const stack = new MainStack(app, 'test');
+  const template = Template.fromStack(stack);
+
+  const QuickSightRoleName = template.toJSON().Parameters.QuickSightRoleName;
+  expect(QuickSightRoleName).toBeDefined();
+});

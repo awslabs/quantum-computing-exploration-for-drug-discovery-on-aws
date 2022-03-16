@@ -29,5 +29,15 @@
 
 4.  输入*确认*删除账户。  
 
+## 删除QuickSight角色(Optional)
+
+1. 导航到[IAM Role](https://console.aws.amazon.com/iamv2/home#/roles)AWS控制台。
+
+2. 搜索`qradd-quicksight-service-role`。
+
+3. 选中勾选框。
+
+4. 点击**删除**。
+
 [cloudformation-console]: https://console.aws.amazon.com/cloudformation/home
 [aws-cli]: https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html
