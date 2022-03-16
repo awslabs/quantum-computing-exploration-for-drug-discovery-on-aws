@@ -4,6 +4,10 @@ As of March 2022, this solution is supported in the following Amazon Web Service
 
 ## Supported regions for deployment in AWS Standard Regions
 
-- US East (N. Virginia) Region:  us-east-1
-- US West (Oregon) Region:  us-west-2
-- Europe (London) Region: eu-west-2
+
+| Region Name | Region ID |
+|----------|--------|
+| US East (N. Virginia) | us-east-1
+| US West (Oregon) | us-west-2
+| Europe (London) | eu-west-2
+

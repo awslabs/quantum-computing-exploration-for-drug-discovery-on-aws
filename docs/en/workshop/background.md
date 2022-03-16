@@ -5,8 +5,7 @@ chapter: true
 
 # Quantum Ready Architecture For Drug Discovery
 
-Quantum Ready Architecture For Drug Discovery is a cloud-native solution for the application of quantum computing
-technology for drug discovery. This solution is trying to bridge the gap between the industrial
+Quantum Ready Architecture For Drug Discovery is a cloud-native solution for the application of quantum computing technology for drug discovery. This solution is trying to bridge the gap between the industrial
 knowledge and the novel computation model provided by the quantum technologies. This solution will continually 
 implement the Proof of Concepts (PoC) based on the recent publications or reports. It is suitable for customers
 with needs to evaluate the possible useful cases of quantum computing in their industries. No matter you just
