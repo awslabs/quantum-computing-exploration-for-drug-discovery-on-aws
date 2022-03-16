@@ -1,8 +1,8 @@
-# Quantum Ready Solution For Drug Discovery (beta)
+# Quantum Ready Architecture For Drug Discovery
 
 ## Overview
 
-AWS Solution Quantum-Ready Solution for Drug Discovery (abbrev. QRSDDSolution), an open-sourced solution that helps customers study drug discovery problems using quantum computing (Amazon Braket), like molecular docking and protein folding. With QRSDD, customers use job management service (AWS Batch) and workflow service (AWS Step Functions) to orchestrate different kinds of computing resources. To be at the forefront of innovations in drug discovery, customers can tailor sample codes to reuse the pipeline for different problems.
+AWS Quantum Ready Architecture for Drug Discovery (abbrev. QRADD), an open-sourced solution customers can launch to design and run computational studies in the area of drug discovery, e.g. molecular docking and protein folding. With this solution, customers can design and load new, or existing algorithms, into Jupyter notebooks, then orchestrate the classical and quantum compute resources using AWS Batch and AWS Step Functions. Due to its design, customers are free to scale their classical simulations by launching a performant HPC resource instead of  a single EC2 instance. At the same time customer’s quantum experiments benefit from the growing number of quantum resources available through the Amazon Braket service.
 
 The overall architecture is shown as below:
 
@@ -35,7 +35,7 @@ batch evaluation (e.g. performance, time)
 For detailed description of architecture, please refer to the 
 [Architecture Page](https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/en/architecture/)
 
-## Drug Discovery Problems
+## Pre-built Examples for Drug Discovery[<sup>1,</sup>](#more-example)[<sup>2</sup>](#data)
 <table border='1' style="text-align: center">
     <tr>
         <td><B>Problem Name</B></td>
@@ -53,10 +53,14 @@ For detailed description of architecture, please refer to the
         <td rowspan='4'><a href="https://arxiv.org/abs/2107.13607">Quantum Molecular Unfolding(2021)</a></td>
     <tr>
     <tr>
-        <td><span>hybrid solver</span></td>
+        <td><span>qbsolv</span></td>
         <td><span><span></td>
 </table>
-All the data in the solution follow the CC0 License
+
+<div id='more-example'></div>
+1.More examples to be added with continuous update
+<div id='data'></div>
+2.All the data in the solution follow the CC0 License
 
 
 

@@ -11,6 +11,7 @@ theme:
 
 plugins:
   - search
+  - markdownextradata: {}
   - mkdocs-jupyter:
       ignore_h1_titles: True
 
@@ -22,3 +23,5 @@ extra:
     - name: 中文
       link: /quantum-ready-solution-for-drug-discovery/zh/
       lang: zh
+  cf_template:
+      url: https://aws-gcr-solutions.s3.amazonaws.com/AWS-gcr-qc-life-science/v0.8.9/default/QCStack.template.json
