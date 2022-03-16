@@ -38,7 +38,7 @@ Before you launch the solution, review the architecture, supported regions, and 
 2. Click **Create Policy**.
 
 3. In Create policy page, click **JSON** tab, fill below QuickSight policy, this is the least policy that QuickSight can work in this solution.
-
+        
         {
             "Version": "2012-10-17",
             "Statement": [{
@@ -131,7 +131,7 @@ Before you launch the solution, review the architecture, supported regions, and 
                 }
             ]
         }
- 
+
 4. Click **Next:Tags**.
 
 5. Click **Next:Review**.
@@ -145,7 +145,7 @@ Before you launch the solution, review the architecture, supported regions, and 
 9. Click **Create Role**.
 
 10. Select **Custom trust policy** in the Select trusted entity page, fill below trust policy in **Custom trust policy**.
-
+        
         {
             "Version": "2012-10-17",
             "Statement": [
@@ -238,7 +238,7 @@ Before you launch the solution, review the architecture, supported regions, and 
 
 You can view the status of the stack in the AWS CloudFormation Console in the **Status** column. You should receive a CREATE_COMPLETE status in approximately 10 minutes.
 
-### Step 3: Subscribe SNS notification (optional)
+## Step 3: Subscribe SNS notification (optional)
 
 !!! notice
     This step is optional.
@@ -264,5 +264,5 @@ Follow below steps to subscribe SNS notification via Email, you might subscribe 
 8. Check inbox of your email, you will get an email, click the **Confirm subscription** link to confirm the subscription.
 
 
-[template-url]: https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/create/template?stackName=QRADDStack&templateURL=https://aws-gcr-solutions.s3.amazonaws.com/AWS-gcr-qc-life-science/v0.8.8/default/QCStack.template.json
-[cf-template-url]: https://aws-gcr-solutions.s3.amazonaws.com/AWS-gcr-qc-life-science/v0.8.8/default/QCStack.template.json
+[template-url]: https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/create/template?stackName=QRADDStack&templateURL={{ cf_template.url }}
+[cf-template-url]: {{ cf_template.url }}

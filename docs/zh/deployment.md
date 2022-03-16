@@ -253,5 +253,5 @@
 
 8. 检查您的邮箱，您将收到一封邮件，点击邮件中*Confirm Subscription*链接，确认订阅。
 
-[template-url]: https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/create/template?stackName=QRADDStack&templateURL=https://aws-gcr-solutions.s3.amazonaws.com/AWS-gcr-qc-life-science/v0.8.8/default/QCStack.template.json
-[cf-template-url]: https://aws-gcr-solutions.s3.amazonaws.com/AWS-gcr-qc-life-science/v0.8.8/default/QCStack.template.json
+[template-url]: https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/create/template?stackName=QRADDStack&templateURL={{ cf_template.url }}
+[cf-template-url]: {{ cf_template.url }}
