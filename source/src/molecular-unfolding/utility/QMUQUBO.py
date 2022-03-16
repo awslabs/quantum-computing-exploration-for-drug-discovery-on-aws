@@ -73,6 +73,8 @@ class QMUQUBO():
                             logging.info(
                                 f"duplicate model !! pass !! M:{M},D:{D},A:{A},hubo_qubo_val {hubo_qubo_val}")
                             continue
+                        else:
+                            self._update_model_info([M,D,A,hubo_qubo_val],["M","D","A","hubo_qubo_val"],"pre-calc")
                         start = time.time()
                         hubo = {}
                         theta_option = [x * 360/D for x in range(D)]
@@ -119,17 +121,9 @@ class QMUQUBO():
 
         return qubo
 
-    def _check_duplicate(self, values, names, method):
-        initial_size = 0
-        update_size = 0
+    def _update_model_info(self, values, names, method):
         for value, name in zip(values, names):
-            initial_size = initial_size + len(self.model_info[method][name])
             self.model_info[method][name].add(value)
-            update_size = update_size + len(self.model_info[method][name])
-        if initial_size == update_size:
-            return True
-        else:
-            return False
 
     def clear_model(self, method):
         for mt in method:

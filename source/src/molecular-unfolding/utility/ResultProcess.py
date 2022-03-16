@@ -10,7 +10,7 @@ import datetime
 import logging
 import re
 
-from .MolGeoCalc import update_pts_distance, get_same_direction_set
+from .MolGeoCalc import update_pts_distance, get_same_direction_set, calc_distance_between_pts
 from .MoleculeParser import MoleculeData
 
 s3_client = boto3.client("s3")
@@ -55,6 +55,14 @@ class ResultParser():
         # initial parameter file
         self.parameters = {}
         self._init_parameters()
+        
+        # parameters
+        self.physical_check = True
+        if self.physical_check == True:
+            self.non_contact_atom_map = self._init_non_contact_atom()
+        
+        # keep N recent results
+        self.N = 100
 
         if self.method == "dwave-sa":
             logging.info("parse simulated annealer result")
@@ -65,13 +73,22 @@ class ResultParser():
                 self.bucket, self.prefix, self.task_id, "results.json")
             self.result = json.loads(obj["Body"].read())
 
+    def _init_non_contact_atom(self):
+        mol_graph = self.mol_data.bond_graph.mol_ug
+
+        non_contact_atom_map = {}
+
+        for node_main in mol_graph.nodes:
+            non_contact_atom = []
+            for node_candidate in mol_graph.nodes:
+                if node_candidate != node_main and node_candidate not in mol_graph.neighbors(node_main):
+                    non_contact_atom.append(node_candidate)
+            non_contact_atom_map[node_main] = non_contact_atom
+        
+        return non_contact_atom_map
+
     def _init_parameters(self):
         logging.info("_init_parameters")
-        # TODO: leave for future post process
-        # van_der_waals_check = 'initial'
-        # self.parameters["volume"] = {}
-        # self.parameters["volume"]["initial"], _, self.set = mol_distance_func(
-        #     self.atom_pos_data, van_der_waals_check, self.set)
         self.parameters["volume"] = {}
         self.parameters["volume"]["optimize"] = 0
         self.parameters["volume"]["initial"] = 0
@@ -174,14 +191,52 @@ class ResultParser():
         # get best configuration
         pddf_sample_result = self.raw_result["response"].aggregate(
         ).to_pandas_dataframe()
+        
+        pddf_head_sample = pddf_sample_result.sort_values(by=['energy']).head(self.N)
+        
+        evaluate_result = False
+        initial_var = None
+        chosen_var = None
+        missing_var = None
+        
+        for index, row in pddf_head_sample.iterrows():
+            self._init_parameters()
+            evaluate_result, initial_var, chosen_var, missing_var, optimize_gain = self._evaluate_one_result(row)
+            
+            if evaluate_result == True:
+                break
+                
+        if evaluate_result == False:
+            logging.info(
+                f"Fail to find optimized shape for {self.N} results, return to original one")
+            self.parameters["volume"]["optimize"] = self.parameters["volume"]["initial"]
+            self.parameters["volume"]["gain"] = 1.0
+            self.parameters["volume"]["unfolding_results"] = list(initial_var)
+        else:
+            self.parameters["volume"]["gain"] = optimize_gain
+            # update optimized results
+            self.parameters["volume"]["unfolding_results"] = list(chosen_var)
 
-        pddf_best_result = pddf_sample_result.iloc[pddf_sample_result['energy'].idxmin(
-        ), :]
+        self.parameters["volume"]["optimize_info"] = {}
+        self.parameters["volume"]["optimize_info"]["missing_var"] = list(
+            missing_var)
+        self.parameters["volume"]["optimize_info"]["optimize_state"] = evaluate_result
+        self.parameters["volume"]["optimize_info"]["result_rank"] = index+1
+
+
+    def _evaluate_one_result(self, candidate_result):
+#         logging.info("generate_optimize_pts()")
+#         # get best configuration
+#         pddf_sample_result = self.raw_result["response"].aggregate(
+#         ).to_pandas_dataframe()
+
+#         pddf_best_result = pddf_sample_result.iloc[pddf_sample_result['energy'].idxmin(
+#         ), :]
 
         logging.debug("generate_optimize_pts model_info={}".format(
             self.raw_result["model_info"]))
 
-        best_config = pddf_best_result.filter(items=self.valid_var_name)
+        best_config = candidate_result.filter(items=self.valid_var_name)
 
         chosen_var = set(best_config[best_config == 1].index.tolist())
         initial_var = set()
@@ -203,6 +258,7 @@ class ResultParser():
 
         missing_var = set()
 
+        logging.info(f"tor list {chosen_var}")
         # use to generate final position
         max_tor_list = []
         max_ris_num = 1
@@ -275,23 +331,15 @@ class ResultParser():
                 max_tor_list = tor_list
 
         # temp for debugging
+#         max_ris = '4+5'
+#         self.M = '1'
+#         max_tor_list = ['x_3_8']
 #         max_ris = '4+5,2+4,1+2,10+11'
 #         self.M = '4'
-#         max_tor_list = ['X_1_3','X_2_3','X_3_3','X_4_3']
-        # update final position for visualization
-        rb_set = self.mol_data.bond_graph.sort_ris_data[str(
-            self.M)][max_ris]
-        for tor in max_tor_list:
-            tor_map = {}
-            base_rb_name = self.var_rb_map[tor.split('_')[1]]
-            # get direction set
-            tor_map[tor] = get_same_direction_set(
-                rb_set['f_1_set'], self.mol_data.bond_graph.rb_data, base_rb_name)
-
-#             logging.debug(f"!!!!visulaize tor {tor} with rb_set {rb_set} and tor_map {tor_map} ")
-
-            update_pts_distance(self.atom_pos_data, rb_set, tor_map,
-                                self.var_rb_map, self.theta_option, True, False)
+#         max_tor_list = ['x_3_3', 'x_2_1', 'x_1_1', 'x_4_1']
+#         max_ris = '4+5,2+4,1+2,10+11'
+#         self.M = '1'
+#         max_tor_list = ['x_3_3', 'x_1_1', 'x_2_1', 'x_4_1']
 
         logging.debug(f"finish update optimize points for {chosen_var}")
         logging.debug(f_distances_optimize)
@@ -306,25 +354,74 @@ class ResultParser():
             self.parameters["volume"]["initial"]
 
         optimize_state = False
-        if optimize_gain < 1.0:
-            logging.info(
-                "Fail to find optimized shape, return to original one")
-            self.parameters["volume"]["optimize"] = self.parameters["volume"]["initial"]
-            self.parameters["volume"]["gain"] = 1.0
-            self.parameters["volume"]["unfolding_results"] = list(initial_var)
+        if optimize_gain <= 1.0:
+#             logging.info(
+#                 "Fail to find optimized shape, return to original one")
+#             self.parameters["volume"]["optimize"] = self.parameters["volume"]["initial"]
+#             self.parameters["volume"]["gain"] = 1.0
+#             self.parameters["volume"]["unfolding_results"] = list(initial_var)
             optimize_state = False
         else:
-            self.parameters["volume"]["gain"] = optimize_gain
-            # update optimized results
-            self.parameters["volume"]["unfolding_results"] = list(chosen_var)
+#             self.parameters["volume"]["gain"] = optimize_gain
+#             # update optimized results
+#             self.parameters["volume"]["unfolding_results"] = list(chosen_var)
             optimize_state = True
 
-        self.parameters["volume"]["optimize_info"] = {}
-        self.parameters["volume"]["optimize_info"]["missing_var"] = list(
-            missing_var)
-        self.parameters["volume"]["optimize_info"]["optimize_state"] = optimize_state
+#         self.parameters["volume"]["optimize_info"] = {}
+#         self.parameters["volume"]["optimize_info"]["missing_var"] = list(
+#             missing_var)
+#         self.parameters["volume"]["optimize_info"]["optimize_state"] = optimize_state
+        logging.debug(f"initial {self.parameters['volume']['initial']}")
+        logging.debug(f"optimize {self.parameters['volume']['optimize']}")
+        logging.info(f"optimize_gain {optimize_gain}")
+    
+        physical_check_result = True
+        if self.physical_check == True:
+            logging.info(f"start physical check")
+            
+            physical_check_result = self._physical_check_van_der_waals(self.atom_pos_data)
+            
+            if physical_check_result == False:
+                logging.info(f"physical check not pass!")
+    
+        post_result = optimize_state & physical_check_result
+        
+        if post_result == True:
+#         if True:
+            # update final position for visualization
+            rb_set = self.mol_data.bond_graph.sort_ris_data[str(
+            self.M)][max_ris]
+            for tor in max_tor_list:
+                tor_map = {}
+                base_rb_name = self.var_rb_map[tor.split('_')[1]]
+                # get direction set
+                tor_map[tor] = get_same_direction_set(
+                    rb_set['f_1_set'], self.mol_data.bond_graph.rb_data, base_rb_name)
 
-        return 0
+    #             logging.info(f"!!!!visulaize tor {tor} with rb_set {rb_set} and tor_map {tor_map} ")
+
+                update_pts_distance(self.atom_pos_data, rb_set, tor_map,
+                                self.var_rb_map, self.theta_option, True, False)
+                      
+        return post_result, initial_var, chosen_var, missing_var, optimize_gain
+    
+    def _physical_check_van_der_waals(self, atom_raw):
+        check_result = True
+        for atom_index, atom_info in atom_raw.items():
+            vdw_radius = atom_info['vdw-radius']
+            atom_pos = atom_info['pts']
+            if check_result == False:
+                break
+            for non_contact_atom in self.non_contact_atom_map[atom_index]:
+                non_contact_atom_pos = atom_raw[non_contact_atom]['pts']
+                distance = calc_distance_between_pts([atom_pos], [non_contact_atom_pos])
+        #         print(f"fail at {atom_index} to {non_contact_atom} for distance {distance}")
+                if distance < vdw_radius:
+                    logging.info(f"fail at {atom_index} to {non_contact_atom}")
+                    check_result = False
+                    break   
+          
+        return check_result
 
     def save_mol_file(self, save_name):
         logging.info(f"save_mol_file {save_name}")
