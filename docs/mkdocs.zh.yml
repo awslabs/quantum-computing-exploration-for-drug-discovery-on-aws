@@ -11,6 +11,7 @@ nav:
   - 架构概览: architecture.md
   - 安全信息: security.md
   - 区域支持: regions.md
+  - CloudFormation模板: template.md
   - 部署解决方案: deployment.md
   - 动手实验: 
     - 背景: workshop/background.md
@@ -19,7 +20,7 @@ nav:
         - 概览: workshop/a-molecular-unfolding/notebook-experiment.md
         - 准备数据: workshop/a-molecular-unfolding/prepare-data.ipynb
         - 建立模型: workshop/a-molecular-unfolding/build-model.ipynb
-        - 建立模型(技术细节): workshop/a-molecular-unfolding/build-model-detail.md
+        - 建立模型（技术细节）: workshop/a-molecular-unfolding/build-model-detail.md
         - 优化构型: workshop/a-molecular-unfolding/optimize-config.ipynb
         - 后处理: workshop/a-molecular-unfolding/post-process.ipynb
       - 批量验证: 

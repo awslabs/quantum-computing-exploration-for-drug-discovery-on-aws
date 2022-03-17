@@ -5,7 +5,7 @@
 - 一键部署包含量子计算和经典计算工作流的混合架构
 - 基于完全托管的Jupyter笔记本，设计和调试药物发现算法
 - 基于[AWS Step Functions][step-functions]和[AWS Batch][batch]的工作流，批量验证算法性能
-- 通过[Amazon Quicksight][quicksight]展示实验结果
+- 通过[Amazon Quicksight][quicksight]展示批量验证的结果
 - 自定义其它药物发现问题的算法并进行复用
 
 同时，该方案还提供配套的[动手实验](workshop/background.md)，以分子展开为例，介绍相关背景知识，建模和优化方法，批量验证和自定义算法等，从而帮助您更快了解如何运用量子计算技术研究药物发现问题。

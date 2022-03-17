@@ -17,13 +17,13 @@
 
 6. 您可以选择按照实验查看结果：by Experiment。
 
-7. 单击每条实验名称，查看每个实验的批量评估结果。
-
-    - QC vs. CC average：通过不同模型参数（X轴）比较QC和CC任务的平均执行时间（Y轴）
-    - QC vs. CC by resource：通过不同模型参数（X轴）使用不同资源比较QC和CC任务的执行时间（Y轴）（对于QC是不同QPU设备，对于CC是不同的内存和vCPU） 
-    - QC by devices：通过不同的模型参数（X轴）比较不同QPU设备的执行时间（Y轴）
-    - CC by resources：通过不同的模型参数（X轴）比较不同CC资源（内存和vCPU）的执行时间（Y轴）
-    - Records：列出了所选实验中每个任务的详细信息（如果没有选择实验，则列出所有）。
+    - Experiments history：显示所有实验的历史信息。您也可以单击每条实验名称，查看每个实验的历史信息。
+    - Task count：列出所有实验的任务数量。如果您从**Experiments hist**表中选中一行，那么将列出对应该实验的任务数量。
+    - QC vs. CC average：通过不同模型参数（X轴）比较QC和CC任务的平均执行时间（Y轴）。
+    - QC vs. CC by resource：通过不同模型参数（X轴）使用不同资源比较QC和CC任务的执行时间（Y轴）（对于QC是不同QPU设备，对于CC是不同的内存和vCPU）。 
+    - QC by devices：通过不同的模型参数（X轴）比较不同QPU设备的执行时间（Y轴）。
+    - CC by resources：通过不同的模型参数（X轴）比较不同CC资源（内存和vCPU）的执行时间（Y轴）。
+    - Records：列出所选实验中每个任务的详细信息（如果没有选择实验，则列出所有）。
 
         | 字段  | 说明  |
         |---|---|

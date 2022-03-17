@@ -1,193 +1,60 @@
-## Run Batch Evaluation
+# Run Default Batch Evaluation
 
-We will run batch evaluation through AWS Step Functions workflow and view the result via Amazon QuickSight dashboard
+We will run batch default evaluation through AWS Step Functions workflow and view the result via Amazon QuickSight dashboard.
 
-### Terms Abbreviation
+1. Obtain Step Functions link from the CloudFormation output, and click the Step Functions link to navigate to AWS Step Functions console.
 
-- **CC**: Classic computing
-- **QC**: Quantum computing
+2. Click the **Start execution** button.
 
-### Get Step Functions link from deployment output
+3. (Optional) Complete the evaluation input.
 
-<center>
-![deployment output](../../images/deploy-output-stepfunc.png)
-
-Figure 1: The workflow link from the output of deployment
-</center>
-
-Click the Step Functions link, you will be navigated to AWS Step Functions console.
-
-### Start Execution
-
-In your AWS Step Functions console, click **Start execution** button, the screen is shown as below:
-
-<center>
-![ start execution step functions ](../../images/batch-start-execution.png)
-
-Figure 2: Execute the workflow
-</center>
-
-1. (optional) Input evaluation input
-
-     - It will use default input if you do not input anything.
+     - It will use default input if you do not enter anything.
      - If you want to customize the batch evaluation, please refer to the [Input specification](#input-specification) in this section.
 
-1. Click **Start execution**, start batch evaluation
+4. Choose **Start execution** to start batch evaluation. The default batch evaluation will take about 15 minutes.
+
+5. When the batch evaluation is completed, you can view the result in AWS QuickSight dashboard. Before that, you need to get the Dashboard link from the CloudFormation output.
+
+6. You can choose to view the batch evaluation result **by Experiment**. 
     
-    The screen is shown as below:
-    <center>
-    ![ execution step functions ](../../images/batch-execution.png)
+    - **Experiments history**: displays all experiments history or displays the history by each experiment when you click each row.
+    - **Task count**: shows the task count of all experiments or each experiment if you select an experiment in **Experiments hist** table.
+    - **QC vs. CC average**: compares the average execution time (Y-axis) of QC (Quantum Computing) and CC (Classical Computing) tasks by different model parameters (X-axis).
+    - **QC vs. CC by resource**: compares the execution time (Y-axis) of QC and CC tasks by different model parameters (X-axis) using different resources(for QC that is different QPU devices, for CC that is different memory-vCPU)
+    - **QC by devices**: compares execution time (Y-axis) of different QPU devices by different model parameters (X-axis)
+    - **CC by resources**: compares execution time (Y-axis) of different CC resources (memory and vCPU) by different model parameters (X-axis)
+    - **Records**: lists the detailed information of each task in the selected experiment (if no experiment is selected, all will be listed)
 
-    Figure 3: Execute batch evaluation
-    </center>
-
-1. Wait for complete
-   > The default batch evaluation will take about 15 minutes.
-
-    The screen is shown as below when the evaluation is finished.
-
-    <center>
-    ![ execution step functions complete](../../images/batch-execution-complete.png)
-
-    Figure 4: Complete batch evaluation
-    </center>
-
-### View dashboard
-
-When the batch evaluation is completed, you can view the result in AWS QuickSight dashboard.
-
-* Get dashboard link form CloudFormation output:
-<center>
-![ dashboard link](../../images/quicksight-link.png)
-Figure 5: Dashboard link
-</center>
-
-* Click the link, you will be navigated to the dashboard, shown as below:
-
-<center>
-![dashboard](../../images/quicksight-dashboard.png)
-
-Figure 6: Dashboard
-</center>
-
-<center>
-![dashboard data](../../images/quicksight-dashboard-table.png)
-
-Figure 7: Dashboard data
-</center>
-
-There are two sheets in the dashboard, you can click to switch.
-
-<center>
-![dashboard sheets](../../images/quicksight-sheets.png)
-
-Figure 8: Dashboard data switch
-</center>
-
-#### Sheet 1: view result by each experiment
-
-In this sheet, you can view batch evaluation result by experiment.
-
-<center>
-![dashboard Experiments hist](../../images/quicksight-sheet1-hist.png)
-
-Figure 9: Watch batch evaluation
-</center>
-
-* Experiments hist table
-
-In this sheet, you can view the batch evaluation result by each experiment, rows in the experiments table is clickable, you can click the row to view the result only for that experiment.
-
-* Task count chart
-    * It shows total tasks count of the experiment if you select an experiment in **Experiments hist** table.
-    * It shows total tasks count of all experiments if no experiment is selected.
-
-* QC vs. CC charts
-
-    Below two charts show the performance of QC vs. CC tasks
-
-    <center>
-    ![dashboard qc vs cc](../../images/quicksight-qc-cc-avg.png)
-
-    Figure 10: Performance of CC v.s. QC
-    </center>
-    
-    * **QC vs. CC average**  - compares the average execution time (Y-axis) of QC and CC tasks by different model parameters (X-axis)
-     * **QC vs. CC by resource**  - compares the execution time (Y-axis) of QC and CC tasks by different model parameters (X-axis) using different resources(for QC that is different QPU devices, for CC that is different memory-vCPU)
-    
-* QC: by devices chart 
-
-    It compares execution time (Y-axis) of different QPU devices by different model parameters (X-axis)
-
-    <center>
-    ![dashboard qc device](../../images/quicksight-qc-device.png)
-
-    Figure 11: Results by QPU
-    </center>
-
-* CC: by resources
-
-    It compares execution time (Y-axis) of different CC resources (memory and vCPU) by different model parameters (X-axis)
-
-    <center>
-    ![dashboard qc device](../../images/quicksight-cc-resource.png)
-
-    Figure 12: Results by CC resources
-    </center>
-
-* Records table
+        | Field  | Description  |
+        |---|---|
+        | compute_type  | Compute type, which can be CC or QC  |
+        | resource  | Resource name. For QC, it refers to different QPU devices; for CC, it refers to different memory-vCPU  |
+        | param  | Model parameters. </br>**M**: number of torsions; </br>**D**: angle precision of rotation; </br>**HQ**: hubo-qubo value, energy penalty; </br>**A**: penalty scalar |
+        | opt_params  | Optimizer parameters  |
+        | task_duration  | Task execution time in seconds  |
+        | time_info | For QC, it refers to different dimensions of QC task time, and`total_time` is the **task_duration**; for CC, `local_time` is the **task_duration**  |
+        | execution_id  | Step Functions execution ID |
+        | experiment_name  | Experiment name. If `experimentName` input is not empty, it is `execution start time + input experimentName`. Otherwise, it is `execution start time + execution_id`  |
+        | task_id  | For QC, it is Braket task id; for CC, it is empty |
+        | result_detail  | Volume size of molecule before and after unfolding  |
+        | result_location | Molecule mol2 file after unfolding  |
    
-    It lists the detail information of each task in the selected experiment (if no experiment selected, it lists all)
 
-    <center>
-    ![dashboard records table](../../images/quicksight-records-table.png)
+7. You can also switch the tab to view result **by Resource**.
 
-    Figure 13: Dashboard records table
-    </center>
+    In this sheet, you can view batch evaluation result by each resource and QPU device.
 
-    Fields in this table:
-
-    * **compute_type**: compute type, CC or QC
-    * **resource**: resource name, for QC that is different QPU devices, for CC that is different memory-vCPU
-    * **param**: model parameters. **M**: number of torsions; **D**: angle precision of rotation; **HQ**: hubo-qubo value, energy penalty; **A**: penalty scalar
-    * **opt_params**: optimizer parameters
-    * **task_duration**: task execution time in seconds
-    * **time_info**: for QC, different dimensions of QC task time, `total_time` is the **task_duration** , for CC, `local_time` is the **task_duration**
-    * **execution_id**: the Step Functions execution id
-    * **experiment_name**: the experiment name, if input `experimentName` is not empty, it is `execution start time + input experimentName`, otherwise, it is `execution start time + execution_id`
-    * **task_id**: for Qc task, it is Braket task id, for CC, it is empty
-    * **result_detail**: the volume size of molecule before and after unfolding
-    * **result_location**: the molecule mol2 file after unfolding
-
-
-#### Sheet 2: view result by each resource
-
-In this sheet, you can view batch evaluation result by each resource and QPU device
-
-<center>
-![by resource sheet](../../images/quicksight-by-resource.png)
-
-Figure 14: Results by resource
-</center>
-
-* Compute type and resource table
-   
-    It lists all resources in batch evaluation, for QC - resources are QPU devices, for CC - resources are memory and vCPU. Items in the table are clickable, when you click one item (meaning you select it),  metrics in this sheet are switched to that item. If no item selected, it shows averaged metrics.
-
-
-* Experiment hist chart
+    * Compute type and resource
     
-    It shows execution time (Y-axis) for selected resource by experiment name (X-axis, ordered by time) using different model parameters.
+        It lists all resources in batch evaluation. For QC, resources are QPU devices; for CC, resources are memory and vCPU. You can click each row to display the corresponding metrics. If no item is selected, it displays average metrics.
 
-    <center>
-    ![experiment hist](../../images/quicksight-experiment-hist.png)  
+    * Experiment history
+        
+        It shows execution time (Y-axis) for selected resource by experiment name (X-axis, ordered by time) using different model parameters.
 
-    Figure 15: Results by model parameters
-    <center>
-
-* Records table
-   
-    This table is the same as the table in **Sheet 1**.
+    * Records
+    
+        This table is the same as the table shown in the **by Experiment** tab.
 
 
 ### Input specification
@@ -221,35 +88,35 @@ The input schema:
 
 ```
 
-!!! notice
+!!! notice "Note"
 
     all fields are optional.
 
 Definition:
 
-  * **version**:  the version of input schema, current only support value is: '1'
-  * **runMode**:  run mode, value can be `ALL`, `CC` or `QC`, default: 'ALL'; `CC` - only run CC tasks, `QC` only run QC tasks, `ALL` - run both tasks
-  * **molFile**: S3 url of the mol2 file
-  * **modelVersion**: model version, default: 'latest'
-  * **experimentName**: the name of the batch evaluation
-  * **optParams**: the optimizer parameters, set shots for QC(qa) and CC(sa) tasks respectively
-  * **modelParams**: model parameters, M: number of torsions, D: angle precision of rotation. Please refer to [Notebook Experiment](./notebook-experiment.md) for detail.  Valid values: 
+  * **version**: version of input schema. Currently, it only supports value: '1'
+  * **runMode**:  running mode. It has values `ALL`, `CC` or `QC`, and defaults to `ALL`. `CC` - only run CC tasks, `QC` only run QC tasks, `ALL` - run both tasks
+  * **molFile**: S3 URL of the mol2 file
+  * **modelVersion**: model version. By default, it is: 'latest'
+  * **experimentName**: name of the batch evaluation
+  * **optParams**: optimizer parameters, which is used to set shots for QC(qa) and CC(sa) tasks respectively
+  * **modelParams**: model parameters, M: number of torsions, D: angle precision of rotation. Please refer to [Notebook Experiment](./notebook-experiment.md) for details.  Valid values: 
 
          M: [1, 2, 3, 4, 5, 6, 7]
          D: [4] or [8]
 
-!!! notice
+!!! Caution "Caution"
 
-    The max value of M is depended on the value of D, QPU device and input molFile, we set max M to 100 in input validation. If the value exceeds the device capacity in actual running, the execution will be failed.
+    The maximum value of M depends on the value of D, QPU device and input molFile. We set max M to 100 in input validation. If the value exceeds the device capacity in actual running, the execution will fail.
     
-    If you use your own molFile, the input validation will be skipped, if the value exceeds the device capacity, the execution will be failed. 
+    If you use your own molFile, the input validation will be skipped; if the value exceeds the device capacity, the execution will fail. 
    
   * **devicesArns**: QPU device arn. Valid values:
   
         arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6
         arn:aws:braket:::device/qpu/d-wave/Advantage_system4
       
-  * **ccResources**: memory(first element) in GiB and vCPU(second element), e.g. 4GiB memory and 2 vCPU is: `[4, 2]`
+  * **ccResources**: memory (first element) in GiB and vCPU (second element), for example, 4GiB memory and 2 vCPU is: `[4, 2]`
 
 
 A typical (the default) input:

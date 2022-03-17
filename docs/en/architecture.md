@@ -5,8 +5,7 @@ Deploying this solution with the default parameters builds the following environ
 Figure 1: Solution architecture
 
 
-This solution deploys the Amazon CloudFormation template in your 
-AWS Cloud account and provides three parts:
+This solution deploys the Amazon CloudFormation template in your AWS Cloud account and provides three parts:
 
 - Notebook Experiment
 - Batch Evaluation
@@ -16,8 +15,7 @@ AWS Cloud account and provides three parts:
 
 1. The solution deploys an instance for [AWS SageMaker Notebook](https://docs.aws.amazon.com/sagemaker/latest/dg/nbi.html), which allows **Notebook Experiment** for drug discovery(1).
 
-2. The notebook comes with prepared sample code for different problems in drug discovery, such as molecular unfolding, molecule simulation and so on. You can learn how to study these problems based on classical computing or quantum computing through 
-[Amazon Braket][braket]. For details, refer to [Workshop](workshop/background.md)(2).
+2. The notebook comes with prepared sample code for different problems in drug discovery, such as molecular unfolding, molecule simulation and so on. You can learn how to study these problems based on classical computing or quantum computing through [Amazon Braket][braket]. For details, refer to [Workshop](workshop/background.md)(2).
 
 3. The solution creates [NAT gateways][nat] in public [subnets][subnet], which connects to internet using an [internet gateway][internet-gateway]. The notebook instance is deployed in private subnets, which can access internet using NAT gateways(3).
 
@@ -25,7 +23,7 @@ AWS Cloud account and provides three parts:
 
 1. The solution deploys [AWS Step Functions][step-functions] workflows for **Batch Evaluation**(4). 
 
-2. The AWS Step Functions workflows launches various computing tasks in parallel through [AWS Batch][batch] jobs based on different model parameters, resources, classical computing or quantum computing(5).
+2. The AWS Step Functions workflow launch various computing tasks in parallel through [AWS Batch][batch] jobs based on different model parameters, resources, classical computing or quantum computing(5).
 
 3. Each AWS Batch job uses the pre-built container image in [Amazon ECR][ecr](7) and attempts to evaluate a particular drug discovery problem based on specific model parameters(6). 
 
@@ -33,15 +31,15 @@ AWS Cloud account and provides three parts:
 
 5. For quantum computing, AWS Batch jobs asynchronously submit tasks to Amazon Braket as Braket tasks/jobs(9).
 
-6. AWS Step Functions workflows waits for all jobs to complete.
+6. AWS Step Functions workflows wait for all jobs to complete.
 
-7. When an Amazon Braket task/job completed, it saves output as a file in an Amazon S3 bucket, and an event is dispatched via [Amazon EventBridge][eventbridge](11).
+7. When an Amazon Braket task/job is completed, it saves output as a file in an Amazon S3 bucket, and an event is dispatched via [Amazon EventBridge][eventbridge](11).
 
 8. An [AWS Lambda][lambda] function is triggered by events from EventBridge, and parses the output file of the Braket task/job in S3, saves the evaluation result to S3 bucket as well and sends a callback to the AWS Step Functions workflow.
 
-9. When all sub jobs complete, AWS Step Functions workflow continues to the next step(12).
+9. When all sub jobs are completed, AWS Step Functions workflow continues to the next step(12).
 
-10. When the whole batch evaluation is done, the workflow sends a notification to [Amazon SNS][sns] topic. All [subscribers][subscribe-topic] will be notified for the batch evaluation result(13).
+10. When the whole batch evaluation is done, the workflow sends a notification to [Amazon SNS][sns] topic. All [subscribers][subscribe-topic] will be notified for the batch evaluation results(13).
 
 **Visualization**
 
@@ -60,7 +58,6 @@ Remarks:
 [internet-gateway]: https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Internet_Gateway.html
 [vpc]: https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html
 [athena]: https://docs.aws.amazon.com/athena/latest/ug/what-is.html
-[gule]: https://aws.amazon.com/glue/getting-started/
 [lambda]: https://aws.amazon.com/lambda
 [sns]: https://aws.amazon.com/sns/
 [s3]: https://aws.amazon.com/s3/

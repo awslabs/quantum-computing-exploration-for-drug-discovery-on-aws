@@ -8,11 +8,11 @@ You are responsible for the cost of AWS services used when running this solution
 
 ## Example 
 
-Take the molecular unfolding function for the prepared sample (117_idel.mol2) as an example. Assume a customer is always using the notebook to study sample code, and uses the solution to run one complete batch test both on quantum computing resource and classical computing resource in order to visualize the results in Amazon QuickSight. 
+Take the molecular unfolding function for the prepared sample (117_idel.mol2) as an example. Assume a customer continues using the notebook to study sample code, and adopts the solution to run one complete batch test both on quantum computing resource and classical computing resource in order to visualize the results in Amazon QuickSight. 
 
-!!! Caution "Caution"
+!!! Notice "Note"
     
-    If the customer uses the solution only to study the sample code, the cost mainly involves the notebook and the computing from Amazon Braket.
+    If the customer uses the solution only to study the sample code, the cost factors mainly involve the notebook and the computing from Amazon Braket.
 
 
 <!-- | Cost Type| Service | Resource Size | Operating Condition | Cost |

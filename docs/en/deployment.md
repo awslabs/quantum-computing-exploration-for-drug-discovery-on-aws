@@ -1,43 +1,41 @@
 Before you launch the solution, review the architecture, supported regions, and other considerations discussed in this guide. Follow the step-by-step instructions in this section to configure and deploy the solution into your account.
 
-
-!!! notice
-
-    It's good practice to set a billing alarm before deploying this solution. Refer to this [link](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/monitor_estimated_charges_with_cloudwatch.html)
-
-
 **Time to deploy**: Approximately 10 minutes
+
+!!! notice "Note"
+
+    Before deploying this solution, we recommend you [create a billing alarm to monitor your estimated AWS charges](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/monitor_estimated_charges_with_cloudwatch.html). 
 
 
 ## Deployment Overview
 
-- Step 1: Prerequisites
+- Step 1: Make preparations
     - Enable Amazon Braket service
     - Create IAM Role for QuickSight
     - Sign up for QuickSight
-    - Get QuickSight Username
+    - Obtain QuickSight Username
 
-- Step 2: Launch the AWS CloudFormation template into your AWS account to deploy the solution
-- Step 3: Subscribe SNS notification (optional)
+- Step 2: Launch the AWS CloudFormation template into your AWS account
+- Step 3: Subscribe to SNS notification (optional)
 
 
-## Step 1: Prerequisites
+## Step 1: Make preparations
 
 ### Enable Amazon Braket service
 
-1. Login AWS Console, find Amazon Braket.
+1. Sign in to the AWS Management Console, and search for Amazon Braket.
 
-2. Open Amazon Braket, select **I have read and accepted the above terms & conditions**.
+2. Access the Amazon Braket console, and select **I have read and accepted the above terms & conditions**.
 
-3. Click **Enable Amazon Braket**.
+3. Choose **Enable Amazon Braket**.
 
 ### Create IAM Role for QuickSight
 
-1. Go to [IAM Policies](https://console.aws.amazon.com/iamv2/home?#/policies).
+1. Navigate to [IAM Policies](https://console.aws.amazon.com/iamv2/home?#/policies).
 
-2. Click **Create Policy**.
+2. Choose **Create Policy**.
 
-3. In Create policy page, click **JSON** tab, fill below QuickSight policy, this is the least policy that QuickSight can work in this solution.
+3. In the Create policy page, click the **JSON** tab, and enter the QuickSight policy as below. This is the least policy required for QuickSight to work in this solution.
         
         {
             "Version": "2012-10-17",
@@ -132,19 +130,19 @@ Before you launch the solution, review the architecture, supported regions, and 
             ]
         }
 
-4. Click **Next:Tags**.
+4. Choose **Next:Tags**.
 
-5. Click **Next:Review**.
+5. Choose **Next:Review**.
 
-6. Fill **Name**: `qradd-quicksight-service-role-policy`.
+6. Enter the **Name** of the policy. In this deployment, we use `qradd-quicksight-service-role-policy`.
 
-7. Click **Create policy**.
+7. Choose **Create policy**.
 
-8. Go to [IAM Roles](https://console.aws.amazon.com/iamv2/home?#/roles).
+8. Navigate to [IAM Roles](https://console.aws.amazon.com/iamv2/home?#/roles).
 
-9. Click **Create Role**.
+9. Choose **Create Role**.
 
-10. Select **Custom trust policy** in the Select trusted entity page, fill below trust policy in **Custom trust policy**.
+10. Select **Custom trust policy** in the **Select trusted entity** page, and enter the trust policy in **Custom trust policy** as below.
         
         {
             "Version": "2012-10-17",
@@ -160,108 +158,99 @@ Before you launch the solution, review the architecture, supported regions, and 
         }
 
 
-11. Click **Next**.
+11. Choose **Next**.
 
-12. Enter `qradd-quicksight-service-role-policy` in **Permissions policies** search input.
+12. Enter `qradd-quicksight-service-role-policy` in the **Permissions policies** search box.
 
-13. Select the policy, Click **Next**.
+13. Select the policy, and choose **Next**.
 
-14. Fill **Role name** : `qradd-quicksight-service-role`.
+14. Enter the **Role name**. In this deployment, we use `qradd-quicksight-service-role`.
 
-15. Click **Create role**.
+15. Choose **Create role**.
 
-16. Record the name of this role(will be used in deployment steps).
+16. Record the name of this role.
 
 ### Sign up for QuickSight
 
-!!! notice
-    You need correct AWS Identity and Access Management (IAM) permissions to sign up for QuickSight, please refer to [Signing up for an Amazon QuickSight subscription](https://docs.aws.amazon.com/quicksight/latest/user/signing-up.html)
+!!! notice "Note"
+     
+     You must have correct AWS Identity and Access Management (IAM) permissions to sign up for QuickSight. Refer to [Signing up for an Amazon QuickSight subscription](https://docs.aws.amazon.com/quicksight/latest/user/signing-up.html) for details.
 
 
-* Sign in to the AWS Management Console, navigate to [QuickSight](https://quicksight.aws.amazon.com/).
+1. Sign in to the AWS Management Console, and navigate to [QuickSight](https://quicksight.aws.amazon.com/).
 
-* Choose **Enterprise**, click continue.
+2. Choose **Enterprise**, and click continue.
 
-* In the **Create your QuickSight account** page, fill the necessary information:
+3. In the **Create your QuickSight account** page, complete the following settings. 
 
-<center>
-
-|      Field Name      |   Value |  Comment |
-|:--------------------|:-------------------| :-------------------|
-| Authentication method | Choose **Use IAM federated identities & QuickSight-managed users** | The default value|
-| Select a region | Choose **US East(N.Virginia)**  | The default value |
-| QuickSight account name | Any string value | Unique QuickSight account name|
-| Notification email address | your email | |
-| IAM Role| Choose **Use an existing role**, select the role: `qradd-quicksight-service-role`| |
-
-</center>
+    - Choose **Use IAM federated identities & QuickSight-managed users** from the Authentication method.
+    - Choose **US East (N.Virginia)**.
+    - Enter the unique **QuickSight account name**.
+    - Enter the **Email** to receive notifications.
+    - Choose **Use an existing role**, and select the role: `qradd-quicksight-service-role`.
 
 
-!!! Caution 
+    !!! Caution "Caution"
 
-    If Quicksight service already used default role, you need to change it to the role created above in page [QuickSight Security & permissions](https://us-east-1.quicksight.aws.amazon.com/sn/admin#aws).
-    This action may influence other data under this QuickSight Account. Please check in advance. 
-    You can refer to this [document](https://docs.aws.amazon.com/quicksight/latest/user/security_iam_service-with-iam.html#security-create-iam-role) to update Quicksight role and its policy.
+        If Quicksight service already used default role, you need to change it to the role created above in the page [QuickSight Security & permissions](https://us-east-1.quicksight.aws.amazon.com/sn/admin#aws). Please check in advance because this operation may influence other data under this QuickSight Account. Refer to [Using Amazon QuickSight with IAM](https://docs.aws.amazon.com/quicksight/latest/user/security_iam_service-with-iam.html#security-create-iam-role) for details.
 
-### Get QuickSight Username
+### Obtain QuickSight Username
 
-* (Optional) Navigate to [QuickSight](https://quicksight.aws.amazon.com/), fill your email if QuickSight user is not created for
- your current AWS account.
+1. Go to [QuickSight Admin](https://us-east-1.quicksight.aws.amazon.com/sn/admin).
 
-* Go to [QuickSight Admin](https://us-east-1.quicksight.aws.amazon.com/sn/admin), record your **QuickSight Username**(not QuickSight account name) for your email.
+2. Record your **QuickSight Username** (not QuickSight account name) for your email.
 
-## Step 2: Launch the AWS CloudFormation template into your AWS account to deploy the solution
+    !!! Caution "Caution"
 
-1. Login AWS console, click [Launch Stack][template-url] to deploy solution via the AWS CloudFormation template.
+            If QuickSight user is not created for your current AWS account, you need to navigate to [QuickSight](https://quicksight.aws.amazon.com/) and enter your email address.
+
+## Step 2: Launch the AWS CloudFormation template into your AWS account
+
+1. Sign in to the AWS management console, and select the [Launch Stack][template-url] button to launch the AWS CloudFormation template. Alternatively, you can download the template as a starting point for your own implementation.
  
-2. The template launches in the US West(Oregon) by default. To launch this solution in a different AWS Region(for example `us-east-1`), use the Region selector in the console navigation bar.
+2. The template launches in the US West (Oregon) by default. To launch this solution in a different AWS Region (for example `us-east-1`), use the Region selector in the console navigation bar.
 
-3. In the **Create stack** page, Amazon S3 URL should be filled with this [template URL][cf-template-url] automatically, please review and confirm then click **Next**.
+3. On the **Create stack** page, verify that Amazon S3 URL is filled with this [template URL][cf-template-url] automatically and choose **Next**.
 
-4. Under **Parameters**, review the parameters for the template and modify them as necessary.
-
-5. This solution uses the following values. Choose **Next**.
+4. Under **Parameters**, review the parameters for the template and modify them as necessary. This solution uses the following values. 
 
 
-|      Parameter      |   Description |
-|:-------------------|:----|
-| QuickSightUser | QuickSight Username, get it from [Manage users](https://us-east-1.quicksight.aws.amazon.com/sn/admin?#users). |
-| QuickSightRoleName | QuickSight Service Role name, get it from [Security & permissions](https://us-east-1.quicksight.aws.amazon.com/sn/admin?#aws).|
+    |      Parameter      |   Description |
+    |:-------------------|:----|
+    | QuickSightUser | QuickSight Username, which can be obtained from [Manage users](https://us-east-1.quicksight.aws.amazon.com/sn/admin?#users). |
+    | QuickSightRoleName | QuickSight Service Role name, which can be obtained from [Security & permissions](https://us-east-1.quicksight.aws.amazon.com/sn/admin?#aws).|
 
-6. Choose **Next**.
+5. Choose **Next**.
 
-7. On the **Configure stack options** page, choose **Next**.
+6. On the **Configure stack options** page, choose **Next**.
 
-8. On the **Review** page, review and confirm the settings. Check the box acknowledging that the template will create AWS Identity and Access Management (IAM) resources.
+7. On the **Review** page, review and confirm the settings. Check the box acknowledging that the template will create AWS Identity and Access Management (IAM) resources.
 
-9. Choose **Create stack** to deploy the stack.
+8. Choose **Create stack** to deploy the stack.
 
 You can view the status of the stack in the AWS CloudFormation Console in the **Status** column. You should receive a CREATE_COMPLETE status in approximately 10 minutes.
 
-## Step 3: Subscribe SNS notification (optional)
+## Step 3: Subscribe to SNS notification (optional)
 
-!!! notice
-    This step is optional.
+Follow below steps to subscribe to SNS notification via Email. You may also subscribe to the notification via [text messages](https://docs.aws.amazon.com/sns/latest/dg/sns-mobile-phone-number-as-subscriber.html).
 
-Follow below steps to subscribe SNS notification via Email, you might subscribe the notification via [text messages](https://docs.aws.amazon.com/sns/latest/dg/sns-mobile-phone-number-as-subscriber.html).
-
-1. Get your SNS topic name in the CloudFormation deployment output
+1. Obtain your SNS topic name in the CloudFormation deployment output.
 
     ![SNS name](./images/deploy-output-sns.png)
 
-2. Navigate to [SNS topics](https://console.aws.amazon.com/sns/v3/home?region=us-east-1#/topics) AWS console.
+2. Navigate to [SNS topics](https://console.aws.amazon.com/sns/v3/home?region=us-east-1#/topics).
 
-3. Click the SNS topic which is in CloudFormation deployment output.
+3. Click the SNS topic that you obtained from the CloudFormation deployment output.
 
-4. Click **Create subscription** button.
+4. Choose **Create subscription**.
 
-5. Select Email in  **Protocol** list.
+5. Select Email from the **Protocol** list.
 
-6. Fill your email in  **Endpoint**.
+6. Enter your email in **Endpoint**.
 
-7. Click **Create subscription**.
+7. Choose **Create subscription**.
 
-8. Check inbox of your email, you will get an email, click the **Confirm subscription** link to confirm the subscription.
+8. Check the inbox of your email to see that you have received an email, and click the **Confirm Subscription** link to confirm the subscription.
 
 
 [template-url]: https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/create/template?stackName=QRADDStack&templateURL={{ cf_template.url }}

@@ -1,12 +1,9 @@
 使用默认参数部署解决方案后，在亚马逊云科技中构建的环境如下图所示。
 
-<center>
-
 ![architecture](./images/architecture.png)
 
 图1：药物发现量子计算解决方案架构图
 
-</center>
 
 本解决方案在您的亚马逊云科技账户中部署AWS CloudFormation模板，并提供三个功能模块：
  

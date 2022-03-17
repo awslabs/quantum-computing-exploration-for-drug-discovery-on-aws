@@ -42,7 +42,7 @@
    
 2. 确认执行部署的用户或IAM角色必须至少拥有[permissions](./permissions.json)。
 
-3. [检查您的QuickSight账户](../../../deployment/#check-your-quicksight)。
+3. 检查部署的[准备工作](../../deployment.md)。
 
 4. 确保您的工作区中运行了docker。有关如何安装docker，请参见[Docker Install](https://docs.docker.com/engine/install/)。
 
@@ -67,11 +67,12 @@
 
 3. 利用CDK将更改部署到您的AWS账户。
 
-    ```bash
-    cd source
-    npm install
-    npx cdk deploy QCStack --parameters QuickSightUser=<your QuickSight user>
-    ```
+        cd source
+        npm install
+        npx cdk deploy QCStack \
+            --parameters QuickSightUser=<your QuickSight user> \
+            --parameters QuickSightRoleName=<your QuickSight service role name>
+
            
 4. 等待部署完成。部署大约需要10分钟。
 
