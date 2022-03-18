@@ -55,12 +55,12 @@ class ResultParser():
         # initial parameter file
         self.parameters = {}
         self._init_parameters()
-        
+
         # parameters
         self.physical_check = True
         if self.physical_check == True:
             self.non_contact_atom_map = self._init_non_contact_atom()
-        
+
         # keep N recent results
         self.N = 100
 
@@ -84,7 +84,7 @@ class ResultParser():
                 if node_candidate != node_main and node_candidate not in mol_graph.neighbors(node_main):
                     non_contact_atom.append(node_candidate)
             non_contact_atom_map[node_main] = non_contact_atom
-        
+
         return non_contact_atom_map
 
     def _init_parameters(self):
@@ -191,50 +191,54 @@ class ResultParser():
         # get best configuration
         pddf_sample_result = self.raw_result["response"].aggregate(
         ).to_pandas_dataframe()
-        
-        pddf_head_sample = pddf_sample_result.sort_values(by=['energy']).head(self.N)
-        
+
+        pddf_head_sample = pddf_sample_result.sort_values(
+            by=['energy']).head(self.N)
+
         evaluate_loop_result = False
         max_optimize_gain = 1.0
         chosen_var = None
         actual_var = None
         max_tor_list = None
         max_ris = None
-        
+
         for index, row in pddf_head_sample.iterrows():
             generate_row = self._generate_row_data(row)
-            
+
             max_optimize_gain = 1.0
             evaluate_loop_result = False
             for complete_tor_info in generate_row:
                 self._init_parameters()
                 logging.info(f"chosen var {complete_tor_info['chosen_var']}")
                 logging.info(f"tor list {complete_tor_info['actual_var']}")
-                optimize_gain = self._evaluate_one_result(complete_tor_info['tor_list'])
+                optimize_gain = self._evaluate_one_result(
+                    complete_tor_info['tor_list'])
                 if optimize_gain > max_optimize_gain:
-                     # update final position for visualization
-                     self._update_physical_position(complete_tor_info['max_ris'], complete_tor_info['max_tor_list'])
-                                                    
-                     physical_check_result = True
-                     if self.physical_check == True:
+                    # update final position for visualization
+                    self._update_physical_position(
+                        complete_tor_info['max_ris'], complete_tor_info['max_tor_list'])
+
+                    physical_check_result = True
+                    if self.physical_check == True:
                         logging.info(f"start physical check")
 
-                        physical_check_result = self._physical_check_van_der_waals(self.atom_pos_data)
+                        physical_check_result = self._physical_check_van_der_waals(
+                            self.atom_pos_data)
 
                         if physical_check_result == False:
-                             evaluate_loop_result = False
-                             logging.info(f"physical check not pass!")
+                            evaluate_loop_result = False
+                            logging.info(f"physical check not pass!")
                         else:
-                             evaluate_loop_result = True
-                             max_optimize_gain = optimize_gain
-                             chosen_var = complete_tor_info['chosen_var']
-                             actual_var = complete_tor_info['actual_var']
-                             max_tor_list = complete_tor_info['max_tor_list']
-                             max_ris = complete_tor_info['max_ris']
-                      
+                            evaluate_loop_result = True
+                            max_optimize_gain = optimize_gain
+                            chosen_var = complete_tor_info['chosen_var']
+                            actual_var = complete_tor_info['actual_var']
+                            max_tor_list = complete_tor_info['max_tor_list']
+                            max_ris = complete_tor_info['max_ris']
+
             if evaluate_loop_result == True:
                 break
- 
+
         if evaluate_loop_result == False:
             logging.info(
                 f"Fail to find optimized shape for {self.N} results, return to original one")
@@ -249,26 +253,25 @@ class ResultParser():
             # update optimized results
             self.parameters["volume"]["unfolding_results"] = list(actual_var)
             #         if True:
-        
-        self.parameters["volume"]["annealing_results"] = list(chosen_var)     
+
+        self.parameters["volume"]["annealing_results"] = list(chosen_var)
         self.parameters["volume"]["optimize_info"] = {}
         self.parameters["volume"]["optimize_info"]["optimize_state"] = evaluate_loop_result
         self.parameters["volume"]["optimize_info"]["result_rank"] = index+1
 
-    
     def _update_physical_position(self, max_ris, max_tor_list):
-#         temp for debugging
-#         max_ris = '4+5'
-#         self.M = '1'
-#         max_tor_list = ['x_3_8']
-#         max_ris = '4+5,2+4,1+2,10+11'
-#         self.M = '4'
-#         max_tor_list = ['x_3_3', 'x_2_1', 'x_1_1', 'x_4_1']
-#         max_ris = '4+5,2+4,1+2,10+11'
-#         self.M = '1'
-#         max_tor_list = ['x_3_3', 'x_1_1', 'x_2_1', 'x_4_1']
+        #         temp for debugging
+        #         max_ris = '4+5'
+        #         self.M = '1'
+        #         max_tor_list = ['x_3_8']
+        #         max_ris = '4+5,2+4,1+2,10+11'
+        #         self.M = '4'
+        #         max_tor_list = ['x_3_3', 'x_2_1', 'x_1_1', 'x_4_1']
+        #         max_ris = '4+5,2+4,1+2,10+11'
+        #         self.M = '1'
+        #         max_tor_list = ['x_3_3', 'x_1_1', 'x_2_1', 'x_4_1']
         rb_set = self.mol_data.bond_graph.sort_ris_data[str(
-        self.M)][max_ris]
+            self.M)][max_ris]
         for tor in max_tor_list:
             tor_map = {}
             base_rb_name = self.var_rb_map[tor.split('_')[1]]
@@ -278,13 +281,13 @@ class ResultParser():
 
             update_pts_distance(self.atom_pos_data, rb_set, tor_map,
                                 self.var_rb_map, self.theta_option, True, False)
-            
+
     def _generate_row_data(self, candidate_result):
         M = self.M
         D = self.D
-        
+
         generate_row = []
-        
+
         logging.debug("generate_optimize_pts model_info={}".format(
             self.raw_result["model_info"]))
 
@@ -333,7 +336,6 @@ class ResultParser():
 
         _update_var_dict_list({}, 1)
 
-
         # use to generate final position
         logging.debug(f"var_dict_list {var_dict_list}")
 
@@ -367,7 +369,7 @@ class ResultParser():
                 logging.debug(f"theta_option {self.theta_option}")
                 logging.debug(f"rb_set {rb_set}")
 
-                complete_tor_list.append((tor_list,rb_set))
+                complete_tor_list.append((tor_list, rb_set))
 
                 # update for final position
                 current_ris_num = len(torsion_group)
@@ -383,9 +385,9 @@ class ResultParser():
             complete_tor_info['max_ris'] = max_ris
 
             generate_row.append(complete_tor_info)
-        
+
         return generate_row
-            
+
     def _evaluate_one_result(self, complete_tor_list):
 
         for tor in complete_tor_list:
@@ -429,7 +431,6 @@ class ResultParser():
 #         logging.debug(f_distances_optimize)
 #         logging.debug(f_distances_raw)
 
-
         optimize_gain = self.parameters["volume"]["optimize"] / \
             self.parameters["volume"]["initial"]
 
@@ -442,11 +443,9 @@ class ResultParser():
         logging.debug(f"initial {self.parameters['volume']['initial']}")
         logging.debug(f"optimize {self.parameters['volume']['optimize']}")
         logging.info(f"optimize_gain {optimize_gain}")
-    
 
-                      
         return optimize_gain
-    
+
     def _physical_check_van_der_waals(self, atom_raw):
         check_result = True
         for atom_index, atom_info in atom_raw.items():
@@ -456,13 +455,14 @@ class ResultParser():
                 break
             for non_contact_atom in self.non_contact_atom_map[atom_index]:
                 non_contact_atom_pos = atom_raw[non_contact_atom]['pts']
-                distance = calc_distance_between_pts([atom_pos], [non_contact_atom_pos])
+                distance = calc_distance_between_pts(
+                    [atom_pos], [non_contact_atom_pos])
         #         print(f"fail at {atom_index} to {non_contact_atom} for distance {distance}")
                 if distance < vdw_radius:
                     logging.info(f"fail at {atom_index} to {non_contact_atom}")
                     check_result = False
-                    break   
-          
+                    break
+
         return check_result
 
     def save_mol_file(self, save_name):

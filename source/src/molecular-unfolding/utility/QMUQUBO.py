@@ -74,7 +74,8 @@ class QMUQUBO():
                                 f"duplicate model !! pass !! M:{M},D:{D},A:{A},hubo_qubo_val {hubo_qubo_val}")
                             continue
                         else:
-                            self._update_model_info([M,D,A,hubo_qubo_val],["M","D","A","hubo_qubo_val"],"pre-calc")
+                            self._update_model_info([M, D, A, hubo_qubo_val], [
+                                                    "M", "D", "A", "hubo_qubo_val"], "pre-calc")
                         start = time.time()
                         hubo = {}
                         theta_option = [x * 360/D for x in range(D)]
