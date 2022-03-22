@@ -1,4 +1,4 @@
-To uninstall the AWS QRADD solution, you must delete the AWS CloudFormation stack. 
+To uninstall the QRADD solution, you must delete the AWS CloudFormation stack. 
 
 You can use either the AWS Management Console or the AWS Command Line Interface (CLI) to delete the CloudFormation stack.
 
@@ -24,7 +24,7 @@ aws cloudformation delete-stack --stack-name <installation-stack-name> --region 
 
 3. Choose **Delete account**.
 
-    !!! Warning "Caution"
+    !!! Caution "Caution"
 
          All users on this account will be permanently deleted along with all dashboards, analyses, and other related data. 
 

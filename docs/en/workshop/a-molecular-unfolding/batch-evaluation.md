@@ -90,7 +90,7 @@ The input schema:
 
 !!! notice "Note"
 
-    all fields are optional.
+    All fields are optional.
 
 Definition:
 

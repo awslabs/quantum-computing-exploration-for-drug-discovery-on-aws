@@ -13,9 +13,9 @@ This solution deploys the Amazon CloudFormation template in your AWS Cloud accou
 
 **Notebook Experiment**
 
-1. The solution deploys an instance for [AWS SageMaker Notebook](https://docs.aws.amazon.com/sagemaker/latest/dg/nbi.html), which allows **Notebook Experiment** for drug discovery(1).
+1. The solution deploys an instance for [Amazon SageMaker Notebook](https://docs.aws.amazon.com/sagemaker/latest/dg/nbi.html), which allows **Notebook Experiment** for drug discovery(1).
 
-2. The notebook comes with prepared sample code for different problems in drug discovery, such as molecular unfolding, molecule simulation and so on. You can learn how to study these problems based on classical computing or quantum computing through [Amazon Braket][braket]. For details, refer to [Workshop](workshop/background.md)(2).
+2. The notebook comes with prepared sample code for different problems in drug discovery, such as molecular unfolding. You can learn how to study these problems based on classical computing or quantum computing through [Amazon Braket][braket]. For details, refer to [Workshop](workshop/background.md)(2).
 
 3. The solution creates [NAT gateways][nat] in public [subnets][subnet], which connects to internet using an [internet gateway][internet-gateway]. The notebook instance is deployed in private subnets, which can access internet using NAT gateways(3).
 
@@ -27,7 +27,7 @@ This solution deploys the Amazon CloudFormation template in your AWS Cloud accou
 
 3. Each AWS Batch job uses the pre-built container image in [Amazon ECR][ecr](7) and attempts to evaluate a particular drug discovery problem based on specific model parameters(6). 
 
-4. For classical computing, AWS Batch jobs evaluate the problem locally, and save results in [Amazon S3][s3](10).
+4. For classical computing, AWS Batch jobs evaluate the problem on [Amazon EC2][ec2], and save results in [Amazon S3][s3](10).
 
 5. For quantum computing, AWS Batch jobs asynchronously submit tasks to Amazon Braket as Braket tasks/jobs(9).
 
@@ -51,7 +51,7 @@ Remarks:
 
 - All computing resources (AWS Batch Compute Environment and AWS Lambda) are placed in private subnets in [Amazon VPC][vpc].
 
-- [VPC Endpoints][vpc-endpoints] are enabled for Amazon ECR, Amazon S3, Amazon Athena and Amazon Braket(8).
+- [VPC Endpoints][vpc-endpoints] are provisioned for Amazon ECR, Amazon S3, Amazon Athena and Amazon Braket(8).
 
 [nat]: https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html
 [subnet]: https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Subnets.html
@@ -64,6 +64,7 @@ Remarks:
 [batch]: https://aws.amazon.com/batch/
 [eventbridge]: https://aws.amazon.com/eventbridge/
 [quicksight]: https://aws.amazon.com/quicksight/
+[ec2]: https://aws.amazon.com/ec2/
 [ecr]: https://aws.amazon.com/ecr/
 [braket]: https://aws.amazon.com/braket/
 [step-functions]: https://aws.amazon.com/step-functions/

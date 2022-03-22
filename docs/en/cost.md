@@ -8,7 +8,7 @@ You are responsible for the cost of AWS services used when running this solution
 
 ## Example 
 
-Take the molecular unfolding function for the prepared sample (117_idel.mol2) as an example. Assume a customer continues using the notebook to study sample code, and adopts the solution to run one complete batch test both on quantum computing resource and classical computing resource in order to visualize the results in Amazon QuickSight. 
+Take the molecular unfolding function for the prepared sample (117_idel.mol2) as an example. In US East (N. Virginia) Region (us-east-1), assume a customer continues using the notebook to study sample code, and adopts the solution to run one complete batch evaluation both on quantum computing resource and classical computing resource in order to visualize the results in Amazon QuickSight. 
 
 !!! Notice "Note"
     
@@ -114,7 +114,7 @@ Take the molecular unfolding function for the prepared sample (117_idel.mol2) as
         <td>Amazon QuickSight</td>
         <td>1 reader</td>
         <td>long run service</td>
-        <td>8.00 USD/Month</td>
+        <td>8.00 USD per month</td>
     <tr>
     <tr>
         <td>Orchestration</td>
@@ -124,7 +124,20 @@ Take the molecular unfolding function for the prepared sample (117_idel.mol2) as
         <td>0 USD</td>
     <tr>
     <tr>
+        <td rowspan='4'>Network</td>
+        <td>VPC Endpoints</td>
+        <td>Amazon S3</br>Amazon ECR</br>Amazon Athena</br>Amazon Braket</td>
+        <td>long run service</td>
+        <td>58.41 USD per month</td>
+    <tr>
+    <tr>
+        <td>NAT Gateway</td>
+        <td>-</td>
+        <td>long run service</td>
+        <td>65.78 USD per month</td>
+    <tr> 
+    <tr>
         <td colspan='4'>Total Cost</td>
-        <td>25.12 USD per day</td>
+        <td>29.26 USD per day</td>
     <tr>
 </table>
