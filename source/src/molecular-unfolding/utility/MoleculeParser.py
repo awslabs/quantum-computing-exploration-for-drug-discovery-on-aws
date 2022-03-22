@@ -48,7 +48,7 @@ class MoleculeData():
     def _add_van_der_waals(self):
         # https://en.wikipedia.org/wiki/Van_der_Waals_radius
         van_der_waals_dict = {'H': 1.2, 'C': 1.7, 'N': 1.55,
-                              'O': 1.52, 'F': 1.47, 'S': 1.8, 'Ch': 1.75, 'Co': 1.4}
+                              'O': 1.52, 'F': 1.47, 'S': 1.8, 'Ch': 1.75, 'Co': 1.4, 'Cl': 1.75}
 
         def _parse_atom(atom_type):
             return atom_type.split('.')[0]

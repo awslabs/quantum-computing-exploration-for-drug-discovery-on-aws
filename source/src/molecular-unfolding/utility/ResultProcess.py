@@ -51,6 +51,7 @@ class ResultParser():
         self.D = None
         self.theta_option = None
         self.valid_var_name = []
+        self.valid_var_angle = []
         self._parse_model_info()
         # initial parameter file
         self.parameters = {}
@@ -63,7 +64,7 @@ class ResultParser():
 
         # keep N recent results
         self.N = 100
-
+        self.tried_combination = set()
         if self.method == "dwave-sa":
             logging.info("parse simulated annealer result")
             self.result = None
@@ -181,7 +182,8 @@ class ResultParser():
         for rb in self.raw_result["model_info"]["rb_name"]:
             var = self.rb_var_map[rb]
             for d in range(self.D):
-                self.valid_var_name.append(f'x_{var}_{d+1}')
+                self.valid_var_angle.append(f'x_{var}_{d+1}')
+            self.valid_var_name.append(f'{var}')
 #         logging.info(f"valid var for this model is {self.valid_var_name}")
 
         return 0
@@ -201,6 +203,8 @@ class ResultParser():
         actual_var = None
         max_tor_list = None
         max_ris = None
+        
+        
 
         for index, row in pddf_head_sample.iterrows():
             generate_row = self._generate_row_data(row)
@@ -208,13 +212,21 @@ class ResultParser():
             max_optimize_gain = 1.0
             evaluate_loop_result = False
             for complete_tor_info in generate_row:
-                self._init_parameters()
                 logging.info(f"chosen var {complete_tor_info['chosen_var']}")
                 logging.info(f"tor list {complete_tor_info['actual_var']}")
+#                 logging.info(f"max_ris {complete_tor_info['max_ris']}")
+#                 logging.info(f"max_tor_list {complete_tor_info['max_tor_list']}")
+                if tuple(complete_tor_info['actual_var']) in self.tried_combination:
+                             logging.info(f"pass current duplicate var")
+                             continue
+                else:
+                             self.tried_combination.add(tuple(complete_tor_info['actual_var']))
+                self._init_parameters()
                 optimize_gain = self._evaluate_one_result(
                     complete_tor_info['tor_list'])
                 if optimize_gain > max_optimize_gain:
                     # update final position for visualization
+                    self._init_mol_file(self.atom_pos_data)
                     self._update_physical_position(
                         complete_tor_info['max_ris'], complete_tor_info['max_tor_list'])
 
@@ -245,9 +257,10 @@ class ResultParser():
             self.parameters["volume"]["optimize"] = self.parameters["volume"]["initial"]
             self.parameters["volume"]["gain"] = 1.0
             initial_var = set()
-            for m in range(self.M):
-                initial_var.add(f"X_{m+1}_1")
+            for var_name in self.valid_var_name:
+                initial_var.add(f"X_{var_name}_1")
             self.parameters["volume"]["unfolding_results"] = list(initial_var)
+            chosen_var = initial_var
         else:
             self.parameters["volume"]["gain"] = max_optimize_gain
             # update optimized results
@@ -291,7 +304,7 @@ class ResultParser():
         logging.debug("generate_optimize_pts model_info={}".format(
             self.raw_result["model_info"]))
 
-        best_config = candidate_result.filter(items=self.valid_var_name)
+        best_config = candidate_result.filter(items=self.valid_var_angle)
 
         chosen_var = set(best_config[best_config == 1].index.tolist())
 
@@ -314,30 +327,32 @@ class ResultParser():
 
         if var_diff == 1:
             candi_angle = [str(d+1) for d in range(D)]
-            for tor in range(M):
-                if str(tor+1) not in var_dict_raw.keys():
-                    var_dict_raw[str(tor+1)] = candi_angle
+            for var_name in self.valid_var_name:
+                if var_name not in var_dict_raw.keys():
+                    var_dict_raw[var_name] = candi_angle
         elif var_diff > 1:
-            for tor in range(M):
-                if str(tor+1) not in var_dict_raw.keys():
-                    var_dict_raw[str(tor+1)] = '1'
+            for var_name in self.valid_var_name:
+                if var_name not in var_dict_raw.keys():
+                    var_dict_raw[var_name] = ['1']
 
-        def _update_var_dict_list(var_dict, key_value):
+        def _update_var_dict_list(var_dict, key_list):
             if len(var_dict_list) > max_generate:
                 return
-            for angle in var_dict_raw[str(key_value)]:
+            key_value = str(key_list[0])
+            for angle in var_dict_raw[key_value]:
                 local_var_dict = var_dict.copy()
-                local_var_dict[str(key_value)] = str(angle)
-                if key_value == M:
+                local_var_dict[key_value] = str(angle)
+                if len(key_list) == 1:
                     var_dict_list.append(local_var_dict)
                 else:
-                    update_key_value = key_value + 1
-                    _update_var_dict_list(local_var_dict, update_key_value)
+                    _update_var_dict_list(local_var_dict, key_list[1:])
 
-        _update_var_dict_list({}, 1)
+        key_list = list(var_dict_raw.keys())
+                             
+        _update_var_dict_list({}, key_list)
 
         # use to generate final position
-        logging.debug(f"var_dict_list {var_dict_list}")
+        logging.info(f"var_dict_raw {var_dict_raw} var_dict_list {var_dict_list}")
 
         for var_dict in var_dict_list:
             complete_tor_info = {}
@@ -352,7 +367,6 @@ class ResultParser():
             for ris in self.mol_data.bond_graph.sort_ris_data[str(M)].keys():
                 # ris: '30+31', '29+30', '30+31,29+30'
                 #             atom_pos_data_temp = self.atom_pos_data_raw.copy()
-                self._init_mol_file(self.atom_pos_data_temp)
                 logging.debug(f"ris group {ris} ")
                 torsion_group = ris.split(",")
                 # update points
@@ -415,6 +429,8 @@ class ResultParser():
                             tor_map[tor_name].add(rb)
 
             logging.debug(f"tor_map {tor_map}")
+            
+            self._init_mol_file(self.atom_pos_data_temp)
 
             optimize_distance = update_pts_distance(
                 self.atom_pos_data_temp, rb_set, tor_map, self.var_rb_map, self.theta_option, True, True)
@@ -457,7 +473,8 @@ class ResultParser():
                 non_contact_atom_pos = atom_raw[non_contact_atom]['pts']
                 distance = calc_distance_between_pts(
                     [atom_pos], [non_contact_atom_pos])
-        #         print(f"fail at {atom_index} to {non_contact_atom} for distance {distance}")
+#                 if non_contact_atom == '14' and atom_index == '1':
+#                       logging.info(f"fail at {atom_index} to {non_contact_atom} for distance {distance}")
                 if distance < vdw_radius:
                     logging.info(f"fail at {atom_index} to {non_contact_atom}")
                     check_result = False
@@ -473,7 +490,7 @@ class ResultParser():
         start_parse = 0
 
         def _update_atom_pos(line, atom_pos_data):
-            atom_idx_name = re.findall(r"\d+ [A-Z]\d+", line)[0]
+            atom_idx_name = re.findall(r"\d+ [A-Za-z]+\d+", line)[0]
             logging.debug("atom id name is {}".format(atom_idx_name))
             atom_idx = atom_idx_name.split(' ')[0]
 
