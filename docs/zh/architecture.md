@@ -15,7 +15,7 @@
 
 1. 本方案部署一个笔记本实例，从而允许[Amazon SageMaker Notebook](https://docs.aws.amazon.com/sagemaker/latest/dg/nbi.html)用户进行**笔记本实验**（1）。
 
-2. 笔记本附带针对不同药物发现问题的示例代码，如分子展开、分子模拟等。用户可以学习如何利用经典计算或通过访问[Amazon Braket][braket]利用量子计算研究这些问题（2）。详情请参考[动手实验](workshop/background.md)。
+2. 笔记本附带针对不同药物发现问题的示例代码，如分子展开等。用户可以学习如何利用经典计算或通过访问[Amazon Braket][braket]利用量子计算研究这些问题（2）。详情请参考[动手实验](workshop/background.md)。
 
 3. 在公共[子网][subnet]中创建了[NAT网关][nat]，并通过[Internet网关][internet-gateway]连接互联网。笔记本实例部署在私有子网中，它通过NAT网关访问互联网（3）。
 
