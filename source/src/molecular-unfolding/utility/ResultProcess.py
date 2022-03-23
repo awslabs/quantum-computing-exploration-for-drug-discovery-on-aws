@@ -13,6 +13,11 @@ import re
 from .MolGeoCalc import update_pts_distance, get_same_direction_set, calc_distance_between_pts
 from .MoleculeParser import MoleculeData
 
+import py3Dmol
+import time
+from ipywidgets import interact,fixed,IntSlider
+import ipywidgets
+
 s3_client = boto3.client("s3")
 
 log = logging.getLogger()
@@ -39,6 +44,7 @@ class ResultParser():
         self.atom_pos_data_temp = {}
         self.mol_file_name = param["raw_path"]
         logging.info("MoleculeData.load()")
+        self.data_path = param["data_path"]
         self.mol_data = MoleculeData.load(param["data_path"])
         logging.info("init mol data for final position")
         self._init_mol_file(self.atom_pos_data)
@@ -535,3 +541,40 @@ class ResultParser():
         logging.info(f"finish save {mol_save_name} and {file_save_name}")
 
         return [mol_save_name, file_save_name]
+    
+    def View3DMol(self,mol, size=(600, 600), style="stick", surface=False, opacity=0.5, type="mol2"):
+        assert style in ('line', 'stick', 'sphere', 'carton')
+        viewer = py3Dmol.view(width=size[0], height=size[1])
+        viewer.addModel(open(mol,'r').read(), type)
+        viewer.setStyle({style:{}})
+        if surface:
+            viewer.addSurface(py3Dmol.SAS, {'opacity': opacity})
+        viewer.zoomTo()
+        return viewer
+
+
+    def View3DMolFromDir(self,mol_dir, size=(600,600), style="stick", surface=False, opacity=0.5, type="mol2"):
+        assert style in ('line', 'stick', 'sphere', 'carton')
+        viewer = py3Dmol.view(width=size[0], height=size[1],linked=False,viewergrid=(2,2))
+        mol2s = os.popen("ls {}/*.mol2".format(mol_dir)).read().split('\n')[0:-1]
+        for index,mol2 in enumerate(mol2s):
+            viewer.addModel(open(mol2,'r').read(),type,viewer=(index/2,index%2))
+            viewer.setStyle({'stick':{'colorscheme':'greenCarbon'}},viewer=(index/2,index%2))
+        if surface:
+            viewer.addSurface(py3Dmol.SAS, {'opacity': opacity})
+        viewer.zoomTo()
+        view.render()
+        return viewer
+
+
+    def StyleSelector(self,mol,size,style):
+        return View3DMol(mol,size=(size,size),style=style).show()
+
+    def InteractView(self,mol,size):
+        interact(self.StyleSelector, 
+            mol=mol,
+            size=size,
+            style=ipywidgets.Dropdown(
+                options=['line', 'stick', 'sphere'],
+                value='stick',
+                description='Style:'))
