@@ -293,7 +293,22 @@
   
     <li class="md-nav__item">
       <a href="../../../regions/" class="md-nav__link">
-        Supported Regions
+        Design Considerations
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../template/" class="md-nav__link">
+        CloudFormation Template
       </a>
     </li>
   
@@ -327,18 +342,18 @@
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" checked>
       
       
       
       
-        <label class="md-nav__link" for="__nav_7">
+        <label class="md-nav__link" for="__nav_8">
           Workshop
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Workshop" data-md-level="1">
-        <label class="md-nav__title" for="__nav_7">
+        <label class="md-nav__title" for="__nav_8">
           <span class="md-nav__icon md-icon"></span>
           Workshop
         </label>
@@ -351,7 +366,7 @@
   
     <li class="md-nav__item">
       <a href="../../background/" class="md-nav__link">
-        Overview
+        Background
       </a>
     </li>
   
@@ -369,18 +384,18 @@
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7_2" type="checkbox" id="__nav_7_2" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_2" type="checkbox" id="__nav_8_2" checked>
       
       
       
       
-        <label class="md-nav__link" for="__nav_7_2">
+        <label class="md-nav__link" for="__nav_8_2">
           Molecular Unfolding
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Molecular Unfolding" data-md-level="2">
-        <label class="md-nav__title" for="__nav_7_2">
+        <label class="md-nav__title" for="__nav_8_2">
           <span class="md-nav__icon md-icon"></span>
           Molecular Unfolding
         </label>
@@ -397,18 +412,18 @@
     <li class="md-nav__item md-nav__item--active md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7_2_1" type="checkbox" id="__nav_7_2_1" checked>
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_2_1" type="checkbox" id="__nav_8_2_1" checked>
       
       
       
       
-        <label class="md-nav__link" for="__nav_7_2_1">
+        <label class="md-nav__link" for="__nav_8_2_1">
           Notebook Experiment
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Notebook Experiment" data-md-level="3">
-        <label class="md-nav__title" for="__nav_7_2_1">
+        <label class="md-nav__title" for="__nav_8_2_1">
           <span class="md-nav__icon md-icon"></span>
           Notebook Experiment
         </label>
@@ -421,7 +436,7 @@
   
     <li class="md-nav__item">
       <a href="../notebook-experiment/" class="md-nav__link">
-        Background
+        Overview
       </a>
     </li>
   
@@ -463,7 +478,7 @@
   
     <li class="md-nav__item">
       <a href="../build-model-detail/" class="md-nav__link">
-        Build Model(Technical Details)
+        Build Model (Technical Details)
       </a>
     </li>
   
@@ -524,18 +539,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7_2_2" type="checkbox" id="__nav_7_2_2" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_2_2" type="checkbox" id="__nav_8_2_2" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_7_2_2">
+        <label class="md-nav__link" for="__nav_8_2_2">
           Batch Evaluation
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Batch Evaluation" data-md-level="3">
-        <label class="md-nav__title" for="__nav_7_2_2">
+        <label class="md-nav__title" for="__nav_8_2_2">
           <span class="md-nav__icon md-icon"></span>
           Batch Evaluation
         </label>
@@ -1748,7 +1763,7 @@ Licensed under the Apache License, Version 2.0.
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>In this part, we use SA and QA to find the optimized configuration of molecular unfolding.
-At first, we load the model file using <strong>QMUQUBO</strong> object</p>
+At first, we load the model file using <strong>QMUQUBO</strong> object.</p>
 
 </div>
 </div>
@@ -1960,7 +1975,7 @@ qubo_model = qmu_qubo_optimize.get_model(method, model_name)</div>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>We can see that we want to carry out experiment with the QUBO model with M equaling 2.
+<p>We can see that we want to carry out experiment using the QUBO model with M equaling 2.
  After that, we set the parameters for optimization.</p>
 <table>
 <thead><tr>
@@ -1972,27 +1987,27 @@ qubo_model = qmu_qubo_optimize.get_model(method, model_name)</div>
 <tbody>
 <tr>
 <td>method</td>
-<td>annealing method for QUBO problem</td>
+<td>Annealing method for QUBO problem</td>
 <td>'dwave-sa': use the simulated annealer in ocean toolkit<br> 'dwave-qa': use the quantum annealer</td>
 </tr>
 <tr>
 <td>shots</td>
-<td>number of reads, refer to <a href="https://docs.ocean.dwavesys.com/projects/neal/en/latest/reference/generated/neal.sampler.SimulatedAnnealingSampler.sample.html#neal.sampler.SimulatedAnnealingSampler.sample">dwave-sa</a> and <a href="https://amazon-braket-ocean-plugin-python.readthedocs.io/en/latest/_apidoc/braket.ocean_plugin.braket_sampler.html">dwave-qa</a> for details</td>
+<td>Number of reads, refer to <a href="https://docs.ocean.dwavesys.com/projects/neal/en/latest/reference/generated/neal.sampler.SimulatedAnnealingSampler.sample.html#neal.sampler.SimulatedAnnealingSampler.sample">dwave-sa</a> and <a href="https://amazon-braket-ocean-plugin-python.readthedocs.io/en/latest/_apidoc/braket.ocean_plugin.braket_sampler.html">dwave-qa</a> for details</td>
 <td>1 to 10,000</td>
 </tr>
 <tr>
 <td>bucket</td>
-<td>the s3 bucket to store your results</td>
+<td>S3 bucket to store your results</td>
 <td>-</td>
 </tr>
 <tr>
 <td>prefix</td>
-<td>the name of the folder in your s3 bucket</td>
+<td>Name of the folder in your S3 bucket</td>
 <td>-</td>
 </tr>
 <tr>
 <td>device</td>
-<td>the arn name to run your quantum annealing</td>
+<td>arn name to run your quantum annealing</td>
 <td>'arn:aws:braket:::device/qpu/d-wave/Advantage_system4' <br> 'arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6'</td>
 </tr>
 </tbody>
@@ -2425,15 +2440,14 @@ dwave-qa run time 7.57835578918457
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>We can tell from the image that SA needs 174.2 seconds 
+<p>We can tell that SA needs 174.2 seconds 
 and QA needs 7.7 seconds to find 
 solution.</p>
 <p>We sometimes get the best result that occurs only once.</p>
 <p><img src="../../../images/one-time-qa.png" alt="OneTimeQA"></p>
 <p>This does not always indicate an error. It is actually the characteristic of the problem or how the problem 
-is formulated. Because we have different linear and quadratic terms that vary by many orders of magnitude. If we 
-set change value of A to some smaller number, like 10 or 100, more occurrences of the best answer will be observed. 
-However, these answers usually break the constraints. For more information about this phenomenon, please refer to this 
+is formulated.</p>
+<p>We have different linear and quadratic terms that vary by many orders of magnitude. If we set change value of A to some smaller number, like 10 or 100, more occurrences of the best answer will be observed. However, these answers usually break the constraints. For more information about this phenomenon, please refer to this 
 <a href="https://support.dwavesys.com/hc/en-us/community/posts/1500000698522-Number-of-occurrences-?input_string=number%20occurance">Link</a>.</p>
 
 </div>
@@ -2456,7 +2470,7 @@ However, these answers usually break the constraints. For more information about
     <nav class="md-footer__inner md-grid" aria-label="Footer">
       
         
-        <a href="../build-model-detail/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Build Model(Technical Details)" rel="prev">
+        <a href="../build-model-detail/" class="md-footer__link md-footer__link--prev" aria-label="Previous: Build Model (Technical Details)" rel="prev">
           <div class="md-footer__button md-icon">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12z"/></svg>
           </div>
@@ -2465,7 +2479,7 @@ However, these answers usually break the constraints. For more information about
               <span class="md-footer__direction">
                 Previous
               </span>
-              Build Model(Technical Details)
+              Build Model (Technical Details)
             </div>
           </div>
         </a>

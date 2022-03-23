@@ -296,7 +296,22 @@
   
     <li class="md-nav__item">
       <a href="regions/" class="md-nav__link">
-        Supported Regions
+        Design Considerations
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="template/" class="md-nav__link">
+        CloudFormation Template
       </a>
     </li>
   
@@ -328,18 +343,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_7">
+        <label class="md-nav__link" for="__nav_8">
           Workshop
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Workshop" data-md-level="1">
-        <label class="md-nav__title" for="__nav_7">
+        <label class="md-nav__title" for="__nav_8">
           <span class="md-nav__icon md-icon"></span>
           Workshop
         </label>
@@ -352,7 +367,7 @@
   
     <li class="md-nav__item">
       <a href="workshop/background/" class="md-nav__link">
-        Overview
+        Background
       </a>
     </li>
   
@@ -368,18 +383,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7_2" type="checkbox" id="__nav_7_2" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_2" type="checkbox" id="__nav_8_2" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_7_2">
+        <label class="md-nav__link" for="__nav_8_2">
           Molecular Unfolding
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Molecular Unfolding" data-md-level="2">
-        <label class="md-nav__title" for="__nav_7_2">
+        <label class="md-nav__title" for="__nav_8_2">
           <span class="md-nav__icon md-icon"></span>
           Molecular Unfolding
         </label>
@@ -394,18 +409,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7_2_1" type="checkbox" id="__nav_7_2_1" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_2_1" type="checkbox" id="__nav_8_2_1" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_7_2_1">
+        <label class="md-nav__link" for="__nav_8_2_1">
           Notebook Experiment
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Notebook Experiment" data-md-level="3">
-        <label class="md-nav__title" for="__nav_7_2_1">
+        <label class="md-nav__title" for="__nav_8_2_1">
           <span class="md-nav__icon md-icon"></span>
           Notebook Experiment
         </label>
@@ -418,7 +433,7 @@
   
     <li class="md-nav__item">
       <a href="workshop/a-molecular-unfolding/notebook-experiment/" class="md-nav__link">
-        Background
+        Overview
       </a>
     </li>
   
@@ -460,7 +475,7 @@
   
     <li class="md-nav__item">
       <a href="workshop/a-molecular-unfolding/build-model-detail/" class="md-nav__link">
-        Build Model(Technical Details)
+        Build Model (Technical Details)
       </a>
     </li>
   
@@ -511,18 +526,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7_2_2" type="checkbox" id="__nav_7_2_2" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_2_2" type="checkbox" id="__nav_8_2_2" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_7_2_2">
+        <label class="md-nav__link" for="__nav_8_2_2">
           Batch Evaluation
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Batch Evaluation" data-md-level="3">
-        <label class="md-nav__title" for="__nav_7_2_2">
+        <label class="md-nav__title" for="__nav_8_2_2">
           <span class="md-nav__icon md-icon"></span>
           Batch Evaluation
         </label>
@@ -671,23 +686,19 @@
 
   <h1>Welcome</h1>
 
-<p>AWS Quantum Ready Architecture for Drug Discovery (AWS QRADD) helps customers 
-study drug discovery problems using quantum computing (Amazon Braket), 
-such as molecular docking and protein folding. Customers can easily 
-leverage this solution to orchestrate workflows that run on both classical 
-and quantum as needed.</p>
+<p>Quantum Ready Architecture for Drug Discovery (QRADD) helps customers study drug discovery problems using quantum computing (Amazon Braket), such as molecular docking and protein folding. Customers can leverage this solution to orchestrate workflows that run on both classical and quantum as needed, thus accelerating iteration and innovation.</p>
 <p>This solution mainly includes the following features:</p>
 <ul>
-<li>Launch a hybrid solution architecture with just 1-click, including quantum computing and 
-classical computing workflow</li>
-<li>Flexibility for customers to use either quantum or classical compute resource or both </li>
-<li>Sample codes to show how to use quantum computing, classical computing or both to study the drug discovery problems </li>
-<li>The analytics data and diagrams are provided in BI service (Amazon QuickSight) to evaluate the experiment values (e.g. performance)</li>
+<li>Launch a hybrid solution architecture with just one-click, including quantum computing and classical computing workflows</li>
+<li>Provide fully managed Jupyter Notebook, which can be used to design and debug drug discovery algorithms</li>
+<li>Offer workflows based on <a href="https://aws.amazon.com/step-functions/">AWS Step Functions</a> and <a href="https://aws.amazon.com/batch/">AWS Batch</a>, which can be used to batch evaluate algorithm performance</li>
+<li>Display the evaluation results through BI services <a href="https://aws.amazon.com/quicksight/">Amazon Quicksight</a></li>
+<li>Allow customizing algorithms for other drug discovery problems and reusing them</li>
 </ul>
-<p>This implementation guide describes architectural considerations and configuration steps for deploying the quantum ready architecture for drug discovery 
-in the Amazon Web Services (AWS) cloud. It includes links to <a href="https://aws.amazon.com/cloudformation/">CloudFormation</a> templates that 
+<p>Moreover, you can walk through the <a href="workshop/background/">workshop</a> to learn quickly how to apply quantum computing to drug discovery problems. The workshop takes the molecular unfolding as an example to illustrate the background information, how to build model, optimize its configuration, and batch evaluate the experiment results. </p>
+<p>This implementation guide describes architectural considerations and configuration steps for deploying the quantum ready architecture for drug discovery in the Amazon Web Services (AWS) cloud. It includes links to <a href="https://aws.amazon.com/en/cloudformation/">CloudFormation</a> templates that 
 launches and configures the AWS services required to deploy this solution using AWS best practices for security and availability.</p>
-<p>The guide is intended for IT architects, developers, DevOps, data scientists, and algorithm engineers with architecture hands-on experience in the AWS Cloud.</p>
+<p>The guide is intended for IT architects, developers, DevOps, data scientists, algorithm engineers with architecture hands-on experience in the AWS Cloud, and researchers in the drug discovery field.</p>
 
               
             </article>

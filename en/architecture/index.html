@@ -296,7 +296,22 @@
   
     <li class="md-nav__item">
       <a href="../regions/" class="md-nav__link">
-        Supported Regions
+        Design Considerations
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../template/" class="md-nav__link">
+        CloudFormation Template
       </a>
     </li>
   
@@ -328,18 +343,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_7">
+        <label class="md-nav__link" for="__nav_8">
           Workshop
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Workshop" data-md-level="1">
-        <label class="md-nav__title" for="__nav_7">
+        <label class="md-nav__title" for="__nav_8">
           <span class="md-nav__icon md-icon"></span>
           Workshop
         </label>
@@ -352,7 +367,7 @@
   
     <li class="md-nav__item">
       <a href="../workshop/background/" class="md-nav__link">
-        Overview
+        Background
       </a>
     </li>
   
@@ -368,18 +383,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7_2" type="checkbox" id="__nav_7_2" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_2" type="checkbox" id="__nav_8_2" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_7_2">
+        <label class="md-nav__link" for="__nav_8_2">
           Molecular Unfolding
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Molecular Unfolding" data-md-level="2">
-        <label class="md-nav__title" for="__nav_7_2">
+        <label class="md-nav__title" for="__nav_8_2">
           <span class="md-nav__icon md-icon"></span>
           Molecular Unfolding
         </label>
@@ -394,18 +409,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7_2_1" type="checkbox" id="__nav_7_2_1" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_2_1" type="checkbox" id="__nav_8_2_1" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_7_2_1">
+        <label class="md-nav__link" for="__nav_8_2_1">
           Notebook Experiment
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Notebook Experiment" data-md-level="3">
-        <label class="md-nav__title" for="__nav_7_2_1">
+        <label class="md-nav__title" for="__nav_8_2_1">
           <span class="md-nav__icon md-icon"></span>
           Notebook Experiment
         </label>
@@ -418,7 +433,7 @@
   
     <li class="md-nav__item">
       <a href="../workshop/a-molecular-unfolding/notebook-experiment/" class="md-nav__link">
-        Background
+        Overview
       </a>
     </li>
   
@@ -460,7 +475,7 @@
   
     <li class="md-nav__item">
       <a href="../workshop/a-molecular-unfolding/build-model-detail/" class="md-nav__link">
-        Build Model(Technical Details)
+        Build Model (Technical Details)
       </a>
     </li>
   
@@ -511,18 +526,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7_2_2" type="checkbox" id="__nav_7_2_2" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_2_2" type="checkbox" id="__nav_8_2_2" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_7_2_2">
+        <label class="md-nav__link" for="__nav_8_2_2">
           Batch Evaluation
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Batch Evaluation" data-md-level="3">
-        <label class="md-nav__title" for="__nav_7_2_2">
+        <label class="md-nav__title" for="__nav_8_2_2">
           <span class="md-nav__icon md-icon"></span>
           Batch Evaluation
         </label>
@@ -672,13 +687,9 @@
   <h1>Architecture Overview</h1>
 
 <p>Deploying this solution with the default parameters builds the following environment in the AWS Cloud.</p>
-<p>Figure 1 illustrates a solution built with AWS, this architecture helps users to get quantum ready for drug discovery.</p>
-<p><center></p>
 <p><img alt="architecture" src="../images/architecture.png" /></p>
-<p>Figure 1: The quantum ready solution for drug discovery architecture</p>
-<p></center></p>
-<p>This solution deploys the Amazon CloudFormation template in your 
-AWS Cloud account and provides three parts:</p>
+<p>Figure 1: Solution architecture</p>
+<p>This solution deploys the Amazon CloudFormation template in your AWS Cloud account and provides three parts:</p>
 <ul>
 <li>Notebook Experiment</li>
 <li>Batch Evaluation</li>
@@ -687,73 +698,64 @@ AWS Cloud account and provides three parts:</p>
 <p><strong>Notebook Experiment</strong></p>
 <ol>
 <li>
-<p>The solution deploys an instance for 
-<a href="https://docs.aws.amazon.com/sagemaker/latest/dg/nbi.html">AWS SageMaker Notebook</a>. 
-The user can do <strong>Notebook Experiment</strong> for drug discovery on classical computing and 
-quantum computing(1).</p>
+<p>The solution deploys an instance for <a href="https://docs.aws.amazon.com/sagemaker/latest/dg/nbi.html">Amazon SageMaker Notebook</a>, which allows <strong>Notebook Experiment</strong> for drug discovery(1).</p>
 </li>
 <li>
-<p>The notebook comes with prepared sample code for different problems 
-in drug discovery, like molecular unfolding, molecule simulation and so on. 
-The user can learn how to study these problems based on classical 
-or quantum computing resource through 
-<a href="https://aws.amazon.com/braket/">Amazon Braket</a>. The step-by-step guide is 
-provided in the <a href="../workshop/background/">Workshop Page</a>(2).</p>
+<p>The notebook comes with prepared sample code for different problems in drug discovery, such as molecular unfolding. You can learn how to study these problems based on classical computing or quantum computing through <a href="https://aws.amazon.com/braket/">Amazon Braket</a>. For details, refer to <a href="../workshop/background/">Workshop</a>(2).</p>
 </li>
 <li>
-<p>The solution creates <a href="https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html">NAT gateways</a> in public <a href="https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Subnets.html">subnets</a>, which connects to internet using an <a href="https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Internet_Gateway.html">internet gateway</a>. The Notebook is deployed in private subnets, which can access internet using NAT gateways(3).</p>
+<p>The solution creates <a href="https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html">NAT gateways</a> in public <a href="https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Subnets.html">subnets</a>, which connects to internet using an <a href="https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Internet_Gateway.html">internet gateway</a>. The notebook instance is deployed in private subnets, which can access internet using NAT gateways(3).</p>
 </li>
 </ol>
 <p><strong>Batch Evaluation</strong></p>
 <ol>
 <li>
-<p>The solution deploys <a href="https://aws.amazon.com/step-functions/">AWS Step Functions</a> workflows for users to do <strong>Batch Evaluation</strong>(4). </p>
+<p>The solution deploys <a href="https://aws.amazon.com/step-functions/">AWS Step Functions</a> workflows for <strong>Batch Evaluation</strong>(4). </p>
 </li>
 <li>
-<p>The AWS Step Functions workflows launches various computing tasks in parallel through 
-    <a href="https://aws.amazon.com/batch/">AWS Batch</a> jobs based on different model parameters, resources, classical computing or quantum computing(5).</p>
+<p>The AWS Step Functions workflow launch various computing tasks in parallel through <a href="https://aws.amazon.com/batch/">AWS Batch</a> jobs based on different model parameters, resources, classical computing or quantum computing(5).</p>
 </li>
 <li>
-<p>Each AWS Batch job which uses the pre-built container image in <a href="https://aws.amazon.com/ecr/">Amazon ECR</a>(7) tries to evaluate a particular drug discovery problem based on a specific model parameter(6). </p>
+<p>Each AWS Batch job uses the pre-built container image in <a href="https://aws.amazon.com/ecr/">Amazon ECR</a>(7) and attempts to evaluate a particular drug discovery problem based on specific model parameters(6). </p>
 </li>
 <li>
-<p>For classical computing, AWS Batch jobs evaluate the problem locally, and save results in <a href="https://aws.amazon.com/s3/">Amazon S3</a>(10).</p>
+<p>For classical computing, AWS Batch jobs evaluate the problem on <a href="https://aws.amazon.com/ec2/">Amazon EC2</a>, and save results in <a href="https://aws.amazon.com/s3/">Amazon S3</a>(10).</p>
 </li>
 <li>
 <p>For quantum computing, AWS Batch jobs asynchronously submit tasks to Amazon Braket as Braket tasks/jobs(9).</p>
 </li>
 <li>
-<p>AWS Step Functions workflows waits for all jobs to complete.</p>
+<p>AWS Step Functions workflows wait for all jobs to complete.</p>
 </li>
 <li>
-<p>When an Amazon Braket task/job completed, it saves output as a file in Amazon S3 bucket, and an event is dispatched via <a href="https://aws.amazon.com/eventbridge/">Amazon EventBridge</a>(11).</p>
+<p>When an Amazon Braket task/job is completed, it saves output as a file in an Amazon S3 bucket, and an event is dispatched via <a href="https://aws.amazon.com/eventbridge/">Amazon EventBridge</a>(11).</p>
 </li>
 <li>
-<p>An <a href="https://aws.amazon.com/lambda">AWS Lambda</a> function is triggered by events from EventBridge, it parses the output file of the Braket task/job in S3, saves the evaluation result to S3 bucket as well and sends a callback to the AWS Step Functions workflow.</p>
+<p>An <a href="https://aws.amazon.com/lambda">AWS Lambda</a> function is triggered by events from EventBridge, and parses the output file of the Braket task/job in S3, saves the evaluation result to S3 bucket as well and sends a callback to the AWS Step Functions workflow.</p>
 </li>
 <li>
-<p>When all sub jobs complete, AWS Step Functions workflow continues to next step(12).</p>
+<p>When all sub jobs are completed, AWS Step Functions workflow continues to the next step(12).</p>
 </li>
 <li>
-<p>When the whole batch evaluation completes, the workflow sends a notification to <a href="https://aws.amazon.com/sns/">Amazon SNS</a> topic. All <a href="../deployment/">subscribers</a> will be notified for the batch evaluation result(13).</p>
+<p>When the whole batch evaluation is done, the workflow sends a notification to <a href="https://aws.amazon.com/sns/">Amazon SNS</a> topic. All <a href="../deployment/">subscribers</a> will be notified for the batch evaluation results(13).</p>
 </li>
 </ol>
 <p><strong>Visualization</strong></p>
 <ol>
 <li>
-<p>An <a href="https://aws.amazon.com/glue/getting-started/">Amazon Glue</a> table and <a href="https://docs.aws.amazon.com/athena/latest/ug/what-is.html">Amazon Athena</a> queries are created for querying the metrics of batch evaluation(14).</p>
+<p>An <a href="https://docs.aws.amazon.com/athena/latest/ug/what-is.html">Amazon Athena</a> table is created for querying the metrics of batch evaluation(14).</p>
 </li>
 <li>
-<p>The user can view the <strong>Batch Evaluation</strong> results(e.g. performance) through <a href="https://aws.amazon.com/quicksight/">Amazon QuickSight</a>(15).</p>
+<p>You can view the <strong>Batch Evaluation</strong> results through <a href="https://aws.amazon.com/quicksight/">Amazon QuickSight</a>(15).</p>
 </li>
 </ol>
-<p>Note: </p>
+<p>Remarks: </p>
 <ul>
 <li>
-<p>All compute resources(AWS Batch Compute Environment and AWS Lambda) are put in private subnets in <a href="https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html">Amazon VPC</a>.</p>
+<p>All computing resources (AWS Batch Compute Environment and AWS Lambda) are placed in private subnets in <a href="https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html">Amazon VPC</a>.</p>
 </li>
 <li>
-<p><a href="https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints.html">VPC Endpoints</a> are enabled for Amazon ECR, Amazon S3, Amazon Athena and Amazon Braket(8).</p>
+<p><a href="https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints.html">VPC Endpoints</a> are provisioned for Amazon ECR, Amazon S3, Amazon Athena and Amazon Braket(8).</p>
 </li>
 </ul>
 

@@ -293,7 +293,22 @@
   
     <li class="md-nav__item">
       <a href="../regions/" class="md-nav__link">
-        Supported Regions
+        Design Considerations
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../template/" class="md-nav__link">
+        CloudFormation Template
       </a>
     </li>
   
@@ -325,18 +340,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7" type="checkbox" id="__nav_7" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8" type="checkbox" id="__nav_8" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_7">
+        <label class="md-nav__link" for="__nav_8">
           Workshop
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Workshop" data-md-level="1">
-        <label class="md-nav__title" for="__nav_7">
+        <label class="md-nav__title" for="__nav_8">
           <span class="md-nav__icon md-icon"></span>
           Workshop
         </label>
@@ -349,7 +364,7 @@
   
     <li class="md-nav__item">
       <a href="../workshop/background/" class="md-nav__link">
-        Overview
+        Background
       </a>
     </li>
   
@@ -365,18 +380,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7_2" type="checkbox" id="__nav_7_2" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_2" type="checkbox" id="__nav_8_2" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_7_2">
+        <label class="md-nav__link" for="__nav_8_2">
           Molecular Unfolding
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Molecular Unfolding" data-md-level="2">
-        <label class="md-nav__title" for="__nav_7_2">
+        <label class="md-nav__title" for="__nav_8_2">
           <span class="md-nav__icon md-icon"></span>
           Molecular Unfolding
         </label>
@@ -391,18 +406,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7_2_1" type="checkbox" id="__nav_7_2_1" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_2_1" type="checkbox" id="__nav_8_2_1" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_7_2_1">
+        <label class="md-nav__link" for="__nav_8_2_1">
           Notebook Experiment
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Notebook Experiment" data-md-level="3">
-        <label class="md-nav__title" for="__nav_7_2_1">
+        <label class="md-nav__title" for="__nav_8_2_1">
           <span class="md-nav__icon md-icon"></span>
           Notebook Experiment
         </label>
@@ -415,7 +430,7 @@
   
     <li class="md-nav__item">
       <a href="../workshop/a-molecular-unfolding/notebook-experiment/" class="md-nav__link">
-        Background
+        Overview
       </a>
     </li>
   
@@ -457,7 +472,7 @@
   
     <li class="md-nav__item">
       <a href="../workshop/a-molecular-unfolding/build-model-detail/" class="md-nav__link">
-        Build Model(Technical Details)
+        Build Model (Technical Details)
       </a>
     </li>
   
@@ -508,18 +523,18 @@
     <li class="md-nav__item md-nav__item--nested">
       
       
-        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_7_2_2" type="checkbox" id="__nav_7_2_2" >
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_8_2_2" type="checkbox" id="__nav_8_2_2" >
       
       
       
       
-        <label class="md-nav__link" for="__nav_7_2_2">
+        <label class="md-nav__link" for="__nav_8_2_2">
           Batch Evaluation
           <span class="md-nav__icon md-icon"></span>
         </label>
       
       <nav class="md-nav" aria-label="Batch Evaluation" data-md-level="3">
-        <label class="md-nav__title" for="__nav_7_2_2">
+        <label class="md-nav__title" for="__nav_8_2_2">
           <span class="md-nav__icon md-icon"></span>
           Batch Evaluation
         </label>
@@ -778,8 +793,8 @@
 
   <h1>Uninstall the solution</h1>
 
-<p>To uninstall the AWS QRADD solution, you must delete the AWS CloudFormation stack. </p>
-<p>You can use either the AWS Management Console or the AWS Command Line Interface (AWS CLI) to delete the CloudFormation stack.</p>
+<p>To uninstall the QRADD solution, you must delete the AWS CloudFormation stack. </p>
+<p>You can use either the AWS Management Console or the AWS Command Line Interface (CLI) to delete the CloudFormation stack.</p>
 <h2 id="uninstall-the-stack-using-the-aws-management-console">Uninstall the stack using the AWS Management Console</h2>
 <ol>
 <li>Sign in to the <a href="https://console.aws.amazon.com/cloudformation/home">AWS CloudFormation</a> console.</li>
@@ -787,25 +802,36 @@
 <li>Choose <strong>Delete</strong>.</li>
 </ol>
 <h2 id="uninstall-the-stack-using-aws-command-line-interface">Uninstall the stack using AWS Command Line Interface</h2>
-<p>Determine whether the AWS Command Line Interface (AWS CLI) is available in your environment. For installation instructions, refer to <a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html">What Is the AWS Command Line Interface</a> in the <em>AWS CLI User Guide</em>. After confirming that the AWS CLI is available, run the following command.</p>
+<p>Determine whether the AWS CLI is available in your environment. For installation instructions, refer to <a href="https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html">What Is the AWS Command Line Interface</a> in the <em>AWS CLI User Guide</em>. After confirming that the AWS CLI is available, run the following command.</p>
 <div class="codehilite"><pre><span></span><code>aws cloudformation delete-stack --stack-name &lt;installation-stack-name&gt; --region &lt;aws-region&gt;
 </code></pre></div>
 
 <h2 id="delete-quicksight-account-optional">Delete QuickSight Account (Optional)</h2>
-<p>Go to the <strong>Account settings</strong> of 
-<a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin">QuickSight admin</a> and click <strong>Delete account</strong>。</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>This action may influence other data under this QuickSight Account. 
-Please check in advance.</p>
+<ol>
+<li>
+<p>Go to <a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin">QuickSight</a>.</p>
+</li>
+<li>
+<p>Choose <strong>Account settings</strong>. </p>
+</li>
+<li>
+<p>Choose <strong>Delete account</strong>.</p>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>All users on this account will be permanently deleted along with all dashboards, analyses, and other related data. </p>
 </div>
+</li>
+<li>
+<p>Enter <em>Confirm</em> to delete the account.</p>
+</li>
+</ol>
 <h2 id="delete-quicksight-role-optional">Delete QuickSight Role (Optional)</h2>
 <ol>
 <li>
 <p>Go to <a href="https://console.aws.amazon.com/iamv2/home#/roles">IAM Role</a> AWS console.</p>
 </li>
 <li>
-<p>Search <code>qradd-quicksight-service-role</code>.</p>
+<p>Search for the role name. For example, <code>qradd-quicksight-service-role</code>.</p>
 </li>
 <li>
 <p>Select the role.</p>

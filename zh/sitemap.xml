@@ -26,11 +26,6 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/notices/</loc>
-         <lastmod>2022-03-23</lastmod>
-         <changefreq>daily</changefreq>
-    </url>
-    <url>
          <loc>https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/regions/</loc>
          <lastmod>2022-03-23</lastmod>
          <changefreq>daily</changefreq>
@@ -47,6 +42,11 @@
     </url>
     <url>
          <loc>https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/source/</loc>
+         <lastmod>2022-03-23</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/template/</loc>
          <lastmod>2022-03-23</lastmod>
          <changefreq>daily</changefreq>
     </url>
