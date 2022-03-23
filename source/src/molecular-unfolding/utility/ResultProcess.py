@@ -203,7 +203,7 @@ class ResultParser():
         actual_var = None
         max_tor_list = None
         max_ris = None
-        max_volume = 0  
+        max_volume = 0
 
         for index, row in pddf_head_sample.iterrows():
             generate_row = self._generate_row_data(row)
@@ -216,10 +216,11 @@ class ResultParser():
 #                 logging.info(f"max_ris {complete_tor_info['max_ris']}")
 #                 logging.info(f"max_tor_list {complete_tor_info['max_tor_list']}")
                 if tuple(complete_tor_info['actual_var']) in self.tried_combination:
-                             logging.info(f"pass current duplicate var")
-                             continue
+                    logging.info(f"pass current duplicate var")
+                    continue
                 else:
-                             self.tried_combination.add(tuple(complete_tor_info['actual_var']))
+                    self.tried_combination.add(
+                        tuple(complete_tor_info['actual_var']))
                 optimize_gain, optimize_volume = self._evaluate_one_result(
                     complete_tor_info['tor_list'])
                 if optimize_gain > max_optimize_gain:
@@ -348,11 +349,12 @@ class ResultParser():
                     _update_var_dict_list(local_var_dict, key_list[1:])
 
         key_list = list(var_dict_raw.keys())
-                             
+
         _update_var_dict_list({}, key_list)
 
         # use to generate final position
-        logging.info(f"var_dict_raw {var_dict_raw} var_dict_list {var_dict_list}")
+        logging.info(
+            f"var_dict_raw {var_dict_raw} var_dict_list {var_dict_list}")
 
         for var_dict in var_dict_list:
             complete_tor_info = {}
@@ -431,13 +433,13 @@ class ResultParser():
                             tor_map[tor_name].add(rb)
 
             logging.debug(f"tor_map {tor_map}")
-            
+
             self._init_mol_file(self.atom_pos_data_temp)
 
             optimize_distance = update_pts_distance(
                 self.atom_pos_data_temp, rb_set, tor_map, self.var_rb_map, self.theta_option, True, True)
             optimize_volume = optimize_volume + optimize_distance
-            
+
             if self.parameters["volume"]["initial"] == 0:
                 raw_distance = update_pts_distance(
                     self.atom_pos_data_raw, rb_set, None, None, None, False, True)
@@ -454,7 +456,7 @@ class ResultParser():
 #         logging.debug(f_distances_raw)
         if self.parameters["volume"]["initial"] == 0:
             self.parameters["volume"]["initial"] = raw_volume
-                             
+
         optimize_gain = optimize_volume / \
             self.parameters["volume"]["initial"]
 
