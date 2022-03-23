@@ -52,6 +52,10 @@ export class AddCfnNag implements IAspect {
         rules_to_suppress: [{
           id: 'W89',
           reason: 'Lambda is used as custom resource',
+        },
+        {
+          id: 'W92',
+          reason: 'Lambda is used as custom resource',
         }],
       });
     } else if (
