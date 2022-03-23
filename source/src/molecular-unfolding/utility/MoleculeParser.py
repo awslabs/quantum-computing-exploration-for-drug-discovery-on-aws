@@ -9,13 +9,14 @@ import numpy as np
 import re
 
 import logging
-import pickle #nosec
+import pickle  # nosec
 import os
 
 from .GraphModel import BuildMolGraph
 
 log = logging.getLogger()
 log.setLevel('INFO')
+
 
 class MoleculeData():
 
@@ -43,15 +44,18 @@ class MoleculeData():
             logging.error(
                 "file type {} not supported! only support mol2,pdb".format(file_type))
             raise Exception("file type not supported!")
-    
+
     def _add_van_der_waals(self):
         # https://en.wikipedia.org/wiki/Van_der_Waals_radius
-        van_der_waals_dict = {'H':1.2, 'C':1.7, 'N':1.55, 'O':1.52, 'F':1.47, 'S':1.8, 'Ch':1.75, 'Co':1.4}
+        van_der_waals_dict = {'H': 1.2, 'C': 1.7, 'N': 1.55,
+                              'O': 1.52, 'F': 1.47, 'S': 1.8, 'Ch': 1.75, 'Co': 1.4, 'Cl': 1.75}
+
         def _parse_atom(atom_type):
             return atom_type.split('.')[0]
 
         for pt, info in self.atom_data.items():
-            self.atom_data[pt]['vdw-radius'] = van_der_waals_dict[_parse_atom(self.atom_data[pt]['atom_type'])]
+            self.atom_data[pt]['vdw-radius'] = van_der_waals_dict[_parse_atom(
+                self.atom_data[pt]['atom_type'])]
 
     def bond_parset(self, filename):
         with open(filename, 'r') as f:
@@ -90,4 +94,4 @@ class MoleculeData():
     @classmethod
     def load(cls, filename):
         with open(filename, "rb") as f:
-            return pickle.load(f) #nosec
+            return pickle.load(f)  # nosec
