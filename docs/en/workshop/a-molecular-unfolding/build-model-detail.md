@@ -85,8 +85,8 @@ For constraints, we use the following logic to implement:
 Figure 5: The Logic for defining the constraints
 
 
-As we analyzed before, the model does not which variables belong to the same physical torsion. For example, $x\_1\_1$ , $x\_1\_2$, $x\_1\_3$ 
-and $x\_1\_4$ belong to the same torsion. The model cannot let only one of them become $1$. If the model choose multiple of them, we must punish it. As the figure shown, when the model choose more than one variables of $x\_1\_?$ to become $1$, we give it the punishment term $600$ (This example is for $A=300$). 
+As we analyzed before, the model does not know which variables belong to the same physical torsion. For example, $x\_1\_1$ , $x\_1\_2$, $x\_1\_3$ 
+and $x\_1\_4$ belong to the same torsion. The model can only let one of them become $1$. If the model choose multiple of them, we must punish it. As the figure shown, when the model choose more than one variables of $x\_1\_?$ to become $1$, we give it the punishment term $600$ (This example is for $A=300$). 
 
 Most importantly, we use the following method to recursively calculate the distances for different configurations:
 

@@ -228,7 +228,7 @@ Before you launch the solution, review the architecture, supported regions, and 
 
 8. Choose **Create stack** to deploy the stack.
 
-You can view the status of the stack in the AWS CloudFormation Console in the **Status** column. You should receive a CREATE_COMPLETE status in approximately 10 minutes.
+You can view the status of the stack in the AWS CloudFormation Console in the **Status** column. You should receive a **CREATE_COMPLETE** status in approximately 10 minutes.
 
 ## Step 3: Subscribe to SNS notification (optional)
 

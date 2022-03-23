@@ -1,8 +1,8 @@
 # Run Default Batch Evaluation
 
-We will run batch default evaluation through AWS Step Functions workflow and view the result via Amazon QuickSight dashboard.
+We will run default batch evaluation through AWS Step Functions workflow and view the result via Amazon QuickSight dashboard.
 
-1. Obtain Step Functions link from the CloudFormation output, and click the Step Functions link to navigate to AWS Step Functions console.
+1. Obtain AWS Step Functions link from the CloudFormation output, and click the link to navigate to AWS Step Functions console.
 
 2. Click the **Start execution** button.
 
@@ -40,7 +40,7 @@ We will run batch default evaluation through AWS Step Functions workflow and vie
         | result_location | Molecule mol2 file after unfolding  |
    
 
-7. You can also switch the tab to view result **by Resource**.
+7. You can also switch the tab to view the result **by Resource**.
 
     In this sheet, you can view batch evaluation result by each resource and QPU device.
 
