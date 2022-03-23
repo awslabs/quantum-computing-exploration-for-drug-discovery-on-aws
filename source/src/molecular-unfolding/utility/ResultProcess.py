@@ -552,21 +552,6 @@ class ResultParser():
         viewer.zoomTo()
         return viewer
 
-
-    def View3DMolFromDir(self,mol_dir, size=(600,600), style="stick", surface=False, opacity=0.5, type="mol2"):
-        assert style in ('line', 'stick', 'sphere', 'carton')
-        viewer = py3Dmol.view(width=size[0], height=size[1],linked=False,viewergrid=(2,2))
-        mol2s = os.popen("ls {}/*.mol2".format(mol_dir)).read().split('\n')[0:-1]
-        for index,mol2 in enumerate(mol2s):
-            viewer.addModel(open(mol2,'r').read(),type,viewer=(index/2,index%2))
-            viewer.setStyle({'stick':{'colorscheme':'greenCarbon'}},viewer=(index/2,index%2))
-        if surface:
-            viewer.addSurface(py3Dmol.SAS, {'opacity': opacity})
-        viewer.zoomTo()
-        view.render()
-        return viewer
-
-
     def StyleSelector(self,mol,size,style):
         return View3DMol(mol,size=(size,size),style=style).show()
 
