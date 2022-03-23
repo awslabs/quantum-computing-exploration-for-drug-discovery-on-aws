@@ -1,24 +1,17 @@
-## Batch Evaluate Your Own Model
+# Batch Evaluate Your Own Model
 
-You have two options to batch evaluate your own model
+You have two options to batch evaluate your own model:
 
 - Batch evaluate your own mol2 file without code changes
 - Fully customize evaluation code
 
 ## Batch evaluate your own mol2 file without code changes
 
-If you have your own mol2 file, you want to batch evaluate it, you can follow below steps:
+If you have your own mol2 file, follow below steps to batch evaluate it:
 
-1. Upload your mol2 file to the S3 bucket in CloudFormation output, or your own S3 bucket. If you want to use your own S3 bucket, the bucket name must be follow pattern:  `braket-*` or `amazon-braket-*`.
-
-    <center>
-      ![S3 output bucket name](../../images/cloudformation-output-s3.png)
+1. Upload your mol2 file to the S3 bucket in CloudFormation output, or your own S3 bucket. If you want to use your own S3 bucket, the bucket name must be in the format of:  `braket-*` or `amazon-braket-*`.
     
-    Figure 1: S3 path
-    </center>
-    
-
-1. Specify S3 uri of your mol2 file as the value of `molFile` in the Step Functions input
+2. Specify S3 uri of your mol2 file as the value of `molFile` in the Step Functions input:
 
      
         {
@@ -26,67 +19,69 @@ If you have your own mol2 file, you want to batch evaluate it, you can follow be
         }
    
 
-       e.g.
+       For example,
     
         {
            "molFile": "s3://amazon-braket-gcr-qc-sol-common/qc/raw_model/117_ideal.mol2"
         }
 
     
-    The full input parameters and schema, please refer to [input specification](../batch-evaluation/#input-specification)
+    For the complete input parameters and schema, please refer to [input specification](../batch-evaluation/#input-specification).
 
-1. Follow the steps in [Batch Evaluation](../batch-evaluation/#start-execution) to run the Step Functions
+3. Follow the steps in [Batch Evaluation](../batch-evaluation/#start-execution) to run the Step Functions.
 
 ## Fully customize evaluation code
 
-This solution is an open source project under Apache License Version 2.0. You can leverage it as your base code, make changes on it.
+This solution is an open source project under Apache License Version 2.0. You can leverage it as your base code, and make changes on it.
 
 If you want to fully customize the evaluation code, follow below steps to make changes and re-deploy the whole stack from CDK.
 
 ### Prerequisites
 
-1. Make sure you have AWS CLI and AWS CDK install in your workspace. You can follow this doc [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) to install AWS CLI. You can follow this document [CDK Getting Started](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_prerequisites) to install and bootstrap CDK
+1. Make sure you have AWS CLI and AWS CDK installed in your workspace. Refer to [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) to install AWS CLI. Follow this document [CDK Getting Started](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_prerequisites) to install and bootstrap CDK.
 
-1. The user or IAM role that performed the deployment must have at least [permissions](./permissions.json)
+2. The user or IAM role to perform the deployment must have at least [permissions](./permissions.json).
 
-1. [Check your quicksight account](../../../deployment/#check-your-quicksight)
+3. Check the [preparations](../../deployment.md) made in the deployment.
 
-1. Make sure you have docker running in your workspace. You can follow this document [Docker Install](https://docs.docker.com/engine/install/) to install docker.
+4. Make sure you have docker running in your workspace. You can follow this document [Docker Install](https://docs.docker.com/engine/install/) to install docker.
 
 ### Customize evaluation code
 
-1. Fork the github repository of this solution to your own git repository
+1. Fork the github repository of this solution to your own git repository.
 
-1. Clone the project to your own workspace
+2. Clone the project to your own workspace.
 
-1. Make changes to source code
+3. Make changes to source code.
 
-!!! notice
-     
-    The `githubRepo` in file `source/src/molecular-unfolding/cdk/construct-notebook.ts` should be changed to your repository
+    !!! caution "Caution"
+        
+        The `githubRepo` in file `source/src/molecular-unfolding/cdk/construct-notebook.ts` should be changed to your repository.
 
 ### Deploy stack to your AWS account from CDK
 
-1. Check CloudFormation in your AWS account, make sure you do not have a stack named `QCStack` in your deployment region
+1. Check CloudFormation in your AWS account, and make sure you do not have a stack named `QCStack` in your deployment region.
 
-1. Check your S3 bucket, make sure no bucket named `amazon-braket-qcstack-<your aws account>-<deployment region>`
+2. Check your S3 bucket, and make sure no bucket is named `amazon-braket-qcstack-<your aws account>-<deployment region>`.
 
-1. Deploy changes to your AWS account from CDK
+3. Deploy changes to your AWS account from CDK.
 
-```bash
-cd source
-npm install
-npx cdk deploy QCStack --parameters QuickSightUser=<your QuickSight user>
-```              
+
+        cd source
+        npm install
+        npx cdk deploy QCStack \
+            --parameters QuickSightUser=<your QuickSight user> \
+            --parameters QuickSightRoleName=<your QuickSight service role name>
+             
  
-1. Wait for the deployment to complete. Deployment will take about 10 minutes 
+4. Wait for the deployment to complete. Deployment will take about 10 minutes. 
 
-1. Get output links from CloudFormation output, the links include:
+5. Get output links from CloudFormation output, which include:
     - Step Functions URL
     - QuickSight Dashboard link
     - Notebook URL
     - S3 Bucket name
 
-1. Follow steps in [Batch Evaluation](../batch-evaluation/) to run your own code with appropriate input
+6. Follow steps in [Batch Evaluation](../batch-evaluation/) to run your own code with appropriate input.
 
-1. [View result](../batch-evaluation/#view-dashboard) through QuickSight dashboard
+7. [View result](../batch-evaluation/#view-dashboard) through QuickSight dashboard.
