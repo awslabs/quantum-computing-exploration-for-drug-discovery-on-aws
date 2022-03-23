@@ -203,8 +203,7 @@ class ResultParser():
         actual_var = None
         max_tor_list = None
         max_ris = None
-        
-        
+        max_volume = 0  
 
         for index, row in pddf_head_sample.iterrows():
             generate_row = self._generate_row_data(row)
@@ -221,8 +220,7 @@ class ResultParser():
                              continue
                 else:
                              self.tried_combination.add(tuple(complete_tor_info['actual_var']))
-                self._init_parameters()
-                optimize_gain = self._evaluate_one_result(
+                optimize_gain, optimize_volume = self._evaluate_one_result(
                     complete_tor_info['tor_list'])
                 if optimize_gain > max_optimize_gain:
                     # update final position for visualization
@@ -243,6 +241,7 @@ class ResultParser():
                         else:
                             evaluate_loop_result = True
                             max_optimize_gain = optimize_gain
+                            max_volume = optimize_volume
                             chosen_var = complete_tor_info['chosen_var']
                             actual_var = complete_tor_info['actual_var']
                             max_tor_list = complete_tor_info['max_tor_list']
@@ -262,6 +261,7 @@ class ResultParser():
             self.parameters["volume"]["unfolding_results"] = list(initial_var)
             chosen_var = initial_var
         else:
+            self.parameters["volume"]["optimize"] = max_volume
             self.parameters["volume"]["gain"] = max_optimize_gain
             # update optimized results
             self.parameters["volume"]["unfolding_results"] = list(actual_var)
@@ -404,6 +404,8 @@ class ResultParser():
 
     def _evaluate_one_result(self, complete_tor_list):
 
+        optimize_volume = 0
+        raw_volume = 0
         for tor in complete_tor_list:
             # build map for affected tor
             tor_list = tor[0]
@@ -434,33 +436,33 @@ class ResultParser():
 
             optimize_distance = update_pts_distance(
                 self.atom_pos_data_temp, rb_set, tor_map, self.var_rb_map, self.theta_option, True, True)
-            raw_distance = update_pts_distance(
-                self.atom_pos_data_raw, rb_set, None, None, None, False, True)
+            optimize_volume = optimize_volume + optimize_distance
+            
+            if self.parameters["volume"]["initial"] == 0:
+                raw_distance = update_pts_distance(
+                    self.atom_pos_data_raw, rb_set, None, None, None, False, True)
+                raw_volume = raw_volume + raw_distance
 
 #             f_distances_optimize[tuple(ris)] = optimize_distance
 #             f_distances_raw[tuple(ris)] = raw_distance
-            self.parameters["volume"]["optimize"] = self.parameters["volume"]["optimize"] + \
-                optimize_distance
-            self.parameters["volume"]["initial"] = self.parameters["volume"]["initial"] + raw_distance
+#             self.parameters["volume"]["optimize"] = self.parameters["volume"]["optimize"] + \
+#                 optimize_distance
+#             self.parameters["volume"]["initial"] = self.parameters["volume"]["initial"] + raw_distance
 
 #         logging.debug(f"finish update optimize points for {chosen_var}")
 #         logging.debug(f_distances_optimize)
 #         logging.debug(f_distances_raw)
-
-        optimize_gain = self.parameters["volume"]["optimize"] / \
+        if self.parameters["volume"]["initial"] == 0:
+            self.parameters["volume"]["initial"] = raw_volume
+                             
+        optimize_gain = optimize_volume / \
             self.parameters["volume"]["initial"]
 
-        optimize_state = False
-        if optimize_gain <= 1.0:
-            optimize_state = False
-        else:
-            optimize_state = True
-
-        logging.debug(f"initial {self.parameters['volume']['initial']}")
-        logging.debug(f"optimize {self.parameters['volume']['optimize']}")
+        logging.info(f"initial {self.parameters['volume']['initial']}")
+        logging.info(f"optimize {optimize_volume}")
         logging.info(f"optimize_gain {optimize_gain}")
 
-        return optimize_gain
+        return optimize_gain, optimize_volume
 
     def _physical_check_van_der_waals(self, atom_raw):
         check_result = True
