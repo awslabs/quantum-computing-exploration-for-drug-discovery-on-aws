@@ -1,26 +1,19 @@
-You are responsible for the cost of Amazon cloud technology services used when running this solution. As of March 2022, the estimated cost for the solution 
-is 25.12 USD per day.
-
-The whole cost consists of five types:
+You are responsible for the cost of AWS services used when running this solution. The actual cost depends on the tasks to be executed and their complexity. As of March 2022, the cost factors mainly consist of five types:
 
  * Notebook
- * Compute 
+ * Computing 
  * Storage
  * Analysis
  * Orchestration
 
- The actual cost depends on the tasks performed and the complexity. Take 
- the molecular unfolding function for the prepared sample (117_idel.mol2) as 
- an example. The following calculation is based on that customers use 
- the notebook to study sample code as well as use the solution to run 
- one complete batch test both on quantum computing resource and classical computing 
- resource in order to visualize the results in Amazon QuickSight. If the 
- customers only used solution to study the sample code, the cost for 
- notebook and the compute from Amazon Braket were considered.
+## Example 
 
-!!! notice
+Take the molecular unfolding function for the prepared sample (117_idel.mol2) as an example. In US East (N. Virginia) Region (us-east-1), assume a customer continues using the notebook to study sample code, and adopts the solution to run one complete batch evaluation both on quantum computing resource and classical computing resource in order to visualize the results in Amazon QuickSight. 
 
-    It's good practice to set a billing alarm before deploying this solution. Refer to this [link](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/monitor_estimated_charges_with_cloudwatch.html)
+!!! Notice "Note"
+    
+    If the customer uses the solution only to study the sample code, the cost factors mainly involve the notebook and the computing from Amazon Braket.
+
 
 <!-- | Cost Type| Service | Resource Size | Operating Condition | Cost |
 | :---: | :---: | :---: | :---: | :---: |
@@ -43,8 +36,8 @@ The whole cost consists of five types:
     <tr>
         <td><B>Type</B></td>
         <td><B>Service</td>
-        <td><B>Resource Size</td>
-        <td><B>Operating Condition</td>
+        <td><B>Resource</td>
+        <td><B>Dimensions</td>
         <td><B>Cost</td>
     <tr>
     <tr>
@@ -52,25 +45,25 @@ The whole cost consists of five types:
         <td>Amazon Sagemaker Notebook</td>
         <td>ml.c5.xlarge</td>
         <td>long run instance</td>
-        <td>4.90 USD/Day</td>
+        <td>4.90 USD per day</td>
     <tr>
     <tr>
-        <td rowspan="16">Compute</td>
+        <td rowspan="16">Computing</td>
         <td>Amazon Braket</td>
         <td>D-Wave - DW_2000Q_6</td>
         <td>4 tasks for different parameters, 10000 shots/task</td>
-        <td>8.8 USD</td>
+        <td>8.80 USD</td>
     <tr>
     <tr>
         <td>Amazon Braket</td>
         <td>D-Wave - Advantage_system4.1</td>
         <td>4 tasks for different parameters, 10000 shots/task</td>
-        <td>8.8 USD</td>
+        <td>8.80 USD</td>
     <tr>
     <tr>
         <td>Amazon Batch (Fargate) </td>
         <td>2 VCPU 4G MEM</td>
-        <td>Tasks like creating models, 8 minutes(< 20 minutes)</td>
+        <td>Tasks like creating models, 8 minutes (< 20 minutes)</td>
         <td>1.02 USD</td>
     <tr>
     <tr>
@@ -121,7 +114,7 @@ The whole cost consists of five types:
         <td>Amazon QuickSight</td>
         <td>1 reader</td>
         <td>long run service</td>
-        <td>8.00 USD/Month</td>
+        <td>8.00 USD per month</td>
     <tr>
     <tr>
         <td>Orchestration</td>
@@ -131,7 +124,20 @@ The whole cost consists of five types:
         <td>0 USD</td>
     <tr>
     <tr>
+        <td rowspan='4'>Network</td>
+        <td>VPC Endpoints</td>
+        <td>Amazon S3</br>Amazon ECR</br>Amazon Athena</br>Amazon Braket</td>
+        <td>long run service</td>
+        <td>58.41 USD per month</td>
+    <tr>
+    <tr>
+        <td>NAT Gateway</td>
+        <td>-</td>
+        <td>long run service</td>
+        <td>65.78 USD per month</td>
+    <tr> 
+    <tr>
         <td colspan='4'>Total Cost</td>
-        <td>25.12 USD/Day</td>
+        <td>29.26 USD per day</td>
     <tr>
 </table>

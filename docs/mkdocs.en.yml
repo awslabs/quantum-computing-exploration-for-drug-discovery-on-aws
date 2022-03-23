@@ -11,16 +11,17 @@ nav:
   - Cost: cost.md
   - Architecture Overview: architecture.md
   - Security: security.md
-  - Supported Regions: regions.md
+  - Design Considerations: regions.md
+  - CloudFormation Template: template.md
   - Automated Deployment: deployment.md
   - Workshop: 
-    - Overview: workshop/background.md
+    - Background: workshop/background.md
     - Molecular Unfolding: 
       - Notebook Experiment:
-        - Background: workshop/a-molecular-unfolding/notebook-experiment.md
+        - Overview: workshop/a-molecular-unfolding/notebook-experiment.md
         - Prepare Data: workshop/a-molecular-unfolding/prepare-data.ipynb
         - Build Model: workshop/a-molecular-unfolding/build-model.ipynb
-        - Build Model(Technical Details): workshop/a-molecular-unfolding/build-model-detail.md
+        - Build Model (Technical Details): workshop/a-molecular-unfolding/build-model-detail.md
         - Optimize Configuration: workshop/a-molecular-unfolding/optimize-config.ipynb
         - Post Process: workshop/a-molecular-unfolding/post-process.ipynb
       - Batch Evaluation: 
