@@ -120,7 +120,6 @@ export default (scope: Construct, props: Props) => {
     timeout: Duration.minutes(5),
     memorySize: 256,
     runtime: Runtime.NODEJS_14_X,
-    reservedConcurrentExecutions: 5,
     vpc: props.vpc,
     securityGroups: [props.sg],
     vpcSubnets: props.vpc.selectSubnets({

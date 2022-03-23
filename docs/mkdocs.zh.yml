@@ -11,7 +11,6 @@ nav:
   - 架构概览: architecture.md
   - 安全信息: security.md
   - 区域支持: regions.md
-  - 模版信息: template.md
   - 部署解决方案: deployment.md
   - 动手实验: 
     - 概览: workshop/background.md

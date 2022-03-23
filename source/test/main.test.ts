@@ -258,8 +258,8 @@ test('SupportedRegionsRule config correctly', () => {
   expect(supportedRegions).toEqual(
     [
       {
-        Assert: { 'Fn::Contains': [['us-west-2', 'us-east-1'], { Ref: 'AWS::Region' }] },
-        AssertDescription: 'supported regions are us-west-2, us-east-1',
+        Assert: { 'Fn::Contains': [['us-west-2', 'us-east-1', 'eu-west-2'], { Ref: 'AWS::Region' }] },
+        AssertDescription: 'supported regions are us-west-2, us-east-1, eu-west-2',
       },
     ],
   );
@@ -284,3 +284,12 @@ test('CreateEventRuleFuncServiceRole has CrossEventRegionCondition', () => {
   expect(conditionSet).toBeTruthy();
 });
 
+
+test('has parameter QuickSightRoleName', () => {
+  const app = new App();
+  const stack = new MainStack(app, 'test');
+  const template = Template.fromStack(stack);
+
+  const QuickSightRoleName = template.toJSON().Parameters.QuickSightRoleName;
+  expect(QuickSightRoleName).toBeDefined();
+});
