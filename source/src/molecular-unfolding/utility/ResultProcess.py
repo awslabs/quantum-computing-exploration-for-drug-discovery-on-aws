@@ -445,15 +445,6 @@ class ResultParser():
                     self.atom_pos_data_raw, rb_set, None, None, None, False, True)
                 raw_volume = raw_volume + raw_distance
 
-#             f_distances_optimize[tuple(ris)] = optimize_distance
-#             f_distances_raw[tuple(ris)] = raw_distance
-#             self.parameters["volume"]["optimize"] = self.parameters["volume"]["optimize"] + \
-#                 optimize_distance
-#             self.parameters["volume"]["initial"] = self.parameters["volume"]["initial"] + raw_distance
-
-#         logging.debug(f"finish update optimize points for {chosen_var}")
-#         logging.debug(f_distances_optimize)
-#         logging.debug(f_distances_raw)
         if self.parameters["volume"]["initial"] == 0:
             self.parameters["volume"]["initial"] = raw_volume
 

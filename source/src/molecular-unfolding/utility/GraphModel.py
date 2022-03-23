@@ -24,7 +24,6 @@ class BuildMolGraph():
 
         self.mol_ug = self.mol_g.to_undirected()
 
-        # build_rb()
         # use betweenness_centrality to generate rotatabole bonds: self.mol_ug -> rb_list
         self.rb_list = self.build_rb()
         self.rb_data, self.rb_data_list = self.build_rb_data()
