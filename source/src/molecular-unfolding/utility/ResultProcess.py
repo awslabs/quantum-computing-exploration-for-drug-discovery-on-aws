@@ -553,7 +553,7 @@ class ResultParser():
         return viewer
 
     def StyleSelector(self,mol,size,style):
-        return View3DMol(mol,size=(size,size),style=style).show()
+        return self.View3DMol(mol,size=(size,size),style=style).show()
 
     def InteractView(self,mol,size):
         interact(self.StyleSelector, 
