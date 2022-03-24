@@ -491,7 +491,7 @@ class ResultParser():
         start_parse = 0
 
         def _update_atom_pos(line, atom_pos_data):
-            atom_idx_name = re.findall(r"\d+ [A-Za-z]+\d+", line)[0]
+            atom_idx_name = re.findall(r"\d+ +[A-Za-z]+\d+", line)[0]
             logging.debug("atom id name is {}".format(atom_idx_name))
             atom_idx = atom_idx_name.split(' ')[0]
 
