@@ -11,7 +11,7 @@
         <link rel="canonical" href="https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/deployment/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.2.6">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.2.7">
     
     
       
@@ -887,7 +887,7 @@
 <p>点击<strong>创建策略</strong>。</p>
 </li>
 <li>
-<p>在创建策略页面，点击<strong>JSON</strong>，填写QuickSight策略如下，这是在本解决方案中，QuickSight能工作的最小权限。</p>
+<p>在创建策略页面，点击<strong>JSON</strong>，填写QuickSight策略如下，这是在本解决方案中，QuickSight能工作的最小权限。请忽略输入框下面的Errors提示。</p>
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="s2">&quot;Version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2012-10-17&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="w">    </span><span class="s2">&quot;Statement&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w"></span>
@@ -1053,7 +1053,7 @@
 <p>在<strong>创建您的 QuickSight 账户</strong>页面，完成以下配置。</p>
 <ul>
 <li>选择<strong>使用 IAM 联合身份和 QuickSight 托管的用户</strong>。</li>
-<li>从QuickSight区域中选择<strong>US East (N.Virginia)</strong>。</li>
+<li>从QuickSight区域中选择<strong>US East (N.Virginia)</strong>。<strong>注意</strong>：无论您将本方案部署哪个区域，这里都选<strong>US East (N.Virginia)</strong>。</li>
 <li>输入唯一的<strong>QuickSight账户名称</strong>。</li>
 <li>输入用于接收通知的<strong>邮箱地址</strong>。</li>
 <li>
@@ -1062,6 +1062,7 @@
 <p class="admonition-title">注意</p>
 <p>如果您的QuickSight已经注册并使用了默认的角色，需要到<a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin#aws">QuickSight安全性和权限</a>修改成上面创建的角色。
 这个操作可能会影响该QuickSight账户下的其他数据，请注意检查。详情可参考<a href="https://docs.aws.amazon.com/quicksight/latest/user/security_iam_service-with-iam.html#security-create-iam-role">Using Amazon QuickSight with IAM</a>。</p>
+<p>如果您已经注册过QuickSight账户，请导航到<a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin">QuickSight admin</a>页面检查您的QuickSight的版本，确保使用的是企业版。</p>
 </div>
 </li>
 </ul>
@@ -1102,12 +1103,12 @@
 </thead>
 <tbody>
 <tr>
-<td align="left">QuickSightUser</td>
-<td align="left">输入QuickSight用户名，从页面<a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin?#users">Manage users</a>获取。</td>
-</tr>
-<tr>
 <td align="left">QuickSightRoleName</td>
 <td align="left">输入QuickSight服务角色名字，从页面<a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin?#aws">Security &amp; permissions</a>获取。</td>
+</tr>
+<tr>
+<td align="left">QuickSightUser</td>
+<td align="left">输入QuickSight用户名，从页面<a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin?#users">Manage users</a>获取。</td>
 </tr>
 </tbody>
 </table>

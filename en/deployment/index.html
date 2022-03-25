@@ -11,7 +11,7 @@
         <link rel="canonical" href="https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/deployment/">
       
       <link rel="icon" href="../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.2.6">
+      <meta name="generator" content="mkdocs-1.2.3, mkdocs-material-8.2.7">
     
     
       
@@ -905,7 +905,7 @@
 <p>Choose <strong>Create Policy</strong>.</p>
 </li>
 <li>
-<p>In the Create policy page, click the <strong>JSON</strong> tab, and enter the QuickSight policy as below. This is the least policy required for QuickSight to work in this solution.</p>
+<p>In the Create policy page, click the <strong>JSON</strong> tab, and enter the QuickSight policy as below. This is the least policy required for QuickSight to work in this solution. Please ignore <strong>Errors</strong> in the bottom of the input.</p>
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="s2">&quot;Version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2012-10-17&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="w">    </span><span class="s2">&quot;Statement&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w"></span>
@@ -1071,7 +1071,7 @@
 <p>In the <strong>Create your QuickSight account</strong> page, complete the following settings. </p>
 <ul>
 <li>Choose <strong>Use IAM federated identities &amp; QuickSight-managed users</strong> from the Authentication method.</li>
-<li>Choose <strong>US East (N.Virginia)</strong>.</li>
+<li>Choose <strong>US East (N.Virginia)</strong>. <strong>Note</strong>: always choose <strong>US East (N.Virginia)</strong> whatever regions you will deploy this solution.</li>
 <li>Enter the unique <strong>QuickSight account name</strong>.</li>
 <li>Enter the <strong>Email</strong> to receive notifications.</li>
 <li>Choose <strong>Use an existing role</strong>, and select the role: <code>qradd-quicksight-service-role</code>.</li>
@@ -1079,6 +1079,7 @@
 <div class="admonition caution">
 <p class="admonition-title">Caution</p>
 <p>If Quicksight service already used default role, you need to change it to the role created above in the page <a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin#aws">QuickSight Security &amp; permissions</a>. Please check in advance because this operation may influence other data under this QuickSight Account. Refer to <a href="https://docs.aws.amazon.com/quicksight/latest/user/security_iam_service-with-iam.html#security-create-iam-role">Using Amazon QuickSight with IAM</a> for details.</p>
+<p>If you already signed up QuickSight, you can got to <a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin">QuickSight admin</a> to check your edition (edition should be Enterprise). </p>
 </div>
 </li>
 </ol>
@@ -1117,12 +1118,12 @@
 </thead>
 <tbody>
 <tr>
-<td align="left">QuickSightUser</td>
-<td align="left">QuickSight Username, which can be obtained from <a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin?#users">Manage users</a>.</td>
-</tr>
-<tr>
 <td align="left">QuickSightRoleName</td>
 <td align="left">QuickSight Service Role name, which can be obtained from <a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin?#aws">Security &amp; permissions</a>.</td>
+</tr>
+<tr>
+<td align="left">QuickSightUser</td>
+<td align="left">QuickSight Username, which can be obtained from <a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin?#users">Manage users</a>.</td>
 </tr>
 </tbody>
 </table>
