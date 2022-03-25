@@ -74,7 +74,6 @@ export class LambdaUtil {
         subnetType: ec2.SubnetType.PRIVATE_WITH_NAT,
       }),
       role: aggLambdaRole,
-      reservedConcurrentExecutions: 30,
       securityGroups: [lambdaSg],
     });
   }
@@ -94,7 +93,6 @@ export class LambdaUtil {
         subnetType: ec2.SubnetType.PRIVATE_WITH_NAT,
       }),
       role: checkLambdaRole,
-      reservedConcurrentExecutions: 30,
       securityGroups: [lambdaSg],
     });
   }
@@ -115,7 +113,6 @@ export class LambdaUtil {
         subnetType: ec2.SubnetType.PRIVATE_WITH_NAT,
       }),
       role: lambdaRole,
-      reservedConcurrentExecutions: 30,
       securityGroups: [lambdaSg],
     });
   }
@@ -136,7 +133,6 @@ export class LambdaUtil {
         subnetType: ec2.SubnetType.PRIVATE_WITH_NAT,
       }),
       role: lambdaRole,
-      reservedConcurrentExecutions: 30,
       securityGroups: [lambdaSg],
     });
   }

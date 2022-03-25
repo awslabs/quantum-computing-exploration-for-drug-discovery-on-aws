@@ -1,6 +1,6 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
-    "Description": "Cross region event bus for braket",
+    "Description": "(SO8027) QRADD Cross region event bus for braket",
     "Parameters": {
         "TargetRegion": {
             "Type": "String",

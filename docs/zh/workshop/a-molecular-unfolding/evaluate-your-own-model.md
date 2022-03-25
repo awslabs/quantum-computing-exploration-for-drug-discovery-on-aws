@@ -1,27 +1,20 @@
-## 批量评估您自己的模型
 
-您有两个选项来批量评估您自己的模型
+批量评估自定义的模型有两种方法：
 
-- 批量评估您自己的 mol2 文件，无需更改代码
+- 批量评估mol2文件，无需更改代码
 - 完全自定义评估代码
 
-## 批量评估您自己的 mol2 文件，无需更改代码
+## 批量评估mol2文件，无需更改代码
 
-如果您有自己的 mol2 文件，想要批量评估它，您可以按照以下步骤操作：
+如果您有mol2文件，可以按照以下步骤批量评估：
 
-1. 将您的 mol2 文件上传到 CloudFormation 输出中的 S3 存储桶，或您自己的 S3 存储桶。如果您想使用自己的 S3 存储桶，存储桶名称必须遵循以下模式：`braket-*` 或 `amazon-braket-*`。
+1. 将您的mol2文件上传到CloudFormation输出中的S3存储桶，或您自己的S3存储桶。如果您想使用自己的S3存储桶，存储桶名称必须遵循以下格式：`braket-*` 或 `amazon-braket-*`。
 
-    <center>
-      ![S3 输出存储桶名称](../../images/cloudformation-output-s3.png)
-
-    图 1: S3 路径
-    </center>
-
-1. 在 Step Functions 输入中将 mol2 文件的 S3 uri 指定为 `molFile` 的值
+2. 在Step Functions输入中将mol2文件的S3 uri指定为`molFile` 的值
 
      
         {
-            "molFile" : "<你的 mol2 文件的 s3 uri>"
+            "molFile" : "<您的 mol2 文件的 s3 uri>"
         }
    
 
@@ -32,62 +25,63 @@
         }
 
     
-    完整的输入参数和架构，请参考[输入规范](../batch-evaluation/#输入规范)
+    有关完整的输入参数和架构，请参考[输入规范](../batch-evaluation/#输入规范)。
 
-1. 按照 [批量评估](../batch-evaluation/#start-execution) 中的步骤运行 Step Functions
+3. 按照[批量评估](../batch-evaluation/#start-execution)中的步骤运行Step Functions。
 
 ## 完全自定义评估代码
 
 
-该解决方案是 Apache License Version 2.0 下的开源项目。您可以利用它作为您的基本代码，对其进行更改。
+您可以利用Apache License Version 2.0下的开源项目做为基本代码，对其进行更改，完全自定义评估代码。
 
-如果您想完全自定义评估代码，请按照以下步骤进行更改并从 CDK 重新部署整个堆栈。
+请按照以下步骤进行更改并从CDK重新部署整个堆栈。
 
 ### 先决条件
 
-1. 确保您的工作区中安装了 AWS CLI 和 AWS CDK。您可以按照此文档 [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html) 安装 AWS CLI。
+1. 确保您的工作区中安装了AWS CLI和 AWS CDK。详情请参考[AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html)。
    
-1. 执行部署的用户或 IAM 角色必须至少拥有 [permissions](./permissions.json)
+2. 确认执行部署的用户或IAM角色必须至少拥有[permissions](./permissions.json)。
 
-1. [检查您的 quicksight 账户](../../../deployment/#check-your-quicksight)
+3. 检查部署的[准备工作](../../deployment.md)。
 
-1. 确保您的工作区中运行了 docker。可以按照本文档 [Docker Install](https://docs.docker.com/engine/install/)安装docker。
+4. 确保您的工作区中运行了docker。有关如何安装docker，请参见[Docker Install](https://docs.docker.com/engine/install/)。
 
 ### 自定义评估代码
 
-1. 将本方案的github仓库fork到自己的git仓库
+1. 将本方案的github仓库fork到自己的git仓库。
 
-1. 将项目克隆到自己的工作区
+2. 将项目克隆到自己的工作区。
 
-1. 修改源代码
+3. 修改源代码
 
-!!! notice
-     
-    文件 `source/src/molecular-unfolding/cdk/construct-notebook.ts`中变量`githubRepo`应该修改为您的git仓库
+    !!! caution "注意"
+        
+        文件source/src/molecular-unfolding/cdk/construct-notebook.ts中变量githubRepo应该修改为您的git仓库。
 
 
 ### 将堆栈从 CDK 部署到您的 AWS 账户
 
-1. 检查您的 AWS 账户中的 CloudFormation，确保您的部署区域中没有名为“QCStack”的堆栈
+1. 检查您的AWS账户中的CloudFormation，确保您的部署区域中没有名为`QCStack`的堆栈。
 
-1. 检查您的 S3 存储桶，确保没有名为 `amazon-braket-qcstack-<your aws account>-<deployment region>` 的存储桶
+2. 检查您的 S3 存储桶，确保没有名为 `amazon-braket-qcstack-<your aws account>-<deployment region>` 的存储桶。
 
-1. 利用 CDK 将更改部署到您的 AWS 账户
+3. 利用CDK将更改部署到您的AWS账户。
 
-```bash
-cd source
-npm install
-npx cdk deploy QCStack --parameters QuickSightUser=<your QuickSight user>
-```
+        cd source
+        npm install
+        npx cdk deploy QCStack \
+            --parameters QuickSightUser=<your QuickSight user> \
+            --parameters QuickSightRoleName=<your QuickSight service role name>
+
            
-1. 等待部署完成，部署大约需要 10 分钟
+4. 等待部署完成。部署大约需要10分钟。
 
-1. 从CloudFormation输出中获取输出链接，链接包括：
+5. 从CloudFormation输出中获取输出链接，链接包括：
     - Step Functions URL
-    - QuickSight 仪表板链接
+    - QuickSight仪表板链接
     - 笔记本网址
-    - S3 存储桶名称
+    - S3存储桶名称
 
-1. 按照 [批量评估](../batch-evaluation/) 中的步骤运行您自己的代码
+6. 按照[批量评估](../batch-evaluation/)中的步骤运行您自己的代码。
 
-1. 通过 QuickSight 仪表板 [查看结果](../batch-evaluation/#view-dashboard)
+7. 通过QuickSight仪表板[查看结果](../batch-evaluation/#view-dashboard)。
