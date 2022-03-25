@@ -34,7 +34,7 @@
 
 2. 点击**创建策略**。
 
-3. 在创建策略页面，点击**JSON**，填写QuickSight策略如下，这是在本解决方案中，QuickSight能工作的最小权限。
+3. 在创建策略页面，点击**JSON**，填写QuickSight策略如下，这是在本解决方案中，QuickSight能工作的最小权限。请忽略输入框下面的Errors提示。
 
         {
             "Version": "2012-10-17",
@@ -182,7 +182,7 @@
 3. 在**创建您的 QuickSight 账户**页面，完成以下配置。
 
     - 选择**使用 IAM 联合身份和 QuickSight 托管的用户**。
-    - 从QuickSight区域中选择**US East (N.Virginia)**。
+    - 从QuickSight区域中选择**US East (N.Virginia)**。**注意**：无论您将本方案部署哪个区域，这里都选**US East (N.Virginia)**。
     - 输入唯一的**QuickSight账户名称**。
     - 输入用于接收通知的**邮箱地址**。
     - 选择**使用现有角色**，在下拉列表中选择：`qradd-quicksight-service-role`。
@@ -192,6 +192,8 @@
 
             如果您的QuickSight已经注册并使用了默认的角色，需要到[QuickSight安全性和权限](https://us-east-1.quicksight.aws.amazon.com/sn/admin#aws)修改成上面创建的角色。
             这个操作可能会影响该QuickSight账户下的其他数据，请注意检查。详情可参考[Using Amazon QuickSight with IAM](https://docs.aws.amazon.com/quicksight/latest/user/security_iam_service-with-iam.html#security-create-iam-role)。
+
+            如果您已经注册过QuickSight账户，请导航到[QuickSight admin](https://us-east-1.quicksight.aws.amazon.com/sn/admin)页面检查您的QuickSight的版本，确保使用的是企业版。
 
 ### 记录QuickSight用户名
 
@@ -216,8 +218,8 @@
 
     | 参数   | 描述 |
     |:-------------------|:----|
-    | QuickSightUser | 输入QuickSight用户名，从页面[Manage users](https://us-east-1.quicksight.aws.amazon.com/sn/admin?#users)获取。 |
     | QuickSightRoleName | 输入QuickSight服务角色名字，从页面[Security & permissions](https://us-east-1.quicksight.aws.amazon.com/sn/admin?#aws)获取。 |
+    | QuickSightUser | 输入QuickSight用户名，从页面[Manage users](https://us-east-1.quicksight.aws.amazon.com/sn/admin?#users)获取。 |
 
 5. 选择**下一步**。
 
