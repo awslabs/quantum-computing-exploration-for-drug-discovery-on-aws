@@ -3,6 +3,7 @@
 ########################################################################################################################
 from posixpath import basename
 import dimod
+import neal
 from dwave.system.composites import EmbeddingComposite
 from braket.ocean_plugin import BraketDWaveSampler
 from braket.ocean_plugin import BraketSampler
@@ -46,6 +47,9 @@ class Annealer():
         if method == "dwave-sa":
             logging.info("use simulated annealer from dimod")
             self.sampler = dimod.SimulatedAnnealingSampler()
+        elif method == "neal-sa":
+            logging.info("use neal simulated annealer from dimod")
+            self.sampler = neal.SimulatedAnnealingSampler()
         elif method == "dwave-qa":
             self.my_bucket = param["bucket"]  # the name of the bucket
             # the name of the folder in the bucket
