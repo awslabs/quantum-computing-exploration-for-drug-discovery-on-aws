@@ -48,7 +48,8 @@ class Annealer():
             logging.info("use simulated annealer from dimod")
             self.sampler = dimod.SimulatedAnnealingSampler()
         elif method == "neal-sa":
-            logging.info("use neal simulated annealer from dimod")
+            # https://github.com/dwavesystems/dwave-neal
+            logging.info("use neal simulated annealer (c++) from dimod")
             self.sampler = neal.SimulatedAnnealingSampler()
         elif method == "dwave-qa":
             self.my_bucket = param["bucket"]  # the name of the bucket
