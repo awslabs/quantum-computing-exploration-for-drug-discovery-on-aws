@@ -3,6 +3,7 @@
 ########################################################################################################################
 from posixpath import basename
 import dimod
+import neal
 from dwave.system.composites import EmbeddingComposite
 from braket.ocean_plugin import BraketDWaveSampler
 from braket.ocean_plugin import BraketSampler
@@ -46,6 +47,10 @@ class Annealer():
         if method == "dwave-sa":
             logging.info("use simulated annealer from dimod")
             self.sampler = dimod.SimulatedAnnealingSampler()
+        elif method == "neal-sa":
+            # https://github.com/dwavesystems/dwave-neal
+            logging.info("use neal simulated annealer (c++) from dimod")
+            self.sampler = neal.SimulatedAnnealingSampler()
         elif method == "dwave-qa":
             self.my_bucket = param["bucket"]  # the name of the bucket
             # the name of the folder in the bucket
@@ -89,9 +94,9 @@ class Annealer():
 #         print("fit result.model_info={}".format(result["model_info"]))
 
         # upload data
-        if self.method == "dwave-sa":
+        if self.method != "dwave-qa":
             logging.info(f"{self.method} save to local")
-            self.save("sa_result.pickle")
+            self.save(f"{self.method}_result.pickle")
         elif self.method == "dwave-qa":
             task_id = self.get_task_id()
             self.save("/tmp/qa_result.pickle")  # nosec
