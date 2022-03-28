@@ -94,9 +94,9 @@ class Annealer():
 #         print("fit result.model_info={}".format(result["model_info"]))
 
         # upload data
-        if self.method == "dwave-sa":
+        if self.method != "dwave-qa":
             logging.info(f"{self.method} save to local")
-            self.save("sa_result.pickle")
+            self.save(f"{self.method}_result.pickle")
         elif self.method == "dwave-qa":
             task_id = self.get_task_id()
             self.save("/tmp/qa_result.pickle")  # nosec
