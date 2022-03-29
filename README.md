@@ -62,8 +62,133 @@ For detailed description of architecture, please refer to the
 <div id='data'></div>
 2.All the data in the solution follow the CC0 License
 
+## File Structure
+
+Upon successfully cloning the repository into your local development environment, you will see the following file structure in your editor:
+
+```
+├── CODE_OF_CONDUCT.md
+├── CONTRIBUTING.md
+├── LICENSE
+├── NOTICE
+├── README.md
+├── docs
+│   ├── en
+│   ├── index.html
+│   ├── mkdocs.base.yml
+│   ├── mkdocs.en.yml
+│   ├── mkdocs.zh.yml
+│   └── zh
+└── source
+    ├── README.md
+    ├── cdk.json
+    ├── package-lock.json
+    ├── package.json
+    ├── src
+    │   ├── main.ts
+    │   ├── molecular-unfolding
+    │   │   ├── batch-images
+    │   │   │   ├── create-model
+    │   │   │   │   ├── Dockerfile
+    │   │   │   │   ├── molecule-data
+    │   │   │   │   │   └── 117_ideal.mol2
+    │   │   │   │   └── process.py
+    │   │   │   ├── qa-optimizer
+    │   │   │   │   ├── Dockerfile
+    │   │   │   │   └── process.py
+    │   │   │   └── sa-optimizer
+    │   │   │       ├── Dockerfile
+    │   │   │       └── process.py
+    │   │   ├── cdk
+    │   │   │   ├── construct-batch-evaluation.ts
+    │   │   │   ├── construct-dashboard.ts
+    │   │   │   ├── construct-listener.ts
+    │   │   │   ├── construct-notebook.ts
+    │   │   │   ├── resources
+    │   │   │   │   └── onStart.template
+    │   │   │   ├── stack-main.ts
+    │   │   │   └── utils
+    │   │   │       ├── custom-resource-lambda
+    │   │   │       │   └── create-event-rule
+    │   │   │       │       ├── index.ts
+    │   │   │       │       └── template.json
+    │   │   │       ├── custom-resource.ts
+    │   │   │       ├── utils-batch.ts
+    │   │   │       ├── utils-images.ts
+    │   │   │       ├── utils-lambda.ts
+    │   │   │       ├── utils-role.ts
+    │   │   │       ├── utils.ts
+    │   │   │       └── vpc.ts
+    │   │   ├── input-template.json
+    │   │   ├── lambda
+    │   │   │   ├── AthenaTabeLambda
+    │   │   │   │   ├── index.js
+    │   │   │   │   ├── package-lock.json
+    │   │   │   │   └── package.json
+    │   │   │   ├── DeviceAvailableCheckLambda
+    │   │   │   │   ├── Dockerfile
+    │   │   │   │   ├── app.py
+    │   │   │   │   └── requirements.txt
+    │   │   │   ├── ParseBraketResultLambda
+    │   │   │   │   ├── Dockerfile
+    │   │   │   │   └── app.py
+    │   │   │   ├── TaskParametersLambda
+    │   │   │   │   ├── app.py
+    │   │   │   │   └── test_app.py
+    │   │   │   └── WaitForTokenLambda
+    │   │   │       └── app.py
+    │   │   ├── molecular_unfolding.ipynb
+    │   │   ├── molecule-data
+    │   │   │   └── 117_ideal.mol2
+    │   │   ├── pytest
+    │   │   │   └── test_sample.py
+    │   │   ├── requirements.txt
+    │   │   └── utility
+    │   │       ├── AnnealerOptimizer.py
+    │   │       ├── GraphModel.py
+    │   │       ├── MolGeoCalc.py
+    │   │       ├── MoleculeParser.py
+    │   │       ├── QMUQUBO.py
+    │   │       ├── ResultProcess.py
+    │   │       └── __init__.py
+    │   └── stack.ts
+    ├── test
+    │   ├── benchmark.test.ts
+    │   ├── dashboard.test.ts
+    │   ├── listener.test.ts
+    │   ├── main.test.ts
+    │   ├── notebook.test.ts
+    │   └── use_bss.test.ts
+    ├── tsconfig.jest.json
+    ├── tsconfig.json
+    └── version.json
+```
+## Deploy from source
+
+Refer to [prerequisites and deployment](./source/README.md)
+## Running Unit Tests
+
+The `/source/run-all-tests.sh` script is the centralized script for running all unit, integration, and snapshot tests for both the CDK project as well as any associated Lambda functions or other source code packages.
+
+```
+
+cd ./source
+chmod +x ./run-all-tests.sh
+./run-all-tests.sh
+
+```
+***
 
 
-## License
+## Collection of operational metrics
+This solution collects anonymous operational metrics to help AWS improve the quality and features of the solution. For more information, including how to disable this capability, please see the [implementation guide](deep link into the documentation with specific information about the metrics and how to opt-out).
 
-This project is licensed under the Apache-2.0 License.
+***
+
+Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Licensed under the Apache License Version 2.0 (the "License"). You may not use this file except in compliance with the License. A copy of the License is located at
+
+    http://www.apache.org/licenses/
+
+or in the "license" file accompanying this file. This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, express or implied. See the License for the specific language governing permissions and limitations under the License.
