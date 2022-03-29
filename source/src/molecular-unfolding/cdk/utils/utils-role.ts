@@ -329,6 +329,7 @@ export class RoleUtil {
       ],
       actions: [
         'athena:StartQueryExecution',
+        'athena:GetQueryExecution',
         'athena:GetQueryResults',
         'glue:UpdateDatabase',
         'glue:DeleteDatabase',

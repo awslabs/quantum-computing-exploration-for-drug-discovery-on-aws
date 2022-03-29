@@ -78,19 +78,19 @@ describe('Dashboard', () => {
               Type: 'STRING',
             },
             {
-              Name: 'resource',
+              Name: 'resolver',
               Type: 'STRING',
             },
             {
-              Name: 'params',
-              Type: 'STRING',
+              Name: 'complexity',
+              Type: 'INTEGER',
             },
             {
-              Name: 'opt_params',
-              Type: 'STRING',
+              Name: 'end_to_end_time',
+              Type: 'DECIMAL',
             },
             {
-              Name: 'task_duration',
+              Name: 'running_time',
               Type: 'DECIMAL',
             },
             {
@@ -119,6 +119,18 @@ describe('Dashboard', () => {
             },
             {
               Name: 'scenario',
+              Type: 'STRING',
+            },
+            {
+              Name: 'resource',
+              Type: 'STRING',
+            },
+            {
+              Name: 'model_param',
+              Type: 'STRING',
+            },
+            {
+              Name: 'opt_param',
               Type: 'STRING',
             },
             {

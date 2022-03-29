@@ -9,7 +9,7 @@ import datetime
 
 @mock_s3
 def test_handler_QC_DEVICE_LIST(monkeypatch):
-    from app import handler
+    from . import app
     monkeypatch.setenv('AWS_REGION', 'us-east-1')
     event = {
         'param_type': 'QC_DEVICE_LIST',
@@ -17,7 +17,7 @@ def test_handler_QC_DEVICE_LIST(monkeypatch):
         's3_prefix': 'test_s3_prefix',
         'execution_id': None
     }
-    devices = handler(event, None)
+    devices = app.handler(event, None)
     assert devices == {'devices_arns': ['arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6',
                                         'arn:aws:braket:::device/qpu/d-wave/Advantage_system4'],
                        'execution_id': None}
@@ -26,7 +26,7 @@ def test_handler_QC_DEVICE_LIST(monkeypatch):
 @mock_s3
 def test_handler_CHECK_INPUT_default(monkeypatch):
     boto3.setup_default_session()
-    from app import handler
+    from . import app
     s3 = boto3.client('s3')
     s3.create_bucket(Bucket='test_s3_bucket')
     s3.put_object(
@@ -47,14 +47,14 @@ def test_handler_CHECK_INPUT_default(monkeypatch):
         'user_input': {}
     }
 
-    handler(event, None)
+    app.handler(event, None)
     assert True
 
 
 @mock_s3
 def test_handler_CHECK_INPUT_full_input(monkeypatch):
     boto3.setup_default_session()
-    from app import handler
+    from . import app
     monkeypatch.setenv('AWS_REGION', 'us-east-1')
     s3 = boto3.client('s3', region_name='us-east-1')
     s3.create_bucket(Bucket='test_s3_bucket')
@@ -100,14 +100,14 @@ def test_handler_CHECK_INPUT_full_input(monkeypatch):
         }
     }
 
-    handler(event, None)
+    app.handler(event, None)
     assert True
 
 
 @mock_s3
 def test_handler_CHECK_INPUT_M4_D8(monkeypatch):
     boto3.setup_default_session()
-    from app import handler
+    from . import app
     monkeypatch.setenv('AWS_REGION', 'us-east-1')
     s3 = boto3.client('s3', region_name='us-east-1')
     s3.create_bucket(Bucket='test_s3_bucket')
@@ -124,14 +124,14 @@ def test_handler_CHECK_INPUT_M4_D8(monkeypatch):
             }
         }
     }
-    handler(event, None)
+    app.handler(event, None)
     assert True
 
 
 @mock_s3
 def test_handler_CHECK_INPUT_M4_D4(monkeypatch):
     boto3.setup_default_session()
-    from app import handler
+    from . import app
     monkeypatch.setenv('AWS_REGION', 'us-east-1')
     s3 = boto3.client('s3', region_name='us-east-1')
     s3.create_bucket(Bucket='test_s3_bucket')
@@ -148,14 +148,14 @@ def test_handler_CHECK_INPUT_M4_D4(monkeypatch):
             }
         }
     }
-    handler(event, None)
+    app.handler(event, None)
     assert True
 
 
 @mock_s3
 def test_handler_CHECK_INPUT_runMode_err(monkeypatch):
     boto3.setup_default_session()
-    from app import handler
+    from . import app
     monkeypatch.setenv('AWS_REGION', 'us-east-1')
     s3 = boto3.client('s3', region_name='us-east-1')
     s3.create_bucket(Bucket='test_s3_bucket')
@@ -170,7 +170,7 @@ def test_handler_CHECK_INPUT_runMode_err(monkeypatch):
         }
     }
     with pytest.raises(Exception) as excinfo:
-        handler(event, None)
+        app.handler(event, None)
 
     assert 'validate error' in str(excinfo.value)
 
@@ -178,7 +178,7 @@ def test_handler_CHECK_INPUT_runMode_err(monkeypatch):
 @mock_s3
 def test_handler_CHECK_INPUT_modelParams_M(monkeypatch):
     boto3.setup_default_session()
-    from app import handler
+    from . import app
     monkeypatch.setenv('AWS_REGION', 'us-east-1')
     s3 = boto3.client('s3', region_name='us-east-1')
     s3.create_bucket(Bucket='test_s3_bucket')
@@ -198,7 +198,7 @@ def test_handler_CHECK_INPUT_modelParams_M(monkeypatch):
         }
     }
 
-    handler(event, None)
+    app.handler(event, None)
     assert True
 
 
@@ -206,7 +206,7 @@ def test_handler_CHECK_INPUT_modelParams_M(monkeypatch):
 @mock_s3
 def test_handler_CHECK_INPUT_modelParams_M_Error_empty(monkeypatch):
     boto3.setup_default_session()
-    from app import handler
+    from . import app
     monkeypatch.setenv('AWS_REGION', 'us-east-1')
     s3 = boto3.client('s3', region_name='us-east-1')
     s3.create_bucket(Bucket='test_s3_bucket')
@@ -223,7 +223,7 @@ def test_handler_CHECK_INPUT_modelParams_M_Error_empty(monkeypatch):
         }
     }
     with pytest.raises(Exception) as excinfo:
-        handler(event, None)
+        app.handler(event, None)
 
     assert 'value for M is empty' in str(excinfo.value)
     
@@ -231,7 +231,7 @@ def test_handler_CHECK_INPUT_modelParams_M_Error_empty(monkeypatch):
 @mock_s3
 def test_handler_CHECK_INPUT_modelParams_D_err(monkeypatch):
     boto3.setup_default_session()
-    from app import handler
+    from . import app
     monkeypatch.setenv('AWS_REGION', 'us-east-1')
     s3 = boto3.client('s3', region_name='us-east-1')
     s3.create_bucket(Bucket='test_s3_bucket')
@@ -248,7 +248,7 @@ def test_handler_CHECK_INPUT_modelParams_D_err(monkeypatch):
         }
     }
     with pytest.raises(Exception) as excinfo:
-        handler(event, None)
+        app.handler(event, None)
 
     assert 'validate error' in str(excinfo.value)
 
@@ -256,7 +256,7 @@ def test_handler_CHECK_INPUT_modelParams_D_err(monkeypatch):
 @mock_s3
 def test_handler_CHECK_INPUT_ccResources_max_err(monkeypatch):
     boto3.setup_default_session()
-    from app import handler
+    from . import app
     monkeypatch.setenv('AWS_REGION', 'us-east-1')
     s3 = boto3.client('s3', region_name='us-east-1')
     s3.create_bucket(Bucket='test_s3_bucket')
@@ -283,7 +283,7 @@ def test_handler_CHECK_INPUT_ccResources_max_err(monkeypatch):
         }
     }
     with pytest.raises(Exception) as excinfo:
-        handler(event, None)
+        app.handler(event, None)
 
     assert 'validate error: max ccResources length is' in str(excinfo.value)
 
@@ -291,7 +291,7 @@ def test_handler_CHECK_INPUT_ccResources_max_err(monkeypatch):
 @mock_s3
 def test_handler_PARAMS_FOR_QC_DEVICE(monkeypatch):
     boto3.setup_default_session()
-    from app import handler
+    from . import app
     s3 = boto3.client('s3', region_name='us-east-1')
     s3.create_bucket(Bucket='test_s3_bucket')
 
@@ -305,7 +305,7 @@ def test_handler_PARAMS_FOR_QC_DEVICE(monkeypatch):
         'user_input': {}
     }
 
-    handler(event, None)
+    app.handler(event, None)
 
     event = {
         'param_type': 'PARAMS_FOR_QC_DEVICE',
@@ -342,14 +342,14 @@ def test_handler_PARAMS_FOR_QC_DEVICE(monkeypatch):
         Key='test_s3_prefix/executions/test_execution_id/user_input.json'
     )
 
-    params = handler(event, None)
+    params = app.handler(event, None)
     assert len(params['qcTaskParams']) == 4
 
 
 @mock_s3
 def test_handler_PARAMS_FOR_CC(monkeypatch):
     boto3.setup_default_session()
-    from app import handler
+    from . import app
     s3 = boto3.client('s3', region_name='us-east-1')
     s3.create_bucket(Bucket='test_s3_bucket')
 
@@ -363,7 +363,7 @@ def test_handler_PARAMS_FOR_CC(monkeypatch):
         'user_input': {}
     }
 
-    handler(event, None)
+    app.handler(event, None)
 
     event = {
         'param_type': 'PARAMS_FOR_CC',
@@ -400,5 +400,5 @@ def test_handler_PARAMS_FOR_CC(monkeypatch):
         Key='test_s3_prefix/executions/test_execution_id/user_input.json'
     )
 
-    params = handler(event, None)
+    params = app.handler(event, None)
     assert len(params['ccTaskParams']) == 16

@@ -30,26 +30,23 @@ known_devices_arns = [
 default_devices_arns = known_devices_arns
 
 default_model_params = {
-    "M": [1, 2, 3, 4],
-    "D": [4],
+    "M": [1, 2, 3, 4, 5],
+    "D": [8],
     "A": [300],
     "HQ": [200]  # hubo_qubo_val
 }
 default_cc_resources = [
     # vcpu, memory_in_GB
-    [2, 2],
-    [4, 4],
-    [8, 8],
-    [16, 16]
+    [4, 8]
 ]
 
 default_opt_params = {
     "qa": {
-        "shots": 1000,
+        "shots": 10000,
         "embed_method": "default"
     },
     "sa": {
-        "shots": 1000,
+        "shots": 10000,
         "notes": "batch evaluation"
     }
 }
@@ -228,9 +225,6 @@ def validate_input(input_dict: dict):
                   'experimentName', 'modelParams', 'devicesArns', 'ccResources', 'Comment']
     valid_keys_str = "|".join(valid_keys)
     errors = []
-
-    if '!' in json.dumps(input_dict):
-        errors.append("invalid char '!' in input")
 
     try:
         for k in input_dict.keys():
