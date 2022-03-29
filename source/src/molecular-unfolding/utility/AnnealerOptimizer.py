@@ -69,9 +69,8 @@ class Annealer():
 
     def fit(self):
         logging.info("fit() ...")
-        # self.pre_check()
         start = time.time()
-        if self.method == "dwave-sa":
+        if self.method == "dwave-sa" or self.method == "neal-sa":
             # response = self.sampler.sample(
             #     self.qubo, num_reads=self.param["shots"]).aggregate()
             self.response = self.sampler.sample_qubo(
@@ -145,7 +144,7 @@ class Annealer():
         self.time["embed"] = (end-start)/60
 
     def time_summary(self):
-        if self.method == "dwave-sa":
+        if self.method == "dwave-sa" or self.method == "neal-sa":
             self.time["time"] = self.time["optimize"]
         elif self.method == "dwave-qa":
             self.time["time"] = self.time["optimize"] + \
@@ -159,9 +158,3 @@ class Annealer():
     def init_time(self):
         if self.method == "dwave-qa":
             self.time["embed"] = 0
-
-    def pre_check(self):
-        if self.method == "dwave-qa":
-            if self.time["embed"] == 0:
-                raise Exception(
-                    "You should run Annealer.embed() before Annealer.fit()!")

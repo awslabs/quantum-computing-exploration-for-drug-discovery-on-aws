@@ -71,7 +71,7 @@ class ResultParser():
         # keep N recent results
         self.N = 100
         self.tried_combination = set()
-        if self.method == "dwave-sa":
+        if self.method == "dwave-sa" or self.method == "neal-sa":
             logging.info("parse simulated annealer result")
             self.result = None
         elif self.method == "dwave-qa":
