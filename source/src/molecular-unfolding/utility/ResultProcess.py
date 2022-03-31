@@ -15,7 +15,7 @@ from .MoleculeParser import MoleculeData
 
 import py3Dmol
 import time
-from ipywidgets import interact,fixed,IntSlider
+from ipywidgets import interact, fixed, IntSlider
 import ipywidgets
 
 s3_client = boto3.client("s3")
@@ -71,7 +71,7 @@ class ResultParser():
         # keep N recent results
         self.N = 100
         self.tried_combination = set()
-        if self.method == "dwave-sa":
+        if self.method == "dwave-sa" or self.method == "neal-sa":
             logging.info("parse simulated annealer result")
             self.result = None
         elif self.method == "dwave-qa":
@@ -125,9 +125,9 @@ class ResultParser():
 
     def _load_raw_result(self):
         logging.info("_load_raw_result")
-        if self.method == "dwave-sa":
-            logging.info("load simulated annealer raw result")
-            full_path = "./sa_result.pickle"
+        if self.method != "dwave-qa":
+            logging.info(f"load simulated annealer {self.method} raw result")
+            full_path = f"./{self.method}_result.pickle"
             with open(full_path, "rb") as f:
                 self.raw_result = pickle.load(f)  # nosec
         elif self.method == "dwave-qa":
@@ -541,25 +541,25 @@ class ResultParser():
         logging.info(f"finish save {mol_save_name} and {file_save_name}")
 
         return [mol_save_name, file_save_name]
-    
-    def View3DMol(self,mol, size=(600, 600), style="stick", surface=False, opacity=0.5, type="mol2"):
+
+    def View3DMol(self, mol, size=(600, 600), style="stick", surface=False, opacity=0.5, type="mol2"):
         assert style in ('line', 'stick', 'sphere', 'carton')
         viewer = py3Dmol.view(width=size[0], height=size[1])
-        viewer.addModel(open(mol,'r').read(), type)
-        viewer.setStyle({style:{}})
+        viewer.addModel(open(mol, 'r').read(), type)
+        viewer.setStyle({style: {}})
         if surface:
             viewer.addSurface(py3Dmol.SAS, {'opacity': opacity})
         viewer.zoomTo()
         return viewer
 
-    def StyleSelector(self,mol,size,style):
-        return self.View3DMol(mol,size=(size,size),style=style).show()
+    def StyleSelector(self, mol, size, style):
+        return self.View3DMol(mol, size=(size, size), style=style).show()
 
-    def InteractView(self,mol,size):
-        interact(self.StyleSelector, 
-            mol=mol,
-            size=size,
-            style=ipywidgets.Dropdown(
-                options=['line', 'stick', 'sphere'],
-                value='stick',
-                description='Style:'))
+    def InteractView(self, mol, size):
+        interact(self.StyleSelector,
+                 mol=mol,
+                 size=size,
+                 style=ipywidgets.Dropdown(
+                     options=['line', 'stick', 'sphere'],
+                     value='stick',
+                     description='Style:'))

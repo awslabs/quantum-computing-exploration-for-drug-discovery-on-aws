@@ -75,7 +75,7 @@ def upload_result_files(execution_id, param_info, res_files: list, bucket):
 
 
 def sa_optimizer(qubo_model, model_file_info, param_info):
-    method = 'dwave-sa'
+    method = 'neal-sa'
     optimizer_param = {}
 
     optimizer_param['shots'] =  1000
