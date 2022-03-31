@@ -166,6 +166,7 @@ Upon successfully cloning the repository into your local development environment
 ## Deploy from source
 
 Refer to [prerequisites and deployment](./source/README.md)
+
 ## Running Unit Tests
 
 The `/source/run-all-tests.sh` script is the centralized script for running all unit, integration, and snapshot tests for both the CDK project as well as any associated Lambda functions or other source code packages.
