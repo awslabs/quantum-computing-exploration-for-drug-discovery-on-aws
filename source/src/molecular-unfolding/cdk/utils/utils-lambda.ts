@@ -11,6 +11,7 @@ import {
   Construct,
 } from 'constructs';
 
+import { MainStack } from '../stack-main';
 import {
   ECRRepoNameEnum,
   ECRImageUtil,
@@ -19,7 +20,6 @@ import {
 import {
   RoleUtil,
 } from './utils-role';
-import { MainStack } from '../stack-main';
 
 interface Props {
   region: string;

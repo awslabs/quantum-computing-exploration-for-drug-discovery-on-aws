@@ -46,8 +46,8 @@ import setup_vpc_and_sg from './utils/vpc';
 
 export class MainStack extends SolutionStack {
   static SOLUTION_ID = 'SO8027'
-  static SOLUTION_VERSION = process.env['SOLUTION_VERSION'] || 'v1.0.0'
-  
+  static SOLUTION_VERSION = process.env.SOLUTION_VERSION || 'v1.0.0'
+
   // constructor
   constructor(scope: Construct, id: string, props: StackProps = {}) {
     const DESCRIPTION = `(${MainStack.SOLUTION_ID}) Quantum Ready Architecture For Drug Discovery ${MainStack.SOLUTION_VERSION}`;
