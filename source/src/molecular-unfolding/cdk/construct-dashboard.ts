@@ -45,7 +45,7 @@ export class Dashboard extends Construct {
 
     const quicksightUser = `arn:aws:quicksight:us-east-1:${this.props.account}:user/default/${this.props.quicksightUser}`;
 
-    const templateArn = 'arn:aws:quicksight:us-east-1:366590864501:template/qc-batch-evaluation-analysis-template-v1';
+    const templateArn = 'arn:aws:quicksight:us-east-1:366590864501:template/qc-batch-evaluation-analysis-template/version/1';
 
     const qcDataSource = new quicksight.CfnDataSource(this, 'qcBatchEvaluation-DataSource', {
       awsAccountId: this.props.account,
@@ -79,19 +79,19 @@ export class Dashboard extends Construct {
       type: 'STRING',
     },
     {
-      name: 'resolver',
+      name: 'resource',
       type: 'STRING',
     },
     {
-      name: 'complexity',
-      type: 'INTEGER',
+      name: 'params',
+      type: 'STRING',
     },
     {
-      name: 'end_to_end_time',
-      type: 'DECIMAL',
+      name: 'opt_params',
+      type: 'STRING',
     },
     {
-      name: 'running_time',
+      name: 'task_duration',
       type: 'DECIMAL',
     },
     {
@@ -120,18 +120,6 @@ export class Dashboard extends Construct {
     },
     {
       name: 'scenario',
-      type: 'STRING',
-    },
-    {
-      name: 'resource',
-      type: 'STRING',
-    },
-    {
-      name: 'model_param',
-      type: 'STRING',
-    },
-    {
-      name: 'opt_param',
       type: 'STRING',
     },
     {

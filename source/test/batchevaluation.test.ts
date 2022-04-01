@@ -94,14 +94,15 @@ describe('BatchEvaluation', () => {
             {
               Ref: Match.anyValue(),
             },
-            '","s3_prefix":"molecular-unfolding","param_type":"PARAMS_FOR_CC","execution_id.$":"$.execution_id","context.$":"$$"}}},"ParallelCCJobs":{"Type":"Map","ResultPath":"$.parallelCCJobsMap","End":true,"Parameters":{"ItemIndex.$":"$$.Map.Item.Index","ItemValue.$":"$$.Map.Item.Value","execution_id.$":"$.execution_id"},"Iterator":{"StartAt":"Run CC Batch Job","States":{"Run CC Batch Job":{"Next":"Batch Job Complete","Type":"Task","Resource":"arn:aws:states:::batch:submitJob.sync","Parameters":{"JobDefinition":"', {
+            '","s3_prefix":"molecular-unfolding","param_type":"PARAMS_FOR_CC","execution_id.$":"$.execution_id","context.$":"$$"}}},"ParallelCCJobs":{"Type":"Map","ResultPath":"$.parallelCCJobsMap","End":true,"Parameters":{"ItemIndex.$":"$$.Map.Item.Index","ItemValue.$":"$$.Map.Item.Value","execution_id.$":"$.execution_id"},"Iterator":{"StartAt":"Run CC Batch Task","States":{"Run CC Batch Task":{"End":true,"Type":"Task","Resource":"arn:aws:states:::batch:submitJob.sync","Parameters":{"JobDefinition":"',
+            {
               Ref: Match.anyValue(),
             },
             "\",\"JobName.$\":\"States.Format('CCTask{}-{}', $.ItemIndex, $.ItemValue.task_name)\",\"JobQueue\":\"",
             {
               Ref: Match.anyValue(),
             },
-            "\",\"ContainerOverrides\":{\"Command.$\":\"$.ItemValue.params\",\"ResourceRequirements\":[{\"Type\":\"VCPU\",\"Value.$\":\"States.Format('{}',$.ItemValue.vcpus)\"},{\"Type\":\"MEMORY\",\"Value.$\":\"States.Format('{}', $.ItemValue.memory)\"}]}},\"Catch\":[{\"ErrorEquals\":[\"States.TaskFailed\"],\"Next\":\"Batch Job Complete\"}],\"ResultSelector\":{\"JobId.$\":\"$.JobId\",\"JobName.$\":\"$.JobName\"}},\"Batch Job Complete\":{\"Type\":\"Pass\",\"End\":true}}},\"ItemsPath\":\"$.ccTaskParams\",\"MaxConcurrency\":20}}}",
+            "\",\"ContainerOverrides\":{\"Command.$\":\"$.ItemValue.params\",\"ResourceRequirements\":[{\"Type\":\"VCPU\",\"Value.$\":\"States.Format('{}',$.ItemValue.vcpus)\"},{\"Type\":\"MEMORY\",\"Value.$\":\"States.Format('{}', $.ItemValue.memory)\"}]}},\"ResultSelector\":{\"JobId.$\":\"$.JobId\",\"JobName.$\":\"$.JobName\"}}}},\"ItemsPath\":\"$.ccTaskParams\",\"MaxConcurrency\":20}}}",
           ],
         ],
       }),

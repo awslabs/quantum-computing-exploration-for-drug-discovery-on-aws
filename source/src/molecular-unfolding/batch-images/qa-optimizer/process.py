@@ -70,7 +70,7 @@ def get_qc_task_id(response):
 def qa_optimizer(context, execution_id, qubo_model, s3_bucket, task_output_s3_prefix, s3_prefix, device_arn):
     method = 'dwave-qa'
     optimizer_param = {}
-    optimizer_param['shots'] = 10000
+    optimizer_param['shots'] = 1000
     optimizer_param['bucket'] = s3_bucket
     optimizer_param['prefix'] = task_output_s3_prefix
     optimizer_param['device'] = device_arn
@@ -80,7 +80,7 @@ def qa_optimizer(context, execution_id, qubo_model, s3_bucket, task_output_s3_pr
     optimizer_params = context['user_input'].get('optParams', None)
     if optimizer_params and optimizer_params.get('qa', None):
         user_optimizer_param = optimizer_params.get('qa')
-        optimizer_param['shots'] = user_optimizer_param.get('shots', 10000)
+        optimizer_param['shots'] = user_optimizer_param.get('shots', 1000)
         optimizer_param['embed_method'] =  user_optimizer_param.get('embed_method', 'default')
 
 
@@ -113,7 +113,7 @@ def run_on_device(s3, input_params):
     device_arn = input_params['device_arn']
     execution_id = input_params['execution_id']
 
-    qubo_model, model_name, mode_file_name, complexity = load_model(
+    qubo_model, model_name, mode_file_name = load_model(
         s3, model_file, model_param, s3_bucket)
 
     task_output = f"{s3_prefix}/qc_task_output"
@@ -129,6 +129,25 @@ def run_on_device(s3, input_params):
     device_name = device_arn.split("/")[-1]
     task_id = qc_task_id
 
+    # metrics_items = [execution_id,
+    #                  "QC",
+    #                  str(device_name),
+    #                  model_param,
+    #                  str(time_in_seconds),
+    #                  start_time,
+    #                  experiment_name,
+    #                  task_id,
+    #                  model_name,
+    #                  mode_file_name,
+    #                  s3_prefix,
+    #                  datetime.datetime.utcnow().isoformat()
+    #                  ]
+
+    # metrics = ",".join(metrics_items)
+    # logging_info("metrics='{}'".format(metrics))
+    # metrics_key = f"{s3_prefix}/batch_evaluation_metrics/{execution_id}-QC-{device_name}-{model_name}-{task_id}-{int(time.time())}.csv"
+    # string_to_s3(s3, metrics, s3_bucket, metrics_key)
+
     logging_info(
         "run_on_device() return - task_id:{}".format(task_id))
     return {
@@ -139,7 +158,6 @@ def run_on_device(s3, input_params):
         "experiment_name": experiment_name,
         "start_time": start_time,
         "model_param": model_param,
-        "complexity": complexity,
         "device_name": device_name,
         "local_fit_time": local_fit_time,
         "optimizer_param": optimizer_param
@@ -199,15 +217,10 @@ def load_model(s3, model_input_file, model_param, s3_bucket):
         map(lambda it: it.split("=")[1], model_param.split('&')))
     logging_info(f"model_name:{model_name}")
 
-    M =  model_param.split('&')[0].split('=')[1]
-    D =  model_param.split('&')[1].split('=')[1]
-    complexity = int(M) * int(D)
-    logging.info("M={}, D={}, complexity={}".format(M, D, complexity))
-
     method = "pre-calc"
     logging_info(f"get_model model_name={model_name}, method={method}")
     qubo_model = qmu_qubo_optimize.get_model(method, model_name)
-    return qubo_model, model_name, model_file_name, complexity
+    return qubo_model, model_name, model_file_name
 
 
 def submit_qc_task(s3, execution_id, device_arn, model_param, s3_bucket, s3_prefix):

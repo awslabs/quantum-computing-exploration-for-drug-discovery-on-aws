@@ -14,7 +14,6 @@ from utility.AnnealerOptimizer import Annealer
 from utility.QMUQUBO import QMUQUBO
 from utility.ResultProcess import ResultParser
 
-sa_optimizer_method = 'neal-sa'
 
 logging.basicConfig(format='%(asctime)s,%(msecs)d %(levelname)-8s [%(filename)s:%(lineno)d] %(message)s',
                     datefmt='%Y-%m-%d:%H:%M:%S',
@@ -79,16 +78,16 @@ def upload_result_files(execution_id, param_info, res_files: list, bucket):
 
 
 def sa_optimizer(qubo_model, model_file_info, param_info):
-    method = sa_optimizer_method
+    method = 'neal-sa'
     optimizer_param = {}
 
-    optimizer_param['shots'] =  10000
+    optimizer_param['shots'] =  1000
     optimizer_param['notes'] =  'batch evaluation'
 
     optimizer_params = context['user_input'].get('optParams', None)
     if optimizer_params and optimizer_params.get('sa', None):
         user_optimizer_param = optimizer_params.get('sa')
-        optimizer_param['shots'] = user_optimizer_param.get('shots', 10000)
+        optimizer_param['shots'] = user_optimizer_param.get('shots', 1000)
         optimizer_param['notes'] =  user_optimizer_param.get('notes', 'batch evaluation')
     
     sa_optimizer = Annealer(qubo_model, method, **optimizer_param)
@@ -167,15 +166,10 @@ def load_model(model_input_file, model_param):
         map(lambda it: it.split("=")[1], model_param.split('&')))
     logging.info(f"model_name:{model_name}")
 
-    M =  model_param.split('&')[0].split('=')[1]
-    D =  model_param.split('&')[1].split('=')[1]
-    complexity = int(M) * int(D)
-    logging.info("M={}, D={}, complexity={}".format(M, D, complexity))
-
     method = "pre-calc"
     logging.info(f"get_model model_name={model_name}, method={method}")
     qubo_model = qmu_qubo_optimize.get_model(method, model_name)
-    return qubo_model, model_name, mode_file_name, complexity
+    return qubo_model, model_name, mode_file_name
 
 def get_result(path):
     with open(path) as f:
@@ -223,7 +217,7 @@ if __name__ == '__main__':
     model_file_info = get_model_info(execution_id)
     logging.info("model_file: {}".format(model_file_info))
 
-    qubo_model, model_name, mode_file_name, complexity = load_model(
+    qubo_model, model_name, mode_file_name = load_model(
         model_file_info['model'], model_param)
 
     sa_result = sa_optimizer(qubo_model, model_file_info, param_info)
@@ -233,21 +227,18 @@ if __name__ == '__main__':
     result_json = sa_result['result_json']
     optimizer_param =  sa_result['optimizer_param']
 
-    end_to_end_time = local_time
-    running_time = local_time
     time_info_json = json.dumps({
-                                 "local_time": local_time
+                                 "local_time": sa_result['local_time'],
                              })
     
     #result_file_info = json.dumps(result_s3_files)
-    resolver = 'CC ' + sa_optimizer_method.upper()
 
     metrics_items = [execution_id,
                      "CC",
-                     resolver,
-                     str(complexity),
-                     str(end_to_end_time),
-                     str(running_time),
+                     str(resource),
+                     model_param,
+                     json.dumps(optimizer_param),
+                     str(local_time),
                      time_info_json,
                      start_time,
                      experiment_name,
@@ -255,14 +246,11 @@ if __name__ == '__main__':
                      model_name,
                      mode_file_name,
                      s3_prefix,
-                     str(resource),
-                     model_param,
-                     json.dumps(optimizer_param),
                      datetime.datetime.utcnow().isoformat(),
                      result_json,
                      result_s3_files[0]
                      ]
-    metrics = "\t".join(metrics_items)
+    metrics = "!".join(metrics_items)
     logging.info("metrics='{}'".format(metrics))
 
     metrics_key = f"{s3_prefix}/batch_evaluation_metrics/{execution_id}-CC-{resource}-{model_name}-{index}-{int(time.time())}.csv"

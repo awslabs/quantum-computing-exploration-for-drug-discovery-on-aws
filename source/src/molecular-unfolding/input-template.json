@@ -6,22 +6,29 @@
     "experimentName": "test",
     "optParams": {
         "qa": {
-            "shots": 10000
+            "shots": 1000,
+            "embed_method": "default"
         },
         "sa": {
-            "shots": 10000
+            "shots": 100,
+            "notes": "batch evaluation"
         }
     },
 
     "modelParams": {
-        "M": [1, 2, 3, 4, 5],
-        "D": [8]
+        "M": [1, 2, 3, 4],
+        "D": [4],
+        "A": [300],
+        "HQ": [200]
     },
     "devicesArns": [
         "arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6",
         "arn:aws:braket:::device/qpu/d-wave/Advantage_system4"
     ],
     "ccResources": [
-        [4, 8]
+        [2, 2],
+        [4, 4],
+        [8, 8],
+        [16, 16]
     ]
 }

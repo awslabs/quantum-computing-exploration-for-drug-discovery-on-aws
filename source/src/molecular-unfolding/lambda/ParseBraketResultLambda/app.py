@@ -189,18 +189,13 @@ def parse_task_result(bucket, key, status='COMPLETED'):
         del_local_file(raw_local_path)
 
         model_param = submit_result['model_param']
-        complexity = submit_result['complexity']
         model_name = submit_result['model_name']
         mode_file_name = submit_result['mode_file_name']
         start_time = submit_result['start_time']
         experiment_name = submit_result['experiment_name']
         device_name = submit_result['device_name']
-        local_fit_time = submit_result['local_fit_time']
+        #local_fit_time = submit_res['local_fit_time']
         optimizer_param = submit_result['optimizer_param']
-
-        end_to_end_time = local_fit_time
-        running_time = total_time
-        task_id = qc_task_id
 
         time_info_json = json.dumps({
             "task_time": task_time,
@@ -209,32 +204,27 @@ def parse_task_result(bucket, key, status='COMPLETED'):
             "access_time": access_time
         })
 
-        resolver = f"QC {device_name}" 
-        if device_name in [ 'DW_2000Q_6', 'Advantage_system4']:
-            resolver = f"QC D-Wave {device_name}" 
+        #result_file_info = json.dumps(result_s3_files)
 
         metrics_items = [execution_id,
-                     "QC",
-                     resolver,
-                     str(complexity),
-                     str(end_to_end_time),
-                     str(running_time),
-                     time_info_json,
-                     start_time,
-                     experiment_name,
-                     task_id,
-                     model_name,
-                     mode_file_name,
-                     s3_prefix,
-                     device_name,
-                     model_param,
-                     json.dumps(optimizer_param),
-                     datetime.datetime.utcnow().isoformat(),
-                     result_json,
-                     result_s3_files[0]
-                     ]
+                         "QC",
+                         str(device_name),
+                         model_param,
+                         json.dumps(optimizer_param),
+                         str(total_time),
+                         time_info_json,
+                         start_time,
+                         experiment_name,
+                         qc_task_id,
+                         model_name,
+                         mode_file_name,
+                         s3_prefix,
+                         datetime.datetime.utcnow().isoformat(),
+                         result_json,
+                         result_s3_files[0]
+                         ]
 
-        metrics = "\t".join(metrics_items)
+        metrics = "!".join(metrics_items)
         log.info("metrics='{}'".format(metrics))
         metrics_key = f"{s3_prefix}/batch_evaluation_metrics/{execution_id}-QC-{device_name}-{model_name}-{index}-{qc_task_id}.csv"
         string_to_s3(metrics, bucket, metrics_key)

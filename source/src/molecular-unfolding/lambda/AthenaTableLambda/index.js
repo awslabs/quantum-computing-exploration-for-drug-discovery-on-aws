@@ -43,26 +43,22 @@ exports.handler = function (event, context, callback) {
     CREATE EXTERNAL TABLE IF NOT EXISTS qc_db.${tableName} (
         Execution_Id string,
         Compute_Type string,
-        Resolver string,
-        Complexity integer,
-        End_To_End_Time float,
-        Running_Time float,
-        Time_Info string,        
+        Resource string,
+        Params string,
+        Opt_Params string,
+        Task_Duration float,
+        Time_Info string,
         Start_Time string,
         Experiment_Name string,
         Task_Id string,
         Model_Name string,
         Model_FileName string, 
         Scenario string,
-        Resource string,
-        Model_Param string,
-        Opt_Param string,
         Create_Time string,
         Result_Detail string,
         Result_Location string
-    ) ROW FORMAT DELIMITED FIELDS TERMINATED BY '\\t' LINES TERMINATED BY '\\n' LOCATION '${location}' 
-`
-
+    ) ROW FORMAT DELIMITED FIELDS TERMINATED BY '!' LINES TERMINATED BY '\\n' LOCATION '${location}' 
+    `
     const createViewSql = `
     CREATE OR REPLACE VIEW qc_db.${viewName} AS 
     SELECT h1.*
@@ -93,37 +89,55 @@ exports.handler = function (event, context, callback) {
         });
     }
 
-    const sqlStmSeq = [createDBSql, dropTableSql, createTableSql, createViewSql, querySql]
-
-    let execPromise = null;
-    let timeDelaySeconds = 10000
-
-    for (const sqlStm of sqlStmSeq) {
-        if (execPromise == null) {
-            console.info("run sql:" + sqlStm)
-            execPromise = startAhenaQueryExecution({
-                QueryString: sqlStm,
+    console.info("run sql:" + createDBSql)
+    startAhenaQueryExecution({
+        QueryString: createDBSql,
+        ResultConfiguration: {
+            OutputLocation: ATHENA_OUTPUT_LOCATION
+        },
+    }).then(result => {
+        setTimeout(() => {
+            console.info("run sql:" + dropTableSql)
+            startAhenaQueryExecution({
+                QueryString: dropTableSql,
                 ResultConfiguration: {
                     OutputLocation: ATHENA_OUTPUT_LOCATION
                 },
-            });
-        } else {
-            execPromise = execPromise.then(
-                setTimeout(() => {
-                    console.info("run sql:" + sqlStm)
-                    startAhenaQueryExecution({
-                        QueryString: sqlStm,
-                        ResultConfiguration: {
-                            OutputLocation: ATHENA_OUTPUT_LOCATION
-                        },
-                    })
-                }, timeDelaySeconds)
-            );
-        }
-        timeDelaySeconds += 10000
-    }
+            })
+        }, 5000)
+    }).then(result => {
+        setTimeout(() => {
+            console.info("run sql:" + createTableSql)
+            startAhenaQueryExecution({
+                QueryString: createTableSql,
+                ResultConfiguration: {
+                    OutputLocation: ATHENA_OUTPUT_LOCATION
+                },
+            })
+        }, 10000)
 
-    execPromise.then(() => {
+    }).then(result => {
+        setTimeout(() => {
+            console.info("run sql:" + createViewSql)
+            startAhenaQueryExecution({
+                QueryString: createViewSql,
+                ResultConfiguration: {
+                    OutputLocation: ATHENA_OUTPUT_LOCATION
+                },
+            })
+        }, 20000)
+
+    }).then(result => {
+        setTimeout(() => {
+            console.info("run sql:" + querySql)
+            startAhenaQueryExecution({
+                QueryString: querySql,
+                ResultConfiguration: {
+                    OutputLocation: ATHENA_OUTPUT_LOCATION
+                },
+            })
+        }, 30000)
+    }).then(result => {
         callback(null, {
             queryResult: ATHENA_OUTPUT_LOCATION,
             endTime: new Date().toISOString()
