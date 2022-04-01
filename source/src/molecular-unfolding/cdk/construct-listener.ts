@@ -73,7 +73,6 @@ export class EventListener extends Construct {
         subnetType: ec2.SubnetType.PRIVATE_WITH_NAT,
       }),
       role: lambdaRole,
-      reservedConcurrentExecutions: 30,
       securityGroups: [lambdaSg],
     });
 
