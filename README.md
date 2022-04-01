@@ -121,8 +121,6 @@ Upon successfully cloning the repository into your local development environment
     │   │   ├── lambda
     │   │   │   ├── AthenaTableLambda
     │   │   │   │   ├── index.js
-    │   │   │   │   ├── package-lock.json
-    │   │   │   │   └── package.json
     │   │   │   ├── DeviceAvailableCheckLambda
     │   │   │   │   ├── Dockerfile
     │   │   │   │   ├── app.py
