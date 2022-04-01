@@ -1,9 +1,9 @@
-numpy==1.21.5
-boto3==1.20.18
-dimod==0.10.10
-networkx==2.6.3
-dwave-ocean-sdk==4.3.0
-amazon-braket-sdk==1.11.1
+numpy==1.22.2
+boto3==1.21.30
+dimod==0.10.12
+networkx==2.7.1
+dwave-ocean-sdk==4.4.0
+amazon-braket-sdk==1.18.0
 amazon-braket-ocean-plugin==1.0.7
 biopandas==0.2.9
 py3Dmol==1.8.0
