@@ -1,4 +1,5 @@
 import boto3
+from botocore import config
 import os
 from collections import defaultdict
 import json
@@ -9,7 +10,14 @@ import logging
 log = logging.getLogger()
 log.setLevel('INFO')
 
-s3 = boto3.client('s3')
+solution_version = os.environ.get('SOLUTION_VERSION', 'v1.0.0')
+solution_id = os.environ.get('SOLUTION_ID')
+user_agent_config = {
+        'user_agent_extra': f'AwsSolution/{solution_id}/{solution_version}'
+}
+default_config = config.Config(**user_agent_config)
+
+s3 = boto3.client('s3', config=default_config)
 
 known_devices_arns = [
     'arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6',

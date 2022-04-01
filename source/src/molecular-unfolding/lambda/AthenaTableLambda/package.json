@@ -1,5 +1,5 @@
 {
-  "name": "athenatabelambda",
+  "name": "athenatablelambda",
   "version": "1.0.0",
   "description": "AWS lambda to create Athena table",
   "main": "index.js",

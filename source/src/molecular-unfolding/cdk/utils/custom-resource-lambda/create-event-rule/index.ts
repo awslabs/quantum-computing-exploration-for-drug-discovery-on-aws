@@ -42,8 +42,12 @@ async function _handler(event: CloudFormationCustomResourceEvent, context: Conte
     console.log('ignore creating event rule');
     return;
   }
+
+  const solution_id = process.env['SOLUTION_ID']
+  const solution_version = process.env['SOLUTION_VERSION'] || 'v1.0.0'
   const config = {
     region: 'us-west-2',
+    customUserAgent: `AwsSolution/${solution_id}/${solution_version}`
   };
 
   const cf_client = new CloudFormationClient(config);

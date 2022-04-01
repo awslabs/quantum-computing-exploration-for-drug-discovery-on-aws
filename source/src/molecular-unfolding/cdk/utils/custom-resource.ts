@@ -24,6 +24,7 @@ import {
 import {
   Construct,
 } from 'constructs';
+import { MainStack } from '../stack-main';
 
 
 function addPolicyToCustomResourceLambdaRole(scope: Construct, role: iam.Role): iam.Role {
@@ -127,6 +128,8 @@ export default (scope: Construct, props: Props) => {
     }),
     environment: {
       EVENT_BRIDGE_ROLE_ARN: eventBridgeRole.roleArn,
+      SOLUTION_ID: MainStack.SOLUTION_ID,
+      SOLUTION_VERSION: MainStack.SOLUTION_VERSION,
     },
 
     bundling: {

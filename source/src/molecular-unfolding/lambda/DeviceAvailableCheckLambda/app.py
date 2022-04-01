@@ -3,6 +3,7 @@ import datetime
 from braket.aws import AwsDevice
 from braket.aws.aws_session import AwsSession
 from boto3 import Session
+from botocore import config
 import os
 import logging
 

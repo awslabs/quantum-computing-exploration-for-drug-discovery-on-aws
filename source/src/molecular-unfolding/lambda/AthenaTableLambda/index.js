@@ -1,12 +1,17 @@
 const AWS = require('aws-sdk')
 const util = require('util')
-const client = new AWS.Athena({})
+
 const bucket = process.env.BUCKET
 
 exports.handler = function (event, context, callback) {
     const s3_prefix = event['s3_prefix']
     const stackName = event['stackName']
     const execution_id = event['execution_id']
+    const solution_id = process.env['SOLUTION_ID']
+    const solution_version = process.env['SOLUTION_VERSION'] || 'v1.0.0'
+
+    const options = { customUserAgent: `AwsSolution/${solution_id}/${solution_version}` };
+    const client = new AWS.Athena(options)
 
     console.log(`stackName: ${stackName}, s3_prefix: ${s3_prefix}`)
 

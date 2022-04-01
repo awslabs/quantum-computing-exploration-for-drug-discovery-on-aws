@@ -90,8 +90,6 @@ Upon successfully cloning the repository into your local development environment
     │   │   ├── batch-images
     │   │   │   ├── create-model
     │   │   │   │   ├── Dockerfile
-    │   │   │   │   ├── molecule-data
-    │   │   │   │   │   └── 117_ideal.mol2
     │   │   │   │   └── process.py
     │   │   │   ├── qa-optimizer
     │   │   │   │   ├── Dockerfile
@@ -121,7 +119,7 @@ Upon successfully cloning the repository into your local development environment
     │   │   │       └── vpc.ts
     │   │   ├── input-template.json
     │   │   ├── lambda
-    │   │   │   ├── AthenaTabeLambda
+    │   │   │   ├── AthenaTableLambda
     │   │   │   │   ├── index.js
     │   │   │   │   ├── package-lock.json
     │   │   │   │   └── package.json
