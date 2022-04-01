@@ -1,5 +1,5 @@
 
-# How to deploy the solution
+# Deploy from source
 
 ## Regions
 

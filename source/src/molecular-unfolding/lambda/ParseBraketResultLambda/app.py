@@ -1,5 +1,9 @@
+# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0
+
 from posixpath import basename
 import boto3
+from botocore import config
 import os
 import json
 import time
@@ -10,8 +14,16 @@ from utility.ResultProcess import ResultParser
 log = logging.getLogger()
 log.setLevel('INFO')
 
-s3 = boto3.client('s3')
-step_func = boto3.client('stepfunctions')
+solution_version = os.environ.get('SOLUTION_VERSION', 'v1.0.0')
+solution_id = os.environ.get('SOLUTION_ID')
+user_agent_config = {
+        'user_agent_extra': f'AwsSolution/{solution_id}/{solution_version}'
+}
+default_config = config.Config(**user_agent_config)
+
+s3 = boto3.client('s3', config=default_config)
+step_func = boto3.client('stepfunctions', config=default_config)
+
 s3_prefix = None
 
 
@@ -248,7 +260,7 @@ def parse_task_result(bucket, key, status='COMPLETED'):
         log.info(repr(e))
 
 
-def handle_event_bridage_message(event):
+def handle_event_bridge_message(event):
     region = os.environ['AWS_REGION']
     outputS3Bucket = event['detail']['outputS3Bucket']
 
@@ -269,7 +281,7 @@ def handle_event_bridage_message(event):
 def handler(event, context):
     log.info(f"event={event}")
     if 'detail-type' in event:
-        handle_event_bridage_message(event)
+        handle_event_bridge_message(event)
     else:
 
         #

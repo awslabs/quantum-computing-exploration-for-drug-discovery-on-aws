@@ -1,3 +1,6 @@
+# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0
+
 ########################################################################################################################
 #   The following class is the parser for different types of molecule files
 ########################################################################################################################

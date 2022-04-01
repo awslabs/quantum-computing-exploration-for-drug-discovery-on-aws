@@ -1,14 +1,28 @@
+# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0
+
 import boto3
+from botocore import config
 import json
 import logging
+import os
 
-s3 = boto3.client('s3')
-step_func = boto3.client('stepfunctions')
 s3_prefix = None
 s3_bucket = None
 
 log = logging.getLogger()
 log.setLevel('INFO')
+
+solution_version = os.environ.get('SOLUTION_VERSION', 'v1.0.0')
+solution_id = os.environ.get('SOLUTION_ID')
+user_agent_config = {
+        'user_agent_extra': f'AwsSolution/{solution_id}/{solution_version}'
+}
+default_config = config.Config(**user_agent_config)
+
+s3 = boto3.client('s3', config=default_config)
+step_func = boto3.client('stepfunctions', config=default_config)
+
 
 def string_to_s3(content, bucket, key):
     log.info(f"write s3://{bucket}/{key}, content={content}")
