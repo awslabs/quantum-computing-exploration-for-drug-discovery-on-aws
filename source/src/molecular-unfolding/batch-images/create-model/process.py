@@ -1,3 +1,6 @@
+# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0
+
 import argparse
 import logging
 from os.path import basename
@@ -59,8 +62,8 @@ def upload_file(bucket, key, file_name):
 def create_qubo_model(mol_data, execution_id, version, model_params):
     logging.info("create_model() enter")
     
-    max_param_M = max(model_params.get('M', [4]))
-    param_D = model_params.get('D', [4])
+    max_param_M = max(model_params.get('M', [5]))
+    param_D = model_params.get('D', [8])
     param_A = model_params.get('A', [300])
     param_HQ = model_params.get('HQ', [200])
 

@@ -90,8 +90,6 @@ Upon successfully cloning the repository into your local development environment
     │   │   ├── batch-images
     │   │   │   ├── create-model
     │   │   │   │   ├── Dockerfile
-    │   │   │   │   ├── molecule-data
-    │   │   │   │   │   └── 117_ideal.mol2
     │   │   │   │   └── process.py
     │   │   │   ├── qa-optimizer
     │   │   │   │   ├── Dockerfile
@@ -121,10 +119,8 @@ Upon successfully cloning the repository into your local development environment
     │   │   │       └── vpc.ts
     │   │   ├── input-template.json
     │   │   ├── lambda
-    │   │   │   ├── AthenaTabeLambda
+    │   │   │   ├── AthenaTableLambda
     │   │   │   │   ├── index.js
-    │   │   │   │   ├── package-lock.json
-    │   │   │   │   └── package.json
     │   │   │   ├── DeviceAvailableCheckLambda
     │   │   │   │   ├── Dockerfile
     │   │   │   │   ├── app.py
@@ -163,7 +159,7 @@ Upon successfully cloning the repository into your local development environment
     ├── tsconfig.json
     └── version.json
 ```
-## Deploy from source
+## Deploy From Source
 
 Refer to [prerequisites and deployment](./source/README.md)
 
@@ -181,7 +177,7 @@ chmod +x ./run-all-tests.sh
 ***
 
 
-## Collection of operational metrics
+## Collection of Operational Metrics
 This solution collects anonymous operational metrics to help AWS improve the quality and features of the solution. For more information, including how to disable this capability, please see the [implementation guide](deep link into the documentation with specific information about the metrics and how to opt-out).
 
 ***

@@ -1,3 +1,20 @@
+/*
+Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+
 import {
   aws_iam as iam,
   aws_lambda as lambda,
@@ -438,7 +455,6 @@ export class BatchEvaluation extends Construct {
     const jobDef = this.batchUtil.createCCBatchJobDef('CCJob_Template', 2, 4);
 
     const stateJson = {
-      End: true,
       Type: 'Task',
       Resource: 'arn:aws:states:::batch:submitJob.sync',
       Parameters: {
@@ -457,15 +473,25 @@ export class BatchEvaluation extends Construct {
           }],
         },
       },
+      Catch: [
+        {
+          ErrorEquals: [
+            'States.TaskFailed',
+          ],
+          Next: 'Batch Job Complete',
+        },
+      ],
       ResultSelector: {
         'JobId.$': '$.JobId',
         'JobName.$': '$.JobName',
       },
     };
 
-    const customBatchSubmitJob = new sfn.CustomState(this, 'Run CC Batch Task', {
+    const customBatchSubmitJob = new sfn.CustomState(this, 'Run CC Batch Job', {
       stateJson,
     });
+
+    const batchJobCompleted = new sfn.Pass(this, 'Batch Job Complete');
 
     const parallelCCJobsMap = new sfn.Map(this, 'ParallelCCJobs', {
       maxConcurrency: 20,
@@ -477,7 +503,7 @@ export class BatchEvaluation extends Construct {
       },
       resultPath: '$.parallelCCJobsMap',
     });
-    parallelCCJobsMap.iterator(customBatchSubmitJob);
+    parallelCCJobsMap.iterator(customBatchSubmitJob.next(batchJobCompleted));
 
     const chain = sfn.Chain.start(parametersLambdaStep).next(parallelCCJobsMap);
 
@@ -571,6 +597,11 @@ export class BatchEvaluation extends Construct {
       resultPath: '$.watiForTokenStep',
       integrationPattern: sfn.IntegrationPattern.WAIT_FOR_TASK_TOKEN,
     });
+
+    submitQCTaskStep.addCatch(new sfn.Pass(this, 'Submit Error'), {
+      errors: [sfn.Errors.TASKS_FAILED],
+    });
+
     return submitQCTaskStep.next(waitForTokenStep);
   }
 

@@ -1,3 +1,19 @@
+/*
+Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
 import {
   App,
 } from 'aws-cdk-lib';
@@ -62,19 +78,19 @@ describe('Dashboard', () => {
               Type: 'STRING',
             },
             {
-              Name: 'resource',
+              Name: 'resolver',
               Type: 'STRING',
             },
             {
-              Name: 'params',
-              Type: 'STRING',
+              Name: 'complexity',
+              Type: 'INTEGER',
             },
             {
-              Name: 'opt_params',
-              Type: 'STRING',
+              Name: 'end_to_end_time',
+              Type: 'DECIMAL',
             },
             {
-              Name: 'task_duration',
+              Name: 'running_time',
               Type: 'DECIMAL',
             },
             {
@@ -103,6 +119,18 @@ describe('Dashboard', () => {
             },
             {
               Name: 'scenario',
+              Type: 'STRING',
+            },
+            {
+              Name: 'resource',
+              Type: 'STRING',
+            },
+            {
+              Name: 'model_param',
+              Type: 'STRING',
+            },
+            {
+              Name: 'opt_param',
               Type: 'STRING',
             },
             {

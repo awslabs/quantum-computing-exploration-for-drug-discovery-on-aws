@@ -1,3 +1,20 @@
+/*
+Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+
 import {
   aws_iam as iam,
   aws_ec2 as ec2,
@@ -24,6 +41,7 @@ import {
 import {
   Construct,
 } from 'constructs';
+import { MainStack } from '../stack-main';
 
 
 function addPolicyToCustomResourceLambdaRole(scope: Construct, role: iam.Role): iam.Role {
@@ -127,6 +145,8 @@ export default (scope: Construct, props: Props) => {
     }),
     environment: {
       EVENT_BRIDGE_ROLE_ARN: eventBridgeRole.roleArn,
+      SOLUTION_ID: MainStack.SOLUTION_ID,
+      SOLUTION_VERSION: MainStack.SOLUTION_VERSION,
     },
 
     bundling: {

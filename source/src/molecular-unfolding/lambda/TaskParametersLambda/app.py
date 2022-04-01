@@ -1,4 +1,8 @@
+# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0
+
 import boto3
+from botocore import config
 import os
 from collections import defaultdict
 import json
@@ -9,7 +13,14 @@ import logging
 log = logging.getLogger()
 log.setLevel('INFO')
 
-s3 = boto3.client('s3')
+solution_version = os.environ.get('SOLUTION_VERSION', 'v1.0.0')
+solution_id = os.environ.get('SOLUTION_ID')
+user_agent_config = {
+        'user_agent_extra': f'AwsSolution/{solution_id}/{solution_version}'
+}
+default_config = config.Config(**user_agent_config)
+
+s3 = boto3.client('s3', config=default_config)
 
 known_devices_arns = [
     'arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6',
@@ -19,26 +30,23 @@ known_devices_arns = [
 default_devices_arns = known_devices_arns
 
 default_model_params = {
-    "M": [1, 2, 3, 4],
-    "D": [4],
+    "M": [1, 2, 3, 4, 5],
+    "D": [8],
     "A": [300],
     "HQ": [200]  # hubo_qubo_val
 }
 default_cc_resources = [
     # vcpu, memory_in_GB
-    [2, 2],
-    [4, 4],
-    [8, 8],
-    [16, 16]
+    [4, 8]
 ]
 
 default_opt_params = {
     "qa": {
-        "shots": 1000,
+        "shots": 10000,
         "embed_method": "default"
     },
     "sa": {
-        "shots": 1000,
+        "shots": 10000,
         "notes": "batch evaluation"
     }
 }
@@ -217,9 +225,6 @@ def validate_input(input_dict: dict):
                   'experimentName', 'modelParams', 'devicesArns', 'ccResources', 'Comment']
     valid_keys_str = "|".join(valid_keys)
     errors = []
-
-    if '!' in json.dumps(input_dict):
-        errors.append("invalid char '!' in input")
 
     try:
         for k in input_dict.keys():

@@ -11,6 +11,7 @@ import {
   Construct,
 } from 'constructs';
 
+import { MainStack } from '../stack-main';
 import {
   ECRRepoNameEnum,
   ECRImageUtil,
@@ -62,12 +63,14 @@ export class LambdaUtil {
     const aggLambdaRole = this.roleUtil.createAggResultLambdaRole();
     return new lambda.Function(this.scope, 'AggResultLambda', {
       runtime: lambda.Runtime.NODEJS_14_X,
-      code: lambda.Code.fromAsset(path.join(__dirname, '../../lambda/AthenaTabeLambda/')),
+      code: lambda.Code.fromAsset(path.join(__dirname, '../../lambda/AthenaTableLambda/')),
       handler: 'index.handler',
       memorySize: 512,
       timeout: Duration.seconds(120),
       environment: {
         BUCKET: this.props.bucket.bucketName,
+        SOLUTION_ID: MainStack.SOLUTION_ID,
+        SOLUTION_VERSION: MainStack.SOLUTION_VERSION,
       },
       vpc,
       vpcSubnets: vpc.selectSubnets({
@@ -94,6 +97,10 @@ export class LambdaUtil {
       }),
       role: checkLambdaRole,
       securityGroups: [lambdaSg],
+      environment: {
+        SOLUTION_ID: MainStack.SOLUTION_ID,
+        SOLUTION_VERSION: MainStack.SOLUTION_VERSION,
+      },
     });
   }
 
@@ -114,6 +121,10 @@ export class LambdaUtil {
       }),
       role: lambdaRole,
       securityGroups: [lambdaSg],
+      environment: {
+        SOLUTION_ID: MainStack.SOLUTION_ID,
+        SOLUTION_VERSION: MainStack.SOLUTION_VERSION,
+      },
     });
   }
 
@@ -134,6 +145,10 @@ export class LambdaUtil {
       }),
       role: lambdaRole,
       securityGroups: [lambdaSg],
+      environment: {
+        SOLUTION_ID: MainStack.SOLUTION_ID,
+        SOLUTION_VERSION: MainStack.SOLUTION_VERSION,
+      },
     });
   }
 }
