@@ -1,3 +1,6 @@
+# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0
+
 from posixpath import basename
 import boto3
 from botocore import config
@@ -257,7 +260,7 @@ def parse_task_result(bucket, key, status='COMPLETED'):
         log.info(repr(e))
 
 
-def handle_event_bridge_message(event, config):
+def handle_event_bridge_message(event):
     region = os.environ['AWS_REGION']
     outputS3Bucket = event['detail']['outputS3Bucket']
 

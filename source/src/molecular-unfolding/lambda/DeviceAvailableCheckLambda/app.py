@@ -1,4 +1,6 @@
-# import boto3
+# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0
+
 import datetime
 from braket.aws import AwsDevice
 from braket.aws.aws_session import AwsSession
