@@ -149,7 +149,7 @@ Upon successfully cloning the repository into your local development environment
     │   │       └── __init__.py
     │   └── stack.ts
     ├── test
-    │   ├── benchmark.test.ts
+    │   ├── batchevaluation.test.ts
     │   ├── dashboard.test.ts
     │   ├── listener.test.ts
     │   ├── main.test.ts
