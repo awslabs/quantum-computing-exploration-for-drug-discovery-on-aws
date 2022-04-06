@@ -301,8 +301,8 @@ echo "--------------------------------------------------------------------------
 # Run the helper to clean-up the templates and remove unnecessary CDK elements
 echo "Run the helper to clean-up the templates and remove unnecessary CDK elements"
 [[ $run_helper == "true" ]] && {
-    echo "node $template_dir/cdk-solution-helper/index"
-    node $template_dir/cdk-solution-helper/index
+    echo "node $template_dir/cdk-solution-helper/my-index"
+    node $template_dir/cdk-solution-helper/my-index
     if [ "$?" = "1" ]; then
     	echo "(cdk-solution-helper) ERROR: there is likely output above." 1>&2
     	exit 1
