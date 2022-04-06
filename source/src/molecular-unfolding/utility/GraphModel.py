@@ -1,3 +1,6 @@
+# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0
+
 ########################################################################################################################
 #   The following class is the graph model for molecules
 ########################################################################################################################
@@ -9,6 +12,7 @@ import logging
 
 log = logging.getLogger()
 log.setLevel('INFO')
+
 
 class BuildMolGraph():
 
@@ -23,6 +27,7 @@ class BuildMolGraph():
 
         self.mol_ug = self.mol_g.to_undirected()
 
+        # use betweenness_centrality to generate rotatabole bonds: self.mol_ug -> rb_list
         self.rb_list = self.build_rb()
         self.rb_data, self.rb_data_list = self.build_rb_data()
         # test only N rb for graph model
@@ -36,7 +41,7 @@ class BuildMolGraph():
                 nodes_list.append(node)
 
         def add_edge(edges_list, edge, rotatable_list, filter_by_type, bond_type):
-            if filter_by_type :
+            if filter_by_type:
                 if bond_type != 'ar':
                     rotatable_list.append(edge)
             if edge not in edges_list:
@@ -116,12 +121,13 @@ class BuildMolGraph():
                 # update make pts pair set
         #         update_pts_pair(rb_data[rb_name])
             self.mol_ug.add_edge(rb[0], rb[1])
-        
+
         for invalid_rb, invalid_rb_name in zip(invalid_rb_list, invalid_rb_name_list):
             self.rb_list.remove(invalid_rb)
             del rb_data[invalid_rb_name]
 
-        sort_rb_data = {k: v for k, v in sorted(rb_data.items(), key=lambda rb: -rb[1]['bc_num'])}
+        sort_rb_data = {k: v for k, v in sorted(
+            rb_data.items(), key=lambda rb: -rb[1]['bc_num'])}
 
         rb_data_list = []
         for rb, data in sort_rb_data.items():

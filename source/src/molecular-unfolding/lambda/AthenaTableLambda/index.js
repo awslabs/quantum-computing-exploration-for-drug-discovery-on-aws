@@ -1,13 +1,36 @@
+/*
+Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
+
+
 const AWS = require('aws-sdk')
 const util = require('util')
-const client = new AWS.Athena({})
+
 const bucket = process.env.BUCKET
+
+const solution_id = process.env['SOLUTION_ID']
+const solution_version = process.env['SOLUTION_VERSION'] || 'v1.0.0'
+
+const options = { customUserAgent: `AwsSolution/${solution_id}/${solution_version}` };
+const client = new AWS.Athena(options)
 
 exports.handler = function (event, context, callback) {
     const s3_prefix = event['s3_prefix']
     const stackName = event['stackName']
     const execution_id = event['execution_id']
-
+   
     console.log(`stackName: ${stackName}, s3_prefix: ${s3_prefix}`)
 
     const ATHENA_OUTPUT_LOCATION = `s3://${bucket}/${s3_prefix}/athena-out/`

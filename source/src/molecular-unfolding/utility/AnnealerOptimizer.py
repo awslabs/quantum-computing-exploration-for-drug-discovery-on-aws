@@ -1,14 +1,18 @@
+# Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+# SPDX-License-Identifier: Apache-2.0
+
 ########################################################################################################################
 #   The following class is for different kinds of annealing optimizer
 ########################################################################################################################
 from posixpath import basename
 import dimod
+import neal
 from dwave.system.composites import EmbeddingComposite
 from braket.ocean_plugin import BraketDWaveSampler
 from braket.ocean_plugin import BraketSampler
 
 import time
-import pickle #nosec
+import pickle  # nosec
 import os
 import logging
 import json
@@ -46,6 +50,10 @@ class Annealer():
         if method == "dwave-sa":
             logging.info("use simulated annealer from dimod")
             self.sampler = dimod.SimulatedAnnealingSampler()
+        elif method == "neal-sa":
+            # https://github.com/dwavesystems/dwave-neal
+            logging.info("use neal simulated annealer (c++) from dimod")
+            self.sampler = neal.SimulatedAnnealingSampler()
         elif method == "dwave-qa":
             self.my_bucket = param["bucket"]  # the name of the bucket
             # the name of the folder in the bucket
@@ -64,9 +72,8 @@ class Annealer():
 
     def fit(self):
         logging.info("fit() ...")
-        # self.pre_check()
         start = time.time()
-        if self.method == "dwave-sa":
+        if self.method == "dwave-sa" or self.method == "neal-sa":
             # response = self.sampler.sample(
             #     self.qubo, num_reads=self.param["shots"]).aggregate()
             self.response = self.sampler.sample_qubo(
@@ -89,14 +96,14 @@ class Annealer():
 #         print("fit result.model_info={}".format(result["model_info"]))
 
         # upload data
-        if self.method == "dwave-sa":
+        if self.method != "dwave-qa":
             logging.info(f"{self.method} save to local")
-            self.save("sa_result.pickle")
+            self.save(f"{self.method}_result.pickle")
         elif self.method == "dwave-qa":
             task_id = self.get_task_id()
-            self.save("/tmp/qa_result.pickle") #nosec
+            self.save("/tmp/qa_result.pickle")  # nosec
             response = self._upload_result_json(
-                task_id, "/tmp/qa_result.pickle") #nosec
+                task_id, "/tmp/qa_result.pickle")  # nosec
             logging.info(f"{self.method} save to s3 - {task_id}: {response}")
         return result
 
@@ -140,7 +147,7 @@ class Annealer():
         self.time["embed"] = (end-start)/60
 
     def time_summary(self):
-        if self.method == "dwave-sa":
+        if self.method == "dwave-sa" or self.method == "neal-sa":
             self.time["time"] = self.time["optimize"]
         elif self.method == "dwave-qa":
             self.time["time"] = self.time["optimize"] + \
@@ -154,9 +161,3 @@ class Annealer():
     def init_time(self):
         if self.method == "dwave-qa":
             self.time["embed"] = 0
-
-    def pre_check(self):
-        if self.method == "dwave-qa":
-            if self.time["embed"] == 0:
-                raise Exception(
-                    "You should run Annealer.embed() before Annealer.fit()!")

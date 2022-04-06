@@ -35,7 +35,11 @@ Before you launch the solution, review the architecture, supported regions, and 
 
 2. Choose **Create Policy**.
 
+<<<<<<< HEAD
 3. In the Create policy page, click the **JSON** tab, and enter the QuickSight policy as below. This is the least policy required for QuickSight to work in this solution.
+=======
+3. In the Create policy page, click the **JSON** tab, and enter the QuickSight policy as below. This is the least policy required for QuickSight to work in this solution. Please ignore **Errors** in the bottom of the input.
+>>>>>>> main
         
         {
             "Version": "2012-10-17",
@@ -184,7 +188,7 @@ Before you launch the solution, review the architecture, supported regions, and 
 3. In the **Create your QuickSight account** page, complete the following settings. 
 
     - Choose **Use IAM federated identities & QuickSight-managed users** from the Authentication method.
-    - Choose **US East (N.Virginia)**.
+    - Choose **US East (N.Virginia)**. **Note**: always choose **US East (N.Virginia)** whatever regions you will deploy this solution.
     - Enter the unique **QuickSight account name**.
     - Enter the **Email** to receive notifications.
     - Choose **Use an existing role**, and select the role: `qradd-quicksight-service-role`.
@@ -193,6 +197,9 @@ Before you launch the solution, review the architecture, supported regions, and 
     !!! Caution "Caution"
 
         If Quicksight service already used default role, you need to change it to the role created above in the page [QuickSight Security & permissions](https://us-east-1.quicksight.aws.amazon.com/sn/admin#aws). Please check in advance because this operation may influence other data under this QuickSight Account. Refer to [Using Amazon QuickSight with IAM](https://docs.aws.amazon.com/quicksight/latest/user/security_iam_service-with-iam.html#security-create-iam-role) for details.
+
+        If you already signed up QuickSight, you can got to [QuickSight admin](https://us-east-1.quicksight.aws.amazon.com/sn/admin) to check your edition (edition should be Enterprise). 
+
 
 ### Obtain QuickSight Username
 
@@ -217,8 +224,8 @@ Before you launch the solution, review the architecture, supported regions, and 
 
     |      Parameter      |   Description |
     |:-------------------|:----|
-    | QuickSightUser | QuickSight Username, which can be obtained from [Manage users](https://us-east-1.quicksight.aws.amazon.com/sn/admin?#users). |
     | QuickSightRoleName | QuickSight Service Role name, which can be obtained from [Security & permissions](https://us-east-1.quicksight.aws.amazon.com/sn/admin?#aws).|
+    | QuickSightUser | QuickSight Username, which can be obtained from [Manage users](https://us-east-1.quicksight.aws.amazon.com/sn/admin?#users). |
 
 5. Choose **Next**.
 
