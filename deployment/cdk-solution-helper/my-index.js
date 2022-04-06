@@ -37,7 +37,7 @@ fs.readdirSync(global_s3_assets).forEach(file => {
           // Set the S3 key reference
           let artifactHash
           if (fn.Properties.Code.S3Bucket.hasOwnProperty('Fn::Sub')){
-            artifactHash = Object.assign(fn.Properties.Code.S3Bucket.S3Key);
+            artifactHash = Object.assign(fn.Properties.Code.S3Key);
             artifactHash = artifactHash.replace('\.zip', '');
           } else {
             artifactHash = Object.assign(fn.Properties.Code.S3Bucket.Ref);
