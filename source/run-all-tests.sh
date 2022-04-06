@@ -8,7 +8,6 @@ set -e
 
 source_dir="$PWD"
 
-
 cd $source_dir
 
 npm install 
