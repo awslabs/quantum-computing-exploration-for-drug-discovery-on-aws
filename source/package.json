@@ -6,6 +6,8 @@
     "url": "https://github.com/awslabs/quantum-ready-solution-for-drug-discovery.git"
   },
   "scripts": {
+    "cleanup": "tsc --build ./ --clean && rm -rf node_modules && rm -f package-lock.json",
+    "cleanup:tsc": "tsc --build ./ --clean",
     "test": "rm -fr lib && npm run test:compile && jest --passWithNoTests --all --updateSnapshot && eslint",
     "build": "npm run synth",
     "bump": "standard-version -i ../CHANGELOG.md",
