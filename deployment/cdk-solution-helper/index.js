@@ -31,6 +31,7 @@ fs.readdirSync(global_s3_assets).forEach(file => {
       return resources[key].Type === "AWS::Lambda::Function";
     });
     lambdaFunctions.forEach(function(f) {
+        console.log("process lambdaFunction " + f)
         const fn = template.Resources[f];
         if (fn.Properties.Code.hasOwnProperty('S3Bucket')) {
           // Set the S3 key reference
