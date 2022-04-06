@@ -32,8 +32,6 @@ normal=$(tput sgr0)
 #------------------------------------------------------------------------------
 # SETTINGS
 #------------------------------------------------------------------------------
-# Important: CDK global version number
-cdk_version=2.8.0 # Note: should match package.json
 template_format="json"
 run_helper="true"
 
@@ -93,7 +91,7 @@ do_replace()
 create_template_json() 
 {
     # Run 'cdk synth' to generate raw solution outputs
-    do_cmd cdk synth --output=$staging_dist_dir
+    do_cmd npx cdk synth --output=$staging_dist_dir
 
     # Remove unnecessary output files
     do_cmd cd $staging_dist_dir
@@ -119,7 +117,7 @@ create_template_yaml()
     maxrc=0
     for template in `cdk list`; do
         echo Create template $template
-        cdk synth $template > ${template_dist_dir}/${template}.template
+        npx cdk synth $template > ${template_dist_dir}/${template}.template
         if [[ $? > $maxrc ]]; then
             maxrc=$?
         fi
@@ -133,7 +131,7 @@ cleanup_temporary_generted_files()
     echo "------------------------------------------------------------------------------"
 
     # Delete generated files: CDK Consctruct typescript transcompiled generted files
-    do_cmd cd $source_dir/
+    do_cmd cd $source_dir/constructs
     do_cmd npm run cleanup:tsc
 
     # Delete the temporary /staging folder
@@ -187,9 +185,6 @@ else
     export SOLUTION_TRADEMARKEDNAME
 fi
 
-if [[ ! -z $SOLUTION_VERSION ]]; then
-    export SOLUTION_VERSION
-fi
 
 #------------------------------------------------------------------------------
 # Validate command line parameters
@@ -209,26 +204,10 @@ export DIST_OUTPUT_BUCKET=$SOLUTION_BUCKET
 #
 # If confused, use build-s3-dist.sh <bucket> <version>
 if [ ! -z $3 ]; then
-    version="$3"
-elif [ ! -z "$2" ]; then
-    version=$2
-elif [ ! -z $SOLUTION_VERSION ]; then
-    version=$SOLUTION_VERSION
-elif [ -e ../source/version.txt ]; then
-    version=`cat ../source/version.txt`
+    export VERSION="$3"
 else
-    echo "Version not found. Version must be passed as an argument or in version.txt in the format vn.n.n"
-    exit 1
+    export VERSION=$(git describe --tags || echo v0.0.0)
 fi
-SOLUTION_VERSION=$version
-
-# SOLUTION_VERSION should be vn.n.n
-if [[ $SOLUTION_VERSION != v* ]]; then
-    echo prepend v to $SOLUTION_VERSION
-    SOLUTION_VERSION=v${SOLUTION_VERSION}
-fi
-
-export SOLUTION_VERSION=$version
 
 #-----------------------------------------------------------------------------------
 # Get reference for all important folders
@@ -261,22 +240,23 @@ echo "--------------------------------------------------------------------------
 echo "${bold}[Synth] CDK Project${normal}"
 echo "------------------------------------------------------------------------------"
 
+# Install and build web console asset
+# This is done in run-all-tests.sh
+# do_cmd cd $source_dir/portal
+# do_cmd npm install
+
+# export PATH=$(npm bin):$PATH
+# do_cmd npm run build
+
+
 # Install the global aws-cdk package
 # Note: do not install using global (-g) option. This makes build-s3-dist.sh difficult
 # for customers and developers to use, as it globally changes their environment.
-do_cmd cd $source_dir
+do_cmd cd $source_dir/
 do_cmd npm install
-do_cmd npm install aws-cdk@$cdk_version
 
 # Add local install to PATH
 export PATH=$(npm bin):$PATH
-# Check cdk version to verify installation
-current_cdkver=`cdk --version | grep -Eo '^[0-9]{1,2}\.[0-9]+\.[0-9]+'`
-echo CDK version $current_cdkver
-if [[ $current_cdkver != $cdk_version ]]; then 
-    echo Required CDK version is ${cdk_version}, found ${current_cdkver}
-    exit 255
-fi
 do_cmd npm run build       # build javascript from typescript to validate the code
                            # cdk synth doesn't always detect issues in the typescript
                            # and may succeed using old build files. This ensures we
@@ -314,7 +294,7 @@ echo "Find and replace bucket_name, solution_name, and version"
 cd $template_dist_dir
 do_replace "*.template" %%BUCKET_NAME%% ${SOLUTION_BUCKET}
 do_replace "*.template" %%SOLUTION_NAME%% ${SOLUTION_TRADEMARKEDNAME}
-do_replace "*.template" %%VERSION%% ${SOLUTION_VERSION}
+do_replace "*.template" %%VERSION%% ${VERSION}
 
 echo "------------------------------------------------------------------------------"
 echo "${bold}[Packing] Source code artifacts${normal}"
@@ -328,69 +308,42 @@ find $staging_dist_dir -iname "node_modules" -type d -exec rm -rf "{}" \; 2> /de
 cd $staging_dist_dir
 for d in `find . -mindepth 1 -maxdepth 1 -type d`; do
 
-    # Rename the artifact, removing the period for handler compatibility
+    # pfname = asset.<key-name>
     pfname="$(basename -- $d)"
-    fname="$(echo $pfname | sed -e 's/\.//g')"
-    echo "zip -r $fname.zip $fname"
-    mv $d $fname
 
-    # Build the artifacts
-    if test -f $fname/requirements.txt; then
-        echo "===================================="
-        echo "This is Python runtime"
-        echo "===================================="
-        cd $fname
-        venv_folder="./venv-prod/"
-        rm -fr .venv-test
-        rm -fr .venv-prod
-        echo "Initiating virtual environment"
-        python3 -m venv $venv_folder
-        source $venv_folder/bin/activate
-        pip3 install -q -r requirements.txt --target .
-        deactivate
-        cd $staging_dist_dir/$fname/$venv_folder/lib/python3.*/site-packages
-        echo "zipping the artifact"
-        zip -qr9 $staging_dist_dir/$fname.zip .
-        cd $staging_dist_dir/$fname
-        zip -gq $staging_dist_dir/$fname.zip *.py util/*
-        cd $staging_dist_dir
-    elif test -f $fname/package.json; then
-        echo "===================================="
-        echo "This is Node runtime"
-        echo "===================================="
-        cd $fname
-        echo "Clean and rebuild artifacts"
-        npm run clean
-        npm ci
-        if [ "$?" = "1" ]; then
-	        echo "ERROR: Seems like package-lock.json does not exists or is out of sync with package.json. Trying npm install instead" 1>&2
-            npm install
-        fi
-        cd $staging_dist_dir
-        # Zip the artifact
-        echo "zip -r $fname.zip $fname"
-        zip -rq $fname.zip $fname
-    fi
+    # zip folder
+    echo "zip -rq $pfname.zip $pfname"
+    cd $pfname
+    zip -rq $pfname.zip *
+    mv $pfname.zip ../
+    cd ..
 
-    if test -f $fname.zip; then
-        # Copy the zipped artifact from /staging to /regional-s3-assets
-        echo "cp $fname.zip $build_dist_dir"
-        cp $fname.zip $build_dist_dir
+    # Remove the old, unzipped artifact from /staging
+    echo "rm -rf $pfname"
+    rm -rf $pfname
 
-        # Remove the old, unzipped artifact from /staging
-        echo "rm -rf $fname"
-        rm -rf $fname
+    # ... repeat until all source code artifacts are zipped and placed in the /staging
+done
 
-        # Remove the old, zipped artifact from /staging
-        echo "rm $fname.zip"
-        rm $fname.zip
-        # ... repeat until all source code artifacts are zipped and placed in the
-        # ... /regional-s3-assets folder
-    else
-        echo "ERROR: $fname.zip not found"
-        exit 1
-    fi
 
+# ... For each asset.*.zip code artifact in the temporary /staging folder...
+cd $staging_dist_dir
+for f in `find . -iname \*.zip`; do
+    # Rename the artifact, removing the period for handler compatibility
+    # pfname = asset.<key-name>.zip
+    pfname="$(basename -- $f)"
+    echo $pfname
+    # fname = <key-name>.zip
+    fname="$(echo $pfname | sed -e 's/asset\.//g')"
+    mv $pfname $fname
+
+    # Copy the zipped artifact from /staging to /regional-s3-assets
+    echo "cp $fname $build_dist_dir"
+    cp $fname $build_dist_dir
+
+    # Remove the old, zipped artifact from /staging
+    echo "rm $fname"
+    rm $fname
 done
 
 # cleanup temporary generated files that are not needed for later stages of the build pipeline

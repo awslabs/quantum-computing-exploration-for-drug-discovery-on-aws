@@ -17,4 +17,6 @@ source/coverage
 .pytest_cache
 __pycache__
 
-
+global-s3-assets/
+regional-s3-assets/
+staging/

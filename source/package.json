@@ -7,7 +7,7 @@
   },
   "scripts": {
     "test": "rm -fr lib && npm run test:compile && jest --passWithNoTests --all --updateSnapshot && eslint",
-    "build": "npm run test && npm run synth",
+    "build": "npm run synth",
     "bump": "standard-version -i ../CHANGELOG.md",
     "test:watch": "jest --watch",
     "test:update": "jest --updateSnapshot",
@@ -42,7 +42,7 @@
   "dependencies": {
     "@aws-cdk/aws-batch-alpha": "^2.8.0-alpha.0",
     "@aws-sdk/client-cloudformation": "^3.48.0",
-    "aws-cdk": "^2.19.0",
+    "aws-cdk": "^2.8.0",
     "aws-cdk-lib": "^2.19.0",
     "cdk-bootstrapless-synthesizer": "^2.2.0",
     "constructs": "^10.0.0",
