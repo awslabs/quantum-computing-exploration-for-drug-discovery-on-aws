@@ -16,7 +16,6 @@ limitations under the License.
 
 import {
   App,
-  Aspects,
 } from 'aws-cdk-lib';
 
 
@@ -34,11 +33,6 @@ const app = new App();
 new MainStack(app, 'QCStack', {
   synthesizer: newSynthesizer(),
 });
-
-// below lines are required if your application has Docker assets
-// if (process.env.USE_BSS) {
-//   Aspects.of(app).add(new BatchJobDefinition());
-// }
 
 app.synth();
 
