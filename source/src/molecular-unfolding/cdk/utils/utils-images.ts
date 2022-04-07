@@ -18,8 +18,14 @@ limitations under the License.
 import * as path from 'path';
 import {
   aws_ecs as ecs,
+  aws_ecr as ecr,
   aws_lambda as lambda,
+  Stack,
 } from 'aws-cdk-lib';
+
+import {
+  Construct,
+} from 'constructs';
 
 export enum ECRRepoNameEnum {
   Batch_Create_Model,
@@ -31,49 +37,91 @@ export enum ECRRepoNameEnum {
 
 
 export class ECRImageUtil {
+  private scope: Construct
 
-  public static newInstance() {
-    return new this();
+  public static newInstance(scope: Construct) {
+    return new this(scope);
   }
 
-  private constructor() {
+  private constructor(scope: Construct) {
+    this.scope = scope;
   }
 
   public getECRImage(name: ECRRepoNameEnum): ecs.ContainerImage | lambda.DockerImageCode {
 
+    const runningGlobalPipeline = process.env['SOLUTIONS_BUILD_ASSETS_BUCKET'] &&
+      process.env['SOLUTIONS_BUILD_ASSETS_BUCKET'] == 'solutions-build-assets'
+    const version = process.env.SOLUTION_VERSION || 'v1.0.0'
+
+    const region = Stack.of(this.scope).region
+    const ecrAccount =  process.env['SOLUTIONS_ECR_ACCOUNT'] || '366590864501'
+
     if (name == ECRRepoNameEnum.Batch_Create_Model) {
-      return ecs.ContainerImage.fromAsset(
-        path.join(__dirname, '../../'), {
-          file: 'batch-images/create-model/Dockerfile',
-        });
+
+      if (runningGlobalPipeline) {
+        return ecs.ContainerImage.fromEcrRepository(ecr.Repository.fromRepositoryArn(this.scope, 'Batch_Create_Model',
+          `arn:aws:ecr:${region}:${ecrAccount}:repository/qradd:${version}-Batch_Create_Model`
+        ));
+      } else {
+        return ecs.ContainerImage.fromAsset(
+          path.join(__dirname, '../../'), {
+            file: 'batch-images/create-model/Dockerfile',
+          });
+      }
     }
 
     if (name == ECRRepoNameEnum.Batch_Sa_Optimizer) {
-      return ecs.ContainerImage.fromAsset(
-        path.join(__dirname, '../../'), {
-          file: 'batch-images/sa-optimizer/Dockerfile',
-        });
+      if (runningGlobalPipeline) {
+        return ecs.ContainerImage.fromEcrRepository(ecr.Repository.fromRepositoryArn(this.scope, 'Batch_Sa_Optimizer',
+          `arn:aws:ecr:${region}:${ecrAccount}:repository/qradd:${version}-Batch_Sa_Optimizer`
+        ));
+      } else {
+
+        return ecs.ContainerImage.fromAsset(
+          path.join(__dirname, '../../'), {
+            file: 'batch-images/sa-optimizer/Dockerfile',
+          });
+
+      }
     }
 
     if (name == ECRRepoNameEnum.Batch_Qa_Optimizer) {
-      return ecs.ContainerImage.fromAsset(
-        path.join(__dirname, '../../'), {
-          file: 'batch-images/qa-optimizer/Dockerfile',
-        });
+      if (runningGlobalPipeline) {
+        return ecs.ContainerImage.fromEcrRepository(ecr.Repository.fromRepositoryArn(this.scope, 'Batch_Qa_Optimizer',
+          `arn:aws:ecr:${region}:${ecrAccount}:repository/qradd:${version}-Batch_Qa_Optimizer`
+        ));
+      } else {
+        return ecs.ContainerImage.fromAsset(
+          path.join(__dirname, '../../'), {
+            file: 'batch-images/qa-optimizer/Dockerfile',
+          });
+      }
     }
 
     if (name == ECRRepoNameEnum.Lambda_CheckDevice) {
-      return lambda.DockerImageCode.fromImageAsset(
-        path.join(__dirname, '../../'), {
-          file: 'lambda/DeviceAvailableCheckLambda/Dockerfile',
-        });
+      if (runningGlobalPipeline) {
+        return ecs.ContainerImage.fromEcrRepository(ecr.Repository.fromRepositoryArn(this.scope, 'Lambda_CheckDevice',
+          `arn:aws:ecr:${region}:${ecrAccount}:repository/qradd:${version}-Lambda_CheckDevice`
+        ));
+      } else {
+        return lambda.DockerImageCode.fromImageAsset(
+          path.join(__dirname, '../../'), {
+            file: 'lambda/DeviceAvailableCheckLambda/Dockerfile',
+          });
+      }
     }
 
     if (name == ECRRepoNameEnum.Lambda_ParseBraketResult) {
-      return lambda.DockerImageCode.fromImageAsset(
-        path.join(__dirname, '../../'), {
-          file: 'lambda/ParseBraketResultLambda/Dockerfile',
-        });
+      if (runningGlobalPipeline) {
+        return ecs.ContainerImage.fromEcrRepository(ecr.Repository.fromRepositoryArn(this.scope, 'Lambda_ParseBraketResult',
+          `arn:aws:ecr:${region}:${ecrAccount}:repository/qradd:${version}-Lambda_ParseBraketResult`
+        ));
+      } else {
+        return lambda.DockerImageCode.fromImageAsset(
+          path.join(__dirname, '../../'), {
+            file: 'lambda/ParseBraketResultLambda/Dockerfile',
+          });
+      }
     }
 
     throw new Error('Cannot find ecr: ' + name);
