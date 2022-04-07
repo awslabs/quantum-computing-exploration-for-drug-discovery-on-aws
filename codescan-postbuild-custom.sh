@@ -6,6 +6,8 @@
 
 pwd 
 
+ls -l 
+
 echo "./codescan-postbuild-custom.sh"
 
 echo "Done codescan-postbuild-custom.sh"

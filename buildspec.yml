@@ -34,7 +34,9 @@ artifacts:
       - deployment/**/*
       - source/**/*
       - .gitignore
+      - .cfnnag_*
+      - .viperlightignore
+      - codescan-postbuild-custom.sh
       - sonar-project.properties
       - buildspec.yml
       - CHANGELOG.md
-      - .cfnnag_*
