@@ -1,0 +1,4362 @@
+
+> gcr-quantum-ready-for-drug-discovery@1.0.0 synth
+> cdk synth QCStack
+
+Description: (SO8027) Quantum Ready Architecture For Drug Discovery v1.0.0
+Rules:
+  SupportedRegionsRule:
+    Assertions:
+      - Assert:
+          Fn::Contains:
+            - - us-west-2
+              - us-east-1
+              - eu-west-2
+            - Ref: AWS::Region
+        AssertDescription: supported regions are us-west-2, us-east-1, eu-west-2
+  CheckBootstrapVersion:
+    Assertions:
+      - Assert:
+          Fn::Not:
+            - Fn::Contains:
+                - - "1"
+                  - "2"
+                  - "3"
+                  - "4"
+                  - "5"
+                - Ref: BootstrapVersion
+        AssertDescription: CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.
+Conditions:
+  CrossEventRegionCondition:
+    Fn::Not:
+      - Fn::Equals:
+          - Ref: AWS::Region
+          - us-west-2
+  CDKMetadataAvailable:
+    Fn::Or:
+      - Fn::Or:
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - af-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-east-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-northeast-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-northeast-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-southeast-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ap-southeast-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - ca-central-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - cn-north-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - cn-northwest-1
+      - Fn::Or:
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-central-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-north-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-west-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-west-2
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - eu-west-3
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - me-south-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - sa-east-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-east-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-east-2
+      - Fn::Or:
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-west-1
+          - Fn::Equals:
+              - Ref: AWS::Region
+              - us-west-2
+Parameters:
+  QuickSightUser:
+    Type: String
+    AllowedPattern: "[ -ÿ]+"
+    ConstraintDescription: Any printable ASCII character ranging from the space character ( ) through the end of the ASCII character range
+    Description: QuickSight User, find user name from https://us-east-1.quicksight.aws.amazon.com/sn/admin
+    MinLength: 1
+  QuickSightRoleName:
+    Type: String
+    AllowedPattern: "[a-zA-Z0-9+=,.@-]+"
+    ConstraintDescription: "A string of characters consisting of upper and lowercase alphanumeric characters with no spaces. Length Constraints: Minimum length of 1. Maximum length of 64."
+    Description: QuickSight IAM role name
+    MaxLength: 64
+    MinLength: 1
+  BootstrapVersion:
+    Type: AWS::SSM::Parameter::Value<String>
+    Default: /cdk-bootstrap/hnb659fds/version
+    Description: Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]
+Resources:
+  QuickSightServiceRolePolicyF940C9C6:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - s3:GetObject*
+              - s3:GetBucket*
+              - s3:List*
+            Effect: Allow
+            Resource:
+              - Fn::GetAtt:
+                  - amazonbraketC6E30921
+                  - Arn
+              - Fn::Join:
+                  - ""
+                  - - Fn::GetAtt:
+                        - amazonbraketC6E30921
+                        - Arn
+                    - /*
+        Version: "2012-10-17"
+      PolicyName:
+        Fn::Join:
+          - ""
+          - - QuickSightServiceRolePolicyF940C9C6-
+            - Ref: AWS::Region
+      Roles:
+        - Ref: QuickSightRoleName
+    Metadata:
+      aws:cdk:path: QCStack/QuickSightServiceRole/Policy/Resource
+  AccessLogS3Bucket951AA1CB:
+    Type: AWS::S3::Bucket
+    Properties:
+      AccessControl: LogDeliveryWrite
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      Tags:
+        - Key: aws-cdk:auto-delete-objects
+          Value: "true"
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+    Metadata:
+      aws:cdk:path: QCStack/AccessLogS3Bucket/Resource
+      cfn_nag:
+        rules_to_suppress:
+          - id: W35
+            reason: this is access log bucket
+  AccessLogS3BucketPolicyB4FC9151:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket:
+        Ref: AccessLogS3Bucket951AA1CB
+      PolicyDocument:
+        Statement:
+          - Action: s3:*
+            Condition:
+              Bool:
+                aws:SecureTransport: "false"
+            Effect: Deny
+            Principal:
+              AWS: "*"
+            Resource:
+              - Fn::GetAtt:
+                  - AccessLogS3Bucket951AA1CB
+                  - Arn
+              - Fn::Join:
+                  - ""
+                  - - Fn::GetAtt:
+                        - AccessLogS3Bucket951AA1CB
+                        - Arn
+                    - /*
+          - Action:
+              - s3:GetBucket*
+              - s3:List*
+              - s3:DeleteObject*
+            Effect: Allow
+            Principal:
+              AWS:
+                Fn::GetAtt:
+                  - CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092
+                  - Arn
+            Resource:
+              - Fn::GetAtt:
+                  - AccessLogS3Bucket951AA1CB
+                  - Arn
+              - Fn::Join:
+                  - ""
+                  - - Fn::GetAtt:
+                        - AccessLogS3Bucket951AA1CB
+                        - Arn
+                    - /*
+        Version: "2012-10-17"
+    Metadata:
+      aws:cdk:path: QCStack/AccessLogS3Bucket/Policy/Resource
+  AccessLogS3BucketAutoDeleteObjectsCustomResourceA26C5D1F:
+    Type: Custom::S3AutoDeleteObjects
+    Properties:
+      ServiceToken:
+        Fn::GetAtt:
+          - CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F
+          - Arn
+      BucketName:
+        Ref: AccessLogS3Bucket951AA1CB
+    DependsOn:
+      - AccessLogS3BucketPolicyB4FC9151
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+    Metadata:
+      aws:cdk:path: QCStack/AccessLogS3Bucket/AutoDeleteObjectsCustomResource/Default
+  CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+      ManagedPolicyArns:
+        - Fn::Sub: arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+    Metadata:
+      aws:cdk:path: QCStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Role
+  CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket:
+          Fn::Sub: cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}
+        S3Key: 483ae06ed27ef8ca76e011264d772420593a6cfe8544759c306ef3b98c9e25be.zip
+      Timeout: 900
+      MemorySize: 128
+      Handler: __entrypoint__.handler
+      Role:
+        Fn::GetAtt:
+          - CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092
+          - Arn
+      Runtime: nodejs12.x
+      Description:
+        Fn::Join:
+          - ""
+          - - "Lambda function for auto-deleting objects in "
+            - Ref: AccessLogS3Bucket951AA1CB
+            - " S3 bucket."
+    DependsOn:
+      - CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092
+    Metadata:
+      aws:cdk:path: QCStack/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler
+      aws:asset:path: asset.483ae06ed27ef8ca76e011264d772420593a6cfe8544759c306ef3b98c9e25be
+      aws:asset:property: Code
+      cfn_nag:
+        rules_to_suppress:
+          - id: W58
+            reason: the lambda is auto generated by CDK
+          - id: W89
+            reason: the lambda is auto generated by CDK
+  amazonbraketC6E30921:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      BucketName:
+        Fn::Join:
+          - ""
+          - - amazon-braket-qcstack-
+            - Ref: AWS::AccountId
+            - "-"
+            - Ref: AWS::Region
+      LoggingConfiguration:
+        DestinationBucketName:
+          Ref: AccessLogS3Bucket951AA1CB
+        LogFilePrefix:
+          Fn::Join:
+            - ""
+            - - accesslogs/amazon-braket-qcstack-
+              - Ref: AWS::AccountId
+              - "-"
+              - Ref: AWS::Region
+              - /
+      Tags:
+        - Key: aws-cdk:auto-delete-objects
+          Value: "true"
+    DependsOn:
+      - AccessLogS3BucketAutoDeleteObjectsCustomResourceA26C5D1F
+      - AccessLogS3BucketPolicyB4FC9151
+      - AccessLogS3Bucket951AA1CB
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+    Metadata:
+      aws:cdk:path: QCStack/amazon-braket/Resource
+  amazonbraketPolicyA997C6D2:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket:
+        Ref: amazonbraketC6E30921
+      PolicyDocument:
+        Statement:
+          - Action: s3:*
+            Condition:
+              Bool:
+                aws:SecureTransport: "false"
+            Effect: Deny
+            Principal:
+              AWS: "*"
+            Resource:
+              - Fn::GetAtt:
+                  - amazonbraketC6E30921
+                  - Arn
+              - Fn::Join:
+                  - ""
+                  - - Fn::GetAtt:
+                        - amazonbraketC6E30921
+                        - Arn
+                    - /*
+          - Action:
+              - s3:GetBucket*
+              - s3:List*
+              - s3:DeleteObject*
+            Effect: Allow
+            Principal:
+              AWS:
+                Fn::GetAtt:
+                  - CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092
+                  - Arn
+            Resource:
+              - Fn::GetAtt:
+                  - amazonbraketC6E30921
+                  - Arn
+              - Fn::Join:
+                  - ""
+                  - - Fn::GetAtt:
+                        - amazonbraketC6E30921
+                        - Arn
+                    - /*
+        Version: "2012-10-17"
+    DependsOn:
+      - AccessLogS3BucketAutoDeleteObjectsCustomResourceA26C5D1F
+      - AccessLogS3BucketPolicyB4FC9151
+      - AccessLogS3Bucket951AA1CB
+    Metadata:
+      aws:cdk:path: QCStack/amazon-braket/Policy/Resource
+  amazonbraketAutoDeleteObjectsCustomResource58542BE3:
+    Type: Custom::S3AutoDeleteObjects
+    Properties:
+      ServiceToken:
+        Fn::GetAtt:
+          - CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F
+          - Arn
+      BucketName:
+        Ref: amazonbraketC6E30921
+    DependsOn:
+      - AccessLogS3BucketAutoDeleteObjectsCustomResourceA26C5D1F
+      - AccessLogS3BucketPolicyB4FC9151
+      - AccessLogS3Bucket951AA1CB
+      - amazonbraketPolicyA997C6D2
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+    Metadata:
+      aws:cdk:path: QCStack/amazon-braket/AutoDeleteObjectsCustomResource/Default
+  VPCB9E5F0B4:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: 10.1.0.0/16
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+      InstanceTenancy: default
+      Tags:
+        - Key: Name
+          Value: QCStack/VPC
+    Metadata:
+      aws:cdk:path: QCStack/VPC/Resource
+  VPCIngressSubnet1Subnet4257CD65:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: VPCB9E5F0B4
+      AvailabilityZone:
+        Fn::Select:
+          - 0
+          - Fn::GetAZs: ""
+      CidrBlock: 10.1.0.0/18
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: Ingress
+        - Key: aws-cdk:subnet-type
+          Value: Public
+        - Key: Name
+          Value: QCStack/VPC/IngressSubnet1
+    Metadata:
+      aws:cdk:path: QCStack/VPC/IngressSubnet1/Subnet
+  VPCIngressSubnet1RouteTable9BE753A6:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: VPCB9E5F0B4
+      Tags:
+        - Key: Name
+          Value: QCStack/VPC/IngressSubnet1
+    Metadata:
+      aws:cdk:path: QCStack/VPC/IngressSubnet1/RouteTable
+  VPCIngressSubnet1RouteTableAssociationCAFE4089:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: VPCIngressSubnet1RouteTable9BE753A6
+      SubnetId:
+        Ref: VPCIngressSubnet1Subnet4257CD65
+    Metadata:
+      aws:cdk:path: QCStack/VPC/IngressSubnet1/RouteTableAssociation
+  VPCIngressSubnet1DefaultRouteFE025494:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: VPCIngressSubnet1RouteTable9BE753A6
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: VPCIGWB7E252D3
+    DependsOn:
+      - VPCVPCGW99B986DC
+    Metadata:
+      aws:cdk:path: QCStack/VPC/IngressSubnet1/DefaultRoute
+  VPCIngressSubnet1EIP99406D22:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+      Tags:
+        - Key: Name
+          Value: QCStack/VPC/IngressSubnet1
+    Metadata:
+      aws:cdk:path: QCStack/VPC/IngressSubnet1/EIP
+  VPCIngressSubnet1NATGatewayEA4AE80E:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      SubnetId:
+        Ref: VPCIngressSubnet1Subnet4257CD65
+      AllocationId:
+        Fn::GetAtt:
+          - VPCIngressSubnet1EIP99406D22
+          - AllocationId
+      Tags:
+        - Key: Name
+          Value: QCStack/VPC/IngressSubnet1
+    Metadata:
+      aws:cdk:path: QCStack/VPC/IngressSubnet1/NATGateway
+  VPCIngressSubnet2SubnetE0EA735B:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: VPCB9E5F0B4
+      AvailabilityZone:
+        Fn::Select:
+          - 1
+          - Fn::GetAZs: ""
+      CidrBlock: 10.1.64.0/18
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: Ingress
+        - Key: aws-cdk:subnet-type
+          Value: Public
+        - Key: Name
+          Value: QCStack/VPC/IngressSubnet2
+    Metadata:
+      aws:cdk:path: QCStack/VPC/IngressSubnet2/Subnet
+  VPCIngressSubnet2RouteTableDFE1B4BC:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: VPCB9E5F0B4
+      Tags:
+        - Key: Name
+          Value: QCStack/VPC/IngressSubnet2
+    Metadata:
+      aws:cdk:path: QCStack/VPC/IngressSubnet2/RouteTable
+  VPCIngressSubnet2RouteTableAssociationB244DE25:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: VPCIngressSubnet2RouteTableDFE1B4BC
+      SubnetId:
+        Ref: VPCIngressSubnet2SubnetE0EA735B
+    Metadata:
+      aws:cdk:path: QCStack/VPC/IngressSubnet2/RouteTableAssociation
+  VPCIngressSubnet2DefaultRoute9FF8300E:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: VPCIngressSubnet2RouteTableDFE1B4BC
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId:
+        Ref: VPCIGWB7E252D3
+    DependsOn:
+      - VPCVPCGW99B986DC
+    Metadata:
+      aws:cdk:path: QCStack/VPC/IngressSubnet2/DefaultRoute
+  VPCIngressSubnet2EIPCE44C233:
+    Type: AWS::EC2::EIP
+    Properties:
+      Domain: vpc
+      Tags:
+        - Key: Name
+          Value: QCStack/VPC/IngressSubnet2
+    Metadata:
+      aws:cdk:path: QCStack/VPC/IngressSubnet2/EIP
+  VPCIngressSubnet2NATGateway68BB4190:
+    Type: AWS::EC2::NatGateway
+    Properties:
+      SubnetId:
+        Ref: VPCIngressSubnet2SubnetE0EA735B
+      AllocationId:
+        Fn::GetAtt:
+          - VPCIngressSubnet2EIPCE44C233
+          - AllocationId
+      Tags:
+        - Key: Name
+          Value: QCStack/VPC/IngressSubnet2
+    Metadata:
+      aws:cdk:path: QCStack/VPC/IngressSubnet2/NATGateway
+  VPCApplicationSubnet1SubnetCE118F80:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: VPCB9E5F0B4
+      AvailabilityZone:
+        Fn::Select:
+          - 0
+          - Fn::GetAZs: ""
+      CidrBlock: 10.1.128.0/18
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: Application
+        - Key: aws-cdk:subnet-type
+          Value: Private
+        - Key: Name
+          Value: QCStack/VPC/ApplicationSubnet1
+    Metadata:
+      aws:cdk:path: QCStack/VPC/ApplicationSubnet1/Subnet
+  VPCApplicationSubnet1RouteTable5B6CE71A:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: VPCB9E5F0B4
+      Tags:
+        - Key: Name
+          Value: QCStack/VPC/ApplicationSubnet1
+    Metadata:
+      aws:cdk:path: QCStack/VPC/ApplicationSubnet1/RouteTable
+  VPCApplicationSubnet1RouteTableAssociation8DF0EAE5:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: VPCApplicationSubnet1RouteTable5B6CE71A
+      SubnetId:
+        Ref: VPCApplicationSubnet1SubnetCE118F80
+    Metadata:
+      aws:cdk:path: QCStack/VPC/ApplicationSubnet1/RouteTableAssociation
+  VPCApplicationSubnet1DefaultRouteA4E47D36:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: VPCApplicationSubnet1RouteTable5B6CE71A
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: VPCIngressSubnet1NATGatewayEA4AE80E
+    Metadata:
+      aws:cdk:path: QCStack/VPC/ApplicationSubnet1/DefaultRoute
+  VPCApplicationSubnet2Subnet988E96B1:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId:
+        Ref: VPCB9E5F0B4
+      AvailabilityZone:
+        Fn::Select:
+          - 1
+          - Fn::GetAZs: ""
+      CidrBlock: 10.1.192.0/18
+      MapPublicIpOnLaunch: false
+      Tags:
+        - Key: aws-cdk:subnet-name
+          Value: Application
+        - Key: aws-cdk:subnet-type
+          Value: Private
+        - Key: Name
+          Value: QCStack/VPC/ApplicationSubnet2
+    Metadata:
+      aws:cdk:path: QCStack/VPC/ApplicationSubnet2/Subnet
+  VPCApplicationSubnet2RouteTableFDC3EEE6:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId:
+        Ref: VPCB9E5F0B4
+      Tags:
+        - Key: Name
+          Value: QCStack/VPC/ApplicationSubnet2
+    Metadata:
+      aws:cdk:path: QCStack/VPC/ApplicationSubnet2/RouteTable
+  VPCApplicationSubnet2RouteTableAssociationD84040F3:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      RouteTableId:
+        Ref: VPCApplicationSubnet2RouteTableFDC3EEE6
+      SubnetId:
+        Ref: VPCApplicationSubnet2Subnet988E96B1
+    Metadata:
+      aws:cdk:path: QCStack/VPC/ApplicationSubnet2/RouteTableAssociation
+  VPCApplicationSubnet2DefaultRouteC3680A52:
+    Type: AWS::EC2::Route
+    Properties:
+      RouteTableId:
+        Ref: VPCApplicationSubnet2RouteTableFDC3EEE6
+      DestinationCidrBlock: 0.0.0.0/0
+      NatGatewayId:
+        Ref: VPCIngressSubnet2NATGateway68BB4190
+    Metadata:
+      aws:cdk:path: QCStack/VPC/ApplicationSubnet2/DefaultRoute
+  VPCIGWB7E252D3:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: QCStack/VPC
+    Metadata:
+      aws:cdk:path: QCStack/VPC/IGW
+  VPCVPCGW99B986DC:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId:
+        Ref: VPCB9E5F0B4
+      InternetGatewayId:
+        Ref: VPCIGWB7E252D3
+    Metadata:
+      aws:cdk:path: QCStack/VPC/VPCGW
+  VPCS3Endpoint18C9C7CA:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      ServiceName:
+        Fn::Join:
+          - ""
+          - - com.amazonaws.
+            - Ref: AWS::Region
+            - .s3
+      VpcId:
+        Ref: VPCB9E5F0B4
+      RouteTableIds:
+        - Ref: VPCApplicationSubnet1RouteTable5B6CE71A
+        - Ref: VPCApplicationSubnet2RouteTableFDC3EEE6
+        - Ref: VPCIngressSubnet1RouteTable9BE753A6
+        - Ref: VPCIngressSubnet2RouteTableDFE1B4BC
+      VpcEndpointType: Gateway
+    Metadata:
+      aws:cdk:path: QCStack/VPC/S3Endpoint/Resource
+  VPCEcrDockerEndpointSecurityGroup8C539908:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: QCStack/VPC/EcrDockerEndpoint/SecurityGroup
+      SecurityGroupEgress:
+        - CidrIp: 0.0.0.0/0
+          Description: Allow all outbound traffic by default
+          IpProtocol: "-1"
+      SecurityGroupIngress:
+        - CidrIp:
+            Fn::GetAtt:
+              - VPCB9E5F0B4
+              - CidrBlock
+          Description:
+            Fn::Join:
+              - ""
+              - - "from "
+                - Fn::GetAtt:
+                    - VPCB9E5F0B4
+                    - CidrBlock
+                - :443
+          FromPort: 443
+          IpProtocol: tcp
+          ToPort: 443
+      Tags:
+        - Key: Name
+          Value: QCStack/VPC
+      VpcId:
+        Ref: VPCB9E5F0B4
+    Metadata:
+      aws:cdk:path: QCStack/VPC/EcrDockerEndpoint/SecurityGroup/Resource
+      cfn_nag:
+        rules_to_suppress:
+          - id: W5
+            reason: generated by CDK
+          - id: W40
+            reason: generated by CDK
+  VPCEcrDockerEndpoint7C488056:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      ServiceName:
+        Fn::Join:
+          - ""
+          - - com.amazonaws.
+            - Ref: AWS::Region
+            - .ecr.dkr
+      VpcId:
+        Ref: VPCB9E5F0B4
+      PrivateDnsEnabled: true
+      SecurityGroupIds:
+        - Fn::GetAtt:
+            - VPCEcrDockerEndpointSecurityGroup8C539908
+            - GroupId
+      SubnetIds:
+        - Ref: VPCApplicationSubnet1SubnetCE118F80
+        - Ref: VPCApplicationSubnet2Subnet988E96B1
+      VpcEndpointType: Interface
+    Metadata:
+      aws:cdk:path: QCStack/VPC/EcrDockerEndpoint/Resource
+  VPCAthenaEndpointSecurityGroup5B54E7F0:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: QCStack/VPC/AthenaEndpoint/SecurityGroup
+      SecurityGroupEgress:
+        - CidrIp: 0.0.0.0/0
+          Description: Allow all outbound traffic by default
+          IpProtocol: "-1"
+      SecurityGroupIngress:
+        - CidrIp:
+            Fn::GetAtt:
+              - VPCB9E5F0B4
+              - CidrBlock
+          Description:
+            Fn::Join:
+              - ""
+              - - "from "
+                - Fn::GetAtt:
+                    - VPCB9E5F0B4
+                    - CidrBlock
+                - :443
+          FromPort: 443
+          IpProtocol: tcp
+          ToPort: 443
+      Tags:
+        - Key: Name
+          Value: QCStack/VPC
+      VpcId:
+        Ref: VPCB9E5F0B4
+    Metadata:
+      aws:cdk:path: QCStack/VPC/AthenaEndpoint/SecurityGroup/Resource
+      cfn_nag:
+        rules_to_suppress:
+          - id: W5
+            reason: generated by CDK
+          - id: W40
+            reason: generated by CDK
+  VPCAthenaEndpoint4BCE62FF:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      ServiceName:
+        Fn::Join:
+          - ""
+          - - com.amazonaws.
+            - Ref: AWS::Region
+            - .athena
+      VpcId:
+        Ref: VPCB9E5F0B4
+      PrivateDnsEnabled: true
+      SecurityGroupIds:
+        - Fn::GetAtt:
+            - VPCAthenaEndpointSecurityGroup5B54E7F0
+            - GroupId
+      SubnetIds:
+        - Ref: VPCApplicationSubnet1SubnetCE118F80
+        - Ref: VPCApplicationSubnet2Subnet988E96B1
+      VpcEndpointType: Interface
+    Metadata:
+      aws:cdk:path: QCStack/VPC/AthenaEndpoint/Resource
+  VPCBraketEndpointSecurityGroup92A02E89:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: QCStack/VPC/BraketEndpoint/SecurityGroup
+      SecurityGroupEgress:
+        - CidrIp: 0.0.0.0/0
+          Description: Allow all outbound traffic by default
+          IpProtocol: "-1"
+      SecurityGroupIngress:
+        - CidrIp:
+            Fn::GetAtt:
+              - VPCB9E5F0B4
+              - CidrBlock
+          Description:
+            Fn::Join:
+              - ""
+              - - "from "
+                - Fn::GetAtt:
+                    - VPCB9E5F0B4
+                    - CidrBlock
+                - :443
+          FromPort: 443
+          IpProtocol: tcp
+          ToPort: 443
+      Tags:
+        - Key: Name
+          Value: QCStack/VPC
+      VpcId:
+        Ref: VPCB9E5F0B4
+    Metadata:
+      aws:cdk:path: QCStack/VPC/BraketEndpoint/SecurityGroup/Resource
+      cfn_nag:
+        rules_to_suppress:
+          - id: W5
+            reason: generated by CDK
+          - id: W40
+            reason: generated by CDK
+  VPCBraketEndpointFB085AD8:
+    Type: AWS::EC2::VPCEndpoint
+    Properties:
+      ServiceName:
+        Fn::Join:
+          - ""
+          - - com.amazonaws.
+            - Ref: AWS::Region
+            - .braket
+      VpcId:
+        Ref: VPCB9E5F0B4
+      PrivateDnsEnabled: true
+      SecurityGroupIds:
+        - Fn::GetAtt:
+            - VPCBraketEndpointSecurityGroup92A02E89
+            - GroupId
+      SubnetIds:
+        - Ref: VPCApplicationSubnet1SubnetCE118F80
+        - Ref: VPCApplicationSubnet2Subnet988E96B1
+      VpcEndpointType: Interface
+    Metadata:
+      aws:cdk:path: QCStack/VPC/BraketEndpoint/Resource
+  VPClogtoCWIAMRoleCFE2A6E9:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: vpc-flow-logs.amazonaws.com
+        Version: "2012-10-17"
+      Tags:
+        - Key: Name
+          Value: QCStack/VPC
+    Metadata:
+      aws:cdk:path: QCStack/VPC/logtoCW/IAMRole/Resource
+  VPClogtoCWIAMRoleDefaultPolicyF548A5B9:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+              - logs:DescribeLogStreams
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - vpcFlowlog69E65BBD
+                - Arn
+          - Action: iam:PassRole
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - VPClogtoCWIAMRoleCFE2A6E9
+                - Arn
+        Version: "2012-10-17"
+      PolicyName: VPClogtoCWIAMRoleDefaultPolicyF548A5B9
+      Roles:
+        - Ref: VPClogtoCWIAMRoleCFE2A6E9
+    Metadata:
+      aws:cdk:path: QCStack/VPC/logtoCW/IAMRole/DefaultPolicy/Resource
+  VPClogtoCWFlowLog99C98B79:
+    Type: AWS::EC2::FlowLog
+    Properties:
+      ResourceId:
+        Ref: VPCB9E5F0B4
+      ResourceType: VPC
+      TrafficType: ALL
+      DeliverLogsPermissionArn:
+        Fn::GetAtt:
+          - VPClogtoCWIAMRoleCFE2A6E9
+          - Arn
+      LogDestinationType: cloud-watch-logs
+      LogGroupName:
+        Ref: vpcFlowlog69E65BBD
+      Tags:
+        - Key: Name
+          Value: QCStack/VPC
+    Metadata:
+      aws:cdk:path: QCStack/VPC/logtoCW/FlowLog
+  qcLogKey219D212D:
+    Type: AWS::KMS::Key
+    Properties:
+      KeyPolicy:
+        Statement:
+          - Action: kms:*
+            Effect: Allow
+            Principal:
+              AWS:
+                Fn::Join:
+                  - ""
+                  - - "arn:"
+                    - Ref: AWS::Partition
+                    - ":iam::"
+                    - Ref: AWS::AccountId
+                    - :root
+            Resource: "*"
+          - Action:
+              - kms:Encrypt*
+              - kms:ReEncrypt*
+              - kms:Decrypt*
+              - kms:GenerateDataKey*
+              - kms:Describe*
+            Condition:
+              ArnLike:
+                kms:EncryptionContext:aws:logs:arn:
+                  Fn::Join:
+                    - ""
+                    - - "arn:"
+                      - Ref: AWS::Partition
+                      - ":logs:"
+                      - Ref: AWS::Region
+                      - ":"
+                      - Ref: AWS::AccountId
+                      - :log-group:QCStack-vpcFlowlog
+            Effect: Allow
+            Principal:
+              Service:
+                Fn::Join:
+                  - ""
+                  - - logs.
+                    - Ref: AWS::Region
+                    - "."
+                    - Ref: AWS::URLSuffix
+            Resource: "*"
+        Version: "2012-10-17"
+      EnableKeyRotation: true
+    UpdateReplacePolicy: Retain
+    DeletionPolicy: Retain
+    Metadata:
+      aws:cdk:path: QCStack/qcLogKey/Resource
+  vpcFlowlog69E65BBD:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      KmsKeyId:
+        Fn::GetAtt:
+          - qcLogKey219D212D
+          - Arn
+      LogGroupName: QCStack-vpcFlowlog
+      RetentionInDays: 90
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+    Metadata:
+      aws:cdk:path: QCStack/vpcFlowlog/Resource
+  batchSg97F2201B:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security Group for QC batch compute environment
+      SecurityGroupEgress:
+        - CidrIp: 0.0.0.0/0
+          Description: from 0.0.0.0/0:443
+          FromPort: 443
+          IpProtocol: tcp
+          ToPort: 443
+        - CidrIpv6: ::/0
+          Description: from ::/0:443
+          FromPort: 443
+          IpProtocol: tcp
+          ToPort: 443
+        - CidrIp: 0.0.0.0/0
+          Description: from 0.0.0.0/0:80
+          FromPort: 80
+          IpProtocol: tcp
+          ToPort: 80
+        - CidrIpv6: ::/0
+          Description: from ::/0:80
+          FromPort: 80
+          IpProtocol: tcp
+          ToPort: 80
+      VpcId:
+        Ref: VPCB9E5F0B4
+    Metadata:
+      aws:cdk:path: QCStack/batchSg/Resource
+      cfn_nag:
+        rules_to_suppress:
+          - id: W5
+            reason: cidr open to world on egress
+  lambdaSgD8D93E20:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security Group for lambda
+      SecurityGroupEgress:
+        - CidrIp: 0.0.0.0/0
+          Description: from 0.0.0.0/0:443
+          FromPort: 443
+          IpProtocol: tcp
+          ToPort: 443
+        - CidrIpv6: ::/0
+          Description: from ::/0:443
+          FromPort: 443
+          IpProtocol: tcp
+          ToPort: 443
+        - CidrIp: 0.0.0.0/0
+          Description: from 0.0.0.0/0:80
+          FromPort: 80
+          IpProtocol: tcp
+          ToPort: 80
+        - CidrIpv6: ::/0
+          Description: from ::/0:80
+          FromPort: 80
+          IpProtocol: tcp
+          ToPort: 80
+      VpcId:
+        Ref: VPCB9E5F0B4
+    Metadata:
+      aws:cdk:path: QCStack/lambdaSg/Resource
+      cfn_nag:
+        rules_to_suppress:
+          - id: W5
+            reason: cidr open to world on egress
+  EventBridgeRole06E13259:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: events.amazonaws.com
+        Version: "2012-10-17"
+    Metadata:
+      aws:cdk:path: QCStack/EventBridgeRole/Resource
+    Condition: CrossEventRegionCondition
+  EventBridgeRoleDefaultPolicy519DB607:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action: events:PutEvents
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:"
+                  - Ref: AWS::Partition
+                  - ":events:"
+                  - Ref: AWS::Region
+                  - ":"
+                  - Ref: AWS::AccountId
+                  - :event-bus/default
+        Version: "2012-10-17"
+      PolicyName: EventBridgeRoleDefaultPolicy519DB607
+      Roles:
+        - Ref: EventBridgeRole06E13259
+    Metadata:
+      aws:cdk:path: QCStack/EventBridgeRole/DefaultPolicy/Resource
+    Condition: CrossEventRegionCondition
+  CreateEventRuleFuncServiceRole8F03426D:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/service-role/AWSLambdaVPCAccessExecutionRole
+    DependsOn:
+      - VPCApplicationSubnet1DefaultRouteA4E47D36
+      - VPCApplicationSubnet1RouteTable5B6CE71A
+      - VPCApplicationSubnet1RouteTableAssociation8DF0EAE5
+      - VPCApplicationSubnet1SubnetCE118F80
+      - VPCApplicationSubnet2DefaultRouteC3680A52
+      - VPCApplicationSubnet2RouteTableFDC3EEE6
+      - VPCApplicationSubnet2RouteTableAssociationD84040F3
+      - VPCApplicationSubnet2Subnet988E96B1
+      - VPCAthenaEndpoint4BCE62FF
+      - VPCAthenaEndpointSecurityGroup5B54E7F0
+      - VPCBraketEndpointFB085AD8
+      - VPCBraketEndpointSecurityGroup92A02E89
+      - VPCEcrDockerEndpoint7C488056
+      - VPCEcrDockerEndpointSecurityGroup8C539908
+      - VPCIGWB7E252D3
+      - VPCIngressSubnet1DefaultRouteFE025494
+      - VPCIngressSubnet1EIP99406D22
+      - VPCIngressSubnet1NATGatewayEA4AE80E
+      - VPCIngressSubnet1RouteTable9BE753A6
+      - VPCIngressSubnet1RouteTableAssociationCAFE4089
+      - VPCIngressSubnet1Subnet4257CD65
+      - VPCIngressSubnet2DefaultRoute9FF8300E
+      - VPCIngressSubnet2EIPCE44C233
+      - VPCIngressSubnet2NATGateway68BB4190
+      - VPCIngressSubnet2RouteTableDFE1B4BC
+      - VPCIngressSubnet2RouteTableAssociationB244DE25
+      - VPCIngressSubnet2SubnetE0EA735B
+      - VPClogtoCWFlowLog99C98B79
+      - VPClogtoCWIAMRoleDefaultPolicyF548A5B9
+      - VPClogtoCWIAMRoleCFE2A6E9
+      - VPCB9E5F0B4
+      - VPCS3Endpoint18C9C7CA
+      - VPCVPCGW99B986DC
+    Metadata:
+      aws:cdk:path: QCStack/CreateEventRuleFunc/ServiceRole/Resource
+    Condition: CrossEventRegionCondition
+  CreateEventRuleFuncServiceRoleDefaultPolicyBA21C1AD:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - events:DescribeRule
+              - events:DeleteRule
+              - events:PutTargets
+              - events:EnableRule
+              - events:PutRule
+              - events:RemoveTargets
+              - events:DisableRule
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:"
+                  - Ref: AWS::Partition
+                  - ":events:us-west-2:"
+                  - Ref: AWS::AccountId
+                  - :rule/QRSFDD-BraketEventTo
+                  - Ref: AWS::Region
+                  - "*"
+          - Action:
+              - cloudformation:CreateChangeSet
+              - cloudformation:DeleteChangeSet
+              - cloudformation:DescribeChangeSet
+              - cloudformation:ExecuteChangeSet
+              - cloudformation:UpdateStack
+              - cloudformation:DeleteStack
+              - cloudformation:CreateStack
+              - cloudformation:DescribeStacks
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:"
+                  - Ref: AWS::Partition
+                  - ":cloudformation:us-west-2:"
+                  - Ref: AWS::AccountId
+                  - :stack/QRSFDD-BraketEventTo
+                  - Ref: AWS::Region
+                  - /*
+          - Action: iam:PassRole
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - EventBridgeRole06E13259
+                - Arn
+        Version: "2012-10-17"
+      PolicyName: CreateEventRuleFuncServiceRoleDefaultPolicyBA21C1AD
+      Roles:
+        - Ref: CreateEventRuleFuncServiceRole8F03426D
+    DependsOn:
+      - VPCApplicationSubnet1DefaultRouteA4E47D36
+      - VPCApplicationSubnet1RouteTable5B6CE71A
+      - VPCApplicationSubnet1RouteTableAssociation8DF0EAE5
+      - VPCApplicationSubnet1SubnetCE118F80
+      - VPCApplicationSubnet2DefaultRouteC3680A52
+      - VPCApplicationSubnet2RouteTableFDC3EEE6
+      - VPCApplicationSubnet2RouteTableAssociationD84040F3
+      - VPCApplicationSubnet2Subnet988E96B1
+      - VPCAthenaEndpoint4BCE62FF
+      - VPCAthenaEndpointSecurityGroup5B54E7F0
+      - VPCBraketEndpointFB085AD8
+      - VPCBraketEndpointSecurityGroup92A02E89
+      - VPCEcrDockerEndpoint7C488056
+      - VPCEcrDockerEndpointSecurityGroup8C539908
+      - VPCIGWB7E252D3
+      - VPCIngressSubnet1DefaultRouteFE025494
+      - VPCIngressSubnet1EIP99406D22
+      - VPCIngressSubnet1NATGatewayEA4AE80E
+      - VPCIngressSubnet1RouteTable9BE753A6
+      - VPCIngressSubnet1RouteTableAssociationCAFE4089
+      - VPCIngressSubnet1Subnet4257CD65
+      - VPCIngressSubnet2DefaultRoute9FF8300E
+      - VPCIngressSubnet2EIPCE44C233
+      - VPCIngressSubnet2NATGateway68BB4190
+      - VPCIngressSubnet2RouteTableDFE1B4BC
+      - VPCIngressSubnet2RouteTableAssociationB244DE25
+      - VPCIngressSubnet2SubnetE0EA735B
+      - VPClogtoCWFlowLog99C98B79
+      - VPClogtoCWIAMRoleDefaultPolicyF548A5B9
+      - VPClogtoCWIAMRoleCFE2A6E9
+      - VPCB9E5F0B4
+      - VPCS3Endpoint18C9C7CA
+      - VPCVPCGW99B986DC
+    Metadata:
+      aws:cdk:path: QCStack/CreateEventRuleFunc/ServiceRole/DefaultPolicy/Resource
+    Condition: CrossEventRegionCondition
+  CreateEventRuleFunc0AAF7F71:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket:
+          Fn::Sub: cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}
+        S3Key: abb7ad6193a3613664a4abbe6dfbfebea4fdeecaae13d5c44c2fdc05dc88ca92.zip
+      Role:
+        Fn::GetAtt:
+          - CreateEventRuleFuncServiceRole8F03426D
+          - Arn
+      Environment:
+        Variables:
+          EVENT_BRIDGE_ROLE_ARN:
+            Fn::GetAtt:
+              - EventBridgeRole06E13259
+              - Arn
+          SOLUTION_ID: SO8027
+          SOLUTION_VERSION: v1.0.0
+          AWS_NODEJS_CONNECTION_REUSE_ENABLED: "1"
+      Handler: index.handler
+      MemorySize: 256
+      Runtime: nodejs14.x
+      Timeout: 300
+      VpcConfig:
+        SecurityGroupIds:
+          - Fn::GetAtt:
+              - lambdaSgD8D93E20
+              - GroupId
+        SubnetIds:
+          - Ref: VPCApplicationSubnet1SubnetCE118F80
+          - Ref: VPCApplicationSubnet2Subnet988E96B1
+    DependsOn:
+      - CreateEventRuleFuncServiceRoleDefaultPolicyBA21C1AD
+      - CreateEventRuleFuncServiceRole8F03426D
+      - VPCApplicationSubnet1DefaultRouteA4E47D36
+      - VPCApplicationSubnet1RouteTable5B6CE71A
+      - VPCApplicationSubnet1RouteTableAssociation8DF0EAE5
+      - VPCApplicationSubnet1SubnetCE118F80
+      - VPCApplicationSubnet2DefaultRouteC3680A52
+      - VPCApplicationSubnet2RouteTableFDC3EEE6
+      - VPCApplicationSubnet2RouteTableAssociationD84040F3
+      - VPCApplicationSubnet2Subnet988E96B1
+      - VPCAthenaEndpoint4BCE62FF
+      - VPCAthenaEndpointSecurityGroup5B54E7F0
+      - VPCBraketEndpointFB085AD8
+      - VPCBraketEndpointSecurityGroup92A02E89
+      - VPCEcrDockerEndpoint7C488056
+      - VPCEcrDockerEndpointSecurityGroup8C539908
+      - VPCIGWB7E252D3
+      - VPCIngressSubnet1DefaultRouteFE025494
+      - VPCIngressSubnet1EIP99406D22
+      - VPCIngressSubnet1NATGatewayEA4AE80E
+      - VPCIngressSubnet1RouteTable9BE753A6
+      - VPCIngressSubnet1RouteTableAssociationCAFE4089
+      - VPCIngressSubnet1Subnet4257CD65
+      - VPCIngressSubnet2DefaultRoute9FF8300E
+      - VPCIngressSubnet2EIPCE44C233
+      - VPCIngressSubnet2NATGateway68BB4190
+      - VPCIngressSubnet2RouteTableDFE1B4BC
+      - VPCIngressSubnet2RouteTableAssociationB244DE25
+      - VPCIngressSubnet2SubnetE0EA735B
+      - VPClogtoCWFlowLog99C98B79
+      - VPClogtoCWIAMRoleDefaultPolicyF548A5B9
+      - VPClogtoCWIAMRoleCFE2A6E9
+      - VPCB9E5F0B4
+      - VPCS3Endpoint18C9C7CA
+      - VPCVPCGW99B986DC
+    Metadata:
+      aws:cdk:path: QCStack/CreateEventRuleFunc/Resource
+      aws:asset:path: asset.abb7ad6193a3613664a4abbe6dfbfebea4fdeecaae13d5c44c2fdc05dc88ca92
+      aws:asset:is-bundled: true
+      aws:asset:property: Code
+      cfn_nag:
+        rules_to_suppress:
+          - id: W89
+            reason: Lambda is used as custom resource
+    Condition: CrossEventRegionCondition
+  EventRuleCustomResourceProviderframeworkonEventServiceRole15C6B011:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+    Metadata:
+      aws:cdk:path: QCStack/EventRuleCustomResourceProvider/framework-onEvent/ServiceRole/Resource
+    Condition: CrossEventRegionCondition
+  EventRuleCustomResourceProviderframeworkonEventServiceRoleDefaultPolicy09FEA4FC:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action: lambda:InvokeFunction
+            Effect: Allow
+            Resource:
+              - Fn::GetAtt:
+                  - CreateEventRuleFunc0AAF7F71
+                  - Arn
+              - Fn::Join:
+                  - ""
+                  - - Fn::GetAtt:
+                        - CreateEventRuleFunc0AAF7F71
+                        - Arn
+                    - :*
+        Version: "2012-10-17"
+      PolicyName: EventRuleCustomResourceProviderframeworkonEventServiceRoleDefaultPolicy09FEA4FC
+      Roles:
+        - Ref: EventRuleCustomResourceProviderframeworkonEventServiceRole15C6B011
+    Metadata:
+      aws:cdk:path: QCStack/EventRuleCustomResourceProvider/framework-onEvent/ServiceRole/DefaultPolicy/Resource
+    Condition: CrossEventRegionCondition
+  EventRuleCustomResourceProviderframeworkonEventDEFEB268:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket:
+          Fn::Sub: cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}
+        S3Key: 885e74c18034f7d2833ec7129bb76a442e75d84f9c21ce7990bbb3aea67ab779.zip
+      Role:
+        Fn::GetAtt:
+          - EventRuleCustomResourceProviderframeworkonEventServiceRole15C6B011
+          - Arn
+      Description: AWS CDK resource provider framework - onEvent (QCStack/EventRuleCustomResourceProvider)
+      Environment:
+        Variables:
+          USER_ON_EVENT_FUNCTION_ARN:
+            Fn::GetAtt:
+              - CreateEventRuleFunc0AAF7F71
+              - Arn
+      Handler: framework.onEvent
+      Runtime: nodejs12.x
+      Timeout: 900
+    DependsOn:
+      - EventRuleCustomResourceProviderframeworkonEventServiceRoleDefaultPolicy09FEA4FC
+      - EventRuleCustomResourceProviderframeworkonEventServiceRole15C6B011
+    Metadata:
+      aws:cdk:path: QCStack/EventRuleCustomResourceProvider/framework-onEvent/Resource
+      aws:asset:path: asset.885e74c18034f7d2833ec7129bb76a442e75d84f9c21ce7990bbb3aea67ab779
+      aws:asset:is-bundled: false
+      aws:asset:property: Code
+      cfn_nag:
+        rules_to_suppress:
+          - id: W58
+            reason: the lambda is auto generated by CDK
+          - id: W89
+            reason: the lambda is auto generated by CDK
+    Condition: CrossEventRegionCondition
+  CreateEventRuleCustomResource:
+    Type: AWS::CloudFormation::CustomResource
+    Properties:
+      ServiceToken:
+        Fn::GetAtt:
+          - EventRuleCustomResourceProviderframeworkonEventDEFEB268
+          - Arn
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+    Metadata:
+      aws:cdk:path: QCStack/CreateEventRuleCustomResource/Default
+    Condition: CrossEventRegionCondition
+  MolUnfNotebookNotebookRole40C44025:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: sagemaker.amazonaws.com
+        Version: "2012-10-17"
+    Metadata:
+      aws:cdk:path: QCStack/MolUnfNotebook/NotebookRole/Resource
+  MolUnfNotebookNotebookRoleDefaultPolicy67656253:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - braket:GetJob
+              - braket:GetQuantumTask
+              - braket:CancelQuantumTask
+              - braket:CancelJob
+              - braket:ListTagsForResource
+            Effect: Allow
+            Resource:
+              - Fn::Join:
+                  - ""
+                  - - "arn:aws:braket:*:"
+                    - Ref: AWS::AccountId
+                    - :quantum-task/*
+              - Fn::Join:
+                  - ""
+                  - - "arn:aws:braket:*:"
+                    - Ref: AWS::AccountId
+                    - :job/*
+          - Action:
+              - braket:CreateJob
+              - braket:GetDevice
+              - braket:SearchDevices
+              - braket:CreateQuantumTask
+              - braket:SearchJobs
+              - braket:SearchQuantumTasks
+            Effect: Allow
+            Resource: "*"
+          - Action:
+              - s3:PutObject
+              - s3:GetObject
+            Effect: Allow
+            Resource:
+              - Fn::Join:
+                  - ""
+                  - - "arn:aws:s3:::"
+                    - Ref: amazonbraketC6E30921
+                    - /*
+              - arn:aws:s3:::braket-*/*
+              - arn:aws:s3:::amazon-braket-*/*
+          - Action: s3:ListBucket
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:aws:s3:::"
+                  - Ref: amazonbraketC6E30921
+          - Action:
+              - ecr:UploadLayerPart
+              - ecr:BatchDeleteImage
+              - ecr:DeleteRepository
+              - ecr:CompleteLayerUpload
+              - ecr:DescribeRepositories
+              - ecr:BatchCheckLayerAvailability
+              - ecr:CreateRepository
+              - ecr:GetDownloadUrlForLayer
+              - ecr:PutImage
+              - ecr:BatchGetImage
+              - ecr:InitiateLayerUpload
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:aws:ecr:"
+                  - Ref: AWS::Region
+                  - ":"
+                  - Ref: AWS::AccountId
+                  - :repository/molecular-unfolding/*
+          - Action:
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+              - logs:CreateLogGroup
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:aws:logs:*:"
+                  - Ref: AWS::AccountId
+                  - :log-group:/aws/sagemaker/*
+        Version: "2012-10-17"
+      PolicyName: MolUnfNotebookNotebookRoleDefaultPolicy67656253
+      Roles:
+        - Ref: MolUnfNotebookNotebookRole40C44025
+    Metadata:
+      aws:cdk:path: QCStack/MolUnfNotebook/NotebookRole/DefaultPolicy/Resource
+      cfn_nag:
+        rules_to_suppress:
+          - id: W12
+            reason: some permissions are not resource-level permissions
+  MolUnfNotebookinstallbraketsdk38DD8407:
+    Type: AWS::SageMaker::NotebookInstanceLifecycleConfig
+    Properties:
+      OnStart:
+        - Content: IyEvdXNyL2Jpbi9lbnYgYmFzaAoKc3VkbyAtdSBlYzItdXNlciAtaSA8PEVPUwpweXRob24zIC0tdmVyc2lvbgoKbWtkaXIgcWNlbnYKY2QgcWNlbnYKcHl0aG9uMyAtbSB2ZW52IHFjZW52CnNvdXJjZSBxY2Vudi9iaW4vYWN0aXZhdGUKCnBpcDMgaW5zdGFsbCBudW1weT09MS4yMi4yCnBpcDMgaW5zdGFsbCBib3RvMz09MS4yMS4zMApwaXAzIGluc3RhbGwgZGltb2Q9PTAuMTAuMTIKcGlwMyBpbnN0YWxsIG5ldHdvcmt4PT0yLjcuMQpwaXAzIGluc3RhbGwgZHdhdmUtb2NlYW4tc2RrPT00LjQuMApwaXAzIGluc3RhbGwgYW1hem9uLWJyYWtldC1zZGs9PTEuMTguMApwaXAzIGluc3RhbGwgYW1hem9uLWJyYWtldC1vY2Vhbi1wbHVnaW49PTEuMC43CnBpcDMgaW5zdGFsbCBiaW9wYW5kYXM9PTAuMy4wCnBpcDMgaW5zdGFsbCBweTNEbW9sPT0xLjguMApwaXAzIGluc3RhbGwgaXB5d2lkZ2V0cz09Ny43LjAKCgpwaXAzIGluc3RhbGwganVweXRlciBpcHlrZXJuZWwKCnB5dGhvbjMgLW0gaXB5a2VybmVsIGluc3RhbGwgLS11c2VyIC0tbmFtZT1xY2VudgoKRU9TCgpleGl0IDAK
+    Metadata:
+      aws:cdk:path: QCStack/MolUnfNotebook/install-braket-sdk
+  MolUnfNotebookqcNotebookKey16AB94AA:
+    Type: AWS::KMS::Key
+    Properties:
+      KeyPolicy:
+        Statement:
+          - Action: kms:*
+            Effect: Allow
+            Principal:
+              AWS:
+                Fn::Join:
+                  - ""
+                  - - "arn:"
+                    - Ref: AWS::Partition
+                    - ":iam::"
+                    - Ref: AWS::AccountId
+                    - :root
+            Resource: "*"
+        Version: "2012-10-17"
+      EnableKeyRotation: true
+    UpdateReplacePolicy: Retain
+    DeletionPolicy: Retain
+    Metadata:
+      aws:cdk:path: QCStack/MolUnfNotebook/qcNotebookKey/Resource
+  MolUnfNotebook3D024BCA:
+    Type: AWS::SageMaker::NotebookInstance
+    Properties:
+      InstanceType: ml.c5.xlarge
+      RoleArn:
+        Fn::GetAtt:
+          - MolUnfNotebookNotebookRole40C44025
+          - Arn
+      DefaultCodeRepository: https://github.com/awslabs/quantum-ready-solution-for-drug-discovery
+      DirectInternetAccess: Disabled
+      KmsKeyId:
+        Ref: MolUnfNotebookqcNotebookKey16AB94AA
+      LifecycleConfigName:
+        Fn::GetAtt:
+          - MolUnfNotebookinstallbraketsdk38DD8407
+          - NotebookInstanceLifecycleConfigName
+      RootAccess: Enabled
+      SecurityGroupIds:
+        - Fn::GetAtt:
+            - batchSg97F2201B
+            - GroupId
+      SubnetId:
+        Ref: VPCApplicationSubnet1SubnetCE118F80
+      VolumeSizeInGB: 50
+    Metadata:
+      aws:cdk:path: QCStack/MolUnfNotebook/Notebook
+  MolUnfDashboardqcBatchEvaluationDataSource5F4B9411:
+    Type: AWS::QuickSight::DataSource
+    Properties:
+      AwsAccountId:
+        Ref: AWS::AccountId
+      DataSourceId: qcstack-qcBatchEvaluation-Datasource
+      DataSourceParameters:
+        AthenaParameters:
+          WorkGroup: primary
+      Name: qcstack-qcBatchEvaluation-Datasource
+      Permissions:
+        - Actions:
+            - quicksight:UpdateDataSourcePermissions
+            - quicksight:DescribeDataSource
+            - quicksight:DescribeDataSourcePermissions
+            - quicksight:PassDataSource
+            - quicksight:UpdateDataSource
+            - quicksight:DeleteDataSource
+          Principal:
+            Fn::Join:
+              - ""
+              - - "arn:aws:quicksight:us-east-1:"
+                - Ref: AWS::AccountId
+                - :user/default/
+                - Ref: QuickSightUser
+      Type: ATHENA
+    Metadata:
+      aws:cdk:path: QCStack/MolUnfDashboard/qcBatchEvaluation-DataSource
+  MolUnfDashboardqcBatchEvaluationDataSetC16CADE8:
+    Type: AWS::QuickSight::DataSet
+    Properties:
+      AwsAccountId:
+        Ref: AWS::AccountId
+      DataSetId: qcstack-qcBatchEvaluation-DataSet
+      ImportMode: DIRECT_QUERY
+      Name: qcstack-qcBatchEvaluation-DataSet
+      Permissions:
+        - Actions:
+            - quicksight:UpdateDataSetPermissions
+            - quicksight:DescribeDataSet
+            - quicksight:DescribeDataSetPermissions
+            - quicksight:PassDataSet
+            - quicksight:DescribeIngestion
+            - quicksight:ListIngestions
+            - quicksight:UpdateDataSet
+            - quicksight:DeleteDataSet
+            - quicksight:CreateIngestion
+            - quicksight:CancelIngestion
+          Principal:
+            Fn::Join:
+              - ""
+              - - "arn:aws:quicksight:us-east-1:"
+                - Ref: AWS::AccountId
+                - :user/default/
+                - Ref: QuickSightUser
+      PhysicalTableMap:
+        ATHENATable:
+          CustomSql:
+            Columns:
+              - Name: execution_id
+                Type: STRING
+              - Name: compute_type
+                Type: STRING
+              - Name: resource
+                Type: STRING
+              - Name: params
+                Type: STRING
+              - Name: opt_params
+                Type: STRING
+              - Name: task_duration
+                Type: DECIMAL
+              - Name: time_info
+                Type: STRING
+              - Name: start_time
+                Type: STRING
+              - Name: experiment_name
+                Type: STRING
+              - Name: task_id
+                Type: STRING
+              - Name: model_name
+                Type: STRING
+              - Name: model_filename
+                Type: STRING
+              - Name: scenario
+                Type: STRING
+              - Name: create_time
+                Type: STRING
+              - Name: result_detail
+                Type: STRING
+              - Name: result_location
+                Type: STRING
+            DataSourceArn:
+              Fn::GetAtt:
+                - MolUnfDashboardqcBatchEvaluationDataSource5F4B9411
+                - Arn
+            Name: all
+            SqlQuery: SELECT * FROM "AwsDataCatalog"."qc_db"."qcstack_qc_batch_evaluation_metrics"
+    Metadata:
+      aws:cdk:path: QCStack/MolUnfDashboard/qcBatchEvaluation-DataSet
+  MolUnfDashboardqcBatchEvaluationQSTemplate055D2375:
+    Type: AWS::QuickSight::Template
+    Properties:
+      AwsAccountId:
+        Ref: AWS::AccountId
+      SourceEntity:
+        SourceTemplate:
+          Arn: arn:aws:quicksight:us-east-1:366590864501:template/qc-batch-evaluation-analysis-template/version/1
+      TemplateId: qcstack-qcBatchEvaluation-QSTemplate
+      Name: qcstack-qcBatchEvaluation-QSTemplate
+      Permissions:
+        - Actions:
+            - quicksight:DescribeTemplate
+          Principal:
+            Fn::Join:
+              - ""
+              - - "arn:aws:quicksight:us-east-1:"
+                - Ref: AWS::AccountId
+                - :user/default/
+                - Ref: QuickSightUser
+    Metadata:
+      aws:cdk:path: QCStack/MolUnfDashboard/qcBatchEvaluation-QSTemplate
+  MolUnfDashboardqcBatchEvaluationDashboard0EB9F8AB:
+    Type: AWS::QuickSight::Dashboard
+    Properties:
+      AwsAccountId:
+        Ref: AWS::AccountId
+      DashboardId: qcstack-qcBatchEvaluation-Dashboard
+      SourceEntity:
+        SourceTemplate:
+          Arn:
+            Fn::GetAtt:
+              - MolUnfDashboardqcBatchEvaluationQSTemplate055D2375
+              - Arn
+          DataSetReferences:
+            - DataSetArn:
+                Fn::GetAtt:
+                  - MolUnfDashboardqcBatchEvaluationDataSetC16CADE8
+                  - Arn
+              DataSetPlaceholder: qcds
+      DashboardPublishOptions:
+        AdHocFilteringOption:
+          AvailabilityStatus: DISABLED
+      Name: qcstack-qcBatchEvaluation-Dashboard
+      Permissions:
+        - Actions:
+            - quicksight:DescribeDashboard
+            - quicksight:ListDashboardVersions
+            - quicksight:UpdateDashboardPermissions
+            - quicksight:QueryDashboard
+            - quicksight:UpdateDashboard
+            - quicksight:DeleteDashboard
+            - quicksight:DescribeDashboardPermissions
+            - quicksight:UpdateDashboardPublishedVersion
+          Principal:
+            Fn::Join:
+              - ""
+              - - "arn:aws:quicksight:us-east-1:"
+                - Ref: AWS::AccountId
+                - :user/default/
+                - Ref: QuickSightUser
+    Metadata:
+      aws:cdk:path: QCStack/MolUnfDashboard/qcBatchEvaluation-Dashboard
+  MolUnfDashboardqcBatchEvaluationAnalysis11DF9269:
+    Type: AWS::QuickSight::Analysis
+    Properties:
+      AnalysisId: qcstack-qcBatchEvaluation-Analysis
+      AwsAccountId:
+        Ref: AWS::AccountId
+      SourceEntity:
+        SourceTemplate:
+          Arn:
+            Fn::GetAtt:
+              - MolUnfDashboardqcBatchEvaluationQSTemplate055D2375
+              - Arn
+          DataSetReferences:
+            - DataSetArn:
+                Fn::GetAtt:
+                  - MolUnfDashboardqcBatchEvaluationDataSetC16CADE8
+                  - Arn
+              DataSetPlaceholder: qcds
+      Name: qcstack-qcBatchEvaluation-Analysis
+      Permissions:
+        - Actions:
+            - quicksight:DescribeAnalysis
+            - quicksight:UpdateAnalysisPermissions
+            - quicksight:QueryAnalysis
+            - quicksight:UpdateAnalysis
+            - quicksight:RestoreAnalysis
+            - quicksight:DeleteAnalysis
+            - quicksight:DescribeAnalysisPermissions
+          Principal:
+            Fn::Join:
+              - ""
+              - - "arn:aws:quicksight:us-east-1:"
+                - Ref: AWS::AccountId
+                - :user/default/
+                - Ref: QuickSightUser
+    Metadata:
+      aws:cdk:path: QCStack/MolUnfDashboard/qcBatchEvaluation-Analysis
+  MolUnfBatchEvaluationSNSKeyD58752B8:
+    Type: AWS::KMS::Key
+    Properties:
+      KeyPolicy:
+        Statement:
+          - Action: kms:*
+            Effect: Allow
+            Principal:
+              AWS:
+                Fn::Join:
+                  - ""
+                  - - "arn:"
+                    - Ref: AWS::Partition
+                    - ":iam::"
+                    - Ref: AWS::AccountId
+                    - :root
+            Resource: "*"
+          - Action:
+              - kms:Decrypt
+              - kms:GenerateDataKey
+            Effect: Allow
+            Principal:
+              Service: events.amazonaws.com
+            Resource: "*"
+          - Action:
+              - kms:Decrypt
+              - kms:GenerateDataKey*
+              - kms:CreateGrant
+              - kms:ListGrants
+              - kms:DescribeKey
+            Condition:
+              StringEquals:
+                kms:ViaService:
+                  Fn::Join:
+                    - ""
+                    - - sns.
+                      - Ref: AWS::Region
+                      - .amazonaws.com
+                kms:CallerAccount:
+                  Ref: AWS::AccountId
+            Effect: Allow
+            Principal:
+              AWS: "*"
+            Resource: "*"
+        Version: "2012-10-17"
+      EnableKeyRotation: true
+    UpdateReplacePolicy: Retain
+    DeletionPolicy: Retain
+    Metadata:
+      aws:cdk:path: QCStack/MolUnfBatchEvaluation/SNSKey/Resource
+      cfn_nag:
+        rules_to_suppress:
+          - id: F76
+            reason: Key for SNS, add constraint in conditions
+  MolUnfBatchEvaluationSNSTopic51BF77A1:
+    Type: AWS::SNS::Topic
+    Properties:
+      DisplayName: QC StepFunctions Workflow Execution Topic
+      KmsMasterKeyId:
+        Fn::GetAtt:
+          - MolUnfBatchEvaluationSNSKeyD58752B8
+          - Arn
+    Metadata:
+      aws:cdk:path: QCStack/MolUnfBatchEvaluation/SNS Topic/Resource
+  MolUnfBatchEvaluationSNSTopicPolicyBAA87836:
+    Type: AWS::SNS::TopicPolicy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - sns:Publish
+              - sns:Subscribe
+            Condition:
+              Bool:
+                aws:SecureTransport: "false"
+            Effect: Deny
+            Principal:
+              AWS: "*"
+            Resource:
+              Ref: MolUnfBatchEvaluationSNSTopic51BF77A1
+            Sid: "0"
+          - Action: sns:Publish
+            Effect: Allow
+            Principal:
+              Service: events.amazonaws.com
+            Resource:
+              Ref: MolUnfBatchEvaluationSNSTopic51BF77A1
+            Sid: "1"
+        Version: "2012-10-17"
+      Topics:
+        - Ref: MolUnfBatchEvaluationSNSTopic51BF77A1
+    Metadata:
+      aws:cdk:path: QCStack/MolUnfBatchEvaluation/SNS Topic/Policy/Resource
+  MolUnfBatchEvaluationCCStateMachineLogGroup907DE313:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      KmsKeyId:
+        Fn::GetAtt:
+          - stepFuncsLogKey98D99E94
+          - Arn
+      LogGroupName: qcstack-CCStateMachineLogGroup
+      RetentionInDays: 90
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+    Metadata:
+      aws:cdk:path: QCStack/MolUnfBatchEvaluation/CCStateMachineLogGroup/Resource
+  MolUnfBatchEvaluationCCStateMachineRole0F354966:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service:
+                Fn::FindInMap:
+                  - ServiceprincipalMap
+                  - Ref: AWS::Region
+                  - states
+        Version: "2012-10-17"
+    Metadata:
+      aws:cdk:path: QCStack/MolUnfBatchEvaluation/CCStateMachine/Role/Resource
+  MolUnfBatchEvaluationCCStateMachineRoleDefaultPolicy905C1A62:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - logs:CreateLogDelivery
+              - logs:GetLogDelivery
+              - logs:UpdateLogDelivery
+              - logs:DeleteLogDelivery
+              - logs:ListLogDeliveries
+              - logs:PutResourcePolicy
+              - logs:DescribeResourcePolicies
+              - logs:DescribeLogGroups
+            Effect: Allow
+            Resource: "*"
+          - Action: lambda:InvokeFunction
+            Effect: Allow
+            Resource:
+              - Fn::GetAtt:
+                  - TaskParametersLambda7323EB65
+                  - Arn
+              - Fn::Join:
+                  - ""
+                  - - Fn::GetAtt:
+                        - TaskParametersLambda7323EB65
+                        - Arn
+                    - :*
+          - Action:
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - MolUnfBatchEvaluationCCStateMachineLogGroup907DE313
+                - Arn
+          - Action: batch:SubmitJob
+            Effect: Allow
+            Resource:
+              - Fn::Join:
+                  - ""
+                  - - "arn:aws:batch:"
+                    - Ref: AWS::Region
+                    - ":"
+                    - Ref: AWS::AccountId
+                    - :job-definition/*
+              - Fn::Join:
+                  - ""
+                  - - "arn:aws:batch:"
+                    - Ref: AWS::Region
+                    - ":"
+                    - Ref: AWS::AccountId
+                    - :job-queue/*
+          - Action:
+              - events:PutTargets
+              - events:PutRule
+              - events:DescribeRule
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:aws:events:"
+                  - Ref: AWS::Region
+                  - ":"
+                  - Ref: AWS::AccountId
+                  - :rule/*
+        Version: "2012-10-17"
+      PolicyName: MolUnfBatchEvaluationCCStateMachineRoleDefaultPolicy905C1A62
+      Roles:
+        - Ref: MolUnfBatchEvaluationCCStateMachineRole0F354966
+    Metadata:
+      aws:cdk:path: QCStack/MolUnfBatchEvaluation/CCStateMachine/Role/DefaultPolicy/Resource
+      cfn_nag:
+        rules_to_suppress:
+          - id: W12
+            reason: the policy about log group is generated by CDK
+  MolUnfBatchEvaluationCCStateMachineFA45B9B6:
+    Type: AWS::StepFunctions::StateMachine
+    Properties:
+      RoleArn:
+        Fn::GetAtt:
+          - MolUnfBatchEvaluationCCStateMachineRole0F354966
+          - Arn
+      DefinitionString:
+        Fn::Join:
+          - ""
+          - - '{"StartAt":"Get Task Parameters","States":{"Get Task Parameters":{"Next":"ParallelCCJobs","Retry":[{"ErrorEquals":["Lambda.ServiceException","Lambda.AWSLambdaException","Lambda.SdkClientException"],"IntervalSeconds":2,"MaxAttempts":6,"BackoffRate":2}],"Type":"Task","OutputPath":"$.Payload","Resource":"arn:'
+            - Ref: AWS::Partition
+            - :states:::lambda:invoke","Parameters":{"FunctionName":"
+            - Fn::GetAtt:
+                - TaskParametersLambda7323EB65
+                - Arn
+            - '","Payload":{"s3_bucket":"'
+            - Ref: amazonbraketC6E30921
+            - '","s3_prefix":"molecular-unfolding","param_type":"PARAMS_FOR_CC","execution_id.$":"$.execution_id","context.$":"$$"}}},"ParallelCCJobs":{"Type":"Map","ResultPath":"$.parallelCCJobsMap","End":true,"Parameters":{"ItemIndex.$":"$$.Map.Item.Index","ItemValue.$":"$$.Map.Item.Value","execution_id.$":"$.execution_id"},"Iterator":{"StartAt":"Run CC Batch Task","States":{"Run CC Batch Task":{"End":true,"Type":"Task","Resource":"arn:aws:states:::batch:submitJob.sync","Parameters":{"JobDefinition":"'
+            - Ref: CCJobTemplate13BE2617
+            - "\",\"JobName.$\":\"States.Format('CCTask{}-{}', $.ItemIndex, $.ItemValue.task_name)\",\"JobQueue\":\""
+            - Ref: ccJobQueueED16D2A4
+            - "\",\"ContainerOverrides\":{\"Command.$\":\"$.ItemValue.params\",\"ResourceRequirements\":[{\"Type\":\"VCPU\",\"Value.$\":\"States.Format('{}',$.ItemValue.vcpus)\"},{\"Type\":\"MEMORY\",\"Value.$\":\"States.Format('{}', $.ItemValue.memory)\"}]}},\"ResultSelector\":{\"JobId.$\":\"$.JobId\",\"JobName.$\":\"$.JobName\"}}}},\"ItemsPath\":\"$.ccTaskParams\",\"MaxConcurrency\":20}}}"
+      LoggingConfiguration:
+        Destinations:
+          - CloudWatchLogsLogGroup:
+              LogGroupArn:
+                Fn::GetAtt:
+                  - MolUnfBatchEvaluationCCStateMachineLogGroup907DE313
+                  - Arn
+        Level: ALL
+    DependsOn:
+      - MolUnfBatchEvaluationCCStateMachineRoleDefaultPolicy905C1A62
+      - MolUnfBatchEvaluationCCStateMachineRole0F354966
+    Metadata:
+      aws:cdk:path: QCStack/MolUnfBatchEvaluation/CCStateMachine/Resource
+  MolUnfBatchEvaluationQCDeviceStateMachineLogGroupC5E179AD:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      KmsKeyId:
+        Fn::GetAtt:
+          - stepFuncsLogKey98D99E94
+          - Arn
+      LogGroupName: qcstack-QCDeviceStateMachineLogGroup
+      RetentionInDays: 90
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+    Metadata:
+      aws:cdk:path: QCStack/MolUnfBatchEvaluation/QCDeviceStateMachineLogGroup/Resource
+  MolUnfBatchEvaluationQCDeviceStateMachineRoleD0C9785F:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service:
+                Fn::FindInMap:
+                  - ServiceprincipalMap
+                  - Ref: AWS::Region
+                  - states
+        Version: "2012-10-17"
+    Metadata:
+      aws:cdk:path: QCStack/MolUnfBatchEvaluation/QCDeviceStateMachine/Role/Resource
+  MolUnfBatchEvaluationQCDeviceStateMachineRoleDefaultPolicy69000E82:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - logs:CreateLogDelivery
+              - logs:GetLogDelivery
+              - logs:UpdateLogDelivery
+              - logs:DeleteLogDelivery
+              - logs:ListLogDeliveries
+              - logs:PutResourcePolicy
+              - logs:DescribeResourcePolicies
+              - logs:DescribeLogGroups
+            Effect: Allow
+            Resource: "*"
+          - Action: lambda:InvokeFunction
+            Effect: Allow
+            Resource:
+              - Fn::GetAtt:
+                  - DeviceAvailableCheckLambda49F8D395
+                  - Arn
+              - Fn::Join:
+                  - ""
+                  - - Fn::GetAtt:
+                        - DeviceAvailableCheckLambda49F8D395
+                        - Arn
+                    - :*
+          - Action: lambda:InvokeFunction
+            Effect: Allow
+            Resource:
+              - Fn::GetAtt:
+                  - TaskParametersLambda7323EB65
+                  - Arn
+              - Fn::Join:
+                  - ""
+                  - - Fn::GetAtt:
+                        - TaskParametersLambda7323EB65
+                        - Arn
+                    - :*
+          - Action: batch:SubmitJob
+            Effect: Allow
+            Resource:
+              - Fn::Join:
+                  - ""
+                  - - "arn:"
+                    - Ref: AWS::Partition
+                    - ":batch:"
+                    - Ref: AWS::Region
+                    - ":"
+                    - Ref: AWS::AccountId
+                    - :job-definition/*
+              - Ref: fargateJobQueueB4CA90F7
+          - Action:
+              - events:PutTargets
+              - events:PutRule
+              - events:DescribeRule
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:"
+                  - Ref: AWS::Partition
+                  - ":events:"
+                  - Ref: AWS::Region
+                  - ":"
+                  - Ref: AWS::AccountId
+                  - :rule/StepFunctionsGetEventsForBatchJobsRule
+          - Action: lambda:InvokeFunction
+            Effect: Allow
+            Resource:
+              - Fn::GetAtt:
+                  - WaitForTokenLambdaA8B2A141
+                  - Arn
+              - Fn::Join:
+                  - ""
+                  - - Fn::GetAtt:
+                        - WaitForTokenLambdaA8B2A141
+                        - Arn
+                    - :*
+          - Action:
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - MolUnfBatchEvaluationQCDeviceStateMachineLogGroupC5E179AD
+                - Arn
+        Version: "2012-10-17"
+      PolicyName: MolUnfBatchEvaluationQCDeviceStateMachineRoleDefaultPolicy69000E82
+      Roles:
+        - Ref: MolUnfBatchEvaluationQCDeviceStateMachineRoleD0C9785F
+    Metadata:
+      aws:cdk:path: QCStack/MolUnfBatchEvaluation/QCDeviceStateMachine/Role/DefaultPolicy/Resource
+      cfn_nag:
+        rules_to_suppress:
+          - id: W12
+            reason: the policy about log group is generated by CDK
+          - id: W76
+            reason: The policy is generated automatically by CDK
+  MolUnfBatchEvaluationQCDeviceStateMachineF6D5A302:
+    Type: AWS::StepFunctions::StateMachine
+    Properties:
+      RoleArn:
+        Fn::GetAtt:
+          - MolUnfBatchEvaluationQCDeviceStateMachineRoleD0C9785F
+          - Arn
+      DefinitionString:
+        Fn::Join:
+          - ""
+          - - '{"StartAt":"Check Device status","States":{"Check Device status":{"Next":"Device Online ?","Retry":[{"ErrorEquals":["Lambda.ServiceException","Lambda.AWSLambdaException","Lambda.SdkClientException"],"IntervalSeconds":2,"MaxAttempts":6,"BackoffRate":2}],"Type":"Task","ResultPath":"$.checkQCDeviceStep","ResultSelector":{"statusPayload.$":"$.Payload"},"Resource":"arn:'
+            - Ref: AWS::Partition
+            - :states:::lambda:invoke","Parameters":{"FunctionName":"
+            - Fn::GetAtt:
+                - DeviceAvailableCheckLambda49F8D395
+                - Arn
+            - '","Payload":{"execution_id.$":"$.execution_id","device_arn.$":"$.device_arn"}}},"Device Online ?":{"Type":"Choice","Choices":[{"Variable":"$.checkQCDeviceStep.statusPayload.deviceStatus","StringEquals":"ONLINE","Next":"Get Task Paramters"}],"Default":"Device Not Online"},"Device Not Online":{"Type":"Fail"},"Get Task Paramters":{"Next":"ParallelQCJobs","Retry":[{"ErrorEquals":["Lambda.ServiceException","Lambda.AWSLambdaException","Lambda.SdkClientException"],"IntervalSeconds":2,"MaxAttempts":6,"BackoffRate":2}],"Type":"Task","OutputPath":"$.Payload","Resource":"arn:'
+            - Ref: AWS::Partition
+            - :states:::lambda:invoke","Parameters":{"FunctionName":"
+            - Fn::GetAtt:
+                - TaskParametersLambda7323EB65
+                - Arn
+            - '","Payload":{"s3_bucket":"'
+            - Ref: amazonbraketC6E30921
+            - '","s3_prefix":"molecular-unfolding","param_type":"PARAMS_FOR_QC_DEVICE","device_arn.$":"$.device_arn","execution_id.$":"$.execution_id"}}},"ParallelQCJobs":{"Type":"Map","ResultPath":"$.parallelQCJobsMap","End":true,"Parameters":{"ItemIndex.$":"$$.Map.Item.Index","ItemValue.$":"$$.Map.Item.Value","execution_id.$":"$.execution_id"},"Iterator":{"StartAt":"Submit QC Task","States":{"Submit QC Task":{"Next":"Wait For Complete","Type":"Task","ResultPath":"$.qcTaskSubmitJob","ResultSelector":{"JobId.$":"$.JobId","JobName.$":"$.JobName"},"Resource":"arn:'
+            - Ref: AWS::Partition
+            - :states:::batch:submitJob.sync","Parameters":{"JobDefinition":"
+            - Ref: QCJobTemplate8011735D
+            - '","JobName":"qcTaskSubmitJob","JobQueue":"'
+            - Ref: fargateJobQueueB4CA90F7
+            - '","ContainerOverrides":{"Command.$":"$.ItemValue.params"}}},"Wait For Complete":{"End":true,"Retry":[{"ErrorEquals":["Lambda.ServiceException","Lambda.AWSLambdaException","Lambda.SdkClientException"],"IntervalSeconds":2,"MaxAttempts":6,"BackoffRate":2}],"Type":"Task","ResultPath":"$.watiForTokenStep","Resource":"arn:'
+            - Ref: AWS::Partition
+            - :states:::lambda:invoke.waitForTaskToken","Parameters":{"FunctionName":"
+            - Fn::GetAtt:
+                - WaitForTokenLambdaA8B2A141
+                - Arn
+            - '","Payload":{"execution_id.$":"$.execution_id","task_token.$":"$$.Task.Token","s3_bucket":"'
+            - Ref: amazonbraketC6E30921
+            - '","s3_prefix":"molecular-unfolding","batch_job_id.$":"$.qcTaskSubmitJob.JobId","ItemValue.$":"$.ItemValue","ItemIndex.$":"$.ItemIndex"}}}}},"ItemsPath":"$.qcTaskParams","MaxConcurrency":20}}}'
+      LoggingConfiguration:
+        Destinations:
+          - CloudWatchLogsLogGroup:
+              LogGroupArn:
+                Fn::GetAtt:
+                  - MolUnfBatchEvaluationQCDeviceStateMachineLogGroupC5E179AD
+                  - Arn
+        Level: ALL
+    DependsOn:
+      - MolUnfBatchEvaluationQCDeviceStateMachineRoleDefaultPolicy69000E82
+      - MolUnfBatchEvaluationQCDeviceStateMachineRoleD0C9785F
+    Metadata:
+      aws:cdk:path: QCStack/MolUnfBatchEvaluation/QCDeviceStateMachine/Resource
+  MolUnfBatchEvaluationQCStateMachineLogGroupF0576347:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      KmsKeyId:
+        Fn::GetAtt:
+          - stepFuncsLogKey98D99E94
+          - Arn
+      LogGroupName: qcstack-QCStateMachineLogGroup
+      RetentionInDays: 90
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+    Metadata:
+      aws:cdk:path: QCStack/MolUnfBatchEvaluation/QCStateMachineLogGroup/Resource
+  MolUnfBatchEvaluationQCStateMachineRole79A38694:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service:
+                Fn::FindInMap:
+                  - ServiceprincipalMap
+                  - Ref: AWS::Region
+                  - states
+        Version: "2012-10-17"
+    Metadata:
+      aws:cdk:path: QCStack/MolUnfBatchEvaluation/QCStateMachine/Role/Resource
+  MolUnfBatchEvaluationQCStateMachineRoleDefaultPolicy57B54DF6:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - logs:CreateLogDelivery
+              - logs:GetLogDelivery
+              - logs:UpdateLogDelivery
+              - logs:DeleteLogDelivery
+              - logs:ListLogDeliveries
+              - logs:PutResourcePolicy
+              - logs:DescribeResourcePolicies
+              - logs:DescribeLogGroups
+            Effect: Allow
+            Resource: "*"
+          - Action: lambda:InvokeFunction
+            Effect: Allow
+            Resource:
+              - Fn::GetAtt:
+                  - TaskParametersLambda7323EB65
+                  - Arn
+              - Fn::Join:
+                  - ""
+                  - - Fn::GetAtt:
+                        - TaskParametersLambda7323EB65
+                        - Arn
+                    - :*
+          - Action: states:StartExecution
+            Effect: Allow
+            Resource:
+              Ref: MolUnfBatchEvaluationQCDeviceStateMachineF6D5A302
+          - Action:
+              - states:DescribeExecution
+              - states:StopExecution
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:"
+                  - Ref: AWS::Partition
+                  - ":states:"
+                  - Ref: AWS::Region
+                  - ":"
+                  - Ref: AWS::AccountId
+                  - ":execution:"
+                  - Fn::Select:
+                      - 6
+                      - Fn::Split:
+                          - ":"
+                          - Ref: MolUnfBatchEvaluationQCDeviceStateMachineF6D5A302
+                  - "*"
+          - Action:
+              - events:PutTargets
+              - events:PutRule
+              - events:DescribeRule
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:"
+                  - Ref: AWS::Partition
+                  - ":events:"
+                  - Ref: AWS::Region
+                  - ":"
+                  - Ref: AWS::AccountId
+                  - :rule/StepFunctionsGetEventsForStepFunctionsExecutionRule
+          - Action:
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - MolUnfBatchEvaluationQCStateMachineLogGroupF0576347
+                - Arn
+        Version: "2012-10-17"
+      PolicyName: MolUnfBatchEvaluationQCStateMachineRoleDefaultPolicy57B54DF6
+      Roles:
+        - Ref: MolUnfBatchEvaluationQCStateMachineRole79A38694
+    Metadata:
+      aws:cdk:path: QCStack/MolUnfBatchEvaluation/QCStateMachine/Role/DefaultPolicy/Resource
+      cfn_nag:
+        rules_to_suppress:
+          - id: W12
+            reason: the policy about log group is generated by CDK
+  MolUnfBatchEvaluationQCStateMachine5CE68CDF:
+    Type: AWS::StepFunctions::StateMachine
+    Properties:
+      RoleArn:
+        Fn::GetAtt:
+          - MolUnfBatchEvaluationQCStateMachineRole79A38694
+          - Arn
+      DefinitionString:
+        Fn::Join:
+          - ""
+          - - '{"StartAt":"Get Device List","States":{"Get Device List":{"Next":"parallelQCDeviceMap","Retry":[{"ErrorEquals":["Lambda.ServiceException","Lambda.AWSLambdaException","Lambda.SdkClientException"],"IntervalSeconds":2,"MaxAttempts":6,"BackoffRate":2}],"Type":"Task","OutputPath":"$.Payload","Resource":"arn:'
+            - Ref: AWS::Partition
+            - :states:::lambda:invoke","Parameters":{"FunctionName":"
+            - Fn::GetAtt:
+                - TaskParametersLambda7323EB65
+                - Arn
+            - '","Payload":{"s3_bucket":"'
+            - Ref: amazonbraketC6E30921
+            - '","s3_prefix":"molecular-unfolding","param_type":"QC_DEVICE_LIST","execution_id.$":"$.execution_id","context.$":"$$"}}},"parallelQCDeviceMap":{"Type":"Map","ResultPath":"$.parallelQCDeviceMap","End":true,"Parameters":{"ItemIndex.$":"$$.Map.Item.Index","ItemValue.$":"$$.Map.Item.Value","execution_id.$":"$.execution_id"},"Iterator":{"StartAt":"Run On Device","States":{"Run On Device":{"End":true,"Type":"Task","Resource":"arn:'
+            - Ref: AWS::Partition
+            - :states:::states:startExecution.sync:2","Parameters":{"Input":{"device_arn.$":"$.ItemValue","execution_id.$":"$.execution_id","AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$":"$$.Execution.Id"},"StateMachineArn":"
+            - Ref: MolUnfBatchEvaluationQCDeviceStateMachineF6D5A302
+            - '"}}}},"ItemsPath":"$.devices_arns","MaxConcurrency":20}}}'
+      LoggingConfiguration:
+        Destinations:
+          - CloudWatchLogsLogGroup:
+              LogGroupArn:
+                Fn::GetAtt:
+                  - MolUnfBatchEvaluationQCStateMachineLogGroupF0576347
+                  - Arn
+        Level: ALL
+    DependsOn:
+      - MolUnfBatchEvaluationQCStateMachineRoleDefaultPolicy57B54DF6
+      - MolUnfBatchEvaluationQCStateMachineRole79A38694
+    Metadata:
+      aws:cdk:path: QCStack/MolUnfBatchEvaluation/QCStateMachine/Resource
+  MolUnfBatchEvaluationRunCCAndQCStateMachineLogGroup5931D455:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      KmsKeyId:
+        Fn::GetAtt:
+          - stepFuncsLogKey98D99E94
+          - Arn
+      LogGroupName: qcstack-RunCCAndQCStateMachineLogGroup
+      RetentionInDays: 90
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+    Metadata:
+      aws:cdk:path: QCStack/MolUnfBatchEvaluation/RunCCAndQCStateMachineLogGroup/Resource
+  MolUnfBatchEvaluationRunCCAndQCStateMachineRole0CAC2D17:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service:
+                Fn::FindInMap:
+                  - ServiceprincipalMap
+                  - Ref: AWS::Region
+                  - states
+        Version: "2012-10-17"
+    Metadata:
+      aws:cdk:path: QCStack/MolUnfBatchEvaluation/RunCCAndQCStateMachine/Role/Resource
+  MolUnfBatchEvaluationRunCCAndQCStateMachineRoleDefaultPolicy8A4313DD:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - logs:CreateLogDelivery
+              - logs:GetLogDelivery
+              - logs:UpdateLogDelivery
+              - logs:DeleteLogDelivery
+              - logs:ListLogDeliveries
+              - logs:PutResourcePolicy
+              - logs:DescribeResourcePolicies
+              - logs:DescribeLogGroups
+            Effect: Allow
+            Resource: "*"
+          - Action: states:StartExecution
+            Effect: Allow
+            Resource:
+              Ref: MolUnfBatchEvaluationCCStateMachineFA45B9B6
+          - Action:
+              - states:DescribeExecution
+              - states:StopExecution
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:"
+                  - Ref: AWS::Partition
+                  - ":states:"
+                  - Ref: AWS::Region
+                  - ":"
+                  - Ref: AWS::AccountId
+                  - ":execution:"
+                  - Fn::Select:
+                      - 6
+                      - Fn::Split:
+                          - ":"
+                          - Ref: MolUnfBatchEvaluationCCStateMachineFA45B9B6
+                  - "*"
+          - Action:
+              - events:PutTargets
+              - events:PutRule
+              - events:DescribeRule
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:"
+                  - Ref: AWS::Partition
+                  - ":events:"
+                  - Ref: AWS::Region
+                  - ":"
+                  - Ref: AWS::AccountId
+                  - :rule/StepFunctionsGetEventsForStepFunctionsExecutionRule
+          - Action: states:StartExecution
+            Effect: Allow
+            Resource:
+              Ref: MolUnfBatchEvaluationQCStateMachine5CE68CDF
+          - Action:
+              - states:DescribeExecution
+              - states:StopExecution
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:"
+                  - Ref: AWS::Partition
+                  - ":states:"
+                  - Ref: AWS::Region
+                  - ":"
+                  - Ref: AWS::AccountId
+                  - ":execution:"
+                  - Fn::Select:
+                      - 6
+                      - Fn::Split:
+                          - ":"
+                          - Ref: MolUnfBatchEvaluationQCStateMachine5CE68CDF
+                  - "*"
+          - Action:
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - MolUnfBatchEvaluationRunCCAndQCStateMachineLogGroup5931D455
+                - Arn
+        Version: "2012-10-17"
+      PolicyName: MolUnfBatchEvaluationRunCCAndQCStateMachineRoleDefaultPolicy8A4313DD
+      Roles:
+        - Ref: MolUnfBatchEvaluationRunCCAndQCStateMachineRole0CAC2D17
+    Metadata:
+      aws:cdk:path: QCStack/MolUnfBatchEvaluation/RunCCAndQCStateMachine/Role/DefaultPolicy/Resource
+      cfn_nag:
+        rules_to_suppress:
+          - id: W12
+            reason: the policy about log group is generated by CDK
+          - id: W76
+            reason: The policy is generated automatically by CDK
+  MolUnfBatchEvaluationRunCCAndQCStateMachineAD6503E1:
+    Type: AWS::StepFunctions::StateMachine
+    Properties:
+      RoleArn:
+        Fn::GetAtt:
+          - MolUnfBatchEvaluationRunCCAndQCStateMachineRole0CAC2D17
+          - Arn
+      DefinitionString:
+        Fn::Join:
+          - ""
+          - - '{"StartAt":"ccAndQCParallel","States":{"ccAndQCParallel":{"Type":"Parallel","End":true,"Branches":[{"StartAt":"Run CC StateMachine","States":{"Run CC StateMachine":{"End":true,"Type":"Task","ResultPath":"$.ccStateMachineStep","Resource":"arn:'
+            - Ref: AWS::Partition
+            - :states:::states:startExecution.sync:2","Parameters":{"Input":{"execution_id.$":"$.execution_id","AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$":"$$.Execution.Id"},"StateMachineArn":"
+            - Ref: MolUnfBatchEvaluationCCStateMachineFA45B9B6
+            - '"}}}},{"StartAt":"Run QC StateMachine","States":{"Run QC StateMachine":{"End":true,"Type":"Task","ResultPath":"$.qcStateMachineStep","Resource":"arn:'
+            - Ref: AWS::Partition
+            - :states:::states:startExecution.sync:2","Parameters":{"Input":{"execution_id.$":"$.execution_id","AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$":"$$.Execution.Id"},"StateMachineArn":"
+            - Ref: MolUnfBatchEvaluationQCStateMachine5CE68CDF
+            - '"}}}}]}}}'
+      LoggingConfiguration:
+        Destinations:
+          - CloudWatchLogsLogGroup:
+              LogGroupArn:
+                Fn::GetAtt:
+                  - MolUnfBatchEvaluationRunCCAndQCStateMachineLogGroup5931D455
+                  - Arn
+        Level: ALL
+    DependsOn:
+      - MolUnfBatchEvaluationRunCCAndQCStateMachineRoleDefaultPolicy8A4313DD
+      - MolUnfBatchEvaluationRunCCAndQCStateMachineRole0CAC2D17
+    Metadata:
+      aws:cdk:path: QCStack/MolUnfBatchEvaluation/RunCCAndQCStateMachine/Resource
+  MolUnfBatchEvaluationBatchEvaluationStateMachineLogGroupBAD426C8:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      KmsKeyId:
+        Fn::GetAtt:
+          - stepFuncsLogKey98D99E94
+          - Arn
+      LogGroupName: qcstack-BatchEvaluationStateMachineLogGroup
+      RetentionInDays: 90
+    UpdateReplacePolicy: Delete
+    DeletionPolicy: Delete
+    Metadata:
+      aws:cdk:path: QCStack/MolUnfBatchEvaluation/BatchEvaluationStateMachineLogGroup/Resource
+  MolUnfBatchEvaluationBatchEvaluationStateMachineRoleFC71479E:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service:
+                Fn::FindInMap:
+                  - ServiceprincipalMap
+                  - Ref: AWS::Region
+                  - states
+        Version: "2012-10-17"
+    Metadata:
+      aws:cdk:path: QCStack/MolUnfBatchEvaluation/BatchEvaluationStateMachine/Role/Resource
+  MolUnfBatchEvaluationBatchEvaluationStateMachineRoleDefaultPolicy6AF94829:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - logs:CreateLogDelivery
+              - logs:GetLogDelivery
+              - logs:UpdateLogDelivery
+              - logs:DeleteLogDelivery
+              - logs:ListLogDeliveries
+              - logs:PutResourcePolicy
+              - logs:DescribeResourcePolicies
+              - logs:DescribeLogGroups
+            Effect: Allow
+            Resource: "*"
+          - Action: lambda:InvokeFunction
+            Effect: Allow
+            Resource:
+              - Fn::GetAtt:
+                  - TaskParametersLambda7323EB65
+                  - Arn
+              - Fn::Join:
+                  - ""
+                  - - Fn::GetAtt:
+                        - TaskParametersLambda7323EB65
+                        - Arn
+                    - :*
+          - Action: batch:SubmitJob
+            Effect: Allow
+            Resource:
+              - Fn::Join:
+                  - ""
+                  - - "arn:"
+                    - Ref: AWS::Partition
+                    - ":batch:"
+                    - Ref: AWS::Region
+                    - ":"
+                    - Ref: AWS::AccountId
+                    - :job-definition/*
+              - Ref: fargateJobQueueB4CA90F7
+          - Action:
+              - events:PutTargets
+              - events:PutRule
+              - events:DescribeRule
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:"
+                  - Ref: AWS::Partition
+                  - ":events:"
+                  - Ref: AWS::Region
+                  - ":"
+                  - Ref: AWS::AccountId
+                  - :rule/StepFunctionsGetEventsForBatchJobsRule
+          - Action: states:StartExecution
+            Effect: Allow
+            Resource:
+              Ref: MolUnfBatchEvaluationRunCCAndQCStateMachineAD6503E1
+          - Action:
+              - states:DescribeExecution
+              - states:StopExecution
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:"
+                  - Ref: AWS::Partition
+                  - ":states:"
+                  - Ref: AWS::Region
+                  - ":"
+                  - Ref: AWS::AccountId
+                  - ":execution:"
+                  - Fn::Select:
+                      - 6
+                      - Fn::Split:
+                          - ":"
+                          - Ref: MolUnfBatchEvaluationRunCCAndQCStateMachineAD6503E1
+                  - "*"
+          - Action:
+              - events:PutTargets
+              - events:PutRule
+              - events:DescribeRule
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:"
+                  - Ref: AWS::Partition
+                  - ":events:"
+                  - Ref: AWS::Region
+                  - ":"
+                  - Ref: AWS::AccountId
+                  - :rule/StepFunctionsGetEventsForStepFunctionsExecutionRule
+          - Action: lambda:InvokeFunction
+            Effect: Allow
+            Resource:
+              - Fn::GetAtt:
+                  - AggResultLambda2D78F89C
+                  - Arn
+              - Fn::Join:
+                  - ""
+                  - - Fn::GetAtt:
+                        - AggResultLambda2D78F89C
+                        - Arn
+                    - :*
+          - Action: states:StartExecution
+            Effect: Allow
+            Resource:
+              Ref: MolUnfBatchEvaluationCCStateMachineFA45B9B6
+          - Action:
+              - states:DescribeExecution
+              - states:StopExecution
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:"
+                  - Ref: AWS::Partition
+                  - ":states:"
+                  - Ref: AWS::Region
+                  - ":"
+                  - Ref: AWS::AccountId
+                  - ":execution:"
+                  - Fn::Select:
+                      - 6
+                      - Fn::Split:
+                          - ":"
+                          - Ref: MolUnfBatchEvaluationCCStateMachineFA45B9B6
+                  - "*"
+          - Action: states:StartExecution
+            Effect: Allow
+            Resource:
+              Ref: MolUnfBatchEvaluationQCStateMachine5CE68CDF
+          - Action:
+              - states:DescribeExecution
+              - states:StopExecution
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:"
+                  - Ref: AWS::Partition
+                  - ":states:"
+                  - Ref: AWS::Region
+                  - ":"
+                  - Ref: AWS::AccountId
+                  - ":execution:"
+                  - Fn::Select:
+                      - 6
+                      - Fn::Split:
+                          - ":"
+                          - Ref: MolUnfBatchEvaluationQCStateMachine5CE68CDF
+                  - "*"
+          - Action: sns:Publish
+            Effect: Allow
+            Resource:
+              Ref: MolUnfBatchEvaluationSNSTopic51BF77A1
+          - Action:
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+            Effect: Allow
+            Resource:
+              Fn::GetAtt:
+                - MolUnfBatchEvaluationBatchEvaluationStateMachineLogGroupBAD426C8
+                - Arn
+        Version: "2012-10-17"
+      PolicyName: MolUnfBatchEvaluationBatchEvaluationStateMachineRoleDefaultPolicy6AF94829
+      Roles:
+        - Ref: MolUnfBatchEvaluationBatchEvaluationStateMachineRoleFC71479E
+    Metadata:
+      aws:cdk:path: QCStack/MolUnfBatchEvaluation/BatchEvaluationStateMachine/Role/DefaultPolicy/Resource
+      cfn_nag:
+        rules_to_suppress:
+          - id: W12
+            reason: the policy about log group is generated by CDK
+          - id: W76
+            reason: The policy is generated automatically by CDK
+  MolUnfBatchEvaluationBatchEvaluationStateMachine759181D6:
+    Type: AWS::StepFunctions::StateMachine
+    Properties:
+      RoleArn:
+        Fn::GetAtt:
+          - MolUnfBatchEvaluationBatchEvaluationStateMachineRoleFC71479E
+          - Arn
+      DefinitionString:
+        Fn::Join:
+          - ""
+          - - '{"StartAt":"Check Input","States":{"Check Input":{"Next":"Create Model","Retry":[{"ErrorEquals":["Lambda.ServiceException","Lambda.AWSLambdaException","Lambda.SdkClientException"],"IntervalSeconds":2,"MaxAttempts":6,"BackoffRate":2}],"Type":"Task","OutputPath":"$.Payload","Resource":"arn:'
+            - Ref: AWS::Partition
+            - :states:::lambda:invoke","Parameters":{"FunctionName":"
+            - Fn::GetAtt:
+                - TaskParametersLambda7323EB65
+                - Arn
+            - '","Payload":{"s3_bucket":"'
+            - Ref: amazonbraketC6E30921
+            - '","s3_prefix":"molecular-unfolding","param_type":"CHECK_INPUT","user_input.$":"$","execution_id.$":"$$.Execution.Id"}}},"Create Model":{"Next":"Select Running Mode","Type":"Task","ResultPath":"$.createModelStep","ResultSelector":{"JobId.$":"$.JobId"},"Resource":"arn:'
+            - Ref: AWS::Partition
+            - :states:::batch:submitJob.sync","Parameters":{"JobDefinition":"
+            - Ref: CreateModelJobDef9834138D
+            - '","JobName":"createModelTask","JobQueue":"'
+            - Ref: fargateJobQueueB4CA90F7
+            - '","ContainerOverrides":{"Command.$":"$.params"}}},"Select Running Mode":{"Type":"Choice","Choices":[{"Variable":"$.runMode","IsPresent":false,"Next":"Run QC and CC"},{"Variable":"$.runMode","StringEquals":"CC","Next":"Run CC"},{"Variable":"$.runMode","StringEquals":"QC","Next":"Run QC"}],"Default":"Run QC and CC"},"Run QC and CC":{"Next":"Aggregate Result","Type":"Task","ResultPath":"$.qcAndCcBranch","Resource":"arn:'
+            - Ref: AWS::Partition
+            - :states:::states:startExecution.sync:2","Parameters":{"Input":{"execution_id.$":"$.execution_id","AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$":"$$.Execution.Id"},"StateMachineArn":"
+            - Ref: MolUnfBatchEvaluationRunCCAndQCStateMachineAD6503E1
+            - '"}},"Aggregate Result":{"Next":"Notify Complete","Retry":[{"ErrorEquals":["Lambda.ServiceException","Lambda.AWSLambdaException","Lambda.SdkClientException"],"IntervalSeconds":2,"MaxAttempts":6,"BackoffRate":2}],"Type":"Task","ResultPath":"$.aggResultStep","ResultSelector":{"Payload.$":"$.Payload"},"Resource":"arn:'
+            - Ref: AWS::Partition
+            - :states:::lambda:invoke","Parameters":{"FunctionName":"
+            - Fn::GetAtt:
+                - AggResultLambda2D78F89C
+                - Arn
+            - '","Payload":{"execution_id.$":"$.execution_id","stackName":"qcstack","s3_prefix":"molecular-unfolding"}}},"Run CC":{"Next":"Aggregate Result","Type":"Task","ResultPath":"$.ccBranch","Resource":"arn:'
+            - Ref: AWS::Partition
+            - :states:::states:startExecution.sync:2","Parameters":{"Input":{"execution_id.$":"$.execution_id","AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$":"$$.Execution.Id"},"StateMachineArn":"
+            - Ref: MolUnfBatchEvaluationCCStateMachineFA45B9B6
+            - '"}},"Run QC":{"Next":"Aggregate Result","Type":"Task","ResultPath":"$.qcBranch","Resource":"arn:'
+            - Ref: AWS::Partition
+            - :states:::states:startExecution.sync:2","Parameters":{"Input":{"execution_id.$":"$.execution_id","AWS_STEP_FUNCTIONS_STARTED_BY_EXECUTION_ID.$":"$$.Execution.Id"},"StateMachineArn":"
+            - Ref: MolUnfBatchEvaluationQCStateMachine5CE68CDF
+            - '"}},"Notify Complete":{"End":true,"Type":"Task","ResultPath":"$.snsStep","Resource":"arn:'
+            - Ref: AWS::Partition
+            - :states:::sns:publish","Parameters":{"TopicArn":"
+            - Ref: MolUnfBatchEvaluationSNSTopic51BF77A1
+            - '","Message":{"status":"SUCCEEDED","name.$":"$.execution_id","startDate.$":"$.start_time","stopDate.$":"$.aggResultStep.Payload.endTime","dashboard":"https://'
+            - Ref: AWS::Region
+            - .quicksight.aws.amazon.com/sn/dashboards/qcstack-qcBatchEvaluation-Dashboard"},"Subject":"QC Step Functions Workflow Execution Succeeded"}}},"TimeoutSeconds":129600}
+      LoggingConfiguration:
+        Destinations:
+          - CloudWatchLogsLogGroup:
+              LogGroupArn:
+                Fn::GetAtt:
+                  - MolUnfBatchEvaluationBatchEvaluationStateMachineLogGroupBAD426C8
+                  - Arn
+        Level: ALL
+    DependsOn:
+      - MolUnfBatchEvaluationBatchEvaluationStateMachineRoleDefaultPolicy6AF94829
+      - MolUnfBatchEvaluationBatchEvaluationStateMachineRoleFC71479E
+    Metadata:
+      aws:cdk:path: QCStack/MolUnfBatchEvaluation/BatchEvaluationStateMachine/Resource
+  MolUnfBatchEvaluationstepFuncFailureRule16E27DFD:
+    Type: AWS::Events::Rule
+    Properties:
+      EventPattern:
+        source:
+          - aws.states
+        detail-type:
+          - Step Functions Execution Status Change
+        detail:
+          status:
+            - FAILED
+            - TIMED_OUT
+            - ABORTED
+          stateMachineArn:
+            - Ref: MolUnfBatchEvaluationBatchEvaluationStateMachine759181D6
+      State: ENABLED
+      Targets:
+        - Arn:
+            Ref: MolUnfBatchEvaluationSNSTopic51BF77A1
+          Id: Target0
+          InputPath: $.detail
+    Metadata:
+      aws:cdk:path: QCStack/MolUnfBatchEvaluation/stepFuncFailureRule/Resource
+  batchExecutionRoleF8E4E0E9:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+        Version: "2012-10-17"
+    Metadata:
+      aws:cdk:path: QCStack/batchExecutionRole/Resource
+  batchExecutionRoleDefaultPolicy80E937A7:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - ecr:BatchCheckLayerAvailability
+              - ecr:GetDownloadUrlForLayer
+              - ecr:BatchGetImage
+            Effect: Allow
+            Resource:
+              - Fn::Join:
+                  - ""
+                  - - "arn:aws:ecr:"
+                    - Ref: AWS::Region
+                    - ":"
+                    - Ref: AWS::AccountId
+                    - :repository/*
+              - Fn::Join:
+                  - ""
+                  - - "arn:aws:ecr:"
+                    - Ref: AWS::Region
+                    - :366590864501:repository/*
+          - Action: ecr:GetAuthorizationToken
+            Effect: Allow
+            Resource: "*"
+          - Action:
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+              - logs:CreateLogGroup
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:aws:logs:*:"
+                  - Ref: AWS::AccountId
+                  - :log-group:/aws/batch/*
+        Version: "2012-10-17"
+      PolicyName: batchExecutionRoleDefaultPolicy80E937A7
+      Roles:
+        - Ref: batchExecutionRoleF8E4E0E9
+    Metadata:
+      aws:cdk:path: QCStack/batchExecutionRole/DefaultPolicy/Resource
+      cfn_nag:
+        rules_to_suppress:
+          - id: W12
+            reason: some permissions are not resource-level permissions
+  ccBatchJobRole65E10A20:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+        Version: "2012-10-17"
+    Metadata:
+      aws:cdk:path: QCStack/ccBatchJobRole/Resource
+  ccBatchJobRoleDefaultPolicy1C344410:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - s3:PutObject
+              - s3:GetObject
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:aws:s3:::"
+                  - Ref: amazonbraketC6E30921
+                  - /*
+          - Action: s3:GetObject
+            Effect: Allow
+            Resource:
+              - arn:aws:s3:::braket-*/*
+              - arn:aws:s3:::amazon-braket-*/*
+          - Action: s3:ListBucket
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:aws:s3:::"
+                  - Ref: amazonbraketC6E30921
+          - Action:
+              - ecr:BatchCheckLayerAvailability
+              - ecr:GetDownloadUrlForLayer
+              - ecr:BatchGetImage
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:aws:ecr:"
+                  - Ref: AWS::Region
+                  - :366590864501:repository/qradd:v1.0.0-Batch_Sa_Optimizer
+          - Action: ecr:GetAuthorizationToken
+            Effect: Allow
+            Resource: "*"
+        Version: "2012-10-17"
+      PolicyName: ccBatchJobRoleDefaultPolicy1C344410
+      Roles:
+        - Ref: ccBatchJobRole65E10A20
+    Metadata:
+      aws:cdk:path: QCStack/ccBatchJobRole/DefaultPolicy/Resource
+      cfn_nag:
+        rules_to_suppress:
+          - id: W12
+            reason: some permissions are not resource-level permissions
+  qcBatchJobRole73930EC7:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+        Version: "2012-10-17"
+    Metadata:
+      aws:cdk:path: QCStack/qcBatchJobRole/Resource
+  qcBatchJobRoleDefaultPolicy6E771E1A:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - s3:PutObject
+              - s3:GetObject
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:aws:s3:::"
+                  - Ref: amazonbraketC6E30921
+                  - /*
+          - Action: braket:GetQuantumTask
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:aws:braket:*:"
+                  - Ref: AWS::AccountId
+                  - :quantum-task/*
+          - Action:
+              - braket:GetDevice
+              - braket:CreateQuantumTask
+            Effect: Allow
+            Resource: "*"
+          - Action: s3:ListBucket
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:aws:s3:::"
+                  - Ref: amazonbraketC6E30921
+          - Action:
+              - ecr:BatchCheckLayerAvailability
+              - ecr:GetDownloadUrlForLayer
+              - ecr:BatchGetImage
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:aws:ecr:"
+                  - Ref: AWS::Region
+                  - :366590864501:repository/qradd:v1.0.0-Batch_Qa_Optimizer
+          - Action: ecr:GetAuthorizationToken
+            Effect: Allow
+            Resource: "*"
+        Version: "2012-10-17"
+      PolicyName: qcBatchJobRoleDefaultPolicy6E771E1A
+      Roles:
+        - Ref: qcBatchJobRole73930EC7
+    Metadata:
+      aws:cdk:path: QCStack/qcBatchJobRole/DefaultPolicy/Resource
+      cfn_nag:
+        rules_to_suppress:
+          - id: W12
+            reason: some permissions are not resource-level permissions
+  createModelBatchJobRoleB186BB88:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: ecs-tasks.amazonaws.com
+        Version: "2012-10-17"
+    Metadata:
+      aws:cdk:path: QCStack/createModelBatchJobRole/Resource
+  createModelBatchJobRoleDefaultPolicy232730DC:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - s3:PutObject
+              - s3:GetObject
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:aws:s3:::"
+                  - Ref: amazonbraketC6E30921
+                  - /*
+          - Action: s3:GetObject
+            Effect: Allow
+            Resource:
+              - arn:aws:s3:::braket-*/*
+              - arn:aws:s3:::amazon-braket-*/*
+          - Action: s3:ListBucket
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:aws:s3:::"
+                  - Ref: amazonbraketC6E30921
+          - Action:
+              - ecr:BatchCheckLayerAvailability
+              - ecr:GetDownloadUrlForLayer
+              - ecr:BatchGetImage
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:aws:ecr:"
+                  - Ref: AWS::Region
+                  - :366590864501:repository/qradd:v1.0.0-Batch_Create_Model
+          - Action: ecr:GetAuthorizationToken
+            Effect: Allow
+            Resource: "*"
+        Version: "2012-10-17"
+      PolicyName: createModelBatchJobRoleDefaultPolicy232730DC
+      Roles:
+        - Ref: createModelBatchJobRoleB186BB88
+    Metadata:
+      aws:cdk:path: QCStack/createModelBatchJobRole/DefaultPolicy/Resource
+      cfn_nag:
+        rules_to_suppress:
+          - id: W12
+            reason: some permissions are not resource-level permissions
+  BatchCCComputeEnvEcsInstanceRole68E0691F:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service:
+                Fn::Join:
+                  - ""
+                  - - ec2.
+                    - Ref: AWS::URLSuffix
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/service-role/AmazonEC2ContainerServiceforEC2Role
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/AmazonSSMManagedInstanceCore
+    DependsOn:
+      - VPCApplicationSubnet1DefaultRouteA4E47D36
+      - VPCApplicationSubnet1RouteTable5B6CE71A
+      - VPCApplicationSubnet1RouteTableAssociation8DF0EAE5
+      - VPCApplicationSubnet1SubnetCE118F80
+      - VPCApplicationSubnet2DefaultRouteC3680A52
+      - VPCApplicationSubnet2RouteTableFDC3EEE6
+      - VPCApplicationSubnet2RouteTableAssociationD84040F3
+      - VPCApplicationSubnet2Subnet988E96B1
+      - VPCAthenaEndpoint4BCE62FF
+      - VPCAthenaEndpointSecurityGroup5B54E7F0
+      - VPCBraketEndpointFB085AD8
+      - VPCBraketEndpointSecurityGroup92A02E89
+      - VPCEcrDockerEndpoint7C488056
+      - VPCEcrDockerEndpointSecurityGroup8C539908
+      - VPCIGWB7E252D3
+      - VPCIngressSubnet1DefaultRouteFE025494
+      - VPCIngressSubnet1EIP99406D22
+      - VPCIngressSubnet1NATGatewayEA4AE80E
+      - VPCIngressSubnet1RouteTable9BE753A6
+      - VPCIngressSubnet1RouteTableAssociationCAFE4089
+      - VPCIngressSubnet1Subnet4257CD65
+      - VPCIngressSubnet2DefaultRoute9FF8300E
+      - VPCIngressSubnet2EIPCE44C233
+      - VPCIngressSubnet2NATGateway68BB4190
+      - VPCIngressSubnet2RouteTableDFE1B4BC
+      - VPCIngressSubnet2RouteTableAssociationB244DE25
+      - VPCIngressSubnet2SubnetE0EA735B
+      - VPClogtoCWFlowLog99C98B79
+      - VPClogtoCWIAMRoleDefaultPolicyF548A5B9
+      - VPClogtoCWIAMRoleCFE2A6E9
+      - VPCB9E5F0B4
+      - VPCS3Endpoint18C9C7CA
+      - VPCVPCGW99B986DC
+    Metadata:
+      aws:cdk:path: QCStack/Batch-CC-Compute-Env/Ecs-Instance-Role/Resource
+  BatchCCComputeEnvInstanceProfileE48EF6B2:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+        - Ref: BatchCCComputeEnvEcsInstanceRole68E0691F
+    DependsOn:
+      - VPCApplicationSubnet1DefaultRouteA4E47D36
+      - VPCApplicationSubnet1RouteTable5B6CE71A
+      - VPCApplicationSubnet1RouteTableAssociation8DF0EAE5
+      - VPCApplicationSubnet1SubnetCE118F80
+      - VPCApplicationSubnet2DefaultRouteC3680A52
+      - VPCApplicationSubnet2RouteTableFDC3EEE6
+      - VPCApplicationSubnet2RouteTableAssociationD84040F3
+      - VPCApplicationSubnet2Subnet988E96B1
+      - VPCAthenaEndpoint4BCE62FF
+      - VPCAthenaEndpointSecurityGroup5B54E7F0
+      - VPCBraketEndpointFB085AD8
+      - VPCBraketEndpointSecurityGroup92A02E89
+      - VPCEcrDockerEndpoint7C488056
+      - VPCEcrDockerEndpointSecurityGroup8C539908
+      - VPCIGWB7E252D3
+      - VPCIngressSubnet1DefaultRouteFE025494
+      - VPCIngressSubnet1EIP99406D22
+      - VPCIngressSubnet1NATGatewayEA4AE80E
+      - VPCIngressSubnet1RouteTable9BE753A6
+      - VPCIngressSubnet1RouteTableAssociationCAFE4089
+      - VPCIngressSubnet1Subnet4257CD65
+      - VPCIngressSubnet2DefaultRoute9FF8300E
+      - VPCIngressSubnet2EIPCE44C233
+      - VPCIngressSubnet2NATGateway68BB4190
+      - VPCIngressSubnet2RouteTableDFE1B4BC
+      - VPCIngressSubnet2RouteTableAssociationB244DE25
+      - VPCIngressSubnet2SubnetE0EA735B
+      - VPClogtoCWFlowLog99C98B79
+      - VPClogtoCWIAMRoleDefaultPolicyF548A5B9
+      - VPClogtoCWIAMRoleCFE2A6E9
+      - VPCB9E5F0B4
+      - VPCS3Endpoint18C9C7CA
+      - VPCVPCGW99B986DC
+    Metadata:
+      aws:cdk:path: QCStack/Batch-CC-Compute-Env/Instance-Profile
+  BatchCCComputeEnvResourceServiceInstanceRole625D98EA:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: batch.amazonaws.com
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/service-role/AWSBatchServiceRole
+    DependsOn:
+      - VPCApplicationSubnet1DefaultRouteA4E47D36
+      - VPCApplicationSubnet1RouteTable5B6CE71A
+      - VPCApplicationSubnet1RouteTableAssociation8DF0EAE5
+      - VPCApplicationSubnet1SubnetCE118F80
+      - VPCApplicationSubnet2DefaultRouteC3680A52
+      - VPCApplicationSubnet2RouteTableFDC3EEE6
+      - VPCApplicationSubnet2RouteTableAssociationD84040F3
+      - VPCApplicationSubnet2Subnet988E96B1
+      - VPCAthenaEndpoint4BCE62FF
+      - VPCAthenaEndpointSecurityGroup5B54E7F0
+      - VPCBraketEndpointFB085AD8
+      - VPCBraketEndpointSecurityGroup92A02E89
+      - VPCEcrDockerEndpoint7C488056
+      - VPCEcrDockerEndpointSecurityGroup8C539908
+      - VPCIGWB7E252D3
+      - VPCIngressSubnet1DefaultRouteFE025494
+      - VPCIngressSubnet1EIP99406D22
+      - VPCIngressSubnet1NATGatewayEA4AE80E
+      - VPCIngressSubnet1RouteTable9BE753A6
+      - VPCIngressSubnet1RouteTableAssociationCAFE4089
+      - VPCIngressSubnet1Subnet4257CD65
+      - VPCIngressSubnet2DefaultRoute9FF8300E
+      - VPCIngressSubnet2EIPCE44C233
+      - VPCIngressSubnet2NATGateway68BB4190
+      - VPCIngressSubnet2RouteTableDFE1B4BC
+      - VPCIngressSubnet2RouteTableAssociationB244DE25
+      - VPCIngressSubnet2SubnetE0EA735B
+      - VPClogtoCWFlowLog99C98B79
+      - VPClogtoCWIAMRoleDefaultPolicyF548A5B9
+      - VPClogtoCWIAMRoleCFE2A6E9
+      - VPCB9E5F0B4
+      - VPCS3Endpoint18C9C7CA
+      - VPCVPCGW99B986DC
+    Metadata:
+      aws:cdk:path: QCStack/Batch-CC-Compute-Env/Resource-Service-Instance-Role/Resource
+  BatchCCComputeEnvDB1EB9AB:
+    Type: AWS::Batch::ComputeEnvironment
+    Properties:
+      Type: MANAGED
+      ComputeResources:
+        AllocationStrategy: BEST_FIT
+        InstanceRole:
+          Fn::GetAtt:
+            - BatchCCComputeEnvInstanceProfileE48EF6B2
+            - Arn
+        InstanceTypes:
+          - c5.large
+          - c5.xlarge
+          - c5.2xlarge
+          - c5.4xlarge
+        MaxvCpus: 256
+        MinvCpus: 0
+        SecurityGroupIds:
+          - Fn::GetAtt:
+              - batchSg97F2201B
+              - GroupId
+        Subnets:
+          - Ref: VPCApplicationSubnet1SubnetCE118F80
+          - Ref: VPCApplicationSubnet2Subnet988E96B1
+        Type: EC2
+      ServiceRole:
+        Fn::GetAtt:
+          - BatchCCComputeEnvResourceServiceInstanceRole625D98EA
+          - Arn
+      State: ENABLED
+    DependsOn:
+      - VPCApplicationSubnet1DefaultRouteA4E47D36
+      - VPCApplicationSubnet1RouteTable5B6CE71A
+      - VPCApplicationSubnet1RouteTableAssociation8DF0EAE5
+      - VPCApplicationSubnet1SubnetCE118F80
+      - VPCApplicationSubnet2DefaultRouteC3680A52
+      - VPCApplicationSubnet2RouteTableFDC3EEE6
+      - VPCApplicationSubnet2RouteTableAssociationD84040F3
+      - VPCApplicationSubnet2Subnet988E96B1
+      - VPCAthenaEndpoint4BCE62FF
+      - VPCAthenaEndpointSecurityGroup5B54E7F0
+      - VPCBraketEndpointFB085AD8
+      - VPCBraketEndpointSecurityGroup92A02E89
+      - VPCEcrDockerEndpoint7C488056
+      - VPCEcrDockerEndpointSecurityGroup8C539908
+      - VPCIGWB7E252D3
+      - VPCIngressSubnet1DefaultRouteFE025494
+      - VPCIngressSubnet1EIP99406D22
+      - VPCIngressSubnet1NATGatewayEA4AE80E
+      - VPCIngressSubnet1RouteTable9BE753A6
+      - VPCIngressSubnet1RouteTableAssociationCAFE4089
+      - VPCIngressSubnet1Subnet4257CD65
+      - VPCIngressSubnet2DefaultRoute9FF8300E
+      - VPCIngressSubnet2EIPCE44C233
+      - VPCIngressSubnet2NATGateway68BB4190
+      - VPCIngressSubnet2RouteTableDFE1B4BC
+      - VPCIngressSubnet2RouteTableAssociationB244DE25
+      - VPCIngressSubnet2SubnetE0EA735B
+      - VPClogtoCWFlowLog99C98B79
+      - VPClogtoCWIAMRoleDefaultPolicyF548A5B9
+      - VPClogtoCWIAMRoleCFE2A6E9
+      - VPCB9E5F0B4
+      - VPCS3Endpoint18C9C7CA
+      - VPCVPCGW99B986DC
+    Metadata:
+      aws:cdk:path: QCStack/Batch-CC-Compute-Env/Resource
+  ccJobQueueED16D2A4:
+    Type: AWS::Batch::JobQueue
+    Properties:
+      ComputeEnvironmentOrder:
+        - ComputeEnvironment:
+            Ref: BatchCCComputeEnvDB1EB9AB
+          Order: 1
+      Priority: 1
+      State: ENABLED
+    Metadata:
+      aws:cdk:path: QCStack/ccJobQueue/Resource
+  BatchFargateComputeEnvResourceServiceInstanceRole8B5DBAC6:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: batch.amazonaws.com
+        Version: "2012-10-17"
+      ManagedPolicyArns:
+        - Fn::Join:
+            - ""
+            - - "arn:"
+              - Ref: AWS::Partition
+              - :iam::aws:policy/service-role/AWSBatchServiceRole
+    DependsOn:
+      - VPCApplicationSubnet1DefaultRouteA4E47D36
+      - VPCApplicationSubnet1RouteTable5B6CE71A
+      - VPCApplicationSubnet1RouteTableAssociation8DF0EAE5
+      - VPCApplicationSubnet1SubnetCE118F80
+      - VPCApplicationSubnet2DefaultRouteC3680A52
+      - VPCApplicationSubnet2RouteTableFDC3EEE6
+      - VPCApplicationSubnet2RouteTableAssociationD84040F3
+      - VPCApplicationSubnet2Subnet988E96B1
+      - VPCAthenaEndpoint4BCE62FF
+      - VPCAthenaEndpointSecurityGroup5B54E7F0
+      - VPCBraketEndpointFB085AD8
+      - VPCBraketEndpointSecurityGroup92A02E89
+      - VPCEcrDockerEndpoint7C488056
+      - VPCEcrDockerEndpointSecurityGroup8C539908
+      - VPCIGWB7E252D3
+      - VPCIngressSubnet1DefaultRouteFE025494
+      - VPCIngressSubnet1EIP99406D22
+      - VPCIngressSubnet1NATGatewayEA4AE80E
+      - VPCIngressSubnet1RouteTable9BE753A6
+      - VPCIngressSubnet1RouteTableAssociationCAFE4089
+      - VPCIngressSubnet1Subnet4257CD65
+      - VPCIngressSubnet2DefaultRoute9FF8300E
+      - VPCIngressSubnet2EIPCE44C233
+      - VPCIngressSubnet2NATGateway68BB4190
+      - VPCIngressSubnet2RouteTableDFE1B4BC
+      - VPCIngressSubnet2RouteTableAssociationB244DE25
+      - VPCIngressSubnet2SubnetE0EA735B
+      - VPClogtoCWFlowLog99C98B79
+      - VPClogtoCWIAMRoleDefaultPolicyF548A5B9
+      - VPClogtoCWIAMRoleCFE2A6E9
+      - VPCB9E5F0B4
+      - VPCS3Endpoint18C9C7CA
+      - VPCVPCGW99B986DC
+    Metadata:
+      aws:cdk:path: QCStack/Batch-Fargate-Compute-Env/Resource-Service-Instance-Role/Resource
+  BatchFargateComputeEnvE007262E:
+    Type: AWS::Batch::ComputeEnvironment
+    Properties:
+      Type: MANAGED
+      ComputeResources:
+        MaxvCpus: 256
+        SecurityGroupIds:
+          - Fn::GetAtt:
+              - batchSg97F2201B
+              - GroupId
+        Subnets:
+          - Ref: VPCApplicationSubnet1SubnetCE118F80
+          - Ref: VPCApplicationSubnet2Subnet988E96B1
+        Type: FARGATE
+      ServiceRole:
+        Fn::GetAtt:
+          - BatchFargateComputeEnvResourceServiceInstanceRole8B5DBAC6
+          - Arn
+      State: ENABLED
+    DependsOn:
+      - VPCApplicationSubnet1DefaultRouteA4E47D36
+      - VPCApplicationSubnet1RouteTable5B6CE71A
+      - VPCApplicationSubnet1RouteTableAssociation8DF0EAE5
+      - VPCApplicationSubnet1SubnetCE118F80
+      - VPCApplicationSubnet2DefaultRouteC3680A52
+      - VPCApplicationSubnet2RouteTableFDC3EEE6
+      - VPCApplicationSubnet2RouteTableAssociationD84040F3
+      - VPCApplicationSubnet2Subnet988E96B1
+      - VPCAthenaEndpoint4BCE62FF
+      - VPCAthenaEndpointSecurityGroup5B54E7F0
+      - VPCBraketEndpointFB085AD8
+      - VPCBraketEndpointSecurityGroup92A02E89
+      - VPCEcrDockerEndpoint7C488056
+      - VPCEcrDockerEndpointSecurityGroup8C539908
+      - VPCIGWB7E252D3
+      - VPCIngressSubnet1DefaultRouteFE025494
+      - VPCIngressSubnet1EIP99406D22
+      - VPCIngressSubnet1NATGatewayEA4AE80E
+      - VPCIngressSubnet1RouteTable9BE753A6
+      - VPCIngressSubnet1RouteTableAssociationCAFE4089
+      - VPCIngressSubnet1Subnet4257CD65
+      - VPCIngressSubnet2DefaultRoute9FF8300E
+      - VPCIngressSubnet2EIPCE44C233
+      - VPCIngressSubnet2NATGateway68BB4190
+      - VPCIngressSubnet2RouteTableDFE1B4BC
+      - VPCIngressSubnet2RouteTableAssociationB244DE25
+      - VPCIngressSubnet2SubnetE0EA735B
+      - VPClogtoCWFlowLog99C98B79
+      - VPClogtoCWIAMRoleDefaultPolicyF548A5B9
+      - VPClogtoCWIAMRoleCFE2A6E9
+      - VPCB9E5F0B4
+      - VPCS3Endpoint18C9C7CA
+      - VPCVPCGW99B986DC
+    Metadata:
+      aws:cdk:path: QCStack/Batch-Fargate-Compute-Env/Resource
+  fargateJobQueueB4CA90F7:
+    Type: AWS::Batch::JobQueue
+    Properties:
+      ComputeEnvironmentOrder:
+        - ComputeEnvironment:
+            Ref: BatchFargateComputeEnvE007262E
+          Order: 1
+      Priority: 1
+      State: ENABLED
+    Metadata:
+      aws:cdk:path: QCStack/fargateJobQueue/Resource
+  stepFuncsLogKey98D99E94:
+    Type: AWS::KMS::Key
+    Properties:
+      KeyPolicy:
+        Statement:
+          - Action: kms:*
+            Effect: Allow
+            Principal:
+              AWS:
+                Fn::Join:
+                  - ""
+                  - - "arn:"
+                    - Ref: AWS::Partition
+                    - ":iam::"
+                    - Ref: AWS::AccountId
+                    - :root
+            Resource: "*"
+          - Action:
+              - kms:Encrypt*
+              - kms:ReEncrypt*
+              - kms:Decrypt*
+              - kms:GenerateDataKey*
+              - kms:Describe*
+            Condition:
+              ArnLike:
+                kms:EncryptionContext:aws:logs:arn:
+                  Fn::Join:
+                    - ""
+                    - - "arn:"
+                      - Ref: AWS::Partition
+                      - ":logs:"
+                      - Ref: AWS::Region
+                      - ":"
+                      - Ref: AWS::AccountId
+                      - :log-group:qcstack-CCStateMachineLogGroup
+            Effect: Allow
+            Principal:
+              Service:
+                Fn::Join:
+                  - ""
+                  - - logs.
+                    - Ref: AWS::Region
+                    - "."
+                    - Ref: AWS::URLSuffix
+            Resource: "*"
+          - Action:
+              - kms:Encrypt*
+              - kms:ReEncrypt*
+              - kms:Decrypt*
+              - kms:GenerateDataKey*
+              - kms:Describe*
+            Condition:
+              ArnLike:
+                kms:EncryptionContext:aws:logs:arn:
+                  Fn::Join:
+                    - ""
+                    - - "arn:"
+                      - Ref: AWS::Partition
+                      - ":logs:"
+                      - Ref: AWS::Region
+                      - ":"
+                      - Ref: AWS::AccountId
+                      - :log-group:qcstack-QCDeviceStateMachineLogGroup
+            Effect: Allow
+            Principal:
+              Service:
+                Fn::Join:
+                  - ""
+                  - - logs.
+                    - Ref: AWS::Region
+                    - "."
+                    - Ref: AWS::URLSuffix
+            Resource: "*"
+          - Action:
+              - kms:Encrypt*
+              - kms:ReEncrypt*
+              - kms:Decrypt*
+              - kms:GenerateDataKey*
+              - kms:Describe*
+            Condition:
+              ArnLike:
+                kms:EncryptionContext:aws:logs:arn:
+                  Fn::Join:
+                    - ""
+                    - - "arn:"
+                      - Ref: AWS::Partition
+                      - ":logs:"
+                      - Ref: AWS::Region
+                      - ":"
+                      - Ref: AWS::AccountId
+                      - :log-group:qcstack-QCStateMachineLogGroup
+            Effect: Allow
+            Principal:
+              Service:
+                Fn::Join:
+                  - ""
+                  - - logs.
+                    - Ref: AWS::Region
+                    - "."
+                    - Ref: AWS::URLSuffix
+            Resource: "*"
+          - Action:
+              - kms:Encrypt*
+              - kms:ReEncrypt*
+              - kms:Decrypt*
+              - kms:GenerateDataKey*
+              - kms:Describe*
+            Condition:
+              ArnLike:
+                kms:EncryptionContext:aws:logs:arn:
+                  Fn::Join:
+                    - ""
+                    - - "arn:"
+                      - Ref: AWS::Partition
+                      - ":logs:"
+                      - Ref: AWS::Region
+                      - ":"
+                      - Ref: AWS::AccountId
+                      - :log-group:qcstack-RunCCAndQCStateMachineLogGroup
+            Effect: Allow
+            Principal:
+              Service:
+                Fn::Join:
+                  - ""
+                  - - logs.
+                    - Ref: AWS::Region
+                    - "."
+                    - Ref: AWS::URLSuffix
+            Resource: "*"
+          - Action:
+              - kms:Encrypt*
+              - kms:ReEncrypt*
+              - kms:Decrypt*
+              - kms:GenerateDataKey*
+              - kms:Describe*
+            Condition:
+              ArnLike:
+                kms:EncryptionContext:aws:logs:arn:
+                  Fn::Join:
+                    - ""
+                    - - "arn:"
+                      - Ref: AWS::Partition
+                      - ":logs:"
+                      - Ref: AWS::Region
+                      - ":"
+                      - Ref: AWS::AccountId
+                      - :log-group:qcstack-BatchEvaluationStateMachineLogGroup
+            Effect: Allow
+            Principal:
+              Service:
+                Fn::Join:
+                  - ""
+                  - - logs.
+                    - Ref: AWS::Region
+                    - "."
+                    - Ref: AWS::URLSuffix
+            Resource: "*"
+        Version: "2012-10-17"
+      EnableKeyRotation: true
+    UpdateReplacePolicy: Retain
+    DeletionPolicy: Retain
+    Metadata:
+      aws:cdk:path: QCStack/stepFuncsLogKey/Resource
+  TaskParametersLambdaRole2B71E550:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: "2012-10-17"
+    Metadata:
+      aws:cdk:path: QCStack/TaskParametersLambdaRole/Resource
+  TaskParametersLambdaRoleDefaultPolicyA4063AF7:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - s3:GetObject
+              - s3:PutObject
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:aws:s3:::"
+                  - Ref: amazonbraketC6E30921
+                  - /*
+          - Action:
+              - ec2:CreateNetworkInterface
+              - ec2:DescribeNetworkInterfaces
+              - ec2:DeleteNetworkInterface
+              - ec2:AssignPrivateIpAddresses
+              - ec2:UnassignPrivateIpAddresses
+            Effect: Allow
+            Resource: "*"
+          - Action:
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+              - logs:CreateLogGroup
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:aws:logs:*:"
+                  - Ref: AWS::AccountId
+                  - :log-group:*
+        Version: "2012-10-17"
+      PolicyName: TaskParametersLambdaRoleDefaultPolicyA4063AF7
+      Roles:
+        - Ref: TaskParametersLambdaRole2B71E550
+    Metadata:
+      aws:cdk:path: QCStack/TaskParametersLambdaRole/DefaultPolicy/Resource
+      cfn_nag:
+        rules_to_suppress:
+          - id: W12
+            reason: some permissions are not resource-level permissions
+  TaskParametersLambda7323EB65:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket:
+          Fn::Sub: cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}
+        S3Key: 65dbcc6041b9afdf7015e58a2986a367e916499f68be2b7fa7d18e287802c072.zip
+      Role:
+        Fn::GetAtt:
+          - TaskParametersLambdaRole2B71E550
+          - Arn
+      Environment:
+        Variables:
+          SOLUTION_ID: SO8027
+          SOLUTION_VERSION: v1.0.0
+      Handler: app.handler
+      MemorySize: 512
+      Runtime: python3.9
+      Timeout: 60
+      VpcConfig:
+        SecurityGroupIds:
+          - Fn::GetAtt:
+              - lambdaSgD8D93E20
+              - GroupId
+        SubnetIds:
+          - Ref: VPCApplicationSubnet1SubnetCE118F80
+          - Ref: VPCApplicationSubnet2Subnet988E96B1
+    DependsOn:
+      - TaskParametersLambdaRoleDefaultPolicyA4063AF7
+      - TaskParametersLambdaRole2B71E550
+    Metadata:
+      aws:cdk:path: QCStack/TaskParametersLambda/Resource
+      aws:asset:path: asset.65dbcc6041b9afdf7015e58a2986a367e916499f68be2b7fa7d18e287802c072
+      aws:asset:is-bundled: false
+      aws:asset:property: Code
+      cfn_nag:
+        rules_to_suppress:
+          - id: W58
+            reason: the lambda already have the cloudwatch permission
+  WaitForTokenLambdaRoleFC3AB99B:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: "2012-10-17"
+    Metadata:
+      aws:cdk:path: QCStack/WaitForTokenLambdaRole/Resource
+  WaitForTokenLambdaRoleDefaultPolicy8B38F7E5:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - s3:GetObject
+              - s3:PutObject
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:aws:s3:::"
+                  - Ref: amazonbraketC6E30921
+                  - /*
+          - Action:
+              - ec2:CreateNetworkInterface
+              - ec2:DescribeNetworkInterfaces
+              - ec2:DeleteNetworkInterface
+              - ec2:AssignPrivateIpAddresses
+              - ec2:UnassignPrivateIpAddresses
+            Effect: Allow
+            Resource: "*"
+          - Action:
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+              - logs:CreateLogGroup
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:aws:logs:*:"
+                  - Ref: AWS::AccountId
+                  - :log-group:*
+        Version: "2012-10-17"
+      PolicyName: WaitForTokenLambdaRoleDefaultPolicy8B38F7E5
+      Roles:
+        - Ref: WaitForTokenLambdaRoleFC3AB99B
+    Metadata:
+      aws:cdk:path: QCStack/WaitForTokenLambdaRole/DefaultPolicy/Resource
+      cfn_nag:
+        rules_to_suppress:
+          - id: W12
+            reason: some permissions are not resource-level permissions
+  WaitForTokenLambdaA8B2A141:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket:
+          Fn::Sub: cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}
+        S3Key: 3c7ef3cac33b67a0b95e2931058646589e6d0103f8536ba7ce4e44ed663a1ea8.zip
+      Role:
+        Fn::GetAtt:
+          - WaitForTokenLambdaRoleFC3AB99B
+          - Arn
+      Environment:
+        Variables:
+          SOLUTION_ID: SO8027
+          SOLUTION_VERSION: v1.0.0
+      Handler: app.handler
+      MemorySize: 512
+      Runtime: python3.9
+      Timeout: 120
+      VpcConfig:
+        SecurityGroupIds:
+          - Fn::GetAtt:
+              - lambdaSgD8D93E20
+              - GroupId
+        SubnetIds:
+          - Ref: VPCApplicationSubnet1SubnetCE118F80
+          - Ref: VPCApplicationSubnet2Subnet988E96B1
+    DependsOn:
+      - WaitForTokenLambdaRoleDefaultPolicy8B38F7E5
+      - WaitForTokenLambdaRoleFC3AB99B
+    Metadata:
+      aws:cdk:path: QCStack/WaitForTokenLambda/Resource
+      aws:asset:path: asset.3c7ef3cac33b67a0b95e2931058646589e6d0103f8536ba7ce4e44ed663a1ea8
+      aws:asset:is-bundled: false
+      aws:asset:property: Code
+      cfn_nag:
+        rules_to_suppress:
+          - id: W58
+            reason: the lambda already have the cloudwatch permission
+  CreateModelJobDef9834138D:
+    Type: AWS::Batch::JobDefinition
+    Properties:
+      Type: container
+      ContainerProperties:
+        Command:
+          - --aws-region
+          - Ref: AWS::Region
+          - --resource
+          - vCpus2_Mem_4G
+          - --s3-bucket
+          - Ref: amazonbraketC6E30921
+        ExecutionRoleArn:
+          Fn::GetAtt:
+            - batchExecutionRoleF8E4E0E9
+            - Arn
+        Image:
+          Fn::Join:
+            - ""
+            - - 366590864501.dkr.ecr.
+              - Ref: AWS::Region
+              - "."
+              - Ref: AWS::URLSuffix
+              - /qradd:latest
+        JobRoleArn:
+          Fn::GetAtt:
+            - createModelBatchJobRoleB186BB88
+            - Arn
+        Privileged: false
+        ReadonlyRootFilesystem: false
+        ResourceRequirements:
+          - Type: VCPU
+            Value: "2"
+          - Type: MEMORY
+            Value: "4096"
+      PlatformCapabilities:
+        - FARGATE
+      RetryStrategy:
+        Attempts: 1
+      Timeout:
+        AttemptDurationSeconds: 7200
+    Metadata:
+      aws:cdk:path: QCStack/CreateModelJobDef/Resource
+  CCJobTemplate13BE2617:
+    Type: AWS::Batch::JobDefinition
+    Properties:
+      Type: container
+      ContainerProperties:
+        Command:
+          - --model-param
+          - M=1&D=4&A=300&HQ=200
+          - --aws-region
+          - Ref: AWS::Region
+          - --resource
+          - vCpus2_Mem_4G
+          - --s3-bucket
+          - Ref: amazonbraketC6E30921
+        ExecutionRoleArn:
+          Fn::GetAtt:
+            - batchExecutionRoleF8E4E0E9
+            - Arn
+        Image:
+          Fn::Join:
+            - ""
+            - - 366590864501.dkr.ecr.
+              - Ref: AWS::Region
+              - "."
+              - Ref: AWS::URLSuffix
+              - /qradd:latest
+        JobRoleArn:
+          Fn::GetAtt:
+            - ccBatchJobRole65E10A20
+            - Arn
+        Privileged: false
+        ReadonlyRootFilesystem: false
+        ResourceRequirements:
+          - Type: VCPU
+            Value: "2"
+          - Type: MEMORY
+            Value: "4096"
+      PlatformCapabilities:
+        - EC2
+      RetryStrategy:
+        Attempts: 1
+      Timeout:
+        AttemptDurationSeconds: 21600
+    Metadata:
+      aws:cdk:path: QCStack/CCJob_Template/Resource
+  DeviceAvailableCheckLambdaRoleAB473EAC:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: "2012-10-17"
+    Metadata:
+      aws:cdk:path: QCStack/DeviceAvailableCheckLambdaRole/Resource
+  DeviceAvailableCheckLambdaRoleDefaultPolicy132C1F83:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action: braket:GetDevice
+            Effect: Allow
+            Resource: "*"
+          - Action:
+              - ec2:CreateNetworkInterface
+              - ec2:DescribeNetworkInterfaces
+              - ec2:DeleteNetworkInterface
+              - ec2:AssignPrivateIpAddresses
+              - ec2:UnassignPrivateIpAddresses
+            Effect: Allow
+            Resource: "*"
+          - Action:
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+              - logs:CreateLogGroup
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:aws:logs:*:"
+                  - Ref: AWS::AccountId
+                  - :log-group:*
+        Version: "2012-10-17"
+      PolicyName: DeviceAvailableCheckLambdaRoleDefaultPolicy132C1F83
+      Roles:
+        - Ref: DeviceAvailableCheckLambdaRoleAB473EAC
+    Metadata:
+      aws:cdk:path: QCStack/DeviceAvailableCheckLambdaRole/DefaultPolicy/Resource
+      cfn_nag:
+        rules_to_suppress:
+          - id: W12
+            reason: some permissions are not resource-level permissions
+  DeviceAvailableCheckLambda49F8D395:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        ImageUri:
+          Fn::Join:
+            - ""
+            - - 366590864501.dkr.ecr.
+              - Ref: AWS::Region
+              - "."
+              - Ref: AWS::URLSuffix
+              - /qradd:v1.0.0-Lambda_ParseBraketResult
+      Role:
+        Fn::GetAtt:
+          - DeviceAvailableCheckLambdaRoleAB473EAC
+          - Arn
+      Environment:
+        Variables:
+          SOLUTION_ID: SO8027
+          SOLUTION_VERSION: v1.0.0
+      MemorySize: 512
+      PackageType: Image
+      Timeout: 60
+      VpcConfig:
+        SecurityGroupIds:
+          - Fn::GetAtt:
+              - lambdaSgD8D93E20
+              - GroupId
+        SubnetIds:
+          - Ref: VPCApplicationSubnet1SubnetCE118F80
+          - Ref: VPCApplicationSubnet2Subnet988E96B1
+    DependsOn:
+      - DeviceAvailableCheckLambdaRoleDefaultPolicy132C1F83
+      - DeviceAvailableCheckLambdaRoleAB473EAC
+    Metadata:
+      aws:cdk:path: QCStack/DeviceAvailableCheckLambda/Resource
+      cfn_nag:
+        rules_to_suppress:
+          - id: W58
+            reason: the lambda already have the cloudwatch permission
+  QCJobTemplate8011735D:
+    Type: AWS::Batch::JobDefinition
+    Properties:
+      Type: container
+      ContainerProperties:
+        Command:
+          - --model-param
+          - M=1&D=4&A=300&HQ=200
+          - --aws-region
+          - Ref: AWS::Region
+          - --resource
+          - vCpus2_Mem_4G
+          - --s3-bucket
+          - Ref: amazonbraketC6E30921
+        ExecutionRoleArn:
+          Fn::GetAtt:
+            - batchExecutionRoleF8E4E0E9
+            - Arn
+        Image:
+          Fn::Join:
+            - ""
+            - - 366590864501.dkr.ecr.
+              - Ref: AWS::Region
+              - "."
+              - Ref: AWS::URLSuffix
+              - /qradd:latest
+        JobRoleArn:
+          Fn::GetAtt:
+            - qcBatchJobRole73930EC7
+            - Arn
+        Privileged: false
+        ReadonlyRootFilesystem: false
+        ResourceRequirements:
+          - Type: VCPU
+            Value: "2"
+          - Type: MEMORY
+            Value: "4096"
+      PlatformCapabilities:
+        - FARGATE
+      RetryStrategy:
+        Attempts: 1
+      Timeout:
+        AttemptDurationSeconds: 3600
+    Metadata:
+      aws:cdk:path: QCStack/QCJob_Template/Resource
+  AggResultLambdaRoleE19247FA:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: "2012-10-17"
+    Metadata:
+      aws:cdk:path: QCStack/AggResultLambdaRole/Resource
+  AggResultLambdaRoleDefaultPolicy7AC5256A:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - athena:StartQueryExecution
+              - athena:GetQueryResults
+              - glue:UpdateDatabase
+              - glue:DeleteDatabase
+              - glue:CreateDatabase
+              - glue:GetTable
+              - glue:DeleteTable
+              - glue:CreateTable
+              - glue:UpdateTable
+            Effect: Allow
+            Resource:
+              - Fn::Join:
+                  - ""
+                  - - "arn:aws:athena:*:"
+                    - Ref: AWS::AccountId
+                    - :workgroup/primary
+              - Fn::Join:
+                  - ""
+                  - - "arn:aws:athena:*:"
+                    - Ref: AWS::AccountId
+                    - :datacatalog/AwsDataCatalog
+              - Fn::Join:
+                  - ""
+                  - - "arn:aws:glue:*:"
+                    - Ref: AWS::AccountId
+                    - :database/qc_db
+              - Fn::Join:
+                  - ""
+                  - - "arn:aws:glue:*:"
+                    - Ref: AWS::AccountId
+                    - :table/qc_db/qcstack_qc_batch_evaluation_metrics_hist
+              - Fn::Join:
+                  - ""
+                  - - "arn:aws:glue:*:"
+                    - Ref: AWS::AccountId
+                    - :table/qc_db/qcstack_qc_batch_evaluation_metrics
+              - Fn::Join:
+                  - ""
+                  - - "arn:aws:glue:*:"
+                    - Ref: AWS::AccountId
+                    - :catalog
+          - Action: athena:ListDataCatalogs
+            Effect: Allow
+            Resource: "*"
+          - Action:
+              - s3:GetObject
+              - s3:PutObject
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:aws:s3:::"
+                  - Ref: amazonbraketC6E30921
+                  - /*
+          - Action:
+              - s3:ListBucket
+              - s3:GetBucketLocation
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:aws:s3:::"
+                  - Ref: amazonbraketC6E30921
+          - Action:
+              - ec2:CreateNetworkInterface
+              - ec2:DescribeNetworkInterfaces
+              - ec2:DeleteNetworkInterface
+              - ec2:AssignPrivateIpAddresses
+              - ec2:UnassignPrivateIpAddresses
+            Effect: Allow
+            Resource: "*"
+          - Action:
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+              - logs:CreateLogGroup
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:aws:logs:*:"
+                  - Ref: AWS::AccountId
+                  - :log-group:*
+        Version: "2012-10-17"
+      PolicyName: AggResultLambdaRoleDefaultPolicy7AC5256A
+      Roles:
+        - Ref: AggResultLambdaRoleE19247FA
+    Metadata:
+      aws:cdk:path: QCStack/AggResultLambdaRole/DefaultPolicy/Resource
+      cfn_nag:
+        rules_to_suppress:
+          - id: W12
+            reason: some permissions are not resource-level permissions
+  AggResultLambda2D78F89C:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        S3Bucket:
+          Fn::Sub: cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}
+        S3Key: 3351a35f934f6e3453bf5ebdadb117ea4d3b2d78b4a31b0f5899e3367ca2e095.zip
+      Role:
+        Fn::GetAtt:
+          - AggResultLambdaRoleE19247FA
+          - Arn
+      Environment:
+        Variables:
+          BUCKET:
+            Ref: amazonbraketC6E30921
+          SOLUTION_ID: SO8027
+          SOLUTION_VERSION: v1.0.0
+      Handler: index.handler
+      MemorySize: 512
+      Runtime: nodejs14.x
+      Timeout: 120
+      VpcConfig:
+        SecurityGroupIds:
+          - Fn::GetAtt:
+              - lambdaSgD8D93E20
+              - GroupId
+        SubnetIds:
+          - Ref: VPCApplicationSubnet1SubnetCE118F80
+          - Ref: VPCApplicationSubnet2Subnet988E96B1
+    DependsOn:
+      - AggResultLambdaRoleDefaultPolicy7AC5256A
+      - AggResultLambdaRoleE19247FA
+    Metadata:
+      aws:cdk:path: QCStack/AggResultLambda/Resource
+      aws:asset:path: asset.3351a35f934f6e3453bf5ebdadb117ea4d3b2d78b4a31b0f5899e3367ca2e095
+      aws:asset:is-bundled: false
+      aws:asset:property: Code
+      cfn_nag:
+        rules_to_suppress:
+          - id: W58
+            reason: the lambda already have the cloudwatch permission
+  BraketTaskEventHandlerParseBraketResultLambda1F0FB38E:
+    Type: AWS::Lambda::Function
+    Properties:
+      Code:
+        ImageUri:
+          Fn::Join:
+            - ""
+            - - 366590864501.dkr.ecr.
+              - Ref: AWS::Region
+              - "."
+              - Ref: AWS::URLSuffix
+              - /qradd:v1.0.0-Lambda_ParseBraketResult
+      Role:
+        Fn::GetAtt:
+          - ParseBraketResultLambdaRole7A6A337E
+          - Arn
+      MemorySize: 2048
+      PackageType: Image
+      Timeout: 900
+      VpcConfig:
+        SecurityGroupIds:
+          - Fn::GetAtt:
+              - lambdaSgD8D93E20
+              - GroupId
+        SubnetIds:
+          - Ref: VPCApplicationSubnet1SubnetCE118F80
+          - Ref: VPCApplicationSubnet2Subnet988E96B1
+    DependsOn:
+      - ParseBraketResultLambdaRoleDefaultPolicy430E3CD1
+      - ParseBraketResultLambdaRole7A6A337E
+    Metadata:
+      aws:cdk:path: QCStack/BraketTaskEventHandler/ParseBraketResultLambda/Resource
+      cfn_nag:
+        rules_to_suppress:
+          - id: W58
+            reason: the lambda already have the cloudwatch permission
+  BraketTaskEventHandlerbraketEventrule319D9E16:
+    Type: AWS::Events::Rule
+    Properties:
+      EventPattern:
+        source:
+          - aws.braket
+        detail-type:
+          - Braket Task State Change
+      State: ENABLED
+      Targets:
+        - Arn:
+            Fn::GetAtt:
+              - BraketTaskEventHandlerParseBraketResultLambda1F0FB38E
+              - Arn
+          Id: Target0
+          RetryPolicy:
+            MaximumEventAgeInSeconds: 7200
+            MaximumRetryAttempts: 3
+    Metadata:
+      aws:cdk:path: QCStack/BraketTaskEventHandler/braketEventrule/Resource
+  BraketTaskEventHandlerbraketEventruleAllowEventRuleQCStackBraketTaskEventHandlerParseBraketResultLambda4BF31B535798B94F:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName:
+        Fn::GetAtt:
+          - BraketTaskEventHandlerParseBraketResultLambda1F0FB38E
+          - Arn
+      Principal: events.amazonaws.com
+      SourceArn:
+        Fn::GetAtt:
+          - BraketTaskEventHandlerbraketEventrule319D9E16
+          - Arn
+    Metadata:
+      aws:cdk:path: QCStack/BraketTaskEventHandler/braketEventrule/AllowEventRuleQCStackBraketTaskEventHandlerParseBraketResultLambda4BF31B53
+  ParseBraketResultLambdaRole7A6A337E:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+          - Action: sts:AssumeRole
+            Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+        Version: "2012-10-17"
+    Metadata:
+      aws:cdk:path: QCStack/ParseBraketResultLambdaRole/Resource
+  ParseBraketResultLambdaRoleDefaultPolicy430E3CD1:
+    Type: AWS::IAM::Policy
+    Properties:
+      PolicyDocument:
+        Statement:
+          - Action:
+              - s3:PutObject
+              - s3:GetObject
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:aws:s3:::"
+                  - Ref: amazonbraketC6E30921
+                  - /*
+          - Action: s3:GetObject
+            Effect: Allow
+            Resource:
+              - arn:aws:s3:::braket-*/*
+              - arn:aws:s3:::amazon-braket-*/*
+          - Action:
+              - ec2:CreateNetworkInterface
+              - ec2:DescribeNetworkInterfaces
+              - ec2:DeleteNetworkInterface
+              - ec2:AssignPrivateIpAddresses
+              - ec2:UnassignPrivateIpAddresses
+            Effect: Allow
+            Resource: "*"
+          - Action:
+              - logs:CreateLogStream
+              - logs:PutLogEvents
+              - logs:CreateLogGroup
+            Effect: Allow
+            Resource:
+              Fn::Join:
+                - ""
+                - - "arn:aws:logs:*:"
+                  - Ref: AWS::AccountId
+                  - :log-group:*
+          - Action:
+              - states:SendTaskSuccess
+              - states:SendTaskFailure
+              - states:SendTaskHeartbeat
+            Effect: Allow
+            Resource: "*"
+        Version: "2012-10-17"
+      PolicyName: ParseBraketResultLambdaRoleDefaultPolicy430E3CD1
+      Roles:
+        - Ref: ParseBraketResultLambdaRole7A6A337E
+    Metadata:
+      aws:cdk:path: QCStack/ParseBraketResultLambdaRole/DefaultPolicy/Resource
+      cfn_nag:
+        rules_to_suppress:
+          - id: W12
+            reason: some permissions are not resource-level permissions
+  CDKMetadata:
+    Type: AWS::CDK::Metadata
+    Properties:
+      Analytics: v2:deflate64:H4sIAAAAAAAA/21UyXLbMAz9lt5pZpvpcqvjOBm3SeramVw9EAXbjCRSJUinHo3/vSC12M70ImyPEAA+8Fo2V9/k5Sd4p5HKi1GpM9ksPahCTNZmEUqMcmJNrr22JhpzcFChRycWSDY4hYJPrxoNlWzmttRqn2CttrBtil7ODHkwCufOrnWJB0E3srkNqkAfw53WimOyM7s1boH4NKpr2bzWKoJe5xMxDxljliEzbb6jtrDB4wtkbRmt/+gbE1mloe8xBaIync2jeAb/AB7fYS/mTu9YPSaeGZ4F6z2graSzxp5nua3QeNF5uNipyWurje+gg5kyrUHhKWaJKjjt9w/OhjqVfua4L+37o93EQKceRFGRbH5iKoXFQZR2wx6ODUl6nWNQZTmsjM3xjeRzEvfBqDQKulkBEXqS4yg6sGzi33rMoNxZvhc3q2CDgy8SAV2lidjiy+ZYBYxKKZ6tx8zaoufEo16j2qsSmW9rnXr6CDmIP0GrgvRm61OOO/CwbFnYW+21vGBVl+A7N20zCy6PxthAuSdNXI3hqbzYWif6tEr6Hol3YjLeY73uOqOVByriVNNIZmZnCxS34NWWqVFp/8NmYskH+lEQb5Xz0798e2kyS0OJrLT9kJjbCuRtxXiu/glqkbQn5pE2LXlP7XvQpZhsreYJxNUsSyx5L3ZMOU7Vb3CUB5HF8tLYJraqmeJTs9POmsRP9nLNvwMG7PQ7XGuT9j4umpMLrC1pb90+Lh+7SPJNeeAy3Cm2rX94HeLvB/0sxI/ATuf8kiR2cVsbbdK1/wqeyxMqoVeug5McDjCGJ1Mz/CC+yssRlPUW+B373j1kF1GmdrtQ85+Oh3bPez2IuAzyjS52V5/lF876RlqPXDBeVygXrfwHnH2o8DoFAAA=
+    Metadata:
+      aws:cdk:path: QCStack/CDKMetadata/Default
+    Condition: CDKMetadataAvailable
+Outputs:
+  bucketName:
+    Description: S3 bucket name
+    Value:
+      Ref: amazonbraketC6E30921
+  MolUnfNotebooknotebookUrl7E1A3C1E:
+    Description: Notebook URL
+    Value:
+      Fn::Join:
+        - ""
+        - - https://console.aws.amazon.com/sagemaker/home?region=
+          - Ref: AWS::Region
+          - "#/notebook-instances/openNotebook/"
+          - Fn::GetAtt:
+              - MolUnfNotebook3D024BCA
+              - NotebookInstanceName
+          - ?view=classic
+  MolUnfDashboardqcBatchEvaluationDashboardUrl8ED1DDDF:
+    Description: Quicksight Dashboard Url
+    Value:
+      Fn::Join:
+        - ""
+        - - https://
+          - Ref: AWS::Region
+          - .quicksight.aws.amazon.com/sn/dashboards/qcstack-qcBatchEvaluation-Dashboard
+  MolUnfDashboardqcBatchEvaluationAnalysisE926BC4A:
+    Description: Quicksight Analysis Id
+    Value: qcstack-qcBatchEvaluation-Analysis
+  MolUnfBatchEvaluationSNSTopicName927F63BE:
+    Description: SNS Topic Name
+    Value:
+      Fn::GetAtt:
+        - MolUnfBatchEvaluationSNSTopic51BF77A1
+        - TopicName
+  MolUnfBatchEvaluationstateMachineURL32CD1967:
+    Description: State Machine URL
+    Value:
+      Fn::Join:
+        - ""
+        - - https://console.aws.amazon.com/states/home?region=
+          - Ref: AWS::Region
+          - "#/statemachines/view/"
+          - Ref: MolUnfBatchEvaluationBatchEvaluationStateMachine759181D6
+Mappings:
+  ServiceprincipalMap:
+    af-south-1:
+      states: states.af-south-1.amazonaws.com
+    ap-east-1:
+      states: states.ap-east-1.amazonaws.com
+    ap-northeast-1:
+      states: states.ap-northeast-1.amazonaws.com
+    ap-northeast-2:
+      states: states.ap-northeast-2.amazonaws.com
+    ap-northeast-3:
+      states: states.ap-northeast-3.amazonaws.com
+    ap-south-1:
+      states: states.ap-south-1.amazonaws.com
+    ap-southeast-1:
+      states: states.ap-southeast-1.amazonaws.com
+    ap-southeast-2:
+      states: states.ap-southeast-2.amazonaws.com
+    ap-southeast-3:
+      states: states.ap-southeast-3.amazonaws.com
+    ca-central-1:
+      states: states.ca-central-1.amazonaws.com
+    cn-north-1:
+      states: states.cn-north-1.amazonaws.com
+    cn-northwest-1:
+      states: states.cn-northwest-1.amazonaws.com
+    eu-central-1:
+      states: states.eu-central-1.amazonaws.com
+    eu-north-1:
+      states: states.eu-north-1.amazonaws.com
+    eu-south-1:
+      states: states.eu-south-1.amazonaws.com
+    eu-south-2:
+      states: states.eu-south-2.amazonaws.com
+    eu-west-1:
+      states: states.eu-west-1.amazonaws.com
+    eu-west-2:
+      states: states.eu-west-2.amazonaws.com
+    eu-west-3:
+      states: states.eu-west-3.amazonaws.com
+    me-south-1:
+      states: states.me-south-1.amazonaws.com
+    sa-east-1:
+      states: states.sa-east-1.amazonaws.com
+    us-east-1:
+      states: states.us-east-1.amazonaws.com
+    us-east-2:
+      states: states.us-east-2.amazonaws.com
+    us-gov-east-1:
+      states: states.us-gov-east-1.amazonaws.com
+    us-gov-west-1:
+      states: states.us-gov-west-1.amazonaws.com
+    us-iso-east-1:
+      states: states.amazonaws.com
+    us-iso-west-1:
+      states: states.amazonaws.com
+    us-isob-east-1:
+      states: states.amazonaws.com
+    us-west-1:
+      states: states.us-west-1.amazonaws.com
+    us-west-2:
+      states: states.us-west-2.amazonaws.com
+

@@ -59,9 +59,10 @@ export class ECRImageUtil {
     if (name == ECRRepoNameEnum.Batch_Create_Model) {
 
       if (runningGlobalPipeline) {
-        return ecs.ContainerImage.fromEcrRepository(ecr.Repository.fromRepositoryArn(this.scope, 'Batch_Create_Model',
-          `arn:aws:ecr:${region}:${ecrAccount}:repository/qradd:${version}-Batch_Create_Model`,
-        ));
+        return ecs.ContainerImage.fromEcrRepository(ecr.Repository.fromRepositoryAttributes(this.scope, 'Batch_Create_Model', {
+          repositoryName: 'qradd',
+          repositoryArn: `arn:aws:ecr:${region}:${ecrAccount}:repository/qradd:${version}-Batch_Create_Model`,
+        }));
       } else {
         return ecs.ContainerImage.fromAsset(
           path.join(__dirname, '../../'), {
@@ -72,9 +73,10 @@ export class ECRImageUtil {
 
     if (name == ECRRepoNameEnum.Batch_Sa_Optimizer) {
       if (runningGlobalPipeline) {
-        return ecs.ContainerImage.fromEcrRepository(ecr.Repository.fromRepositoryArn(this.scope, 'Batch_Sa_Optimizer',
-          `arn:aws:ecr:${region}:${ecrAccount}:repository/qradd:${version}-Batch_Sa_Optimizer`,
-        ));
+        return ecs.ContainerImage.fromEcrRepository(ecr.Repository.fromRepositoryAttributes(this.scope, 'Batch_Sa_Optimizer', {
+          repositoryName: 'qradd',
+          repositoryArn: `arn:aws:ecr:${region}:${ecrAccount}:repository/qradd:${version}-Batch_Sa_Optimizer`,
+        }));
       } else {
 
         return ecs.ContainerImage.fromAsset(
@@ -87,9 +89,10 @@ export class ECRImageUtil {
 
     if (name == ECRRepoNameEnum.Batch_Qa_Optimizer) {
       if (runningGlobalPipeline) {
-        return ecs.ContainerImage.fromEcrRepository(ecr.Repository.fromRepositoryArn(this.scope, 'Batch_Qa_Optimizer',
-          `arn:aws:ecr:${region}:${ecrAccount}:repository/qradd:${version}-Batch_Qa_Optimizer`,
-        ));
+        return ecs.ContainerImage.fromEcrRepository(ecr.Repository.fromRepositoryAttributes(this.scope, 'Batch_Qa_Optimizer', {
+          repositoryName: 'qradd',
+          repositoryArn: `arn:aws:ecr:${region}:${ecrAccount}:repository/qradd:${version}-Batch_Qa_Optimizer`,
+        }));
       } else {
         return ecs.ContainerImage.fromAsset(
           path.join(__dirname, '../../'), {
@@ -100,9 +103,12 @@ export class ECRImageUtil {
 
     if (name == ECRRepoNameEnum.Lambda_CheckDevice) {
       if (runningGlobalPipeline) {
-        return ecs.ContainerImage.fromEcrRepository(ecr.Repository.fromRepositoryArn(this.scope, 'Lambda_CheckDevice',
-          `arn:aws:ecr:${region}:${ecrAccount}:repository/qradd:${version}-Lambda_CheckDevice`,
-        ));
+        return lambda.DockerImageCode.fromEcr(ecr.Repository.fromRepositoryAttributes(this.scope, 'Lambda_CheckDevice', {
+          repositoryName: 'qradd',
+          repositoryArn: `arn:aws:ecr:${region}:${ecrAccount}:repository/qradd`,
+        }), {
+          tag: `${version}-Lambda_ParseBraketResult`,
+        });
       } else {
         return lambda.DockerImageCode.fromImageAsset(
           path.join(__dirname, '../../'), {
@@ -113,9 +119,12 @@ export class ECRImageUtil {
 
     if (name == ECRRepoNameEnum.Lambda_ParseBraketResult) {
       if (runningGlobalPipeline) {
-        return ecs.ContainerImage.fromEcrRepository(ecr.Repository.fromRepositoryArn(this.scope, 'Lambda_ParseBraketResult',
-          `arn:aws:ecr:${region}:${ecrAccount}:repository/qradd:${version}-Lambda_ParseBraketResult`,
-        ));
+        return lambda.DockerImageCode.fromEcr(ecr.Repository.fromRepositoryAttributes(this.scope, 'Lambda_ParseBraketResult', {
+          repositoryName: 'qradd',
+          repositoryArn: `arn:aws:ecr:${region}:${ecrAccount}:repository/qradd`,
+        }), {
+          tag: `${version}-Lambda_ParseBraketResult`,
+        });
       } else {
         return lambda.DockerImageCode.fromImageAsset(
           path.join(__dirname, '../../'), {
