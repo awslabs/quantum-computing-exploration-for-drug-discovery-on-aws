@@ -29,6 +29,7 @@ scan_npm() {
     elif [ $rc -eq 42 ]; then
         echo NOTHING TO SCAN
     else
+        echo "Ignore NPM scan result"
         # echo FAILED rc=$rc
         # ((failed_scans=failed_scans+1))
     fi
