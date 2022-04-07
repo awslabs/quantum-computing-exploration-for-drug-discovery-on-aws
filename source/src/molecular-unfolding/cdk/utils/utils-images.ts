@@ -37,11 +37,11 @@ export enum ECRRepoNameEnum {
 
 
 export class ECRImageUtil {
-  private scope: Construct
-
   public static newInstance(scope: Construct) {
     return new this(scope);
   }
+
+  private scope: Construct
 
   private constructor(scope: Construct) {
     this.scope = scope;
@@ -49,18 +49,18 @@ export class ECRImageUtil {
 
   public getECRImage(name: ECRRepoNameEnum): ecs.ContainerImage | lambda.DockerImageCode {
 
-    const runningGlobalPipeline = process.env['SOLUTIONS_BUILD_ASSETS_BUCKET'] &&
-      process.env['SOLUTIONS_BUILD_ASSETS_BUCKET'] == 'solutions-build-assets'
-    const version = process.env.SOLUTION_VERSION || 'v1.0.0'
+    const runningGlobalPipeline = process.env.SOLUTIONS_BUILD_ASSETS_BUCKET &&
+      process.env.SOLUTIONS_BUILD_ASSETS_BUCKET == 'solutions-build-assets';
+    const version = process.env.SOLUTION_VERSION || 'v1.0.0';
 
-    const region = Stack.of(this.scope).region
-    const ecrAccount =  process.env['SOLUTIONS_ECR_ACCOUNT'] || '366590864501'
+    const region = Stack.of(this.scope).region;
+    const ecrAccount = process.env.SOLUTIONS_ECR_ACCOUNT || '366590864501';
 
     if (name == ECRRepoNameEnum.Batch_Create_Model) {
 
       if (runningGlobalPipeline) {
         return ecs.ContainerImage.fromEcrRepository(ecr.Repository.fromRepositoryArn(this.scope, 'Batch_Create_Model',
-          `arn:aws:ecr:${region}:${ecrAccount}:repository/qradd:${version}-Batch_Create_Model`
+          `arn:aws:ecr:${region}:${ecrAccount}:repository/qradd:${version}-Batch_Create_Model`,
         ));
       } else {
         return ecs.ContainerImage.fromAsset(
@@ -73,7 +73,7 @@ export class ECRImageUtil {
     if (name == ECRRepoNameEnum.Batch_Sa_Optimizer) {
       if (runningGlobalPipeline) {
         return ecs.ContainerImage.fromEcrRepository(ecr.Repository.fromRepositoryArn(this.scope, 'Batch_Sa_Optimizer',
-          `arn:aws:ecr:${region}:${ecrAccount}:repository/qradd:${version}-Batch_Sa_Optimizer`
+          `arn:aws:ecr:${region}:${ecrAccount}:repository/qradd:${version}-Batch_Sa_Optimizer`,
         ));
       } else {
 
@@ -88,7 +88,7 @@ export class ECRImageUtil {
     if (name == ECRRepoNameEnum.Batch_Qa_Optimizer) {
       if (runningGlobalPipeline) {
         return ecs.ContainerImage.fromEcrRepository(ecr.Repository.fromRepositoryArn(this.scope, 'Batch_Qa_Optimizer',
-          `arn:aws:ecr:${region}:${ecrAccount}:repository/qradd:${version}-Batch_Qa_Optimizer`
+          `arn:aws:ecr:${region}:${ecrAccount}:repository/qradd:${version}-Batch_Qa_Optimizer`,
         ));
       } else {
         return ecs.ContainerImage.fromAsset(
@@ -101,7 +101,7 @@ export class ECRImageUtil {
     if (name == ECRRepoNameEnum.Lambda_CheckDevice) {
       if (runningGlobalPipeline) {
         return ecs.ContainerImage.fromEcrRepository(ecr.Repository.fromRepositoryArn(this.scope, 'Lambda_CheckDevice',
-          `arn:aws:ecr:${region}:${ecrAccount}:repository/qradd:${version}-Lambda_CheckDevice`
+          `arn:aws:ecr:${region}:${ecrAccount}:repository/qradd:${version}-Lambda_CheckDevice`,
         ));
       } else {
         return lambda.DockerImageCode.fromImageAsset(
@@ -114,7 +114,7 @@ export class ECRImageUtil {
     if (name == ECRRepoNameEnum.Lambda_ParseBraketResult) {
       if (runningGlobalPipeline) {
         return ecs.ContainerImage.fromEcrRepository(ecr.Repository.fromRepositoryArn(this.scope, 'Lambda_ParseBraketResult',
-          `arn:aws:ecr:${region}:${ecrAccount}:repository/qradd:${version}-Lambda_ParseBraketResult`
+          `arn:aws:ecr:${region}:${ecrAccount}:repository/qradd:${version}-Lambda_ParseBraketResult`,
         ));
       } else {
         return lambda.DockerImageCode.fromImageAsset(
