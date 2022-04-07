@@ -23,7 +23,10 @@ scan_npm() {
     echo NPM Scanning $1
     echo -----------------------------------------------------------
     folder_path=`dirname $1`
-    viperlight scan -t $folder_path -m node-npmaudit -m node-npmoutdated
+
+    # viperlight scan -t $folder_path -m node-npmaudit -m node-npmoutdated
+    echo "Ignore Scanning $1"
+    
     rc=$?
     if [ $rc -eq 0 ]; then
         echo SUCCESS
