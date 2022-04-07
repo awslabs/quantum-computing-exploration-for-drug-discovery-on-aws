@@ -4,8 +4,7 @@
 # Viperlight scan fails.
 #--------------------------------------------------------------------
 
-source_dir='./source'   # May need to adjust this for your repo, but this 
-                        # should generally work
+source_dir='./source'
 viperlight_temp=/tmp/viperlight_scan # should work in most environments
 export PATH=$PATH:../viperlight/bin
 
@@ -23,10 +22,7 @@ scan_npm() {
     echo NPM Scanning $1
     echo -----------------------------------------------------------
     folder_path=`dirname $1`
-
-    # viperlight scan -t $folder_path -m node-npmaudit -m node-npmoutdated
-    echo "Ignore Scanning $1"
-    
+    viperlight scan -t $folder_path -m node-npmoutdated
     rc=$?
     if [ $rc -eq 0 ]; then
         echo SUCCESS
@@ -54,17 +50,6 @@ scan_py() {
         ((failed_scans=failed_scans+1))
     fi
 }
-
-echo -----------------------------------------------------------
-echo Environment
-echo -----------------------------------------------------------
-echo npm `npm --version`
-echo `python --version`
-
-echo -----------------------------------------------------------
-echo Update npm to latest
-echo -----------------------------------------------------------
-npm install -g npm@latest
 
 echo -----------------------------------------------------------
 echo Scanning all Nodejs projects
@@ -97,13 +82,14 @@ while read folder
     done < $viperlight_temp/scan_python_list.txt
 
 echo -----------------------------------------------------------
-echo Scanning everywhere else
+echo Running publisher checks
 echo -----------------------------------------------------------
-viperlight scan
-rc=$?
-if [ $rc -gt 0 ]; then
-    ((failed_scans=failed_scans+1))
-fi
+viperlight pubcheck
+# Uncomment to have failed pubcheck fail the build
+# rc=$?
+# if [ $rc -gt 0 ]; then
+#     ((failed_scans=failed_scans+1))
+# fi
 
 if [ $failed_scans == 0 ]
 then
