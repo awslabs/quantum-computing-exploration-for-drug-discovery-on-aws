@@ -160,7 +160,7 @@ export class RoleUtil {
 
 
   public createBatchJobExecutionRole(roleName: string): iam.Role {
-    const ecrAccount = process.env.SOLUTIONS_ECR_ACCOUNT || '366590864501';
+   // const ecrAccount = process.env.SOLUTIONS_ECR_ACCOUNT || '366590864501';
 
     const role = new iam.Role(this.scope, `${roleName}`, {
       assumedBy: new iam.ServicePrincipal('ecs-tasks.amazonaws.com'),
@@ -168,7 +168,7 @@ export class RoleUtil {
     role.addToPolicy(new iam.PolicyStatement({
       resources: [
         `arn:aws:ecr:${this.props.region}:${this.props.account}:repository/*`,
-        `arn:aws:ecr:${this.props.region}:${ecrAccount}:repository/*`,
+       // `arn:aws:ecr:${this.props.region}:${ecrAccount}:repository/*`,
       ],
       actions: [
         'ecr:BatchCheckLayerAvailability',

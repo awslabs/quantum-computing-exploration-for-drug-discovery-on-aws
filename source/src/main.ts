@@ -22,7 +22,6 @@ import {
 
 import {
   BootstraplessStackSynthesizer,
-  BatchJobDefinition,
 } from 'cdk-bootstrapless-synthesizer';
 
 import {
@@ -37,9 +36,9 @@ new MainStack(app, 'QCStack', {
 });
 
 // below lines are required if your application has Docker assets
-if (process.env.USE_BSS) {
-  Aspects.of(app).add(new BatchJobDefinition());
-}
+// if (process.env.USE_BSS) {
+//   Aspects.of(app).add(new BatchJobDefinition());
+// }
 
 app.synth();
 
