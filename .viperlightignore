@@ -5,5 +5,6 @@ Config
 node_modules/
 cdk.out/
 deployment/regional-s3-assets/
+deployment/solution_config
 source/
 docs/

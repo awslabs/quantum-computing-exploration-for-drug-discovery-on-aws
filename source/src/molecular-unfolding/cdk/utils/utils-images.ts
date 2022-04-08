@@ -54,7 +54,7 @@ export class ECRImageUtil {
     const version = process.env.SOLUTION_VERSION || 'v1.0.0';
     const imagePrefix = process.env.IMAGE_PREFIX || '';
     const ecrAccount = process.env.SOLUTION_ECR_ACCOUNT || '';
-    const repoName =  process.env.SOLUTION_ECR_REPO_NAME || '';
+    const repoName = process.env.SOLUTION_ECR_REPO_NAME || '';
     const region = Stack.of(this.scope).region;
 
     if (name == ECRRepoNameEnum.Batch_Create_Model) {
