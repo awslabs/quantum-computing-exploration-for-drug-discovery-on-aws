@@ -1,5 +1,7 @@
 SOLUTION_ID='SO8027'
 SOLUTION_NAME='quantum-ready-solution-for-drug-discovery'
-SOLUTION_TRADEMARKEDNAME='Quantum Ready Architecture For Drug Discovery'
+SOLUTION_TRADEMARKEDNAME='Quantum-Ready-Architecture-For-Drug-Discovery'
 SOLUTION_VERSION='v1.0.0' # optional
 IMAGE_PREFIX=test20200408-
+SOLUTION_ECR_ACCOUNT=366590864501
+SOLUTION_ECR_REPO_NAME=aws-gcr-qc-life-science
