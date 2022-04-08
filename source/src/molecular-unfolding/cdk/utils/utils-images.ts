@@ -52,10 +52,10 @@ export class ECRImageUtil {
     const runningGlobalPipeline = process.env.SOLUTIONS_BUILD_ASSETS_BUCKET &&
       process.env.SOLUTIONS_BUILD_ASSETS_BUCKET == 'solutions-build-assets';
     const version = process.env.SOLUTION_VERSION || 'v1.0.0';
-
+    const commitId = process.env.GIT_COMMIT_ID || '';
     const region = Stack.of(this.scope).region;
     const ecrAccount = process.env.SOLUTIONS_ECR_ACCOUNT || '366590864501';
-    const repoName = 'aws-gcr-qc-life-science'
+    const repoName = 'aws-gcr-qc-life-science';
 
     if (name == ECRRepoNameEnum.Batch_Create_Model) {
 
@@ -63,7 +63,7 @@ export class ECRImageUtil {
         return ecs.ContainerImage.fromEcrRepository(ecr.Repository.fromRepositoryAttributes(this.scope, 'Batch_Create_Model', {
           repositoryName: `${repoName}`,
           repositoryArn: `arn:aws:ecr:${region}:${ecrAccount}:repository/${repoName}`,
-        }), `${version}-Batch_Create_Model`);
+        }), `${version}-${commitId}Batch_Create_Model`.toLowerCase());
       } else {
         return ecs.ContainerImage.fromAsset(
           path.join(__dirname, '../../'), {
@@ -77,7 +77,7 @@ export class ECRImageUtil {
         return ecs.ContainerImage.fromEcrRepository(ecr.Repository.fromRepositoryAttributes(this.scope, 'Batch_Sa_Optimizer', {
           repositoryName: `${repoName}`,
           repositoryArn: `arn:aws:ecr:${region}:${ecrAccount}:repository/${repoName}`,
-        }), `${version}-Batch_Sa_Optimizer`);
+        }), `${version}-${commitId}Batch_Sa_Optimizer`.toLowerCase());
       } else {
 
         return ecs.ContainerImage.fromAsset(
@@ -93,7 +93,7 @@ export class ECRImageUtil {
         return ecs.ContainerImage.fromEcrRepository(ecr.Repository.fromRepositoryAttributes(this.scope, 'Batch_Qa_Optimizer', {
           repositoryName: `${repoName}`,
           repositoryArn: `arn:aws:ecr:${region}:${ecrAccount}:repository/${repoName}`,
-        }), `${version}-Batch_Qa_Optimizer`);
+        }), `${version}-${commitId}Batch_Qa_Optimizer`.toLowerCase());
       } else {
         return ecs.ContainerImage.fromAsset(
           path.join(__dirname, '../../'), {
@@ -108,7 +108,7 @@ export class ECRImageUtil {
           repositoryName: `${repoName}`,
           repositoryArn: `arn:aws:ecr:${region}:${ecrAccount}:repository/${repoName}`,
         }), {
-          tag: `${version}-Lambda_CheckDevice`,
+          tag: `${version}-${commitId}Lambda_CheckDevice`.toLowerCase(),
         });
       } else {
         return lambda.DockerImageCode.fromImageAsset(
@@ -124,7 +124,7 @@ export class ECRImageUtil {
           repositoryName: `${repoName}`,
           repositoryArn: `arn:aws:ecr:${region}:${ecrAccount}:repository/${repoName}`,
         }), {
-          tag: `${version}-Lambda_ParseBraketResult`,
+          tag: `${version}-${commitId}Lambda_ParseBraketResult`.toLowerCase(),
         });
       } else {
         return lambda.DockerImageCode.fromImageAsset(
