@@ -185,6 +185,13 @@ else
     export SOLUTION_TRADEMARKEDNAME
 fi
 
+if [[ -z $IMAGE_PREFIX ]]; then
+    echo "IMAGE_PREFIX is missing from ../solution_config"
+    exit 1
+else 
+    export IMAGE_PREFIX
+fi
+
 
 #------------------------------------------------------------------------------
 # Validate command line parameters
@@ -293,7 +300,7 @@ echo "Run the helper to clean-up the templates and remove unnecessary CDK elemen
 echo "Find and replace bucket_name, solution_name, and version"
 cd $template_dist_dir
 do_replace "*.template" %%BUCKET_NAME%% ${SOLUTION_BUCKET}
-do_replace "*.template" %%SOLUTION_NAME%% ${SOLUTION_TRADEMARKEDNAME}
+do_replace "*.template" %%SOLUTION_NAME%% ${SOLUTION_NAME}
 do_replace "*.template" %%VERSION%% ${VERSION}
 
 echo "------------------------------------------------------------------------------"

@@ -52,10 +52,8 @@ export class ECRImageUtil {
     const runningGlobalPipeline = process.env.SOLUTIONS_BUILD_ASSETS_BUCKET &&
       process.env.SOLUTIONS_BUILD_ASSETS_BUCKET == 'solutions-build-assets';
     const version = process.env.SOLUTION_VERSION || 'v1.0.0';
-    let uniqueId = process.env.CODEBUILD_BUILD_ID || '0';
-    if (uniqueId.lastIndexOf(':') > 0) {
-      uniqueId = uniqueId.substring(uniqueId.lastIndexOf(':')+1);
-    }
+    const imagePrefix = process.env.IMAGE_PREFIX || '';
+
     const region = Stack.of(this.scope).region;
     const ecrAccount = process.env.SOLUTIONS_ECR_ACCOUNT || '366590864501';
     const repoName = 'aws-gcr-qc-life-science';
@@ -66,7 +64,7 @@ export class ECRImageUtil {
         return ecs.ContainerImage.fromEcrRepository(ecr.Repository.fromRepositoryAttributes(this.scope, 'Batch_Create_Model', {
           repositoryName: `${repoName}`,
           repositoryArn: `arn:aws:ecr:${region}:${ecrAccount}:repository/${repoName}`,
-        }), `${version}-${uniqueId}Batch_Create_Model`);
+        }), `${version}-${imagePrefix}Batch_Create_Model`);
       } else {
         return ecs.ContainerImage.fromAsset(
           path.join(__dirname, '../../'), {
@@ -80,7 +78,7 @@ export class ECRImageUtil {
         return ecs.ContainerImage.fromEcrRepository(ecr.Repository.fromRepositoryAttributes(this.scope, 'Batch_Sa_Optimizer', {
           repositoryName: `${repoName}`,
           repositoryArn: `arn:aws:ecr:${region}:${ecrAccount}:repository/${repoName}`,
-        }), `${version}-${uniqueId}Batch_Sa_Optimizer`);
+        }), `${version}-${imagePrefix}Batch_Sa_Optimizer`);
       } else {
 
         return ecs.ContainerImage.fromAsset(
@@ -96,7 +94,7 @@ export class ECRImageUtil {
         return ecs.ContainerImage.fromEcrRepository(ecr.Repository.fromRepositoryAttributes(this.scope, 'Batch_Qa_Optimizer', {
           repositoryName: `${repoName}`,
           repositoryArn: `arn:aws:ecr:${region}:${ecrAccount}:repository/${repoName}`,
-        }), `${version}-${uniqueId}Batch_Qa_Optimizer`);
+        }), `${version}-${imagePrefix}Batch_Qa_Optimizer`);
       } else {
         return ecs.ContainerImage.fromAsset(
           path.join(__dirname, '../../'), {
@@ -111,7 +109,7 @@ export class ECRImageUtil {
           repositoryName: `${repoName}`,
           repositoryArn: `arn:aws:ecr:${region}:${ecrAccount}:repository/${repoName}`,
         }), {
-          tag: `${version}-${uniqueId}Lambda_CheckDevice`,
+          tag: `${version}-${imagePrefix}Lambda_CheckDevice`,
         });
       } else {
         return lambda.DockerImageCode.fromImageAsset(
@@ -127,7 +125,7 @@ export class ECRImageUtil {
           repositoryName: `${repoName}`,
           repositoryArn: `arn:aws:ecr:${region}:${ecrAccount}:repository/${repoName}`,
         }), {
-          tag: `${version}-${uniqueId}Lambda_ParseBraketResult`,
+          tag: `${version}-${imagePrefix}Lambda_ParseBraketResult`,
         });
       } else {
         return lambda.DockerImageCode.fromImageAsset(
