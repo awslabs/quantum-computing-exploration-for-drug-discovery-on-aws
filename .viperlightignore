@@ -6,5 +6,6 @@ node_modules/
 cdk.out/
 deployment/regional-s3-assets/
 deployment/solution_config
+gcr_buildspec.yml
 source/
 docs/

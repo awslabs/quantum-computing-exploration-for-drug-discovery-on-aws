@@ -165,12 +165,12 @@ export class RoleUtil {
       assumedBy: new iam.ServicePrincipal('ecs-tasks.amazonaws.com'),
     });
 
-   const resources = [
+    const resources = [
       `arn:aws:ecr:${this.props.region}:${this.props.account}:repository/*`,
     ];
 
     if (ecrAccount) {
-      resources.push(`arn:aws:ecr:${this.props.region}:${ecrAccount}:repository/*`,)
+      resources.push(`arn:aws:ecr:${this.props.region}:${ecrAccount}:repository/*`);
     }
 
     role.addToPolicy(new iam.PolicyStatement({
