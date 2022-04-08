@@ -52,7 +52,10 @@ export class ECRImageUtil {
     const runningGlobalPipeline = process.env.SOLUTIONS_BUILD_ASSETS_BUCKET &&
       process.env.SOLUTIONS_BUILD_ASSETS_BUCKET == 'solutions-build-assets';
     const version = process.env.SOLUTION_VERSION || 'v1.0.0';
-    const uniqueId = process.env.BUILD_NUMBER || '0';
+    let uniqueId = process.env.CODEBUILD_BUILD_ID || '0';
+    if (uniqueId.lastIndexOf(':') > 0) {
+         uniqueId = uniqueId.substring(uniqueId.lastIndexOf(':')+1)
+    }
     const region = Stack.of(this.scope).region;
     const ecrAccount = process.env.SOLUTIONS_ECR_ACCOUNT || '366590864501';
     const repoName = 'aws-gcr-qc-life-science';
