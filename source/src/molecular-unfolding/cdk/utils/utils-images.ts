@@ -49,8 +49,7 @@ export class ECRImageUtil {
 
   public getECRImage(name: ECRRepoNameEnum): ecs.ContainerImage | lambda.DockerImageCode {
 
-    const runningGlobalPipeline = process.env.SOLUTIONS_BUILD_ASSETS_BUCKET &&
-      process.env.SOLUTIONS_BUILD_ASSETS_BUCKET == 'solutions-build-assets';
+    const usePreBuildImages = process.env.SOLUTIONS_PRE_BUILD_IMAGES || false;
     const version = process.env.SOLUTION_VERSION || 'v1.0.0';
     const imagePrefix = process.env.IMAGE_PREFIX || '';
     const ecrAccount = process.env.SOLUTION_ECR_ACCOUNT || '';
@@ -59,7 +58,7 @@ export class ECRImageUtil {
 
     if (name == ECRRepoNameEnum.Batch_Create_Model) {
 
-      if (runningGlobalPipeline) {
+      if (usePreBuildImages) {
         return ecs.ContainerImage.fromEcrRepository(ecr.Repository.fromRepositoryAttributes(this.scope, 'Batch_Create_Model', {
           repositoryName: `${repoName}`,
           repositoryArn: `arn:aws:ecr:${region}:${ecrAccount}:repository/${repoName}`,
@@ -73,7 +72,7 @@ export class ECRImageUtil {
     }
 
     if (name == ECRRepoNameEnum.Batch_Sa_Optimizer) {
-      if (runningGlobalPipeline) {
+      if (usePreBuildImages) {
         return ecs.ContainerImage.fromEcrRepository(ecr.Repository.fromRepositoryAttributes(this.scope, 'Batch_Sa_Optimizer', {
           repositoryName: `${repoName}`,
           repositoryArn: `arn:aws:ecr:${region}:${ecrAccount}:repository/${repoName}`,
@@ -89,7 +88,7 @@ export class ECRImageUtil {
     }
 
     if (name == ECRRepoNameEnum.Batch_Qa_Optimizer) {
-      if (runningGlobalPipeline) {
+      if (usePreBuildImages) {
         return ecs.ContainerImage.fromEcrRepository(ecr.Repository.fromRepositoryAttributes(this.scope, 'Batch_Qa_Optimizer', {
           repositoryName: `${repoName}`,
           repositoryArn: `arn:aws:ecr:${region}:${ecrAccount}:repository/${repoName}`,
@@ -103,7 +102,7 @@ export class ECRImageUtil {
     }
 
     if (name == ECRRepoNameEnum.Lambda_CheckDevice) {
-      if (runningGlobalPipeline) {
+      if (usePreBuildImages) {
         return lambda.DockerImageCode.fromEcr(ecr.Repository.fromRepositoryAttributes(this.scope, 'Lambda_CheckDevice', {
           repositoryName: `${repoName}`,
           repositoryArn: `arn:aws:ecr:${region}:${ecrAccount}:repository/${repoName}`,
@@ -119,7 +118,7 @@ export class ECRImageUtil {
     }
 
     if (name == ECRRepoNameEnum.Lambda_ParseBraketResult) {
-      if (runningGlobalPipeline) {
+      if (usePreBuildImages) {
         return lambda.DockerImageCode.fromEcr(ecr.Repository.fromRepositoryAttributes(this.scope, 'Lambda_ParseBraketResult', {
           repositoryName: `${repoName}`,
           repositoryArn: `arn:aws:ecr:${region}:${ecrAccount}:repository/${repoName}`,
