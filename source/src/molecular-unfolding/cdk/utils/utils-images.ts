@@ -63,7 +63,7 @@ export class ECRImageUtil {
         return ecs.ContainerImage.fromEcrRepository(ecr.Repository.fromRepositoryAttributes(this.scope, 'Batch_Create_Model', {
           repositoryName: `${repoName}`,
           repositoryArn: `arn:aws:ecr:${region}:${ecrAccount}:repository/${repoName}`,
-        }), `${version}-${commitId}Batch_Create_Model`.toLowerCase());
+        }), `${version}-${commitId}Batch_Create_Model`);
       } else {
         return ecs.ContainerImage.fromAsset(
           path.join(__dirname, '../../'), {
@@ -77,7 +77,7 @@ export class ECRImageUtil {
         return ecs.ContainerImage.fromEcrRepository(ecr.Repository.fromRepositoryAttributes(this.scope, 'Batch_Sa_Optimizer', {
           repositoryName: `${repoName}`,
           repositoryArn: `arn:aws:ecr:${region}:${ecrAccount}:repository/${repoName}`,
-        }), `${version}-${commitId}Batch_Sa_Optimizer`.toLowerCase());
+        }), `${version}-${commitId}Batch_Sa_Optimizer`);
       } else {
 
         return ecs.ContainerImage.fromAsset(
@@ -93,7 +93,7 @@ export class ECRImageUtil {
         return ecs.ContainerImage.fromEcrRepository(ecr.Repository.fromRepositoryAttributes(this.scope, 'Batch_Qa_Optimizer', {
           repositoryName: `${repoName}`,
           repositoryArn: `arn:aws:ecr:${region}:${ecrAccount}:repository/${repoName}`,
-        }), `${version}-${commitId}Batch_Qa_Optimizer`.toLowerCase());
+        }), `${version}-${commitId}Batch_Qa_Optimizer`);
       } else {
         return ecs.ContainerImage.fromAsset(
           path.join(__dirname, '../../'), {
@@ -108,7 +108,7 @@ export class ECRImageUtil {
           repositoryName: `${repoName}`,
           repositoryArn: `arn:aws:ecr:${region}:${ecrAccount}:repository/${repoName}`,
         }), {
-          tag: `${version}-${commitId}Lambda_CheckDevice`.toLowerCase(),
+          tag: `${version}-${commitId}Lambda_CheckDevice`,
         });
       } else {
         return lambda.DockerImageCode.fromImageAsset(
@@ -124,7 +124,7 @@ export class ECRImageUtil {
           repositoryName: `${repoName}`,
           repositoryArn: `arn:aws:ecr:${region}:${ecrAccount}:repository/${repoName}`,
         }), {
-          tag: `${version}-${commitId}Lambda_ParseBraketResult`.toLowerCase(),
+          tag: `${version}-${commitId}Lambda_ParseBraketResult`,
         });
       } else {
         return lambda.DockerImageCode.fromImageAsset(
