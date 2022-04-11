@@ -61,23 +61,24 @@ export class LambdaUtil {
     const vpc = this.props.vpc;
     const lambdaSg = this.props.lambdaSg;
     const aggLambdaRole = this.roleUtil.createAggResultLambdaRole();
+
     return new lambda.Function(this.scope, 'AggResultLambda', {
-      runtime: lambda.Runtime.NODEJS_14_X,
+      runtime: lambda.Runtime.PYTHON_3_9,
       code: lambda.Code.fromAsset(path.join(__dirname, '../../lambda/AthenaTableLambda/')),
-      handler: 'index.handler',
+      handler: 'app.handler',
       memorySize: 512,
       timeout: Duration.seconds(120),
-      environment: {
-        BUCKET: this.props.bucket.bucketName,
-        SOLUTION_ID: MainStack.SOLUTION_ID,
-        SOLUTION_VERSION: MainStack.SOLUTION_VERSION,
-      },
       vpc,
       vpcSubnets: vpc.selectSubnets({
         subnetType: ec2.SubnetType.PRIVATE_WITH_NAT,
       }),
       role: aggLambdaRole,
       securityGroups: [lambdaSg],
+      environment: {
+        BUCKET: this.props.bucket.bucketName,
+        SOLUTION_ID: MainStack.SOLUTION_ID,
+        SOLUTION_VERSION: MainStack.SOLUTION_VERSION,
+      },
     });
   }
 
