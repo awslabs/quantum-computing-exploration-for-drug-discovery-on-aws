@@ -776,22 +776,19 @@
 </ul>
 </li>
 <li>
-<p>Choose <strong>Start execution</strong> to start batch evaluation. The default batch evaluation will take about 15 minutes.</p>
+<p>Choose <strong>Start execution</strong> to start batch evaluation. The default batch evaluation will take about 25 minutes.</p>
 </li>
 <li>
 <p>When the batch evaluation is completed, you can view the result in AWS QuickSight dashboard. Before that, you need to get the Dashboard link from the CloudFormation output.</p>
 </li>
 <li>
-<p>You can choose to view the batch evaluation result <strong>by Experiment</strong>. </p>
+<p>View the batch evaluation result in the dashboard: </p>
 <ul>
 <li><strong>Experiments history</strong>: displays all experiments history or displays the history by each experiment when you click each row.</li>
-<li><strong>Task count</strong>: shows the task count of all experiments or each experiment if you select an experiment in <strong>Experiments hist</strong> table.</li>
-<li><strong>QC vs. CC average</strong>: compares the average execution time (Y-axis) of QC (Quantum Computing) and CC (Classical Computing) tasks by different model parameters (X-axis).</li>
-<li><strong>QC vs. CC by resource</strong>: compares the execution time (Y-axis) of QC and CC tasks by different model parameters (X-axis) using different resources(for QC that is different QPU devices, for CC that is different memory-vCPU)</li>
-<li><strong>QC by devices</strong>: compares execution time (Y-axis) of different QPU devices by different model parameters (X-axis)</li>
-<li><strong>CC by resources</strong>: compares execution time (Y-axis) of different CC resources (memory and vCPU) by different model parameters (X-axis)</li>
+<li>Comparison of <strong>end to end time</strong> of the quantum solver with classical solver: X-axis is complexity of the model, Y-axis is end to end time in seconds(if no experiment is selected, the time is average time). </li>
+<li>Comparison of <strong>running time</strong> of the quantum solver with classical solver: X-axis is complexity of the model, Y-axis is running time in seconds(if no experiment is selected,  the time is average time). </li>
 <li>
-<p><strong>Records</strong>: lists the detailed information of each task in the selected experiment (if no experiment is selected, all will be listed)</p>
+<p><strong>Experiments data</strong>: lists the detailed information of each task in the selected experiment (if no experiment is selected, all will be listed)</p>
 <table>
 <thead>
 <tr>
@@ -805,24 +802,32 @@
 <td>Compute type, which can be CC or QC</td>
 </tr>
 <tr>
+<td>complexity</td>
+<td>Complexity of the model,  complexity = M * D</td>
+</tr>
+<tr>
+<td>end_to_end_time</td>
+<td>End to end time in seconds</td>
+</tr>
+<tr>
+<td>running_time</td>
+<td>Running time in seconds</td>
+</tr>
+<tr>
 <td>resource</td>
 <td>Resource name. For QC, it refers to different QPU devices; for CC, it refers to different memory-vCPU</td>
 </tr>
 <tr>
-<td>param</td>
+<td>model_param</td>
 <td>Model parameters. </br><strong>M</strong>: number of torsions; </br><strong>D</strong>: angle precision of rotation; </br><strong>HQ</strong>: hubo-qubo value, energy penalty; </br><strong>A</strong>: penalty scalar</td>
 </tr>
 <tr>
-<td>opt_params</td>
+<td>opt_param</td>
 <td>Optimizer parameters</td>
 </tr>
 <tr>
-<td>task_duration</td>
-<td>Task execution time in seconds</td>
-</tr>
-<tr>
 <td>time_info</td>
-<td>For QC, it refers to different dimensions of QC task time, and<code>total_time</code> is the <strong>task_duration</strong>; for CC, <code>local_time</code> is the <strong>task_duration</strong></td>
+<td>For QC, it refers to different dimensions of QC task time, and <code>local_time</code> is the <strong>end_to_end_time</strong>，  <code>total_time</code> is the <strong>running_time</strong>; for CC, <code>local_time</code> is the <strong>end_to_end_time</strong> and <strong>running_time</strong></td>
 </tr>
 <tr>
 <td>execution_id</td>
@@ -831,10 +836,6 @@
 <tr>
 <td>experiment_name</td>
 <td>Experiment name. If <code>experimentName</code> input is not empty, it is <code>execution start time + input experimentName</code>. Otherwise, it is <code>execution start time + execution_id</code></td>
-</tr>
-<tr>
-<td>task_id</td>
-<td>For QC, it is Braket task id; for CC, it is empty</td>
 </tr>
 <tr>
 <td>result_detail</td>
@@ -846,24 +847,6 @@
 </tr>
 </tbody>
 </table>
-</li>
-</ul>
-</li>
-<li>
-<p>You can also switch the tab to view the result <strong>by Resource</strong>.</p>
-<p>In this sheet, you can view batch evaluation result by each resource and QPU device.</p>
-<ul>
-<li>
-<p>Compute type and resource</p>
-<p>It lists all resources in batch evaluation. For QC, resources are QPU devices; for CC, resources are memory and vCPU. You can click each row to display the corresponding metrics. If no item is selected, it displays average metrics.</p>
-</li>
-<li>
-<p>Experiment history</p>
-<p>It shows execution time (Y-axis) for selected resource by experiment name (X-axis, ordered by time) using different model parameters.</p>
-</li>
-<li>
-<p>Records</p>
-<p>This table is the same as the table shown in the <strong>by Experiment</strong> tab.</p>
 </li>
 </ul>
 </li>
@@ -926,7 +909,7 @@
 
 </li>
 <li>
-<p><strong>ccResources</strong>: memory (first element) in GiB and vCPU (second element), for example, 4GiB memory and 2 vCPU is: <code>[4, 2]</code></p>
+<p><strong>ccResources</strong>: vCPU (first element) and memory (second element) in GiB and , for example, 4 vCPU and 8GiB memory is: <code>[4, 8]</code></p>
 </li>
 </ul>
 <p>A typical (the default) input:</p>
@@ -935,25 +918,22 @@
 <span class="w">    </span><span class="nt">&quot;runMode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ALL&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="w">    </span><span class="nt">&quot;optParams&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">        </span><span class="nt">&quot;qa&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">            </span><span class="nt">&quot;shots&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;shots&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10000</span><span class="w"></span>
 <span class="w">        </span><span class="p">},</span><span class="w"></span>
 <span class="w">        </span><span class="nt">&quot;sa&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">            </span><span class="nt">&quot;shots&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="w"></span>
+<span class="w">            </span><span class="nt">&quot;shots&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10000</span><span class="w"></span>
 <span class="w">        </span><span class="p">}</span><span class="w"></span>
 <span class="w">    </span><span class="p">},</span><span class="w"></span>
 <span class="w">    </span><span class="nt">&quot;modelParams&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="nt">&quot;M&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">],</span><span class="w"></span>
-<span class="w">        </span><span class="nt">&quot;D&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;M&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">],</span><span class="w"></span>
+<span class="w">        </span><span class="nt">&quot;D&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="w"></span>
 <span class="w">    </span><span class="p">},</span><span class="w"></span>
 <span class="w">    </span><span class="nt">&quot;devicesArns&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
 <span class="w">        </span><span class="s2">&quot;arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="w">        </span><span class="s2">&quot;arn:aws:braket:::device/qpu/d-wave/Advantage_system4&quot;</span><span class="w"></span>
 <span class="w">    </span><span class="p">],</span><span class="w"></span>
 <span class="w">    </span><span class="nt">&quot;ccResources&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
-<span class="w">        </span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">],</span><span class="w"></span>
-<span class="w">        </span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">],</span><span class="w"></span>
-<span class="w">        </span><span class="p">[</span><span class="mi">8</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">],</span><span class="w"></span>
-<span class="w">        </span><span class="p">[</span><span class="mi">16</span><span class="p">,</span><span class="w"> </span><span class="mi">16</span><span class="p">]</span><span class="w"></span>
+<span class="w">        </span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">]</span><span class="w"></span>
 <span class="w">    </span><span class="p">]</span><span class="w"></span>
 <span class="p">}</span><span class="w"></span>
 </code></pre></div>
