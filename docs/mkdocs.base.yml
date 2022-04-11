@@ -11,7 +11,6 @@ theme:
 
 plugins:
   - search
-  - with-pdf
   - markdownextradata: {}
   - mkdocs-jupyter:
       ignore_h1_titles: True
