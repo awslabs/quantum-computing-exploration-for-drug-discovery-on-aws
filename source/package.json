@@ -7,7 +7,7 @@
   },
   "scripts": {
     "test": "rm -fr lib && npm run test:compile && jest --passWithNoTests --all --updateSnapshot && eslint",
-    "build": "npm run synth",
+    "build": "npx cdk synth",
     "bump": "standard-version -i ../CHANGELOG.md",
     "test:watch": "jest --watch",
     "test:update": "jest --updateSnapshot",
