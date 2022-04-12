@@ -20,3 +20,5 @@ __pycache__
 global-s3-assets/
 regional-s3-assets/
 staging/
+_*.yml 
+_*.sh
