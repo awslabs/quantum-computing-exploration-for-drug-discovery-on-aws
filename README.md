@@ -120,7 +120,7 @@ Upon successfully cloning the repository into your local development environment
     │   │   ├── input-template.json
     │   │   ├── lambda
     │   │   │   ├── AthenaTableLambda
-    │   │   │   │   ├── index.js
+    │   │   │   │   ├── app.py
     │   │   │   ├── DeviceAvailableCheckLambda
     │   │   │   │   ├── Dockerfile
     │   │   │   │   ├── app.py

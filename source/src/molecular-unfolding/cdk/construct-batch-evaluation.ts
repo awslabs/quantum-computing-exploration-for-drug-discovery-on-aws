@@ -82,7 +82,7 @@ export class BatchEvaluation extends Construct {
   constructor(scope: Construct, id: string, props: BatchProps) {
     super(scope, id);
     this.props = props;
-    this.images = ECRImageUtil.newInstance(scope);
+    this.images = ECRImageUtil.newInstance();
     this.roleUtil = RoleUtil.newInstance(scope, this.props);
 
     this.lambdaUtil = LambdaUtil.newInstance(scope, this.props, {
@@ -455,7 +455,6 @@ export class BatchEvaluation extends Construct {
     const jobDef = this.batchUtil.createCCBatchJobDef('CCJob_Template', 2, 4);
 
     const stateJson = {
-      End: true,
       Type: 'Task',
       Resource: 'arn:aws:states:::batch:submitJob.sync',
       Parameters: {
@@ -474,15 +473,25 @@ export class BatchEvaluation extends Construct {
           }],
         },
       },
+      Catch: [
+        {
+          ErrorEquals: [
+            'States.TaskFailed',
+          ],
+          Next: 'Batch Job Complete',
+        },
+      ],
       ResultSelector: {
         'JobId.$': '$.JobId',
         'JobName.$': '$.JobName',
       },
     };
 
-    const customBatchSubmitJob = new sfn.CustomState(this, 'Run CC Batch Task', {
+    const customBatchSubmitJob = new sfn.CustomState(this, 'Run CC Batch Job', {
       stateJson,
     });
+
+    const batchJobCompleted = new sfn.Pass(this, 'Batch Job Complete');
 
     const parallelCCJobsMap = new sfn.Map(this, 'ParallelCCJobs', {
       maxConcurrency: 20,
@@ -494,7 +503,7 @@ export class BatchEvaluation extends Construct {
       },
       resultPath: '$.parallelCCJobsMap',
     });
-    parallelCCJobsMap.iterator(customBatchSubmitJob);
+    parallelCCJobsMap.iterator(customBatchSubmitJob.next(batchJobCompleted));
 
     const chain = sfn.Chain.start(parametersLambdaStep).next(parallelCCJobsMap);
 
@@ -588,6 +597,11 @@ export class BatchEvaluation extends Construct {
       resultPath: '$.watiForTokenStep',
       integrationPattern: sfn.IntegrationPattern.WAIT_FOR_TASK_TOKEN,
     });
+
+    submitQCTaskStep.addCatch(new sfn.Pass(this, 'Submit Error'), {
+      errors: [sfn.Errors.TASKS_FAILED],
+    });
+
     return submitQCTaskStep.next(waitForTokenStep);
   }
 
