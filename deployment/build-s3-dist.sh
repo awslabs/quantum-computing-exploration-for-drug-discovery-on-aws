@@ -206,7 +206,7 @@ else
     export SOLUTION_ECR_REPO_NAME
 fi
 
-export SOLUTIONS_PRE_BUILD_IMAGES=true
+export SOLUTION_PRE_BUILD_IMAGES=true
 
 #------------------------------------------------------------------------------
 # Validate command line parameters

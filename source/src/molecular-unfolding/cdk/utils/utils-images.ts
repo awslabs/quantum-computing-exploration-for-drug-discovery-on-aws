@@ -49,7 +49,7 @@ export class ECRImageUtil {
 
   public getECRImage(name: ECRRepoNameEnum): ecs.ContainerImage | lambda.DockerImageCode {
 
-    const usePreBuildImages = process.env.SOLUTIONS_PRE_BUILD_IMAGES || false;
+    const usePreBuildImages = process.env.SOLUTION_PRE_BUILD_IMAGES || false;
     const version = process.env.SOLUTION_VERSION || 'v1.0.0';
     const imagePrefix = process.env.IMAGE_PREFIX || '';
     const ecrAccount = process.env.SOLUTION_ECR_ACCOUNT || '';
