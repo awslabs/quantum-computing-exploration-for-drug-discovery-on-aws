@@ -27,7 +27,7 @@
     
     有关完整的输入参数和架构，请参考[输入规范](../batch-evaluation/#输入规范)。
 
-3. 按照[批量评估](../batch-evaluation/)中的步骤运行Step Functions。
+3. 按照[批量评估](../batch-evaluation/#start-execution)中的步骤运行Step Functions。
 
 ## 完全自定义评估代码
 
@@ -84,4 +84,4 @@
 
 6. 按照[批量评估](../batch-evaluation/)中的步骤运行您自己的代码。
 
-7. 通过QuickSight仪表板。
+7. 通过QuickSight仪表板[查看结果](../batch-evaluation/#view-dashboard)。
