@@ -67,46 +67,46 @@ describe('BatchEvaluation', () => {
   });
 
 
-  // test('bechmark main StateMachine', () => {
-  //   const app = new App();
-  //   const stack = new MainStack(app, 'test');
-  //   const template = Template.fromStack(stack);
-  //   //const startAtCapture = new Capture();
-  //   //const statesCapture = new Capture();
+  test('bechmark main StateMachine', () => {
+    const app = new App();
+    const stack = new MainStack(app, 'test');
+    const template = Template.fromStack(stack);
+    //const startAtCapture = new Capture();
+    //const statesCapture = new Capture();
 
-  //   template.hasResourceProperties('AWS::StepFunctions::StateMachine', {
-  //     DefinitionString: Match.objectLike({
-  //       'Fn::Join': [
-  //         '',
-  //         [
-  //           '{"StartAt":"Get Task Parameters","States":{"Get Task Parameters":{"Next":"ParallelCCJobs","Retry":[{"ErrorEquals":["Lambda.ServiceException","Lambda.AWSLambdaException","Lambda.SdkClientException"],"IntervalSeconds":2,"MaxAttempts":6,"BackoffRate":2}],"Type":"Task","OutputPath":"$.Payload","Resource":"arn:',
-  //           {
-  //             Ref: 'AWS::Partition',
-  //           },
-  //           ':states:::lambda:invoke","Parameters":{"FunctionName":"',
-  //           {
-  //             'Fn::GetAtt': [
-  //               Match.anyValue(),
-  //               'Arn',
-  //             ],
-  //           },
-  //           '","Payload":{"s3_bucket":"',
-  //           {
-  //             Ref: Match.anyValue(),
-  //           },
-  //           '","s3_prefix":"molecular-unfolding","param_type":"PARAMS_FOR_CC","execution_id.$":"$.execution_id","context.$":"$$"}}},"ParallelCCJobs":{"Type":"Map","ResultPath":"$.parallelCCJobsMap","End":true,"Parameters":{"ItemIndex.$":"$$.Map.Item.Index","ItemValue.$":"$$.Map.Item.Value","execution_id.$":"$.execution_id"},"Iterator":{"StartAt":"Run CC Batch Job","States":{"Run CC Batch Job":{"Next":"Batch Job Complete","Type":"Task","Resource":"arn:aws:states:::batch:submitJob.sync","Parameters":{"JobDefinition":"', {
-  //             Ref: Match.anyValue(),
-  //           },
-  //           "\",\"JobName.$\":\"States.Format('CCTask{}-{}', $.ItemIndex, $.ItemValue.task_name)\",\"JobQueue\":\"",
-  //           {
-  //             Ref: Match.anyValue(),
-  //           },
-  //           "\",\"ContainerOverrides\":{\"Command.$\":\"$.ItemValue.params\",\"ResourceRequirements\":[{\"Type\":\"VCPU\",\"Value.$\":\"States.Format('{}',$.ItemValue.vcpus)\"},{\"Type\":\"MEMORY\",\"Value.$\":\"States.Format('{}', $.ItemValue.memory)\"}]}},\"Catch\":[{\"ErrorEquals\":[\"States.TaskFailed\"],\"Next\":\"Batch Job Complete\"}],\"ResultSelector\":{\"JobId.$\":\"$.JobId\",\"JobName.$\":\"$.JobName\"}},\"Batch Job Complete\":{\"Type\":\"Pass\",\"End\":true}}},\"ItemsPath\":\"$.ccTaskParams\",\"MaxConcurrency\":20}}}",
-  //         ],
-  //       ],
-  //     }),
-  //   });
-  // });
+    template.hasResourceProperties('AWS::StepFunctions::StateMachine', {
+      DefinitionString: Match.objectLike({
+        'Fn::Join': [
+          '',
+          [
+            '{"StartAt":"Get Task Parameters","States":{"Get Task Parameters":{"Next":"ParallelCCJobs","Retry":[{"ErrorEquals":["Lambda.ServiceException","Lambda.AWSLambdaException","Lambda.SdkClientException"],"IntervalSeconds":2,"MaxAttempts":6,"BackoffRate":2}],"Type":"Task","OutputPath":"$.Payload","Resource":"arn:',
+            {
+              Ref: 'AWS::Partition',
+            },
+            ':states:::lambda:invoke","Parameters":{"FunctionName":"',
+            {
+              'Fn::GetAtt': [
+                Match.anyValue(),
+                'Arn',
+              ],
+            },
+            '","Payload":{"s3_bucket":"',
+            {
+              Ref: Match.anyValue(),
+            },
+            '","s3_prefix":"molecular-unfolding","param_type":"PARAMS_FOR_CC","execution_id.$":"$.execution_id","context.$":"$$"}}},"ParallelCCJobs":{"Type":"Map","ResultPath":"$.parallelCCJobsMap","End":true,"Parameters":{"ItemIndex.$":"$$.Map.Item.Index","ItemValue.$":"$$.Map.Item.Value","execution_id.$":"$.execution_id"},"Iterator":{"StartAt":"Run CC Batch Job","States":{"Run CC Batch Job":{"Next":"Batch Job Complete","Type":"Task","Resource":"arn:aws:states:::batch:submitJob.sync","Parameters":{"JobDefinition":"', {
+              Ref: Match.anyValue(),
+            },
+            "\",\"JobName.$\":\"States.Format('CCTask{}-{}', $.ItemIndex, $.ItemValue.task_name)\",\"JobQueue\":\"",
+            {
+              Ref: Match.anyValue(),
+            },
+            "\",\"ContainerOverrides\":{\"Command.$\":\"$.ItemValue.params\",\"ResourceRequirements\":[{\"Type\":\"VCPU\",\"Value.$\":\"States.Format('{}',$.ItemValue.vcpus)\"},{\"Type\":\"MEMORY\",\"Value.$\":\"States.Format('{}', $.ItemValue.memory)\"}]}},\"Catch\":[{\"ErrorEquals\":[\"States.TaskFailed\"],\"Next\":\"Batch Job Complete\"}],\"ResultSelector\":{\"JobId.$\":\"$.JobId\",\"JobName.$\":\"$.JobName\"}},\"Batch Job Complete\":{\"Type\":\"Pass\",\"End\":true}}},\"ItemsPath\":\"$.ccTaskParams\",\"MaxConcurrency\":20}}}",
+          ],
+        ],
+      }),
+    });
+  });
 
   test('has lambdas with image package type', () => {
     const app = new App();
