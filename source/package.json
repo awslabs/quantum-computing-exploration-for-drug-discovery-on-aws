@@ -43,6 +43,7 @@
     "@aws-cdk/aws-batch-alpha": "^2.18.0-alpha.0",
     "@aws-sdk/client-cloudformation": "^3.48.0",
     "aws-cdk-lib": "^2.18.0",
+    "aws-cdk": "^2.18.0",
     "cdk-bootstrapless-synthesizer": "^2.2.0",
     "constructs": "^10.0.0",
     "source-map-support": "^0.5.16"
