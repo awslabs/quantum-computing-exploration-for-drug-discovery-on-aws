@@ -36,7 +36,7 @@ def handler(event, context):
     ATHENA_OUTPUT_LOCATION = f"s3://{bucket}/{s3_prefix}/athena-out/"
     location = f"s3://{bucket}/{s3_prefix}/batch_evaluation_metrics/"
     createDBSql = "CREATE DATABASE IF NOT EXISTS qc_db"
-    
+    dropTableSql = f"DROP TABLE IF EXISTS qc_db.{table_name}"
     createTableSql = f'''
     CREATE EXTERNAL TABLE IF NOT EXISTS qc_db.{table_name} (
         Execution_Id string,
@@ -63,7 +63,7 @@ def handler(event, context):
     createViewSql = f"CREATE OR REPLACE VIEW qc_db.{view_name} AS SELECT h1.* FROM qc_db.{table_name} h1, (SELECT DISTINCT Execution_Id, Start_Time FROM qc_db.{table_name} ORDER BY Start_Time DESC LIMIT 20)  h2 WHERE (h1.Execution_Id = h2.Execution_Id)" #nosec B608
     querySql = f"SELECT * FROM qc_db.{view_name}" #nosec B608
 
-    sqlStmSeq = [createDBSql, createTableSql, createViewSql, querySql]
+    sqlStmSeq = [createDBSql, dropTableSql, createTableSql, createViewSql, querySql]
 
     for sqlStm in sqlStmSeq:
         log.info(sqlStm)
