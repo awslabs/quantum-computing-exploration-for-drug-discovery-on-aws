@@ -48,7 +48,7 @@ Take the molecular unfolding function for the prepared sample (117_idel.mol2) as
         <td>4.90 USD per day</td>
     <tr>
     <tr>
-        <td rowspan="16">Computing</td>
+        <td rowspan="9">Computing</td>
         <td>Amazon Braket</td>
         <td>D-Wave - DW_2000Q_6</td>
         <td>4 tasks for different parameters, 10000 shots/task</td>
@@ -60,36 +60,21 @@ Take the molecular unfolding function for the prepared sample (117_idel.mol2) as
         <td>4 tasks for different parameters, 10000 shots/task</td>
         <td>8.80 USD</td>
     <tr>
-    <tr>
+
+      <tr>
         <td>Amazon Batch (Fargate) </td>
         <td>2 VCPU 4G MEM</td>
-        <td>Tasks like creating models, 8 minutes (< 20 minutes)</td>
+        <td>build model task, 8 minutes(< 20 minutes)</td>
         <td>1.02 USD</td>
     <tr>
+
     <tr>
         <td>Amazon Batch (EC2) </td>
-        <td>2 VCPU 2G MEM</td>
-        <td>4 tasks for different parameters, 19 minutes(< 60 minutes)</td>
-        <td>0.09 USD</td>
-    <tr>
-    <tr>
-        <td>Amazon Batch (EC2) </td>
-        <td>4 VCPU 4G MEM</td>
-        <td>4 tasks for different parameters, 19 minutes(< 60 minutes)</td>
+        <td>4 VCPU 8G MEM</td>
+        <td>4 tasks for different parameters, 25 minutes(< 60 minutes)</td>
         <td>0.17 USD</td>
     <tr>
-    <tr>
-        <td>Amazon Batch (EC2) </td>
-        <td>8 VCPU 8G MEM</td>
-        <td>4 tasks for different parameters, 19 minutes(< 60 minutes)</td>
-        <td>0.34 USD</td>
-    <tr>
-    <tr>
-        <td>Amazon Batch (EC2) </td>
-        <td>16 VCPU 16G MEM</td>
-        <td>4 tasks for different parameters, 19 minutes(< 60 minutes)</td>
-        <td>0.68 USD</td>
-    <tr>
+    
     <tr>
         <td>AWS Lambda </td>
         <td>-</td>
@@ -138,6 +123,6 @@ Take the molecular unfolding function for the prepared sample (117_idel.mol2) as
     <tr> 
     <tr>
         <td colspan='4'>Total Cost</td>
-        <td>29.26 USD per day</td>
+        <td>28.21 USD per day</td>
     <tr>
 </table>

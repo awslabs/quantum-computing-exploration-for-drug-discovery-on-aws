@@ -31,7 +31,7 @@
         <td>每天4.90美金</td>
     <tr>
     <tr>
-        <td rowspan="16">计算</td>
+        <td rowspan="9">计算</td>
         <td>Amazon Braket</td>
         <td>D-Wave - DW_2000Q_6</td>
         <td>4个包含不同参数的任务, 每个任务10000次执行</td>
@@ -51,28 +51,11 @@
     <tr>
     <tr>
         <td>Amazon Batch (EC2) </td>
-        <td>2 VCPU 2G MEM</td>
-        <td>4个包含不同参数的任务, 19分钟（小于60分钟）</td>
-        <td>0.09美金</td>
-    <tr>
-    <tr>
-        <td>Amazon Batch (EC2) </td>
-        <td>4 VCPU 4G MEM</td>
-        <td>4个不同参数的任务, 19分钟（小于60分钟）</td>
+        <td>4 VCPU 8G MEM</td>
+        <td>4个不同参数的任务, 25分钟（小于60分钟）</td>
         <td>0.17美金</td>
     <tr>
-    <tr>
-        <td>Amazon Batch (EC2) </td>
-        <td>8 VCPU 8G MEM</td>
-        <td>4个包含不同参数的任务, 19分钟（小于60分钟）</td>
-        <td>0.34美金</td>
-    <tr>
-    <tr>
-        <td>Amazon Batch (EC2) </td>
-        <td>16 VCPU 16G MEM</td>
-        <td>4个包含不同参数的任务, 19分钟（小于60分钟）</td>
-        <td>0.68美金</td>
-    <tr>
+    
     <tr>
         <td>AWS Lambda </td>
         <td>-</td>
@@ -106,8 +89,23 @@
         <td>小于100运行</td>
         <td>0</td>
     <tr>
+
+     <tr>
+        <td rowspan='4'>网络</td>
+        <td>VPC 端点</td>
+        <td>Amazon S3</br>Amazon ECR</br>Amazon Athena</br>Amazon Braket</td>
+        <td>长时间运行</td>
+        <td>每月58.41美金</td>
+    <tr>
+    <tr>
+        <td>NAT 网关</td>
+        <td>-</td>
+        <td>长时间运行</td>
+        <td>每月65.78美金</td>
+    <tr> 
+
     <tr>
         <td colspan='4'>总花费</td>
-        <td>每天25.12美金</td>
+        <td>每天28.21美金</td>
     <tr>
 </table>
