@@ -132,7 +132,7 @@ cleanup_temporary_generted_files()
 
     # Delete generated files: CDK Consctruct typescript transcompiled generted files
     do_cmd cd $source_dir/
-    do_cmd npm run cleanup:tsc
+    #do_cmd npm run cleanup:tsc
 
     # Delete the temporary /staging folder
     do_cmd rm -rf $staging_dist_dir
