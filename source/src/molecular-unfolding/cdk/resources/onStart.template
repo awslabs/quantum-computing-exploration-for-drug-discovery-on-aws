@@ -15,7 +15,7 @@ pip3 install networkx==2.7.1
 pip3 install dwave-ocean-sdk==4.4.0
 pip3 install amazon-braket-sdk==1.18.0
 pip3 install amazon-braket-ocean-plugin==1.0.7
-pip3 install biopandas==0.2.9
+pip3 install biopandas==0.3.0
 pip3 install py3Dmol==1.8.0
 pip3 install ipywidgets==7.7.0
 
