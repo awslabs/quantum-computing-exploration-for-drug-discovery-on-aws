@@ -50,19 +50,10 @@ export class ECRImageUtil {
   public getECRImage(name: ECRRepoNameEnum): ecs.ContainerImage | lambda.DockerImageCode {
 
     const usePreBuildImages = process.env.SOLUTION_PRE_BUILD_IMAGES || false;
-    const version = process.env.SOLUTION_VERSION || 'v1.0.0';
-    const imagePrefix = process.env.IMAGE_PREFIX || '';
-    const ecrAccount = process.env.SOLUTION_ECR_ACCOUNT || '';
-    const repoName = process.env.SOLUTION_ECR_REPO_NAME || '';
-    const region = Stack.of(this.scope).region;
 
     if (name == ECRRepoNameEnum.Batch_Create_Model) {
-
       if (usePreBuildImages) {
-        return ecs.ContainerImage.fromEcrRepository(ecr.Repository.fromRepositoryAttributes(this.scope, 'Batch_Create_Model', {
-          repositoryName: `${repoName}`,
-          repositoryArn: `arn:aws:ecr:${region}:${ecrAccount}:repository/${repoName}`,
-        }), `${version}-${imagePrefix}Batch_Create_Model`);
+        return this.getECRRepository('Batch_Create_Model', 'batch');
       } else {
         return ecs.ContainerImage.fromAsset(
           path.join(__dirname, '../../'), {
@@ -73,12 +64,8 @@ export class ECRImageUtil {
 
     if (name == ECRRepoNameEnum.Batch_Sa_Optimizer) {
       if (usePreBuildImages) {
-        return ecs.ContainerImage.fromEcrRepository(ecr.Repository.fromRepositoryAttributes(this.scope, 'Batch_Sa_Optimizer', {
-          repositoryName: `${repoName}`,
-          repositoryArn: `arn:aws:ecr:${region}:${ecrAccount}:repository/${repoName}`,
-        }), `${version}-${imagePrefix}Batch_Sa_Optimizer`);
+        return this.getECRRepository('Batch_Sa_Optimizer', 'batch');
       } else {
-
         return ecs.ContainerImage.fromAsset(
           path.join(__dirname, '../../'), {
             file: 'batch-images/sa-optimizer/Dockerfile',
@@ -89,10 +76,7 @@ export class ECRImageUtil {
 
     if (name == ECRRepoNameEnum.Batch_Qa_Optimizer) {
       if (usePreBuildImages) {
-        return ecs.ContainerImage.fromEcrRepository(ecr.Repository.fromRepositoryAttributes(this.scope, 'Batch_Qa_Optimizer', {
-          repositoryName: `${repoName}`,
-          repositoryArn: `arn:aws:ecr:${region}:${ecrAccount}:repository/${repoName}`,
-        }), `${version}-${imagePrefix}Batch_Qa_Optimizer`);
+        return this.getECRRepository('Batch_Qa_Optimizer', 'batch');
       } else {
         return ecs.ContainerImage.fromAsset(
           path.join(__dirname, '../../'), {
@@ -103,12 +87,7 @@ export class ECRImageUtil {
 
     if (name == ECRRepoNameEnum.Lambda_CheckDevice) {
       if (usePreBuildImages) {
-        return lambda.DockerImageCode.fromEcr(ecr.Repository.fromRepositoryAttributes(this.scope, 'Lambda_CheckDevice', {
-          repositoryName: `${repoName}`,
-          repositoryArn: `arn:aws:ecr:${region}:${ecrAccount}:repository/${repoName}`,
-        }), {
-          tag: `${version}-${imagePrefix}Lambda_CheckDevice`,
-        });
+        return this.getECRRepository('Lambda_CheckDevice', 'lambda');
       } else {
         return lambda.DockerImageCode.fromImageAsset(
           path.join(__dirname, '../../'), {
@@ -119,12 +98,7 @@ export class ECRImageUtil {
 
     if (name == ECRRepoNameEnum.Lambda_ParseBraketResult) {
       if (usePreBuildImages) {
-        return lambda.DockerImageCode.fromEcr(ecr.Repository.fromRepositoryAttributes(this.scope, 'Lambda_ParseBraketResult', {
-          repositoryName: `${repoName}`,
-          repositoryArn: `arn:aws:ecr:${region}:${ecrAccount}:repository/${repoName}`,
-        }), {
-          tag: `${version}-${imagePrefix}Lambda_ParseBraketResult`,
-        });
+        return this.getECRRepository('Lambda_ParseBraketResult', 'lambda');
       } else {
         return lambda.DockerImageCode.fromImageAsset(
           path.join(__dirname, '../../'), {
@@ -132,7 +106,33 @@ export class ECRImageUtil {
           });
       }
     }
-
     throw new Error('Cannot find ecr: ' + name);
+  }
+
+  private getECRRepository(name: string, type: string): ecs.ContainerImage | lambda.DockerImageCode {
+
+    const ecrAccount = process.env.SOLUTION_ECR_ACCOUNT || '';
+    const repoName = process.env.SOLUTION_ECR_REPO_NAME || '';
+    const version = process.env.SOLUTION_VERSION || 'v1.0.0';
+    const imagePrefix = process.env.IMAGE_PREFIX || '';
+    const tag = `${version}-${imagePrefix}${name}`;
+    const region = Stack.of(this.scope).region;
+
+    if (type == 'lambda') {
+      return lambda.DockerImageCode.fromEcr(ecr.Repository.fromRepositoryAttributes(this.scope, name, {
+        repositoryName: `${repoName}`,
+        repositoryArn: `arn:aws:ecr:${region}:${ecrAccount}:repository/${repoName}`,
+      }), {
+        tag,
+      });
+    } else if (type == 'batch') {
+      return ecs.ContainerImage.fromEcrRepository(ecr.Repository.fromRepositoryAttributes(this.scope, name, {
+        repositoryName: `${repoName}`,
+        repositoryArn: `arn:aws:ecr:${region}:${ecrAccount}:repository/${repoName}`,
+      }), tag);
+    } else {
+      throw new Error('getECRRepository unknown type ' + type);
+    }
+
   }
 }
