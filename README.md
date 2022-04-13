@@ -67,94 +67,36 @@ For detailed description of architecture, please refer to the
 Upon successfully cloning the repository into your local development environment, you will see the following file structure in your editor:
 
 ```
-├── CODE_OF_CONDUCT.md
-├── CONTRIBUTING.md
-├── LICENSE
-├── NOTICE
-├── README.md
-├── docs
+├── CHANGELOG.md                  [Change log file]    
+├── CODE_OF_CONDUCT.md            [Code of conduct file] 
+├── CONTRIBUTING.md               [Contribution guide] 
+├── LICENSE                       [LICENSE for this solution] 
+├── NOTICE                        [Notice for 3rd-party libraries]
+├── README.md                     [Read me file]
+├── docs                          [Solution's document]
 │   ├── en
 │   ├── index.html
 │   ├── mkdocs.base.yml
 │   ├── mkdocs.en.yml
 │   ├── mkdocs.zh.yml
 │   └── zh
-└── source
+└── source                        [Solution's source and test code]
     ├── README.md
     ├── cdk.json
     ├── package-lock.json
     ├── package.json
-    ├── src
+    ├── src                       [Solution's source code]
     │   ├── main.ts
     │   ├── molecular-unfolding
-    │   │   ├── batch-images
-    │   │   │   ├── create-model
-    │   │   │   │   ├── Dockerfile
-    │   │   │   │   └── process.py
-    │   │   │   ├── qa-optimizer
-    │   │   │   │   ├── Dockerfile
-    │   │   │   │   └── process.py
-    │   │   │   └── sa-optimizer
-    │   │   │       ├── Dockerfile
-    │   │   │       └── process.py
+    │   │   ├── batch-images      
     │   │   ├── cdk
-    │   │   │   ├── construct-batch-evaluation.ts
-    │   │   │   ├── construct-dashboard.ts
-    │   │   │   ├── construct-listener.ts
-    │   │   │   ├── construct-notebook.ts
-    │   │   │   ├── resources
-    │   │   │   │   └── onStart.template
-    │   │   │   ├── stack-main.ts
-    │   │   │   └── utils
-    │   │   │       ├── custom-resource-lambda
-    │   │   │       │   └── create-event-rule
-    │   │   │       │       ├── index.ts
-    │   │   │       │       └── template.json
-    │   │   │       ├── custom-resource.ts
-    │   │   │       ├── utils-batch.ts
-    │   │   │       ├── utils-images.ts
-    │   │   │       ├── utils-lambda.ts
-    │   │   │       ├── utils-role.ts
-    │   │   │       ├── utils.ts
-    │   │   │       └── vpc.ts
-    │   │   ├── input-template.json
     │   │   ├── lambda
-    │   │   │   ├── AthenaTableLambda
-    │   │   │   │   ├── app.py
-    │   │   │   ├── DeviceAvailableCheckLambda
-    │   │   │   │   ├── Dockerfile
-    │   │   │   │   ├── app.py
-    │   │   │   │   └── requirements.txt
-    │   │   │   ├── ParseBraketResultLambda
-    │   │   │   │   ├── Dockerfile
-    │   │   │   │   └── app.py
-    │   │   │   ├── TaskParametersLambda
-    │   │   │   │   ├── app.py
-    │   │   │   │   └── test_app.py
-    │   │   │   └── WaitForTokenLambda
-    │   │   │       └── app.py
     │   │   ├── molecular_unfolding.ipynb
     │   │   ├── molecule-data
-    │   │   │   └── 117_ideal.mol2
-    │   │   ├── pytest
-    │   │   │   └── test_sample.py
     │   │   ├── requirements.txt
     │   │   └── utility
-    │   │       ├── AnnealerOptimizer.py
-    │   │       ├── GraphModel.py
-    │   │       ├── MolGeoCalc.py
-    │   │       ├── MoleculeParser.py
-    │   │       ├── QMUQUBO.py
-    │   │       ├── ResultProcess.py
-    │   │       └── __init__.py
     │   └── stack.ts
-    ├── test
-    │   ├── batchevaluation.test.ts
-    │   ├── dashboard.test.ts
-    │   ├── listener.test.ts
-    │   ├── main.test.ts
-    │   ├── notebook.test.ts
-    │   └── use_bss.test.ts
+    ├── test                      [Solution's unit test code]             
     ├── tsconfig.jest.json
     ├── tsconfig.json
     └── version.json
