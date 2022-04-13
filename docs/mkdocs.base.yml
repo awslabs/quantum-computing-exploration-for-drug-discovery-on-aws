@@ -24,4 +24,4 @@ extra:
       link: /quantum-ready-solution-for-drug-discovery/zh/
       lang: zh
   cf_template:
-      url: https://aws-gcr-solutions.s3.amazonaws.com/Quantum-Ready-Architecture-For-Drug-Discovery/v0.9.9/default/QCStack.template.json
+      url: https://aws-gcr-solutions.s3.amazonaws.com/Quantum-Ready-Architecture-For-Drug-Discovery/v0.9.10/default/QCStack.template.json
