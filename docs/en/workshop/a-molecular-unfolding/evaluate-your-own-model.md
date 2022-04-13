@@ -28,7 +28,7 @@ If you have your own mol2 file, follow below steps to batch evaluate it:
     
     For the complete input parameters and schema, please refer to [input specification](../batch-evaluation/#input-specification).
 
-3. Follow the steps in [Batch Evaluation](../batch-evaluation/) to run the Step Functions.
+3. Follow the steps in [Batch Evaluation](../batch-evaluation/#start-execution) to run the Step Functions.
 
 ## Fully customize evaluation code
 
@@ -84,4 +84,4 @@ If you want to fully customize the evaluation code, follow below steps to make c
 
 6. Follow steps in [Batch Evaluation](../batch-evaluation/) to run your own code with appropriate input.
 
-7. View result through QuickSight dashboard.
+7. [View result](../batch-evaluation/#view-dashboard) through QuickSight dashboard.
