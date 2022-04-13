@@ -8,6 +8,8 @@
 
 ## 部署概述
 
+确认执行部署的用户或IAM角色必须至少拥有[permissions](./workshop/a-molecular-unfolding/permissions.json)。
+
 在亚马逊云科技上部署本解决方案主要包括以下过程：
 
 - 步骤1：准备工作

@@ -9,6 +9,8 @@ Before you launch the solution, review the architecture, supported regions, and 
 
 ## Deployment Overview
 
+The user or IAM role to perform the deployment must have at least [permissions](./workshop/a-molecular-unfolding/permissions.json).
+
 - Step 1: Make preparations
     - Enable Amazon Braket service
     - Create IAM Role for QuickSight
