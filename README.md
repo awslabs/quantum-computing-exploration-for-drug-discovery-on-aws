@@ -67,94 +67,36 @@ For detailed description of architecture, please refer to the
 Upon successfully cloning the repository into your local development environment, you will see the following file structure in your editor:
 
 ```
-├── CODE_OF_CONDUCT.md
-├── CONTRIBUTING.md
-├── LICENSE
-├── NOTICE
-├── README.md
-├── docs
+├── CHANGELOG.md                  [Change log file]    
+├── CODE_OF_CONDUCT.md            [Code of conduct file] 
+├── CONTRIBUTING.md               [Contribution guide] 
+├── LICENSE                       [LICENSE for this solution] 
+├── NOTICE                        [Notice for 3rd-party libraries]
+├── README.md                     [Read me file]
+├── docs                          [Solution's document]
 │   ├── en
 │   ├── index.html
 │   ├── mkdocs.base.yml
 │   ├── mkdocs.en.yml
 │   ├── mkdocs.zh.yml
 │   └── zh
-└── source
+└── source                        [Solution's source and test code]
     ├── README.md
     ├── cdk.json
     ├── package-lock.json
     ├── package.json
-    ├── src
+    ├── src                       [Solution's source code]
     │   ├── main.ts
     │   ├── molecular-unfolding
-    │   │   ├── batch-images
-    │   │   │   ├── create-model
-    │   │   │   │   ├── Dockerfile
-    │   │   │   │   └── process.py
-    │   │   │   ├── qa-optimizer
-    │   │   │   │   ├── Dockerfile
-    │   │   │   │   └── process.py
-    │   │   │   └── sa-optimizer
-    │   │   │       ├── Dockerfile
-    │   │   │       └── process.py
+    │   │   ├── batch-images      
     │   │   ├── cdk
-    │   │   │   ├── construct-batch-evaluation.ts
-    │   │   │   ├── construct-dashboard.ts
-    │   │   │   ├── construct-listener.ts
-    │   │   │   ├── construct-notebook.ts
-    │   │   │   ├── resources
-    │   │   │   │   └── onStart.template
-    │   │   │   ├── stack-main.ts
-    │   │   │   └── utils
-    │   │   │       ├── custom-resource-lambda
-    │   │   │       │   └── create-event-rule
-    │   │   │       │       ├── index.ts
-    │   │   │       │       └── template.json
-    │   │   │       ├── custom-resource.ts
-    │   │   │       ├── utils-batch.ts
-    │   │   │       ├── utils-images.ts
-    │   │   │       ├── utils-lambda.ts
-    │   │   │       ├── utils-role.ts
-    │   │   │       ├── utils.ts
-    │   │   │       └── vpc.ts
-    │   │   ├── input-template.json
     │   │   ├── lambda
-    │   │   │   ├── AthenaTableLambda
-    │   │   │   │   ├── app.py
-    │   │   │   ├── DeviceAvailableCheckLambda
-    │   │   │   │   ├── Dockerfile
-    │   │   │   │   ├── app.py
-    │   │   │   │   └── requirements.txt
-    │   │   │   ├── ParseBraketResultLambda
-    │   │   │   │   ├── Dockerfile
-    │   │   │   │   └── app.py
-    │   │   │   ├── TaskParametersLambda
-    │   │   │   │   ├── app.py
-    │   │   │   │   └── test_app.py
-    │   │   │   └── WaitForTokenLambda
-    │   │   │       └── app.py
     │   │   ├── molecular_unfolding.ipynb
     │   │   ├── molecule-data
-    │   │   │   └── 117_ideal.mol2
-    │   │   ├── pytest
-    │   │   │   └── test_sample.py
     │   │   ├── requirements.txt
     │   │   └── utility
-    │   │       ├── AnnealerOptimizer.py
-    │   │       ├── GraphModel.py
-    │   │       ├── MolGeoCalc.py
-    │   │       ├── MoleculeParser.py
-    │   │       ├── QMUQUBO.py
-    │   │       ├── ResultProcess.py
-    │   │       └── __init__.py
     │   └── stack.ts
-    ├── test
-    │   ├── batchevaluation.test.ts
-    │   ├── dashboard.test.ts
-    │   ├── listener.test.ts
-    │   ├── main.test.ts
-    │   ├── notebook.test.ts
-    │   └── use_bss.test.ts
+    ├── test                      [Solution's unit test code]             
     ├── tsconfig.jest.json
     ├── tsconfig.json
     └── version.json
@@ -175,17 +117,3 @@ chmod +x ./run-all-tests.sh
 
 ```
 ***
-
-
-## Collection of Operational Metrics
-This solution collects anonymous operational metrics to help AWS improve the quality and features of the solution. For more information, including how to disable this capability, please see the [implementation guide](deep link into the documentation with specific information about the metrics and how to opt-out).
-
-***
-
-Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
-
-Licensed under the Apache License Version 2.0 (the "License"). You may not use this file except in compliance with the License. A copy of the License is located at
-
-    http://www.apache.org/licenses/
-
-or in the "license" file accompanying this file. This file is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, express or implied. See the License for the specific language governing permissions and limitations under the License.
