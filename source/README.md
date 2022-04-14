@@ -1,5 +1,5 @@
 
-# Deploy from source
+# Deploy From Source
 
 ## Regions
 
@@ -9,7 +9,7 @@
 | US West (Oregon) | us-west-2 |
 | Europe (London) | eu-west-2 |
 
-## Deploy from source
+## Deployment
 
 Deploy solution to your AWS account by [AWS CDK](https://docs.aws.amazon.com/cdk/v2/guide/home.html).
 ### Prerequisites
@@ -20,11 +20,12 @@ Deploy solution to your AWS account by [AWS CDK](https://docs.aws.amazon.com/cdk
 - Install Docker Engine
 - Install the dependencies of solution via executing command `npm install`
 - Initialize the CDK toolkit stack into AWS environment(only for deploying via AWS CDK first time, [doc](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_install))
-- Check Amazon Quicksight account in your AWS account([doc](https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/en/deployment/))
+- Make sure complete [Step 1: Make preparations](https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/en/deployment/#step-1-make-preparations).
 
 ### Deploy solution by AWS CDK
    
    * Get your Amazon Quicksight [user name](https://us-east-1.quicksight.aws.amazon.com/sn/admin#)
+   * Get your Amazon Quicksight [role name](https://us-east-1.quicksight.aws.amazon.com/sn/admin?#aws)
 
    * Run below command to deploy the solution.
 
