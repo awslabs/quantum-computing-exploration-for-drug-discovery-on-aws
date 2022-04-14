@@ -851,6 +851,7 @@
 <p>建议您在部署此解决方案之前<a href="https://docs.aws.amazon.com/zh_cn/AmazonCloudWatch/latest/monitoring/monitor_estimated_charges_with_cloudwatch.html">创建账单告警</a>以监控AWS估算费用。</p>
 </div>
 <h2 id="_1">部署概述</h2>
+<p>确认执行部署的用户或IAM角色必须至少拥有<a href="../workshop/a-molecular-unfolding/permissions.json">permissions</a>。</p>
 <p>在亚马逊云科技上部署本解决方案主要包括以下过程：</p>
 <ul>
 <li>步骤1：准备工作<ul>
@@ -1082,13 +1083,13 @@
 <h2 id="2cloudformation">步骤2：启动CloudFormation堆栈</h2>
 <ol>
 <li>
-<p>登录到AWS管理控制台，选择按钮<a href="https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/create/template?stackName=QRADDStack&amp;templateURL=https://aws-gcr-solutions.s3.amazonaws.com/Quantum-Ready-Architecture-For-Drug-Discovery/v0.9.10/default/QCStack.template.json">Launch Stack</a>以启动模板。您还可以选择直接下载模板进行部署。</p>
+<p>登录到AWS管理控制台，选择按钮<a href="https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/create/template?stackName=QRADDStack&amp;templateURL=https://aws-gcr-solutions.s3.amazonaws.com/Quantum-Ready-Architecture-For-Drug-Discovery/v0.9.11/default/QCStack.template.json">Launch Stack</a>以启动模板。您还可以选择直接下载模板进行部署。</p>
 </li>
 <li>
 <p>默认情况下，该模板将在您登录控制台后默认的区域启动，即美国西部（俄勒冈）区域。若需在指定的区域中启动该解决方案，请在控制台导航栏中的区域下拉列表中选择。</p>
 </li>
 <li>
-<p>在<strong>创建堆栈</strong>页面上，Amazon S3 URL文本框中会自动填写这个<a href="https://aws-gcr-solutions.s3.amazonaws.com/Quantum-Ready-Architecture-For-Drug-Discovery/v0.9.10/default/QCStack.template.json">模板URL</a>，请确认模板URL正确填写，然后选择<strong>下一步</strong>。</p>
+<p>在<strong>创建堆栈</strong>页面上，Amazon S3 URL文本框中会自动填写这个<a href="https://aws-gcr-solutions.s3.amazonaws.com/Quantum-Ready-Architecture-For-Drug-Discovery/v0.9.11/default/QCStack.template.json">模板URL</a>，请确认模板URL正确填写，然后选择<strong>下一步</strong>。</p>
 </li>
 <li>
 <p>在<strong>参数</strong>部分，查看此解决方案模板的参数并根据需要进行修改。</p>
