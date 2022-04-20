@@ -1,63 +1,49 @@
+# 默认的批量评估
+
+默认的批量评估将运行基于笔记本实验中的示例代码预构建的Amazon ECR镜像。
+
 您可以通过AWS Step Functions工作流程运行批量评估，并利用Amazon QuickSight控制面板查看评估结果。
 
-1. 从部署输出中获取AWS Step Functions链接，单击Step Functions链接导航至AWS Step Functions控制台。
+1. 登录[AWS CloudFormation控制台](https://console.aws.amazon.com/cloudformation/)。
 
-2. 选择**启动执行**。
+2. 在**堆栈**页面，选择本方案的堆栈。
+
+3. 选择**输出**页签，并点击AWS Step Functions链接。
+
+4. 选择**启动**。
     
-3. （可选）输入评估的相关内容。
+5. （可选）输入评估的相关内容。
 
      - 如果您不输入任何内容，它将使用默认输入。
      - 如果要自定义批量评估，请参考本节的[输入规范](#input-specification)。
 
-4. 点击**启动执行**，开始批量评估。
-    
-    默认批量评估大约需要15分钟。
+6. 点击**启动**，开始批量评估。默认批量评估大约需要25分钟。
 
-5. 批量评估完成后，从CloudFormation输出中获取仪表板链接，点击链接导航至仪表板，您可以在AWS QuickSight中查看整体的实验结果。
+7. 批量评估完成后，从CloudFormation输出中获取仪表板链接，点击链接导航至仪表板，您可以在AWS QuickSight中查看整体的实验结果。
 
-6. 您可以选择按照实验查看结果：by Experiment。
+8. 在仪表板中查看批量评估结果。
 
-    - Experiments history：显示所有实验的历史信息。您也可以单击每条实验名称，查看每个实验的历史信息。
-    - Task count：列出所有实验的任务数量。如果您从**Experiments hist**表中选中一行，那么将列出对应该实验的任务数量。
-    - QC vs. CC average：通过不同模型参数（X轴）比较QC和CC任务的平均执行时间（Y轴）。
-    - QC vs. CC by resource：通过不同模型参数（X轴）使用不同资源比较QC和CC任务的执行时间（Y轴）（对于QC是不同QPU设备，对于CC是不同的内存和vCPU）。 
-    - QC by devices：通过不同的模型参数（X轴）比较不同QPU设备的执行时间（Y轴）。
-    - CC by resources：通过不同的模型参数（X轴）比较不同CC资源（内存和vCPU）的执行时间（Y轴）。
-    - Records：列出所选实验中每个任务的详细信息（如果没有选择实验，则列出所有）。
+    - Experiments history：显示所有实验的历史信息。您也可以点击每条实验名称，查看每个实验的历史信息。
+    - Comparison of end to end time of the quantum solver with classical solver：通过不同模型复杂度（X轴）比较QC和CC任务在不同求解器上端到端执行时间（Y轴）（如果没有选择实验，则计算平均时间）。
+    - Comparison of running time of the quantum solver with classical solver：通过不同模型复杂度（X轴）比较QC和CC任务在不同求解器上实际运行时间（Y轴）（如果没有选择实验，则计算平均时间）。
+    - Experiments data：列出所选实验中每个任务的详细信息（如果没有选择实验，则列出所有）。
 
         | 字段  | 说明  |
         |---|---|
         | compute_type  | 计算类型。CC或QC。  |
-        | resource  | 资源名称。对于不同QPU设备的QC，对于不同内存-vCPU的CC。  |
-        | param  | 模型参数。</br>**M**：扭转次数； </br>**D**：旋转角度精度；</br> **HQ**：hubo-qubo 值，能量惩罚；</br> **A**：惩罚项 |
-        | opt_params  | 优化器参数。  |
-        | task_duration  | 任务执行时间，以秒为单位。  |
-        | time_info | 对于QC，不同维度的QC任务时间，`total_time`是**task_duration**，对于CC，`local_time`是**task_duration**。  |
+        | complexity  | 模型复杂度。等于D*M的值。  |
+        | end_to_end_time  | 端到端时间，以秒为单位。  |
+        | running_time  | 任务实际的执行时间，以秒为单位。  |
+        | resource  | 资源名称。QPU设备的QC，内存vCPU的CC。  |
+        | model_param  | 模型参数。</br>M：扭转次数；</br>D：旋转角度精度；</br>HQ：hubo-qubo 值，能量惩罚；</br>A：惩罚项  |
+        | opt_param  | 优化器参数。 |
+        | time_info | 对于QC，不同维度的QC任务时间，`local_time`是end_to_end_time，`total_time`是running_time；对于CC，`local_time`是end_to_end_time，也是running_time。  |
         | execution_id  |Step Functions执行ID。 |
         | experiment_name  | 实验名称，如果输入`experimentName`不为空，则为`execution start time + input experimentName`，否则为`execution start time +execution_id`。  |
-        | task_id  | 对于QC任务，为Braket任务id；对于CC，为空。 |
         | result_detail  | 分子展开前后的体积大小。  |
-        |  result_location | 展开后的分子mol2文件。  |
+        | result_location | 展开后的分子mol2文件。  |
 
-
-8. 您也可以切换维度按照资源查看结果：by Resource。
-    
-    您可以查看每个资源和QPU设备的批量评估结果。
-
-    * 计算类型和资源
-   
-    它列出了批处理评估中的所有资源，对于QC来说，资源是QPU设备，对于CC来说，资源是内存和vCPU。表格中的项目是可点击的，当您单击一个项目（意味着您选择它）时，此工作表中的指标将切换到该项目。如果未选择任何项目，则显示平均指标。
-
-
-    * 实验历史
-    
-    它使用不同的模型参数按实验名称（X轴，按时间排序）显示所选资源的执行时间（Y轴）。
-
-    * 记录表
-   
-    此表与按实验查看结果的表相同。
-
-### 输入规范
+## 输入规范
 
 您可以使用json输入自定义评估参数。
 
@@ -88,7 +74,7 @@
 
 ```
 
-!!! 说明
+!!! Notice "说明"
 
     所有字段都是可选的。
 
@@ -99,7 +85,7 @@
   * **mol2文件**: mol2文件的S3 URL
   * **modelVersion**：模型版本，默认为`latest`
   * **experimentName**：批量评估的名称
-  * **optParams**：优化器参数, 为QC(qa)和CC(sa)任务设置shots值
+  * **optParams**：优化器参数，为QC(qa)和CC(sa)任务设置shots值
   * **modelParams**：模型参数，M：扭转数，D：旋转角度精度。详情请参考[建立模型-技术细节](./build-model-detail.md)。有效值：
 
          M: [1, 2, 3, 4, 5, 6, 7]
@@ -117,9 +103,9 @@
         arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6
         arn:aws:braket:::device/qpu/d-wave/Advantage_system4
       
-  * **ccResources**：GiB 中的内存（第一个元素）和 vCPU（第二个元素），例如4GiB 内存和 2 个 vCPU 是：`[4, 2]`
+  * **ccResources**：vCPU（第一个元素）和 GiB中的内存（第二个元素），例如4个vCPU，8GiB内存是：`[4, 8]`
 
-典型（默认）输入：
+使用默认mol2文件的输入示例：
 
 ```json
 {
@@ -142,10 +128,28 @@
         "arn:aws:braket:::device/qpu/d-wave/Advantage_system4"
     ],
     "ccResources": [
-        [2, 2],
-        [4, 4],
-        [8, 8],
-        [16, 16]
+        [4, 8]
     ]
 }
 ```
+
+如果您有mol2文件，可以按照以下步骤批量评估：
+
+1. 将您的mol2文件上传到CloudFormation输出中的S3存储桶，或您自己的S3存储桶。如果您想使用自己的S3存储桶，存储桶名称必须遵循以下格式：`braket-*` 或 `amazon-braket-*`。
+
+2. 在Step Functions输入中将mol2文件的S3 uri指定为`molFile` 的值。
+
+     
+        {
+            "molFile" : "<您的 mol2 文件的 s3 uri>"
+        }
+   
+
+       例如
+    
+        {
+           “molFile”：“s3://amazon-braket-gcr-qc-sol-common/qc/raw_model/117_ideal.mol2”
+        }
+
+    
+

@@ -1,5 +1,5 @@
 INHERIT: ./mkdocs.base.yml
-site_name: 药物发现量子计算解决方案
+site_name: 量子计算探索之药物发现方案
 docs_dir: zh
 site_dir: ./site/zh
 edit_uri: edit/main/docs/zh/
