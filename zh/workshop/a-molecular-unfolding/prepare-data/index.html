@@ -15,7 +15,7 @@
     
     
       
-        <title>准备数据 - 药物发现量子计算解决方案</title>
+        <title>准备数据 - 量子计算探索之药物发现方案</title>
       
     
     
@@ -74,7 +74,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="页眉">
-    <a href="../../.." title="药物发现量子计算解决方案" class="md-header__button md-logo" aria-label="药物发现量子计算解决方案" data-md-component="logo">
+    <a href="../../.." title="量子计算探索之药物发现方案" class="md-header__button md-logo" aria-label="量子计算探索之药物发现方案" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
@@ -87,7 +87,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            药物发现量子计算解决方案
+            量子计算探索之药物发现方案
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -200,13 +200,13 @@
 
 <nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../.." title="药物发现量子计算解决方案" class="md-nav__button md-logo" aria-label="药物发现量子计算解决方案" data-md-component="logo">
+    <a href="../../.." title="量子计算探索之药物发现方案" class="md-nav__button md-logo" aria-label="量子计算探索之药物发现方案" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
 
     </a>
-    药物发现量子计算解决方案
+    量子计算探索之药物发现方案
   </label>
   
     <div class="md-nav__source">
@@ -1745,7 +1745,15 @@ Licensed under the Apache License, Version 2.0.
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>本节介绍如何加载原始的分子数据。您也可以选择使用CloudFormation默认生成的资源。</p>
+<p>按照以下步骤加载原始的分子数据。</p>
+<ol>
+<li>从<a href="https://www.rcsb.org/downloads/ligands">Protein Data Bank</a> (PDB)中找到并下载mol2格式的分子文件。本示例使用的是<a href="http://www.rcsb.org/ligand/117">117配体</a>。 </li>
+<li>把分子文件上传到该目录<strong>source/src/molecular-folding/molecule-data</strong>。</li>
+<li>修改参数 'raw_path' 为文件的相对路径。</li>
+<li><p>修改参数 's3_bucket' 和 'prefix'，用于存储优化结果。</p>
+<p><strong>说明</strong>：您也可以使用CloudFormation输出里面的S3桶名。</p>
+</li>
+</ol>
 
 </div>
 </div>
@@ -1922,8 +1930,7 @@ This molecule has 23 rotable bond
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>本实验中使用的<a href="http://www.rcsb.org/ligand/117">117 配体</a>文件存储在代码库中，参数<strong>raw_path</strong>用于设置配体文件的相对路径，参数<strong>s3_bucket</strong>和<strong>prefix</strong>用于存储优化结果。</p>
-<p>运行结束，处理后的数据将保存为<strong>qmu_117_ideal_data_latest.pickle</strong>，同时<strong>data_path</strong>将被更新。我们可以看到这个分子有23个可旋转的键。</p>
+<p>运行结束，处理后的数据将保存为<strong>qmu_117_ideal_data_latest.pickle</strong>，同时<strong>data_path</strong>将被更新。可以看到这个分子有23个可旋转的键。</p>
 
 </div>
 </div>

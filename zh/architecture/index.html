@@ -15,7 +15,7 @@
     
     
       
-        <title>架构概览 - 药物发现量子计算解决方案</title>
+        <title>架构概览 - 量子计算探索之药物发现方案</title>
       
     
     
@@ -69,7 +69,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="页眉">
-    <a href=".." title="药物发现量子计算解决方案" class="md-header__button md-logo" aria-label="药物发现量子计算解决方案" data-md-component="logo">
+    <a href=".." title="量子计算探索之药物发现方案" class="md-header__button md-logo" aria-label="量子计算探索之药物发现方案" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
@@ -82,7 +82,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            药物发现量子计算解决方案
+            量子计算探索之药物发现方案
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -195,13 +195,13 @@
 
 <nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="药物发现量子计算解决方案" class="md-nav__button md-logo" aria-label="药物发现量子计算解决方案" data-md-component="logo">
+    <a href=".." title="量子计算探索之药物发现方案" class="md-nav__button md-logo" aria-label="量子计算探索之药物发现方案" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
 
     </a>
-    药物发现量子计算解决方案
+    量子计算探索之药物发现方案
   </label>
   
     <div class="md-nav__source">
@@ -671,18 +671,38 @@
 
 <p>使用默认参数部署解决方案后，在AWS中构建的环境如下图所示。</p>
 <p><img alt="architecture" src="../images/architecture.png" /></p>
-<p>图1：药物发现量子计算解决方案架构图</p>
-<p>本解决方案在您的AWS账户中部署AWS CloudFormation模板，并完成以下配置:</p>
+<p>图1：量子计算探索之药物发现方案架构图</p>
+<p>本方案在您的AWS账户中部署AWS CloudFormation模板，并实现三大模块的功能:</p>
+<ul>
+<li>笔记本实验</li>
+<li>批量评估</li>
+<li>可视化</li>
+</ul>
+<div class="admonition notice">
+<p class="admonition-title">说明</p>
+<ul>
+<li>
+<p>本方案所有计算资源（AWS Batch计算环境和AWS Lambda）都放在<a href="https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html">Amazon VPC</a>私有子网中，从而保证安全访问。</p>
+</li>
+<li>
+<p>本方案为Amazon ECR、Amazon S3、Amazon Athena和Amazon Braket创建了<a href="https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints.html">VPC Endpoints</a>。</p>
+</li>
+</ul>
+</div>
+<p>笔记本实验</p>
 <ol>
 <li>
 <p>本方案部署一个笔记本实例，从而允许<a href="https://docs.aws.amazon.com/sagemaker/latest/dg/nbi.html">Amazon SageMaker Notebook</a>用户进行<strong>笔记本实验</strong>。</p>
 </li>
 <li>
-<p>笔记本附带针对不同药物发现问题的示例代码，如分子展开等。用户可以学习如何利用经典计算或通过访问<a href="https://aws.amazon.com/braket/">Amazon Braket</a>利用量子计算研究这些问题（2）。详情请参考<a href="../workshop/background/">动手实验</a>。</p>
+<p>笔记本附带针对不同药物发现问题的示例代码，如分子展开等。</p>
 </li>
 <li>
 <p>在公共<a href="https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Subnets.html">子网</a>中创建了<a href="https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html">NAT网关</a>，并通过<a href="https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Internet_Gateway.html">Internet网关</a>连接互联网。笔记本实例部署在私有子网中，它通过NAT网关访问互联网。</p>
 </li>
+</ol>
+<p>批量评估</p>
+<ol>
 <li>
 <p>本方案使用<a href="https://aws.amazon.com/step-functions/">AWS Step Functions</a>工作流进行<strong>批量评估</strong>。</p>
 </li>
@@ -699,33 +719,27 @@
 <p>对于经典计算，AWS Batch任务会在本地评估药物发现中的问题，然后把结果存放到<a href="https://aws.amazon.com/s3/">Amazon S3</a>。</p>
 </li>
 <li>
-<p>对于量子计算，AWS Batch会以异步的方式把任务提交到Amazon Braket，把它变成Amazon Braket任务。</p>
+<p>对于量子计算，AWS Batch会以异步的方式把任务提交到Amazon Braket。</p>
 </li>
 <li>
-<p>当一个Amazon Braket任务结束后，它会把输出存放在S3桶里，并触发一个<a href="https://aws.amazon.com/eventbridge/">Amazon EventBridge</a>事件。</p>
+<p>当一个Amazon Braket任务结束后，它会把输出存放在S3桶里的一个文件，并触发一个<a href="https://aws.amazon.com/eventbridge/">Amazon EventBridge</a>事件。</p>
 </li>
 <li>
-<p><a href="https://aws.amazon.com/lambda">AWS Lambda</a>由Amazon EventBridge事件触发，它会解析Braket任务存储在S3上的输出文件，并把解析后的结果放到S3，并向AWS Step Functions工作流发送一个回调。</p>
+<p><a href="https://aws.amazon.com/lambda">AWS Lambda</a>由Amazon EventBridge事件触发，它会解析Braket任务/作业存储在S3上的输出文件，并把解析后的结果放到S3，并向AWS Step Functions工作流发送一个回调。</p>
 </li>
 <li>
 <p>当批量评估完成后，AWS Step Functions工作流会向<a href="https://aws.amazon.com/sns/">Amazon SNS</a>发送一个通知，所有订阅了该主题的<a href="../deployment/">订阅者</a>会收到此通知。</p>
 </li>
+</ol>
+<p>可视化</p>
+<ol>
 <li>
 <p>在AWS Step Functions工作流执行过程中，会创建一个<a href="https://docs.aws.amazon.com/athena/latest/ug/what-is.html">Amazon Athena</a>表用于可视化。</p>
 </li>
 <li>
-<p>您可以通过<a href="https://aws.amazon.com/quicksight/">Amazon QuickSight</a>来查看<strong>批量评估</strong>的结果。</p>
+<p>您可以通过<a href="https://aws.amazon.com/quicksight/">Amazon QuickSight</a>来查看<strong>批量评估</strong>的结果。默认情况下，方案提供不同资源的运行时间做为指标。</p>
 </li>
 </ol>
-<p>备注： </p>
-<ul>
-<li>
-<p>本方案所有计算资源（AWS Batch计算环境和AWS Lambda）都放在<a href="https://docs.aws.amazon.com/vpc/latest/userguide/what-is-amazon-vpc.html">Amazon VPC</a>私有子网中。</p>
-</li>
-<li>
-<p>本方案为Amazon ECR、Amazon S3、Amazon Athena和Amazon Braket创建了<a href="https://docs.aws.amazon.com/vpc/latest/privatelink/vpc-endpoints.html">VPC Endpoints</a>。</p>
-</li>
-</ul>
 
               
             </article>

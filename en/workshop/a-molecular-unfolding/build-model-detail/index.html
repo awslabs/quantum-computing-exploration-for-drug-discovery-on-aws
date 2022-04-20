@@ -60,7 +60,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#problem-definition" class="md-skip">
+        <a href="#model-code" class="md-skip">
           Skip to content
         </a>
       
@@ -506,56 +506,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#problem-definition" class="md-nav__link">
-    Problem Definition
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#formulation" class="md-nav__link">
-    Formulation
-  </a>
-  
-    <nav class="md-nav" aria-label="Formulation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#constraint-1" class="md-nav__link">
-    constraint-1
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#constraint-2" class="md-nav__link">
-    constraint-2
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#model-code" class="md-nav__link">
     Model code
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
-  
-</li>
       
         <li class="md-nav__item">
   <a href="#quantum-annealing" class="md-nav__link">
-    Quantum Annealing
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#reference" class="md-nav__link">
-    Reference
+    Quantum annealing
   </a>
   
 </li>
@@ -778,56 +737,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#problem-definition" class="md-nav__link">
-    Problem Definition
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#formulation" class="md-nav__link">
-    Formulation
-  </a>
-  
-    <nav class="md-nav" aria-label="Formulation">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#constraint-1" class="md-nav__link">
-    constraint-1
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
-  <a href="#constraint-2" class="md-nav__link">
-    constraint-2
-  </a>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#model-code" class="md-nav__link">
     Model code
   </a>
   
 </li>
-        
-      </ul>
-    </nav>
-  
-</li>
       
         <li class="md-nav__item">
   <a href="#quantum-annealing" class="md-nav__link">
-    Quantum Annealing
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#reference" class="md-nav__link">
-    Reference
+    Quantum annealing
   </a>
   
 </li>
@@ -849,55 +767,26 @@
 </a>
 
 
-<h3 id="problem-definition">Problem Definition</h3>
-<p>In this problem, the ligand is considered as a flexible set of atoms. Strictly speaking, it can be seen as a set of chemical bonds (edges). These bonds have fixed length and only a subset of them are rotatable. Because there are some rotatable bonds (torsions), the molecule is split into different disjointed fragments. Take one bond for instance, the rightmost rotatable one, it splits the molecule into the left and right fragments. These fragments can rotate independently from each other around the axis of the bond. This idea is graphically reported in the following figure. </p>
-<p><img alt="Rotatable Bonds" src="../../../images/rotatable-bonds.png" />
- Figure 1: Rotatable Bonds <a href="#qmu-paper"><sup>1</sup></a></p>
-<p>As it indicates, the objective of MU is to find the shape of the ligand that can maximizes the molecular volume. The shape of the ligand can be expressed as the unfolded shape of the ligand (the torsion configuration of all the rotatable bonds).</p>
-<h3 id="formulation">Formulation</h3>
-<p>Suppose the ligand has <span class="arithmatex">\(M\)</span> torsions, from <span class="arithmatex">\(T_i\)</span> to <span class="arithmatex">\(T_M\)</span>, and each torsion must have the angle of rotation <span class="arithmatex">\(\theta\)</span>.</p>
-<p><img alt="Multiple Torsion" src="../../../images/multiple-torsion.png" /></p>
-<p>Figure 2: Multiple Torsion</p>
-<p>The objective of this model is to find the unfolded torsion configuration <span class="arithmatex">\({\Theta}^{unfold}\)</span> which can maximizes the sum of distances <span class="arithmatex">\(D(\Theta)\)</span>:</p>
-<div class="arithmatex">\[ {\Theta}^{unfold} = [\theta^{unfold}_1,  \theta^{unfold}_2, ../..., \theta^{unfold}_M] \]</div>
-<div class="arithmatex">\[ D(\Theta) = \sum_{a,b}D_{a,b}(\theta)^2 \]</div>
-<p>The <span class="arithmatex">\(D_{a,b}(\theta)^2\)</span> is <span class="arithmatex">\(|| \overrightarrow{a}_0 - R(\theta)\overrightarrow{b}_0||^2\)</span>. 
-This is the distance between fragment a and b. <span class="arithmatex">\(R(\theta)\)</span> is the rotation matrix associated the torsion angle 
-<span class="arithmatex">\(\theta\)</span>.</p>
-<p><img alt="Two Frag One Tor" src="../../../images/two-frag-one-torsion.png" /></p>
-<p>Figure 3: Two Fragment with One Torsion</p>
-<p>Since this is the problem of portfolio optimization, the final configuration can be the combination of any angle of any torsion. However, there are some constraints for applying it to real problem: </p>
-<h4 id="constraint-1">constraint-1</h4>
-<p>In terms of the limitation of computation resource, the torsion cannot have the rotation with infinitely small precision. This means that there are limited candidates of rotation angles for each torsion. Suppose we have <span class="arithmatex">\(M\)</span> torsions and they have the same precision of rotation angle: <span class="arithmatex">\(\Delta\theta\)</span> . This means that we need <span class="arithmatex">\(d\)</span> variables for each torsion:</p>
-<div class="arithmatex">\[ d = \frac{2\pi}{\Delta\theta} \]</div>
-<p>For the whole model, we need <span class="arithmatex">\(n = d \times M\)</span> binary variables <span class="arithmatex">\(x_{ik}\)</span> to represent all the combinations. For example, for the torsion <span class="arithmatex">\(T_i\)</span>, its torsion angle <span class="arithmatex">\(\theta_i\)</span> can have 
-<span class="arithmatex">\(d\)</span> possible values:</p>
-<div class="arithmatex">\[ \theta_i = [\theta_i^1,\theta_i^2,\theta_i^3, ..., \theta_i^d] \]</div>
-<h4 id="constraint-2">constraint-2</h4>
-<p>If we only consider the distance, the final result or configuration may have multiple results from the same torsion as long as this combination means smaller distance. For example, there may be two binary variables of the same torsion, <span class="arithmatex">\(T_1\)</span>, in the final result:</p>
-<div class="arithmatex">\[ {\Theta}^{unfold} = [\theta^2_1,  \theta^4_1, ../..., \theta^3_M] \]</div>
-<p>This cannot happen in real world. <span class="arithmatex">\(T_1\)</span> can only have one of <span class="arithmatex">\(d\)</span> angles finally. So we need to integrate the following constraint into our final model:</p>
-<div class="arithmatex">\[ \displaystyle\sum\limits_{k=1}^{d} x_{ik} = 1 \]</div>
-<p>With these two constraints, this problem can be formulated as the High-order Unconstrained Binary Optimization (HUBO).</p>
-<div class="arithmatex">\[ O(x_{ik}) = A\displaystyle\sum\limits_i (\displaystyle\sum\limits_{k=1}^d x_{ik}-1)^2 - \displaystyle\sum\limits_{a,b} D_{ab} (\theta)^2 \]</div>
-<p>The first part is the constraint for each torsion. If one torsion has more than one angles at last, we will add the punishment term <span class="arithmatex">\(A\)</span>. However, in this implementation we calculate the distance-pair under different configuration in advance. This means that we use the absolute distance instead:</p>
+  <h1>Build Model (Technical Details)</h1>
+
+<p>In the quantum molecular unfolding sample code, the solution uses largely the framework of the original author with some changes. Instead of using the HUBO optimization function defined by the original author, the solution uses the below absolute distance instead. The method is named “pre-calc” in the code.</p>
 <div class="arithmatex">\[ O(x_{ik}) = A\displaystyle\sum\limits_i (\displaystyle\sum\limits_{k=1}^d x_{ik}-1)^2 - \displaystyle\sum\limits_{a,b} |D_{ab} (\theta)| \]</div>
-<h4 id="model-code">Model code</h4>
-<p>We have implemented this model in <strong>source/src/molecualr-unfolding/untiliy/QMUQUBO.py</strong>.
-We initialize the variables using the following logic:</p>
+<h2 id="model-code">Model code</h2>
+<p>The source code for this model is placed in the file <strong>source/src/molecualr-unfolding/untiliy/QMUQUBO.py</strong>.</p>
+<p>The following code shows how to initialize the variables:</p>
 <div class="admonition notice">
 <p class="admonition-title">Note</p>
-<p>The following codes are for describing the ideas to build the model. We can find similar codes in the source code.</p>
+<p>It describes the ideas to build the model. You can find similar codes in the source code file.</p>
 </div>
 <p><img alt="Var Init" src="../../../images/var-init.png" /></p>
-<p>Figure 4: The logic for defining the variables</p>
-<p>The above code indicates that we have 4 torsions from <span class="arithmatex">\(x\_1\_?\)</span> to <span class="arithmatex">\(x\_4\_?\)</span>. Each torsion has four optional rotation angles from <span class="arithmatex">\(0^o\)</span> to <span class="arithmatex">\(270^o\)</span>. For example, <span class="arithmatex">\(x\_3\_2\)</span> means that the torsion 3 rotates <span class="arithmatex">\(180^o\)</span>.</p>
-<p>For constraints, we use the following logic to implement: </p>
+<p>Figure 8: The logic for defining the variables</p>
+<p>The above code indicates that we have 4 torsions from <span class="arithmatex">\(x\_1\_?\)</span> to <span class="arithmatex">\(x\_4\_?\)</span>. Each torsion has four optional rotation angles from <span class="arithmatex">\(0^o\)</span> to <span class="arithmatex">\(270^o\)</span>. For example, <span class="arithmatex">\(x\_3\_2\)</span> means that the torsion 3 rotates <span class="arithmatex">\(90^o\)</span>, and <span class="arithmatex">\(x\_4\_2\)</span> means torsion 4 rotates <span class="arithmatex">\(0^o\)</span>.</p>
+<p>The following code shows how to implement constraints: </p>
 <p><img alt="Constraint" src="../../../images/constraint.png" /></p>
-<p>Figure 5: The Logic for defining the constraints</p>
-<p>As we analyzed before, the model does not know which variables belong to the same physical torsion. For example, <span class="arithmatex">\(x\_1\_1\)</span> , <span class="arithmatex">\(x\_1\_2\)</span>, <span class="arithmatex">\(x\_1\_3\)</span> 
-and <span class="arithmatex">\(x\_1\_4\)</span> belong to the same torsion. The model can only let one of them become <span class="arithmatex">\(1\)</span>. If the model choose multiple of them, we must punish it. As the figure shown, when the model choose more than one variables of <span class="arithmatex">\(x\_1\_?\)</span> to become <span class="arithmatex">\(1\)</span>, we give it the punishment term <span class="arithmatex">\(600\)</span> (This example is for <span class="arithmatex">\(A=300\)</span>). </p>
-<p>Most importantly, we use the following method to recursively calculate the distances for different configurations:</p>
+<p>Figure 9: The Logic for defining the constraints</p>
+<p>The model may generate unexpected results, for example, four binary variables <span class="arithmatex">\(x\_1\_1\)</span> , <span class="arithmatex">\(x\_1\_2\)</span>, <span class="arithmatex">\(x\_1\_3\)</span> 
+and <span class="arithmatex">\(x\_1\_4\)</span> belong to the same torsion <span class="arithmatex">\(1\)</span>. In reality, only one of them can become <span class="arithmatex">\(1\)</span>. If more than one of them become <span class="arithmatex">\(1\)</span>, a penalty term will be added. As the figure shows, when the model chooses more than one variables of <span class="arithmatex">\(x\_1\_?\)</span> to become <span class="arithmatex">\(1\)</span>, it has the penalty term <span class="arithmatex">\(600\)</span> (This example is for <span class="arithmatex">\(A=300\)</span>). </p>
+<p>The following code shows how to recursively calculate the distances for different configurations:</p>
 <div class="codehilite"><pre><span></span><code><span class="n">def</span><span class="w"> </span><span class="n">update_hubo</span><span class="p">(</span><span class="n">torsion_group</span><span class="p">,</span><span class="w"> </span><span class="n">up_list</span><span class="p">,</span><span class="w"> </span><span class="n">ris</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
 <span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nf">len</span><span class="p">(</span><span class="n">torsion_group</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">1</span><span class="err">:</span><span class="w"></span>
 <span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="n">d</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="k">range</span><span class="p">(</span><span class="n">D</span><span class="p">)</span><span class="err">:</span><span class="w"></span>
@@ -943,22 +832,17 @@ and <span class="arithmatex">\(x\_1\_4\)</span> belong to the same torsion. The 
 <span class="w">        </span><span class="n">f</span><span class="ss">&quot;elapsed time for torsion group {ris} : {(end-start)/60} min&quot;</span><span class="p">)</span><span class="w"></span>
 </code></pre></div>
 
-<h3 id="quantum-annealing">Quantum Annealing</h3>
-<p>The quantum annealing (QA) can be seen as a variation of the simulated annealing (SA). Both QA and SA are meta-heuristic technique to address challenging combinatorial problems. QA uses the quantum fluctuation to explore the configuration space instead of thermal effects. Here, we use Amazon Braket API to access the Canadian company D-Wave. This annealer is implemented using superconductive qubits. Natively, the QUBO can be solved using quantum annealer:</p>
+<h2 id="quantum-annealing">Quantum annealing</h2>
+<p>Quantum annealing (QA) can be seen as a variation of the simulated annealing (SA). Both QA and SA are meta-heuristic techniques to address challenging combinatorial problems. QA uses the quantum fluctuation to explore the configuration space instead of thermal effects. This workshop uses Amazon Braket API to access the Canadian company D-Wave. This annealer is implemented using superconductive qubits. Natively, the QUBO can be solved using quantum annealer:</p>
 <div class="arithmatex">\[ O(x) = \displaystyle\sum\limits_i h_i x_i + \displaystyle\sum_{i&gt;j} J_{i,j} x_i x_j \]</div>
-<p>In QUBO form, <span class="arithmatex">\(x_i \in \{0, 1\}\)</span> are binary variables. We can consider it as the angle that we choose for a particular torsion. <span class="arithmatex">\(h_i\)</span> and <span class="arithmatex">\(J_{i,j}\)</span> can be considered as the values encoding the optimization task when we use corresponding angles. However, in our task, it is common that there are more than one torsion between fragments, and we model it as the HUBO problem:</p>
+<p>In QUBO form, <span class="arithmatex">\(x_i \in \{0, 1\}\)</span> are binary variables, and can be considered as the angle chosen for a particular torsion. <span class="arithmatex">\(h_i\)</span> and <span class="arithmatex">\(J_{i,j}\)</span> can be considered as the values encoding the optimization task when using corresponding angles. However, it is common that there are more than one torsion between fragments, and the task models it as the HUBO problem:</p>
 <div class="arithmatex">\[ O(x) = \displaystyle\sum\limits_i \alpha_i x_i + \displaystyle\sum_{i,j} \beta_{i,j} x_i x_j + \displaystyle\sum_{i,j,k} \gamma_{i,j,k} x_i x_j x_k + ../... \]</div>
 <p><img alt="Two Frag Mul Tor" src="../../../images/two-frag-multiple-torsion.png" /></p>
-<p>Figure 6: Multiple torsions</p>
-<p>It is often possible to convert HUBOs to QUBOs by using some tricks, like adding new ancillary binary variables to replace high-order term. In practice, we use the API <span class="arithmatex">\(make \_ quadratic()\)</span> in D-Wave software package to make this conversion.</p>
+<p>Figure 10: Multiple torsions</p>
+<p>To convert HUBOs to QUBOs, you can add new ancillary binary variables to replace high-order term. In practice, we use the API <span class="arithmatex">\(make \_ quadratic()\)</span> in D-Wave software package to make this conversion.</p>
 <p><img alt="HUBO QUBO" src="../../../images/hubo-qubo.png" /></p>
-<p>Figure 7: HUBO changed to QUBO</p>
-<p>As shown in the figure, some high-order terms of HUBO, like <span class="arithmatex">\(('x\_1\_1','x\_2\_1','x\_3\_1')\)</span>, have been transformed to binary terms in QUBO. We only highlight some of them.</p>
-<h1 id="reference">Reference</h1>
-<div id='qmu-paper'></div>
-<ul>
-<li>1.Mato, Kevin, et al. "Quantum Molecular Unfolding." arXiv preprint arXiv:2107.13607 (2021).</li>
-</ul>
+<p>Figure 11: HUBO changed to QUBO</p>
+<p>As shown in the figure, some high-order terms of HUBO, like <span class="arithmatex">\(('x\_1\_1','x\_2\_1','x\_3\_1')\)</span>, have been transformed to quadratic terms in QUBO.</p>
 
               
             </article>

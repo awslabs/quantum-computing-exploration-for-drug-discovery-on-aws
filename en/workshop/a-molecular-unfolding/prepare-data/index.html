@@ -1760,13 +1760,15 @@ Licensed under the Apache License, Version 2.0.
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>In this part, we load the raw molecule data for experiment.
-The <a href="http://www.rcsb.org/ligand/117">117 ligand</a> was 
-put in the repository. We assign the relative 
-path to <strong>raw_path</strong>.
-The <strong>s3_bucket</strong> and <strong>prefix</strong> are used to store the 
-optimization results. We can use the one created with the 
-cloudformation for convenience.</p>
+<p>To load the raw molecule data for experiment, do the following:</p>
+<ol>
+<li>Find the molecular file in mol2 format from the <a href="https://www.rcsb.org/downloads/ligands">Protein Data Bank</a> (PDB) and download it. In this example, <a href="http://www.rcsb.org/ligand/117">117 ligand</a> is used.</li>
+<li>Upload the molecular file to the directory <strong>source/src/molecular-folding/molecule-data</strong>.</li>
+<li>Update the parameter 'raw_path' to be the relative path of the file.</li>
+<li><p>Update the parameters 's3_bucket' and 'prefix', which are used to store the optimization results.</p>
+<p><strong>Note</strong>: You can use the S3 bucket name in the CloudFormation output.</p>
+</li>
+</ol>
 
 </div>
 </div>
@@ -1943,10 +1945,9 @@ This molecule has 23 rotable bond
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>After running this block, the processed data 
+<p>After running, the result
 will be saved as <strong>qmu_117_ideal_data_latest.pickle</strong>
-and <strong>data_path</strong> will be updated. We can see that this 
-molecule has 23 rotatable bonds.</p>
+and <strong>data_path</strong> will be updated. The output shows that this molecule has 23 rotatable bonds.</p>
 
 </div>
 </div>

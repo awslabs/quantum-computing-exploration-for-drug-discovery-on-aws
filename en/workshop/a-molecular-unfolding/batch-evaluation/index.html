@@ -760,35 +760,34 @@
 
 
 <h1 id="run-default-batch-evaluation">Run Default Batch Evaluation</h1>
-<p>We will run default batch evaluation through AWS Step Functions workflow and view the result via Amazon QuickSight dashboard.</p>
+<p>The default batch evaluation runs a pre-built Amazon ECR Image that is based on the sample code in notebook experiments.</p>
+<p>Run default batch evaluation through AWS Step Functions workflow and view the result via Amazon QuickSight dashboard.</p>
 <ol>
-<li>
-<p>Obtain AWS Step Functions link from the CloudFormation output, and click the link to navigate to AWS Step Functions console.</p>
-</li>
-<li>
-<p>Click the <strong>Start execution</strong> button.</p>
-</li>
+<li>Sign in to the <a href="https://console.aws.amazon.com/cloudformation/home?">AWS CloudFormation console</a>. </li>
+<li>On the <strong>Stacks</strong> page, select the solution’s root stack. </li>
+<li>Choose the <strong>Outputs</strong> tab and select the AWS Step Functions link.</li>
+<li>Choose the <strong>Start</strong> button.</li>
 <li>
 <p>(Optional) Complete the evaluation input.</p>
 <ul>
 <li>It will use default input if you do not enter anything.</li>
-<li>If you want to customize the batch evaluation, please refer to the <a href="#input-specification">Input specification</a> in this section.</li>
+<li>If you want to customize the batch evaluation, refer to the <a href="#input-specification">Input specification</a> in this section.</li>
 </ul>
 </li>
 <li>
-<p>Choose <strong>Start execution</strong> to start batch evaluation. The default batch evaluation will take about 25 minutes.</p>
+<p>Choose <strong>Start</strong> to start batch evaluation. The default batch evaluation takes about 25 minutes.</p>
 </li>
 <li>
-<p>When the batch evaluation is completed, you can view the result in AWS QuickSight dashboard. Before that, you need to get the Dashboard link from the CloudFormation output.</p>
+<p>When the batch evaluation is completed, you can view the result in AWS QuickSight dashboard. Before that, you need to go back to the <strong>Outputs</strong> tab and get the Dashboard link.</p>
 </li>
 <li>
-<p>View the batch evaluation result in the dashboard: </p>
+<p>View the batch evaluation result in the dashboard. </p>
 <ul>
-<li><strong>Experiments history</strong>: displays all experiments history or displays the history by each experiment when you click each row.</li>
-<li>Comparison of <strong>end to end time</strong> of the quantum solver with classical solver: X-axis is complexity of the model, Y-axis is end to end time in seconds(if no experiment is selected, the time is average time). </li>
-<li>Comparison of <strong>running time</strong> of the quantum solver with classical solver: X-axis is complexity of the model, Y-axis is running time in seconds(if no experiment is selected,  the time is average time). </li>
+<li><strong>Experiments history</strong>: Displays all experiments history or displays the history by each experiment when select each row.</li>
+<li><strong>Comparison of end to end time of the quantum solver with classical solver</strong>: X-axis is complexity of the model, Y-axis is end-to-end time in seconds (if no experiment is selected, the time is average time).</li>
+<li><strong>Comparison of running time of the quantum solver with classical solver</strong>: X-axis is complexity of the model, Y-axis is running time in seconds (if no experiment is selected,  the time is average time). </li>
 <li>
-<p><strong>Experiments data</strong>: lists the detailed information of each task in the selected experiment (if no experiment is selected, all will be listed)</p>
+<p><strong>Experiments data</strong>: Lists the detailed information of each task in the selected experiment (if no experiment is selected, all will be listed).</p>
 <table>
 <thead>
 <tr>
@@ -803,11 +802,11 @@
 </tr>
 <tr>
 <td>complexity</td>
-<td>Complexity of the model,  complexity = M * D</td>
+<td>Complexity of the model, complexity = M * D</td>
 </tr>
 <tr>
 <td>end_to_end_time</td>
-<td>End to end time in seconds</td>
+<td>End-to-end time in seconds</td>
 </tr>
 <tr>
 <td>running_time</td>
@@ -819,7 +818,7 @@
 </tr>
 <tr>
 <td>model_param</td>
-<td>Model parameters. </br><strong>M</strong>: number of torsions; </br><strong>D</strong>: angle precision of rotation; </br><strong>HQ</strong>: hubo-qubo value, energy penalty; </br><strong>A</strong>: penalty scalar</td>
+<td>Model parameters.</br> M: number of torsions;</br>D: angle precision of rotation;</br>HQ: hubo-qubo value, energy penalty; </br>A: penalty scalar</td>
 </tr>
 <tr>
 <td>opt_param</td>
@@ -827,11 +826,11 @@
 </tr>
 <tr>
 <td>time_info</td>
-<td>For QC, it refers to different dimensions of QC task time, and <code>local_time</code> is the <strong>end_to_end_time</strong>，  <code>total_time</code> is the <strong>running_time</strong>; for CC, <code>local_time</code> is the <strong>end_to_end_time</strong> and <strong>running_time</strong></td>
+<td>For QC, it refers to different dimensions of QC task time, and local_time is the end_to_end_time, total_time is the running_time; for CC, local_time is the end_to_end_time and running_time</td>
 </tr>
 <tr>
 <td>execution_id</td>
-<td>Step Functions execution ID</td>
+<td>Step Functions run ID</td>
 </tr>
 <tr>
 <td>experiment_name</td>
@@ -851,7 +850,7 @@
 </ul>
 </li>
 </ol>
-<h3 id="input-specification">Input specification</h3>
+<h2 id="input-specification">Input specification</h2>
 <p>You can customize parameters of the evaluation by using a json input.</p>
 <p>The input schema:</p>
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="w"></span>
@@ -883,24 +882,24 @@
 </div>
 <p>Definition:</p>
 <ul>
-<li><strong>version</strong>: version of input schema. Currently, it only supports value: '1'</li>
-<li><strong>runMode</strong>:  running mode. It has values <code>ALL</code>, <code>CC</code> or <code>QC</code>, and defaults to <code>ALL</code>. <code>CC</code> - only run CC tasks, <code>QC</code> only run QC tasks, <code>ALL</code> - run both tasks</li>
-<li><strong>molFile</strong>: S3 URL of the mol2 file</li>
-<li><strong>modelVersion</strong>: model version. By default, it is: 'latest'</li>
-<li><strong>experimentName</strong>: name of the batch evaluation</li>
-<li><strong>optParams</strong>: optimizer parameters, which is used to set shots for QC(qa) and CC(sa) tasks respectively</li>
-<li><strong>modelParams</strong>: model parameters, M: number of torsions, D: angle precision of rotation. Please refer to <a href="../notebook-experiment/">Notebook Experiment</a> for details.  Valid values: <div class="codehilite"><pre><span></span><code> M: [1, 2, 3, 4, 5, 6, 7]
+<li><strong>version</strong>: Version of input schema. Currently, it only supports value '1'.</li>
+<li><strong>runMode</strong>: Running mode. It has values <code>ALL</code>, <code>CC</code> or <code>QC</code>, and defaults to <code>ALL</code>. <code>CC</code> - only run CC tasks, <code>QC</code> only run QC tasks, <code>ALL</code> - run both tasks.</li>
+<li><strong>molFile</strong>: S3 URL of the mol2 file.</li>
+<li><strong>modelVersion</strong>: Model version. By default, it is 'latest'.</li>
+<li><strong>experimentName</strong>: Name of the batch evaluation.</li>
+<li><strong>optParams</strong>: Optimizer parameters, which is used to set shots for QC(qa) and CC(sa) tasks respectively.</li>
+<li>
+<p><strong>modelParams</strong>: Model parameters. M: number of torsions, D: angle precision of rotation. Refer to <a href="../build-model-detail/">Build Model - Technical Details</a> for details. Valid values: </p>
+<div class="codehilite"><pre><span></span><code> M: [1, 2, 3, 4, 5, 6, 7]
  D: [4] or [8]
 </code></pre></div>
 
-</li>
-</ul>
 <div class="admonition caution">
 <p class="admonition-title">Caution</p>
-<p>The maximum value of M depends on the value of D, QPU device and input molFile. We set max M to 100 in input validation. If the value exceeds the device capacity in actual running, the execution will fail.</p>
-<p>If you use your own molFile, the input validation will be skipped; if the value exceeds the device capacity, the execution will fail. </p>
+<p>The maximum value of M depends on the value of D, QPU device and input molFile. We set max M to 100 in input validation. If the value exceeds the device capacity in actual running, the run fails.</p>
+<p>If you use your own molFile, the input validation will be skipped; if the value exceeds the device capacity, the run fails. </p>
 </div>
-<ul>
+</li>
 <li>
 <p><strong>devicesArns</strong>: QPU device arn. Valid values:</p>
 <div class="codehilite"><pre><span></span><code><span class="n">arn</span><span class="o">:</span><span class="n">aws</span><span class="o">:</span><span class="n">braket</span><span class="o">:::</span><span class="n">device</span><span class="sr">/qpu/d-wave/</span><span class="n">DW_2000Q_6</span><span class="w"></span>
@@ -908,11 +907,27 @@
 </code></pre></div>
 
 </li>
-<li>
-<p><strong>ccResources</strong>: vCPU (first element) and memory (second element) in GiB and , for example, 4 vCPU and 8GiB memory is: <code>[4, 8]</code></p>
-</li>
 </ul>
-<p>A typical (the default) input:</p>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+  * <strong>ccResources</strong>: vCPU (first element) and memory (second element) in GiB, for example, 4 vCPU and 8 GiB memory is: <code>[4, 8]</code>
+=======
+  * <strong>ccResources</strong>: vCPU (first element) and memory (second element) in GiB and , for example, 4 vCPU and 8GiB memory is: <code>[4, 8]</code></p>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>main</p>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Example input with default mol2 file:</p>
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">,</span><span class="w"></span>
 <span class="w">    </span><span class="nt">&quot;runMode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ALL&quot;</span><span class="p">,</span><span class="w"></span>
@@ -936,6 +951,26 @@
 <span class="w">        </span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">]</span><span class="w"></span>
 <span class="w">    </span><span class="p">]</span><span class="w"></span>
 <span class="p">}</span><span class="w"></span>
+</code></pre></div>
+
+<p>If you have your own mol2 file, do the following:</p>
+<ol>
+<li>
+<p>Upload your mol2 file to the S3 bucket in CloudFormation output, or your own S3 bucket. If you want to use your own S3 bucket, the bucket name must be in the format of: braket-<em> or amazon-braket-</em>.</p>
+</li>
+<li>
+<p>Specify S3 uri of your mol2 file as the value of molFile in the Step Functions input:</p>
+</li>
+</ol>
+<div class="codehilite"><pre><span></span><code>{
+    &quot;molFile&quot; : &quot;&lt;s3 uri of your mol2 file&gt;&quot;
+}
+</code></pre></div>
+
+<p>For example:</p>
+<div class="codehilite"><pre><span></span><code>{
+   &quot;molFile&quot;: &quot;s3://amazon-braket-gcr-qc-sol-common/qc/raw_model/117_ideal.mol2&quot;
+}
 </code></pre></div>
 
               

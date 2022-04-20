@@ -1760,46 +1760,18 @@ Licensed under the Apache License, Version 2.0.
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>In this part, we build the Quadratic Unconstrained 
-Binary Optimization (QUBO) model for molecular unfolding.</p>
-<p>Firstly, we set the following parameters and initialize the QMUQUBO object.</p>
-<p><strong>Note</strong></p>
-<p>Please refer to <strong>Build Model (Technical Details)</strong> for the definition of parameters.</p>
-<table>
-<thead><tr>
-<th>Parameter</th>
-<th>Description</th>
-<th>Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>A</td>
-<td>penalty scalar</td>
-<td>300</td>
-</tr>
-<tr>
-<td>hubo_qubo_val</td>
-<td>energy penalty of make_quadratic()</td>
-<td>200</td>
-</tr>
-<tr>
-<td>M</td>
-<td>number of torsions for molecular unfolding</td>
-<td>[1, max number of rotatable bonds]</td>
-</tr>
-<tr>
-<td>D</td>
-<td>angle precision of rotation</td>
-<td>8</td>
-</tr>
-<tr>
-<td>method</td>
-<td>the method of building model</td>
-<td>'pre-calc': calculate the score in advance</td>
-</tr>
-</tbody>
-</table>
+<p>To build the Quadratic Unconstrained Binary Optimization (QUBO) model for molecular unfolding, do the following:</p>
+<ol>
+<li><p>Initialize the QMUQUBO object by setting the following parameters. In this example, set <strong>M</strong> to 2, and <strong>D</strong> to 8. The <strong>A</strong> and <strong>hubo_qubo_val</strong> are from experiment tests. Refer to <strong>Build Model (Technical Details)</strong> for the definition of parameters.</p>
+<p>| Parameter | Description | Value |
+ |--- |--- |--- |
+ |A | penalty scalar |300|
+ |hubo_qubo_val | energy penalty of make_quadratic() |200|
+ |M | number of torsions for molecular unfolding| [1, max number of rotatable bonds] |
+ |D| angle precision of rotation| 8|
+ |method| the method of building model| 'pre-calc': calculate the score in advance|</p>
+</li>
+</ol>
 
 </div>
 </div>
@@ -1811,14 +1783,8 @@ Binary Optimization (QUBO) model for molecular unfolding.</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>We use the 'pre-calc' method 
-to build the model. This molecule has 23 rotatable bonds and 
-we only test 2 of them, so we set the <strong>M</strong> to 2. And we want 
-the angle to become $45^o$, so we set the <strong>D</strong> to 8 
-(i.e., $8=360^o/45^o$). The <strong>A</strong> and <strong>hubo_qubo_val</strong> are 
-from experiment tests.</p>
-<p><strong>Warning</strong></p>
-<p>You may have long run time for large <strong>M</strong> or <strong>D</strong>. Please refer to <strong>Batch Evaluation</strong> to see the general running time before adjusting parameters.</p>
+<p><strong>Important</strong></p>
+<p>You might have long run time for large <strong>M</strong> or <strong>D</strong>. Refer to <strong>Batch Evaluation</strong> to view the general running time before adjusting parameters.</p>
 
 </div>
 </div>
@@ -2042,10 +2008,10 @@ qmu_qubo.build_model(**model_param)</div>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>We can use the following method to check the properties of 
-model. 
-After that, we save the model and update the value of 
-<strong>model_path</strong>.</p>
+<ol>
+<li>Use the method <strong>describe_model()</strong> to check the properties of the model. </li>
+<li>Use the method <strong>save()</strong> to save the model as <strong>./qmu_117_ideal_model_latest.pickle</strong>. The value of <strong>model_path</strong> will be updated.</li>
+</ol>
 
 </div>
 </div>
@@ -2184,18 +2150,6 @@ print(f"You have built the QUBO model and saved it as {model_path}")</div>
 
 </div>
 
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Congratulations! We have already prepared the model and it is time to find the optimized configuration.</p>
-
-</div>
-</div>
 </div>
 </div>
 </div>

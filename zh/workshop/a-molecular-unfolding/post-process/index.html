@@ -15,7 +15,7 @@
     
     
       
-        <title>后处理 - 药物发现量子计算解决方案</title>
+        <title>后处理 - 量子计算探索之药物发现方案</title>
       
     
     
@@ -74,7 +74,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="页眉">
-    <a href="../../.." title="药物发现量子计算解决方案" class="md-header__button md-logo" aria-label="药物发现量子计算解决方案" data-md-component="logo">
+    <a href="../../.." title="量子计算探索之药物发现方案" class="md-header__button md-logo" aria-label="量子计算探索之药物发现方案" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
@@ -87,7 +87,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            药物发现量子计算解决方案
+            量子计算探索之药物发现方案
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -200,13 +200,13 @@
 
 <nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../.." title="药物发现量子计算解决方案" class="md-nav__button md-logo" aria-label="药物发现量子计算解决方案" data-md-component="logo">
+    <a href="../../.." title="量子计算探索之药物发现方案" class="md-nav__button md-logo" aria-label="量子计算探索之药物发现方案" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
 
     </a>
-    药物发现量子计算解决方案
+    量子计算探索之药物发现方案
   </label>
   
     <div class="md-nav__source">
@@ -1734,7 +1734,7 @@ Licensed under the Apache License, Version 2.0.
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="">&#31532;&#22235;&#27493;&#65306;&#21518;&#22788;&#29702;<a class="anchor-link" href="#">&#182;</a></h1>
+<h1 id="">&#31532;&#22235;&#27493;&#65306;&#22788;&#29702;&#32467;&#26524;<a class="anchor-link" href="#">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -1745,8 +1745,10 @@ Licensed under the Apache License, Version 2.0.
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>在这一部分中，我们对优化结果进行后处理以进行评估和可视化。
-首先，我们准备以下参数：</p>
+<p>以下介绍如何对优化结果进行处理以进行评估和可视化。</p>
+<ol>
+<li>准备以下参数：</li>
+</ol>
 <table>
 <thead><tr>
 <th>参数</th>
@@ -1763,27 +1765,27 @@ Licensed under the Apache License, Version 2.0.
 <tr>
 <td>raw_path</td>
 <td>原始分子文件的路径</td>
-<td>在这个例子中是'./molecule-data/117_ideal.mol2'</td>
+<td>本示例使用的是'./molecule-data/117_ideal.mol2'</td>
 </tr>
 <tr>
 <td>data_path</td>
 <td>处理后的分子文件的路径</td>
-<td>在这个例子中是'./qmu_117_ideal_data_latest.mol2'</td>
+<td>本示例使用的是'./qmu_117_ideal_data_latest.mol2'</td>
 </tr>
 <tr>
 <td>bucket</td>
-<td>存储结果的 s3 存储桶</td>
+<td>存储结果的 S3 存储桶</td>
 <td>-</td>
 </tr>
 <tr>
 <td>prefix</td>
-<td>s3 存储桶中的文件夹名称</td>
+<td>S3 存储桶中的文件夹名称</td>
 <td>-</td>
 </tr>
 <tr>
 <td>task_id</td>
-<td>您的量子退火任务id</td>
-<td>请在上一步确认具体数值</td>
+<td>量子退火任务id</td>
+<td>本示例使用的是'2b5a3b05-1a0e-443a-852c-4ec422a10e59'</td>
 </tr>
 </tbody>
 </table>
@@ -1798,7 +1800,9 @@ Licensed under the Apache License, Version 2.0.
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>然后，使用SA的 <strong>ResultParser</strong>对象运行后处理：</p>
+<ol>
+<li>使用SA的 <strong>ResultParser</strong>对象进行处理。</li>
+</ol>
 
 </div>
 </div>
@@ -2098,15 +2102,15 @@ INFO:root:finish save ./molecule-data/117_ideal_dwave-sa_20220323-14.mol2 and ./
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>在第一个代码块中，我们可以看到SA的<strong>local time</strong>
-大于 150 秒。
+<p>在第一个代码块中，可以看到SA的<strong>local time</strong>
+大约为 174 秒。
 使用 <strong>generate_optimize_pts()</strong> 方法，最终的 3D
 展开后的点会生成并保存为json文件和mol2文件。
 最后一个代码块显示优化结果，也存储在 json 文件中。从结果看出体积增加
-1.0006倍。 <strong>unfolding_results</strong> 的值表示
-可旋转键 15 应旋转 $270^o$ ($360/8*(7-1)$) 和
-可旋转键 14 应旋转 $0^o$ ($360/8*(1-1)$)。
-同时，您可以运行 QA 的后处理：</p>
+1.0212倍。</p>
+<ol>
+<li>使用 QA 进行处理：</li>
+</ol>
 
 </div>
 </div>
@@ -2234,10 +2238,10 @@ INFO:root:_read_result_obj: annealer-experiment/22419429-2f93-4679-9305-a2e099dc
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>我们可以看到运行 QA 的时间指标有很多种。
-该任务的<strong>local time</strong>为 5 秒，即调用 api 和
-得到退火结果的时间。 <strong>task time</strong>  是来自存放在桶里面的json 文件的度量。我们还可以看到<strong>qpu total time</strong>和<strong>qpu access time</strong>代表
-在 QPU 中运行的实际时间。请参考<a href="https://docs.dwavesys.com/docs/latest/c_qpu_timing.html">操作与时序</a>的详情。</p>
+<p>运行 QA 的时间指标有很多种。
+该任务的<strong>local time</strong>为 7.7 秒，即调用 API 和
+得到退火结果之间的时间。 <strong>task time</strong>  是来自存放在桶里面的json 文件的指标。<strong>qpu total time</strong>和<strong>qpu access time</strong>表示
+在 QPU 中运行的实际时间。详情可参考<a href="https://docs.dwavesys.com/docs/latest/c_qpu_timing.html">操作与时序</a>。</p>
 
 </div>
 </div>
@@ -2393,10 +2397,8 @@ INFO:root:finish save ./molecule-data/117_ideal_dwave-qa_20220323-14.mol2 and ./
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>同理，优化后的结果被转化为3D点并保存
-作为本地json和mol2文件。结果表明QA获得了
-1.0006倍
-体积增加。</p>
+<p>同理，优化后的结果被保存为本地json和mol2文件。结果表明QA获得了
+1.021倍体积增加。</p>
 
 </div>
 </div>
@@ -2408,11 +2410,15 @@ INFO:root:finish save ./molecule-data/117_ideal_dwave-qa_20220323-14.mol2 and ./
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>最后， 我们可以打开文件夹以获得优化的结果：</p>
+<ol>
+<li>打开文件夹以获取优化的结果。</li>
+</ol>
+<p>如果执行更多实验，更多带有时间戳的结果会存储在这里。</p>
 <p><img src="../../../images/optimize-results.png" alt="optimize-results"></p>
-<p>图1：优化结果</p>
-<p>您可以将SA和QA的json结果和mol2文件分别存放在这个地方。如果执行更多实验，更多带有时间戳的结果会存储在这里。</p>
-<p>我们可以将 SA 和 QA 的json结果和mol2文件分别存放在这个地方。如果我们执行更多实验，更多带有时间戳的结果会存储在这个地方。我们可以使用一下方法看原始和展开的分子形态</p>
+<p>图13：优化结果</p>
+<ol>
+<li>使用以下方法查看原始的和展开的分子形态。</li>
+</ol>
 
 </div>
 </div>
@@ -2542,11 +2548,13 @@ qa_process_result.InteractView(qa_result_filepath, size=800)</div>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>我们也可以将mol2文件上传到
-<a href="https://www.rcsb.org/3d-view">online viewer tool</a> 
-查看结果:</p>
+<ol>
+<li>（可选）将mol2文件上传到
+<a href="https://www.rcsb.org/3d-view">Protein Data Bank online viewer tool</a> 
+查看结果:</li>
+</ol>
 <p><img src="../../../images/visualization.png" alt="visual"></p>
-<p>图2：可视化</p>
+<p>图14：可视化</p>
 
 </div>
 </div>

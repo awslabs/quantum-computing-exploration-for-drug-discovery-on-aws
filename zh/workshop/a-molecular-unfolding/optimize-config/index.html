@@ -15,7 +15,7 @@
     
     
       
-        <title>优化构型 - 药物发现量子计算解决方案</title>
+        <title>优化构型 - 量子计算探索之药物发现方案</title>
       
     
     
@@ -74,7 +74,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="页眉">
-    <a href="../../.." title="药物发现量子计算解决方案" class="md-header__button md-logo" aria-label="药物发现量子计算解决方案" data-md-component="logo">
+    <a href="../../.." title="量子计算探索之药物发现方案" class="md-header__button md-logo" aria-label="量子计算探索之药物发现方案" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
@@ -87,7 +87,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            药物发现量子计算解决方案
+            量子计算探索之药物发现方案
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -200,13 +200,13 @@
 
 <nav class="md-nav md-nav--primary" aria-label="导航栏" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href="../../.." title="药物发现量子计算解决方案" class="md-nav__button md-logo" aria-label="药物发现量子计算解决方案" data-md-component="logo">
+    <a href="../../.." title="量子计算探索之药物发现方案" class="md-nav__button md-logo" aria-label="量子计算探索之药物发现方案" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
 
     </a>
-    药物发现量子计算解决方案
+    量子计算探索之药物发现方案
   </label>
   
     <div class="md-nav__source">
@@ -1734,7 +1734,7 @@ Licensed under the Apache License, Version 2.0.
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="">&#31532;&#19977;&#27493;&#39588;&#65306;&#20248;&#21270;&#26500;&#22411;<a class="anchor-link" href="#">&#182;</a></h1>
+<h1 id="">&#31532;&#19977;&#27493;&#65306;&#20248;&#21270;&#26500;&#22411;<a class="anchor-link" href="#">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -1746,7 +1746,9 @@ Licensed under the Apache License, Version 2.0.
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>本节介绍如何使用模拟退火器（SA）和量子退火器（QA）来寻找分子展开的优化构型。</p>
-<p>首先，使用<strong>QMUQUBO</strong>对象加载模型文件。</p>
+<ol>
+<li>使用<strong>QMUQUBO</strong>对象加载模型文件。</li>
+</ol>
 
 </div>
 </div>
@@ -1894,9 +1896,9 @@ INFO:root:param: hubo_qubo_val, value {200}
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>我们可以看到这个模型的参数以及相应的取值：M等于2，D等于8，A等于300，hubo_qubo_val等于200。
-实际上，在创建模型时为一个参数提供多个值，就可以在这个文件中包含多个模型。</p>
-<p>然后，使用 <strong>model_name</strong> 来获取模型进行实验。</p>
+<ol>
+<li>使用参数 <strong>model_name</strong> 来获取模型进行实验。</li>
+</ol>
 
 </div>
 </div>
@@ -1956,8 +1958,9 @@ qubo_model = qmu_qubo_optimize.get_model(method, model_name)</div>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>本实验中，我们将用QUBO模型进行实验，其中M等于2。</p>
-<p>接下来，设置优化参数。</p>
+<ol>
+<li>设置优化参数。</li>
+</ol>
 <table>
 <thead><tr>
 <th>参数</th>
@@ -1993,6 +1996,9 @@ qubo_model = qmu_qubo_optimize.get_model(method, model_name)</div>
 </tr>
 </tbody>
 </table>
+<ol>
+<li>运行SA解决问题。</li>
+</ol>
 
 </div>
 </div>
@@ -2126,8 +2132,10 @@ INFO:root:finish save sa_result.pickle
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>我们可以选择运行SA解决问题：将SA的shots设置为 1000，并将结果保存为本地文件 <strong>./sa_result.pickle</strong>。</p>
-<p>我们也可以选择运行QA解决问题：</p>
+<p>将SA的shots数量设置为1000。结果保存到本地的文件中：./sa_result.pickle。</p>
+<ol>
+<li>运行QA解决问题。</li>
+</ol>
 
 </div>
 </div>
@@ -2212,8 +2220,7 @@ qa_optimizer = Annealer(qubo_model, method, **optimizer_param)</div>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>将QA的shots数量设置为1000，并且选择<a href="https://docs.dwavesys.com/docs/latest/doc_physical_properties.html">Advantage_System4.1</a>作为QPU，结果会自动保存到您的存储桶中。</p>
-<p>您可以获取任务ID用于后续处理。</p>
+<p>将QA的shots数量设置为1000，并且选择<a href="https://docs.dwavesys.com/docs/latest/doc_physical_properties.html">Advantage_System4.1</a>作为QPU，结果会自动保存到您的存储桶中，您可以获取任务ID用于后续处理。</p>
 
 </div>
 </div>
@@ -2346,7 +2353,9 @@ print(f"task id is {qa_task_id}")</div>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>最后，我们可以比较 SA 和 QA 的执行时间：</p>
+<ol>
+<li>比较 SA 和 QA 的执行时间。</li>
+</ol>
 
 </div>
 </div>
@@ -2418,7 +2427,8 @@ dwave-qa run time 7.57835578918457
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>结果显示，SA和QA分别需要174.2秒和7.7秒可以完成优化过程。</p>
 <p><img src="../../../images/one-time-qa.png" alt="OneTimeQA"></p>
-<p>有时最优结果仅仅出现过一次。这并不是表示错误，它实际上是反应了问题的特征或取决于公式是如何建立的。</p>
+<p>图12：最优结果</p>
+<p>有时最优结果仅出现一次。这并不是表示错误，而是问题的特征或取决于公式是如何建立的。</p>
 <p>因为有不同的线性项和二次项，它们相差许多数量级。如果将A的变化值设置为一些较小的数字，如10或100，那么最优结果出现的次数会变多。
 但是，这些答案通常会打破限制。有关更多信息，请查看
 <a href="https://support.dwavesys.com/hc/en-us/community/posts/1500000698522-Number-of-occurrences-?input_string=number%20occurance">链接</a>。</p>

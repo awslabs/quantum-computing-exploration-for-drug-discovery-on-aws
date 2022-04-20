@@ -749,7 +749,7 @@
 
   <h1>Cost</h1>
 
-<p>You are responsible for the cost of AWS services used when running this solution. The actual cost depends on the tasks to be executed and their complexity. As of March 2022, the cost factors mainly consist of five types:</p>
+<p>You are responsible for the cost of AWS services used when running this solution. The actual cost depends on the tasks run and their complexity. As of April 2022, the cost factors mainly consist of five types:</p>
 <ul>
 <li>Notebook</li>
 <li>Computing </li>
@@ -758,10 +758,10 @@
 <li>Orchestration</li>
 </ul>
 <h2 id="example">Example</h2>
-<p>Take the molecular unfolding function for the prepared sample (117_idel.mol2) as an example. In US East (N. Virginia) Region (us-east-1), assume a customer continues using the notebook to study sample code, and adopts the solution to run one complete batch evaluation both on quantum computing resource and classical computing resource in order to visualize the results in Amazon QuickSight. </p>
+<p>This example uses the molecular unfolding function for the prepared sample, which is a ligand 117_idel.mol2 downloaded from <a href="https://www.rcsb.org/downloads/ligands">Protein Data Bank (PDB)</a>. Assuming a customer continues using the notebook to study sample code, and adopts the solution to run one complete batch evaluation both on quantum computing resource and classical computing resource in order to visualize the results in Amazon QuickSight, the cost for running this solution in US East (N. Virginia) Region is $28.21 per day.</p>
 <div class="admonition notice">
 <p class="admonition-title">Note</p>
-<p>If the customer uses the solution only to study the sample code, the cost factors mainly involve the notebook and the computing from Amazon Braket.</p>
+<p>If the customer uses the solution only to study the sample code, the cost factors mainly involve the Notebook and the Computing from Amazon Braket.</p>
 </div>
 <!-- | Cost Type| Service | Resource Size | Operating Condition | Cost |
 | :---: | :---: | :---: | :---: | :---: |
@@ -790,88 +790,87 @@
     <tr>
     <tr>
         <td>Notebook</td>
-        <td>Amazon Sagemaker Notebook</td>
+        <td>Amazon Sagemaker</td>
         <td>ml.c5.xlarge</td>
         <td>long run instance</td>
-        <td>4.90 USD per day</td>
+        <td>$4.90 per day</td>
     <tr>
     <tr>
         <td rowspan="9">Computing</td>
         <td>Amazon Braket</td>
         <td>D-Wave - DW_2000Q_6</td>
         <td>4 tasks for different parameters, 10000 shots/task</td>
-        <td>8.80 USD</td>
+        <td>$8.80</td>
     <tr>
     <tr>
         <td>Amazon Braket</td>
         <td>D-Wave - Advantage_system4.1</td>
         <td>4 tasks for different parameters, 10000 shots/task</td>
-        <td>8.80 USD</td>
+        <td>$8.80</td>
     <tr>
 
       <tr>
         <td>Amazon Batch (Fargate) </td>
         <td>2 VCPU 4G MEM</td>
-        <td>build model task, 8 minutes(< 20 minutes)</td>
-        <td>1.02 USD</td>
+        <td>Build model task, 8 minutes (< 20 minutes)</td>
+        <td>$1.02</td>
     <tr>
 
     <tr>
         <td>Amazon Batch (EC2) </td>
         <td>4 VCPU 8G MEM</td>
         <td>4 tasks for different parameters, 25 minutes(< 60 minutes)</td>
-        <td>0.17 USD</td>
+        <td>$0.17</td>
     <tr>
-
     <tr>
         <td>AWS Lambda </td>
         <td>-</td>
         <td>< 100 queries</td>
-        <td>0 USD</td>
+        <td>$0</td>
     <tr>
     <tr>
         <td>Storage</td>
         <td>Amazon S3</td>
         <td>-</td>
         <td>< 1G</td>
-        <td>0.02 USD</td>
+        <td>$0.02</td>
     <tr>
     <tr>
         <td rowspan='4'>Analysis</td>
         <td>Amazon Athena</td>
         <td>-</td>
         <td>< 20 queries, 100M data</td>
-        <td>0.029 USD</td>
+        <td>$0.029</td>
     <tr>
     <tr>
         <td>Amazon QuickSight</td>
         <td>1 reader</td>
         <td>long run service</td>
-        <td>8.00 USD per month</td>
+        <td>$8.00 per month</td>
     <tr>
     <tr>
         <td>Orchestration</td>
         <td>AWS Step Functions</td>
         <td>-</td>
         <td>< 100 transitions</td>
-        <td>0 USD</td>
+        <td>$0</td>
     <tr>
     <tr>
         <td rowspan='4'>Network</td>
-        <td>VPC Endpoints</td>
-        <td>Amazon S3</br>Amazon ECR</br>Amazon Athena</br>Amazon Braket</td>
+        <td>Amazon VPC</td>
+        <td>Amazon S3</br>Amazon ECR</br>Amazon Athena</br>Amazon Braket</br>endpoints</td>
         <td>long run service</td>
-        <td>58.41 USD per month</td>
+        <td>$58.41 per month</td>
     <tr>
     <tr>
+        <td>Amazon VPC</td>
         <td>NAT Gateway</td>
-        <td>-</td>
         <td>long run service</td>
-        <td>65.78 USD per month</td>
+        <td>$65.78 per month</td>
     <tr> 
     <tr>
         <td colspan='4'>Total Cost</td>
-        <td>28.21 USD per day</td>
+        <td>$28.21 per day</td>
     <tr>
 </table>
 

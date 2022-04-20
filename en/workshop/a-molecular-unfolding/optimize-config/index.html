@@ -1760,8 +1760,10 @@ Licensed under the Apache License, Version 2.0.
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>In this part, we use SA and QA to find the optimized configuration of molecular unfolding.
-At first, we load the model file using <strong>QMUQUBO</strong> object.</p>
+<p>This part describes how to use SA and QA to find the optimized configuration of molecular unfolding.</p>
+<ol>
+<li>Load the model file using <strong>QMUQUBO</strong> object.</li>
+</ol>
 
 </div>
 </div>
@@ -1909,11 +1911,9 @@ INFO:root:param: hubo_qubo_val, value {200}
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>We can see the parameters of this model, with M equaling 2, D equaling 8, 
-A equaling 300 and hubo_qubo_val equaling 200. 
-Actually, we can contain multiple models in this file just 
-by giving multiple values for one parameter when creating models.
-Then, we need use <strong>model_name</strong> to get the model for experiments.</p>
+<ol>
+<li>Use the parameter <strong>model_name</strong> to get the model for experiments.</li>
+</ol>
 
 </div>
 </div>
@@ -1973,8 +1973,9 @@ qubo_model = qmu_qubo_optimize.get_model(method, model_name)</div>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>We can see that we want to carry out experiment using the QUBO model with M equaling 2.
- After that, we set the parameters for optimization.</p>
+<ol>
+<li>Set the parameters for optimization.</li>
+</ol>
 <table>
 <thead><tr>
 <th>Parameter</th>
@@ -2010,7 +2011,9 @@ qubo_model = qmu_qubo_optimize.get_model(method, model_name)</div>
 </tr>
 </tbody>
 </table>
-<p>Then, we can run the SA for this problem:</p>
+<ol>
+<li>Run the SA for this problem:</li>
+</ol>
 
 </div>
 </div>
@@ -2144,9 +2147,10 @@ INFO:root:finish save sa_result.pickle
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>We can tell that we set the number of shots for SA to 1000. 
-The result is saved as the local file <strong>./sa_result.pickle.</strong>
-Alternatively, we can use QA to solve this problem:</p>
+<p>The number of shots for SA is set to <strong>1000</strong>. The result is saved as the local file <strong>./sa_result.pickle.</strong></p>
+<ol>
+<li>Run the QA to solve this problem.</li>
+</ol>
 
 </div>
 </div>
@@ -2231,7 +2235,7 @@ qa_optimizer = Annealer(qubo_model, method, **optimizer_param)</div>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>In this QA, we set the number of shots to 1000 and 
+<p>This QA sets the number of shots to <strong>1000</strong> and 
 choose the 
 <a href="https://docs.dwavesys.com/docs/latest/doc_physical_properties.html">Advantage_System4.1</a>
 as the QPU. In addition, the results are saved to your bucket automatically and you 
@@ -2368,7 +2372,9 @@ print(f"task id is {qa_task_id}")</div>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Finally, we can compare the execution time between SA and QA :</p>
+<ol>
+<li>Compare the run time between SA and QA:</li>
+</ol>
 
 </div>
 </div>
@@ -2438,15 +2444,11 @@ dwave-qa run time 7.57835578918457
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>We can tell that SA needs 174.2 seconds 
-and QA needs 7.7 seconds to find 
-solution.</p>
-<p>We sometimes get the best result that occurs only once.</p>
+<p>It shows that SA needs 174.2 seconds and QA needs 7.7 seconds to find solution.</p>
 <p><img src="../../../images/one-time-qa.png" alt="OneTimeQA"></p>
-<p>This does not always indicate an error. It is actually the characteristic of the problem or how the problem 
-is formulated.</p>
-<p>We have different linear and quadratic terms that vary by many orders of magnitude. If we set change value of A to some smaller number, like 10 or 100, more occurrences of the best answer will be observed. However, these answers usually break the constraints. For more information about this phenomenon, please refer to this 
-<a href="https://support.dwavesys.com/hc/en-us/community/posts/1500000698522-Number-of-occurrences-?input_string=number%20occurance">Link</a>.</p>
+<p>Figure 12: Best results</p>
+<p>Sometimes, the best result occurs only once. This does not always indicate an error. It is actually the characteristic of the problem or how the problem is formulated.
+Different linear and quadratic terms vary by many orders of magnitude. If you change value of A to a smaller number, like 10 or 100, more occurrences of the best answer will be observed. However, these answers usually break the constraints. For more information about this phenomenon, refer to <a href="https://support.dwavesys.com/hc/en-us/community/posts/1500000698522-Number-of-occurrences-?input_string=number%20occurance">Number of occurrences</a>.</p>
 
 </div>
 </div>

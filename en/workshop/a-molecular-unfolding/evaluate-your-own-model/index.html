@@ -599,43 +599,23 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#batch-evaluate-your-own-mol2-file-without-code-changes" class="md-nav__link">
-    Batch evaluate your own mol2 file without code changes
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#fully-customize-evaluation-code" class="md-nav__link">
-    Fully customize evaluation code
-  </a>
-  
-    <nav class="md-nav" aria-label="Fully customize evaluation code">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
   <a href="#prerequisites" class="md-nav__link">
     Prerequisites
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#customize-evaluation-code" class="md-nav__link">
     Customize evaluation code
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#deploy-stack-to-your-aws-account-from-cdk" class="md-nav__link">
     Deploy stack to your AWS account from CDK
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -770,43 +750,23 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#batch-evaluate-your-own-mol2-file-without-code-changes" class="md-nav__link">
-    Batch evaluate your own mol2 file without code changes
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#fully-customize-evaluation-code" class="md-nav__link">
-    Fully customize evaluation code
-  </a>
-  
-    <nav class="md-nav" aria-label="Fully customize evaluation code">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
   <a href="#prerequisites" class="md-nav__link">
     Prerequisites
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#customize-evaluation-code" class="md-nav__link">
     Customize evaluation code
   </a>
   
 </li>
-        
-          <li class="md-nav__item">
+      
+        <li class="md-nav__item">
   <a href="#deploy-stack-to-your-aws-account-from-cdk" class="md-nav__link">
     Deploy stack to your AWS account from CDK
   </a>
-  
-</li>
-        
-      </ul>
-    </nav>
   
 </li>
       
@@ -828,40 +788,8 @@
 
 
 <h1 id="batch-evaluate-your-own-model">Batch Evaluate Your Own Model</h1>
-<p>You have two options to batch evaluate your own model:</p>
-<ul>
-<li>Batch evaluate your own mol2 file without code changes</li>
-<li>Fully customize evaluation code</li>
-</ul>
-<h2 id="batch-evaluate-your-own-mol2-file-without-code-changes">Batch evaluate your own mol2 file without code changes</h2>
-<p>If you have your own mol2 file, follow below steps to batch evaluate it:</p>
-<ol>
-<li>
-<p>Upload your mol2 file to the S3 bucket in CloudFormation output, or your own S3 bucket. If you want to use your own S3 bucket, the bucket name must be in the format of:  <code>braket-*</code> or <code>amazon-braket-*</code>.</p>
-</li>
-<li>
-<p>Specify S3 uri of your mol2 file as the value of <code>molFile</code> in the Step Functions input:</p>
-<div class="codehilite"><pre><span></span><code>{
-    &quot;molFile&quot; : &quot;&lt;s3 uri of your mol2 file&gt;&quot;
-}
-</code></pre></div>
-
-<p>For example,</p>
-<div class="codehilite"><pre><span></span><code>{
-   &quot;molFile&quot;: &quot;s3://amazon-braket-gcr-qc-sol-common/qc/raw_model/117_ideal.mol2&quot;
-}
-</code></pre></div>
-
-<p>For the complete input parameters and schema, please refer to <a href="../batch-evaluation/#input-specification">input specification</a>.</p>
-</li>
-<li>
-<p>Follow the steps in <a href="../batch-evaluation/#start-execution">Batch Evaluation</a> to run the Step Functions.</p>
-</li>
-</ol>
-<h2 id="fully-customize-evaluation-code">Fully customize evaluation code</h2>
-<p>This solution is an open source project under Apache License Version 2.0. You can leverage it as your base code, and make changes on it.</p>
-<p>If you want to fully customize the evaluation code, follow below steps to make changes and re-deploy the whole stack from CDK.</p>
-<h3 id="prerequisites">Prerequisites</h3>
+<p>This solution is an open-source project under Apache License Version 2.0. You can leverage it as your base code, and make changes on it. To fully customize the evaluation code, complete the following steps to make changes and re-deploy the whole stack from CDK.</p>
+<h2 id="prerequisites">Prerequisites</h2>
 <ol>
 <li>
 <p>Make sure you have AWS CLI and AWS CDK installed in your workspace. Refer to <a href="https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html">AWS CLI</a> to install AWS CLI. Follow this document <a href="https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_prerequisites">CDK Getting Started</a> to install and bootstrap CDK.</p>
@@ -876,29 +804,28 @@
 <p>Make sure you have docker running in your workspace. You can follow this document <a href="https://docs.docker.com/engine/install/">Docker Install</a> to install docker.</p>
 </li>
 </ol>
-<h3 id="customize-evaluation-code">Customize evaluation code</h3>
+<h2 id="customize-evaluation-code">Customize evaluation code</h2>
 <ol>
 <li>
-<p>Fork the github repository of this solution to your own git repository.</p>
+<p>Fork the GitHub repository of this solution to your own Git repository.</p>
 </li>
 <li>
 <p>Clone the project to your own workspace.</p>
 </li>
 <li>
-<p>Make changes to source code.</p>
-<div class="admonition caution">
-<p class="admonition-title">Caution</p>
-<p>The <code>githubRepo</code> in file <code>source/src/molecular-unfolding/cdk/construct-notebook.ts</code> should be changed to your repository.</p>
-</div>
+<p>Change <code>githubRepo</code> path in the source/src/molecular-unfolding/cdk/construct-notebook.ts file to be your Git repository. </p>
+</li>
+<li>
+<p>Make changes to source code. If you want to make changes for quantum algorithms, you can modify code under this directory <strong>source/src/molecular-unfolding/utility</strong>.</p>
 </li>
 </ol>
-<h3 id="deploy-stack-to-your-aws-account-from-cdk">Deploy stack to your AWS account from CDK</h3>
+<h2 id="deploy-stack-to-your-aws-account-from-cdk">Deploy stack to your AWS account from CDK</h2>
 <ol>
 <li>
 <p>Check CloudFormation in your AWS account, and make sure you do not have a stack named <code>QCStack</code> in your deployment region.</p>
 </li>
 <li>
-<p>Check your S3 bucket, and make sure no bucket is named <code>amazon-braket-qcstack-&lt;your aws account&gt;-&lt;deployment region&gt;</code>.</p>
+<p>Check your S3 bucket, and make sure no bucket is named <code>amazon-braket-qcstack-&lt;your account&gt;-&lt;deployment Region&gt;</code>.</p>
 </li>
 <li>
 <p>Deploy changes to your AWS account from CDK.</p>
@@ -917,16 +844,16 @@ npx cdk deploy QCStack \
 <p>Get output links from CloudFormation output, which include:</p>
 <ul>
 <li>Step Functions URL</li>
-<li>QuickSight Dashboard link</li>
+<li>QuickSight dashboard link</li>
 <li>Notebook URL</li>
-<li>S3 Bucket name</li>
+<li>S3 bucket name</li>
 </ul>
 </li>
 <li>
-<p>Follow steps in <a href="../batch-evaluation/">Batch Evaluation</a> to run your own code with appropriate input.</p>
+<p>Follow steps in Batch Evaluation to run your own code with appropriate input.</p>
 </li>
 <li>
-<p><a href="../batch-evaluation/#view-dashboard">View result</a> through QuickSight dashboard.</p>
+<p>View result through QuickSight dashboard.</p>
 </li>
 </ol>
 

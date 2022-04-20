@@ -1760,48 +1760,19 @@ Licensed under the Apache License, Version 2.0.
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>In this part, we post process the optimized results for evaluation and visualization.
-At first, we prepare the following parameters:</p>
-<table>
-<thead><tr>
-<th>Parameter</th>
-<th>Description</th>
-<th>Value</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>method</td>
-<td>annealing method for QUBO problem</td>
-<td>'dwave-sa': use the simulated annealer in ocean toolkit<br> 'dwave-qa': use the quantum annealer</td>
-</tr>
-<tr>
-<td>raw_path</td>
-<td>the path for the original molecule file</td>
-<td>'./molecule-data/117_ideal.mol2' in this example</td>
-</tr>
-<tr>
-<td>data_path</td>
-<td>the path for the processed molecule file</td>
-<td>'./qmu_117_ideal_data_latest.mol2' in this example</td>
-</tr>
-<tr>
-<td>bucket</td>
-<td>the s3 bucket to store your results</td>
-<td>-</td>
-</tr>
-<tr>
-<td>prefix</td>
-<td>the name of the folder in your s3 bucket</td>
-<td>-</td>
-</tr>
-<tr>
-<td>task_id</td>
-<td>the id for your quantum annealing task</td>
-<td>please check the value in the previous step</td>
-</tr>
-</tbody>
-</table>
+<p>This part describes how to process the optimized results for evaluation and visualization.</p>
+<ol>
+<li><p>Prepare the following parameters.</p>
+<p>| Parameter | Description | Value |
+|--- |--- |--- |
+|method | Annealing method for QUBO problem |'dwave-sa': use the simulated annealer in ocean toolkit<br> 'dwave-qa': use the quantum annealer|
+|raw_path| Path for the original molecule file| './molecule-data/117_ideal.mol2' in this example |
+|data_path| Path for the processed molecule file| './qmu_117_ideal_data_latest.mol2' in this example |
+|bucket | S3 bucket to store your results | - |
+|prefix | Name of the folder in your S3 bucket | - |
+|task_id | Your quantum annealing task id| '2b5a3b05-1a0e-443a-852c-4ec422a10e59' in this example|</p>
+</li>
+</ol>
 
 </div>
 </div>
@@ -1813,7 +1784,9 @@ At first, we prepare the following parameters:</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Then we can run the post-process using <strong>ResultParser</strong> object for SA:</p>
+<ol>
+<li>Use <strong>ResultParser</strong> object for SA to run the process.</li>
+</ol>
 
 </div>
 </div>
@@ -2113,16 +2086,11 @@ INFO:root:finish save ./molecule-data/117_ideal_dwave-sa_20220323-14.mol2 and ./
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>In the first block, we can see the <strong>local time</strong>
-for SA is more than 150 seconds. 
-With the <strong>generate_optimize_pts()</strong> method, the final 3D 
-points after unfolding will be generated and saved as json file and mol2 files. The last 
-block shows the optimizing results which are also stored in json files. 
-It shows that the optimized result gains 
-1.0006x increase in volume. The value for <strong>unfolding_results</strong> indicates 
-that the rotatable bond 15 should rotate $270^o$ ($360/8*(7-1)$) and 
-the rotatable bond 14 should rotate $0^o$ ($360/8*(1-1)$).
-At the same time, you can run the post-process for QA:</p>
+<p>As shown in the first block, the local time for SA is around 174 seconds. With the  <strong>generate_optimize_pts()</strong> method, the final 3D points after unfolding will be generated and saved as json file and mol2 files. 
+The last block shows the optimizing results which are also stored in json files. It shows that the optimized result gains <strong>1.0212x</strong> increase in volume.</p>
+<ol>
+<li>Run the process for QA:</li>
+</ol>
 
 </div>
 </div>
@@ -2250,11 +2218,9 @@ INFO:root:_read_result_obj: annealer-experiment/22419429-2f93-4679-9305-a2e099dc
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>we can see that there many types of time metrics for running QA.
-This task has the <strong>local time</strong> of 5 s, which means the time between calling the api and 
-getting the annealing result. The <strong>task time</strong> time is the metric from the json file in 
-bucket. We can also see the <strong>qpu total time</strong> and <strong>qpu access time</strong> representing the 
-actual time running in the QPU. Please refer to <a href="https://docs.dwavesys.com/docs/latest/c_qpu_timing.html">Operation and Timing</a>
+<p>There are many types of time metrics for running QA. This task has the local time of 7.7 s, which indicates the time between calling the API and getting the annealing result. The task time is the metric from the json file in bucket. 
+The <strong>qpu total time</strong> and <strong>qpu access time</strong> represent the 
+actual time running in the QPU. Refer to <a href="https://docs.dwavesys.com/docs/latest/c_qpu_timing.html">Operation and Timing</a>
 for details.</p>
 
 </div>
@@ -2411,10 +2377,8 @@ INFO:root:finish save ./molecule-data/117_ideal_dwave-qa_20220323-14.mol2 and ./
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>In the same way, the optimized results are translated the 3D points and saved 
-as local json and mol2 files. The result indicates that QA gains 
-1.0006x increase in 
-volume.</p>
+<p>In the same way, the optimized results are saved 
+as local json and mol2 files respectively. The result indicates that QA gains <strong>1.0006x</strong> increase in volume.</p>
 
 </div>
 </div>
@@ -2426,14 +2390,15 @@ volume.</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Finally, We can open folders for the optimized results:</p>
+<ol>
+<li>Open folders for the optimized results.</li>
+</ol>
+<p>With more experiments, results with timestamp are stored incrementally.</p>
 <p><img src="../../../images/optimize-results.png" alt="optimize-results"></p>
-<p>Figure 1: Optimized results</p>
-<p>We can see the json result and mol2 file of SA and QA are 
-stored in this place. If we carry out more 
-experiments, more results with time stamp are 
-stored incrementally. 
-For visualization, we can use the following method to see the original the molecule and unfolding molecule.</p>
+<p>Figure 13: Optimized results</p>
+<ol>
+<li>Use the following method to see the original molecule and unfolding molecule.</li>
+</ol>
 
 </div>
 </div>
@@ -2563,11 +2528,13 @@ qa_process_result.InteractView(qa_result_filepath, size=800)</div>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<p>Alternatively, we can upload the mol2 file into 
-<a href="https://www.rcsb.org/3d-view">online viewer tool</a> 
-to see the result:</p>
+<ol>
+<li>(Optional) Upload the result 117_ideal_dwave-qa_20220216-05.mol2 into
+<a href="https://www.rcsb.org/3d-view">Protein Data Bank online viewer tool</a> 
+to see the result:</li>
+</ol>
 <p><img src="../../../images/visualization.png" alt="visual"></p>
-<p>Figure 2: Visualization</p>
+<p>Figure 14: Protein Data Bank visualization</p>
 
 </div>
 </div>
