@@ -1,76 +1,12 @@
----
-title: 建立模型（技术细节）
-weight: 10
----
-### 问题定义 
-
-在这个问题中，配体被认为是一组灵活的原子。严格来讲，它可以看作是一组化学键（边）。这些键具有固定的长度，并且只有其中的一个子集是可旋转的。因为有一些可旋转的键（扭转），分子被分裂成不同的不连贯片段。以图中最右边的可旋转一个键为例，它将分子分成左右片段。这些碎片可以围绕键轴彼此独立旋转。下图展示了这种想法。
-
- ![Rotatable Bonds](../../images/rotatable-bonds.png)
- 图 1: 可旋转的键[<sup>1</sup>](#qmu-paper)
- 
-
-正如它所表明的，MU的目标是找到可以最大化分子体积的配体形状。配体的形状可以表示为展开的形状（所有可旋转键的扭转构型）。
-
-### 公式
-
-假设配体有$M$扭转，从$T_i$到$T_M$，并且每个扭转会有一个转转角度$\theta$。
-
-
-![Multiple Torsion](../../images/multiple-torsion.png)
-
-图 2: 多重扭转
-
-
-该模型的目标是找到展开的扭转构型${\Theta}^{unfold}$。这个构型可以最大化距离$D(\Theta)$ 的总和:
-
-$$ {\Theta}^{unfold} = [\theta^{unfold}_1,  \theta^{unfold}_2, ../..., \theta^{unfold}_M] $$
-
-$$ D(\Theta) = \sum_{a,b}D_{a,b}(\theta)^2 $$
-
-
-$D_{a,b}(\theta)^2$ 是 $|| \overrightarrow{a}_0 - R(\theta)\overrightarrow{b}_0||^2$ 。
-这是片段a和b之间的距离。$R(\theta)$ 是与扭转角$\theta$相关的旋转矩阵。
-
-![Two Frag One Tor](../../images/two-frag-one-torsion.png)
-
-图 3: 通过一个扭转相连的两个片段
-
-由于这是组合优化的问题，最终的构型可以是任何扭转角度的组合。但是，将其应用于实际问题会存在一些限制：
-
-#### 限制-1
-
-受计算资源的限制，扭转不可能有无限小的旋转精确。这意味着每个扭转的旋转角度候选者是有限的。假设我们有$M$ 扭转，它们具有相同的旋转角度精度：$\Delta\theta$。这意味着对于每个扭转，我们需要$d$变量来表示不同的旋转状态：
-
-$$ d = \frac{2\pi}{\Delta\theta} $$
-
-对于整个模型，我们需要$n = d \times M$二元变量$x_{ik}$来表示所有组合。例如，对于扭转 $T_i$，它的扭转角$\theta_i$可以有$d$种可能的值：
-
-$$ \theta_i = [\theta_i^1,\theta_i^2,\theta_i^3, ..., \theta_i^d] $$
-
-#### 限制-2
-
-
-如果我们只考虑距离，最终的结果或构型可能有多个结果来自相同的扭转，只要这种组合意味着更小的距离。例如，可能扭转$T_1$有两个角度被同时选上，则最后结果变为：
-
-$$ {\Theta}^{unfold} = [\theta^2_1,  \theta^4_1, ../..., \theta^3_M] $$
-
-这在现实世界中不可能发生。$T_1$只能有一个角度$d$。所以我们需要将以下约束集成到我们的最终模型中：
-
-$$ \displaystyle\sum\limits_{k=1}^{d} x_{ik} = 1 $$
-
-有了这两个约束，这个问题可以表述为High-Order Unconstrained Binary Optimization（HUBO）。
-
-$$ O(x_{ik}) = A\displaystyle\sum\limits_i (\displaystyle\sum\limits_{k=1}^d x_{ik}-1)^2 - \displaystyle\sum\limits_{a,b} D_{ab} (\theta)^2 $$
-
-第一部分是每个扭转的约束。如果最后一个扭转有多个角度，我们将添加惩罚项$A$。然而，在方法pre-calc实现中，我们预先计算了不同构型下的距离对。这意味着我们可以使用绝对距离来代替：
+在量子分子展开的示例代码中，本方案在大量采用了原作者的框架的基础上做了一些修改。原作者使用的是HUBO优化函数，本方案使用的是绝对距离，如下所示。代码中的方法名为pre-calc。
 
 $$ O(x_{ik}) = A\displaystyle\sum\limits_i (\displaystyle\sum\limits_{k=1}^d x_{ik}-1)^2 - \displaystyle\sum\limits_{a,b} |D_{ab} (\theta)| $$
 
-#### 模型代码
-我们在**source/src/molecualr-unfolding/untiliy/QMUQUBO.py**里实现了该模型。
+## 模型代码
 
-我们使用以下逻辑初始化变量
+您可以打开文件**source/src/molecualr-unfolding/untiliy/QMUQUBO.py**查看该模型的源代码。
+
+以下代码展示了如何初始化变量：
 
 !!! Note "说明"
 
@@ -78,21 +14,21 @@ $$ O(x_{ik}) = A\displaystyle\sum\limits_i (\displaystyle\sum\limits_{k=1}^d x_{
 
 ![Var Init](../../images/var-init.png)
 
-图 4: 初始化变量的逻辑
+图 8: 初始化变量的逻辑
 
-上面的代码表明我们有来自$x\_1\_?$到$x\_4\_?$一共4个扭转。每个扭转有四个可选的旋转角度，从$0^o$到$270^o$。例如$x\_3\_2$表示扭转3旋转$180^o$。
+上面的代码表明我们有来自$x\_1\_?$到$x\_4\_?$一共4个扭转。每个扭转有四个可选的旋转角度，从$0^o$到$270^o$。例如$x\_3\_2$表示扭转3旋转$90^o$，$x\_4\_2$表示扭转4旋转$0^o$。
 
 
-我们用下面的逻辑引入约束：
+以下代码展示了如何引入约束：
 
 ![Constraint](../../images/constraint.png)
 
-图 5: 约束的逻辑
+图 9: 约束的逻辑
 
-正如我们之前分析的那样，模型不知道变量属于哪些相同的物理扭转。例如，$x\_1\_1$、$x\_1\_2$、$x\_1\_3$
-和 $x\_1\_4$属于同一个扭转。理论上，模型只能选择其中一个变量。如果模型选择其中的多个，我们必须惩罚它。如图所示，当模型选择$x\_1\_?$ 的多个变量时，我们给它惩罚项目$600$ （这里是以 $A=300$ 为例）。
+模型有时会产生意想不到的结果，例如，$x\_1\_1$、$x\_1\_2$、$x\_1\_3$
+和 $x\_1\_4$属于同一个扭转。理论上，模型只能选择其中一个变量。如果模型选择其中的多个，我们必须为其添加惩罚项目。如图所示，当模型选择$x\_1\_?$ 的多个变量时，我们给它惩罚项目$600$ （这里是以 $A=300$ 为例）。
 
-最重要的是，我们使用下面的方法来递归计算出不同构型的距离:
+下面的方法来递归计算出不同构型的距离:
 
 ```
 def update_hubo(torsion_group, up_list, ris):
@@ -140,34 +76,29 @@ for ris in mol_data.bond_graph.sort_ris_data[str(M)].keys():
         f"elapsed time for torsion group {ris} : {(end-start)/60} min")
 ```
 
-### 量子退火
+## 量子退火
 
-量子退火（QA）可以看作是模拟退火（SA）的一种变体。 QA和SA 都是通过启发式技术来解决具有挑战性的组合问题。 QA使用量子涨落（quantum fluctuation）而不是热效应来探索组合空间。在这里，我们使用用于访问加拿大公司D-Wave的Amazon Braket API。该退火器是使用超导量子比特实现的。原生地，QUBO可以使用量子退火器解决：
+量子退火（QA）可以看作是模拟退火（SA）的一种变体。 QA和SA 都是通过启发式技术来解决具有挑战性的组合问题。QA使用量子涨落（quantum fluctuation）而不是热效应来探索组合空间。本实验使用用于访问加拿大公司D-Wave的Amazon Braket API。该退火器是使用超导量子比特实现的。原生地，QUBO可以使用量子退火器解决：
 
 $$ O(x) = \displaystyle\sum\limits_i h_i x_i + \displaystyle\sum_{i>j} J_{i,j} x_i x_j $$
 
-在QUBO形式中，$x_i \in \{0, 1\}$是二进制变量。我们可以将其视为我们为特定扭转选择的角度。 $h_i$ 和 $J_{i,j}$
- 当我们使用相应的角度时，可以认为是编码优化任务的值。但是，在我们的任务中，通常有
- 片段之间不止一个扭转，我们将其建模为HUBO问题：
+在QUBO形式中，$x_i \in \{0, 1\}$是二进制变量，可以将其视为我们为特定扭转选择的角度。 $h_i$ 和 $J_{i,j}$
+当我们使用相应的角度时，可以认为是编码优化任务的值。但是，通常有片段之间不止一个扭转，在任务里将其建模为HUBO问题：
 
 $$ O(x) = \displaystyle\sum\limits_i \alpha_i x_i + \displaystyle\sum_{i,j} \beta_{i,j} x_i x_j + \displaystyle\sum_{i,j,k} \gamma_{i,j,k} x_i x_j x_k + ../... $$
 
 
 ![Two Frag Mul Tor](../../images/two-frag-multiple-torsion.png)
 
-图 6: 拥有多个扭转
+图 10: 拥有多个扭转
 
-通过使用一些技巧，通常可以将HUBO转换为QUBO，比如添加新的辅助二元变量来替换高阶项。
-在实践中，我们使用D-Wave软件包中的API $make \_ quadratic()$来进行这种转换。
+通过添加新的辅助二元变量来替换高阶项，可以将HUBO转换为QUBO。
+本方案使用D-Wave软件包中的API $make \_ quadratic()$来进行这种转换。
 
 ![HUBO QUBO](../../images/hubo-qubo.png)
 
-图 7: 将HUBO转为QUBO
+图 11: 将HUBO转为QUBO
 
 如图所示，HUBO 的一些高阶项，如 $('x\_1\_1','x\_2\_1','x\_3\_1')$
-在 QUBO 中转换为二次项。我们只展示了其中的一些转化。
+在 QUBO 中转换为二次项。
 
-
-# 参考
-<div id='qmu-paper'></div>
-- 1.Mato, Kevin, et al. "Quantum Molecular Unfolding." arXiv preprint arXiv:2107.13607 (2021).

@@ -1,40 +1,8 @@
+## 批量评估自定义模型
 
-批量评估自定义的模型有两种方法：
+本方案为Apache License Version 2.0下的开源项目。您可将其做为基本代码，进行更改。
 
-- 批量评估mol2文件，无需更改代码
-- 完全自定义评估代码
-
-## 批量评估mol2文件，无需更改代码
-
-如果您有mol2文件，可以按照以下步骤批量评估：
-
-1. 将您的mol2文件上传到CloudFormation输出中的S3存储桶，或您自己的S3存储桶。如果您想使用自己的S3存储桶，存储桶名称必须遵循以下格式：`braket-*` 或 `amazon-braket-*`。
-
-2. 在Step Functions输入中将mol2文件的S3 uri指定为`molFile` 的值
-
-     
-        {
-            "molFile" : "<您的 mol2 文件的 s3 uri>"
-        }
-   
-
-       例如
-    
-        {
-           “molFile”：“s3://amazon-braket-gcr-qc-sol-common/qc/raw_model/117_ideal.mol2”
-        }
-
-    
-    有关完整的输入参数和架构，请参考[输入规范](../batch-evaluation/#输入规范)。
-
-3. 按照[批量评估](../batch-evaluation/#start-execution)中的步骤运行Step Functions。
-
-## 完全自定义评估代码
-
-
-您可以利用Apache License Version 2.0下的开源项目做为基本代码，对其进行更改，完全自定义评估代码。
-
-请按照以下步骤进行更改并从CDK重新部署整个堆栈。
+您可以通过以下步骤完全自定义评估代码，并从CDK重新部署整个堆栈。
 
 ### 先决条件
 
@@ -48,16 +16,13 @@
 
 ### 自定义评估代码
 
-1. 将本方案的github仓库fork到自己的git仓库。
+1. 将本方案的GitHub仓库fork到您自己的Git仓库。
 
-2. 将项目克隆到自己的工作区。
+2. 将项目克隆到您自己的工作区。
 
-3. 修改源代码
+3. 修改文件`source/src/molecular-unfolding/cdk/construct-notebook.ts`中的`githubRepo`路径为您的Git仓库。
 
-    !!! caution "注意"
-        
-        文件source/src/molecular-unfolding/cdk/construct-notebook.ts中变量githubRepo应该修改为您的git仓库。
-
+4. 修改源代码。如果您想要修改量子算法，可以在目录`source/src/molecular-unfolding/utility`下修改代码。
 
 ### 将堆栈从 CDK 部署到您的 AWS 账户
 
@@ -82,6 +47,6 @@
     - 笔记本网址
     - S3存储桶名称
 
-6. 按照[批量评估](../batch-evaluation/)中的步骤运行您自己的代码。
+6. 按照[批量评估](batch-evaluation.md)中的步骤运行您自己的代码。
 
-7. 通过QuickSight仪表板[查看结果](../batch-evaluation/#view-dashboard)。
+7. 通过QuickSight仪表板查看结果。

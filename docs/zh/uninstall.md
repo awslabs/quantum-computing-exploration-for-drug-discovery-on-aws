@@ -1,11 +1,11 @@
-要卸载药物发现量子计算解决方案，请删除CloudFormation堆栈。
+要卸载量子计算探索之药物发现方案，请删除CloudFormation堆栈。
 
 您可以使用亚马逊云科技管理控制台或CLI删除CloudFormation堆栈。
 
 ## 使用亚马逊云科技管理控制台删除堆栈
 
 1. 登录[AWS CloudFormation][cloudformation-console]控制台。
-2. 在**堆栈**页面上，选择此解决方案的安装堆栈。
+2. 在**堆栈**页面上，选择此方案的安装堆栈。
 3. 选择**删除**。
 
 ## 使用CLI删除堆栈

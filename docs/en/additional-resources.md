@@ -1,4 +1,5 @@
-- [Amazon SageMaker Notebook][sagemaker]
+AWS services
+- [Amazon SageMaker][sagemaker]
 - [Amazon Braket][braket]
 - [AWS Step Functions][step functions]
 - [AWS Batch][batch]
