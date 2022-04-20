@@ -88,6 +88,19 @@
         <td>小于100运行</td>
         <td>0</td>
     <tr>
+     <tr>
+        <td rowspan='4'>网络</td>
+        <td>VPC 端点</td>
+        <td>Amazon S3</br>Amazon ECR</br>Amazon Athena</br>Amazon Braket</td>
+        <td>长时间运行</td>
+        <td>每月58.41美金</td>
+    <tr>
+    <tr>
+        <td>NAT 网关</td>
+        <td>-</td>
+        <td>长时间运行</td>
+        <td>每月65.78美金</td>
+    <tr> 
     <tr>
         <td rowspan='4'>网络</td>
         <td>Amazon VPC</td>

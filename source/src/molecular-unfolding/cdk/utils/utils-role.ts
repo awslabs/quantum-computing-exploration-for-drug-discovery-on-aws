@@ -160,13 +160,21 @@ export class RoleUtil {
 
 
   public createBatchJobExecutionRole(roleName: string): iam.Role {
+    const ecrAccount = process.env.SOLUTION_ECR_ACCOUNT || '';
     const role = new iam.Role(this.scope, `${roleName}`, {
       assumedBy: new iam.ServicePrincipal('ecs-tasks.amazonaws.com'),
     });
+
+    const resources = [
+      `arn:aws:ecr:${this.props.region}:${this.props.account}:repository/*`,
+    ];
+
+    if (ecrAccount) {
+      resources.push(`arn:aws:ecr:${this.props.region}:${ecrAccount}:repository/*`);
+    }
+
     role.addToPolicy(new iam.PolicyStatement({
-      resources: [
-        `arn:aws:ecr:${this.props.region}:${this.props.account}:repository/*`,
-      ],
+      resources,
       actions: [
         'ecr:BatchCheckLayerAvailability',
         'ecr:GetDownloadUrlForLayer',
@@ -329,6 +337,7 @@ export class RoleUtil {
       ],
       actions: [
         'athena:StartQueryExecution',
+        'athena:GetQueryExecution',
         'athena:GetQueryResults',
         'glue:UpdateDatabase',
         'glue:DeleteDatabase',

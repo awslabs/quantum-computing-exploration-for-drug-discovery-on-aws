@@ -60,12 +60,14 @@ This example uses the molecular unfolding function for the prepared sample, whic
         <td>4 tasks for different parameters, 10000 shots/task</td>
         <td>$8.80</td>
     <tr>
-    <tr>
+
+      <tr>
         <td>Amazon Batch (Fargate) </td>
         <td>2 VCPU 4G MEM</td>
         <td>Build model task, 8 minutes (< 20 minutes)</td>
         <td>$1.02</td>
     <tr>
+
     <tr>
         <td>Amazon Batch (EC2) </td>
         <td>4 VCPU 8G MEM</td>
