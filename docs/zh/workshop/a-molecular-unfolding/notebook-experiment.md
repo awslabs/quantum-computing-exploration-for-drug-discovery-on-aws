@@ -1,9 +1,6 @@
----
-title: Notebook Experiment
-weight: 10
----
+## 笔记本实验
 
-本动手实验尝试在Amazon Braket上面实现文献[Quantum Molecular Unfolding](https://arxiv.org/abs/2107.13607)和视频[Molecular Unfolding with Quantum Annealing](https://www.youtube.com/watch?v=1NmAXIHAF2Y)中介绍的工作。
+本动手实验尝试在Amazon Braket上面实现[Quantum Molecular Unfolding](https://arxiv.org/abs/2107.13607)和视频[Molecular Unfolding with Quantum Annealing](https://www.youtube.com/watch?v=1NmAXIHAF2Y)中介绍的工作。
 
 ## 分子对接
 
@@ -15,14 +12,14 @@ weight: 10
 
 ![Molecular Docking](../../images/molecule-docking.png)
 
-图 1: 分子对接[<sup>1</sup>](#wiki-docking)
+图 6: 分子对接[<sup>6</sup>](#wiki-docking)
 
-根据文献[Quantum Molecular Unfolding](https://arxiv.org/abs/2107.13607)的说明，分子对接通常包含三个阶段：
+根据[Quantum Molecular Unfolding](https://arxiv.org/abs/2107.13607)的说明，分子对接通常包含三个阶段：
 
-* 配体展开
+* 配体展开，也即分子展开（Molecular Unfolding，MU）
     * 可旋转键的识别
     * 内部距离最大化
-    * 消除工具相关的偏差 (e.g. smile-to-3D)
+    * 消除工具相关的偏差 (例如，SMILES-to-3D)
 * 初始放置
     * 配体主要片段分解
     * 配体初始姿态识别
@@ -31,18 +28,24 @@ weight: 10
     * 使用可旋转键来修饰配体形状并匹配蛋白质对接口袋
     * 对接分数最大化
 
-本实验主要关注利用量子退火器件来实现第一个阶段：配体扩张或者分子展开（Molecular Unfolding，MU）。这个阶段对于改进分子对接很重要。事实上，一个具有初始先验设置的配体位姿可能会引入影响最终对接质量的形状偏差。MU是用于消除这种初始偏差的技术。
+## AWS云上的量子分子展开
+
+本实验主要关注分子对接的第一个阶段：配体扩张或者分子展开。这个阶段对于改进分子对接很重要。事实上，一个具有初始先验设置的配体位姿可能会引入影响最终对接质量的形状偏差。MU是用于消除这种初始偏差的技术。本方案利用Mato et al. 提出的量子退火方法来实现分子展开，通过AWS Braket在量子计算机上研究该问题，同时也在经典计算机上运行，并进行结果对比。
 
 ## 笔记本
 
-1. 打开CloudFormation中的部署输出页面，并单击笔记本的链接。
+1. 登录[AWS CloudFormation控制台](https://console.aws.amazon.com/cloudformation/home?)。
+
+2. 在**堆栈**页面，选择本方案的堆栈。
+
+3. 选择**输出**页签，并点击笔记本的链接。
 
     ![deployment output](../../images/deploy_output_notebook.png)
-    图 2: 笔记本链接
+    图 7: 笔记本链接
 
-2. 访问**source/src/molecular-folding/molecular_unfolding.ipynbn**打开笔记本，并确保笔记本的核为**qcenv**。
+4. 打开笔记本文件**source/src/molecular-folding/molecular_unfolding.ipynbn**，并确保笔记本的核为**qcenv**。
 
-3. 浏览整个笔记本。它由四个步骤组成：
+5. 浏览整个笔记本。它由四个步骤组成：
 
     |步骤|内容|
     |:--|:--|
@@ -50,6 +53,11 @@ weight: 10
     |第二步：建立模型|建立分子展开模型|
     |第三步：优化构型|运行优化以找到最佳构型|
     |第四步：后处理|对结果进行后处理以进行评估和可视化|
+
+    - 第一步：准备数据，为实验准备分子数据
+    - 第二步：建立模型，建立分子展开模型
+    - 第三步：优化构型，运行优化以找到最佳构型
+    - 第四步：处理结果，对结果进行处理以进行评估和可视化
 
 <!-- |步骤|内容|
 |:--|:--|
@@ -63,5 +71,4 @@ weight: 10
 
 # 参考
 <div id='wiki-docking'></div>
-
-1. 图片来源：[Wikipedia: Docking (molecular)](https://en.wikipedia.org/wiki/Docking_(molecular))
+- 6.[Wikipedia: Docking (molecular)](https://en.wikipedia.org/wiki/Docking_(molecular))

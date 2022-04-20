@@ -1,19 +1,25 @@
+# 默认的批量评估
+
+默认的批量评估将运行基于笔记本实验中的示例代码预构建的Amazon ECR镜像。
+
 您可以通过AWS Step Functions工作流程运行批量评估，并利用Amazon QuickSight控制面板查看评估结果。
 
-1. 从部署输出中获取AWS Step Functions链接，单击Step Functions链接导航至AWS Step Functions控制台。
+1. 登录[AWS CloudFormation控制台](https://console.aws.amazon.com/cloudformation/)。
 
-2. 选择**启动执行**。
+2. 在**堆栈**页面，选择本方案的堆栈。
+
+3. 选择**输出**页签，并点击AWS Step Functions链接。
+
+4. 选择**启动**。
     
-3. （可选）输入评估的相关内容。
+5. （可选）输入评估的相关内容。
 
      - 如果您不输入任何内容，它将使用默认输入。
      - 如果要自定义批量评估，请参考本节的[输入规范](#input-specification)。
 
-4. 点击**启动执行**，开始批量评估。
-    
-    默认批量评估大约需要25分钟。
+6. 点击**启动**，开始批量评估。默认批量评估大约需要25分钟。
 
-5. 批量评估完成后，从CloudFormation输出中获取仪表板链接，点击链接导航至仪表板，您可以在AWS QuickSight中查看整体的实验结果。
+7. 批量评估完成后，从CloudFormation输出中获取仪表板链接，点击链接导航至仪表板，您可以在AWS QuickSight中查看整体的实验结果。
 
 6. 在仪表盘中查看实验结果：
 
@@ -37,9 +43,7 @@
         | result_detail  | 分子展开前后的体积大小。  |
         | result_location | 展开后的分子mol2文件。  |
 
-
-
-### 输入规范
+## 输入规范
 
 您可以使用json输入自定义评估参数。
 
@@ -70,7 +74,7 @@
 
 ```
 
-!!! 说明
+!!! Notice "说明"
 
     所有字段都是可选的。
 
@@ -81,7 +85,7 @@
   * **mol2文件**: mol2文件的S3 URL
   * **modelVersion**：模型版本，默认为`latest`
   * **experimentName**：批量评估的名称
-  * **optParams**：优化器参数, 为QC(qa)和CC(sa)任务设置shots值
+  * **optParams**：优化器参数，为QC(qa)和CC(sa)任务设置shots值
   * **modelParams**：模型参数，M：扭转数，D：旋转角度精度。详情请参考[建立模型-技术细节](./build-model-detail.md)。有效值：
 
          M: [1, 2, 3, 4, 5, 6, 7]
@@ -99,9 +103,9 @@
         arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6
         arn:aws:braket:::device/qpu/d-wave/Advantage_system4
       
-  * **ccResources**：vCPU（第一个元素），GiB 中的内存（第二个元素），例如 4 个 vCPU， 8GiB 内存是：`[4, 8]`
+  * **ccResources**：vCPU（第一个元素）和 GiB中的内存（第二个元素），例如4个vCPU，8GiB内存是：`[4, 8]`
 
-典型（默认）输入：
+使用默认mol2文件的输入示例：
 
 ```json
 {
@@ -127,3 +131,24 @@
         [4, 8]
     ]
 ```
+
+如果您有mol2文件，可以按照以下步骤批量评估：
+
+1. 将您的mol2文件上传到CloudFormation输出中的S3存储桶，或您自己的S3存储桶。如果您想使用自己的S3存储桶，存储桶名称必须遵循以下格式：`braket-*` 或 `amazon-braket-*`。
+
+2. 在Step Functions输入中将mol2文件的S3 uri指定为`molFile` 的值。
+
+     
+        {
+            "molFile" : "<您的 mol2 文件的 s3 uri>"
+        }
+   
+
+       例如
+    
+        {
+           “molFile”：“s3://amazon-braket-gcr-qc-sol-common/qc/raw_model/117_ideal.mol2”
+        }
+
+    
+
