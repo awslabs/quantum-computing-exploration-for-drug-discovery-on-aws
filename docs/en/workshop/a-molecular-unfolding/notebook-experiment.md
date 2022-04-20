@@ -1,8 +1,8 @@
+## Notebook experimentation
 
-We are trying to implement the work from the publication [Quantum Molecular Unfolding](https://arxiv.org/abs/2107.13607)
-and video [Molecular Unfolding with Quantum Annealing](https://www.youtube.com/watch?v=1NmAXIHAF2Y) in Amazon Braket.
+The workshop implements the work from [Quantum Molecular Unfolding](https://arxiv.org/abs/2107.13607), published by Cornell University, and the [Molecular Unfolding with Quantum Annealing](https://www.youtube.com/watch?v=1NmAXIHAF2Y) video in Amazon Braket.
 
-## Molecular Docking 
+## Molecular docking 
 
 Molecular Docking (MD) is an important step of the drug discovery process which aims at calculating the preferred position and shape of one molecule to a second when they are bound to each other. This step focuses on computationally simulating the molecular recognition process. It aims to achieve an optimized conformation for both the protein and ligand and relative orientation between protein and ligand such that the free energy of the overall system is minimized. 
 
@@ -11,47 +11,49 @@ flexible set of atoms.
 
 ![Molecular Docking](../../images/molecule-docking.png)
 
-Figure 1: Molecular docking[<sup>1</sup>](#wiki-docking)
+Figure 6: Molecular docking[<sup>6</sup>](#wiki-docking)
 
-According to the publication [Quantum Molecular Unfolding](https://arxiv.org/abs/2107.13607), there are usually three main phases in MD: 
+As described in [Quantum Molecular Unfolding](https://arxiv.org/abs/2107.13607), published by Mato et al, there are usually three main phases in MD: 
 
-* Ligand expansion
+1. Expansion of the ligand to an unfolded shape, to reduce bias, that is, molecular unfolding (MU). MU includes:
     * Identification of the rotatable bonds
-    * Internal distances maximization
-    * Remove tool related bias (e.g. smile-to-3D)
-* Initial Placement
+    * Internal distance maximization
+    * Removal of tool related bias (for example, SMILES-to-3D)
+2. Initial placement, which includes:
     * Ligand main fragments decomposition
     * Ligand initial poses identification
     * Placement of the ligand into the pocket with rigid roto-translations
-* Shape Refinement
+3. Shape refinement, which includes:
     * Use of the rotatable bonds to modify the ligand shape and to match the protein pocket
     * Docking score maximization
 
-In this work, actually the first phase, ligand expansion or the molecular unfolding (MU), is focused and implemented using quantum annealer. This phase is important for improving docking. In fact, an initial pose of the ligand that is set a priori may introduce shape bias affecting the final quality of the docking. MU is the technology used for removing such initial bias.
+## Quantum molecular unfolding on the AWS Cloud
 
-# Notebook Overview
+Here we focus on the first phase of MD, ligand expansion, which aims to reduce shape bias that may affect the final quality of docking.  In this solution we use the quantum annealing approach to molecular unfolding (MU) as published by Mato et al. Our solution uses AWS Services to execute this problem on quantum computing hardware, available through AWS Braket. The solution also allows the problem to be run on classic computing hardware, on AWS, for comparison.
 
-1. Access the deployment output page in your cloudformation and open the link for your notebook.
+## Notebook overview
+
+1. Sign in to the [AWS CloudFormation console](https://console.aws.amazon.com/cloudformation/home?). 
+2. On the **Stacks** page, select the solution’s root stack. 
+3. Choose the **Outputs** tab and open the link for your notebook.
 
     ![deployment output](../../images/deploy_output_notebook.png)
 
-    Figure 2: The notebook link in the output of cloudformation
+    Figure 7: Notebook URL on the stack's Output tab
 
+4. Open the file under the directory **source/src/molecular-folding/molecular_unfolding.ipynb** and choose the kernel **qcenv**.
 
-2. Open the notebook (**source/src/molecular-folding/molecular_unfolding.ipynb**) and make sure that the kernel for this notebook is **qcenv**.
+5. Navigate through the notebook, which consists of four Steps:
 
-3. Navigate through the notebook, which consists of four Steps:
+    - Step 1: Prepare data - Prepare molecular data for experiments.
+    - Step 2: Build model - Build model for molecular unfolding.
+    - Step 3: Optimize configuration - Run optimization to find the configuration.
+    - Step 4: Process results - Process the results for evaluation and visualization.
 
-
-    |Steps|Contents|
-    |:--|:--|
-    |Step1: Prepare Data|prepare molecular data for experiments|
-    |Step2: Build Model|build model for molecular unfolding|
-    |Step3: Optimize Configuration|run optimization to find the configuration|
-    |Step4: PostProcess Results |post process the results for evaluation and visualization|
 
 
 
 # References
 <div id='wiki-docking'></div>
-- 1.[Wiki: Molecular Docking](https://en.wikipedia.org/wiki/Docking_(molecular))
+
+- 6.[Wiki: Molecular Docking](https://en.wikipedia.org/wiki/Docking_(molecular))
