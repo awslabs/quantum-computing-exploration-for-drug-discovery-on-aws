@@ -1,8 +1,8 @@
-Deploying the Quantum Ready Architecture for Drug Discovery solution with the default parameters builds the following environment in the AWS Cloud.
+Deploying the Quantum Computing Exploration for Drug Discovery on AWS solution with the default parameters builds the following environment in the AWS Cloud.
 
 ![architecture](./images/architecture.png)
 
-Figure 1: Quantum Ready Architecture for Drug Discovery architecture on AWS
+Figure 1: Quantum Computing Exploration for Drug Discovery on AWS architecture
 
 This solution deploys the AWS CloudFormation template in your AWS Cloud account and provides three parts:
 

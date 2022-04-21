@@ -1,4 +1,4 @@
-To uninstall Quantum Ready Architecture for Drug Discovery, you must delete the AWS CloudFormation stack. 
+To uninstall Quantum Computing Exploration for Drug Discovery on AWS, you must delete the AWS CloudFormation stack. 
 
 You can use either the AWS Management Console or the AWS Command Line Interface (CLI) to delete the CloudFormation stack.
 

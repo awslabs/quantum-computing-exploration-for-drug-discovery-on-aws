@@ -65,7 +65,7 @@ export class MainStack extends SolutionStack {
 
   // constructor
   constructor(scope: Construct, id: string, props: StackProps = {}) {
-    const DESCRIPTION = `(${MainStack.SOLUTION_ID}) Quantum Ready Architecture For Drug Discovery ${MainStack.SOLUTION_VERSION}`;
+    const DESCRIPTION = `(${MainStack.SOLUTION_ID}) Quantum Computing Exploration for Drug Discovery on AWS ${MainStack.SOLUTION_VERSION}`;
     super(scope, id, props);
     this.setDescription(DESCRIPTION);
     const stackName = this.stackName.replace(/[^a-zA-Z0-9_]+/, '').toLocaleLowerCase();

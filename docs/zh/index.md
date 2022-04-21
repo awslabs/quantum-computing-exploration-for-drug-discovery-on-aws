@@ -1,4 +1,4 @@
-量子计算探索之药物发现方案（Quantum Ready Architecture for Drug Discovery）旨在帮助客户研究药物发现问题，例如分子对接，蛋白质折叠等。通过[Amazon Braket][braket]调用量子计算资源进行实验，同时调用经典计算资源进行对比，从而让客户提升研究效率，获取研究的新思路。
+量子计算探索之药物发现方案（Quantum Computing Exploration for Drug Discovery on AWS）旨在帮助客户研究药物发现问题，例如分子对接，蛋白质折叠等。通过[Amazon Braket][braket]调用量子计算资源进行实验，同时调用经典计算资源进行对比，从而让客户提升研究效率，获取研究的新思路。
 
 本方案主要包括以下功能：
 
