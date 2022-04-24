@@ -121,7 +121,7 @@ Before you launch the solution, review the architecture, supported regions, and 
 
 5. Choose **Next:Review**.
 
-6. Enter the **Name** of the policy. This deployment uses `qradd-quicksight-service-role-policy` as an example.
+6. Enter the **Name** of the policy. This deployment uses `qcedd-quicksight-service-role-policy` as an example.
 
 7. Choose **Create policy**.
 
@@ -151,7 +151,7 @@ Before you launch the solution, review the architecture, supported regions, and 
 
 13. Select the policy, and choose **Next**.
 
-14. Enter the **Role name**. This deployment uses`qradd-quicksight-service-role` as an example.
+14. Enter the **Role name**. This deployment uses`qcedd-quicksight-service-role` as an example.
 
 15. Choose **Create role**.
 
@@ -182,7 +182,7 @@ Before you launch the solution, review the architecture, supported regions, and 
 3.	Select the account name in the upper right corner, and choose **Manage QuickSight**.
 4.	Choose **Security & permissions** from the left navigation pane.
 5.	In the **QuickSight access to AWS services** area, choose **Manage**.
-6. Choose **Use an existing role**, and select the role created in previous step. As an example, the deployment uses`qradd-quicksight-service-role`.
+6. Choose **Use an existing role**, and select the role created in previous step. As an example, the deployment uses`qcedd-quicksight-service-role`.
 ### Obtain QuickSight Username
 
 1. Sign in to the [Amazon QuickSight console](https://us-east-1.quicksight.aws.amazon.com/sn/admin) in the **US East (N.Virginia)** Region.
@@ -244,5 +244,5 @@ Follow below steps to subscribe to SNS notification via email to receive result 
 10. Check your inbox for the email, and select the **Confirm Subscription** link to confirm the subscription.
 
 
-[template-url]: https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/create/template?stackName=QRADDStack&templateURL={{ cf_template.url }}
+[template-url]: https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/create/template?stackName=QCEDDStack&templateURL={{ cf_template.url }}
 [cf-template-url]: {{ cf_template.url }}

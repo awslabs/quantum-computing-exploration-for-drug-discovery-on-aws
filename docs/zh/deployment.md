@@ -125,7 +125,7 @@
 
 5. 点击**下一步：审核**。
 
-6. 填写策略名称。本示例填入：`qradd-quicksight-service-role-policy`。
+6. 填写策略名称。本示例填入：`qcedd-quicksight-service-role-policy`。
 
 7. 点击**创建策略**。
 
@@ -151,11 +151,11 @@
 
 11. 点击**下一步**。
 
-12. 在**权限策略**搜索框中输入刚刚创建的策略名称：`qradd-quicksight-service-role-policy`。
+12. 在**权限策略**搜索框中输入刚刚创建的策略名称：`qcedd-quicksight-service-role-policy`。
 
-13. 选中策略`qradd-quicksight-service-role-policy`, 点击**下一步**。
+13. 选中策略`qcedd-quicksight-service-role-policy`, 点击**下一步**。
 
-14. 填写**角色名称**。本示例填入： `qradd-quicksight-service-role`。
+14. 填写**角色名称**。本示例填入： `qcedd-quicksight-service-role`。
 
 15. 点击**创建角色**。
 
@@ -247,5 +247,5 @@
 
 10. 检查您的邮箱，您将收到一封邮件，点击邮件中*Confirm Subscription*链接，确认订阅。
 
-[template-url]: https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/create/template?stackName=QRADDStack&templateURL={{ cf_template.url }}
+[template-url]: https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/create/template?stackName=QCEDDStack&templateURL={{ cf_template.url }}
 [cf-template-url]: {{ cf_template.url }}

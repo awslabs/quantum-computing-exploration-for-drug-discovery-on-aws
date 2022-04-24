@@ -69,7 +69,7 @@ async function _handler(event: CloudFormationCustomResourceEvent, context: Conte
 
   const cf_client = new CloudFormationClient(config);
   let templateBody = readFileSync(`${__dirname}/template.json`, 'utf-8');
-  const stackName = `QRSFDD-BraketEventTo${currentRegion}`;
+  const stackName = `QCEDD-BraketEventTo${currentRegion}`;
   const eventBridgeRoleArn = process.env.EVENT_BRIDGE_ROLE_ARN;
   const createStackInput = {
     StackName: stackName,
