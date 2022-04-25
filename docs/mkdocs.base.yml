@@ -1,6 +1,6 @@
-site_name: Quantum Ready Architecture for Drug Discovery
-site_url: https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/
-repo_url: https://github.com/awslabs/quantum-ready-solution-for-drug-discovery/
+site_name: Quantum Computing Exploration for Drug Discovery on AWS
+site_url: https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/
+repo_url: https://github.com/awslabs/quantum-computing-exploration-for-drug-discovery-on-aws/
 
 theme:
   name: material
@@ -18,10 +18,10 @@ plugins:
 extra:
   alternate:
     - name: English
-      link: /quantum-ready-solution-for-drug-discovery/en/
+      link: /quantum-computing-exploration-for-drug-discovery-on-aws/en/
       lang: en
     - name: 中文
-      link: /quantum-ready-solution-for-drug-discovery/zh/
+      link: /quantum-computing-exploration-for-drug-discovery-on-aws/zh/
       lang: zh
   cf_template:
       url: https://solutions-test-reference.s3.amazonaws.com/quantum-ready-solution-for-drug-discovery/v1.0.0/QCStack.template

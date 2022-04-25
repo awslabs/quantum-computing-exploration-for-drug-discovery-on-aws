@@ -33,7 +33,7 @@
 
 1. 导航至[IAM Role](https://console.aws.amazon.com/iamv2/home#/roles)AWS控制台。
 
-2. 搜索角色名称。例如，`qradd-quicksight-service-role`。
+2. 搜索角色名称。例如，`qcedd-quicksight-service-role`。
 
 3. 选中勾选框。
 

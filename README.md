@@ -1,8 +1,8 @@
-# Quantum Ready Architecture For Drug Discovery
+# Quantum Computing Exploration for Drug Discovery on AWS
 
 ## Overview
 
-AWS Quantum Ready Architecture for Drug Discovery (abbrev. QRADD), an open-sourced solution customers can launch to design and run computational studies in the area of drug discovery, e.g. molecular docking and protein folding. With this solution, customers can design and load new, or existing algorithms, into Jupyter notebooks, then orchestrate the classical and quantum compute resources using AWS Batch and AWS Step Functions. Due to its design, customers are free to scale their classical simulations by launching a performant HPC resource instead of  a single EC2 instance. At the same time customer’s quantum experiments benefit from the growing number of quantum resources available through the Amazon Braket service.
+Quantum Computing Exploration for Drug Discovery on AWS (abbrev. QCEDD), an open-sourced solution customers can launch to design and run computational studies in the area of drug discovery, e.g. molecular docking and protein folding. With this solution, customers can design and load new, or existing algorithms, into Jupyter notebooks, then orchestrate the classical and quantum compute resources using AWS Batch and AWS Step Functions. Due to its design, customers are free to scale their classical simulations by launching a performant HPC resource instead of  a single EC2 instance. At the same time customer’s quantum experiments benefit from the growing number of quantum resources available through the Amazon Braket service.
 
 The overall architecture is shown as below:
 
@@ -33,7 +33,7 @@ The solution provides user the way to visualize the comparing results of
 batch evaluation (e.g. performance, time)
 
 For detailed description of architecture, please refer to the 
-[Architecture Page](https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/en/architecture/)
+[Architecture Page](https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/en/architecture/)
 
 ## Pre-built Examples for Drug Discovery[<sup>1,</sup>](#more-example)[<sup>2</sup>](#data)
 <table border='1' style="text-align: center">
