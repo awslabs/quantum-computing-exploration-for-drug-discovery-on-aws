@@ -33,7 +33,7 @@ The solution provides user the way to visualize the comparing results of
 batch evaluation (e.g. performance, time)
 
 For detailed description of architecture, please refer to the 
-[Architecture Page](https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/en/architecture/)
+[Architecture Page](https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/en/architecture/)
 
 ## Pre-built Examples for Drug Discovery[<sup>1,</sup>](#more-example)[<sup>2</sup>](#data)
 <table border='1' style="text-align: center">

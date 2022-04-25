@@ -196,7 +196,7 @@
 
 ## 步骤1：启动CloudFormation堆栈
 
-1. 登录AWS管理控制台，选择按钮[Launch Stack][template-url]以启动模板。您还可以选择直接[下载模板](https://solutions-test-reference.s3.amazonaws.com/quantum-ready-solution-for-drug-discovery/v1.0.0/QCStack.template)进行部署。
+1. 登录AWS管理控制台，选择按钮[Launch Stack][template-url]以启动模板。您还可以选择直接[下载模板][cf-template-url]进行部署。
 
 2. 默认情况下，该模板将在您登录控制台后默认的区域启动，即美国西部（俄勒冈）区域。若需在指定的区域中启动该解决方案，请在控制台导航栏中的区域下拉列表中选择。
 
