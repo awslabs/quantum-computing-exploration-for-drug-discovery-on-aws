@@ -3,7 +3,7 @@
   "description": "Quantum Ready Solution For Drug Discovery",
   "repository": {
     "type": "git",
-    "url": "https://github.com/awslabs/quantum-ready-solution-for-drug-discovery.git"
+    "url": "https://github.com/awslabs/quantum-computing-exploration-for-drug-discovery-on-aws.git"
   },
   "scripts": {
     "test": "rm -fr lib && npm run test:compile && jest --passWithNoTests --all --updateSnapshot && eslint",
