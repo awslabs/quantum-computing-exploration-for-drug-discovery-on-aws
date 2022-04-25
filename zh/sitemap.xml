@@ -1,103 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-         <loc>https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/</loc>
-         <lastmod>2022-04-20</lastmod>
+         <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/</loc>
+         <lastmod>2022-04-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/additional-resources/</loc>
-         <lastmod>2022-04-20</lastmod>
+         <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/additional-resources/</loc>
+         <lastmod>2022-04-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/architecture/</loc>
-         <lastmod>2022-04-20</lastmod>
+         <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/architecture/</loc>
+         <lastmod>2022-04-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/cost/</loc>
-         <lastmod>2022-04-20</lastmod>
+         <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/cost/</loc>
+         <lastmod>2022-04-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/deployment/</loc>
-         <lastmod>2022-04-20</lastmod>
+         <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/deployment/</loc>
+         <lastmod>2022-04-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/regions/</loc>
-         <lastmod>2022-04-20</lastmod>
+         <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/regions/</loc>
+         <lastmod>2022-04-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/revisions/</loc>
-         <lastmod>2022-04-20</lastmod>
+         <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/revisions/</loc>
+         <lastmod>2022-04-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/security/</loc>
-         <lastmod>2022-04-20</lastmod>
+         <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/security/</loc>
+         <lastmod>2022-04-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/source/</loc>
-         <lastmod>2022-04-20</lastmod>
+         <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/source/</loc>
+         <lastmod>2022-04-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/template/</loc>
-         <lastmod>2022-04-20</lastmod>
+         <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/template/</loc>
+         <lastmod>2022-04-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/uninstall/</loc>
-         <lastmod>2022-04-20</lastmod>
+         <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/uninstall/</loc>
+         <lastmod>2022-04-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/workshop/background/</loc>
-         <lastmod>2022-04-20</lastmod>
+         <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/workshop/background/</loc>
+         <lastmod>2022-04-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/workshop/a-molecular-unfolding/batch-evaluation/</loc>
-         <lastmod>2022-04-20</lastmod>
+         <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/workshop/a-molecular-unfolding/batch-evaluation/</loc>
+         <lastmod>2022-04-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/workshop/a-molecular-unfolding/build-model-detail/</loc>
-         <lastmod>2022-04-20</lastmod>
+         <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/workshop/a-molecular-unfolding/build-model-detail/</loc>
+         <lastmod>2022-04-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/workshop/a-molecular-unfolding/build-model/</loc>
-         <lastmod>2022-04-20</lastmod>
+         <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/workshop/a-molecular-unfolding/build-model/</loc>
+         <lastmod>2022-04-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/workshop/a-molecular-unfolding/evaluate-your-own-model/</loc>
-         <lastmod>2022-04-20</lastmod>
+         <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/workshop/a-molecular-unfolding/evaluate-your-own-model/</loc>
+         <lastmod>2022-04-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/workshop/a-molecular-unfolding/notebook-experiment/</loc>
-         <lastmod>2022-04-20</lastmod>
+         <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/workshop/a-molecular-unfolding/notebook-experiment/</loc>
+         <lastmod>2022-04-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/workshop/a-molecular-unfolding/optimize-config/</loc>
-         <lastmod>2022-04-20</lastmod>
+         <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/workshop/a-molecular-unfolding/optimize-config/</loc>
+         <lastmod>2022-04-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/workshop/a-molecular-unfolding/post-process/</loc>
-         <lastmod>2022-04-20</lastmod>
+         <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/workshop/a-molecular-unfolding/post-process/</loc>
+         <lastmod>2022-04-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
-         <loc>https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/workshop/a-molecular-unfolding/prepare-data/</loc>
-         <lastmod>2022-04-20</lastmod>
+         <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/workshop/a-molecular-unfolding/prepare-data/</loc>
+         <lastmod>2022-04-25</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>
