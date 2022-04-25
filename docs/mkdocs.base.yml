@@ -1,6 +1,6 @@
 site_name: Quantum Computing Exploration for Drug Discovery on AWS
-site_url: https://awslabs.github.io/quantum-ready-solution-for-drug-discovery/
-repo_url: https://github.com/awslabs/quantum-ready-solution-for-drug-discovery/
+site_url: https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/
+repo_url: https://github.com/awslabs/quantum-computing-exploration-for-drug-discovery-on-aws/
 
 theme:
   name: material
