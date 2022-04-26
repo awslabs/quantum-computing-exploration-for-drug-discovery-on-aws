@@ -1,6 +1,6 @@
 SOLUTION_ID='SO8027'
 SOLUTION_NAME='quantum-ready-solution-for-drug-discovery'
-SOLUTION_TRADEMARKEDNAME='Quantum-Ready-Architecture-For-Drug-Discovery'
+SOLUTION_TRADEMARKEDNAME='quantum-computing-exploration-for-drug-discovery-on-aws'
 SOLUTION_VERSION='v1.0.0' # optional
 IMAGE_PREFIX=beta-
 SOLUTION_ECR_ACCOUNT=366590864501
