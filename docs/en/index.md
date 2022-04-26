@@ -1,4 +1,4 @@
-Quantum Ready Architecture for Drug Discovery (QRADD) helps you study drug discovery problems using quantum computing (Amazon Braket), such as molecular docking and protein folding. You can use this solution to orchestrate workflows that run on both classical and quantum as needed, thus accelerating iteration and innovation.
+Quantum Computing Exploration for Drug Discovery on AWS (QCEDD) helps you study drug discovery problems using quantum computing (Amazon Braket), such as molecular docking and protein folding. You can use this solution to orchestrate workflows that run on both classical and quantum as needed, thus accelerating iteration and innovation.
 
 This solution includes the following features:
 
@@ -10,7 +10,7 @@ This solution includes the following features:
 
 This implementation guide includes a [workshop](workshop/background.md) for you to walk through the solution. The workshop takes molecular unfolding algorithm from Mato, Kevin, et al.[<sup>1</sup>](#original-author) as an example to illustrate the background information, how to build a model, optimize its configuration, and batch evaluate the experiment results.
 
-This implementation guide describes architectural considerations and configuration steps for deploying the Quantum Ready Architecture for Drug Discovery in the Amazon Web Services (AWS) cloud. It includes links to [CloudFormation][cloudformation] templates that 
+This implementation guide describes architectural considerations and configuration steps for deploying the Quantum Computing Exploration for Drug Discovery on AWS in the Amazon Web Services (AWS) cloud. It includes links to [CloudFormation][cloudformation] templates that 
 launches and configures the AWS services required to deploy this solution using AWS best practices for security and availability.
 
 The guide is intended for researchers, data scientists, algorithm engineers in the drug discovery field and quantum computing advocates with architecture hands-on experience in the AWS Cloud.
