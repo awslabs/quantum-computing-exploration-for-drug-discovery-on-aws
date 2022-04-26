@@ -204,7 +204,7 @@ test('CreateEventRuleFunc has the right policy', () => {
                 {
                   Ref: 'AWS::AccountId',
                 },
-                ':rule/QRSFDD-BraketEventTo',
+                ':rule/QCEDD-BraketEventTo',
                 {
                   Ref: 'AWS::Region',
                 },
@@ -237,7 +237,7 @@ test('CreateEventRuleFunc has the right policy', () => {
                 {
                   Ref: 'AWS::AccountId',
                 },
-                ':stack/QRSFDD-BraketEventTo',
+                ':stack/QCEDD-BraketEventTo',
                 {
                   Ref: 'AWS::Region',
                 },
