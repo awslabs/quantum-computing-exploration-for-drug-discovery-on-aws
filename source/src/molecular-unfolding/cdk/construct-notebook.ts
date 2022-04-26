@@ -64,7 +64,7 @@ export class Notebook extends Construct {
 
     this.roleUtil = RoleUtil.newInstance(this, props);
 
-    const githubRepo = 'https://github.com/awslabs/quantum-ready-solution-for-drug-discovery';
+    const githubRepo = 'https://github.com/awslabs/quantum-computing-exploration-for-drug-discovery-on-aws';
 
     const defaultCodeRepository = this.node.tryGetContext('default_code_repository') || githubRepo;
 
