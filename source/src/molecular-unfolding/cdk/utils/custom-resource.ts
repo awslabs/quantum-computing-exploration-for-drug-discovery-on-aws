@@ -53,7 +53,7 @@ function addPolicyToCustomResourceLambdaRole(scope: Construct, role: iam.Role): 
       Arn.format({
         service: 'events',
         region: 'us-west-2',
-        resource: `rule/QRSFDD-BraketEventTo${region}*`,
+        resource: `rule/QCEDD-BraketEventTo${region}*`,
         account: account_id,
         arnFormat: ArnFormat.COLON_RESOURCE_NAME,
       }, Stack.of(scope)),
