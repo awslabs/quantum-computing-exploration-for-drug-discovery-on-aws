@@ -16,7 +16,6 @@ limitations under the License.
 
 import {
   aws_s3 as s3,
-  aws_iam as iam,
   Aspects,
   StackProps,
   CfnCondition,
@@ -24,7 +23,6 @@ import {
   RemovalPolicy,
   CfnOutput,
   CfnRule,
-  CfnParameter,
 } from 'aws-cdk-lib';
 
 import {
@@ -41,10 +39,6 @@ import {
 } from './construct-batch-evaluation';
 
 import {
-  Dashboard,
-} from './construct-dashboard';
-
-import {
   EventListener,
 } from './construct-listener';
 import {
@@ -55,7 +49,6 @@ import create_custom_resources from './utils/custom-resource';
 import {
   AddCfnNag,
   AddCondition,
-  ChangePolicyName,
 } from './utils/utils';
 import setup_vpc_and_sg from './utils/vpc';
 
@@ -65,7 +58,7 @@ export class MainStack extends SolutionStack {
 
   // constructor
   constructor(scope: Construct, id: string, props: StackProps = {}) {
-    const DESCRIPTION = `(${MainStack.SOLUTION_ID}) Quantum Computing Exploration for Drug Discovery on AWS ${MainStack.SOLUTION_VERSION}`;
+    const DESCRIPTION = `(${MainStack.SOLUTION_ID}) Quantum Computing Exploration for Drug Discovery on AWS ${MainStack.SOLUTION_VERSION} Main Stack`;
     super(scope, id, props);
     this.setDescription(DESCRIPTION);
     const stackName = this.stackName.replace(/[^a-zA-Z0-9_]+/, '').toLocaleLowerCase();
@@ -86,24 +79,6 @@ export class MainStack extends SolutionStack {
       ),
     });
 
-    const quickSightUserParam = new CfnParameter(this, 'QuickSightUser', {
-      type: 'String',
-      description: 'QuickSight User, find user name from https://us-east-1.quicksight.aws.amazon.com/sn/admin',
-      minLength: 1,
-      allowedPattern: '[\u0020-\u00FF]+',
-      constraintDescription: 'Any printable ASCII character ranging from the space character (\u0020) through the end of the ASCII character range',
-    });
-
-    const quickSightRoleName = new CfnParameter(this, 'QuickSightRoleName', {
-      type: 'String',
-      description: 'QuickSight IAM role name',
-      minLength: 1,
-      maxLength: 64,
-      allowedPattern: '[a-zA-Z0-9+=,.@-]+',
-      constraintDescription: 'A string of characters consisting of upper and lowercase alphanumeric characters with no spaces. Length Constraints: Minimum length of 1. Maximum length of 64.',
-    });
-    const quicksightRole = iam.Role.fromRoleArn(this, 'QuickSightServiceRole', `arn:aws:iam::${this.account}:role/${quickSightRoleName.valueAsString}`);
-
     const logS3bucket = new s3.Bucket(this, 'AccessLogS3Bucket', {
       removalPolicy: RemovalPolicy.DESTROY,
       autoDeleteObjects: true,
@@ -122,11 +97,6 @@ export class MainStack extends SolutionStack {
       serverAccessLogsPrefix: `accesslogs/${bucketName}/`,
     });
     s3bucket.node.addDependency(logS3bucket);
-    s3bucket.grantRead(quicksightRole);
-
-    Aspects.of(this).add(new ChangePolicyName());
-
-    let usePreBuildImage = stackName.endsWith('dev');
 
     new CfnOutput(this, 'bucketName', {
       value: s3bucket.bucketName,
@@ -157,24 +127,12 @@ export class MainStack extends SolutionStack {
       stackName,
     });
 
-    // Dashboard //////////////////////////
-    const dashboard = new Dashboard(this, 'MolUnfDashboard', {
-      account: this.account,
-      region: this.region,
-      bucket: s3bucket,
-      prefix,
-      stackName,
-      quicksightUser: quickSightUserParam.valueAsString,
-    });
-
     // BatchEvaluation StepFuncs //////////////////////////
     new BatchEvaluation(this, 'MolUnfBatchEvaluation', {
       account: this.account,
       region: this.region,
       bucket: s3bucket,
       prefix,
-      usePreBuildImage,
-      dashboardUrl: dashboard.outputDashboardUrl.value,
       vpc,
       batchSg,
       lambdaSg,
@@ -188,7 +146,6 @@ export class MainStack extends SolutionStack {
       region: this.region,
       bucket: s3bucket,
       prefix,
-      usePreBuildImage,
       vpc,
       lambdaSg,
       stackName,

@@ -324,8 +324,8 @@ export class RoleUtil {
     const role = new iam.Role(this.scope, 'AggResultLambdaRole', {
       assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
     });
-    const table_name1 = `${this.props.stackName}_qc_batch_evaluation_metrics_hist`;
-    const table_name2 = `${this.props.stackName}_qc_batch_evaluation_metrics`;
+    const table_name1 = `qceddmain_qc_batch_evaluation_metrics_hist`;
+    const table_name2 = `qceddmain_qc_batch_evaluation_metrics`;
     role.addToPolicy(new iam.PolicyStatement({
       resources: [
         `arn:aws:athena:*:${this.props.account}:workgroup/primary`,

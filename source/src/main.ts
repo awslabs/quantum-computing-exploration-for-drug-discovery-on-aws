@@ -27,10 +27,18 @@ import {
   MainStack,
 } from './molecular-unfolding/cdk/stack-main';
 
+import {
+  DashboardStack,
+} from './molecular-unfolding/cdk/stack-dashboard';
+
 
 const app = new App();
 
-new MainStack(app, 'QCStack', {
+new MainStack(app, 'QCEDDMain', {
+  synthesizer: newSynthesizer(),
+});
+
+new DashboardStack(app, 'QCEDDDashboard', {
   synthesizer: newSynthesizer(),
 });
 
