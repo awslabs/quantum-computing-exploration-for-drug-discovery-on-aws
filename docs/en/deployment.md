@@ -9,10 +9,12 @@ Before you launch the solution, review the architecture, supported regions, and 
 
 There two CloudFormation templates to deploy this solution. 
 One is main stack, which is necessary, including notebook, batch evaluation.
-Another is dashboard stack, which is optional, if you do not want to view the batch evaluation result in dashboard, you can skip. If you skip it at this time, you can still deploy it anytime you like.
+Another is dashboard stack, which is optional, if you do not want to view the batch evaluation result in dashboard, you can skip it. 
+If you skip it at this time, you can still deploy it anytime you like.
 
-## Prerequisites
-### Enable Amazon Braket service
+## Deploy Main Stack
+### Prerequisites
+#### Enable Amazon Braket service
 
 1. Sign in to the AWS Management Console, and search for Amazon Braket.
 
@@ -20,12 +22,63 @@ Another is dashboard stack, which is optional, if you do not want to view the ba
 
 3. Choose **Enable Amazon Braket**.
 
-### (Optional) Create IAM Role for QuickSight
+### Step 1: Launch the AWS CloudFormation template to deploy main stack into your AWS account
+
+1. Sign in to the [AWS management console](https://console.aws.amazon.com/cloudformation/home?), and select the [Launch Main Stack][template-main-url] button to launch the AWS CloudFormation template. Alternatively, you can download the template as a starting point for your own implementation.
+ 
+2. The template launches in the US West (Oregon) by default. To launch this solution in a different AWS Region, use the Region selector in the console navigation bar.
+
+3. On the **Create stack** page, verify that Amazon S3 URL is filled with this [main template URL][cf-template-main-url] automatically and choose **Next**.
+
+4. On the Specify stack details page, assign a name to your solution stack. For information about naming character limitations, refer to [IAM and STS Limits](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-limits.html) in the *AWS Identity and Access Management User Guide*.
+
+5. Choose **Next**.
+
+6. On the **Configure stack options** page, choose **Next**.
+
+7. On the **Review** page, review and confirm the settings. Check the box acknowledging that the template will create AWS Identity and Access Management (IAM) resources.
+
+8. Choose **Create stack** to deploy the stack.
+
+You can view the status of the stack in the AWS CloudFormation Console in the **Status** column. You should receive a **CREATE_COMPLETE** status in approximately 10 minutes.
+
+### Step 2: (Optional) Subscribe to SNS notification 
+
+Follow below steps to subscribe to SNS notification via email to receive result notifications from AWS Step Functions. You can also subscribe to the notification via text messages.
+
+1. Sign in to the [AWS CloudFormation console](https://console.aws.amazon.com/cloudformation/).
+
+2. On the **Stacks** page, select the solution’s root stack.
+
+3. Choose the **Outputs** tab and record the value for the SNS topic.
+
+    ![SNS name](./images/deploy-output-sns.png)
+
+4. Navigate to the [Amazon SNS](https://console.aws.amazon.com/sns/v3/home?region=us-east-1#/topics) console.
+
+5. Choose **Topics**, then select the SNS topic that you obtained from the CloudFormation deployment output.
+
+6. Choose **Create subscription**.
+
+7. Select **Email** from the **Protocol** list.
+
+8. Enter your email in **Endpoint**.
+
+9. Choose **Create subscription**.
+
+10. Check your inbox for the email, and select the **Confirm Subscription** link to confirm the subscription.
+
+
+## (Optional) Deploy Dashboard Stack
 
 !!! notice "Note"
     
-    Skip this step if you only want to deploy the main stack(notebook, batch evaluation), this step is necessary if you want to view batch evaluation result in QuickSight dashboard.
+    Skip this step if you only want to deploy the main stack(notebook, batch evaluation), steps below are necessary if you want to view batch evaluation result in QuickSight dashboard.
     
+    If you skip it at this time, you can still deploy it anytime you like.
+
+### Prerequisites  
+#### Create IAM Role for QuickSight
 
 1. Navigate to [IAM console](https://console.aws.amazon.com/iamv2/home?#/policies).
 
@@ -178,13 +231,11 @@ Another is dashboard stack, which is optional, if you do not want to view the ba
 
 15. Choose **Create role**.
 
-### (Optional) Sign up for QuickSight
+#### Sign up for QuickSight
 
 !!! notice "Note"
-     
-    Skip this step if you only want to deploy the main stack(notebook, batch evaluation), this step is necessary if you want to view batch evaluation result in QuickSight dashboard. 
-    
-    Skip this step if your AWS Account already signed up for QuickSight.
+
+     Skip this step if your AWS Account already signed up for QuickSight.
 
 1. Sign in to the [Amazon QuickSight console](https://quicksight.aws.amazon.com/).
 
@@ -198,12 +249,7 @@ Another is dashboard stack, which is optional, if you do not want to view the ba
     - Enter the **Email** to receive notifications.
     - For other parameters, keep default values.
 
-### (Optional) Assign the Created IAM Role to QuickSight
-
-!!! notice "Note"
-     
-    Skip this step if you only want to deploy the main stack(notebook, batch evaluation), this step is necessary if you want to view batch evaluation result in QuickSight dashboard. 
-
+#### Assign the Created IAM Role to QuickSight
 
 1. Sign in to Amazon QuickSight console.
 2. Use the Region selector to select the **US East (N.Virginia)** Region.
@@ -211,38 +257,13 @@ Another is dashboard stack, which is optional, if you do not want to view the ba
 4.	Choose **Security & permissions** from the left navigation pane.
 5.	In the **QuickSight access to AWS services** area, choose **Manage**.
 6. Choose **Use an existing role**, and select the role created in previous step. As an example, the deployment uses`qcedd-quicksight-service-role`.
-### Obtain QuickSight Username
+#### Obtain QuickSight Username
 
 1. Sign in to the [Amazon QuickSight console](https://us-east-1.quicksight.aws.amazon.com/sn/admin) in the **US East (N.Virginia)** Region.
 
 2. Record your **QuickSight Username** (not QuickSight account name) in the upper right corner.
 
-## Step 1: Launch the AWS CloudFormation template to deploy main stack into your AWS account
-
-1. Sign in to the [AWS management console](https://console.aws.amazon.com/cloudformation/home?), and select the [Launch Main Stack][template-main-url] button to launch the AWS CloudFormation template. Alternatively, you can download the template as a starting point for your own implementation.
- 
-2. The template launches in the US West (Oregon) by default. To launch this solution in a different AWS Region, use the Region selector in the console navigation bar.
-
-3. On the **Create stack** page, verify that Amazon S3 URL is filled with this [main template URL][cf-template-main-url] automatically and choose **Next**.
-
-4. On the Specify stack details page, assign a name to your solution stack. For information about naming character limitations, refer to [IAM and STS Limits](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-limits.html) in the *AWS Identity and Access Management User Guide*.
-
-5. Choose **Next**.
-
-6. On the **Configure stack options** page, choose **Next**.
-
-7. On the **Review** page, review and confirm the settings. Check the box acknowledging that the template will create AWS Identity and Access Management (IAM) resources.
-
-8. Choose **Create stack** to deploy the stack.
-
-You can view the status of the stack in the AWS CloudFormation Console in the **Status** column. You should receive a **CREATE_COMPLETE** status in approximately 10 minutes.
-
-
-## Step 2: (Optional) Launch the AWS CloudFormation template to deploy dashboard stack into your AWS account
-
-!!! notice "Note"
-     
-    Skip this step if you only want to deploy the main stack(notebook, batch evaluation), this step is necessary if you want to view batch evaluation result in QuickSight dashboard. 
+### Launch the AWS CloudFormation template to deploy dashboard stack into your AWS account
 
 1. Sign in to the [AWS management console](https://console.aws.amazon.com/cloudformation/home?), and select the [Launch Dashboard Stack][template-dashboard-url] button to launch the AWS CloudFormation template. Alternatively, you can download the template as a starting point for your own implementation.
  
@@ -268,33 +289,6 @@ You can view the status of the stack in the AWS CloudFormation Console in the **
 9. Choose **Create stack** to deploy the stack.
 
 You can view the status of the stack in the AWS CloudFormation Console in the **Status** column. You should receive a **CREATE_COMPLETE** status in approximately 2 minutes.
-
-
-## Step 3: (Optional) Subscribe to SNS notification 
-
-Follow below steps to subscribe to SNS notification via email to receive result notifications from AWS Step Functions. You can also subscribe to the notification via text messages.
-
-1. Sign in to the [AWS CloudFormation console](https://console.aws.amazon.com/cloudformation/).
-
-2. On the **Stacks** page, select the solution’s root stack.
-
-3. Choose the **Outputs** tab and record the value for the SNS topic.
-
-    ![SNS name](./images/deploy-output-sns.png)
-
-4. Navigate to the [Amazon SNS](https://console.aws.amazon.com/sns/v3/home?region=us-east-1#/topics) console.
-
-5. Choose **Topics**, then select the SNS topic that you obtained from the CloudFormation deployment output.
-
-6. Choose **Create subscription**.
-
-7. Select **Email** from the **Protocol** list.
-
-8. Enter your email in **Endpoint**.
-
-9. Choose **Create subscription**.
-
-10. Check your inbox for the email, and select the **Confirm Subscription** link to confirm the subscription.
 
 
 [template-main-url]: https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/create/template?stackName=QCEDDMain&templateURL={{ cf_template.main_url }}

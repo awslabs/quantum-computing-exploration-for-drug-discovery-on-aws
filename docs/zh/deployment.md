@@ -9,8 +9,9 @@
 本方案包含两个CloudFormation模版文件，主模版文件和可选的仪表盘模版文件。
 主模版文件用来部署笔记本和批量评估，仪表盘模版文件用来部署可视化仪表盘，如果您不想通过仪表板查看批量评估结果，请跳过此模版文件部署，即使您现在没有部署仪表盘模版，您也可以在以后任意时间部署。
 
-## 准备工作
-### 启动Amazon Braket服务
+## 部署主堆栈
+### 准备工作
+#### 启动Amazon Braket服务
 
 1. 登录到[AWS管理控制台](https://console.aws.amazon.com/)，并找到Amazon Braket。
 
@@ -18,12 +19,63 @@
 
 3. 选择**Enable Amazon Braket**。
 
-### （可选）创建QuickSight IAM角色
+### 步骤1：启动主CloudFormation堆栈
 
+1. 登录AWS管理控制台，选择按钮[Launch Main Stack][template-main-url]以启动模板。您还可以选择直接[下载主模板][cf-template-main-url]进行部署。
+
+2. 默认情况下，该模板将在您登录控制台后默认的区域启动，即美国西部（俄勒冈）区域。若需在指定的区域中启动该解决方案，请在控制台导航栏中的区域下拉列表中选择。
+
+3. 在**创建堆栈**页面上，Amazon S3 URL文本框中会自动填写这个[主模板URL][cf-template-main-url]，请确认模板URL正确填写，然后选择**下一步**。
+
+4. 在指定堆栈详细信息页面，为您的解决方案堆栈分配一个账户内唯一且符合命名要求的名称。有关命名字符限制的信息，请参阅*AWS Identity and Access Management用户指南*中的[IAM 和 STS 限制](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-limits.html)。
+
+5. 选择**下一步**。
+
+6. 在**配置堆栈选项**页面上，保留默认值并选择**下一步**。
+
+7. 在**审核**页面，查看并确认设置。确保选中确认模板将创建Amazon Identity and Access Management（IAM）资源的复选框。选择**下一步**。
+
+8. 选择**创建堆栈**以部署堆栈。
+
+您可以在AWS CloudFormation控制台的**状态**列中查看stack的状态。正常情况下，大约10分钟内可以看到状态为**CREATE_COMPLETE**。
+
+### 步骤2：（可选）订阅SNS通知
+
+当批量评估执行完成后，如果您想获得Email通知，可以按照下面的步骤订阅SNS通知。您也可以通过短信订阅通知。
+
+1. 登录[AWS CloudFormation控制台](https://console.aws.amazon.com/cloudformation/)。
+
+2. 在**堆栈**页面，选择本方案的堆栈。
+
+3. 选择**输出**页签，记录SNS主题的值。
+
+    ![SNS name](./images/deploy-output-sns.png)
+
+4. 导航至[Amazon SNS控制台](https://console.aws.amazon.com/sns/v3/home?region=us-east-1#/topics)。
+
+5. 选中**主题**，然后点击在CloudFormation部署的输出中的SNS主题。
+
+6. 选择**创建订阅**。
+
+7. 在**协议**列表中，选择**电子邮件**。
+
+8. 在**终端节点**文本框中，输入可以从Amazon SNS接收通知的电子邮件地址。
+
+9. 选择**创建订阅**。
+
+10. 检查您的邮箱，您将收到一封邮件，点击邮件中*Confirm Subscription*链接，确认订阅。
+
+
+## （可选）部署仪表盘堆栈
 !!! Notice "说明"
     
-    如果只想部署笔记本和批量评估，请跳过此步骤。如果想通过仪表盘查看批量评估结果，需要执行此步骤。
+    如果只想部署笔记本和批量评估，请跳过此步骤。如果想通过仪表盘查看批量评估结果，需要执行下面的步骤。
 
+    即使现在您跳过此步骤，您也可以在以后任意时间部署此步骤。
+
+### 准备工作
+
+#### 创建QuickSight IAM角色
 
 1. 导航至[IAM Policies](https://console.aws.amazon.com/iamv2/home?#/policies)。
 
@@ -177,11 +229,10 @@
 15. 点击**创建角色**。
 
 
-### （可选）注册QuickSight账户
+#### 注册QuickSight账户
 
 !!! Notice "说明"
 
-    如果只想部署笔记本和批量评估，请跳过此步骤。如果想通过仪表盘查看批量评估结果，需要执行此步骤。
     如果您的AWS账户已经注册了QuickSight账户，可以跳过该步骤。
 
 1. 登录到[Amazon QuickSight控制台](https://quicksight.aws.amazon.com/)。
@@ -196,12 +247,7 @@
     - 输入用于接收通知的**邮箱地址**。
     - 对于其它参数，采用默认值。
 
-### （可选）为QuickSight分配创建好的IAM角色
-
-!!! Notice "说明"
-    
-    如果只想部署笔记本和批量评估，请跳过此步骤。如果想通过仪表盘查看批量评估结果，需要执行此步骤。
-
+#### 为QuickSight分配创建好的IAM角色
 
 1. 登录到[Amazon QuickSight控制台](https://quicksight.aws.amazon.com/)。
 2. 从区域下拉列表中选择**美国东部（弗吉尼亚北部）区域**。
@@ -210,35 +256,13 @@
 5. 在**QuickSight access to AWS services**区域中选中**管理**。
 6. 选择**使用现有角色**，在下拉列表中选择刚刚创建的角色。本示例为`qradd-quicksight-service-role`。
 
-### 记录QuickSight用户名
+#### 记录QuickSight用户名
 
 1. 从美国东部（弗吉尼亚北部）区域登录[QuickSight管理用户页面](https://us-east-1.quicksight.aws.amazon.com/sn/admin)。
 
 2. 记录右上角的对应您电子邮件的**用户名**。
 
-## 步骤1：启动主CloudFormation堆栈
-
-1. 登录AWS管理控制台，选择按钮[Launch Main Stack][template-main-url]以启动模板。您还可以选择直接[下载主模板][cf-template-main-url]进行部署。
-
-2. 默认情况下，该模板将在您登录控制台后默认的区域启动，即美国西部（俄勒冈）区域。若需在指定的区域中启动该解决方案，请在控制台导航栏中的区域下拉列表中选择。
-
-3. 在**创建堆栈**页面上，Amazon S3 URL文本框中会自动填写这个[主模板URL][cf-template-main-url]，请确认模板URL正确填写，然后选择**下一步**。
-
-4. 在指定堆栈详细信息页面，为您的解决方案堆栈分配一个账户内唯一且符合命名要求的名称。有关命名字符限制的信息，请参阅*AWS Identity and Access Management用户指南*中的[IAM 和 STS 限制](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-limits.html)。
-
-5. 选择**下一步**。
-
-6. 在**配置堆栈选项**页面上，保留默认值并选择**下一步**。
-
-7. 在**审核**页面，查看并确认设置。确保选中确认模板将创建Amazon Identity and Access Management（IAM）资源的复选框。选择**下一步**。
-
-8. 选择**创建堆栈**以部署堆栈。
-
-您可以在AWS CloudFormation控制台的**状态**列中查看stack的状态。正常情况下，大约10分钟内可以看到状态为**CREATE_COMPLETE**。
-
-
-
-## 步骤2：（可选）启动仪表盘CloudFormation堆栈
+### 启动仪表盘CloudFormation堆栈
 
 1. 登录AWS管理控制台，选择按钮[Launch Dashboard Stack][template-dashboard-url]以启动模板。您还可以选择直接[下载仪表盘模板][cf-template-dashboard-url]进行部署。
 
@@ -264,32 +288,6 @@
 
 您可以在AWS CloudFormation控制台的**状态**列中查看stack的状态。正常情况下，大约2分钟内可以看到状态为**CREATE_COMPLETE**。
 
-
-## 步骤3：（可选）订阅SNS通知
-
-当批量评估执行完成后，如果您想获得Email通知，可以按照下面的步骤订阅SNS通知。您也可以通过短信订阅通知。
-
-1. 登录[AWS CloudFormation控制台](https://console.aws.amazon.com/cloudformation/)。
-
-2. 在**堆栈**页面，选择本方案的堆栈。
-
-3. 选择**输出**页签，记录SNS主题的值。
-
-    ![SNS name](./images/deploy-output-sns.png)
-
-4. 导航至[Amazon SNS控制台](https://console.aws.amazon.com/sns/v3/home?region=us-east-1#/topics)。
-
-5. 选中**主题**，然后点击在CloudFormation部署的输出中的SNS主题。
-
-6. 选择**创建订阅**。
-
-7. 在**协议**列表中，选择**电子邮件**。
-
-8. 在**终端节点**文本框中，输入可以从Amazon SNS接收通知的电子邮件地址。
-
-9. 选择**创建订阅**。
-
-10. 检查您的邮箱，您将收到一封邮件，点击邮件中*Confirm Subscription*链接，确认订阅。
 
 [template-main-url]: https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/create/template?stackName=QCEDDMain&templateURL={{ cf_template.main_url }}
 [cf-template-main-url]: {{ cf_template.main_url }}
