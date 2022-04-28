@@ -24,12 +24,11 @@ import {
 } from 'cdk-bootstrapless-synthesizer';
 
 import {
-  MainStack,
-} from './molecular-unfolding/cdk/stack-main';
-
-import {
   DashboardStack,
 } from './molecular-unfolding/cdk/stack-dashboard';
+import {
+  MainStack,
+} from './molecular-unfolding/cdk/stack-main';
 
 
 const app = new App();
