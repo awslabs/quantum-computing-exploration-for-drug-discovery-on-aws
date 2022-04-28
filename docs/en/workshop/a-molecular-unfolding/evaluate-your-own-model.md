@@ -24,28 +24,31 @@ This solution is an open-source project under Apache License Version 2.0. You ca
 
 ## Deploy stack to your AWS account from CDK
 
-1. Check CloudFormation in your AWS account, and make sure you do not have a stack named `QCStack` in your deployment region.
+1. Check CloudFormation in your AWS account, and make sure you do not have a stack named `QCEDDMain` and `QCEDDDashboard` in your deployment region.
 
-2. Check your S3 bucket, and make sure no bucket is named `amazon-braket-qcstack-<your account>-<deployment Region>`.
+2. Check your S3 bucket, and make sure no bucket is named `amazon-braket-qceddmain-<your account>-<deployment Region>`.
 
 3. Deploy changes to your AWS account from CDK.
 
-
         cd source
         npm install
-        npx cdk deploy QCStack \
-            --parameters QuickSightUser=<your QuickSight user> \
-            --parameters QuickSightRoleName=<your QuickSight service role name>
+        npx cdk deploy QCEDDMain
              
- 
 4. Wait for the deployment to complete. Deployment will take about 10 minutes. 
 
-5. Get output links from CloudFormation output, which include:
-    - Step Functions URL
-    - QuickSight dashboard link
-    - Notebook URL
-    - S3 bucket name
+5. Deploy dashboard change to your AWS account from CDK.
 
-6. Follow steps in Batch Evaluation to run your own code with appropriate input.
+        cd source
+        npx cdk deploy QCEDDDashboard --parameters QuickSightUser=<your QuickSight username>
+             
+6. Wait for the deployment to complete. Deployment will take about 2 minutes. 
 
-7. View result through QuickSight dashboard.
+7. Get output links from CloudFormations output, which include:
+    - Step Functions URL (output of QCEDDMain stack)
+    - Notebook URL (output of QCEDDMain stack)
+    - S3 bucket name (output of QCEDDMain stack)
+    - QuickSight dashboard link (output of QCEDDDashboard stack)
+
+8. Follow steps in Batch Evaluation to run your own code with appropriate input.
+
+9. View result through QuickSight dashboard.
