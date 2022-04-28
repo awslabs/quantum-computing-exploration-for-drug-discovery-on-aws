@@ -25,18 +25,25 @@ Deploy solution to your AWS account by [AWS CDK](https://docs.aws.amazon.com/cdk
 ### Deploy solution by AWS CDK
    
    * Get your Amazon Quicksight [user name](https://us-east-1.quicksight.aws.amazon.com/sn/admin#)
-   * Get your Amazon Quicksight [role name](https://us-east-1.quicksight.aws.amazon.com/sn/admin?#aws)
 
-   * Run below command to deploy the solution.
+   * Run below command to deploy the main stack (notebook, batch evaluation):
 
 ```sh
     cd source
-    npx cdk deploy QCStack \
-    --parameters QuickSightUser=<your QuickSight user> \
-    --parameters QuickSightRoleName=<your QuickSight service role name>
+    npx cdk deploy QCEDDMain  
 ```
 
 The output messages show status of the deployment, it takes approximately 10 minutes for the whole process.
+
+   * If you want to view batch evaluation result, run below command to deploy the dashboard:
+
+```sh
+    cd source
+    npx cdk deploy QCEDDDashboard --parameters QuickSightUser=<Quicksight username>
+```
+
+The output messages show status of the deployment, it takes approximately 2 minutes for the whole process.
+
 
 ## How to test
 

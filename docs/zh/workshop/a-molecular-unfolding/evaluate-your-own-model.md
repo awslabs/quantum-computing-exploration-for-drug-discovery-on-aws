@@ -26,27 +26,32 @@
 
 ### 将堆栈从 CDK 部署到您的 AWS 账户
 
-1. 检查您的AWS账户中的CloudFormation，确保您的部署区域中没有名为`QCStack`的堆栈。
+1. 检查您的AWS账户中的CloudFormation，确保您的部署区域中没有名为`QCEDDMain`和`QCEDDDashboard`的堆栈。
 
-2. 检查您的 S3 存储桶，确保没有名为 `amazon-braket-qcstack-<your aws account>-<deployment region>` 的存储桶。
+2. 检查您的 S3 存储桶，确保没有名为 `amazon-braket-qceddmain-<your aws account>-<deployment region>` 的存储桶。
 
 3. 利用CDK将更改部署到您的AWS账户。
 
         cd source
         npm install
-        npx cdk deploy QCStack \
-            --parameters QuickSightUser=<your QuickSight user> \
-            --parameters QuickSightRoleName=<your QuickSight service role name>
+        npx cdk deploy QCEDDMain
 
-           
 4. 等待部署完成。部署大约需要10分钟。
 
-5. 从CloudFormation输出中获取输出链接，链接包括：
-    - Step Functions URL
-    - QuickSight仪表板链接
-    - 笔记本网址
-    - S3存储桶名称
+5. 利用CDK将仪表盘更改部署到您的AWS账户。
 
-6. 按照[批量评估](batch-evaluation.md)中的步骤运行您自己的代码。
+        cd source
+        npx cdk deploy QCEDDDashboard \
+            --parameters QuickSightUser=<your QuickSight user>
 
-7. 通过QuickSight仪表板查看结果。
+6. 等待部署完成。部署大约需要2分钟。
+
+7. 从CloudFormation输出中获取输出链接，链接包括：
+    - Step Functions URL（QCEDDMain输出中）
+    - 笔记本网址（QCEDDMain输出中）
+    - S3存储桶名称（QCEDDMain输出中）
+    - QuickSight仪表板链接（QCEDDDashboard输出中）
+
+8. 按照[批量评估](batch-evaluation.md)中的步骤运行您自己的代码。
+
+9. 通过QuickSight仪表板查看结果。
