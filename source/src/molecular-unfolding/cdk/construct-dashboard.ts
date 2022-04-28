@@ -169,7 +169,7 @@ export class Dashboard extends Construct {
           customSql: {
             dataSourceArn: qcDataSource.attrArn,
             name: 'all',
-            sqlQuery: `SELECT * FROM "AwsDataCatalog"."qc_db"."${this.props.stackName}_qc_batch_evaluation_metrics"`,
+            sqlQuery: 'SELECT * FROM "AwsDataCatalog"."qc_db"."qceddmain_qc_batch_evaluation_metrics"',
             columns,
           },
         },
@@ -227,7 +227,7 @@ export class Dashboard extends Construct {
 
     });
 
-    const qcBatchEvaluationAnalysis = new quicksight.CfnAnalysis(this, 'qcBatchEvaluation-Analysis', {
+    new quicksight.CfnAnalysis(this, 'qcBatchEvaluation-Analysis', {
       analysisId: `${this.props.stackName}-qcBatchEvaluation-Analysis`,
       name: `${this.props.stackName}-qcBatchEvaluation-Analysis`,
       awsAccountId: this.props.account,
@@ -259,11 +259,6 @@ export class Dashboard extends Construct {
     this.outputDashboardUrl = new CfnOutput(this, 'qcBatchEvaluationDashboardUrl', {
       value: `https://${this.props.region}.quicksight.aws.amazon.com/sn/dashboards/${qcBatchEvaluationDashboard.dashboardId}`,
       description: 'Quicksight Dashboard Url',
-    });
-
-    new CfnOutput(this, 'qcBatchEvaluationAnalysis', {
-      value: qcBatchEvaluationAnalysis.analysisId,
-      description: 'Quicksight Analysis Id',
     });
   }
 }

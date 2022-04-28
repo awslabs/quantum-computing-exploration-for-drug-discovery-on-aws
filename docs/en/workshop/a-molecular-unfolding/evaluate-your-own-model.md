@@ -26,7 +26,7 @@ This solution is an open-source project under Apache License Version 2.0. You ca
 
 1. Check CloudFormation in your AWS account, and make sure you do not have a stack named `QCStack` in your deployment region.
 
-2. Check your S3 bucket, and make sure no bucket is named `amazon-braket-qcstack-<your account>-<deployment Region>`.
+2. Check your S3 bucket, and make sure no bucket is named `amazon-braket-qcedd-<your account>-<deployment Region>`.
 
 3. Deploy changes to your AWS account from CDK.
 

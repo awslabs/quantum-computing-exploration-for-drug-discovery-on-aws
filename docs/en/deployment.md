@@ -23,10 +23,11 @@ Before you launch the solution, review the architecture, supported regions, and 
 2. Choose **Policies** from the left navigation pane, then choose **Create Policy**. The policy will be added to the IAM role that is to be created.
 
 3. In the Create policy page, click the **JSON** tab, and enter the QuickSight policy as below. This is the least policy required for QuickSight in this solution. 
-        
+
         {
             "Version": "2012-10-17",
-            "Statement": [{
+            "Statement": [
+                {
                     "Effect": "Allow",
                     "Action": [
                         "athena:BatchGetQueryExecution",
@@ -110,8 +111,16 @@ Before you launch the solution, review the architecture, supported regions, and 
                         "lakeformation:GetDataAccess",
                         "iam:List*"
                     ],
+                    "Resource": "*"
+                },
+                {
+                    "Effect": "Allow",
+                    "Action": [
+                        "s3:GetObject",
+                        "s3:ListBucket"
+                    ],
                     "Resource": [
-                        "*"
+                        "arn:aws:s3:::amazon-braket-qcedd*"
                     ]
                 }
             ]
@@ -154,8 +163,6 @@ Before you launch the solution, review the architecture, supported regions, and 
 14. Enter the **Role name**. This deployment uses`qcedd-quicksight-service-role` as an example.
 
 15. Choose **Create role**.
-
-16. Record the name of this role.
 
 ### Sign up for QuickSight
 

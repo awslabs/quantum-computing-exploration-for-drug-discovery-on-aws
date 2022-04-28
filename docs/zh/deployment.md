@@ -30,7 +30,8 @@
 
         {
             "Version": "2012-10-17",
-            "Statement": [{
+            "Statement": [
+                {
                     "Effect": "Allow",
                     "Action": [
                         "athena:BatchGetQueryExecution",
@@ -114,8 +115,16 @@
                         "lakeformation:GetDataAccess",
                         "iam:List*"
                     ],
+                    "Resource": "*"
+                },
+                {
+                    "Effect": "Allow",
+                    "Action": [
+                        "s3:GetObject",
+                        "s3:ListBucket"
+                    ],
                     "Resource": [
-                        "*"
+                        "arn:aws:s3:::amazon-braket-qcedd*"
                     ]
                 }
             ]
@@ -159,7 +168,6 @@
 
 15. 点击**创建角色**。
 
-16. 记录所创建角色的名字。
 
 ### 注册QuickSight账户
 

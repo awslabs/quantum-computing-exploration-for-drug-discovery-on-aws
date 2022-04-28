@@ -18,7 +18,7 @@ def test_handler(monkeypatch):
     })
     event = {
         's3_prefix': 's3_prefix_test',
-        'stackName': 'qcstack'
+        'stackName': 'qceddmain'
     }
     res = app.handler(event, None)
     assert res['endTime'] is not None
