@@ -93,6 +93,7 @@
                 "arn:aws:s3:::braket*/*",
                 "arn:aws:s3:::amazon-braket*/*",
                 "arn:aws:s3:::aws-gcr-solutions*/*",
+                "arn:aws:s3:::solutions*/*",
                 "arn:aws:s3:::aws-athena-query-results-*"
             ]
         },
