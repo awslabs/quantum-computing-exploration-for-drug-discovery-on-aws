@@ -21,27 +21,27 @@ import {
 import { Template } from 'aws-cdk-lib/assertions';
 
 import {
-  MainStack,
-} from '../src/molecular-unfolding/cdk/stack-main';
+  DashboardStack,
+} from '../src/molecular-unfolding/cdk/stack-dashboard';
 
 describe('Dashboard', () => {
   test('has 1 datasource', () => {
     const app = new App();
-    const stack = new MainStack(app, 'test');
+    const stack = new DashboardStack(app, 'test');
     const template = Template.fromStack(stack);
     template.resourceCountIs('AWS::QuickSight::DataSource', 1);
   });
 
   test('has 1 dataset', () => {
     const app = new App();
-    const stack = new MainStack(app, 'test');
+    const stack = new DashboardStack(app, 'test');
     const template = Template.fromStack(stack);
     template.resourceCountIs('AWS::QuickSight::DataSet', 1);
   });
 
   test('has 1 template', () => {
     const app = new App();
-    const stack = new MainStack(app, 'test');
+    const stack = new DashboardStack(app, 'test');
     const template = Template.fromStack(stack);
     template.resourceCountIs('AWS::QuickSight::Template', 1);
   });
@@ -49,21 +49,21 @@ describe('Dashboard', () => {
 
   test('has 1 dashboard', () => {
     const app = new App();
-    const stack = new MainStack(app, 'test');
+    const stack = new DashboardStack(app, 'test');
     const template = Template.fromStack(stack);
     template.resourceCountIs('AWS::QuickSight::Dashboard', 1);
   });
 
   test('has 1 analysis', () => {
     const app = new App();
-    const stack = new MainStack(app, 'test');
+    const stack = new DashboardStack(app, 'test');
     const template = Template.fromStack(stack);
     template.resourceCountIs('AWS::QuickSight::Analysis', 1);
   });
 
   test('dataset is configed correctly', () => {
     const app = new App();
-    const stack = new MainStack(app, 'test');
+    const stack = new DashboardStack(app, 'test');
     const template = Template.fromStack(stack);
     template.hasResourceProperties('AWS::QuickSight::DataSet', {
       PhysicalTableMap: {

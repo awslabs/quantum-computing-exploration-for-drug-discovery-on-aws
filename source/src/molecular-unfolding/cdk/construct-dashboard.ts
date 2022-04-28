@@ -16,7 +16,6 @@ limitations under the License.
 
 
 import {
-  aws_s3 as s3,
   aws_quicksight as quicksight,
   CfnOutput,
 } from 'aws-cdk-lib';
@@ -29,8 +28,6 @@ import {
 interface DashBoardProps {
   region: string;
   account: string;
-  bucket: s3.Bucket;
-  prefix: string;
   stackName: string;
   quicksightUser: string;
 }
@@ -256,7 +253,6 @@ export class Dashboard extends Construct {
           }],
         },
       },
-
     });
 
     // Output //////////////////////////
