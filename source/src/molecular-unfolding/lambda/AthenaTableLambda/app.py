@@ -28,7 +28,7 @@ athena_client = boto3.client('athena', config=default_config)
 def handler(event, context):
 
     s3_prefix = event['s3_prefix']
-    table_prefix = 'qceddmain'
+    table_prefix = event["stackName"]
 
     log.info(f"table_prefix: {table_prefix}, s3_prefix: {s3_prefix}")
     table_name = f"{table_prefix}_qc_batch_evaluation_metrics_hist"

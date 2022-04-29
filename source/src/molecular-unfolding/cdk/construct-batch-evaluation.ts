@@ -58,6 +58,8 @@ export interface BatchProps {
   region: string;
   account: string;
   bucket: s3.Bucket;
+  usePreBuildImage: boolean;
+  dashboardUrl: string;
   prefix: string;
   vpc: ec2.Vpc;
   batchSg: ec2.SecurityGroup;
@@ -629,6 +631,7 @@ export class BatchEvaluation extends Construct {
         name: sfn.JsonPath.stringAt('$.execution_id'),
         startDate: sfn.JsonPath.stringAt('$.start_time'),
         stopDate: sfn.JsonPath.stringAt('$.aggResultStep.Payload.endTime'),
+        dashboard: this.props.dashboardUrl,
       }),
       resultPath: '$.snsStep',
     });

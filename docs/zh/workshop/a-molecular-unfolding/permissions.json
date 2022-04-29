@@ -24,7 +24,10 @@
             ],
             "Resource": [
                 "arn:aws:iam::*:policy/qc*",
+                "arn:aws:iam::*:policy/qr*",
                 "arn:aws:iam::*:role/QC*",
+                "arn:aws:iam::*:role/QR*",
+                "arn:aws:iam::*:role/qr*",
                 "arn:aws:iam::*:role/service-role/aws-quicksight-service*"
             ]
         },
@@ -48,6 +51,7 @@
             ],
             "Resource": [
                 "arn:aws:s3:::qc*",
+                "arn:aws:s3:::qr*",
                 "arn:aws:s3:::braket*",
                 "arn:aws:s3:::amazon-braket*",
                 "arn:aws:s3:::aws-athena-query-results-*"
@@ -90,6 +94,7 @@
             ],
             "Resource": [
                 "arn:aws:s3:::qc*/*",
+                "arn:aws:s3:::qr*/*",
                 "arn:aws:s3:::braket*/*",
                 "arn:aws:s3:::amazon-braket*/*",
                 "arn:aws:s3:::aws-gcr-solutions*/*",
@@ -107,7 +112,7 @@
             ],
             "Resource": [
                 "arn:aws:ecr:*:*:repository/qc*",
-                "arn:aws:ecr:*:*:repository/quantum*"
+                "arn:aws:ecr:*:*:repository/qr*"
             ]
         },
         {
@@ -135,7 +140,7 @@
                 "sns:Subscribe",
                 "sns:ConfirmSubscription"
             ],
-            "Resource": ["arn:aws:sns:*:*:QC*"]
+            "Resource": ["arn:aws:sns:*:*:QC*", "arn:aws:sns:*:*:QR*"]
         },
 
         {
@@ -150,7 +155,7 @@
                 "cloudformation:DeleteChangeSet",
                 "cloudformation:CreateUploadBucket"
             ],
-            "Resource": [
+            "Resource": ["arn:aws:cloudformation:*:*:stack/QR*",
                 "arn:aws:cloudformation:*:*:stack/QC*"
             ]
         },
