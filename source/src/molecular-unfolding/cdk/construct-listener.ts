@@ -42,7 +42,6 @@ interface Props {
   account: string;
   bucket: s3.Bucket;
   prefix: string;
-  usePreBuildImage: boolean;
   vpc: ec2.Vpc;
   lambdaSg: ec2.SecurityGroup;
   stackName: string;
