@@ -16,10 +16,10 @@
     "eslint-fix": "eslint --ext .ts,.tsx --fix --no-error-on-unmatched-pattern src test",
     "eslint": "eslint --ext .ts,.tsx --no-error-on-unmatched-pattern src test",
     "cdk": "cdk ",
-    "diff": "cdk diff QCEDDRootStack",
-    "synth": "cdk synth QCEDDRootStack ",
-    "destroy": "cdk destroy QCEDDRootStack",
-    "cfn-nag": "rm -rf /tmp/cfn > /dev/null 2>&1  && mkdir /tmp/cfn/ && cdk synth QCEDDRootStack --output /tmp/cfn/ && cfn_nag_scan --fail-on-warnings -b ../.cfn-nag-ignore-lists.yml --input-path  /tmp/cfn/QCEDDRootStack.template.json"
+    "diff": "cdk diff QCEDDStack",
+    "synth": "cdk synth QCEDDStack ",
+    "destroy": "cdk destroy QCEDDStack",
+    "cfn-nag": "rm -rf /tmp/cfn > /dev/null 2>&1  && mkdir /tmp/cfn/ && cdk synth QCEDDStack --output /tmp/cfn/ && cfn_nag_scan --fail-on-warnings -b ../.cfn-nag-ignore-lists.yml --input-path  /tmp/cfn/QCEDDRootStack.template.json"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.92",

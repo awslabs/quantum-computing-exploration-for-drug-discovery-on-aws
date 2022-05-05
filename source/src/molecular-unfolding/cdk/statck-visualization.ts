@@ -59,12 +59,12 @@ export class VisualizationNestStack extends NestedStack {
     Aspects.of(this).add(new ChangePolicyName());
 
     // Dashboard //////////////////////////
-    const dashboard = new Dashboard(this, 'MolUnfDashboard', {
+    const dashboard = new Dashboard(this, 'Dashboard', {
       account: this.account,
       region: this.region,
       stackName: props.stackName,
       quicksightUser: props.quicksightUser,
     });
-     this.outputDashboardUrl= dashboard.outputDashboardUrl
+    this.outputDashboardUrl= dashboard.outputDashboardUrl;
   }
 }

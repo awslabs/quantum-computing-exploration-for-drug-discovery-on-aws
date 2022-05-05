@@ -108,9 +108,9 @@ export class MainStack extends SolutionStack {
 
     s3bucket.node.addDependency(logS3bucket);
 
-    new CfnOutput(this, 'bucketName', {
+    new CfnOutput(this, 'BucketName', {
       value: s3bucket.bucketName,
-      description: 'S3 bucket name',
+      description: 'S3 Bucket Name',
     });
 
     const {
@@ -151,7 +151,7 @@ export class MainStack extends SolutionStack {
       });
       (batchEvaluation.nestedStackResource as CfnStack).cfnOptions.condition = conditionDeployBatchEvaluation;
       this.addOutput('SNSTopic', batchEvaluation.snsOutput, conditionDeployBatchEvaluation);
-      this.addOutput('StateMachineURL', batchEvaluation.stateMachineURLOutput, conditionDeployBatchEvaluation)
+      this.addOutput('StateMachineURL', batchEvaluation.stateMachineURLOutput, conditionDeployBatchEvaluation);
     }
 
     {
@@ -164,7 +164,7 @@ export class MainStack extends SolutionStack {
         quicksightUser: quickSightUserParam.valueAsString,
       });
       (dashboard.nestedStackResource as CfnStack).cfnOptions.condition = conditionDeployVisualization;
-      this.addOutput('DashboardUrl', dashboard.outputDashboardUrl, conditionDeployVisualization)
+      this.addOutput('DashboardUrl', dashboard.outputDashboardUrl, conditionDeployVisualization);
     }
     Aspects.of(this).add(new AddCfnNag());
   }

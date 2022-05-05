@@ -221,7 +221,7 @@ export class BatchEvaluation extends Construct {
     }));
 
     // Output //////////////////////////
-    this.stateMachineURLOutput =  new CfnOutput(this, 'stateMachineURL', {
+    this.stateMachineURLOutput = new CfnOutput(this, 'stateMachineURL', {
       value: `https://console.aws.amazon.com/states/home?region=${this.props.region}#/statemachines/view/${batchEvaluationStateMachine.stateMachineArn}`,
       description: 'State Machine URL',
     });
