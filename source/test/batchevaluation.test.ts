@@ -16,8 +16,6 @@ limitations under the License.
 
 import {
   App,
-  Stack,
-  aws_s3 as s3,
 } from 'aws-cdk-lib';
 
 import {
@@ -27,240 +25,52 @@ import {
 } from 'aws-cdk-lib/assertions';
 
 import {
-  BatchEvaluationNestStack,
-} from '../src/molecular-unfolding/cdk/statck-batch-evaluation';
-
-import setup_vpc_and_sg from '../src/molecular-unfolding/cdk/utils/vpc';
-
-function initializeNestStackTemplate() {
-  const app = new App();
-  const stack = new Stack(app, 'test');
-
-  const {
-    vpc,
-    batchSg,
-    lambdaSg,
-  } = setup_vpc_and_sg(stack);
-
-  const s3bucket = new s3.Bucket(stack, 'amazon-braket-test');
-  const prefix = 'test_s3_prefix';
-  const nestStack = new BatchEvaluationNestStack(stack, 'BatchEvaluation', {
-    account: '123456789012',
-    region: 'us-east-1',
-    prefix,
-    bucket: s3bucket,
-    vpc,
-    batchSg,
-    lambdaSg,
-    stackName: 'nestStack',
-  });
-  return Template.fromStack(nestStack);
-}
-
+  MainStack,
+} from '../src/molecular-unfolding/cdk/stack-main';
 
 describe('BatchEvaluation', () => {
   test('has 1 batch ComputeEnvironment', () => {
-    const template = initializeNestStackTemplate();
+    const app = new App();
+    const stack = new MainStack(app, 'test');
+    const template = Template.fromStack(stack);
     template.resourceCountIs('AWS::Batch::ComputeEnvironment', 2);
   });
 
   test('has 1 batch JobQueue', () => {
-    const template = initializeNestStackTemplate();
+    const app = new App();
+    const stack = new MainStack(app, 'test');
+    const template = Template.fromStack(stack);
     template.resourceCountIs('AWS::Batch::JobQueue', 2);
   });
   test('has 2 batch JobDefinitions', () => {
-    const template = initializeNestStackTemplate();
+    const app = new App();
+    const stack = new MainStack(app, 'test');
+    const template = Template.fromStack(stack);
     template.resourceCountIs('AWS::Batch::JobDefinition', 3);
   });
 
   test('has 1 SNS', () => {
-    const template = initializeNestStackTemplate();
+    const app = new App();
+    const stack = new MainStack(app, 'test');
+    const template = Template.fromStack(stack);
     template.resourceCountIs('AWS::SNS::Topic', 1);
   });
 
-  test('StateMachine count is 5', () => {
-    const template = initializeNestStackTemplate();
+  test('bechmark StateMachine', () => {
+    const app = new App();
+    const stack = new MainStack(app, 'test');
+    const template = Template.fromStack(stack);
     //const startAtCapture = new Capture();
     //const statesCapture = new Capture();
 
     template.resourceCountIs('AWS::StepFunctions::StateMachine', 5);
   });
 
-  test('CreateEventRuleFuncServiceRole has CrossEventRegionCondition', () => {
-    const template = initializeNestStackTemplate();
-    const findRoles = template.findResources('AWS::IAM::Role', {
-      Condition: 'CrossEventRegionCondition',
-    });
-    let conditionSet = false;
-    for (const p in findRoles) {
-      if (p.startsWith('CreateEventRuleFuncServiceRole')) {
-        conditionSet = true;
-        break;
-      }
-    }
-    expect(conditionSet).toBeTruthy();
-  });
 
-  test('has 1 CustomResource', () => {
-    const template = initializeNestStackTemplate();
-    template.hasResource('AWS::CloudFormation::CustomResource', 1);
-  });
-
-  test('The CustomResource has Condition', () => {
-    const template = initializeNestStackTemplate();
-
-    template.hasResource('AWS::CloudFormation::CustomResource', {
-      Condition: 'CrossEventRegionCondition',
-    });
-  });
-
-
-  test('CreateEventRuleFunc has Environment Variables', () => {
-    const template = initializeNestStackTemplate();
-    template.hasResourceProperties('AWS::Lambda::Function', {
-      Environment: {
-        Variables: {
-          EVENT_BRIDGE_ROLE_ARN: Match.anyValue(),
-          AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
-        },
-      },
-    });
-  });
-
-  test('CrossEventRegionCondition is for us-west-2', () => {
-    const template = initializeNestStackTemplate();
-    const conditionRegion = template.toJSON().Conditions.CrossEventRegionCondition['Fn::Not'];
-    expect(conditionRegion).toEqual([{
-      'Fn::Equals': [{
-        Ref: 'AWS::Region',
-      }, 'us-west-2'],
-    }]);
-  });
-
-
-  test('EventBridgeRole has the right policy', () => {
-    const template = initializeNestStackTemplate();
-    template.hasResourceProperties('AWS::IAM::Policy', {
-      PolicyDocument: {
-        Statement: [{
-          Action: 'events:PutEvents',
-          Effect: 'Allow',
-          Resource: {
-            'Fn::Join': [
-              '',
-              [
-                'arn:',
-                {
-                  Ref: 'AWS::Partition',
-                },
-                ':events:',
-                {
-                  Ref: 'AWS::Region',
-                },
-                ':',
-                {
-                  Ref: 'AWS::AccountId',
-                },
-                ':event-bus/default',
-              ],
-            ],
-          },
-        }],
-        Version: '2012-10-17',
-      },
-    });
-  });
-
-  test('CreateEventRuleFunc has the right policy', () => {
-    const roleCapture = new Capture();
-    const template = initializeNestStackTemplate();
-    template.hasResourceProperties('AWS::IAM::Policy', {
-      PolicyDocument: {
-        Statement: [{
-          Action: [
-            'events:DescribeRule',
-            'events:DeleteRule',
-            'events:PutTargets',
-            'events:EnableRule',
-            'events:PutRule',
-            'events:RemoveTargets',
-            'events:DisableRule',
-          ],
-          Effect: 'Allow',
-          Resource: {
-            'Fn::Join': [
-              '',
-              [
-                'arn:',
-                {
-                  Ref: 'AWS::Partition',
-                },
-                ':events:us-west-2:',
-                {
-                  Ref: 'AWS::AccountId',
-                },
-                ':rule/QCEDD-BraketEventTo',
-                {
-                  Ref: 'AWS::Region',
-                },
-                '*',
-              ],
-            ],
-          },
-        },
-        {
-          Action: [
-            'cloudformation:CreateChangeSet',
-            'cloudformation:DeleteChangeSet',
-            'cloudformation:DescribeChangeSet',
-            'cloudformation:ExecuteChangeSet',
-            'cloudformation:UpdateStack',
-            'cloudformation:DeleteStack',
-            'cloudformation:CreateStack',
-            'cloudformation:DescribeStacks',
-          ],
-          Effect: 'Allow',
-          Resource: {
-            'Fn::Join': [
-              '',
-              [
-                'arn:',
-                {
-                  Ref: 'AWS::Partition',
-                },
-                ':cloudformation:us-west-2:',
-                {
-                  Ref: 'AWS::AccountId',
-                },
-                ':stack/QCEDD-BraketEventTo',
-                {
-                  Ref: 'AWS::Region',
-                },
-                '/*',
-              ],
-            ],
-          },
-        },
-        {
-          Action: 'iam:PassRole',
-          Effect: 'Allow',
-          Resource: {
-            'Fn::GetAtt': [
-              roleCapture,
-              'Arn',
-            ],
-          },
-        }],
-        Version: '2012-10-17',
-      },
-
-    });
-    expect(roleCapture.asString()).toEqual(expect.stringMatching(/^EventBridgeRole/));
-
-  });
-
-  test('CC StateMachine', () => {
-    const template = initializeNestStackTemplate();
+  test('bechmark main StateMachine', () => {
+    const app = new App();
+    const stack = new MainStack(app, 'test');
+    const template = Template.fromStack(stack);
     //const startAtCapture = new Capture();
     //const statesCapture = new Capture();
 
@@ -284,8 +94,7 @@ describe('BatchEvaluation', () => {
             {
               Ref: Match.anyValue(),
             },
-            '","s3_prefix":"test_s3_prefix","param_type":"PARAMS_FOR_CC","execution_id.$":"$.execution_id","context.$":"$$"}}},"ParallelCCJobs":{"Type":"Map","ResultPath":"$.parallelCCJobsMap","End":true,"Parameters":{"ItemIndex.$":"$$.Map.Item.Index","ItemValue.$":"$$.Map.Item.Value","execution_id.$":"$.execution_id"},"Iterator":{"StartAt":"Run CC Batch Job","States":{"Run CC Batch Job":{"Next":"Batch Job Complete","Type":"Task","Resource":"arn:aws:states:::batch:submitJob.sync","Parameters":{"JobDefinition":"',
-            {
+            '","s3_prefix":"molecular-unfolding","param_type":"PARAMS_FOR_CC","execution_id.$":"$.execution_id","context.$":"$$"}}},"ParallelCCJobs":{"Type":"Map","ResultPath":"$.parallelCCJobsMap","End":true,"Parameters":{"ItemIndex.$":"$$.Map.Item.Index","ItemValue.$":"$$.Map.Item.Value","execution_id.$":"$.execution_id"},"Iterator":{"StartAt":"Run CC Batch Job","States":{"Run CC Batch Job":{"Next":"Batch Job Complete","Type":"Task","Resource":"arn:aws:states:::batch:submitJob.sync","Parameters":{"JobDefinition":"', {
               Ref: Match.anyValue(),
             },
             "\",\"JobName.$\":\"States.Format('CCTask{}-{}', $.ItemIndex, $.ItemValue.task_name)\",\"JobQueue\":\"",
@@ -300,7 +109,9 @@ describe('BatchEvaluation', () => {
   });
 
   test('has lambdas with image package type', () => {
-    const template = initializeNestStackTemplate();
+    const app = new App();
+    const stack = new MainStack(app, 'test');
+    const template = Template.fromStack(stack);
     //const startAtCapture = new Capture();
     //const statesCapture = new Capture();
 
@@ -310,7 +121,9 @@ describe('BatchEvaluation', () => {
   });
 
   test('has lambdas in vpc', () => {
-    const template = initializeNestStackTemplate();
+    const app = new App();
+    const stack = new MainStack(app, 'test');
+    const template = Template.fromStack(stack);
     //const startAtCapture = new Capture();
     //const statesCapture = new Capture();
 
@@ -319,9 +132,12 @@ describe('BatchEvaluation', () => {
     });
   });
 
-  test('BatchEcsInstanceRole has SSM permission', () => {
-    const template = initializeNestStackTemplate();
+  test('BatchEcsInstanceRole has SSM permission', ()=> {
+    const app = new App();
+    const stack = new MainStack(app, 'test');
+    const template = Template.fromStack(stack);
     const findRoles = template.findResources('AWS::IAM::Role', {
+      DependsOn: Match.anyValue(),
       Properties: {
         AssumeRolePolicyDocument: Match.anyValue(),
         ManagedPolicyArns: Match.anyValue(),
@@ -329,7 +145,7 @@ describe('BatchEvaluation', () => {
     });
 
     let SSMSet = false;
-    for (const role in findRoles) {
+    for (const role in findRoles ) {
       if (role.startsWith('BatchCCComputeEnvEcsInstanceRole')) {
         for (const arn of findRoles[role].Properties.ManagedPolicyArns) {
           if ('Fn::Join' in arn) {
@@ -345,8 +161,10 @@ describe('BatchEvaluation', () => {
   });
 
 
-  test('AWS Events Rule is configed for stepFunctions', () => {
-    const template = initializeNestStackTemplate();
+  test('AWS Events Rule is configed for stepFunctions', ()=> {
+    const app = new App();
+    const stack = new MainStack(app, 'test');
+    const template = Template.fromStack(stack);
     const nameCapture = new Capture();
     template.hasResourceProperties('AWS::Events::Rule', {
       EventPattern: {
@@ -362,9 +180,11 @@ describe('BatchEvaluation', () => {
             'TIMED_OUT',
             'ABORTED',
           ],
-          stateMachineArn: [{
-            Ref: nameCapture,
-          }],
+          stateMachineArn: [
+            {
+              Ref: nameCapture,
+            },
+          ],
         },
       },
     });
@@ -373,81 +193,85 @@ describe('BatchEvaluation', () => {
 
   });
 
-  test('SNS Key permission is configed correctly', () => {
-    const template = initializeNestStackTemplate();
+  test('SNS Key permission is configed correctly', ()=> {
+    const app = new App();
+    const stack = new MainStack(app, 'test');
+    const template = Template.fromStack(stack);
     template.hasResourceProperties('AWS::KMS::Key', {
       KeyPolicy: {
-        Statement: [{
-          Action: 'kms:*',
-          Effect: 'Allow',
-          Principal: {
-            AWS: {
-              'Fn::Join': [
-                '',
-                [
-                  'arn:',
-                  {
-                    Ref: 'AWS::Partition',
-                  },
-                  ':iam::',
-                  {
-                    Ref: 'AWS::AccountId',
-                  },
-                  ':root',
-                ],
-              ],
-            },
-          },
-          Resource: '*',
-        },
-        {
-          Action: [
-            'kms:Decrypt',
-            'kms:GenerateDataKey',
-          ],
-          Effect: 'Allow',
-          Principal: {
-            Service: 'events.amazonaws.com',
-          },
-          Resource: '*',
-        },
-        {
-          Action: [
-            'kms:Decrypt',
-            'kms:GenerateDataKey*',
-            'kms:CreateGrant',
-            'kms:ListGrants',
-            'kms:DescribeKey',
-          ],
-          Condition: {
-            StringEquals: {
-              'kms:ViaService': {
+        Statement: [
+          {
+            Action: 'kms:*',
+            Effect: 'Allow',
+            Principal: {
+              AWS: {
                 'Fn::Join': [
                   '',
                   [
-                    'sns.',
+                    'arn:',
                     {
-                      Ref: 'AWS::Region',
+                      Ref: 'AWS::Partition',
                     },
-                    '.amazonaws.com',
+                    ':iam::',
+                    {
+                      Ref: 'AWS::AccountId',
+                    },
+                    ':root',
                   ],
                 ],
               },
-              'kms:CallerAccount': {
-                Ref: 'AWS::AccountId',
+            },
+            Resource: '*',
+          },
+          {
+            Action: [
+              'kms:Decrypt',
+              'kms:GenerateDataKey',
+            ],
+            Effect: 'Allow',
+            Principal: {
+              Service: 'events.amazonaws.com',
+            },
+            Resource: '*',
+          },
+          {
+            Action: [
+              'kms:Decrypt',
+              'kms:GenerateDataKey*',
+              'kms:CreateGrant',
+              'kms:ListGrants',
+              'kms:DescribeKey',
+            ],
+            Condition: {
+              StringEquals: {
+                'kms:ViaService': {
+                  'Fn::Join': [
+                    '',
+                    [
+                      'sns.',
+                      {
+                        Ref: 'AWS::Region',
+                      },
+                      '.amazonaws.com',
+                    ],
+                  ],
+                },
+                'kms:CallerAccount': {
+                  Ref: 'AWS::AccountId',
+                },
               },
             },
+            Effect: 'Allow',
+            Principal: {
+              AWS: '*',
+            },
+            Resource: '*',
           },
-          Effect: 'Allow',
-          Principal: {
-            AWS: '*',
-          },
-          Resource: '*',
-        }],
+        ],
         Version: '2012-10-17',
       },
     });
+
   });
+
 });
-
-

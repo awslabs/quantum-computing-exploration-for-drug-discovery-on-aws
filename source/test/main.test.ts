@@ -19,7 +19,9 @@ import {
 } from 'aws-cdk-lib';
 
 import {
+  Match,
   Template,
+  Capture,
 } from 'aws-cdk-lib/assertions';
 
 import {
@@ -84,70 +86,183 @@ test('has 1 flowLog', () => {
   template.hasResource('AWS::EC2::FlowLog', 1);
 });
 
-test('has output - BucketName', () => {
+test('has output - bucketName', () => {
   const app = new App();
   const stack = new MainStack(app, 'test');
   const template = Template.fromStack(stack);
-  template.hasOutput('BucketName', {});
+  template.hasOutput('bucketName', {});
 });
 
-test('has output - NotebookUrl', () => {
+test('has 1 CustomResource', () => {
   const app = new App();
   const stack = new MainStack(app, 'test');
   const template = Template.fromStack(stack);
-  template.hasOutput('NotebookUrl', {});
+  template.hasResource('AWS::CloudFormation::CustomResource', 1);
 });
 
-test('has output - SNSTopic', () => {
+test('The CustomResource has Condition', () => {
   const app = new App();
   const stack = new MainStack(app, 'test');
   const template = Template.fromStack(stack);
-  template.hasOutput('SNSTopic', {});
-});
 
-
-test('has output - StateMachineURL', () => {
-  const app = new App();
-  const stack = new MainStack(app, 'test');
-  const template = Template.fromStack(stack);
-  template.hasOutput('StateMachineURL', {});
-});
-
-test('has 2 nest CloudFormation stacks ', () => {
-  const app = new App();
-  const stack = new MainStack(app, 'test');
-  const template = Template.fromStack(stack);
-  template.hasResource('AWS::CloudFormation::Stack', 2);
-});
-
-test('has Condition ConditionDeployBatchEvaluation', () => {
-  const app = new App();
-  const stack = new MainStack(app, 'test');
-  const template = Template.fromStack(stack);
-  const conditionDeployBatchEvaluation = template.toJSON().Conditions.ConditionDeployBatchEvaluation;
-  expect(conditionDeployBatchEvaluation).toEqual({
-    'Fn::Equals': [
-      {
-        Ref: 'DeployBatchEvaluation',
-      },
-      'yes',
-    ],
+  template.hasResource('AWS::CloudFormation::CustomResource', {
+    Condition: 'CrossEventRegionCondition',
   });
 });
 
-test('has Condition ConditionDeployVisualization', () => {
+test('CrossEventRegionCondition is for us-west-2', () => {
   const app = new App();
   const stack = new MainStack(app, 'test');
   const template = Template.fromStack(stack);
-  const conditionDeployVisualization = template.toJSON().Conditions.ConditionDeployVisualization;
-  expect(conditionDeployVisualization).toEqual({
-    'Fn::Equals': [
-      {
-        Ref: 'DeployVisualization',
+  const conditionRegion = template.toJSON().Conditions.CrossEventRegionCondition['Fn::Not'];
+  expect(conditionRegion).toEqual([{
+    'Fn::Equals': [{
+      Ref: 'AWS::Region',
+    }, 'us-west-2'],
+  }]);
+});
+
+test('CreateEventRuleFunc has Environment Variables', () => {
+  const app = new App();
+  const stack = new MainStack(app, 'test');
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::Lambda::Function', {
+    Environment: {
+      Variables: {
+        EVENT_BRIDGE_ROLE_ARN: Match.anyValue(),
+        AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
       },
-      'yes',
-    ],
+    },
   });
+});
+
+
+test('EventBridgeRole has the right policy', () => {
+  const app = new App();
+  const stack = new MainStack(app, 'test');
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::IAM::Policy', {
+    PolicyDocument: {
+      Statement: [{
+        Action: 'events:PutEvents',
+        Effect: 'Allow',
+        Resource: {
+          'Fn::Join': [
+            '',
+            [
+              'arn:',
+              {
+                Ref: 'AWS::Partition',
+              },
+              ':events:',
+              {
+                Ref: 'AWS::Region',
+              },
+              ':',
+              {
+                Ref: 'AWS::AccountId',
+              },
+              ':event-bus/default',
+            ],
+          ],
+        },
+      }],
+      Version: '2012-10-17',
+    },
+  });
+});
+
+test('CreateEventRuleFunc has the right policy', () => {
+  const app = new App();
+  const stack = new MainStack(app, 'test');
+  const roleCapture = new Capture();
+
+  const template = Template.fromStack(stack);
+  template.hasResourceProperties('AWS::IAM::Policy', {
+    PolicyDocument: {
+      Statement: [
+        {
+          Action: [
+            'events:DescribeRule',
+            'events:DeleteRule',
+            'events:PutTargets',
+            'events:EnableRule',
+            'events:PutRule',
+            'events:RemoveTargets',
+            'events:DisableRule',
+          ],
+          Effect: 'Allow',
+          Resource: {
+            'Fn::Join': [
+              '',
+              [
+                'arn:',
+                {
+                  Ref: 'AWS::Partition',
+                },
+                ':events:us-west-2:',
+                {
+                  Ref: 'AWS::AccountId',
+                },
+                ':rule/QCEDD-BraketEventTo',
+                {
+                  Ref: 'AWS::Region',
+                },
+                '*',
+              ],
+            ],
+          },
+        },
+        {
+          Action: [
+            'cloudformation:CreateChangeSet',
+            'cloudformation:DeleteChangeSet',
+            'cloudformation:DescribeChangeSet',
+            'cloudformation:ExecuteChangeSet',
+            'cloudformation:UpdateStack',
+            'cloudformation:DeleteStack',
+            'cloudformation:CreateStack',
+            'cloudformation:DescribeStacks',
+          ],
+          Effect: 'Allow',
+          Resource: {
+            'Fn::Join': [
+              '',
+              [
+                'arn:',
+                {
+                  Ref: 'AWS::Partition',
+                },
+                ':cloudformation:us-west-2:',
+                {
+                  Ref: 'AWS::AccountId',
+                },
+                ':stack/QCEDD-BraketEventTo',
+                {
+                  Ref: 'AWS::Region',
+                },
+                '/*',
+              ],
+            ],
+          },
+        },
+        {
+          Action: 'iam:PassRole',
+          Effect: 'Allow',
+          Resource: {
+            'Fn::GetAtt': [
+              roleCapture,
+              'Arn',
+            ],
+          },
+        },
+      ],
+      Version: '2012-10-17',
+    },
+
+  });
+  expect(roleCapture.asString()).toEqual(expect.stringMatching(/^EventBridgeRole/));
+
 });
 
 test('SupportedRegionsRule config correctly', () => {
@@ -164,4 +279,33 @@ test('SupportedRegionsRule config correctly', () => {
       },
     ],
   );
+
+});
+
+test('CreateEventRuleFuncServiceRole has CrossEventRegionCondition', () => {
+  const app = new App();
+  const stack = new MainStack(app, 'test');
+  const template = Template.fromStack(stack);
+  const findRoles = template.findResources('AWS::IAM::Role', {
+    DependsOn: Match.anyValue(),
+    Condition: 'CrossEventRegionCondition',
+  });
+  let conditionSet = false;
+  for (const p in findRoles) {
+    if (p.startsWith('CreateEventRuleFuncServiceRole')) {
+      conditionSet = true;
+      break;
+    }
+  }
+  expect(conditionSet).toBeTruthy();
+});
+
+
+test('has parameter QuickSightRoleName', () => {
+  const app = new App();
+  const stack = new MainStack(app, 'test');
+  const template = Template.fromStack(stack);
+
+  const QuickSightRoleName = template.toJSON().Parameters.QuickSightRoleName;
+  expect(QuickSightRoleName).toBeDefined();
 });

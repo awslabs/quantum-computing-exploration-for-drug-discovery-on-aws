@@ -1,8 +1,6 @@
 在部署解决方案之前，建议您先查看本指南中有关架构图和区域支持等信息。然后按照下面的说明配置解决方案并将其部署到您的帐户中。
 
-只有部署笔记本实验部分是必须的，批量评估和可视化部分是可选的。如果您跳过可选部分，您可以在以后任意时间通过[更新堆栈](#3cloudformation)部署它们。
-
-**部署时间**：约10分钟(包含所有可选部分)
+**部署时间**：约10分钟
 
 !!! Note "说明"
 
@@ -17,19 +15,18 @@
 
 3. 选择**Enable Amazon Braket**。
 
-### 设置QuickSight
-
-!!! Note "说明"
-    如果您不想部署可视化部分，请跳过此步骤。即使您此时跳过此步骤，您也可以在任何时候执行此步骤。
-
-#### 创建QuickSight IAM角色
+### 创建QuickSight IAM角色
 
 1. 导航至[IAM Policies](https://console.aws.amazon.com/iamv2/home?#/policies)。
 
 2. 从左侧导航栏中选择**策略**，然后选择**创建策略**。该策略将被添加至新创建的IAM角色。
 
 3. 在创建策略页面，点击**JSON**，填写QuickSight策略如下，这是本方案中QuickSight角色所需的最小权限。
-   
+
+    !!! Note "说明"
+        
+        请忽略输入框下面的Errors提示。
+
 
         {
             "Version": "2012-10-17",
@@ -124,11 +121,6 @@
             ]
         }
 
-    !!! Note "说明"
-        
-        请忽略输入框下面的Errors提示。
-
-
 4. 点击**下一步：标签**。
 
 5. 点击**下一步：审核**。
@@ -169,12 +161,12 @@
 
 16. 记录所创建角色的名字。
 
-#### 注册QuickSight账户
+### 注册QuickSight账户
 
 !!! Notice "说明"
 
     如果您的AWS账户已经注册了QuickSight账户，可以跳过该步骤。
-       
+
 1. 登录到[Amazon QuickSight控制台](https://quicksight.aws.amazon.com/)。
 
 2. 选择**企业版**，点击**继续**。
@@ -187,7 +179,7 @@
     - 输入用于接收通知的**邮箱地址**。
     - 对于其它参数，采用默认值。
 
-#### 为QuickSight分配创建好的IAM角色
+### 为QuickSight分配创建好的IAM角色
 
 1. 登录到[Amazon QuickSight控制台](https://quicksight.aws.amazon.com/)。
 2. 从区域下拉列表中选择**美国东部（弗吉尼亚北部）区域**。
@@ -196,7 +188,7 @@
 5. 在**QuickSight access to AWS services**区域中选中**管理**。
 6. 选择**使用现有角色**，在下拉列表中选择刚刚创建的角色。本示例为`qradd-quicksight-service-role`。
 
-#### 记录QuickSight用户名
+### 记录QuickSight用户名
 
 1. 从美国东部（弗吉尼亚北部）区域登录[QuickSight管理用户页面](https://us-east-1.quicksight.aws.amazon.com/sn/admin)。
 
@@ -216,10 +208,8 @@
 
     参数 | 默认值 | 描述 
     ---|---|---
-    Deploy Batch Evaluation | no | 选择yes部署**批量评估**部分, 选择no跳过 |
-    Deploy Visualization | no |选择yes部署**可视化**部分, 选择no跳过 |
-    QuickSight User | 无 | 输入QuickSight用户名，从页面[Manage users](https://us-east-1.quicksight.aws.amazon.com/sn/admin?#users)获取， 如果您选择了部署**可视化**部分，此参数是必须的。
-    QuickSight Role Name | 无 | 输入QuickSight服务角色名字，从页面[Security & permissions](https://us-east-1.quicksight.aws.amazon.com/sn/admin?#aws)获取， 如果您选择了部署**可视化**部分，此参数是必须的。
+    QuickSightRoleName | 无 | 输入QuickSight服务角色名字，从页面[Security & permissions](https://us-east-1.quicksight.aws.amazon.com/sn/admin?#aws)获取。
+    QuickSightUser | 无 | 输入QuickSight用户名，从页面[Manage users](https://us-east-1.quicksight.aws.amazon.com/sn/admin?#users)获取。
 
 6. 选择**下一步**。
 
@@ -256,27 +246,6 @@
 9. 选择**创建订阅**。
 
 10. 检查您的邮箱，您将收到一封邮件，点击邮件中*Confirm Subscription*链接，确认订阅。
-
-## 步骤3：（可选）更新CloudFormation堆栈
-
-1. 登录[AWS CloudFormation](https://console.aws.amazon.com/cloudformation/)管理控制台。
-
-2. 选择本解决方案的堆栈，如果您遵循上面的部署步骤，堆栈的名字是**QCEDDStack**。
-
-3. 选择**更新**按钮。
-
-4. 选择**使用当前模版**， 选择 **下一步**。
-
-5. 选择或者填写对应的参数。
-
-6. 选择**下一步**。
-
-7. 在**配置堆栈选项**页面上，保留默认值并选择**下一步**。
-
-8. 在**审核**页面，查看并确认设置。确保选中确认模板将创建Amazon Identity and Access Management（IAM）资源的复选框。选择**下一步**。
-
-8. 选择**更新堆栈**以更新堆栈。
-
 
 [template-url]: https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/create/template?stackName=QCEDDStack&templateURL={{ cf_template.url }}
 [cf-template-url]: {{ cf_template.url }}

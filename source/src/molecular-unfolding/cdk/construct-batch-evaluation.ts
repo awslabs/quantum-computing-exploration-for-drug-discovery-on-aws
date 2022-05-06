@@ -58,6 +58,8 @@ export interface BatchProps {
   region: string;
   account: string;
   bucket: s3.Bucket;
+  usePreBuildImage: boolean;
+  dashboardUrl: string;
   prefix: string;
   vpc: ec2.Vpc;
   batchSg: ec2.SecurityGroup;
@@ -66,8 +68,7 @@ export interface BatchProps {
 }
 
 export class BatchEvaluation extends Construct {
-  stateMachineURLOutput: CfnOutput;
-  snsOutput?: CfnOutput;
+
   private props: BatchProps;
   private images: ECRImageUtil
   private roleUtil: RoleUtil
@@ -221,7 +222,7 @@ export class BatchEvaluation extends Construct {
     }));
 
     // Output //////////////////////////
-    this.stateMachineURLOutput = new CfnOutput(this, 'stateMachineURL', {
+    new CfnOutput(this, 'stateMachineURL', {
       value: `https://console.aws.amazon.com/states/home?region=${this.props.region}#/statemachines/view/${batchEvaluationStateMachine.stateMachineArn}`,
       description: 'State Machine URL',
     });
@@ -630,11 +631,12 @@ export class BatchEvaluation extends Construct {
         name: sfn.JsonPath.stringAt('$.execution_id'),
         startDate: sfn.JsonPath.stringAt('$.start_time'),
         stopDate: sfn.JsonPath.stringAt('$.aggResultStep.Payload.endTime'),
+        dashboard: this.props.dashboardUrl,
       }),
       resultPath: '$.snsStep',
     });
 
-    this.snsOutput = new CfnOutput(this, 'SNS Topic Name', {
+    new CfnOutput(this, 'SNS Topic Name', {
       value: topic.topicName,
       description: 'SNS Topic Name',
     });

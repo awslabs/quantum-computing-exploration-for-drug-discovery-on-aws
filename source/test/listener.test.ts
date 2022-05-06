@@ -16,41 +16,20 @@ limitations under the License.
 
 import {
   App,
-  aws_s3 as s3,
-  Stack,
 } from 'aws-cdk-lib';
 
 import { Template, Match } from 'aws-cdk-lib/assertions';
 
 import {
-  BatchEvaluationNestStack,
-} from '../src/molecular-unfolding/cdk/statck-batch-evaluation';
-
-import setup_vpc_and_sg from '../src/molecular-unfolding/cdk/utils/vpc';
-
+  MainStack,
+} from '../src/molecular-unfolding/cdk/stack-main';
 
 describe('Listener', () => {
+
   test('Events Rule is configed correctly', () => {
     const app = new App();
-    const stack = new Stack(app, 'test');
-    const {
-      vpc,
-      batchSg,
-      lambdaSg,
-    } = setup_vpc_and_sg(stack);
-    const s3bucket = new s3.Bucket(stack, 'amazon-braket-test');
-
-    const nestStack = new BatchEvaluationNestStack(stack, 'BatchEvaluation', {
-      account: '123456789012',
-      region: 'us-east-1',
-      bucket: s3bucket,
-      prefix: 'test_s3_prefix',
-      vpc,
-      batchSg,
-      lambdaSg,
-      stackName: 'nestStack',
-    });
-    const template = Template.fromStack(nestStack);
+    const stack = new MainStack(app, 'test');
+    const template = Template.fromStack(stack);
     template.hasResourceProperties('AWS::Events::Rule', {
       EventPattern: Match.objectLike({
         'source': [

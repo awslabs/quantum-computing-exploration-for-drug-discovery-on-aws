@@ -30,7 +30,7 @@ import {
 
 const app = new App();
 
-new MainStack(app, 'QCEDDStack', {
+new MainStack(app, 'QCStack', {
   synthesizer: newSynthesizer(),
 });
 

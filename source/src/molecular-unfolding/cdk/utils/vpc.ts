@@ -60,6 +60,14 @@ export default (scope: Construct) => {
     service: ec2.GatewayVpcEndpointAwsService.S3,
   });
 
+  vpc.addInterfaceEndpoint('EcrDockerEndpoint', {
+    service: ec2.InterfaceVpcEndpointAwsService.ECR_DOCKER,
+  });
+
+  vpc.addInterfaceEndpoint('AthenaEndpoint', {
+    service: ec2.InterfaceVpcEndpointAwsService.ATHENA,
+  });
+
   vpc.addInterfaceEndpoint('BraketEndpoint', {
     service: {
       name: `com.amazonaws.${region}.braket`,

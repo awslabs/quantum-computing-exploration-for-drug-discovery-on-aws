@@ -1,7 +1,6 @@
 {
     "Version": "2012-10-17",
-    "Statement": [
-        {
+    "Statement": [{
             "Effect": "Allow",
             "Action": [
                 "iam:CreatePolicy",
@@ -25,9 +24,10 @@
             ],
             "Resource": [
                 "arn:aws:iam::*:policy/qc*",
-                "arn:aws:iam::*:policy/QC*",
-                "arn:aws:iam::*:role/qc*",
+                "arn:aws:iam::*:policy/qr*",
                 "arn:aws:iam::*:role/QC*",
+                "arn:aws:iam::*:role/QR*",
+                "arn:aws:iam::*:role/qr*",
                 "arn:aws:iam::*:role/service-role/aws-quicksight-service*"
             ]
         },
@@ -51,11 +51,13 @@
             ],
             "Resource": [
                 "arn:aws:s3:::qc*",
+                "arn:aws:s3:::qr*",
                 "arn:aws:s3:::braket*",
                 "arn:aws:s3:::amazon-braket*",
                 "arn:aws:s3:::aws-athena-query-results-*"
             ]
         },
+
         {
             "Effect": "Allow",
             "Action": [
@@ -92,10 +94,10 @@
             ],
             "Resource": [
                 "arn:aws:s3:::qc*/*",
+                "arn:aws:s3:::qr*/*",
                 "arn:aws:s3:::braket*/*",
                 "arn:aws:s3:::amazon-braket*/*",
                 "arn:aws:s3:::aws-gcr-solutions*/*",
-                "arn:aws:s3:::solutions*/*",
                 "arn:aws:s3:::aws-athena-query-results-*"
             ]
         },
@@ -109,7 +111,8 @@
                 "ecr:DeleteRepository"
             ],
             "Resource": [
-                "arn:aws:ecr:*:*:repository/qc*"
+                "arn:aws:ecr:*:*:repository/qc*",
+                "arn:aws:ecr:*:*:repository/qr*"
             ]
         },
         {
@@ -137,10 +140,9 @@
                 "sns:Subscribe",
                 "sns:ConfirmSubscription"
             ],
-            "Resource": [
-                "arn:aws:sns:*:*:QC*"
-            ]
+            "Resource": ["arn:aws:sns:*:*:QC*", "arn:aws:sns:*:*:QR*"]
         },
+
         {
             "Effect": "Allow",
             "Action": [
@@ -153,10 +155,11 @@
                 "cloudformation:DeleteChangeSet",
                 "cloudformation:CreateUploadBucket"
             ],
-            "Resource": [
+            "Resource": ["arn:aws:cloudformation:*:*:stack/QR*",
                 "arn:aws:cloudformation:*:*:stack/QC*"
             ]
         },
+
         {
             "Effect": "Allow",
             "Action": [
@@ -283,5 +286,6 @@
             ],
             "Resource": "*"
         }
+
     ]
 }

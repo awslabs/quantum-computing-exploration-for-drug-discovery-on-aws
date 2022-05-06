@@ -26,19 +26,17 @@
 
 ### 将堆栈从 CDK 部署到您的 AWS 账户
 
-1. 检查您的AWS账户中的CloudFormation，确保您的部署区域中没有名为`QCEDDStack`的堆栈。
+1. 检查您的AWS账户中的CloudFormation，确保您的部署区域中没有名为`QCStack`的堆栈。
 
-2. 检查您的 S3 存储桶，确保没有名为 `amazon-braket-qceddstack-<your aws account>-<deployment region>` 的存储桶。
+2. 检查您的 S3 存储桶，确保没有名为 `amazon-braket-qcstack-<your aws account>-<deployment region>` 的存储桶。
 
 3. 利用CDK将更改部署到您的AWS账户。
 
         cd source
         npm install
-        npx cdk deploy QCEDDStack  \
-         --parameters DeployBatchEvaluation=yes \
-         --parameters DeployVisualization=yes \
-         --parameters QuickSightUser=<your QuickSight user> \
-         --parameters QuickSightRoleName=<your QuickSight service role name>
+        npx cdk deploy QCStack \
+            --parameters QuickSightUser=<your QuickSight user> \
+            --parameters QuickSightRoleName=<your QuickSight service role name>
 
            
 4. 等待部署完成。部署大约需要10分钟。
