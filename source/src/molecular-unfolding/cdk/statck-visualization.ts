@@ -58,9 +58,9 @@ export class VisualizationNestStack extends NestedStack {
 
     new CfnRule(this, 'VisualizationParameterRule', {
       assertions: [{
-        assert: Fn.conditionOr(
+        assert: Fn.conditionNot(Fn.conditionOr(
           Fn.conditionEquals(props.quicksightUser, ''),
-          Fn.conditionEquals(props.quickSightRoleName, '')),
+          Fn.conditionEquals(props.quickSightRoleName, ''))),
         assertDescription: 'Parameter quicksightUser or quickSightRoleName is not set',
       }],
     });
