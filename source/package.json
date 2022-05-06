@@ -19,7 +19,7 @@
     "diff": "cdk diff QCEDDStack",
     "synth": "cdk synth QCEDDStack ",
     "destroy": "cdk destroy QCEDDStack",
-    "cfn-nag": "rm -rf /tmp/cfn > /dev/null 2>&1  && mkdir /tmp/cfn/ && cdk synth QCEDDStack --output /tmp/cfn/ && cfn_nag_scan --fail-on-warnings -b ../.cfn-nag-ignore-lists.yml --input-path  /tmp/cfn/QCEDDRootStack.template.json"
+    "cfn-nag": "rm -rf /tmp/cfn > /dev/null 2>&1  && mkdir /tmp/cfn/ && cdk synth QCEDDStack --output /tmp/cfn/ && cfn_nag_scan --fail-on-warnings -b ../.cfn-nag-ignore-lists.yml --input-path  /tmp/cfn/QCEDDStack.template.json"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.92",
