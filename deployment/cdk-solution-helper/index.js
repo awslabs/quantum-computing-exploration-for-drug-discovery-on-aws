@@ -111,40 +111,48 @@ fs.readdirSync(global_s3_assets).forEach(file => {
   //         "ParentStackName": Aws.STACK_NAME
   //     }
   // });
-  //
+  
   // The slice at the end of the statement is to remove the ".json" extension. Since all templates are published ".template"
+  
   // myNestedTemplate.nestedStackResource!.addMetadata('nestedStackFileName', myNestedTemplate.templateFile.slice(0, -(".json".length)));
-  //
+  
   // The below block of code has been tested to work with single nesting levels. This block of code has not been tested for multilevel
   // nesting of stacks
-  // nestedStacks.forEach(function(f) {
-  //     const fn = template.Resources[f];
-  //     fn.Properties.TemplateURL = {
-  //          'Fn::Join': [
-  //             '',
-  //             [
-  //                 'https://%%TEMPLATE_BUCKET_NAME%%.s3.',
-  //                 {
-  //                     'Ref' : 'AWS::URLSuffix'
-  //                 },
-  //                 '/',
-  //                 `%%SOLUTION_NAME%%/%%VERSION%%/${fn.Metadata.nestedStackFileName}`
-  //             ]
-  //          ]
-  //     };
 
-  //     const params = fn.Properties.Parameters ? fn.Properties.Parameters : {};
-  //     const nestedStackParameters = Object.keys(params).filter(function(key) {
-  //         if (key.search(_regex) > -1) {
-  //             return true;
-  //         }
-  //         return false;
-  //     });
+  const nestedStacks = Object.keys(resources).filter(function (key) {
+    return resources[key].Type === "AWS::CloudFormation::Stack";
+  });
 
-  //     nestedStackParameters.forEach(function(stkParam) {
-  //         fn.Properties.Parameters[stkParam] = undefined;
-  //     })
-  // });
+  nestedStacks.forEach(function(f) {
+      const fn = template.Resources[f];
+      const templateName = fn.Metadata['aws:asset:path'].slice(0, -(".json".length))
+      
+      fn.Properties.TemplateURL = {
+           'Fn::Join': [
+              '',
+              [
+                  'https://%%TEMPLATE_OUTPUT_BUCKET%%.s3.',
+                  {
+                      'Ref' : 'AWS::URLSuffix'
+                  },
+                  '/',
+                  `%%SOLUTION_NAME%%/%%VERSION%%/${templateName}}`
+              ]
+           ]
+      };
+
+      const params = fn.Properties.Parameters ? fn.Properties.Parameters : {};
+      const nestedStackParameters = Object.keys(params).filter(function(key) {
+          if (key.search(_regex) > -1) {
+              return true;
+          }
+          return false;
+      });
+
+      nestedStackParameters.forEach(function(stkParam) {
+          fn.Properties.Parameters[stkParam] = undefined;
+      })
+  });
 
   // Clean-up parameters section
   const parameters = (template.Parameters) ? template.Parameters : {};

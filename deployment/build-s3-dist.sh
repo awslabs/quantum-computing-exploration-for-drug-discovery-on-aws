@@ -317,6 +317,7 @@ cd $template_dist_dir
 do_replace "*.template" %%BUCKET_NAME%% ${SOLUTION_BUCKET}
 do_replace "*.template" %%SOLUTION_NAME%% ${SOLUTION_NAME}
 do_replace "*.template" %%VERSION%% ${VERSION}
+do_replace "*.template" %%TEMPLATE_OUTPUT_BUCKET%% ${TEMPLATE_OUTPUT_BUCKET}
 
 echo "------------------------------------------------------------------------------"
 echo "${bold}[Packing] Source code artifacts${normal}"
