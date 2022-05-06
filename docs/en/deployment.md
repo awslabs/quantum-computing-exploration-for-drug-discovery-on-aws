@@ -1,6 +1,9 @@
 Before you launch the solution, review the architecture, supported regions, and other considerations discussed in this guide. Follow the step-by-step instructions in this section to configure and deploy the solution into your account.
 
-**Time to deploy**: Approximately 10 minutes
+Deployment of **Notebook** part is necessary, **Batch Evaluation** and **Visualization** are optional.
+If you skip optional parts, you can deploy them any time you like via **[Update AWS CloudFormation template](#step-3-optional-update-aws-cloudformation-template)**.
+
+**Time to deploy**: Approximately 10 minutes(all parts)
 
 !!! notice "Note"
 
@@ -16,7 +19,11 @@ Before you launch the solution, review the architecture, supported regions, and 
 
 3. Choose **Enable Amazon Braket**.
 
-### Create IAM Role for QuickSight
+### Config QuickSight
+
+!!! notice "Note"
+    Skip this step if you do not want to deploy the **Visualization** part. If you skip it at this time, you can do it any time you like.
+#### Create IAM Role for QuickSight
 
 1. Navigate to [IAM console](https://console.aws.amazon.com/iamv2/home?#/policies).
 
@@ -157,7 +164,7 @@ Before you launch the solution, review the architecture, supported regions, and 
 
 16. Record the name of this role.
 
-### Sign up for QuickSight
+#### Sign up for QuickSight
 
 !!! notice "Note"
      
@@ -175,7 +182,7 @@ Before you launch the solution, review the architecture, supported regions, and 
     - Enter the **Email** to receive notifications.
     - For other parameters, keep default values.
 
-### Assign the Created IAM Role to QuickSight
+#### Assign the Created IAM Role to QuickSight
 
 1. Sign in to Amazon QuickSight console.
 2. Use the Region selector to select the **US East (N.Virginia)** Region.
@@ -183,7 +190,8 @@ Before you launch the solution, review the architecture, supported regions, and 
 4.	Choose **Security & permissions** from the left navigation pane.
 5.	In the **QuickSight access to AWS services** area, choose **Manage**.
 6. Choose **Use an existing role**, and select the role created in previous step. As an example, the deployment uses`qcedd-quicksight-service-role`.
-### Obtain QuickSight Username
+
+#### Obtain QuickSight Username
 
 1. Sign in to the [Amazon QuickSight console](https://us-east-1.quicksight.aws.amazon.com/sn/admin) in the **US East (N.Virginia)** Region.
 
@@ -203,9 +211,11 @@ Before you launch the solution, review the architecture, supported regions, and 
 
     Parameter | Default | Description 
     ---|---|---
-    QuickSightRoleName | <Requires input\> | QuickSight Service Role name, which can be obtained from [Security & permissions](https://us-east-1.quicksight.aws.amazon.com/sn/admin?#aws). 
-    QuickSightUser | <Requires input\> | QuickSight Username, which can be obtained from [Manage users](https://us-east-1.quicksight.aws.amazon.com/sn/admin?#users).                 |
-
+    Deploy Batch Evaluation | no | Choose yes to deploy **Batch Evaluation** part, no to skip |
+    Deploy Visualization | no | Choose yes to deploy **Visualization** part, no to skip |
+    QuickSight User |  | QuickSight Username, which can be obtained from [Manage users](https://us-east-1.quicksight.aws.amazon.com/sn/admin?#users), requires input if choose yes to Deploy Visualization.                 |
+    QuickSight Role Name | | QuickSight Service Role name, which can be obtained from [Security & permissions](https://us-east-1.quicksight.aws.amazon.com/sn/admin?#aws), requires input if choose yes to Deploy Visualization.
+   
 
 6. Choose **Next**.
 
@@ -242,6 +252,26 @@ Follow below steps to subscribe to SNS notification via email to receive result 
 9. Choose **Create subscription**.
 
 10. Check your inbox for the email, and select the **Confirm Subscription** link to confirm the subscription.
+
+## Step 3: (Optional) Update AWS CloudFormation template
+
+1. Sign in to the [AWS CloudFormation console](https://console.aws.amazon.com/cloudformation/).
+
+2. Select CloudFormation stack of this solution, if you follow the **Step 1: Launch the AWS CloudFormation template into your AWS account**, the stack name is **QCEDDStack**.
+
+3. Choose **Update** button.
+
+4. Choose **Use current template**, Click **Next**.
+
+5. Select or fill required parameters.
+
+6. Choose **Next**.
+
+7. On the **Configure stack options** page, choose **Next**.
+
+8. On the **Review** page, review and confirm the settings. Check the box acknowledging that the template will create AWS Identity and Access Management (IAM) resources.
+
+9. Choose **Update stack** to update the stack.
 
 
 [template-url]: https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/create/template?stackName=QCEDDStack&templateURL={{ cf_template.url }}

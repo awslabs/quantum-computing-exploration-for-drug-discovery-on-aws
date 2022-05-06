@@ -23,7 +23,6 @@ import {
   aws_s3 as s3,
   aws_kms as kms,
   aws_ec2 as ec2,
-  CfnOutput,
 } from 'aws-cdk-lib';
 
 import {
@@ -53,6 +52,7 @@ export interface Props {
 
 export class Notebook extends Construct {
 
+  notebookUrl: string;
   private props: Props;
   private roleUtil: RoleUtil;
 
@@ -116,15 +116,7 @@ export class Notebook extends Construct {
         directInternetAccess: 'Disabled',
       });
     }
-
-
-    // Output //////////////////////////
-    const notebookUrl = `https://console.aws.amazon.com/sagemaker/home?region=${this.props.region}#/notebook-instances/openNotebook/${notebookInstance.attrNotebookInstanceName}?view=classic`;
-
-    new CfnOutput(this, 'notebookUrl', {
-      value: notebookUrl,
-      description: 'Notebook URL',
-    });
+    this.notebookUrl = `https://console.aws.amazon.com/sagemaker/home?region=${this.props.region}#/notebook-instances/openNotebook/${notebookInstance.attrNotebookInstanceName}?view=classic`;
   }
 
 }

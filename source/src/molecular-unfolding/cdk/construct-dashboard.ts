@@ -16,7 +16,6 @@ limitations under the License.
 
 
 import {
-  aws_s3 as s3,
   aws_quicksight as quicksight,
   CfnOutput,
 } from 'aws-cdk-lib';
@@ -29,8 +28,6 @@ import {
 interface DashBoardProps {
   region: string;
   account: string;
-  bucket: s3.Bucket;
-  prefix: string;
   stackName: string;
   quicksightUser: string;
 }
@@ -230,7 +227,7 @@ export class Dashboard extends Construct {
 
     });
 
-    const qcBatchEvaluationAnalysis = new quicksight.CfnAnalysis(this, 'qcBatchEvaluation-Analysis', {
+    new quicksight.CfnAnalysis(this, 'qcBatchEvaluation-Analysis', {
       analysisId: `${this.props.stackName}-qcBatchEvaluation-Analysis`,
       name: `${this.props.stackName}-qcBatchEvaluation-Analysis`,
       awsAccountId: this.props.account,
@@ -263,11 +260,6 @@ export class Dashboard extends Construct {
     this.outputDashboardUrl = new CfnOutput(this, 'qcBatchEvaluationDashboardUrl', {
       value: `https://${this.props.region}.quicksight.aws.amazon.com/sn/dashboards/${qcBatchEvaluationDashboard.dashboardId}`,
       description: 'Quicksight Dashboard Url',
-    });
-
-    new CfnOutput(this, 'qcBatchEvaluationAnalysis', {
-      value: qcBatchEvaluationAnalysis.analysisId,
-      description: 'Quicksight Analysis Id',
     });
   }
 }

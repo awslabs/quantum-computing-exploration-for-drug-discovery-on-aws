@@ -16,55 +16,63 @@ limitations under the License.
 
 import {
   App,
+  Stack,
+  aws_s3 as s3,
 } from 'aws-cdk-lib';
 
-import { Template } from 'aws-cdk-lib/assertions';
+import {
+  Template,
+} from 'aws-cdk-lib/assertions';
 
 import {
-  MainStack,
-} from '../src/molecular-unfolding/cdk/stack-main';
+  VisualizationNestStack,
+} from '../src/molecular-unfolding/cdk/statck-visualization';
+
+
+function initializeNestStackTemplate() {
+  const app = new App();
+  const stack = new Stack(app, 'test');
+
+  const s3bucket = new s3.Bucket(stack, 'amazon-braket-test');
+  const prefix = 'test_s3_prefix';
+  const nestStack = new VisualizationNestStack(stack, 'dashboard', {
+    prefix,
+    bucket: s3bucket,
+    quickSightRoleName: 'test_qs_iam_role',
+    quicksightUser: 'adminUser',
+    stackName: 'nestStack',
+  });
+  return Template.fromStack(nestStack);
+}
 
 describe('Dashboard', () => {
   test('has 1 datasource', () => {
-    const app = new App();
-    const stack = new MainStack(app, 'test');
-    const template = Template.fromStack(stack);
+    const template = initializeNestStackTemplate();
     template.resourceCountIs('AWS::QuickSight::DataSource', 1);
   });
 
   test('has 1 dataset', () => {
-    const app = new App();
-    const stack = new MainStack(app, 'test');
-    const template = Template.fromStack(stack);
+    const template = initializeNestStackTemplate();
     template.resourceCountIs('AWS::QuickSight::DataSet', 1);
   });
 
   test('has 1 template', () => {
-    const app = new App();
-    const stack = new MainStack(app, 'test');
-    const template = Template.fromStack(stack);
+    const template = initializeNestStackTemplate();
     template.resourceCountIs('AWS::QuickSight::Template', 1);
   });
 
-
   test('has 1 dashboard', () => {
-    const app = new App();
-    const stack = new MainStack(app, 'test');
-    const template = Template.fromStack(stack);
+    const template = initializeNestStackTemplate();
     template.resourceCountIs('AWS::QuickSight::Dashboard', 1);
   });
 
   test('has 1 analysis', () => {
-    const app = new App();
-    const stack = new MainStack(app, 'test');
-    const template = Template.fromStack(stack);
+    const template = initializeNestStackTemplate();
     template.resourceCountIs('AWS::QuickSight::Analysis', 1);
   });
 
   test('dataset is configed correctly', () => {
-    const app = new App();
-    const stack = new MainStack(app, 'test');
-    const template = Template.fromStack(stack);
+    const template = initializeNestStackTemplate();
     template.hasResourceProperties('AWS::QuickSight::DataSet', {
       PhysicalTableMap: {
         ATHENATable: {
