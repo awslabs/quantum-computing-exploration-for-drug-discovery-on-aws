@@ -169,7 +169,7 @@ export class Dashboard extends Construct {
           customSql: {
             dataSourceArn: qcDataSource.attrArn,
             name: 'all',
-            sqlQuery: 'SELECT * FROM "AwsDataCatalog"."qc_db"."qceddmain_qc_batch_evaluation_metrics"',
+            sqlQuery: `SELECT * FROM "AwsDataCatalog"."qc_db"."${this.props.stackName}_qc_batch_evaluation_metrics"`,
             columns,
           },
         },
@@ -253,6 +253,7 @@ export class Dashboard extends Construct {
           }],
         },
       },
+
     });
 
     // Output //////////////////////////

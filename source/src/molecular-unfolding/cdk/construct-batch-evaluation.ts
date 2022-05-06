@@ -66,7 +66,8 @@ export interface BatchProps {
 }
 
 export class BatchEvaluation extends Construct {
-
+  stateMachineURLOutput: CfnOutput;
+  snsOutput?: CfnOutput;
   private props: BatchProps;
   private images: ECRImageUtil
   private roleUtil: RoleUtil
@@ -220,7 +221,7 @@ export class BatchEvaluation extends Construct {
     }));
 
     // Output //////////////////////////
-    new CfnOutput(this, 'stateMachineURL', {
+    this.stateMachineURLOutput = new CfnOutput(this, 'stateMachineURL', {
       value: `https://console.aws.amazon.com/states/home?region=${this.props.region}#/statemachines/view/${batchEvaluationStateMachine.stateMachineArn}`,
       description: 'State Machine URL',
     });
@@ -633,7 +634,7 @@ export class BatchEvaluation extends Construct {
       resultPath: '$.snsStep',
     });
 
-    new CfnOutput(this, 'SNS Topic Name', {
+    this.snsOutput = new CfnOutput(this, 'SNS Topic Name', {
       value: topic.topicName,
       description: 'SNS Topic Name',
     });

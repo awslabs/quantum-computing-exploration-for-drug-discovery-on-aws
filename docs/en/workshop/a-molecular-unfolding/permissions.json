@@ -1,6 +1,7 @@
 {
     "Version": "2012-10-17",
-    "Statement": [{
+    "Statement": [
+        {
             "Effect": "Allow",
             "Action": [
                 "iam:CreatePolicy",
@@ -24,6 +25,8 @@
             ],
             "Resource": [
                 "arn:aws:iam::*:policy/qc*",
+                "arn:aws:iam::*:policy/QC*",
+                "arn:aws:iam::*:role/qc*",
                 "arn:aws:iam::*:role/QC*",
                 "arn:aws:iam::*:role/service-role/aws-quicksight-service*"
             ]
@@ -53,7 +56,6 @@
                 "arn:aws:s3:::aws-athena-query-results-*"
             ]
         },
-
         {
             "Effect": "Allow",
             "Action": [
@@ -93,6 +95,7 @@
                 "arn:aws:s3:::braket*/*",
                 "arn:aws:s3:::amazon-braket*/*",
                 "arn:aws:s3:::aws-gcr-solutions*/*",
+                "arn:aws:s3:::solutions*/*",
                 "arn:aws:s3:::aws-athena-query-results-*"
             ]
         },
@@ -106,8 +109,7 @@
                 "ecr:DeleteRepository"
             ],
             "Resource": [
-                "arn:aws:ecr:*:*:repository/qc*",
-                "arn:aws:ecr:*:*:repository/quantum*"
+                "arn:aws:ecr:*:*:repository/qc*"
             ]
         },
         {
@@ -135,9 +137,10 @@
                 "sns:Subscribe",
                 "sns:ConfirmSubscription"
             ],
-            "Resource": ["arn:aws:sns:*:*:QC*"]
+            "Resource": [
+                "arn:aws:sns:*:*:QC*"
+            ]
         },
-
         {
             "Effect": "Allow",
             "Action": [
@@ -154,7 +157,6 @@
                 "arn:aws:cloudformation:*:*:stack/QC*"
             ]
         },
-
         {
             "Effect": "Allow",
             "Action": [
@@ -281,6 +283,5 @@
             ],
             "Resource": "*"
         }
-
     ]
 }

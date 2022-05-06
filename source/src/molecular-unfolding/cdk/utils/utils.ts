@@ -88,7 +88,7 @@ export class AddCfnNag implements IAspect {
             node.node.path.endsWith('/ParseBraketResultLambdaRole/DefaultPolicy/Resource') ||
             node.node.path.endsWith('/AggResultLambdaRole/DefaultPolicy/Resource') ||
             node.node.path.endsWith('/WaitForTokenLambdaRole/DefaultPolicy/Resource') ||
-            node.node.path.endsWith('/MolUnfNotebook/NotebookRole/DefaultPolicy/Resource') ||
+            node.node.path.endsWith('/Notebook/NotebookRole/DefaultPolicy/Resource') ||
             node.node.path.endsWith('/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/DefaultPolicy/Resource') ||
             node.node.path.endsWith('/CreateEventRuleFuncRole/DefaultPolicy/Resource')
     ) {
@@ -218,3 +218,14 @@ export class AddSSMPolicyToRole implements IAspect {
     }
   }
 }
+
+
+export class ChangePolicyName implements IAspect {
+  visit(node: IConstruct): void {
+    const region = Stack.of(node).region;
+    if (node instanceof iam.CfnPolicy && node.node.path.endsWith('QuickSightServiceRole/Policy/Resource')) {
+      node.policyName = node.policyName + '-' + region;
+    }
+  }
+}
+

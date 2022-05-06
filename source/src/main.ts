@@ -24,20 +24,13 @@ import {
 } from 'cdk-bootstrapless-synthesizer';
 
 import {
-  DashboardStack,
-} from './molecular-unfolding/cdk/stack-dashboard';
-import {
   MainStack,
 } from './molecular-unfolding/cdk/stack-main';
 
 
 const app = new App();
 
-new MainStack(app, 'QCEDDMain', {
-  synthesizer: newSynthesizer(),
-});
-
-new DashboardStack(app, 'QCEDDDashboard', {
+new MainStack(app, 'QCEDDStack', {
   synthesizer: newSynthesizer(),
 });
 

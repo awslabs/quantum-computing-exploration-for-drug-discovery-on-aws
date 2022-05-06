@@ -7,7 +7,7 @@
   },
   "scripts": {
     "test": "rm -fr lib && npm run test:compile && jest --passWithNoTests --all --updateSnapshot && eslint",
-    "build": "npx cdk synth QCEDDMain && npx cdk synth QCEDDDashboard",
+    "build": "npx cdk synth",
     "bump": "standard-version -i ../CHANGELOG.md",
     "test:watch": "jest --watch",
     "test:update": "jest --updateSnapshot",
@@ -16,11 +16,10 @@
     "eslint-fix": "eslint --ext .ts,.tsx --fix --no-error-on-unmatched-pattern src test",
     "eslint": "eslint --ext .ts,.tsx --no-error-on-unmatched-pattern src test",
     "cdk": "cdk ",
-    "diff": "cdk diff QCEDDMain",
-    "synth": "cdk synth QCEDDMain",
-    "deploy": "cdk deploy QCEDDMain", 
-    "destroy": "cdk destroy QCEDDMain",
-    "cfn-nag": "rm -rf /tmp/cfn > /dev/null 2>&1  && mkdir /tmp/cfn/ && cdk synth QCEDDMain --output /tmp/cfn/ && cfn_nag_scan --fail-on-warnings -b ../.cfn-nag-ignore-lists.yml --input-path  /tmp/cfn/QCEDDMain.template.json"
+    "diff": "cdk diff QCEDDStack",
+    "synth": "cdk synth QCEDDStack ",
+    "destroy": "cdk destroy QCEDDStack",
+    "cfn-nag": "rm -rf /tmp/cfn > /dev/null 2>&1  && mkdir /tmp/cfn/ && cdk synth QCEDDStack --output /tmp/cfn/ && cfn_nag_scan --fail-on-warnings -b ../.cfn-nag-ignore-lists.yml --input-path  /tmp/cfn/QCEDDStack.template.json"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.92",
