@@ -22,6 +22,8 @@ import {
   aws_s3 as s3,
   aws_iam as iam,
   CfnOutput,
+  CfnRule,
+  Fn
 } from 'aws-cdk-lib';
 import {
   Construct,
@@ -54,6 +56,15 @@ export class VisualizationNestStack extends NestedStack {
     const featureName = 'Visualization';
     this.templateOptions.description = MainStack.DESCRIPTION + ' ' + featureName;
 
+    new CfnRule(this, 'VisualizationParameterRule', {
+      assertions: [{
+        assert: Fn.conditionOr(
+          Fn.conditionEquals(props.quicksightUser, ''),
+          Fn.conditionEquals(props.quickSightRoleName, '')),
+        assertDescription: 'Parameter quicksightUser or quickSightRoleName is not set',
+      }],
+    });
+
     const quicksightRole = iam.Role.fromRoleArn(this, 'QuickSightServiceRole', `arn:aws:iam::${this.account}:role/${props.quickSightRoleName}`);
     props.bucket.grantRead(quicksightRole);
     Aspects.of(this).add(new ChangePolicyName());
@@ -65,6 +76,6 @@ export class VisualizationNestStack extends NestedStack {
       stackName: props.stackName,
       quicksightUser: props.quicksightUser,
     });
-    this.outputDashboardUrl= dashboard.outputDashboardUrl;
+    this.outputDashboardUrl = dashboard.outputDashboardUrl;
   }
 }
