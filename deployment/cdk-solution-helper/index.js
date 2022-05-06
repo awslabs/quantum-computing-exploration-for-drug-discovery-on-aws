@@ -126,7 +126,7 @@ fs.readdirSync(global_s3_assets).forEach(file => {
   nestedStacks.forEach(function(f) {
       const fn = template.Resources[f];
       const templateName = fn.Metadata['aws:asset:path'].slice(0, -(".json".length))
-      
+
       fn.Properties.TemplateURL = {
            'Fn::Join': [
               '',
@@ -136,7 +136,7 @@ fs.readdirSync(global_s3_assets).forEach(file => {
                       'Ref' : 'AWS::URLSuffix'
                   },
                   '/',
-                  `%%SOLUTION_NAME%%/%%VERSION%%/${templateName}}`
+                  `%%SOLUTION_NAME%%/%%VERSION%%/${templateName}`
               ]
            ]
       };
