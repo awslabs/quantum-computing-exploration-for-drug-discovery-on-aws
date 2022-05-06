@@ -23,7 +23,7 @@ import {
   aws_iam as iam,
   CfnOutput,
   CfnRule,
-  Fn
+  Fn,
 } from 'aws-cdk-lib';
 import {
   Construct,
