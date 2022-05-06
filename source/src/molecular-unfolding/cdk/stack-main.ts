@@ -14,18 +14,23 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import * as path from 'path';
+
 import {
   aws_s3 as s3,
-  aws_iam as iam,
-  Aspects,
   StackProps,
-  CfnCondition,
   Fn,
   RemovalPolicy,
   CfnOutput,
+  Aspects,
+  CfnCondition,
   CfnRule,
-  CfnParameter,
+  CfnStack,
 } from 'aws-cdk-lib';
+
+import {
+  CfnInclude,
+} from 'aws-cdk-lib/cloudformation-include';
 
 import {
   Construct,
@@ -35,40 +40,37 @@ import {
   SolutionStack,
 } from '../../stack';
 
-
-import {
-  BatchEvaluation,
-} from './construct-batch-evaluation';
-
-import {
-  Dashboard,
-} from './construct-dashboard';
-
-import {
-  EventListener,
-} from './construct-listener';
 import {
   Notebook,
 } from './construct-notebook';
-
-import create_custom_resources from './utils/custom-resource';
+import {
+  BatchEvaluationNestStack,
+} from './statck-batch-evaluation';
+import {
+  VisualizationNestStack,
+} from './statck-visualization';
 import {
   AddCfnNag,
-  AddCondition,
-  ChangePolicyName,
 } from './utils/utils';
+
 import setup_vpc_and_sg from './utils/vpc';
 
 export class MainStack extends SolutionStack {
   static SOLUTION_ID = 'SO8027'
   static SOLUTION_VERSION = process.env.SOLUTION_VERSION || 'v1.0.0'
+  static DESCRIPTION = `(${MainStack.SOLUTION_ID}) Quantum Computing Exploration for Drug Discovery on AWS ${MainStack.SOLUTION_VERSION}`;
 
   // constructor
   constructor(scope: Construct, id: string, props: StackProps = {}) {
-    const DESCRIPTION = `(${MainStack.SOLUTION_ID}) Quantum Computing Exploration for Drug Discovery on AWS ${MainStack.SOLUTION_VERSION}`;
+
     super(scope, id, props);
-    this.setDescription(DESCRIPTION);
+    this.setDescription(MainStack.DESCRIPTION);
     const stackName = this.stackName.replace(/[^a-zA-Z0-9_]+/, '').toLocaleLowerCase();
+
+
+    const cfnTemplate = new CfnInclude(this, 'CfnTemplate', {
+      templateFile: path.join(__dirname, 'parameter-group.template'),
+    });
 
     const supportRegions = ['us-west-2', 'us-east-1', 'eu-west-2'];
     new CfnRule(this, 'SupportedRegionsRule', {
@@ -80,29 +82,11 @@ export class MainStack extends SolutionStack {
 
     const prefix = 'molecular-unfolding';
 
-    const crossEventRegionCondition = new CfnCondition(this, 'CrossEventRegionCondition', {
-      expression: Fn.conditionNot(
-        Fn.conditionEquals(this.region, 'us-west-2'),
-      ),
-    });
+    const quickSightUserParam = cfnTemplate.getParameter('QuickSightUser');
+    const quickSightRoleNameParam = cfnTemplate.getParameter('QuickSightRoleName');
+    const conditionDeployVisualization = cfnTemplate.getCondition('ConditionDeployVisualization');
+    const conditionDeployBatchEvaluation = cfnTemplate.getCondition('ConditionDeployBatchEvaluation');
 
-    const quickSightUserParam = new CfnParameter(this, 'QuickSightUser', {
-      type: 'String',
-      description: 'QuickSight User, find user name from https://us-east-1.quicksight.aws.amazon.com/sn/admin',
-      minLength: 1,
-      allowedPattern: '[\u0020-\u00FF]+',
-      constraintDescription: 'Any printable ASCII character ranging from the space character (\u0020) through the end of the ASCII character range',
-    });
-
-    const quickSightRoleName = new CfnParameter(this, 'QuickSightRoleName', {
-      type: 'String',
-      description: 'QuickSight IAM role name',
-      minLength: 1,
-      maxLength: 64,
-      allowedPattern: '[a-zA-Z0-9+=,.@-]+',
-      constraintDescription: 'A string of characters consisting of upper and lowercase alphanumeric characters with no spaces. Length Constraints: Minimum length of 1. Maximum length of 64.',
-    });
-    const quicksightRole = iam.Role.fromRoleArn(this, 'QuickSightServiceRole', `arn:aws:iam::${this.account}:role/${quickSightRoleName.valueAsString}`);
 
     const logS3bucket = new s3.Bucket(this, 'AccessLogS3Bucket', {
       removalPolicy: RemovalPolicy.DESTROY,
@@ -121,16 +105,12 @@ export class MainStack extends SolutionStack {
       serverAccessLogsBucket: logS3bucket,
       serverAccessLogsPrefix: `accesslogs/${bucketName}/`,
     });
+
     s3bucket.node.addDependency(logS3bucket);
-    s3bucket.grantRead(quicksightRole);
 
-    Aspects.of(this).add(new ChangePolicyName());
-
-    let usePreBuildImage = stackName.endsWith('dev');
-
-    new CfnOutput(this, 'bucketName', {
+    new CfnOutput(this, 'BucketName', {
       value: s3bucket.bucketName,
-      description: 'S3 bucket name',
+      description: 'S3 Bucket Name',
     });
 
     const {
@@ -139,61 +119,62 @@ export class MainStack extends SolutionStack {
       lambdaSg,
     } = setup_vpc_and_sg(this);
 
-    create_custom_resources(this, {
-      vpc,
-      sg: lambdaSg,
-      crossEventRegionCondition,
-    });
-    Aspects.of(this).add(new AddCondition(crossEventRegionCondition));
+    {
+      // Notebook //////////////////////////
+      const notebook = new Notebook(this, 'Notebook', {
+        account: this.account,
+        region: this.region,
+        bucket: s3bucket,
+        prefix,
+        notebookSg: batchSg,
+        vpc,
+        stackName,
+      });
 
-    // Notebook //////////////////////////
-    new Notebook(this, 'MolUnfNotebook', {
-      account: this.account,
-      region: this.region,
-      bucket: s3bucket,
-      prefix,
-      notebookSg: batchSg,
-      vpc,
-      stackName,
-    });
+      new CfnOutput(this, 'NotebookUrl', {
+        value: notebook.notebookUrl,
+        description: 'Notebook URL',
+      });
+    }
 
-    // Dashboard //////////////////////////
-    const dashboard = new Dashboard(this, 'MolUnfDashboard', {
-      account: this.account,
-      region: this.region,
-      bucket: s3bucket,
-      prefix,
-      stackName,
-      quicksightUser: quickSightUserParam.valueAsString,
-    });
+    {
+      // BatchEvaluation //////////////////////////
+      const batchEvaluation = new BatchEvaluationNestStack(this, 'BatchEvaluation', {
+        account: this.account,
+        region: this.region,
+        bucket: s3bucket,
+        prefix,
+        vpc,
+        batchSg,
+        lambdaSg,
+        stackName,
+      });
+      (batchEvaluation.nestedStackResource as CfnStack).cfnOptions.condition = conditionDeployBatchEvaluation;
+      this.addOutput('SNSTopic', batchEvaluation.snsOutput, conditionDeployBatchEvaluation);
+      this.addOutput('StateMachineURL', batchEvaluation.stateMachineURLOutput, conditionDeployBatchEvaluation);
+    }
 
-    // BatchEvaluation StepFuncs //////////////////////////
-    new BatchEvaluation(this, 'MolUnfBatchEvaluation', {
-      account: this.account,
-      region: this.region,
-      bucket: s3bucket,
-      prefix,
-      usePreBuildImage,
-      dashboardUrl: dashboard.outputDashboardUrl.value,
-      vpc,
-      batchSg,
-      lambdaSg,
-      stackName,
-    });
-
-
-    // Event Listener Lambda //////////////////////////
-    new EventListener(this, 'BraketTaskEventHandler', {
-      account: this.account,
-      region: this.region,
-      bucket: s3bucket,
-      prefix,
-      usePreBuildImage,
-      vpc,
-      lambdaSg,
-      stackName,
-    });
+    {
+      // Visualization //////////////////////////
+      const dashboard = new VisualizationNestStack(this, 'QuicksightDashboard', {
+        prefix,
+        stackName,
+        bucket: s3bucket,
+        quickSightRoleName: quickSightRoleNameParam.valueAsString,
+        quicksightUser: quickSightUserParam.valueAsString,
+      });
+      (dashboard.nestedStackResource as CfnStack).cfnOptions.condition = conditionDeployVisualization;
+      this.addOutput('DashboardUrl', dashboard.outputDashboardUrl, conditionDeployVisualization);
+    }
     Aspects.of(this).add(new AddCfnNag());
   }
 
+  private addOutput(name: string, output ? : CfnOutput, condition ? : CfnCondition) {
+    if (output && condition) {
+      new CfnOutput(this, name, {
+        value: output.value,
+        description: output.description,
+      }).condition = condition;
+    }
+  }
 }

@@ -1,6 +1,6 @@
 {
-  "name": "gcr-quantum-ready-for-drug-discovery",
-  "description": "Quantum Ready Solution For Drug Discovery",
+  "name": "quantum-computing-exploration-for-drug-discovery-on-aws",
+  "description": "Quantum Computing Exploration for Drug Discovery on AWS",
   "repository": {
     "type": "git",
     "url": "https://github.com/awslabs/quantum-computing-exploration-for-drug-discovery-on-aws.git"
@@ -16,10 +16,10 @@
     "eslint-fix": "eslint --ext .ts,.tsx --fix --no-error-on-unmatched-pattern src test",
     "eslint": "eslint --ext .ts,.tsx --no-error-on-unmatched-pattern src test",
     "cdk": "cdk ",
-    "diff": "cdk diff QCStack",
-    "synth": "cdk synth QCStack ",
-    "destroy": "cdk destroy QCStack",
-    "cfn-nag": "rm -rf /tmp/cfn > /dev/null 2>&1  && mkdir /tmp/cfn/ && cdk synth QCStack --output /tmp/cfn/ && cfn_nag_scan --fail-on-warnings -b ../.cfn-nag-ignore-lists.yml --input-path  /tmp/cfn/QCStack.template.json"
+    "diff": "cdk diff QCEDDStack",
+    "synth": "cdk synth QCEDDStack ",
+    "destroy": "cdk destroy QCEDDStack",
+    "cfn-nag": "rm -rf /tmp/cfn > /dev/null 2>&1  && mkdir /tmp/cfn/ && cdk synth QCEDDStack --output /tmp/cfn/ && cfn_nag_scan --fail-on-warnings -b ../.cfn-nag-ignore-lists.yml --input-path  /tmp/cfn/QCEDDStack.template.json"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.92",
