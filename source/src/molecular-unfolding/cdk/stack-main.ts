@@ -57,8 +57,9 @@ import setup_vpc_and_sg from './utils/vpc';
 
 export class MainStack extends SolutionStack {
   static SOLUTION_ID = 'SO8027'
+  static SOLUTION_NAME = 'Quantum Computing Exploration for Drug Discovery on AWS'
   static SOLUTION_VERSION = process.env.SOLUTION_VERSION || 'v1.0.0'
-  static DESCRIPTION = `(${MainStack.SOLUTION_ID}) Quantum Computing Exploration for Drug Discovery on AWS ${MainStack.SOLUTION_VERSION}`;
+  static DESCRIPTION = `(${MainStack.SOLUTION_ID}) ${MainStack.SOLUTION_NAME} ${MainStack.SOLUTION_VERSION}`;
 
   // constructor
   constructor(scope: Construct, id: string, props: StackProps = {}) {

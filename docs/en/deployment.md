@@ -19,7 +19,7 @@ If you skip optional parts, you can deploy them any time you like via **[Update 
 
 3. Choose **Enable Amazon Braket**.
 
-### Config QuickSight
+### Visualization Configuration
 
 !!! notice "Note"
     Skip this step if you do not want to deploy the **Visualization** part. If you skip it at this time, you can do it any time you like.
