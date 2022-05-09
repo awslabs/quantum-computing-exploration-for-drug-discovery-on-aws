@@ -14,8 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import * as path from 'path';
-
 import {
   aws_s3 as s3,
   StackProps,
@@ -26,11 +24,8 @@ import {
   CfnCondition,
   CfnRule,
   CfnStack,
+  CfnParameter,
 } from 'aws-cdk-lib';
-
-import {
-  CfnInclude,
-} from 'aws-cdk-lib/cloudformation-include';
 
 import {
   Construct,
@@ -66,10 +61,84 @@ export class MainStack extends SolutionStack {
     this.setDescription(MainStack.DESCRIPTION);
     const stackName = this.stackName.replace(/[^a-zA-Z0-9_]+/, '').toLocaleLowerCase();
 
-
-    const cfnTemplate = new CfnInclude(this, 'CfnTemplate', {
-      templateFile: path.join(__dirname, 'parameter-group.template'),
+    const deployNotebook = new CfnParameter(this, 'DeployNotebook', {
+      description: 'Notebook. Choose yes to activate.',
+      default: 'yes',
+      type: 'String',
+      allowedValues: ['yes', 'no'],
     });
+    const deployBatchEvaluation = new CfnParameter(this, 'DeployBatchEvaluation', {
+      description: 'Batch Evaluation. Choose yes to activate.',
+      default: 'yes',
+      type: 'String',
+      allowedValues: ['yes', 'no'],
+    });
+    const deployVisualization = new CfnParameter(this, 'DeployVisualization', {
+      description: 'Visualization. Choose yes to activate. If choose yes, please perform the prerequisite setup of your QuickSight, refer to https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/en/deployment/#prerequisites ',
+      default: 'no',
+      type: 'String',
+      allowedValues: ['yes', 'no'],
+    });
+
+    const quickSightUserParam = new CfnParameter(this, 'QuickSightUser');
+    const quickSightRoleNameParam = new CfnParameter(this, 'QuickSightRoleName');
+
+    const conditionDeployNotebook = new CfnCondition(this, 'ConditionDeployNotebook', {
+      expression: Fn.conditionEquals(
+        deployNotebook.valueAsString, 'yes',
+      ),
+    });
+    const conditionDeployBatchEvaluation = new CfnCondition(this, 'ConditionDeployBatchEvaluation', {
+      expression: Fn.conditionEquals(
+        deployBatchEvaluation.valueAsString, 'yes',
+      ),
+    });
+    const conditionDeployVisualization = new CfnCondition(this, 'ConditionDeployVisualization', {
+      expression: Fn.conditionEquals(
+        deployVisualization.valueAsString, 'yes',
+      ),
+    });
+
+    const scenario = 'Molecular Unfolding';
+
+    this.templateOptions.metadata = {
+      'AWS::CloudFormation::Interface': {
+        ParameterGroups: [
+          {
+            Label: { default: `${scenario} - Notebook` },
+            Parameters: [deployNotebook.logicalId],
+          },
+
+          {
+            Label: { default: `${scenario} - Batch Evaluation` },
+            Parameters: [deployBatchEvaluation.logicalId],
+          },
+
+          {
+            Label: { default: `${scenario} - Visualization` },
+            Parameters: [
+              deployVisualization.logicalId,
+              quickSightUserParam.logicalId,
+              quickSightRoleNameParam.logicalId,
+            ],
+          },
+
+        ],
+        ParameterLabels: {
+          [deployNotebook.logicalId]: {
+            default: 'Deploy Notebook',
+          },
+
+          [deployBatchEvaluation.logicalId]: {
+            default: 'Deploy Batch Evaluation',
+          },
+
+          [deployVisualization.logicalId]: {
+            default: 'Deploy Notebook',
+          },
+        },
+      },
+    };
 
     const supportRegions = ['us-west-2', 'us-east-1', 'eu-west-2'];
     new CfnRule(this, 'SupportedRegionsRule', {
@@ -79,14 +148,7 @@ export class MainStack extends SolutionStack {
       }],
     });
 
-    const prefix = 'molecular-unfolding';
-
-    const quickSightUserParam = cfnTemplate.getParameter('QuickSightUser');
-    const quickSightRoleNameParam = cfnTemplate.getParameter('QuickSightRoleName');
-    const conditionDeployNotebook = cfnTemplate.getCondition('ConditionDeployNotebook');
-    const conditionDeployVisualization = cfnTemplate.getCondition('ConditionDeployVisualization');
-    const conditionDeployBatchEvaluation = cfnTemplate.getCondition('ConditionDeployBatchEvaluation');
-
+    const prefix = scenario.split(' ').join('-').toLowerCase();
 
     const logS3bucket = new s3.Bucket(this, 'AccessLogS3Bucket', {
       removalPolicy: RemovalPolicy.DESTROY,
