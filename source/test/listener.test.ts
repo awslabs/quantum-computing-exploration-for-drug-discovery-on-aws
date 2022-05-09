@@ -41,8 +41,6 @@ describe('Listener', () => {
     const s3bucket = new s3.Bucket(stack, 'amazon-braket-test');
 
     const nestStack = new BatchEvaluationNestStack(stack, 'BatchEvaluation', {
-      account: '123456789012',
-      region: 'us-east-1',
       bucket: s3bucket,
       prefix: 'test_s3_prefix',
       vpc,
