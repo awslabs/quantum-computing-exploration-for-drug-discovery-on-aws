@@ -42,11 +42,11 @@ import {
 
 import {
   BatchEvaluationNestStack,
-} from './stack-batch-evaluation';
-import { NotebookNestStack } from './stack-notebook';
+} from './statck-batch-evaluation';
+import { NotebookNestStack } from './statck-notebook';
 import {
   VisualizationNestStack,
-} from './stack-visualization';
+} from './statck-visualization';
 import {
   AddCfnNag,
 } from './utils/utils';
