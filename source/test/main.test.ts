@@ -91,11 +91,11 @@ test('has output - BucketName', () => {
   template.hasOutput('BucketName', {});
 });
 
-test('has output - NotebookUrl', () => {
+test('has output - NotebookURL', () => {
   const app = new App();
   const stack = new MainStack(app, 'test');
   const template = Template.fromStack(stack);
-  template.hasOutput('NotebookUrl', {});
+  template.hasOutput('NotebookURL', {});
 });
 
 test('has output - SNSTopic', () => {
