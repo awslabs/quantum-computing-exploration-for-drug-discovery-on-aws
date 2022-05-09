@@ -80,8 +80,17 @@ export class MainStack extends SolutionStack {
       allowedValues: ['yes', 'no'],
     });
 
-    const quickSightUserParam = new CfnParameter(this, 'QuickSightUser');
-    const quickSightRoleNameParam = new CfnParameter(this, 'QuickSightRoleName');
+    const quickSightUserParam = new CfnParameter(this, 'QuickSightUser', {
+      type: 'String',
+      description: 'QuickSight User, find user name from https://us-east-1.quicksight.aws.amazon.com/sn/admin',
+      default: '',
+    });
+
+    const quickSightRoleNameParam = new CfnParameter(this, 'QuickSightRoleName', {
+      type: 'String',
+      description: 'QuickSight IAM role name',
+      default: '',
+    });
 
     const conditionDeployNotebook = new CfnCondition(this, 'ConditionDeployNotebook', {
       expression: Fn.conditionEquals(
@@ -135,6 +144,14 @@ export class MainStack extends SolutionStack {
 
           [deployVisualization.logicalId]: {
             default: 'Deploy Notebook',
+          },
+
+          [quickSightUserParam.logicalId]: {
+            default: 'QuickSight User',
+          },
+
+          [quickSightRoleNameParam.logicalId]: {
+            default: 'QuickSight Role Name',
           },
         },
       },
