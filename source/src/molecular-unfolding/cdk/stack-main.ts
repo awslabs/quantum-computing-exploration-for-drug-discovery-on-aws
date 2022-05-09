@@ -208,7 +208,7 @@ export class MainStack extends SolutionStack {
         stackName,
       });
       (notebook.nestedStackResource as CfnStack).cfnOptions.condition = conditionDeployNotebook;
-      this.addOutput('NotebookUrl', notebook.notebookUrlOutput, conditionDeployNotebook);
+      this.addOutput('NotebookURL', notebook.notebookUrlOutput, conditionDeployNotebook);
       notebook.node.addDependency(s3bucket);
       notebook.node.addDependency(vpc);
     }
@@ -239,7 +239,7 @@ export class MainStack extends SolutionStack {
         quicksightUser: quickSightUserParam.valueAsString,
       });
       (dashboard.nestedStackResource as CfnStack).cfnOptions.condition = conditionDeployVisualization;
-      this.addOutput('DashboardUrl', dashboard.outputDashboardUrl, conditionDeployVisualization);
+      this.addOutput('DashboardURL', dashboard.outputDashboardUrl, conditionDeployVisualization);
       dashboard.node.addDependency(s3bucket);
     }
     Aspects.of(this).add(new AddCfnNag());
