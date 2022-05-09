@@ -35,6 +35,7 @@
         cd source
         npm install
         npx cdk deploy QCEDDStack  \
+         --parameters DeployNotebook=yes \
          --parameters DeployBatchEvaluation=yes \
          --parameters DeployVisualization=yes \
          --parameters QuickSightUser=<your QuickSight user> \

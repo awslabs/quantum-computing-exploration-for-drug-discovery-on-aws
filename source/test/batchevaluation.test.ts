@@ -45,8 +45,6 @@ function initializeNestStackTemplate() {
   const s3bucket = new s3.Bucket(stack, 'amazon-braket-test');
   const prefix = 'test_s3_prefix';
   const nestStack = new BatchEvaluationNestStack(stack, 'BatchEvaluation', {
-    account: '123456789012',
-    region: 'us-east-1',
     prefix,
     bucket: s3bucket,
     vpc,
