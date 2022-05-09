@@ -131,6 +131,7 @@ export class MainStack extends SolutionStack {
       (notebook.nestedStackResource as CfnStack).cfnOptions.condition = conditionDeployNotebook;
       this.addOutput('NotebookUrl', notebook.notebookUrlOutput, conditionDeployNotebook);
       notebook.node.addDependency(s3bucket);
+      notebook.node.addDependency(vpc);
     }
 
     {
