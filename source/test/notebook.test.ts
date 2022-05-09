@@ -27,7 +27,7 @@ import {
 
 import {
   NotebookNestStack,
-} from '../src/molecular-unfolding/cdk/statck-notebook';
+} from '../src/molecular-unfolding/cdk/stack-notebook';
 
 import setup_vpc_and_sg from '../src/molecular-unfolding/cdk/utils/vpc';
 

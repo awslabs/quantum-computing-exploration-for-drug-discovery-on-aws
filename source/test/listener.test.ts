@@ -24,7 +24,7 @@ import { Template, Match } from 'aws-cdk-lib/assertions';
 
 import {
   BatchEvaluationNestStack,
-} from '../src/molecular-unfolding/cdk/statck-batch-evaluation';
+} from '../src/molecular-unfolding/cdk/stack-batch-evaluation';
 
 import setup_vpc_and_sg from '../src/molecular-unfolding/cdk/utils/vpc';
 
