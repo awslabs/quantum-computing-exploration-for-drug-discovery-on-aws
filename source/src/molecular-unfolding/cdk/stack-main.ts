@@ -132,6 +132,8 @@ export class MainStack extends SolutionStack {
         stackName,
       });
 
+      notebook.node.addDependency(s3bucket)
+
       new CfnOutput(this, 'NotebookUrl', {
         value: notebook.notebookUrl,
         description: 'Notebook URL',
@@ -153,6 +155,7 @@ export class MainStack extends SolutionStack {
       (batchEvaluation.nestedStackResource as CfnStack).cfnOptions.condition = conditionDeployBatchEvaluation;
       this.addOutput('SNSTopic', batchEvaluation.snsOutput, conditionDeployBatchEvaluation);
       this.addOutput('StateMachineURL', batchEvaluation.stateMachineURLOutput, conditionDeployBatchEvaluation);
+      batchEvaluation.node.addDependency(s3bucket)
     }
 
     {
@@ -166,6 +169,7 @@ export class MainStack extends SolutionStack {
       });
       (dashboard.nestedStackResource as CfnStack).cfnOptions.condition = conditionDeployVisualization;
       this.addOutput('DashboardUrl', dashboard.outputDashboardUrl, conditionDeployVisualization);
+      dashboard.node.addDependency(s3bucket)
     }
     Aspects.of(this).add(new AddCfnNag());
   }
