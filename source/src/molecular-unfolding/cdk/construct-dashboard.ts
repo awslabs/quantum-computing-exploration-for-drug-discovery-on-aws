@@ -259,7 +259,7 @@ export class Dashboard extends Construct {
     // Output //////////////////////////
     this.outputDashboardUrl = new CfnOutput(this, 'qcBatchEvaluationDashboardUrl', {
       value: `https://${this.props.region}.quicksight.aws.amazon.com/sn/dashboards/${qcBatchEvaluationDashboard.dashboardId}`,
-      description: 'Quicksight Dashboard Url',
+      description: 'Quicksight Dashboard URL',
     });
   }
 }
