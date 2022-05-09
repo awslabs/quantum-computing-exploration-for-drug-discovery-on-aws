@@ -54,7 +54,7 @@ export class VisualizationNestStack extends NestedStack {
 
     super(scope, id, props);
     const featureName = 'Visualization';
-    this.templateOptions.description = MainStack.DESCRIPTION + ' ' + featureName;
+    this.templateOptions.description = `(${MainStack.SOLUTION_ID}-visualization) ${MainStack.SOLUTION_NAME} ${MainStack.SOLUTION_VERSION} ${featureName}`;
 
     new CfnRule(this, 'VisualizationParameterRule', {
       assertions: [{

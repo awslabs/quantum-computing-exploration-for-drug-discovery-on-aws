@@ -64,7 +64,7 @@ export class BatchEvaluationNestStack extends NestedStack {
 
     super(scope, id, props);
     const featureName = 'Batch Evaluation';
-    this.templateOptions.description = MainStack.DESCRIPTION + ' ' + featureName;
+    this.templateOptions.description = `(${MainStack.SOLUTION_ID}-batch-eval) ${MainStack.SOLUTION_NAME} ${MainStack.SOLUTION_VERSION} ${featureName}`;
 
     const crossEventRegionCondition = new CfnCondition(this, 'CrossEventRegionCondition', {
       expression: Fn.conditionNot(

@@ -57,8 +57,9 @@ import setup_vpc_and_sg from './utils/vpc';
 
 export class MainStack extends SolutionStack {
   static SOLUTION_ID = 'SO8027'
+  static SOLUTION_NAME = 'Quantum Computing Exploration for Drug Discovery on AWS'
   static SOLUTION_VERSION = process.env.SOLUTION_VERSION || 'v1.0.0'
-  static DESCRIPTION = `(${MainStack.SOLUTION_ID}) Quantum Computing Exploration for Drug Discovery on AWS ${MainStack.SOLUTION_VERSION}`;
+  static DESCRIPTION = `(${MainStack.SOLUTION_ID}) ${MainStack.SOLUTION_NAME} ${MainStack.SOLUTION_VERSION}`;
 
   // constructor
   constructor(scope: Construct, id: string, props: StackProps = {}) {
@@ -131,6 +132,8 @@ export class MainStack extends SolutionStack {
         stackName,
       });
 
+      notebook.node.addDependency(s3bucket)
+
       new CfnOutput(this, 'NotebookUrl', {
         value: notebook.notebookUrl,
         description: 'Notebook URL',
@@ -152,6 +155,7 @@ export class MainStack extends SolutionStack {
       (batchEvaluation.nestedStackResource as CfnStack).cfnOptions.condition = conditionDeployBatchEvaluation;
       this.addOutput('SNSTopic', batchEvaluation.snsOutput, conditionDeployBatchEvaluation);
       this.addOutput('StateMachineURL', batchEvaluation.stateMachineURLOutput, conditionDeployBatchEvaluation);
+      batchEvaluation.node.addDependency(s3bucket)
     }
 
     {
@@ -165,6 +169,7 @@ export class MainStack extends SolutionStack {
       });
       (dashboard.nestedStackResource as CfnStack).cfnOptions.condition = conditionDeployVisualization;
       this.addOutput('DashboardUrl', dashboard.outputDashboardUrl, conditionDeployVisualization);
+      dashboard.node.addDependency(s3bucket)
     }
     Aspects.of(this).add(new AddCfnNag());
   }
