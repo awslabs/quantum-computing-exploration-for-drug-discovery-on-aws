@@ -211,7 +211,8 @@ If you skip optional parts, you can deploy them any time you like via **[Update 
 
     Parameter | Default | Description 
     ---|---|---
-    Deploy Batch Evaluation | no | Choose yes to deploy **Batch Evaluation** part, no to skip |
+    Deploy Notebook | yes | Choose yes to deploy **Notebook** part, no to skip |
+    Deploy Batch Evaluation | yes | Choose yes to deploy **Batch Evaluation** part, no to skip |
     Deploy Visualization | no | Choose yes to deploy **Visualization** part, no to skip |
     QuickSight User |  | QuickSight Username, which can be obtained from [Manage users](https://us-east-1.quicksight.aws.amazon.com/sn/admin?#users), requires input if choose yes to Deploy Visualization.                 |
     QuickSight Role Name | | QuickSight Service Role name, which can be obtained from [Security & permissions](https://us-east-1.quicksight.aws.amazon.com/sn/admin?#aws), requires input if choose yes to Deploy Visualization.

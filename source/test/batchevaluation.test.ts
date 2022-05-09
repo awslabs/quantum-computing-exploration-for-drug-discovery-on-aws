@@ -28,7 +28,7 @@ import {
 
 import {
   BatchEvaluationNestStack,
-} from '../src/molecular-unfolding/cdk/statck-batch-evaluation';
+} from '../src/molecular-unfolding/cdk/stack-batch-evaluation';
 
 import setup_vpc_and_sg from '../src/molecular-unfolding/cdk/utils/vpc';
 
@@ -45,8 +45,6 @@ function initializeNestStackTemplate() {
   const s3bucket = new s3.Bucket(stack, 'amazon-braket-test');
   const prefix = 'test_s3_prefix';
   const nestStack = new BatchEvaluationNestStack(stack, 'BatchEvaluation', {
-    account: '123456789012',
-    region: 'us-east-1',
     prefix,
     bucket: s3bucket,
     vpc,

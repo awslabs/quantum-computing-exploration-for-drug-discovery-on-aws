@@ -46,8 +46,6 @@ import {
 } from './utils/utils';
 
 export interface BatchEvaluationNestStackProps extends NestedStackProps {
-  readonly region: string;
-  readonly account: string;
   readonly bucket: s3.Bucket;
   readonly prefix: string;
   readonly vpc: ec2.Vpc;

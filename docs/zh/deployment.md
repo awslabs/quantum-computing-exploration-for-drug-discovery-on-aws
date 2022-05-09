@@ -216,7 +216,8 @@
 
     参数 | 默认值 | 描述 
     ---|---|---
-    Deploy Batch Evaluation | no | 选择yes部署**批量评估**部分, 选择no跳过 |
+    Deploy Notebook | yes | 选择yes部署**笔记本实验**部分, 选择no跳过 |
+    Deploy Batch Evaluation | yes | 选择yes部署**批量评估**部分, 选择no跳过 |
     Deploy Visualization | no |选择yes部署**可视化**部分, 选择no跳过 |
     QuickSight User | 无 | 输入QuickSight用户名，从页面[Manage users](https://us-east-1.quicksight.aws.amazon.com/sn/admin?#users)获取， 如果您选择了部署**可视化**部分，此参数是必须的。
     QuickSight Role Name | 无 | 输入QuickSight服务角色名字，从页面[Security & permissions](https://us-east-1.quicksight.aws.amazon.com/sn/admin?#aws)获取， 如果您选择了部署**可视化**部分，此参数是必须的。
