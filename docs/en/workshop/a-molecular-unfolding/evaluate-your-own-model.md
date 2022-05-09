@@ -34,6 +34,7 @@ This solution is an open-source project under Apache License Version 2.0. You ca
         cd source
         npm install
         npx cdk deploy QCEDDStack  \
+         --parameters DeployNotebook=yes \
          --parameters DeployBatchEvaluation=yes \
          --parameters DeployVisualization=yes \
          --parameters QuickSightUser=<your QuickSight user> \

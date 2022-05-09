@@ -41,14 +41,12 @@ import {
 } from '../../stack';
 
 import {
-  Notebook,
-} from './construct-notebook';
-import {
   BatchEvaluationNestStack,
-} from './statck-batch-evaluation';
+} from './stack-batch-evaluation';
+import { NotebookNestStack } from './stack-notebook';
 import {
   VisualizationNestStack,
-} from './statck-visualization';
+} from './stack-visualization';
 import {
   AddCfnNag,
 } from './utils/utils';
@@ -85,6 +83,7 @@ export class MainStack extends SolutionStack {
 
     const quickSightUserParam = cfnTemplate.getParameter('QuickSightUser');
     const quickSightRoleNameParam = cfnTemplate.getParameter('QuickSightRoleName');
+    const conditionDeployNotebook = cfnTemplate.getCondition('ConditionDeployNotebook');
     const conditionDeployVisualization = cfnTemplate.getCondition('ConditionDeployVisualization');
     const conditionDeployBatchEvaluation = cfnTemplate.getCondition('ConditionDeployBatchEvaluation');
 
@@ -122,29 +121,21 @@ export class MainStack extends SolutionStack {
 
     {
       // Notebook //////////////////////////
-      const notebook = new Notebook(this, 'Notebook', {
-        account: this.account,
-        region: this.region,
+      const notebook = new NotebookNestStack(this, 'Notebook', {
         bucket: s3bucket,
         prefix,
-        notebookSg: batchSg,
         vpc,
+        batchSg,
         stackName,
       });
-
-      notebook.node.addDependency(s3bucket)
-
-      new CfnOutput(this, 'NotebookUrl', {
-        value: notebook.notebookUrl,
-        description: 'Notebook URL',
-      });
+      (notebook.nestedStackResource as CfnStack).cfnOptions.condition = conditionDeployNotebook;
+      this.addOutput('NotebookUrl', notebook.notebookUrlOutput, conditionDeployNotebook);
+      notebook.node.addDependency(s3bucket);
     }
 
     {
       // BatchEvaluation //////////////////////////
       const batchEvaluation = new BatchEvaluationNestStack(this, 'BatchEvaluation', {
-        account: this.account,
-        region: this.region,
         bucket: s3bucket,
         prefix,
         vpc,
@@ -155,7 +146,7 @@ export class MainStack extends SolutionStack {
       (batchEvaluation.nestedStackResource as CfnStack).cfnOptions.condition = conditionDeployBatchEvaluation;
       this.addOutput('SNSTopic', batchEvaluation.snsOutput, conditionDeployBatchEvaluation);
       this.addOutput('StateMachineURL', batchEvaluation.stateMachineURLOutput, conditionDeployBatchEvaluation);
-      batchEvaluation.node.addDependency(s3bucket)
+      batchEvaluation.node.addDependency(s3bucket);
     }
 
     {
@@ -169,7 +160,7 @@ export class MainStack extends SolutionStack {
       });
       (dashboard.nestedStackResource as CfnStack).cfnOptions.condition = conditionDeployVisualization;
       this.addOutput('DashboardUrl', dashboard.outputDashboardUrl, conditionDeployVisualization);
-      dashboard.node.addDependency(s3bucket)
+      dashboard.node.addDependency(s3bucket);
     }
     Aspects.of(this).add(new AddCfnNag());
   }

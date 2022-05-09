@@ -3,12 +3,17 @@ Metadata:
   AWS::CloudFormation::Interface:
     ParameterGroups:
       - Label:
-          default: Batch Evaluation
+          default: Molecular Unfolding - Notebook
+        Parameters:
+          - DeployNotebook
+
+      - Label:
+          default: Molecular Unfolding - Batch Evaluation
         Parameters:
           - DeployBatchEvaluation
 
       - Label:
-          default: Visualization
+          default: Molecular Unfolding - Visualization
         Parameters:
           - DeployVisualization
           - QuickSightUser
@@ -16,6 +21,9 @@ Metadata:
 
 
     ParameterLabels:
+      DeployNotebook:
+        default: Deploy Notebook
+
       DeployBatchEvaluation:
         default: Deploy Batch Evaluation
 
@@ -30,10 +38,18 @@ Metadata:
 
 
 Parameters:
+
+  DeployNotebook:
+    Description: Notebook. Choose yes to activate.
+    Default: "yes"
+    Type: String
+    AllowedValues:
+      - "yes"
+      - "no"
   
   DeployBatchEvaluation:
     Description: Batch Evaluation. Choose yes to activate.
-    Default: "no"
+    Default: "yes"
     Type: String
     AllowedValues:
       - "yes"
@@ -59,6 +75,10 @@ Parameters:
 
 
 Conditions:
+  ConditionDeployNotebook: !Equals 
+      - !Ref DeployNotebook
+      - "yes"
+
   ConditionDeployBatchEvaluation: !Equals 
       - !Ref DeployBatchEvaluation
       - "yes"
