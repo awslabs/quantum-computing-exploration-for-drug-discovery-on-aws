@@ -39,7 +39,6 @@ function initializeNestStackTemplate() {
   const {
     vpc,
     batchSg,
-    lambdaSg
   } = setup_vpc_and_sg(stack);
 
   const s3bucket = new s3.Bucket(stack, 'amazon-braket-test');
