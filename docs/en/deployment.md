@@ -7,6 +7,8 @@ Before you launch the solution, review the architecture, supported regions, and 
 
     Before deploying this solution, we recommend you [create a billing alarm to monitor your estimated AWS charges](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/monitor_estimated_charges_with_cloudwatch.html). 
 
+The user or IAM role to perform the deployment must have at least [permissions](./workshop/a-molecular-unfolding/permissions.json). If you use the permissions defined in this file to deploy this solution, your CloudFormation stack name should start with `QCEDD`, e.g `QCEDDStack` .
+
 
 ## Prerequisites
 ### Enable Amazon Braket service

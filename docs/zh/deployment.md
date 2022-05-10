@@ -7,6 +7,10 @@
 
     建议您在部署此解决方案之前[创建账单告警](https://docs.aws.amazon.com/zh_cn/AmazonCloudWatch/latest/monitoring/monitor_estimated_charges_with_cloudwatch.html)以监控AWS估算费用。
 
+
+部署本方案，您需要具有最小的[IAM权限](./workshop/a-molecular-unfolding/permissions.json)。 如果您使用定义在此文件中的权限部署本方案， 您的CloudFormation堆栈的名字应该以 `QCEDD`开头， 例如： `QCEDDStack`。
+
+
 ## 准备工作
 ### 启动Amazon Braket服务
 

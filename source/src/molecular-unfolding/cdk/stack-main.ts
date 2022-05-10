@@ -143,7 +143,7 @@ export class MainStack extends SolutionStack {
           },
 
           [deployVisualization.logicalId]: {
-            default: 'Deploy Notebook',
+            default: 'Deploy Visualization',
           },
 
           [quickSightUserParam.logicalId]: {
