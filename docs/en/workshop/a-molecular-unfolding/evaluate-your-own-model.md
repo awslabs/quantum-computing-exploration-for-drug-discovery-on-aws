@@ -24,18 +24,21 @@ This solution is an open-source project under Apache License Version 2.0. You ca
 
 ## Deploy stack to your AWS account from CDK
 
-1. Check CloudFormation in your AWS account, and make sure you do not have a stack named `QCStack` in your deployment region.
+1. Check CloudFormation in your AWS account, and make sure you do not have a stack named `QCEDDStack` in your deployment region.
 
-2. Check your S3 bucket, and make sure no bucket is named `amazon-braket-qcstack-<your account>-<deployment Region>`.
+2. Check your S3 bucket, and make sure no bucket is named `amazon-braket-qceddstack-<your account>-<deployment Region>`.
 
 3. Deploy changes to your AWS account from CDK.
 
 
         cd source
         npm install
-        npx cdk deploy QCStack \
-            --parameters QuickSightUser=<your QuickSight user> \
-            --parameters QuickSightRoleName=<your QuickSight service role name>
+        npx cdk deploy QCEDDStack  \
+         --parameters DeployNotebook=yes \
+         --parameters DeployBatchEvaluation=yes \
+         --parameters DeployVisualization=yes \
+         --parameters QuickSightUser=<your QuickSight user> \
+         --parameters QuickSightRoleName=<your QuickSight service role name>
              
  
 4. Wait for the deployment to complete. Deployment will take about 10 minutes. 

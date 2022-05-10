@@ -98,11 +98,7 @@ Definition:
         arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6
         arn:aws:braket:::device/qpu/d-wave/Advantage_system4
       
-<<<<<<< HEAD
   * **ccResources**: vCPU (first element) and memory (second element) in GiB, for example, 4 vCPU and 8 GiB memory is: `[4, 8]`
-=======
-  * **ccResources**: vCPU (first element) and memory (second element) in GiB and , for example, 4 vCPU and 8GiB memory is: `[4, 8]`
->>>>>>> main
 
 
 Example input with default mol2 file:

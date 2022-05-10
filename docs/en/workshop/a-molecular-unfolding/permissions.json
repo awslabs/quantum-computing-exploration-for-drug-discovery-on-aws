@@ -24,10 +24,10 @@
                 "iam:ListInstanceProfilesForRole"
             ],
             "Resource": [
-                "arn:aws:iam::*:policy/qc*",
-                "arn:aws:iam::*:policy/QC*",
-                "arn:aws:iam::*:role/qc*",
-                "arn:aws:iam::*:role/QC*",
+                "arn:aws:iam::*:policy/qcedd*",
+                "arn:aws:iam::*:policy/QCEDD*",
+                "arn:aws:iam::*:role/qcedd*",
+                "arn:aws:iam::*:role/QCEDD*",
                 "arn:aws:iam::*:role/service-role/aws-quicksight-service*"
             ]
         },
@@ -50,7 +50,7 @@
                 "s3:PutBucketPublicAccessBlock"
             ],
             "Resource": [
-                "arn:aws:s3:::qc*",
+                "arn:aws:s3:::qcedd*",
                 "arn:aws:s3:::braket*",
                 "arn:aws:s3:::amazon-braket*",
                 "arn:aws:s3:::aws-athena-query-results-*"
@@ -91,7 +91,7 @@
                 "s3:DeleteObject"
             ],
             "Resource": [
-                "arn:aws:s3:::qc*/*",
+                "arn:aws:s3:::qcedd*/*",
                 "arn:aws:s3:::braket*/*",
                 "arn:aws:s3:::amazon-braket*/*",
                 "arn:aws:s3:::aws-gcr-solutions*/*",
@@ -123,8 +123,8 @@
                 "sagemaker:CreateNotebookInstance*"
             ],
             "Resource": [
-                "arn:aws:sagemaker:*:*:notebook-instance/molunfnotebook*",
-                "arn:aws:sagemaker:*:*:notebook-instance-lifecycle-config/molunfnotebook*"
+                "arn:aws:sagemaker:*:*:notebook-instance/notebook*",
+                "arn:aws:sagemaker:*:*:notebook-instance-lifecycle-config/notebook*"
             ]
         },
         {
@@ -138,7 +138,7 @@
                 "sns:ConfirmSubscription"
             ],
             "Resource": [
-                "arn:aws:sns:*:*:QC*"
+                "arn:aws:sns:*:*:QCEDD*"
             ]
         },
         {
@@ -154,7 +154,7 @@
                 "cloudformation:CreateUploadBucket"
             ],
             "Resource": [
-                "arn:aws:cloudformation:*:*:stack/QC*"
+                "arn:aws:cloudformation:*:*:stack/QCEDD*"
             ]
         },
         {
