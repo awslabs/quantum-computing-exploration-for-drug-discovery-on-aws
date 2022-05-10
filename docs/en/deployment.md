@@ -1,7 +1,5 @@
 Before you launch the solution, review the architecture, supported regions, and other considerations discussed in this guide. Follow the step-by-step instructions in this section to configure and deploy the solution into your account.
 
-Deployment of **Notebook** part is necessary, **Batch Evaluation** and **Visualization** are optional.
-If you skip optional parts, you can deploy them any time you like via **[Update AWS CloudFormation template](#step-3-optional-update-aws-cloudformation-template)**.
 
 **Time to deploy**: Approximately 10 minutes(all parts)
 
