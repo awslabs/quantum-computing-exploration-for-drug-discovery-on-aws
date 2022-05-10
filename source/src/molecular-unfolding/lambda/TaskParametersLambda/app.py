@@ -144,9 +144,9 @@ def validate_modelParams(input_dict: dict, errors: list):
         if len(list_vals)==0:
             errors.append(
                     f"invalid value {p}, value for {p} is empty")
-        if p == 'D' and not (list_vals == [8] or list_vals == [4]):
+        if p == 'D' and len(list_vals) != 1 :
             errors.append(
-                f"invalid value for {p}, current only support '[ 8 ]' or '[ 4 ]'")
+                f"invalid value for {p}, the array length should be one")
         if p == 'A' and list_vals != [300]:
             errors.append(
                 f"invalid value for {p}, current only support '[ 300 ]'")

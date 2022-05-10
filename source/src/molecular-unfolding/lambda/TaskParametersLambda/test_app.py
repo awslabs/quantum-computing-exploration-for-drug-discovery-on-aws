@@ -229,7 +229,7 @@ def test_handler_CHECK_INPUT_modelParams_M_Error_empty(monkeypatch):
     
 
 @mock_s3
-def test_handler_CHECK_INPUT_modelParams_D_err(monkeypatch):
+def test_handler_CHECK_INPUT_modelParams_D16(monkeypatch):
     boto3.setup_default_session()
     from . import app
     monkeypatch.setenv('AWS_REGION', 'us-east-1')
@@ -243,10 +243,62 @@ def test_handler_CHECK_INPUT_modelParams_D_err(monkeypatch):
         'execution_id': 'arn:aws:states:us-west-2:123456789000:execution:MolUnfBatchEvaluationBatchEvaluationStateMachine759181D6-smNpiWdkgrOI:test_execution_id',
         'user_input': {
             "modelParams": {
-                "D": [7]
+                "D": [16]
             },
         }
     }
+
+    app.handler(event, None)
+    assert True
+  
+
+@mock_s3
+def test_handler_CHECK_INPUT_modelParams_D_empty_error(monkeypatch):
+    boto3.setup_default_session()
+    from . import app
+    monkeypatch.setenv('AWS_REGION', 'us-east-1')
+    s3 = boto3.client('s3', region_name='us-east-1')
+    s3.create_bucket(Bucket='test_s3_bucket')
+
+    event = {
+        'param_type': 'CHECK_INPUT',
+        's3_bucket': 'test_s3_bucket',
+        's3_prefix': 'test_s3_prefix',
+        'execution_id': 'arn:aws:states:us-west-2:123456789000:execution:MolUnfBatchEvaluationBatchEvaluationStateMachine759181D6-smNpiWdkgrOI:test_execution_id',
+        'user_input': {
+            "modelParams": {
+                "D": []
+            },
+        }
+    }
+
+    with pytest.raises(Exception) as excinfo:
+        app.handler(event, None)
+
+    assert 'validate error' in str(excinfo.value)
+
+
+
+@mock_s3
+def test_handler_CHECK_INPUT_modelParams_D_4_8_error(monkeypatch):
+    boto3.setup_default_session()
+    from . import app
+    monkeypatch.setenv('AWS_REGION', 'us-east-1')
+    s3 = boto3.client('s3', region_name='us-east-1')
+    s3.create_bucket(Bucket='test_s3_bucket')
+
+    event = {
+        'param_type': 'CHECK_INPUT',
+        's3_bucket': 'test_s3_bucket',
+        's3_prefix': 'test_s3_prefix',
+        'execution_id': 'arn:aws:states:us-west-2:123456789000:execution:MolUnfBatchEvaluationBatchEvaluationStateMachine759181D6-smNpiWdkgrOI:test_execution_id',
+        'user_input': {
+            "modelParams": {
+                "D": [4, 8]
+            },
+        }
+    }
+
     with pytest.raises(Exception) as excinfo:
         app.handler(event, None)
 
