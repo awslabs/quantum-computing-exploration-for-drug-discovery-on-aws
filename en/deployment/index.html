@@ -366,6 +366,14 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#visualization-configuration" class="md-nav__link">
+    Visualization Configuration
+  </a>
+  
+    <nav class="md-nav" aria-label="Visualization Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#create-iam-role-for-quicksight" class="md-nav__link">
     Create IAM Role for QuickSight
   </a>
@@ -397,6 +405,11 @@
     </nav>
   
 </li>
+        
+      </ul>
+    </nav>
+  
+</li>
       
         <li class="md-nav__item">
   <a href="#step-1-launch-the-aws-cloudformation-template-into-your-aws-account" class="md-nav__link">
@@ -408,6 +421,13 @@
         <li class="md-nav__item">
   <a href="#step-2-optional-subscribe-to-sns-notification" class="md-nav__link">
     Step 2: (Optional) Subscribe to SNS notification
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-3-optional-update-aws-cloudformation-template" class="md-nav__link">
+    Step 3: (Optional) Update AWS CloudFormation template
   </a>
   
 </li>
@@ -794,6 +814,14 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#visualization-configuration" class="md-nav__link">
+    Visualization Configuration
+  </a>
+  
+    <nav class="md-nav" aria-label="Visualization Configuration">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#create-iam-role-for-quicksight" class="md-nav__link">
     Create IAM Role for QuickSight
   </a>
@@ -825,6 +853,11 @@
     </nav>
   
 </li>
+        
+      </ul>
+    </nav>
+  
+</li>
       
         <li class="md-nav__item">
   <a href="#step-1-launch-the-aws-cloudformation-template-into-your-aws-account" class="md-nav__link">
@@ -836,6 +869,13 @@
         <li class="md-nav__item">
   <a href="#step-2-optional-subscribe-to-sns-notification" class="md-nav__link">
     Step 2: (Optional) Subscribe to SNS notification
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#step-3-optional-update-aws-cloudformation-template" class="md-nav__link">
+    Step 3: (Optional) Update AWS CloudFormation template
   </a>
   
 </li>
@@ -860,11 +900,12 @@
   <h1>Automated Deployment</h1>
 
 <p>Before you launch the solution, review the architecture, supported regions, and other considerations discussed in this guide. Follow the step-by-step instructions in this section to configure and deploy the solution into your account.</p>
-<p><strong>Time to deploy</strong>: Approximately 10 minutes</p>
+<p><strong>Time to deploy</strong>: Approximately 10 minutes(all parts)</p>
 <div class="admonition notice">
 <p class="admonition-title">Note</p>
 <p>Before deploying this solution, we recommend you <a href="https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/monitor_estimated_charges_with_cloudwatch.html">create a billing alarm to monitor your estimated AWS charges</a>. </p>
 </div>
+<p>The user or IAM role to perform the deployment must have at least <a href="../workshop/a-molecular-unfolding/permissions.json">permissions</a>. If you use the permissions defined in this file to deploy this solution, your CloudFormation stack name should start with <code>QCEDD</code>, e.g <code>QCEDDStack</code> .</p>
 <h2 id="prerequisites">Prerequisites</h2>
 <h3 id="enable-amazon-braket-service">Enable Amazon Braket service</h3>
 <ol>
@@ -878,7 +919,12 @@
 <p>Choose <strong>Enable Amazon Braket</strong>.</p>
 </li>
 </ol>
-<h3 id="create-iam-role-for-quicksight">Create IAM Role for QuickSight</h3>
+<h3 id="visualization-configuration">Visualization Configuration</h3>
+<div class="admonition notice">
+<p class="admonition-title">Note</p>
+<p>Skip this step if you do not want to deploy the <strong>Visualization</strong> part. If you skip it at this time, you can do it any time you like.</p>
+</div>
+<h4 id="create-iam-role-for-quicksight">Create IAM Role for QuickSight</h4>
 <ol>
 <li>
 <p>Navigate to <a href="https://console.aws.amazon.com/iamv2/home?#/policies">IAM console</a>.</p>
@@ -1037,7 +1083,7 @@
 <p>Record the name of this role.</p>
 </li>
 </ol>
-<h3 id="sign-up-for-quicksight">Sign up for QuickSight</h3>
+<h4 id="sign-up-for-quicksight">Sign up for QuickSight</h4>
 <div class="admonition notice">
 <p class="admonition-title">Note</p>
 <p>Skip this step if your AWS Account already signed up for QuickSight.</p>
@@ -1060,7 +1106,7 @@
 </ul>
 </li>
 </ol>
-<h3 id="assign-the-created-iam-role-to-quicksight">Assign the Created IAM Role to QuickSight</h3>
+<h4 id="assign-the-created-iam-role-to-quicksight">Assign the Created IAM Role to QuickSight</h4>
 <ol>
 <li>Sign in to Amazon QuickSight console.</li>
 <li>Use the Region selector to select the <strong>US East (N.Virginia)</strong> Region.</li>
@@ -1069,7 +1115,7 @@
 <li>In the <strong>QuickSight access to AWS services</strong> area, choose <strong>Manage</strong>.</li>
 <li>Choose <strong>Use an existing role</strong>, and select the role created in previous step. As an example, the deployment uses<code>qcedd-quicksight-service-role</code>.</li>
 </ol>
-<h3 id="obtain-quicksight-username">Obtain QuickSight Username</h3>
+<h4 id="obtain-quicksight-username">Obtain QuickSight Username</h4>
 <ol>
 <li>
 <p>Sign in to the <a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin">Amazon QuickSight console</a> in the <strong>US East (N.Virginia)</strong> Region.</p>
@@ -1081,13 +1127,13 @@
 <h2 id="step-1-launch-the-aws-cloudformation-template-into-your-aws-account">Step 1: Launch the AWS CloudFormation template into your AWS account</h2>
 <ol>
 <li>
-<p>Sign in to the <a href="https://console.aws.amazon.com/cloudformation/home?">AWS management console</a>, and select the <a href="https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/create/template?stackName=QCEDDStack&amp;templateURL=https://solutions-test-reference.s3.amazonaws.com/quantum-ready-solution-for-drug-discovery/v1.0.0/QCStack.template">Launch solution</a> button to launch the AWS CloudFormation template. Alternatively, you can download the template as a starting point for your own implementation.</p>
+<p>Sign in to the <a href="https://console.aws.amazon.com/cloudformation/home?">AWS management console</a>, and select the <a href="https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/create/template?stackName=QCEDDStack&amp;templateURL=https://solutions-reference.s3.amazonaws.com/quantum-computing-exploration-for-drug-discovery-on-aws/v1.0.0/QCEDDStack.template">Launch solution</a> button to launch the AWS CloudFormation template. Alternatively, you can download the template as a starting point for your own implementation.</p>
 </li>
 <li>
 <p>The template launches in the US West (Oregon) by default. To launch this solution in a different AWS Region, use the Region selector in the console navigation bar.</p>
 </li>
 <li>
-<p>On the <strong>Create stack</strong> page, verify that Amazon S3 URL is filled with this <a href="https://solutions-test-reference.s3.amazonaws.com/quantum-ready-solution-for-drug-discovery/v1.0.0/QCStack.template">template URL</a> automatically and choose <strong>Next</strong>.</p>
+<p>On the <strong>Create stack</strong> page, verify that Amazon S3 URL is filled with this <a href="https://solutions-reference.s3.amazonaws.com/quantum-computing-exploration-for-drug-discovery-on-aws/v1.0.0/QCEDDStack.template">template URL</a> automatically and choose <strong>Next</strong>.</p>
 </li>
 <li>
 <p>On the Specify stack details page, assign a name to your solution stack. For information about naming character limitations, refer to <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-limits.html">IAM and STS Limits</a> in the <em>AWS Identity and Access Management User Guide</em>.</p>
@@ -1104,14 +1150,29 @@
 </thead>
 <tbody>
 <tr>
-<td>QuickSightRoleName</td>
-<td>&lt;Requires input></td>
-<td>QuickSight Service Role name, which can be obtained from <a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin?#aws">Security &amp; permissions</a>.</td>
+<td>Deploy Notebook</td>
+<td>yes</td>
+<td>Choose yes to deploy <strong>Notebook</strong> part, no to skip</td>
 </tr>
 <tr>
-<td>QuickSightUser</td>
-<td>&lt;Requires input></td>
-<td>QuickSight Username, which can be obtained from <a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin?#users">Manage users</a>.</td>
+<td>Deploy Batch Evaluation</td>
+<td>yes</td>
+<td>Choose yes to deploy <strong>Batch Evaluation</strong> part, no to skip</td>
+</tr>
+<tr>
+<td>Deploy Visualization</td>
+<td>no</td>
+<td>Choose yes to deploy <strong>Visualization</strong> part, no to skip</td>
+</tr>
+<tr>
+<td>QuickSight User</td>
+<td></td>
+<td>QuickSight Username, which can be obtained from <a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin?#users">Manage users</a>, requires input if choose yes to Deploy Visualization.</td>
+</tr>
+<tr>
+<td>QuickSight Role Name</td>
+<td></td>
+<td>QuickSight Service Role name, which can be obtained from <a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin?#aws">Security &amp; permissions</a>, requires input if choose yes to Deploy Visualization.</td>
 </tr>
 </tbody>
 </table>
@@ -1163,6 +1224,36 @@
 </li>
 <li>
 <p>Check your inbox for the email, and select the <strong>Confirm Subscription</strong> link to confirm the subscription.</p>
+</li>
+</ol>
+<h2 id="step-3-optional-update-aws-cloudformation-template">Step 3: (Optional) Update AWS CloudFormation template</h2>
+<ol>
+<li>
+<p>Sign in to the <a href="https://console.aws.amazon.com/cloudformation/">AWS CloudFormation console</a>.</p>
+</li>
+<li>
+<p>Select CloudFormation stack of this solution, if you follow the <strong>Step 1: Launch the AWS CloudFormation template into your AWS account</strong>, the stack name is <strong>QCEDDStack</strong>.</p>
+</li>
+<li>
+<p>Choose <strong>Update</strong> button.</p>
+</li>
+<li>
+<p>Choose <strong>Use current template</strong>, Click <strong>Next</strong>.</p>
+</li>
+<li>
+<p>Select or fill required parameters.</p>
+</li>
+<li>
+<p>Choose <strong>Next</strong>.</p>
+</li>
+<li>
+<p>On the <strong>Configure stack options</strong> page, choose <strong>Next</strong>.</p>
+</li>
+<li>
+<p>On the <strong>Review</strong> page, review and confirm the settings. Check the box acknowledging that the template will create AWS Identity and Access Management (IAM) resources.</p>
+</li>
+<li>
+<p>Choose <strong>Update stack</strong> to update the stack.</p>
 </li>
 </ol>
 

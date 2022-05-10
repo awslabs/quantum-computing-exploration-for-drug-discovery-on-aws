@@ -822,18 +822,21 @@
 <h2 id="deploy-stack-to-your-aws-account-from-cdk">Deploy stack to your AWS account from CDK</h2>
 <ol>
 <li>
-<p>Check CloudFormation in your AWS account, and make sure you do not have a stack named <code>QCStack</code> in your deployment region.</p>
+<p>Check CloudFormation in your AWS account, and make sure you do not have a stack named <code>QCEDDStack</code> in your deployment region.</p>
 </li>
 <li>
-<p>Check your S3 bucket, and make sure no bucket is named <code>amazon-braket-qcstack-&lt;your account&gt;-&lt;deployment Region&gt;</code>.</p>
+<p>Check your S3 bucket, and make sure no bucket is named <code>amazon-braket-qceddstack-&lt;your account&gt;-&lt;deployment Region&gt;</code>.</p>
 </li>
 <li>
 <p>Deploy changes to your AWS account from CDK.</p>
 <div class="codehilite"><pre><span></span><code>cd source
 npm install
-npx cdk deploy QCStack \
-    --parameters QuickSightUser=&lt;your QuickSight user&gt; \
-    --parameters QuickSightRoleName=&lt;your QuickSight service role name&gt;
+npx cdk deploy QCEDDStack  \
+ --parameters DeployNotebook=yes \
+ --parameters DeployBatchEvaluation=yes \
+ --parameters DeployVisualization=yes \
+ --parameters QuickSightUser=&lt;your QuickSight user&gt; \
+ --parameters QuickSightRoleName=&lt;your QuickSight service role name&gt;
 </code></pre></div>
 
 </li>

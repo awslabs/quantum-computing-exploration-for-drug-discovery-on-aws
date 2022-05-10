@@ -830,18 +830,21 @@
 <h3 id="cdk-aws">将堆栈从 CDK 部署到您的 AWS 账户</h3>
 <ol>
 <li>
-<p>检查您的AWS账户中的CloudFormation，确保您的部署区域中没有名为<code>QCStack</code>的堆栈。</p>
+<p>检查您的AWS账户中的CloudFormation，确保您的部署区域中没有名为<code>QCEDDStack</code>的堆栈。</p>
 </li>
 <li>
-<p>检查您的 S3 存储桶，确保没有名为 <code>amazon-braket-qcstack-&lt;your aws account&gt;-&lt;deployment region&gt;</code> 的存储桶。</p>
+<p>检查您的 S3 存储桶，确保没有名为 <code>amazon-braket-qceddstack-&lt;your aws account&gt;-&lt;deployment region&gt;</code> 的存储桶。</p>
 </li>
 <li>
 <p>利用CDK将更改部署到您的AWS账户。</p>
 <div class="codehilite"><pre><span></span><code>cd source
 npm install
-npx cdk deploy QCStack \
-    --parameters QuickSightUser=&lt;your QuickSight user&gt; \
-    --parameters QuickSightRoleName=&lt;your QuickSight service role name&gt;
+npx cdk deploy QCEDDStack  \
+ --parameters DeployNotebook=yes \
+ --parameters DeployBatchEvaluation=yes \
+ --parameters DeployVisualization=yes \
+ --parameters QuickSightUser=&lt;your QuickSight user&gt; \
+ --parameters QuickSightRoleName=&lt;your QuickSight service role name&gt;
 </code></pre></div>
 
 </li>

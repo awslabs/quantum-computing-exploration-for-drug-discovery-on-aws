@@ -366,6 +366,14 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    可视化设置
+  </a>
+  
+    <nav class="md-nav" aria-label="可视化设置">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#quicksight-iam" class="md-nav__link">
     创建QuickSight IAM角色
   </a>
@@ -397,6 +405,11 @@
     </nav>
   
 </li>
+        
+      </ul>
+    </nav>
+  
+</li>
       
         <li class="md-nav__item">
   <a href="#1cloudformation" class="md-nav__link">
@@ -408,6 +421,13 @@
         <li class="md-nav__item">
   <a href="#2sns" class="md-nav__link">
     步骤2：（可选）订阅SNS通知
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3cloudformation" class="md-nav__link">
+    步骤3：（可选）更新CloudFormation堆栈
   </a>
   
 </li>
@@ -779,6 +799,14 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    可视化设置
+  </a>
+  
+    <nav class="md-nav" aria-label="可视化设置">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
   <a href="#quicksight-iam" class="md-nav__link">
     创建QuickSight IAM角色
   </a>
@@ -810,6 +838,11 @@
     </nav>
   
 </li>
+        
+      </ul>
+    </nav>
+  
+</li>
       
         <li class="md-nav__item">
   <a href="#1cloudformation" class="md-nav__link">
@@ -821,6 +854,13 @@
         <li class="md-nav__item">
   <a href="#2sns" class="md-nav__link">
     步骤2：（可选）订阅SNS通知
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3cloudformation" class="md-nav__link">
+    步骤3：（可选）更新CloudFormation堆栈
   </a>
   
 </li>
@@ -845,11 +885,12 @@
   <h1>部署解决方案</h1>
 
 <p>在部署解决方案之前，建议您先查看本指南中有关架构图和区域支持等信息。然后按照下面的说明配置解决方案并将其部署到您的帐户中。</p>
-<p><strong>部署时间</strong>：约10分钟</p>
+<p><strong>部署时间</strong>：约10分钟(包含所有可选部分)</p>
 <div class="admonition note">
 <p class="admonition-title">说明</p>
 <p>建议您在部署此解决方案之前<a href="https://docs.aws.amazon.com/zh_cn/AmazonCloudWatch/latest/monitoring/monitor_estimated_charges_with_cloudwatch.html">创建账单告警</a>以监控AWS估算费用。</p>
 </div>
+<p>部署本方案，您需要具有最小的<a href="../workshop/a-molecular-unfolding/permissions.json">IAM权限</a>。 如果您使用定义在此文件中的权限部署本方案， 您的CloudFormation堆栈的名字应该以 <code>QCEDD</code>开头， 例如： <code>QCEDDStack</code>。</p>
 <h2 id="_1">准备工作</h2>
 <h3 id="amazon-braket">启动Amazon Braket服务</h3>
 <ol>
@@ -863,7 +904,12 @@
 <p>选择<strong>Enable Amazon Braket</strong>。</p>
 </li>
 </ol>
-<h3 id="quicksight-iam">创建QuickSight IAM角色</h3>
+<h3 id="_2">可视化设置</h3>
+<div class="admonition note">
+<p class="admonition-title">说明</p>
+<p>如果您不想部署可视化部分，请跳过此步骤。即使您此时跳过此步骤，您也可以在任何时候执行此步骤。</p>
+</div>
+<h4 id="quicksight-iam">创建QuickSight IAM角色</h4>
 <ol>
 <li>
 <p>导航至<a href="https://console.aws.amazon.com/iamv2/home?#/policies">IAM Policies</a>。</p>
@@ -873,101 +919,103 @@
 </li>
 <li>
 <p>在创建策略页面，点击<strong>JSON</strong>，填写QuickSight策略如下，这是本方案中QuickSight角色所需的最小权限。</p>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;Version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2012-10-17&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">    </span><span class="s2">&quot;Statement&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w"></span>
+<span class="w">            </span><span class="s2">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Allow&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="s2">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:BatchGetQueryExecution&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:CancelQueryExecution&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:GetCatalogs&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:GetExecutionEngine&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:GetExecutionEngines&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:GetNamespace&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:GetNamespaces&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:GetQueryExecution&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:GetQueryExecutions&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:GetQueryResults&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:GetQueryResultsStream&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:GetTable&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:GetTables&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:ListQueryExecutions&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:RunQuery&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:StartQueryExecution&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:StopQueryExecution&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:ListWorkGroups&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:ListEngineVersions&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:GetWorkGroup&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:GetDataCatalog&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:GetDatabase&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:GetTableMetadata&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:ListDataCatalogs&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:ListDatabases&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;athena:ListTableMetadata&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="p">],</span><span class="w"></span>
+<span class="w">            </span><span class="s2">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;*&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="p">]</span><span class="w"></span>
+<span class="w">        </span><span class="p">},</span><span class="w"></span>
+<span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="s2">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Allow&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="s2">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;glue:CreateDatabase&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;glue:DeleteDatabase&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;glue:GetDatabase&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;glue:GetDatabases&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;glue:UpdateDatabase&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;glue:CreateTable&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;glue:DeleteTable&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;glue:BatchDeleteTable&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;glue:UpdateTable&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;glue:GetTable&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;glue:GetTables&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;glue:BatchCreatePartition&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;glue:CreatePartition&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;glue:DeletePartition&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;glue:BatchDeletePartition&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;glue:UpdatePartition&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;glue:GetPartition&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;glue:GetPartitions&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;glue:BatchGetPartition&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="p">],</span><span class="w"></span>
+<span class="w">            </span><span class="s2">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;*&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="p">]</span><span class="w"></span>
+<span class="w">        </span><span class="p">},</span><span class="w"></span>
+<span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="s2">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Allow&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="s2">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;s3:GetBucketLocation&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;s3:GetObject&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;s3:ListBucket&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;s3:ListBucketMultipartUploads&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;s3:ListMultipartUploadParts&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;s3:AbortMultipartUpload&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;s3:CreateBucket&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;s3:PutObject&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;s3:PutBucketPublicAccessBlock&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="p">],</span><span class="w"></span>
+<span class="w">            </span><span class="s2">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;arn:aws:s3:::aws-athena-query-results-*&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="p">]</span><span class="w"></span>
+<span class="w">        </span><span class="p">},</span><span class="w"></span>
+<span class="w">        </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="s2">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Allow&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">            </span><span class="s2">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;lakeformation:GetDataAccess&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;iam:List*&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="p">],</span><span class="w"></span>
+<span class="w">            </span><span class="s2">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">                </span><span class="s2">&quot;*&quot;</span><span class="w"></span>
+<span class="w">            </span><span class="p">]</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">]</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
+
 <div class="admonition note">
 <p class="admonition-title">说明</p>
 <p>请忽略输入框下面的Errors提示。</p>
-<p>{
-    "Version": "2012-10-17",
-    "Statement": [{
-            "Effect": "Allow",
-            "Action": [
-                "athena:BatchGetQueryExecution",
-                "athena:CancelQueryExecution",
-                "athena:GetCatalogs",
-                "athena:GetExecutionEngine",
-                "athena:GetExecutionEngines",
-                "athena:GetNamespace",
-                "athena:GetNamespaces",
-                "athena:GetQueryExecution",
-                "athena:GetQueryExecutions",
-                "athena:GetQueryResults",
-                "athena:GetQueryResultsStream",
-                "athena:GetTable",
-                "athena:GetTables",
-                "athena:ListQueryExecutions",
-                "athena:RunQuery",
-                "athena:StartQueryExecution",
-                "athena:StopQueryExecution",
-                "athena:ListWorkGroups",
-                "athena:ListEngineVersions",
-                "athena:GetWorkGroup",
-                "athena:GetDataCatalog",
-                "athena:GetDatabase",
-                "athena:GetTableMetadata",
-                "athena:ListDataCatalogs",
-                "athena:ListDatabases",
-                "athena:ListTableMetadata"
-            ],
-            "Resource": [
-                "<em>"
-            ]
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "glue:CreateDatabase",
-                "glue:DeleteDatabase",
-                "glue:GetDatabase",
-                "glue:GetDatabases",
-                "glue:UpdateDatabase",
-                "glue:CreateTable",
-                "glue:DeleteTable",
-                "glue:BatchDeleteTable",
-                "glue:UpdateTable",
-                "glue:GetTable",
-                "glue:GetTables",
-                "glue:BatchCreatePartition",
-                "glue:CreatePartition",
-                "glue:DeletePartition",
-                "glue:BatchDeletePartition",
-                "glue:UpdatePartition",
-                "glue:GetPartition",
-                "glue:GetPartitions",
-                "glue:BatchGetPartition"
-            ],
-            "Resource": [
-                "</em>"
-            ]
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "s3:GetBucketLocation",
-                "s3:GetObject",
-                "s3:ListBucket",
-                "s3:ListBucketMultipartUploads",
-                "s3:ListMultipartUploadParts",
-                "s3:AbortMultipartUpload",
-                "s3:CreateBucket",
-                "s3:PutObject",
-                "s3:PutBucketPublicAccessBlock"
-            ],
-            "Resource": [
-                "arn:aws:s3:::aws-athena-query-results-<em>"
-            ]
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "lakeformation:GetDataAccess",
-                "iam:List</em>"
-            ],
-            "Resource": [
-                "*"
-            ]
-        }
-    ]
-}</p>
 </div>
 </li>
 <li>
@@ -1024,7 +1072,7 @@
 <p>记录所创建角色的名字。</p>
 </li>
 </ol>
-<h3 id="quicksight">注册QuickSight账户</h3>
+<h4 id="quicksight">注册QuickSight账户</h4>
 <div class="admonition notice">
 <p class="admonition-title">说明</p>
 <p>如果您的AWS账户已经注册了QuickSight账户，可以跳过该步骤。</p>
@@ -1047,7 +1095,7 @@
 </ul>
 </li>
 </ol>
-<h3 id="quicksightiam">为QuickSight分配创建好的IAM角色</h3>
+<h4 id="quicksightiam">为QuickSight分配创建好的IAM角色</h4>
 <ol>
 <li>登录到<a href="https://quicksight.aws.amazon.com/">Amazon QuickSight控制台</a>。</li>
 <li>从区域下拉列表中选择<strong>美国东部（弗吉尼亚北部）区域</strong>。</li>
@@ -1056,7 +1104,7 @@
 <li>在<strong>QuickSight access to AWS services</strong>区域中选中<strong>管理</strong>。</li>
 <li>选择<strong>使用现有角色</strong>，在下拉列表中选择刚刚创建的角色。本示例为<code>qradd-quicksight-service-role</code>。</li>
 </ol>
-<h3 id="quicksight_1">记录QuickSight用户名</h3>
+<h4 id="quicksight_1">记录QuickSight用户名</h4>
 <ol>
 <li>
 <p>从美国东部（弗吉尼亚北部）区域登录<a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin">QuickSight管理用户页面</a>。</p>
@@ -1068,13 +1116,13 @@
 <h2 id="1cloudformation">步骤1：启动CloudFormation堆栈</h2>
 <ol>
 <li>
-<p>登录AWS管理控制台，选择按钮<a href="https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/create/template?stackName=QCEDDStack&amp;templateURL=https://solutions-test-reference.s3.amazonaws.com/quantum-ready-solution-for-drug-discovery/v1.0.0/QCStack.template">Launch Stack</a>以启动模板。您还可以选择直接<a href="https://solutions-test-reference.s3.amazonaws.com/quantum-ready-solution-for-drug-discovery/v1.0.0/QCStack.template">下载模板</a>进行部署。</p>
+<p>登录AWS管理控制台，选择按钮<a href="https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/create/template?stackName=QCEDDStack&amp;templateURL=https://solutions-reference.s3.amazonaws.com/quantum-computing-exploration-for-drug-discovery-on-aws/v1.0.0/QCEDDStack.template">Launch Stack</a>以启动模板。您还可以选择直接<a href="https://solutions-reference.s3.amazonaws.com/quantum-computing-exploration-for-drug-discovery-on-aws/v1.0.0/QCEDDStack.template">下载模板</a>进行部署。</p>
 </li>
 <li>
 <p>默认情况下，该模板将在您登录控制台后默认的区域启动，即美国西部（俄勒冈）区域。若需在指定的区域中启动该解决方案，请在控制台导航栏中的区域下拉列表中选择。</p>
 </li>
 <li>
-<p>在<strong>创建堆栈</strong>页面上，Amazon S3 URL文本框中会自动填写这个<a href="https://solutions-test-reference.s3.amazonaws.com/quantum-ready-solution-for-drug-discovery/v1.0.0/QCStack.template">模板URL</a>，请确认模板URL正确填写，然后选择<strong>下一步</strong>。</p>
+<p>在<strong>创建堆栈</strong>页面上，Amazon S3 URL文本框中会自动填写这个<a href="https://solutions-reference.s3.amazonaws.com/quantum-computing-exploration-for-drug-discovery-on-aws/v1.0.0/QCEDDStack.template">模板URL</a>，请确认模板URL正确填写，然后选择<strong>下一步</strong>。</p>
 </li>
 <li>
 <p>在指定堆栈详细信息页面，为您的解决方案堆栈分配一个账户内唯一且符合命名要求的名称。有关命名字符限制的信息，请参阅<em>AWS Identity and Access Management用户指南</em>中的<a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-limits.html">IAM 和 STS 限制</a>。</p>
@@ -1091,14 +1139,29 @@
 </thead>
 <tbody>
 <tr>
-<td>QuickSightRoleName</td>
-<td>无</td>
-<td>输入QuickSight服务角色名字，从页面<a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin?#aws">Security &amp; permissions</a>获取。</td>
+<td>Deploy Notebook</td>
+<td>yes</td>
+<td>选择yes部署<strong>笔记本实验</strong>部分, 选择no跳过</td>
 </tr>
 <tr>
-<td>QuickSightUser</td>
+<td>Deploy Batch Evaluation</td>
+<td>yes</td>
+<td>选择yes部署<strong>批量评估</strong>部分, 选择no跳过</td>
+</tr>
+<tr>
+<td>Deploy Visualization</td>
+<td>no</td>
+<td>选择yes部署<strong>可视化</strong>部分, 选择no跳过</td>
+</tr>
+<tr>
+<td>QuickSight User</td>
 <td>无</td>
-<td>输入QuickSight用户名，从页面<a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin?#users">Manage users</a>获取。</td>
+<td>输入QuickSight用户名，从页面<a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin?#users">Manage users</a>获取， 如果您选择了部署<strong>可视化</strong>部分，此参数是必须的。</td>
+</tr>
+<tr>
+<td>QuickSight Role Name</td>
+<td>无</td>
+<td>输入QuickSight服务角色名字，从页面<a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin?#aws">Security &amp; permissions</a>获取， 如果您选择了部署<strong>可视化</strong>部分，此参数是必须的。</td>
 </tr>
 </tbody>
 </table>
@@ -1150,6 +1213,36 @@
 </li>
 <li>
 <p>检查您的邮箱，您将收到一封邮件，点击邮件中<em>Confirm Subscription</em>链接，确认订阅。</p>
+</li>
+</ol>
+<h2 id="3cloudformation">步骤3：（可选）更新CloudFormation堆栈</h2>
+<ol>
+<li>
+<p>登录<a href="https://console.aws.amazon.com/cloudformation/">AWS CloudFormation</a>管理控制台。</p>
+</li>
+<li>
+<p>选择本解决方案的堆栈，如果您遵循上面的部署步骤，堆栈的名字是<strong>QCEDDStack</strong>。</p>
+</li>
+<li>
+<p>选择<strong>更新</strong>按钮。</p>
+</li>
+<li>
+<p>选择<strong>使用当前模版</strong>， 选择 <strong>下一步</strong>。</p>
+</li>
+<li>
+<p>选择或者填写对应的参数。</p>
+</li>
+<li>
+<p>选择<strong>下一步</strong>。</p>
+</li>
+<li>
+<p>在<strong>配置堆栈选项</strong>页面上，保留默认值并选择<strong>下一步</strong>。</p>
+</li>
+<li>
+<p>在<strong>审核</strong>页面，查看并确认设置。确保选中确认模板将创建Amazon Identity and Access Management（IAM）资源的复选框。选择<strong>下一步</strong>。</p>
+</li>
+<li>
+<p>选择<strong>更新堆栈</strong>以更新堆栈。</p>
 </li>
 </ol>
 
