@@ -35,6 +35,11 @@ batch evaluation (e.g. performance, time)
 For detailed description of architecture, please refer to the 
 [Architecture Page](https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/en/architecture/)
 
+## Deploy From Source
+
+Refer to [prerequisites and deployment](./source/README.md)
+
+
 ## Pre-built Examples for Drug Discovery[<sup>1,</sup>](#more-example)[<sup>2</sup>](#data)
 <table border='1' style="text-align: center">
     <tr>
@@ -101,9 +106,6 @@ Upon successfully cloning the repository into your local development environment
     ├── tsconfig.json
     └── version.json
 ```
-## Deploy From Source
-
-Refer to ![prerequisites and deployment](./source/README.md)
 
 ## Running Unit Tests
 
