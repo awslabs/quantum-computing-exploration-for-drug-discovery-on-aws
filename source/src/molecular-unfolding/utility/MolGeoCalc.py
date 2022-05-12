@@ -141,17 +141,17 @@ def update_pts_dict(target_name, pts_dict, rotate_pts, rotate_bd):
 
 
 def calc_distance_between_pts(pts1, pts2):
-    pts1_middle = np.array(tuple(list(np.mean(np.array(pts1), axis=0))))
-    pts2_middle = np.array(tuple(list(np.mean(np.array(pts2), axis=0))))
+    # pts1_middle = np.array(tuple(list(np.mean(np.array(pts1), axis=0))))
+    # pts2_middle = np.array(tuple(list(np.mean(np.array(pts2), axis=0))))
 
-#     sum_distance = []
-#     for pt_a in pts1:
-#         for pt_b in pts2:
-#             sum_distance.append(np.linalg.norm(np.array(pt_a)-np.array(pt_b)))
+    sum_distance = []
+    for pt_a in pts1:
+        for pt_b in pts2:
+            sum_distance.append(np.linalg.norm(np.array(pt_a)-np.array(pt_b)))
 
-#     return min(sum_distance)
+    return sum(sum_distance)
 
-    return np.linalg.norm(pts1_middle-pts2_middle)
+    # return np.linalg.norm(pts1_middle-pts2_middle)
 
 
 def calc_mid_pts(pts, mol_data):
