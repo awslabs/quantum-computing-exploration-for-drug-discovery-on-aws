@@ -1,4 +1,4 @@
-在量子分子展开的示例代码中，本方案在大量采用了原作者的框架的基础上做了一些修改。原作者使用的是HUBO优化函数，本方案使用的是绝对距离，如下所示。代码中的方法名为pre-calc。
+在量子分子展开的用例中，本方案在大量采用了原作者的框架的基础上做了一些修改。原作者使用的是HUBO优化函数，本方案使用的是绝对距离，如下所示。代码中的方法名为pre-calc。
 
 $$ O(x_{ik}) = A\displaystyle\sum\limits_i (\displaystyle\sum\limits_{k=1}^d x_{ik}-1)^2 - \displaystyle\sum\limits_{a,b} |D_{ab} (\theta)| $$
 

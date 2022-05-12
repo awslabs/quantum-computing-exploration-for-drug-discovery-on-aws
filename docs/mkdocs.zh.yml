@@ -22,8 +22,8 @@ nav:
         - 建立模型: workshop/a-molecular-unfolding/build-model.ipynb
         - 建立模型（技术细节）: workshop/a-molecular-unfolding/build-model-detail.md
         - 优化构型: workshop/a-molecular-unfolding/optimize-config.ipynb
-        - 后处理: workshop/a-molecular-unfolding/post-process.ipynb
-      - 批量验证: 
+        - 处理结果: workshop/a-molecular-unfolding/post-process.ipynb
+      - 批量评估: 
         - 批量评估默认模型: workshop/a-molecular-unfolding/batch-evaluation.md
         - 批量评估自定义模型: workshop/a-molecular-unfolding/evaluate-your-own-model.md
   - 更多资源: additional-resources.md
