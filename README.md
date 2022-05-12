@@ -103,7 +103,7 @@ Upon successfully cloning the repository into your local development environment
 ```
 ## Deploy From Source
 
-Refer to [prerequisites and deployment](source/README.md)
+Refer to [prerequisites and deployment](/source/README.md)
 
 ## Running Unit Tests
 
