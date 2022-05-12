@@ -93,6 +93,9 @@ find $dist_dir -iname "node_modules" -type d -exec rm -rf "{}" \; 2> /dev/null
 # echo "find $dist_dir -iname "package-lock.json" -type f -exec rm -f "{}" \; 2> /dev/null"
 # find $dist_dir -iname "package-lock.json" -type f -exec rm -f "{}" \; 2> /dev/null
 
+find $dist_dir -iname ".pytest_cache" -type d -exec rm -rf "{}" \; 2> /dev/null
+find $dist_dir -iname ".venv"  -type d -exec rm -rf "{}" \; 2> /dev/null
+
 echo "------------------------------------------------------------------------------"
 echo "[Packing] Create GitHub (open-source) zip file"
 echo "------------------------------------------------------------------------------"
