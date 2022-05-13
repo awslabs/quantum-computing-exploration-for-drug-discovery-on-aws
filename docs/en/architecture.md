@@ -16,15 +16,12 @@ This solution deploys the AWS CloudFormation template in your AWS Cloud account 
      
      VPC Endpoints are provisioned for Amazon ECR, Amazon S3, Amazon Athena and Amazon Braket.
 
-Notebook experimentation
 
 1. An [Amazon SageMaker Notebook](https://docs.aws.amazon.com/sagemaker/latest/dg/nbi.html) instance, which allows **notebook experimentation** for drug discovery.
 
-2. The notebook comes with prepared sample code for different problems in drug discovery, such as molecular unfolding.
+2. The notebook comes with prepared use cases for different problems in drug discovery, such as molecular unfolding.
 
 3. The solution creates [NAT gateways][nat] in public [subnets][subnet], which connects to internet using an [internet gateway][internet-gateway]. The notebook instance is deployed in private subnets, and can access internet using NAT gateways.
-
-Batch evaluation
 
 4. [AWS Step Functions][step-functions] workflows for Batch evaluation. 
 
@@ -43,8 +40,6 @@ Batch evaluation
 11. An [AWS Lambda][lambda] function is triggered by events from EventBridge, parses the output file of the Braket task/job in S3, saves the evaluation result to S3 bucket, and sends a callback to the AWS Step Functions workflow.
 
 12. When the whole batch evaluation is done, the workflow sends a notification to [Amazon SNS][sns] topic. All subscribers will be notified for the batch evaluation results.
-
-Visualization
 
 13. An [Amazon Athena][athena] table is created for querying the metrics of batch evaluation.
 

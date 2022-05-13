@@ -5,7 +5,7 @@
 - 一键部署包含量子计算和经典计算工作流的混合架构
 - 基于完全托管的Jupyter笔记本，设计和调试药物发现算法
 - 基于[AWS Step Functions][step-functions]和[AWS Batch][batch]的工作流，批量验证算法性能
-- 通过[Amazon Quicksight][quicksight]展示批量验证的结果
+- 通过[Amazon QuickSight][quicksight]展示批量验证的结果
 - 自定义其它药物发现问题的算法并进行复用
 
 同时，该方案还提供配套的[动手实验](workshop/background.md)，以由Mato, Kevin, et al.[<sup>1</sup>](#original-author)提出的分子展开算法为例，介绍相关背景知识，建模和优化方法，批量验证和自定义算法等，从而帮助您更快了解如何运用量子计算技术研究药物发现问题。
@@ -17,7 +17,7 @@
 # 参考
 <div id='original-author'></div>
  
- - 1. Mato, Kevin, et al. "Quantum Molecular Unfolding." arXiv preprint arXiv:2107.13607 (2021).
+ - 1.Mato, Kevin, et al. "Quantum Molecular Unfolding." arXiv preprint arXiv:2107.13607 (2021).
 
 
 [braket]: https://aws.amazon.com/braket/

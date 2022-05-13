@@ -210,7 +210,7 @@ def parse_task_result(bucket, key, status='COMPLETED'):
         })
 
         resolver = f"QC {device_name}" 
-        if device_name in [ 'DW_2000Q_6', 'Advantage_system4']:
+        if device_name in [ 'DW_2000Q_6', 'Advantage_system4', 'Advantage_system6']:
             resolver = f"QC D-Wave {device_name}" 
 
         metrics_items = [execution_id,
