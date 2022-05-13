@@ -74,7 +74,7 @@ export class MainStack extends SolutionStack {
       allowedValues: ['yes', 'no'],
     });
     const deployVisualization = new CfnParameter(this, 'DeployVisualization', {
-      description: 'Visualization. Choose yes to activate. If choose yes, please perform the prerequisite setup of your QuickSight, refer to https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/en/deployment/#prerequisites ',
+      description: 'Visualization. Choose yes to activate. If choose yes, you need to grant permissions in advance. For more information, see the section Grant permissions for Visualization in this chapter https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/en/deployment/',
       default: 'no',
       type: 'String',
       allowedValues: ['yes', 'no'],

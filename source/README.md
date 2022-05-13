@@ -20,7 +20,8 @@ Deploy solution to your AWS account by [AWS CDK](https://docs.aws.amazon.com/cdk
 - Install Docker Engine
 - Install the dependencies of solution via executing command `npm install`
 - Initialize the CDK toolkit stack into AWS environment(only for deploying via AWS CDK first time, [doc](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_install))
-- Make sure complete [prerequisites](https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/en/deployment/#prerequisites).
+- If you want to deploy Visualization, you need to grant permissions in advance. For more information, see the section Grant permissions for Visualization in this [chapter](../docs/en/deployment.md)'
+    
 
 ### Deploy solution by AWS CDK
    
