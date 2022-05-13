@@ -19,7 +19,8 @@ def test_handler_QC_DEVICE_LIST(monkeypatch):
     }
     devices = app.handler(event, None)
     assert devices == {'devices_arns': ['arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6',
-                                        'arn:aws:braket:::device/qpu/d-wave/Advantage_system4'
+                                        'arn:aws:braket:::device/qpu/d-wave/Advantage_system4',
+                                        'arn:aws:braket:us-west-2::device/qpu/d-wave/Advantage_system6'
                                         ],
                        'execution_id': None}
 

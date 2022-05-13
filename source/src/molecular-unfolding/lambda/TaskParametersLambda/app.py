@@ -26,10 +26,10 @@ s3 = boto3.client('s3', config=default_config)
 default_devices_arns = [
     'arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6',
     'arn:aws:braket:::device/qpu/d-wave/Advantage_system4',
+    'arn:aws:braket:us-west-2::device/qpu/d-wave/Advantage_system6'
 ]
 
 known_devices_arns = default_devices_arns.copy()
-known_devices_arns.append('arn:aws:braket:us-west-2::device/qpu/d-wave/Advantage_system6')
 
 default_model_params = {
     "M": [1, 2, 3, 4, 5],

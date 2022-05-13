@@ -43,6 +43,12 @@ This example uses the molecular unfolding function for the prepared sample, whic
         <td>$8.80</td>
     <tr>
     <tr>
+        <td>Amazon Braket</td>
+        <td>D-Wave - Advantage_system6.1</td>
+        <td>4 tasks for different parameters, 10000 shots/task</td>
+        <td>$8.80</td>
+    <tr>
+    <tr>
         <td>Amazon Batch (Fargate) </td>
         <td>2 VCPU 4G MEM</td>
         <td>Build model task, 8 minutes (< 20 minutes)</td>
@@ -102,6 +108,6 @@ This example uses the molecular unfolding function for the prepared sample, whic
     <tr> 
     <tr>
         <td colspan='4'>Total Cost</td>
-        <td>$28.21 per day</td>
+        <td>$37.01 per day</td>
     <tr>
 </table>
