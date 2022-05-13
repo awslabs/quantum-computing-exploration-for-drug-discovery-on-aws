@@ -44,6 +44,12 @@
         <td>8.8美元</td>
     <tr>
     <tr>
+        <td>Amazon Braket</td>
+        <td>D-Wave - Advantage_system6.1</td>
+        <td>4个包含不同参数的任务, 每个任务10000次执行</td>
+        <td>8.8美元</td>
+    <tr>
+    <tr>
         <td>Amazon Batch (Fargate) </td>
         <td>2 VCPU 4G MEM</td>
         <td>构建模型的任务, 8分钟（小于20分钟）</td>
@@ -103,6 +109,6 @@
     <tr>
     <tr>
         <td colspan='4'>总花费</td>
-        <td>每天28.21美元</td>
+        <td>每天37.01美元</td>
     <tr>
 </table>
