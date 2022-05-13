@@ -1,4 +1,4 @@
-In the quantum molecular unfolding sample code, the solution uses largely the framework of the original author with some changes. Instead of using the HUBO optimization function defined by the original author, the solution uses the below absolute distance instead. The method is named “pre-calc” in the code.
+In the quantum molecular unfolding use cases, the solution uses largely the framework of the original author with some changes. Instead of using the HUBO optimization function defined by the original author, the solution uses the below absolute distance instead. The method is named “pre-calc” in the code.
 
 $$ O(x_{ik}) = A\displaystyle\sum\limits_i (\displaystyle\sum\limits_{k=1}^d x_{ik}-1)^2 - \displaystyle\sum\limits_{a,b} |D_{ab} (\theta)| $$
 

@@ -5,7 +5,7 @@
 图1：量子计算探索之药物发现方案架构图
 
 
-本方案在您的AWS账户中部署AWS CloudFormation模板，并实现三大模块的功能:
+本方案在您的AWS账户中部署AWS CloudFormation模板，并实现三大模块的功能：
 
 - 笔记本实验
 - 批量评估
@@ -17,15 +17,12 @@
 
     - 本方案为Amazon ECR、Amazon S3、Amazon Athena和Amazon Braket创建了[VPC Endpoints][vpc-endpoints]。
 
-笔记本实验
 
 1. 本方案部署一个笔记本实例，从而允许[Amazon SageMaker Notebook](https://docs.aws.amazon.com/sagemaker/latest/dg/nbi.html)用户进行**笔记本实验**。
 
-2. 笔记本附带针对不同药物发现问题的示例代码，如分子展开等。
+2. 笔记本附带针对不同药物发现问题的用例，如分子展开等。
 
 3. 在公共[子网][subnet]中创建了[NAT网关][nat]，并通过[Internet网关][internet-gateway]连接互联网。笔记本实例部署在私有子网中，它通过NAT网关访问互联网。
-
-批量评估
 
 4. 本方案使用[AWS Step Functions][step-functions]工作流进行**批量评估**。
 
@@ -43,9 +40,8 @@
 
 11. [AWS Lambda][lambda]由Amazon EventBridge事件触发，它会解析Braket任务/作业存储在S3上的输出文件，并把解析后的结果放到S3，并向AWS Step Functions工作流发送一个回调。
 
-12. 当批量评估完成后，AWS Step Functions工作流会向[Amazon SNS][sns]发送一个通知，所有订阅了该主题的[订阅者][subscribe-topic]会收到此通知。
+12. 当批量评估完成后，AWS Step Functions工作流会向[Amazon SNS][sns]发送一个通知，所有订阅了该主题的订阅者会收到此通知。
 
-可视化
 
 13. 在AWS Step Functions工作流执行过程中，会创建一个[Amazon Athena][athena]表用于可视化。
 

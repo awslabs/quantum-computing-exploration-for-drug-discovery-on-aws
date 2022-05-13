@@ -1,6 +1,6 @@
 # Run Default Batch Evaluation
 
-The default batch evaluation runs a pre-built Amazon ECR Image that is based on the sample code in notebook experiments.
+The default batch evaluation runs a pre-built Amazon ECR Image that is based on the use cases in notebook experiments.
 
 Run default batch evaluation through AWS Step Functions workflow and view the result via Amazon QuickSight dashboard.
 

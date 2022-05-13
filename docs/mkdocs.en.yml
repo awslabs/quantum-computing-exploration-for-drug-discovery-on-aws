@@ -23,10 +23,10 @@ nav:
         - Build Model: workshop/a-molecular-unfolding/build-model.ipynb
         - Build Model (Technical Details): workshop/a-molecular-unfolding/build-model-detail.md
         - Optimize Configuration: workshop/a-molecular-unfolding/optimize-config.ipynb
-        - Post Process: workshop/a-molecular-unfolding/post-process.ipynb
+        - Process Results: workshop/a-molecular-unfolding/post-process.ipynb
       - Batch Evaluation: 
-        - Standard Images: workshop/a-molecular-unfolding/batch-evaluation.md
-        - Customize Images: workshop/a-molecular-unfolding/evaluate-your-own-model.md
+        - Run Default Batch Evaluation: workshop/a-molecular-unfolding/batch-evaluation.md
+        - Batch Evaluate Your Own Model: workshop/a-molecular-unfolding/evaluate-your-own-model.md
   - Additional resources: additional-resources.md
   - Uninstall the solution: uninstall.md
   - Source code: source.md

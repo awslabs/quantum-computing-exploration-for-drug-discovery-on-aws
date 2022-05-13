@@ -1,14 +1,13 @@
 Before you launch the solution, review the architecture, supported regions, and other considerations discussed in this guide. Follow the step-by-step instructions in this section to configure and deploy the solution into your account.
 
 
-**Time to deploy**: Approximately 10 minutes(all parts)
+**Time to deploy**: Approximately 10 minutes
 
 !!! notice "Note"
 
     Before deploying this solution, we recommend you [create a billing alarm to monitor your estimated AWS charges](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/monitor_estimated_charges_with_cloudwatch.html). 
 
-The user or IAM role to perform the deployment must have at least [permissions](./workshop/a-molecular-unfolding/permissions.json). If you use the permissions defined in this file to deploy this solution, your CloudFormation stack name should start with `QCEDD`, e.g `QCEDDStack` .
-
+The user or IAM role to perform the deployment must have at least permissions defined in [this file](https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/en/workshop/a-molecular-unfolding/permissions.json). If you use the permissions defined in this file to deploy this solution, your CloudFormation stack name should start with `QCEDD`, for example, `QCEDDStack`.
 
 ## Prerequisites
 ### Enable Amazon Braket service
@@ -19,11 +18,71 @@ The user or IAM role to perform the deployment must have at least [permissions](
 
 3. Choose **Enable Amazon Braket**.
 
-### Visualization Configuration
+## Step 1: Launch the AWS CloudFormation template into your AWS account
 
-!!! notice "Note"
-    Skip this step if you do not want to deploy the **Visualization** part. If you skip it at this time, you can do it any time you like.
-#### Create IAM Role for QuickSight
+1. Sign in to the [AWS management console](https://console.aws.amazon.com/cloudformation/home?), and select the [Launch solution][template-url] button to launch the AWS CloudFormation template. Alternatively, you can download the template as a starting point for your own implementation.
+ 
+2. The template launches in the US West (Oregon) by default. To launch this solution in a different AWS Region, use the Region selector in the console navigation bar.
+
+3. On the **Create stack** page, verify that Amazon S3 URL is filled with this [template URL][cf-template-url] automatically and choose **Next**.
+
+4. On the Specify stack details page, assign a name to your solution stack. For information about naming character limitations, refer to [IAM and STS Limits](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-limits.html) in the *AWS Identity and Access Management User Guide*.
+
+5. Under **Parameters**, review the parameters for the template and modify them as necessary. 
+
+    !!! important "Important"
+        
+        As described in the *Architecture Overview* chapter, the solution provides three parts: Notebook experimentation, Batch evaluation, and Visualization. By default, Notebook and Batch evaluation will be deployed, and Visualization will not. If you want to deploy Visualization, you need to grant permissions in advance. For more information, see the section *Grant permissions for Visualization* in this chapter.
+
+    This solution uses the following values. 
+
+    Parameter | Default | Description 
+    ---|---|---
+    Deploy Notebook | yes | Choose `yes` to deploy **Notebook**, or `no` to skip it. |
+    Deploy Batch Evaluation | yes | Choose `yes` to deploy **Batch Evaluation**, or `no` to skip it. |
+    Deploy Visualization | no | Choose `yes` to deploy **Visualization**, or `no` to skip it. |
+    QuickSight Role Name |<Requires input\> | QuickSight Service Role name, which can be obtained from [Security & permissions](https://us-east-1.quicksight.aws.amazon.com/sn/admin?#aws), requires input if choose yes to Deploy Visualization. |
+    QuickSight User | <Requires input\> | QuickSight Username, which can be obtained from [Manage users](https://us-east-1.quicksight.aws.amazon.com/sn/admin?#users), requires input if choose yes to Deploy Visualization.                 |
+   
+
+6. Choose **Next**.
+
+7. On the **Configure stack options** page, choose **Next**.
+
+8. On the **Review** page, review and confirm the settings. Check the box acknowledging that the template will create AWS Identity and Access Management (IAM) resources.
+
+9. Choose **Create stack** to deploy the stack.
+
+You can view the status of the stack in the AWS CloudFormation Console in the **Status** column. You should receive a **CREATE_COMPLETE** status in approximately 10 minutes.
+
+## Step 2: (Optional) Subscribe to SNS notification 
+
+Follow below steps to subscribe to SNS notification via email to receive result notifications from AWS Step Functions. You can also subscribe to the notification via text messages.
+
+1. Sign in to the [AWS CloudFormation console](https://console.aws.amazon.com/cloudformation/).
+
+2. On the **Stacks** page, select the solution’s root stack.
+
+3. Choose the **Outputs** tab and record the value for the SNS topic.
+
+    ![SNS name](./images/deploy-output-sns.png)
+
+4. Navigate to the [Amazon SNS](https://console.aws.amazon.com/sns/v3/home?region=us-east-1#/topics) console.
+
+5. Choose **Topics**, then select the SNS topic that you obtained from the CloudFormation deployment output.
+
+6. Choose **Create subscription**.
+
+7. Select **Email** from the **Protocol** list.
+
+8. Enter your email in **Endpoint**.
+
+9. Choose **Create subscription**.
+
+10. Check your inbox for the email, and select the **Confirm Subscription** link to confirm the subscription.
+
+## Grant permissions for Visualization
+### Create IAM Role for QuickSight
 
 1. Navigate to [IAM console](https://console.aws.amazon.com/iamv2/home?#/policies).
 
@@ -164,7 +223,7 @@ The user or IAM role to perform the deployment must have at least [permissions](
 
 16. Record the name of this role.
 
-#### Sign up for QuickSight
+### Sign up for QuickSight
 
 !!! notice "Note"
      
@@ -182,7 +241,7 @@ The user or IAM role to perform the deployment must have at least [permissions](
     - Enter the **Email** to receive notifications.
     - For other parameters, keep default values.
 
-#### Assign the Created IAM Role to QuickSight
+### Assign the Created IAM Role to QuickSight
 
 1. Sign in to Amazon QuickSight console.
 2. Use the Region selector to select the **US East (N.Virginia)** Region.
@@ -191,88 +250,32 @@ The user or IAM role to perform the deployment must have at least [permissions](
 5.	In the **QuickSight access to AWS services** area, choose **Manage**.
 6. Choose **Use an existing role**, and select the role created in previous step. As an example, the deployment uses`qcedd-quicksight-service-role`.
 
-#### Obtain QuickSight Username
+### Obtain QuickSight Username
 
 1. Sign in to the [Amazon QuickSight console](https://us-east-1.quicksight.aws.amazon.com/sn/admin) in the **US East (N.Virginia)** Region.
 
 2. Record your **QuickSight Username** (not QuickSight account name) in the upper right corner.
 
-## Step 1: Launch the AWS CloudFormation template into your AWS account
 
-1. Sign in to the [AWS management console](https://console.aws.amazon.com/cloudformation/home?), and select the [Launch solution][template-url] button to launch the AWS CloudFormation template. Alternatively, you can download the template as a starting point for your own implementation.
- 
-2. The template launches in the US West (Oregon) by default. To launch this solution in a different AWS Region, use the Region selector in the console navigation bar.
+## Update AWS CloudFormation template
 
-3. On the **Create stack** page, verify that Amazon S3 URL is filled with this [template URL][cf-template-url] automatically and choose **Next**.
-
-4. On the Specify stack details page, assign a name to your solution stack. For information about naming character limitations, refer to [IAM and STS Limits](https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-limits.html) in the *AWS Identity and Access Management User Guide*.
-
-5. Under **Parameters**, review the parameters for the template and modify them as necessary. This solution uses the following values. 
-
-    Parameter | Default | Description 
-    ---|---|---
-    Deploy Notebook | yes | Choose yes to deploy **Notebook** part, no to skip |
-    Deploy Batch Evaluation | yes | Choose yes to deploy **Batch Evaluation** part, no to skip |
-    Deploy Visualization | no | Choose yes to deploy **Visualization** part, no to skip |
-    QuickSight User |  | QuickSight Username, which can be obtained from [Manage users](https://us-east-1.quicksight.aws.amazon.com/sn/admin?#users), requires input if choose yes to Deploy Visualization.                 |
-    QuickSight Role Name | | QuickSight Service Role name, which can be obtained from [Security & permissions](https://us-east-1.quicksight.aws.amazon.com/sn/admin?#aws), requires input if choose yes to Deploy Visualization.
-   
-
-6. Choose **Next**.
-
-7. On the **Configure stack options** page, choose **Next**.
-
-8. On the **Review** page, review and confirm the settings. Check the box acknowledging that the template will create AWS Identity and Access Management (IAM) resources.
-
-9. Choose **Create stack** to deploy the stack.
-
-You can view the status of the stack in the AWS CloudFormation Console in the **Status** column. You should receive a **CREATE_COMPLETE** status in approximately 10 minutes.
-
-## Step 2: (Optional) Subscribe to SNS notification 
-
-Follow below steps to subscribe to SNS notification via email to receive result notifications from AWS Step Functions. You can also subscribe to the notification via text messages.
+If needed, you can update the AWS CloudFormation stack to change the deployment settings. 
 
 1. Sign in to the [AWS CloudFormation console](https://console.aws.amazon.com/cloudformation/).
 
-2. On the **Stacks** page, select the solution’s root stack.
+2. Select the root stack of this solution, not the nested stack. 
 
-3. Choose the **Outputs** tab and record the value for the SNS topic.
+3. Choose **Update**.
 
-    ![SNS name](./images/deploy-output-sns.png)
+4. Select **Use current template**, and choose **Next**.
 
-4. Navigate to the [Amazon SNS](https://console.aws.amazon.com/sns/v3/home?region=us-east-1#/topics) console.
+5. Update the parameters as needed, and choose **Next**. For example, if you have chosen `no` for Deploy Visualization, you may change it to `yes`.
 
-5. Choose **Topics**, then select the SNS topic that you obtained from the CloudFormation deployment output.
+6. On the **Configure stack options** page, choose **Next**.
 
-6. Choose **Create subscription**.
+7. On the **Review** page, review and confirm the settings. Check the box acknowledging that the template will create AWS Identity and Access Management (IAM) resources.
 
-7. Select **Email** from the **Protocol** list.
-
-8. Enter your email in **Endpoint**.
-
-9. Choose **Create subscription**.
-
-10. Check your inbox for the email, and select the **Confirm Subscription** link to confirm the subscription.
-
-## Step 3: (Optional) Update AWS CloudFormation template
-
-1. Sign in to the [AWS CloudFormation console](https://console.aws.amazon.com/cloudformation/).
-
-2. Select CloudFormation stack of this solution, if you follow the **Step 1: Launch the AWS CloudFormation template into your AWS account**, the stack name is **QCEDDStack**.
-
-3. Choose **Update** button.
-
-4. Choose **Use current template**, Click **Next**.
-
-5. Select or fill required parameters.
-
-6. Choose **Next**.
-
-7. On the **Configure stack options** page, choose **Next**.
-
-8. On the **Review** page, review and confirm the settings. Check the box acknowledging that the template will create AWS Identity and Access Management (IAM) resources.
-
-9. Choose **Update stack** to update the stack.
+8. Choose **Update stack** to update the stack.
 
 
 [template-url]: https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/create/template?stackName=QCEDDStack&templateURL={{ cf_template.url }}

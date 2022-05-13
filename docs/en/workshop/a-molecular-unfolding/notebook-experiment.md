@@ -1,6 +1,6 @@
 ## Notebook experimentation
 
-The workshop implements the work from [Quantum Molecular Unfolding](https://arxiv.org/abs/2107.13607), published by Cornell University, and the [Molecular Unfolding with Quantum Annealing](https://www.youtube.com/watch?v=1NmAXIHAF2Y) video in Amazon Braket.
+The workshop implements the work from [Quantum Molecular Unfolding](https://arxiv.org/abs/2107.13607), and the [Molecular Unfolding with Quantum Annealing](https://www.youtube.com/watch?v=1NmAXIHAF2Y) video in Amazon Braket.
 
 ## Molecular docking 
 

@@ -1,3 +1,3 @@
 | Date          | Change            |
 |---------------|-------------------|
-| April 2022 | Initial release  |
+| May 2022 | Initial release  |
