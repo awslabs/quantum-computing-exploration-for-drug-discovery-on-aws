@@ -19,7 +19,8 @@ def test_handler_QC_DEVICE_LIST(monkeypatch):
     }
     devices = app.handler(event, None)
     assert devices == {'devices_arns': ['arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6',
-                                        'arn:aws:braket:::device/qpu/d-wave/Advantage_system4'],
+                                        'arn:aws:braket:::device/qpu/d-wave/Advantage_system4'
+                                        ],
                        'execution_id': None}
 
 
@@ -89,7 +90,8 @@ def test_handler_CHECK_INPUT_full_input(monkeypatch):
             },
             "devicesArns": [
                 "arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6",
-                "arn:aws:braket:::device/qpu/d-wave/Advantage_system4"
+                "arn:aws:braket:::device/qpu/d-wave/Advantage_system4",
+                "arn:aws:braket:us-west-2::device/qpu/d-wave/Advantage_system6",
             ],
             "ccResources": [
                 [2, 2],
@@ -306,6 +308,33 @@ def test_handler_CHECK_INPUT_modelParams_D_4_8_error(monkeypatch):
 
 
 @mock_s3
+def test_handler_CHECK_INPUT_modelParams_devicesArns_error(monkeypatch):
+    boto3.setup_default_session()
+    from . import app
+    monkeypatch.setenv('AWS_REGION', 'us-east-1')
+    s3 = boto3.client('s3', region_name='us-east-1')
+    s3.create_bucket(Bucket='test_s3_bucket')
+
+    event = {
+        'param_type': 'CHECK_INPUT',
+        's3_bucket': 'test_s3_bucket',
+        's3_prefix': 'test_s3_prefix',
+        'execution_id': 'arn:aws:states:us-west-2:123456789000:execution:MolUnfBatchEvaluationBatchEvaluationStateMachine759181D6-smNpiWdkgrOI:test_execution_id',
+        'user_input': {
+             "devicesArns": [
+                "DW_2000Q_6",
+                "Advantage_system4"
+                ],
+        }
+    }
+
+    with pytest.raises(Exception) as excinfo:
+        app.handler(event, None)
+
+    assert 'validate error' in str(excinfo.value)
+
+
+@mock_s3
 def test_handler_CHECK_INPUT_ccResources_max_err(monkeypatch):
     boto3.setup_default_session()
     from . import app
@@ -376,7 +405,8 @@ def test_handler_PARAMS_FOR_QC_DEVICE(monkeypatch):
                 },
                 "devicesArns": [
                     "arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6",
-                    "arn:aws:braket:::device/qpu/d-wave/Advantage_system4"
+                    "arn:aws:braket:::device/qpu/d-wave/Advantage_system4",
+                    "arn:aws:braket:us-west-2::device/qpu/d-wave/Advantage_system6"
                 ],
                 "ccResources": [
                     [2, 2],
