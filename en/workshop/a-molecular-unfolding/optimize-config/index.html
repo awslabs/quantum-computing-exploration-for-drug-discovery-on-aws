@@ -515,7 +515,7 @@
   
     <li class="md-nav__item">
       <a href="../post-process/" class="md-nav__link">
-        Post Process
+        Process Results
       </a>
     </li>
   
@@ -562,7 +562,7 @@
   
     <li class="md-nav__item">
       <a href="../batch-evaluation/" class="md-nav__link">
-        Standard Images
+        Run Default Batch Evaluation
       </a>
     </li>
   
@@ -576,7 +576,7 @@
   
     <li class="md-nav__item">
       <a href="../evaluate-your-own-model/" class="md-nav__link">
-        Customize Images
+        Batch Evaluate Your Own Model
       </a>
     </li>
   
@@ -1761,9 +1761,7 @@ Licensed under the Apache License, Version 2.0.
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>This part describes how to use SA and QA to find the optimized configuration of molecular unfolding.</p>
-<ol>
-<li>Load the model file using <strong>QMUQUBO</strong> object.</li>
-</ol>
+<p>1.Load the model file using <strong>QMUQUBO</strong> object.</p>
 
 </div>
 </div>
@@ -1911,9 +1909,7 @@ INFO:root:param: hubo_qubo_val, value {200}
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<ol>
-<li>Use the parameter <strong>model_name</strong> to get the model for experiments.</li>
-</ol>
+<p>2.Use the parameter <strong>model_name</strong> to get the model for experiments.</p>
 
 </div>
 </div>
@@ -1973,9 +1969,7 @@ qubo_model = qmu_qubo_optimize.get_model(method, model_name)</div>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<ol>
-<li>Set the parameters for optimization.</li>
-</ol>
+<p>3.Set the parameters for optimization.</p>
 <table>
 <thead><tr>
 <th>Parameter</th>
@@ -2011,9 +2005,7 @@ qubo_model = qmu_qubo_optimize.get_model(method, model_name)</div>
 </tr>
 </tbody>
 </table>
-<ol>
-<li>Run the SA for this problem:</li>
-</ol>
+<p>4.Run the SA for this problem:</p>
 
 </div>
 </div>
@@ -2148,9 +2140,7 @@ INFO:root:finish save sa_result.pickle
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>The number of shots for SA is set to <strong>1000</strong>. The result is saved as the local file <strong>./sa_result.pickle.</strong></p>
-<ol>
-<li>Run the QA to solve this problem.</li>
-</ol>
+<p>5.Run the QA to solve this problem.</p>
 
 </div>
 </div>
@@ -2372,9 +2362,7 @@ print(f"task id is {qa_task_id}")</div>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<ol>
-<li>Compare the run time between SA and QA:</li>
-</ol>
+<p>6.Compare the run time between SA and QA:</p>
 
 </div>
 </div>
@@ -2486,13 +2474,13 @@ Different linear and quadratic terms vary by many orders of magnitude. If you ch
       
       
         
-        <a href="../post-process/" class="md-footer__link md-footer__link--next" aria-label="Next: Post Process" rel="next">
+        <a href="../post-process/" class="md-footer__link md-footer__link--next" aria-label="Next: Process Results" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Post Process
+              Process Results
             </div>
           </div>
           <div class="md-footer__button md-icon">

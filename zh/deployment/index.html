@@ -365,12 +365,31 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
-    可视化设置
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1cloudformation" class="md-nav__link">
+    步骤1：启动CloudFormation堆栈
   </a>
   
-    <nav class="md-nav" aria-label="可视化设置">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2sns" class="md-nav__link">
+    步骤2：（可选）订阅SNS通知
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    授予权限（可视化）
+  </a>
+  
+    <nav class="md-nav" aria-label="授予权限（可视化）">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -405,29 +424,10 @@
     </nav>
   
 </li>
-        
-      </ul>
-    </nav>
-  
-</li>
       
         <li class="md-nav__item">
-  <a href="#1cloudformation" class="md-nav__link">
-    步骤1：启动CloudFormation堆栈
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#2sns" class="md-nav__link">
-    步骤2：（可选）订阅SNS通知
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#3cloudformation" class="md-nav__link">
-    步骤3：（可选）更新CloudFormation堆栈
+  <a href="#cloudformation" class="md-nav__link">
+    更新CloudFormation堆栈
   </a>
   
 </li>
@@ -611,7 +611,7 @@
   
     <li class="md-nav__item">
       <a href="../workshop/a-molecular-unfolding/post-process/" class="md-nav__link">
-        后处理
+        处理结果
       </a>
     </li>
   
@@ -640,14 +640,14 @@
       
       
         <label class="md-nav__link" for="__nav_8_2_2">
-          批量验证
+          批量评估
           <span class="md-nav__icon md-icon"></span>
         </label>
       
-      <nav class="md-nav" aria-label="批量验证" data-md-level="3">
+      <nav class="md-nav" aria-label="批量评估" data-md-level="3">
         <label class="md-nav__title" for="__nav_8_2_2">
           <span class="md-nav__icon md-icon"></span>
-          批量验证
+          批量评估
         </label>
         <ul class="md-nav__list" data-md-scrollfix>
           
@@ -798,12 +798,31 @@
   
 </li>
         
-          <li class="md-nav__item">
-  <a href="#_2" class="md-nav__link">
-    可视化设置
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1cloudformation" class="md-nav__link">
+    步骤1：启动CloudFormation堆栈
   </a>
   
-    <nav class="md-nav" aria-label="可视化设置">
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2sns" class="md-nav__link">
+    步骤2：（可选）订阅SNS通知
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    授予权限（可视化）
+  </a>
+  
+    <nav class="md-nav" aria-label="授予权限（可视化）">
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
@@ -838,29 +857,10 @@
     </nav>
   
 </li>
-        
-      </ul>
-    </nav>
-  
-</li>
       
         <li class="md-nav__item">
-  <a href="#1cloudformation" class="md-nav__link">
-    步骤1：启动CloudFormation堆栈
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#2sns" class="md-nav__link">
-    步骤2：（可选）订阅SNS通知
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#3cloudformation" class="md-nav__link">
-    步骤3：（可选）更新CloudFormation堆栈
+  <a href="#cloudformation" class="md-nav__link">
+    更新CloudFormation堆栈
   </a>
   
 </li>
@@ -885,12 +885,12 @@
   <h1>部署解决方案</h1>
 
 <p>在部署解决方案之前，建议您先查看本指南中有关架构图和区域支持等信息。然后按照下面的说明配置解决方案并将其部署到您的帐户中。</p>
-<p><strong>部署时间</strong>：约10分钟(包含所有可选部分)</p>
+<p><strong>部署时间</strong>：约10分钟</p>
 <div class="admonition note">
 <p class="admonition-title">说明</p>
 <p>建议您在部署此解决方案之前<a href="https://docs.aws.amazon.com/zh_cn/AmazonCloudWatch/latest/monitoring/monitor_estimated_charges_with_cloudwatch.html">创建账单告警</a>以监控AWS估算费用。</p>
 </div>
-<p>部署本方案，您需要具有最小的<a href="../workshop/a-molecular-unfolding/permissions.json">IAM权限</a>。 如果您使用定义在此文件中的权限部署本方案， 您的CloudFormation堆栈的名字应该以 <code>QCEDD</code>开头， 例如： <code>QCEDDStack</code>。</p>
+<p>部署本方案需要具有最小的<a href="https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/en/workshop/a-molecular-unfolding/permissions.json">IAM权限</a>。如果您使用定义在此文件中的权限部署本方案，您的CloudFormation堆栈的名字将以 <code>QCEDD</code>开头， 例如：<code>QCEDDStack</code>。</p>
 <h2 id="_1">准备工作</h2>
 <h3 id="amazon-braket">启动Amazon Braket服务</h3>
 <ol>
@@ -904,12 +904,115 @@
 <p>选择<strong>Enable Amazon Braket</strong>。</p>
 </li>
 </ol>
-<h3 id="_2">可视化设置</h3>
-<div class="admonition note">
-<p class="admonition-title">说明</p>
-<p>如果您不想部署可视化部分，请跳过此步骤。即使您此时跳过此步骤，您也可以在任何时候执行此步骤。</p>
+<h2 id="1cloudformation">步骤1：启动CloudFormation堆栈</h2>
+<ol>
+<li>
+<p>登录AWS管理控制台，选择按钮<a href="https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/create/template?stackName=QCEDDStack&amp;templateURL=https://solutions-reference.s3.amazonaws.com/quantum-computing-exploration-for-drug-discovery-on-aws/latest/QCEDDStack.template">Launch Stack</a>以启动模板。您还可以选择直接<a href="https://solutions-reference.s3.amazonaws.com/quantum-computing-exploration-for-drug-discovery-on-aws/latest/QCEDDStack.template">下载模板</a>进行部署。</p>
+</li>
+<li>
+<p>默认情况下，该模板将在您登录控制台后默认的区域启动，即美国西部（俄勒冈）区域。若需在指定的区域中启动该解决方案，请在控制台导航栏中的区域下拉列表中选择。</p>
+</li>
+<li>
+<p>在<strong>创建堆栈</strong>页面上，Amazon S3 URL文本框中会自动填写这个<a href="https://solutions-reference.s3.amazonaws.com/quantum-computing-exploration-for-drug-discovery-on-aws/latest/QCEDDStack.template">模板URL</a>，请确认模板URL正确填写，然后选择<strong>下一步</strong>。</p>
+</li>
+<li>
+<p>在指定堆栈详细信息页面，为您的解决方案堆栈分配一个账户内唯一且符合命名要求的名称。有关命名字符限制的信息，请参阅<em>AWS Identity and Access Management用户指南</em>中的<a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-limits.html">IAM 和 STS 限制</a>。</p>
+</li>
+<li>
+<p>在<strong>参数</strong>部分，查看此解决方案模板的参数并根据需要进行修改。</p>
+<div class="admonition important">
+<p class="admonition-title">重要说明<p>本解决方案提供三个模块的功能：笔记本实验，批量评估，和可视化。默认情况下将部署笔记本实验和批量评估，但不会部署可视化。如果要部署可视化模块，您需要提前授予QuickSight权限。详情可参见本章节中的<em>授予权限（可视化）</em>。</p>
+</p>
 </div>
-<h4 id="quicksight-iam">创建QuickSight IAM角色</h4>
+<p>方案中使用的参数如下：</p>
+<table>
+<thead>
+<tr>
+<th>参数</th>
+<th>默认值</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Deploy Notebook</td>
+<td>yes</td>
+<td>选择<code>yes</code>部署<strong>笔记本实验</strong>，选择<code>no</code>将不会部署该模块。</td>
+</tr>
+<tr>
+<td>Deploy Batch Evaluation</td>
+<td>yes</td>
+<td>选择<code>yes</code>部署<strong>批量评估</strong>，选择<code>no</code>将不会部署该模块。</td>
+</tr>
+<tr>
+<td>Deploy Visualization</td>
+<td>no</td>
+<td>选择<code>yes</code>部署<strong>可视化</strong>，选择<code>no</code>将不会部署该模块。</td>
+</tr>
+<tr>
+<td>QuickSight User</td>
+<td>无</td>
+<td>输入QuickSight用户名，可从页面<a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin?#users">Manage users</a>获取。如果您选择了部署<strong>可视化</strong>，此参数是必填的。</td>
+</tr>
+<tr>
+<td>QuickSight Role Name</td>
+<td>无</td>
+<td>输入QuickSight服务角色名字，从页面<a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin?#aws">Security &amp; permissions</a>获取。如果您选择了部署<strong>可视化</strong>，此参数是必填的。</td>
+</tr>
+</tbody>
+</table>
+</li>
+<li>
+<p>选择<strong>下一步</strong>。</p>
+</li>
+<li>
+<p>在<strong>配置堆栈选项</strong>页面上，保留默认值并选择<strong>下一步</strong>。</p>
+</li>
+<li>
+<p>在<strong>审核</strong>页面，查看并确认设置。确保选中确认模板将创建Amazon Identity and Access Management（IAM）资源的复选框。选择<strong>下一步</strong>。</p>
+</li>
+<li>
+<p>选择<strong>创建堆栈</strong>以部署堆栈。</p>
+</li>
+</ol>
+<p>您可以在AWS CloudFormation控制台的<strong>状态</strong>列中查看stack的状态。正常情况下，大约10分钟内可以看到状态为<strong>CREATE_COMPLETE</strong>。</p>
+<h2 id="2sns">步骤2：（可选）订阅SNS通知</h2>
+<p>当批量评估执行完成后，如果您想获得Email通知，可以按照下面的步骤订阅SNS通知。您也可以通过短信订阅通知。</p>
+<ol>
+<li>
+<p>登录<a href="https://console.aws.amazon.com/cloudformation/">AWS CloudFormation控制台</a>。</p>
+</li>
+<li>
+<p>在<strong>堆栈</strong>页面，选择本方案的堆栈。</p>
+</li>
+<li>
+<p>选择<strong>输出</strong>页签，记录SNS主题的值。</p>
+<p><img alt="SNS name" src="../images/deploy-output-sns.png" /></p>
+</li>
+<li>
+<p>导航至<a href="https://console.aws.amazon.com/sns/v3/home?region=us-east-1#/topics">Amazon SNS控制台</a>。</p>
+</li>
+<li>
+<p>选中<strong>主题</strong>，然后点击在CloudFormation部署的输出中的SNS主题。</p>
+</li>
+<li>
+<p>选择<strong>创建订阅</strong>。</p>
+</li>
+<li>
+<p>在<strong>协议</strong>列表中，选择<strong>电子邮件</strong>。</p>
+</li>
+<li>
+<p>在<strong>终端节点</strong>文本框中，输入可以从Amazon SNS接收通知的电子邮件地址。</p>
+</li>
+<li>
+<p>选择<strong>创建订阅</strong>。</p>
+</li>
+<li>
+<p>检查您的邮箱，您将收到一封邮件，点击邮件中<em>Confirm Subscription</em>链接，确认订阅。</p>
+</li>
+</ol>
+<h2 id="_2">授予权限（可视化）</h2>
+<h3 id="quicksight-iam">创建QuickSight IAM角色</h3>
 <ol>
 <li>
 <p>导航至<a href="https://console.aws.amazon.com/iamv2/home?#/policies">IAM Policies</a>。</p>
@@ -1013,10 +1116,6 @@
 <span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
-<div class="admonition note">
-<p class="admonition-title">说明</p>
-<p>请忽略输入框下面的Errors提示。</p>
-</div>
 </li>
 <li>
 <p>点击<strong>下一步：标签</strong>。</p>
@@ -1072,7 +1171,7 @@
 <p>记录所创建角色的名字。</p>
 </li>
 </ol>
-<h4 id="quicksight">注册QuickSight账户</h4>
+<h3 id="quicksight">注册QuickSight账户</h3>
 <div class="admonition notice">
 <p class="admonition-title">说明</p>
 <p>如果您的AWS账户已经注册了QuickSight账户，可以跳过该步骤。</p>
@@ -1095,16 +1194,16 @@
 </ul>
 </li>
 </ol>
-<h4 id="quicksightiam">为QuickSight分配创建好的IAM角色</h4>
+<h3 id="quicksightiam">为QuickSight分配创建好的IAM角色</h3>
 <ol>
 <li>登录到<a href="https://quicksight.aws.amazon.com/">Amazon QuickSight控制台</a>。</li>
 <li>从区域下拉列表中选择<strong>美国东部（弗吉尼亚北部）区域</strong>。</li>
 <li>选中右上角的账户名称，点击<strong>管理 QuickSight</strong>。</li>
 <li>从左侧导航栏中选择<strong>安全和权限</strong>。</li>
 <li>在<strong>QuickSight access to AWS services</strong>区域中选中<strong>管理</strong>。</li>
-<li>选择<strong>使用现有角色</strong>，在下拉列表中选择刚刚创建的角色。本示例为<code>qradd-quicksight-service-role</code>。</li>
+<li>选择<strong>使用现有角色</strong>，在下拉列表中选择刚刚创建的角色。本示例为<code>qcedd-quicksight-service-role</code>。</li>
 </ol>
-<h4 id="quicksight_1">记录QuickSight用户名</h4>
+<h3 id="quicksight_1">记录QuickSight用户名</h3>
 <ol>
 <li>
 <p>从美国东部（弗吉尼亚北部）区域登录<a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin">QuickSight管理用户页面</a>。</p>
@@ -1113,127 +1212,23 @@
 <p>记录右上角的对应您电子邮件的<strong>用户名</strong>。</p>
 </li>
 </ol>
-<h2 id="1cloudformation">步骤1：启动CloudFormation堆栈</h2>
-<ol>
-<li>
-<p>登录AWS管理控制台，选择按钮<a href="https://console.aws.amazon.com/cloudformation/home?region=us-west-2#/stacks/create/template?stackName=QCEDDStack&amp;templateURL=https://solutions-reference.s3.amazonaws.com/quantum-computing-exploration-for-drug-discovery-on-aws/v1.0.0/QCEDDStack.template">Launch Stack</a>以启动模板。您还可以选择直接<a href="https://solutions-reference.s3.amazonaws.com/quantum-computing-exploration-for-drug-discovery-on-aws/v1.0.0/QCEDDStack.template">下载模板</a>进行部署。</p>
-</li>
-<li>
-<p>默认情况下，该模板将在您登录控制台后默认的区域启动，即美国西部（俄勒冈）区域。若需在指定的区域中启动该解决方案，请在控制台导航栏中的区域下拉列表中选择。</p>
-</li>
-<li>
-<p>在<strong>创建堆栈</strong>页面上，Amazon S3 URL文本框中会自动填写这个<a href="https://solutions-reference.s3.amazonaws.com/quantum-computing-exploration-for-drug-discovery-on-aws/v1.0.0/QCEDDStack.template">模板URL</a>，请确认模板URL正确填写，然后选择<strong>下一步</strong>。</p>
-</li>
-<li>
-<p>在指定堆栈详细信息页面，为您的解决方案堆栈分配一个账户内唯一且符合命名要求的名称。有关命名字符限制的信息，请参阅<em>AWS Identity and Access Management用户指南</em>中的<a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/reference_iam-limits.html">IAM 和 STS 限制</a>。</p>
-</li>
-<li>
-<p>在<strong>参数</strong>部分，查看此解决方案模板的参数并根据需要进行修改。</p>
-<table>
-<thead>
-<tr>
-<th>参数</th>
-<th>默认值</th>
-<th>描述</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Deploy Notebook</td>
-<td>yes</td>
-<td>选择yes部署<strong>笔记本实验</strong>部分, 选择no跳过</td>
-</tr>
-<tr>
-<td>Deploy Batch Evaluation</td>
-<td>yes</td>
-<td>选择yes部署<strong>批量评估</strong>部分, 选择no跳过</td>
-</tr>
-<tr>
-<td>Deploy Visualization</td>
-<td>no</td>
-<td>选择yes部署<strong>可视化</strong>部分, 选择no跳过</td>
-</tr>
-<tr>
-<td>QuickSight User</td>
-<td>无</td>
-<td>输入QuickSight用户名，从页面<a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin?#users">Manage users</a>获取， 如果您选择了部署<strong>可视化</strong>部分，此参数是必须的。</td>
-</tr>
-<tr>
-<td>QuickSight Role Name</td>
-<td>无</td>
-<td>输入QuickSight服务角色名字，从页面<a href="https://us-east-1.quicksight.aws.amazon.com/sn/admin?#aws">Security &amp; permissions</a>获取， 如果您选择了部署<strong>可视化</strong>部分，此参数是必须的。</td>
-</tr>
-</tbody>
-</table>
-</li>
-<li>
-<p>选择<strong>下一步</strong>。</p>
-</li>
-<li>
-<p>在<strong>配置堆栈选项</strong>页面上，保留默认值并选择<strong>下一步</strong>。</p>
-</li>
-<li>
-<p>在<strong>审核</strong>页面，查看并确认设置。确保选中确认模板将创建Amazon Identity and Access Management（IAM）资源的复选框。选择<strong>下一步</strong>。</p>
-</li>
-<li>
-<p>选择<strong>创建堆栈</strong>以部署堆栈。</p>
-</li>
-</ol>
-<p>您可以在AWS CloudFormation控制台的<strong>状态</strong>列中查看stack的状态。正常情况下，大约10分钟内可以看到状态为<strong>CREATE_COMPLETE</strong>。</p>
-<h2 id="2sns">步骤2：（可选）订阅SNS通知</h2>
-<p>当批量评估执行完成后，如果您想获得Email通知，可以按照下面的步骤订阅SNS通知。您也可以通过短信订阅通知。</p>
-<ol>
-<li>
-<p>登录<a href="https://console.aws.amazon.com/cloudformation/">AWS CloudFormation控制台</a>。</p>
-</li>
-<li>
-<p>在<strong>堆栈</strong>页面，选择本方案的堆栈。</p>
-</li>
-<li>
-<p>选择<strong>输出</strong>页签，记录SNS主题的值。</p>
-<p><img alt="SNS name" src="../images/deploy-output-sns.png" /></p>
-</li>
-<li>
-<p>导航至<a href="https://console.aws.amazon.com/sns/v3/home?region=us-east-1#/topics">Amazon SNS控制台</a>。</p>
-</li>
-<li>
-<p>选中<strong>主题</strong>，然后点击在CloudFormation部署的输出中的SNS主题。</p>
-</li>
-<li>
-<p>选择<strong>创建订阅</strong>。</p>
-</li>
-<li>
-<p>在<strong>协议</strong>列表中，选择<strong>电子邮件</strong>。</p>
-</li>
-<li>
-<p>在<strong>终端节点</strong>文本框中，输入可以从Amazon SNS接收通知的电子邮件地址。</p>
-</li>
-<li>
-<p>选择<strong>创建订阅</strong>。</p>
-</li>
-<li>
-<p>检查您的邮箱，您将收到一封邮件，点击邮件中<em>Confirm Subscription</em>链接，确认订阅。</p>
-</li>
-</ol>
-<h2 id="3cloudformation">步骤3：（可选）更新CloudFormation堆栈</h2>
+<h2 id="cloudformation">更新CloudFormation堆栈</h2>
+<p>部署完成后，您可以通过更新CloudFormation堆栈来修改配置。</p>
 <ol>
 <li>
 <p>登录<a href="https://console.aws.amazon.com/cloudformation/">AWS CloudFormation</a>管理控制台。</p>
 </li>
 <li>
-<p>选择本解决方案的堆栈，如果您遵循上面的部署步骤，堆栈的名字是<strong>QCEDDStack</strong>。</p>
+<p>选择本解决方案的根堆栈，而不是嵌套堆栈（NESTED）。</p>
 </li>
 <li>
 <p>选择<strong>更新</strong>按钮。</p>
 </li>
 <li>
-<p>选择<strong>使用当前模版</strong>， 选择 <strong>下一步</strong>。</p>
+<p>选择<strong>使用当前模版</strong>，选择<strong>下一步</strong>。</p>
 </li>
 <li>
-<p>选择或者填写对应的参数。</p>
-</li>
-<li>
-<p>选择<strong>下一步</strong>。</p>
+<p>根据需要更改对应的参数，然后选择<strong>下一步</strong>。例如，如果您从前为<strong>部署可视化</strong>选择<code>no</code>，现在可更改为<code>yes</code>。</p>
 </li>
 <li>
 <p>在<strong>配置堆栈选项</strong>页面上，保留默认值并选择<strong>下一步</strong>。</p>

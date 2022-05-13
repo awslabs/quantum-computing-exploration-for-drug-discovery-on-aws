@@ -15,7 +15,7 @@
     
     
       
-        <title>Post Process - Quantum Computing Exploration for Drug Discovery on AWS</title>
+        <title>Process Results - Quantum Computing Exploration for Drug Discovery on AWS</title>
       
     
     
@@ -60,7 +60,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#step-4-postprocess-results" class="md-skip">
+        <a href="#step-4-process-results" class="md-skip">
           Skip to content
         </a>
       
@@ -93,7 +93,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Post Process
+              Process Results
             
           </span>
         </div>
@@ -514,7 +514,7 @@
       
       
       <a href="./" class="md-nav__link md-nav__link--active">
-        Post Process
+        Process Results
       </a>
       
     </li>
@@ -562,7 +562,7 @@
   
     <li class="md-nav__item">
       <a href="../batch-evaluation/" class="md-nav__link">
-        Standard Images
+        Run Default Batch Evaluation
       </a>
     </li>
   
@@ -576,7 +576,7 @@
   
     <li class="md-nav__item">
       <a href="../evaluate-your-own-model/" class="md-nav__link">
-        Customize Images
+        Batch Evaluate Your Own Model
       </a>
     </li>
   
@@ -1749,7 +1749,7 @@ Licensed under the Apache License, Version 2.0.
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<h1 id="step-4-postprocess-results">Step 4: PostProcess Results<a class="anchor-link" href="#step-4-postprocess-results">&#182;</a></h1>
+<h1 id="step-4-process-results">Step 4: Process Results<a class="anchor-link" href="#step-4-process-results">&#182;</a></h1>
 </div>
 </div>
 </div>
@@ -1762,17 +1762,48 @@ Licensed under the Apache License, Version 2.0.
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>This part describes how to process the optimized results for evaluation and visualization.</p>
 <ol>
-<li><p>Prepare the following parameters.</p>
-<p>| Parameter | Description | Value |
-|--- |--- |--- |
-|method | Annealing method for QUBO problem |'dwave-sa': use the simulated annealer in ocean toolkit<br> 'dwave-qa': use the quantum annealer|
-|raw_path| Path for the original molecule file| './molecule-data/117_ideal.mol2' in this example |
-|data_path| Path for the processed molecule file| './qmu_117_ideal_data_latest.mol2' in this example |
-|bucket | S3 bucket to store your results | - |
-|prefix | Name of the folder in your S3 bucket | - |
-|task_id | Your quantum annealing task id| '2b5a3b05-1a0e-443a-852c-4ec422a10e59' in this example|</p>
-</li>
+<li>Prepare the following parameters.</li>
 </ol>
+<table>
+<thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>method</td>
+<td>Annealing method for QUBO problem</td>
+<td>'dwave-sa': use the simulated annealer in ocean toolkit<br> 'dwave-qa': use the quantum annealer</td>
+</tr>
+<tr>
+<td>raw_path</td>
+<td>Path for the original molecule file</td>
+<td>'./molecule-data/117_ideal.mol2' in this example</td>
+</tr>
+<tr>
+<td>data_path</td>
+<td>Path for the processed molecule file</td>
+<td>'./qmu_117_ideal_data_latest.mol2' in this example</td>
+</tr>
+<tr>
+<td>bucket</td>
+<td>S3 bucket to store your results</td>
+<td>-</td>
+</tr>
+<tr>
+<td>prefix</td>
+<td>Name of the folder in your S3 bucket</td>
+<td>-</td>
+</tr>
+<tr>
+<td>task_id</td>
+<td>Your quantum annealing task id</td>
+<td>'2b5a3b05-1a0e-443a-852c-4ec422a10e59' in this example</td>
+</tr>
+</tbody>
+</table>
 
 </div>
 </div>
@@ -1784,9 +1815,7 @@ Licensed under the Apache License, Version 2.0.
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<ol>
-<li>Use <strong>ResultParser</strong> object for SA to run the process.</li>
-</ol>
+<p>2.Use <strong>ResultParser</strong> object for SA to run the process.</p>
 
 </div>
 </div>
@@ -2088,9 +2117,7 @@ INFO:root:finish save ./molecule-data/117_ideal_dwave-sa_20220323-14.mol2 and ./
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>As shown in the first block, the local time for SA is around 174 seconds. With the  <strong>generate_optimize_pts()</strong> method, the final 3D points after unfolding will be generated and saved as json file and mol2 files. 
 The last block shows the optimizing results which are also stored in json files. It shows that the optimized result gains <strong>1.0212x</strong> increase in volume.</p>
-<ol>
-<li>Run the process for QA:</li>
-</ol>
+<p>3.Run the process for QA:</p>
 
 </div>
 </div>
@@ -2390,15 +2417,11 @@ as local json and mol2 files respectively. The result indicates that QA gains <s
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<ol>
-<li>Open folders for the optimized results.</li>
-</ol>
+<p>4.Open folders for the optimized results.</p>
 <p>With more experiments, results with timestamp are stored incrementally.</p>
 <p><img src="../../../images/optimize-results.png" alt="optimize-results"></p>
 <p>Figure 13: Optimized results</p>
-<ol>
-<li>Use the following method to see the original molecule and unfolding molecule.</li>
-</ol>
+<p>5.Use the following method to see the original molecule and unfolding molecule.</p>
 
 </div>
 </div>
@@ -2528,11 +2551,9 @@ qa_process_result.InteractView(qa_result_filepath, size=800)</div>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<ol>
-<li>(Optional) Upload the result 117_ideal_dwave-qa_20220216-05.mol2 into
+<p>6.(Optional) Upload the result 117_ideal_dwave-qa_20220216-05.mol2 into
 <a href="https://www.rcsb.org/3d-view">Protein Data Bank online viewer tool</a> 
-to see the result:</li>
-</ol>
+to see the result:</p>
 <p><img src="../../../images/visualization.png" alt="visual"></p>
 <p>Figure 14: Protein Data Bank visualization</p>
 
@@ -2572,13 +2593,13 @@ to see the result:</li>
       
       
         
-        <a href="../batch-evaluation/" class="md-footer__link md-footer__link--next" aria-label="Next: Standard Images" rel="next">
+        <a href="../batch-evaluation/" class="md-footer__link md-footer__link--next" aria-label="Next: Run Default Batch Evaluation" rel="next">
           <div class="md-footer__title">
             <div class="md-ellipsis">
               <span class="md-footer__direction">
                 Next
               </span>
-              Standard Images
+              Run Default Batch Evaluation
             </div>
           </div>
           <div class="md-footer__button md-icon">

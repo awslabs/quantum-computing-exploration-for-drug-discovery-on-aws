@@ -515,7 +515,7 @@
   
     <li class="md-nav__item">
       <a href="../post-process/" class="md-nav__link">
-        Post Process
+        Process Results
       </a>
     </li>
   
@@ -562,7 +562,7 @@
   
     <li class="md-nav__item">
       <a href="../batch-evaluation/" class="md-nav__link">
-        Standard Images
+        Run Default Batch Evaluation
       </a>
     </li>
   
@@ -576,7 +576,7 @@
   
     <li class="md-nav__item">
       <a href="../evaluate-your-own-model/" class="md-nav__link">
-        Customize Images
+        Batch Evaluate Your Own Model
       </a>
     </li>
   
@@ -1762,27 +1762,43 @@ Licensed under the Apache License, Version 2.0.
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <p>To build the Quadratic Unconstrained Binary Optimization (QUBO) model for molecular unfolding, do the following:</p>
 <ol>
-<li><p>Initialize the QMUQUBO object by setting the following parameters. In this example, set <strong>M</strong> to 2, and <strong>D</strong> to 8. The <strong>A</strong> and <strong>hubo_qubo_val</strong> are from experiment tests. Refer to <strong>Build Model (Technical Details)</strong> for the definition of parameters.</p>
-<p>| Parameter | Description | Value |
- |--- |--- |--- |
- |A | penalty scalar |300|
- |hubo_qubo_val | energy penalty of make_quadratic() |200|
- |M | number of torsions for molecular unfolding| [1, max number of rotatable bonds] |
- |D| angle precision of rotation| 8|
- |method| the method of building model| 'pre-calc': calculate the score in advance|</p>
-</li>
+<li>Initialize the QMUQUBO object by setting the following parameters. In this example, set <strong>M</strong> to 2, and <strong>D</strong> to 8. The <strong>A</strong> and <strong>hubo_qubo_val</strong> are from experiment tests. Refer to <strong>Build Model (Technical Details)</strong> for the definition of parameters.</li>
 </ol>
-
-</div>
-</div>
-</div>
-</div>
-<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
-<div class="jp-Cell-inputWrapper">
-<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
-</div>
-<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
-</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<table>
+<thead><tr>
+<th>Parameter</th>
+<th>Description</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>penalty scalar</td>
+<td>300</td>
+</tr>
+<tr>
+<td>hubo_qubo_val</td>
+<td>energy penalty of make_quadratic()</td>
+<td>200</td>
+</tr>
+<tr>
+<td>M</td>
+<td>number of torsions for molecular unfolding</td>
+<td>[1, max number of rotatable bonds]</td>
+</tr>
+<tr>
+<td>D</td>
+<td>angle precision of rotation</td>
+<td>8</td>
+</tr>
+<tr>
+<td>method</td>
+<td>the method of building model</td>
+<td>'pre-calc': calculate the score in advance</td>
+</tr>
+</tbody>
+</table>
 <p><strong>Important</strong></p>
 <p>You might have long run time for large <strong>M</strong> or <strong>D</strong>. Refer to <strong>Batch Evaluation</strong> to view the general running time before adjusting parameters.</p>
 
@@ -2008,10 +2024,8 @@ qmu_qubo.build_model(**model_param)</div>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<ol>
-<li>Use the method <strong>describe_model()</strong> to check the properties of the model. </li>
-<li>Use the method <strong>save()</strong> to save the model as <strong>./qmu_117_ideal_model_latest.pickle</strong>. The value of <strong>model_path</strong> will be updated.</li>
-</ol>
+<p>2.Use the method <strong>describe_model()</strong> to check the properties of the model.</p>
+<p>3.Use the method <strong>save()</strong> to save the model as <strong>./qmu_117_ideal_model_latest.pickle</strong>. The value of <strong>model_path</strong> will be updated.</p>
 
 </div>
 </div>

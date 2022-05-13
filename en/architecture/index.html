@@ -502,7 +502,7 @@
   
     <li class="md-nav__item">
       <a href="../workshop/a-molecular-unfolding/post-process/" class="md-nav__link">
-        Post Process
+        Process Results
       </a>
     </li>
   
@@ -549,7 +549,7 @@
   
     <li class="md-nav__item">
       <a href="../workshop/a-molecular-unfolding/batch-evaluation/" class="md-nav__link">
-        Standard Images
+        Run Default Batch Evaluation
       </a>
     </li>
   
@@ -563,7 +563,7 @@
   
     <li class="md-nav__item">
       <a href="../workshop/a-molecular-unfolding/evaluate-your-own-model/" class="md-nav__link">
-        Customize Images
+        Batch Evaluate Your Own Model
       </a>
     </li>
   
@@ -698,20 +698,16 @@
 <p>All computing resources (AWS Batch compute environment and AWS Lambda) are placed in private subnets in Amazon VPC to provide secure accesses. </p>
 <p>VPC Endpoints are provisioned for Amazon ECR, Amazon S3, Amazon Athena and Amazon Braket.</p>
 </div>
-<p>Notebook experimentation</p>
 <ol>
 <li>
 <p>An <a href="https://docs.aws.amazon.com/sagemaker/latest/dg/nbi.html">Amazon SageMaker Notebook</a> instance, which allows <strong>notebook experimentation</strong> for drug discovery.</p>
 </li>
 <li>
-<p>The notebook comes with prepared sample code for different problems in drug discovery, such as molecular unfolding.</p>
+<p>The notebook comes with prepared use cases for different problems in drug discovery, such as molecular unfolding.</p>
 </li>
 <li>
 <p>The solution creates <a href="https://docs.aws.amazon.com/vpc/latest/userguide/vpc-nat-gateway.html">NAT gateways</a> in public <a href="https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Subnets.html">subnets</a>, which connects to internet using an <a href="https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Internet_Gateway.html">internet gateway</a>. The notebook instance is deployed in private subnets, and can access internet using NAT gateways.</p>
 </li>
-</ol>
-<p>Batch evaluation</p>
-<ol>
 <li>
 <p><a href="https://aws.amazon.com/step-functions/">AWS Step Functions</a> workflows for Batch evaluation. </p>
 </li>
@@ -739,9 +735,6 @@
 <li>
 <p>When the whole batch evaluation is done, the workflow sends a notification to <a href="https://aws.amazon.com/sns/">Amazon SNS</a> topic. All subscribers will be notified for the batch evaluation results.</p>
 </li>
-</ol>
-<p>Visualization</p>
-<ol>
 <li>
 <p>An <a href="https://docs.aws.amazon.com/athena/latest/ug/what-is.html">Amazon Athena</a> table is created for querying the metrics of batch evaluation.</p>
 </li>
