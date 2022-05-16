@@ -8,7 +8,7 @@ You are responsible for the cost of AWS services used when running this solution
 
 ## Example 
 
-This example uses the molecular unfolding function for the prepared sample, which is a ligand 117_idel.mol2 downloaded from [Protein Data Bank (PDB)](https://www.rcsb.org/downloads/ligands). Assuming a customer continues using the notebook to study use cases, and adopts the solution to run one complete batch evaluation both on quantum computing resource and classical computing resource in order to visualize the results in Amazon QuickSight, the cost for running this solution in US East (N. Virginia) Region is $28.21 per day.
+This example uses the molecular unfolding function for the prepared sample, which is a ligand 117_idel.mol2 downloaded from [Protein Data Bank (PDB)](https://www.rcsb.org/downloads/ligands). Assuming a customer continues using the notebook to study use cases, and adopts the solution to run one complete batch evaluation both on quantum computing resource and classical computing resource in order to visualize the results in Amazon QuickSight, the cost for running this solution in US East (N. Virginia) Region is shown in the table below.
 
 !!! Notice "Note"
     
