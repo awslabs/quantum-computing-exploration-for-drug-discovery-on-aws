@@ -1,0 +1,38 @@
+Quantum Computing Exploration for Drug Discovery on AWS
+Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+**********************
+THIRD PARTY COMPONENTS
+**********************
+This software includes third party software subject to the following copyrights:
+
+@aws-cdk/aws-batch-alpha under the Apache License 2.0
+@aws-sdk/client-cloudformation under the Apache License 2.0
+aws-cdk-lib under the Apache License 2.0
+aws-cdk under the Apache License 2.0
+cdk-bootstrapless-synthesizer under the Apache License 2.0
+constructs under the Apache License 2.0
+@popperjs/core under the Massachusetts Institute of Technology (MIT) license
+@types/color under the Massachusetts Institute of Technology (MIT) license
+@types/color-name under the Massachusetts Institute of Technology (MIT) license
+@types/jest under the Massachusetts Institute of Technology (MIT) license
+@types/node under the Massachusetts Institute of Technology (MIT) license
+@types/sharp under the Massachusetts Institute of Technology (MIT) license
+@types/uuid under the Massachusetts Institute of Technology (MIT) license
+@typescript-eslint/eslint-plugin under the Massachusetts Institute of Technology (MIT) license
+@typescript-eslint/parser under the BSD 2-Clause license
+typescript under the Apache License 2.0
+ts-jest under the Massachusetts Institute of Technology (MIT) license
+ts-node under the Massachusetts Institute of Technology (MIT) license
+jest under the Massachusetts Institute of Technology (MIT) license
+
+numpy under the BSD License (BSD)
+dimod under the Apache Software License (Apache 2.0)
+networkx under the BSD License
+dwave-ocean-sdk under the Apache Software License (Apache 2.0)
+biopandas under the BSD License (BSD 3-Clause)
+dwave-ocean-sdk under the Apache Software License (Apache 2.0)
+amazon-braket-sdk under the Apache Software License (Apache License 2.0)
+amazon-braket-ocean-plugin under the Apache Software License (Apache License 2.0)
+py3Dmol under the MIT License (MIT)
+ipywidgets under the BSD License (BSD)
