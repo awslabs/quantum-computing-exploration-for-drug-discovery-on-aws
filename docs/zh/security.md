@@ -7,3 +7,9 @@
 ### Amazon Braket安全设置
 
 由于在解决方案中使用了Amazon Braket，请参考与其相关的[安全措施说明](https://docs.aws.amazon.com/braket/latest/developerguide/security.html)。
+
+
+### 考虑将 Amazon Macie 与 Amazon S3 结合使用
+Amazon Macie 是一项数据安全和数据隐私服务，它使用机器学习和模式匹配来帮助您发现、监控和保护 Amazon 环境中的敏感数据。Macie 自动发现敏感数据 [例如个人身份信息 (PII) 和财务数据]，让您更好地了解组织在 Amazon S3 中存储的数据。
+
+Macie 还为您提供 S3 存储桶的清单，并且它会自动评估和监控这些存储桶以实现安全性和访问控制。如果 Macie 检测到敏感数据或潜在的数据安全性或隐私问题，它会创建详细的调查结果供您查看并在必要时进行补救。有关更多信息，请参阅 [Amazon Macie](https://docs.aws.amazon.com/macie/latest/user/what-is-macie.html) 是什么？
