@@ -7,3 +7,9 @@ The security groups created in this solution are designed to control and isolate
 ## Amazon Braket Security 
 
 Refer to [Security in Amazon Braket](https://docs.aws.amazon.com/braket/latest/developerguide/security.html) to learn how to apply the shared responsibility model when using Amazon Braket.
+
+## Consider using Amazon Macie with Amazon S3
+
+Amazon Macie is a data security and data privacy service that uses machine learning and pattern matching to help you discover, monitor, and protect sensitive data in your AWS environment. Macie automates the discovery of sensitive data, such as personally identifiable information (PII) and financial data, to provide you with a better understanding of the data that your organization stores in Amazon S3.
+
+Macie also provides you with an inventory of your S3 buckets, and it automatically evaluates and monitors those buckets for security and access control. If Macie detects sensitive data or potential issues with the security or privacy of your data, it creates detailed findings for you to review and remediate as necessary. For more information, see [Amazon Macie User Guide](https://docs.aws.amazon.com/macie/latest/user/what-is-macie.html).
