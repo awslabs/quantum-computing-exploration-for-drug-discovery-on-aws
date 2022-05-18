@@ -102,6 +102,7 @@
   
         arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6
         arn:aws:braket:::device/qpu/d-wave/Advantage_system4
+        arn:aws:braket:us-west-2::device/qpu/d-wave/Advantage_system6
       
   * **ccResources**：vCPU（第一个元素）和 GiB中的内存（第二个元素），例如4个vCPU，8GiB内存是：`[4, 8]`
 
@@ -125,7 +126,8 @@
     },
     "devicesArns": [
         "arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6",
-        "arn:aws:braket:::device/qpu/d-wave/Advantage_system4"
+        "arn:aws:braket:::device/qpu/d-wave/Advantage_system4",
+        "arn:aws:braket:us-west-2::device/qpu/d-wave/Advantage_system6"
     ],
     "ccResources": [
         [4, 8]
