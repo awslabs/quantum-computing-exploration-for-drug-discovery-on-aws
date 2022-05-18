@@ -97,6 +97,7 @@ Definition:
   
         arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6
         arn:aws:braket:::device/qpu/d-wave/Advantage_system4
+        arn:aws:braket:us-west-2::device/qpu/d-wave/Advantage_system6
       
   * **ccResources**: vCPU (first element) and memory (second element) in GiB, for example, 4 vCPU and 8 GiB memory is: `[4, 8]`
 
@@ -121,7 +122,8 @@ Example input with default mol2 file:
     },
     "devicesArns": [
         "arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6",
-        "arn:aws:braket:::device/qpu/d-wave/Advantage_system4"
+        "arn:aws:braket:::device/qpu/d-wave/Advantage_system4",
+        "arn:aws:braket:us-west-2::device/qpu/d-wave/Advantage_system6"
     ],
     "ccResources": [
         [4, 8]
