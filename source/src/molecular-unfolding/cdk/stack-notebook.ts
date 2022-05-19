@@ -46,7 +46,7 @@ export class NotebookNestStack extends NestedStack {
 
     super(scope, id, props);
     const featureName = 'Notebook';
-    this.templateOptions.description = `(${MainStack.SOLUTION_ID}-notebook) ${MainStack.SOLUTION_NAME} ${MainStack.SOLUTION_VERSION} ${featureName}`;
+    this.templateOptions.description = `(${MainStack.SOLUTION_ID}-notebook) ${MainStack.SOLUTION_NAME} - ${featureName} (Version ${MainStack.SOLUTION_VERSION})`;
 
     // Notebook //////////////////////////
     const notebook = new Notebook(this, 'Notebook', {
