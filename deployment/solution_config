@@ -4,4 +4,5 @@ SOLUTION_TRADEMARKEDNAME='quantum-computing-exploration-for-drug-discovery-on-aw
 SOLUTION_VERSION='v1.0.0' # optional
 IMAGE_PREFIX=gcrv100
 SOLUTION_ECR_ACCOUNT=366590864501
-SOLUTION_ECR_REPO_NAME=quantum-ready-architecture-for-drug-discovery
+SOLUTION_ECR_REPO_NAME='quantum-computing-exploration-for-drug-discovery-on-aws'
+
