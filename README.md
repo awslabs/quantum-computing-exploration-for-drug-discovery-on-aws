@@ -117,3 +117,7 @@ chmod +x ./run-all-tests.sh
 
 ```
 ***
+
+## AWS solution landing page
+
+For more detail, please refer to [solution landing page](https://aws.amazon.com/solutions/implementations/quantum-computing-exploration-for-drug-discovery/).
