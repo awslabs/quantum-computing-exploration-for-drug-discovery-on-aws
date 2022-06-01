@@ -153,6 +153,5 @@ For example:
 ## Q&A
 
 - How to delete batch evaluation result of a specific experiment from Quicksight dashboard?  
-  
-  The location of batch evaluation result is `s3://<S3_bucket>/molecular-unfolding/batch_evaluation_metrics/`, 
-  each file name starts with `execution_id`, you can delete all the files that start with the execution id.
+
+    The location of batch evaluation result is `s3://<S3_bucket>/molecular-unfolding/batch_evaluation_metrics/`, each file name starts with `execution_id`, you can delete all the files that start with the execution id.

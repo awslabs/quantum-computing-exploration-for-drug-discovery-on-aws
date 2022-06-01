@@ -158,5 +158,4 @@
 
 - 如何从仪表盘中删除一个批量评估结果？
   
-  批量评估结果放在`s3://<S3_bucket>/molecular-unfolding/batch_evaluation_metrics/`中，每个文件都是以`execution_id`开头，
-  如果要删除某次批量评估结果，只需删除对应执行Id所有文件即可。
+    批量评估结果放在`s3://<S3_bucket>/molecular-unfolding/batch_evaluation_metrics/`中，每个文件都是以`execution_id`开头，如果要删除某次批量评估结果，只需删除对应执行Id所有文件即可。
