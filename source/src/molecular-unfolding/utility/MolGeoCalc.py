@@ -6,7 +6,10 @@
 ########################################################################################################################
 
 import numpy as np
+import math
 import logging
+
+from pyqubo import Array
 
 log = logging.getLogger()
 log.setLevel('INFO')
@@ -29,8 +32,14 @@ def add_list(l1, l2):
 def rount_list(l):
     result = []
     for n in l:
-        result.append(round(n, 4))
+        result.append(n)
     return result
+
+# def rount_list(l):
+#     result = []
+#     for n in l:
+#         result.append(round(n, 4))
+#     return result
 
 
 """
@@ -75,6 +84,11 @@ def PointRotate3D(p1, p2, p0, theta):
     d32 = t*Y*Z + s*X
     d33 = t*Z**2 + c
 
+    # print("debug accuracy!!")
+    # print(f"[{d11}, {d12}, {d13}, {p1[0]}]")
+    # print(f"[{d21}, {d22}, {d23}, {p1[1]}]")
+    # print(f"[{d31}, {d32}, {d33}, {p1[2]}]")
+
     #            |p.x|
     # Matrix 'M'*|p.y|
     #            |p.z|
@@ -86,7 +100,75 @@ def PointRotate3D(p1, p2, p0, theta):
     sum_p = add_list(q, p1)
     final_p = rount_list(sum_p)
     return final_p
+    
+def rot_mat_value(vec, orig, c, s):
 
+    x_vector = vec[0]
+    y_vector = vec[1]
+    z_vector = vec[2]
+    x_orig = orig[0]
+    y_orig = orig[1]
+    z_orig = orig[2]
+
+    u = x_orig - x_vector
+    v = y_orig - y_vector
+    w = z_orig - z_vector
+
+    u2 = u * u
+    v2 = v * v
+    w2 = w * w
+
+    l2 = u * u + v * v + w * w
+
+    l = math.sqrt(l2)
+
+    cost = c
+
+    sint = s
+
+    one_minus_cost = 1 - c
+
+    matrix_list =[]
+    row_list = []
+    row_list.append((u2 + (v2 + w2) * cost)/l2)
+    row_list.append((u * v * one_minus_cost - w * l * sint)/l2)
+    row_list.append((u * w * one_minus_cost + v * l * sint)/l2)
+    row_list.append(((x_orig * (v2 + w2) - u * (y_orig * v + z_orig * w)) * one_minus_cost + (y_orig * w - z_orig * v) * l * sint) / l2)
+    # row_list = [round(num, 4) for num in row_list]
+
+    matrix_list.append(row_list)
+
+    row_list = []
+    row_list.append((u * v * one_minus_cost + w * l * sint)/l2)
+    row_list.append((v2 + (u2 + w2) * cost)/l2)
+    row_list.append((v * w * one_minus_cost - u * l * sint)/l2)
+    row_list.append(((y_orig * (u2 + w2) - v * (x_orig * u + z_orig * w)) * one_minus_cost + (z_orig * u - x_orig * w) * l * sint) / l2)
+    # row_list = [round(num, 4) for num in row_list]
+
+    matrix_list.append(row_list)
+
+    row_list = []
+    row_list.append((u * w * one_minus_cost - v * l * sint)/l2)
+    row_list.append((v * w * one_minus_cost + u * l * sint)/l2)
+    row_list.append((w2 + (u2 + v2) * cost)/l2)
+    row_list.append(((z_orig * (u2 + v2) - w * (x_orig * u + y_orig * v)) * one_minus_cost + (x_orig * v - y_orig * u) * l * sint) / l2)
+    # row_list = [round(num, 4) for num in row_list]
+
+    matrix_list.append(row_list)
+
+    row_list = []
+    row_list.append(0)
+    row_list.append(0)
+    row_list.append(0)
+    row_list.append(1)
+    # row_list = [round(num, 4) for num in row_list]
+
+    matrix_list.append(row_list)
+
+    # np_matrix = np.array(matrix_list)
+    rot_binary = Array(matrix_list)
+
+    return rot_binary, matrix_list
 
 def get_idx(var, var_rb_map):
     # 'x_3_2' -> '3' -> '4+5' -> ['4','5']
@@ -147,7 +229,9 @@ def calc_distance_between_pts(pts1, pts2):
     sum_distance = []
     for pt_a in pts1:
         for pt_b in pts2:
-            sum_distance.append(np.linalg.norm(np.array(pt_a)-np.array(pt_b)))
+            distance_array = np.array(pt_a)-np.array(pt_b)
+            sum_distance.append(np.inner(distance_array,distance_array))
+            # sum_distance.append(np.linalg.norm(np.array(pt_a)-np.array(pt_b)))
 
     return sum(sum_distance)
 
