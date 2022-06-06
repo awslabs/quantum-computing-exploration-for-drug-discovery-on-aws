@@ -21,7 +21,6 @@ import {
   aws_s3 as s3,
   aws_ec2 as ec2,
   CfnOutput,
-  Fn
 } from 'aws-cdk-lib';
 import {
   Construct,
@@ -60,17 +59,9 @@ export class NotebookNestStack extends NestedStack {
       stackName: props.stackName,
     });
 
-    // this.notebookUrlOutput = new CfnOutput(this, 'NotebookUrl', {
-    //   value: notebook.notebookUrl,
-    //   description: 'Notebook URL',
-    // });
-
-    const notebookId = Fn.select(0, Fn.split('?', Fn.select(1, Fn.split("openNotebook/", notebook.notebookUrl))))
-
     this.notebookUrlOutput = new CfnOutput(this, 'NotebookUrl', {
-      value: `https://${notebookId}.notebook.${this.region}.sagemaker.aws/notebooks/quantum-computing-exploration-for-drug-discovery-on-aws/source/src/molecular-unfolding/molecular_unfolding.ipynb`,
+      value: notebook.notebookUrl,
       description: 'Notebook URL',
     });
-
   }
 }

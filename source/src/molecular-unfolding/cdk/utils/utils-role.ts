@@ -155,9 +155,17 @@ export class RoleUtil {
         'logs:CreateLogGroup',
       ],
     }));
+
+    role.addToPolicy(new iam.PolicyStatement({
+      resources: [
+        `arn:aws:ssm:*:${this.props.account}:parameter/qcedd/*`
+      ],
+      actions: [
+        "ssm:GetParameter"
+      ],
+    }));
     return role;
   }
-
 
   public createBatchJobExecutionRole(roleName: string): iam.Role {
     const ecrAccount = process.env.SOLUTION_ECR_ACCOUNT || '';

@@ -16,6 +16,7 @@ limitations under the License.
 
 import {
   aws_s3 as s3,
+  aws_ssm as ssm,
   StackProps,
   Fn,
   RemovalPolicy,
@@ -183,6 +184,13 @@ export class MainStack extends SolutionStack {
       encryption: s3.BucketEncryption.S3_MANAGED,
       serverAccessLogsBucket: logS3bucket,
       serverAccessLogsPrefix: `accesslogs/${bucketName}/`,
+    });
+
+    new ssm.StringParameter(this, 'bucketNameParam', {
+      parameterName: '/qcedd/bucket-name',
+      stringValue: s3bucket.bucketName,
+      type: ssm.ParameterType.STRING,
+      tier: ssm.ParameterTier.STANDARD,
     });
 
     s3bucket.node.addDependency(logS3bucket);
