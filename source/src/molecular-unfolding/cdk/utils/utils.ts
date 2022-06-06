@@ -90,7 +90,8 @@ export class AddCfnNag implements IAspect {
             node.node.path.endsWith('/WaitForTokenLambdaRole/DefaultPolicy/Resource') ||
             node.node.path.endsWith('/Notebook/NotebookRole/DefaultPolicy/Resource') ||
             node.node.path.endsWith('/BucketNotificationsHandler050a0587b7544547bf325f094a3db834/Role/DefaultPolicy/Resource') ||
-            node.node.path.endsWith('/CreateEventRuleFuncRole/DefaultPolicy/Resource')
+            node.node.path.endsWith('/CreateEventRuleFuncRole/DefaultPolicy/Resource') ||
+            node.node.path.endsWith('/qcedd-quicksight-service-role/DefaultPolicy/Resource')
     ) {
       (node as CfnResource).addMetadata('cfn_nag', {
         rules_to_suppress: [{
