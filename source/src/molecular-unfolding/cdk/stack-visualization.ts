@@ -59,105 +59,15 @@ export class VisualizationNestStack extends NestedStack {
       }],
     });
 
-    const quicksightRole = this.createQuickSightRole(scope);
-    props.bucket.grantRead(quicksightRole);
-
-    this.outputQuicksightRoleArn = new CfnOutput(scope, 'outputQuickSightRoleArn', {
-      value: quicksightRole.roleArn,
-      description: 'QuickSight Role Arn',
-    });
-
     // Dashboard //////////////////////////
     const dashboard = new Dashboard(this, 'Dashboard', {
       account: this.account,
       region: this.region,
       stackName: props.stackName,
+      bucket: props.bucket,
       quicksightUser: props.quicksightUser,
     });
     this.outputDashboardUrl = dashboard.outputDashboardUrl;
+    this.outputQuicksightRoleArn = dashboard.outputQuicksightRoleArn;
   }
-
-  private createQuickSightRole(scope: Construct): iam.Role {
-    const role = new iam.Role(scope, 'qcedd-quicksight-service-role', {
-      assumedBy: new iam.ServicePrincipal('quicksight.amazonaws.com'),
-    });
-    role.addToPolicy(new iam.PolicyStatement({
-      resources: [
-        'athena:BatchGetQueryExecution',
-        'athena:CancelQueryExecution',
-        'athena:GetCatalogs',
-        'athena:GetExecutionEngine',
-        'athena:GetExecutionEngines',
-        'athena:GetNamespace',
-        'athena:GetNamespaces',
-        'athena:GetQueryExecution',
-        'athena:GetQueryExecutions',
-        'athena:GetQueryResults',
-        'athena:GetQueryResultsStream',
-        'athena:GetTable',
-        'athena:GetTables',
-        'athena:ListQueryExecutions',
-        'athena:RunQuery',
-        'athena:StartQueryExecution',
-        'athena:StopQueryExecution',
-        'athena:ListWorkGroups',
-        'athena:ListEngineVersions',
-        'athena:GetWorkGroup',
-        'athena:GetDataCatalog',
-        'athena:GetDatabase',
-        'athena:GetTableMetadata',
-        'athena:ListDataCatalogs',
-        'athena:ListDatabases',
-        'athena:ListTableMetadata',
-      ],
-      actions: [
-        '*',
-      ],
-    }));
-    role.addToPolicy(new iam.PolicyStatement({
-      resources: [
-        'glue:CreateDatabase',
-        'glue:DeleteDatabase',
-        'glue:GetDatabase',
-        'glue:GetDatabases',
-        'glue:UpdateDatabase',
-        'glue:CreateTable',
-        'glue:DeleteTable',
-        'glue:BatchDeleteTable',
-        'glue:UpdateTable',
-        'glue:GetTable',
-        'glue:GetTables',
-        'glue:BatchCreatePartition',
-        'glue:CreatePartition',
-        'glue:DeletePartition',
-        'glue:BatchDeletePartition',
-        'glue:UpdatePartition',
-        'glue:GetPartition',
-        'glue:GetPartitions',
-        'glue:BatchGetPartition',
-      ],
-      actions: [
-        '*',
-      ],
-    }));
-    role.addToPolicy(new iam.PolicyStatement({
-      actions: [
-        's3:GetBucketLocation',
-        's3:GetObject',
-        's3:ListBucket',
-        's3:ListBucketMultipartUploads',
-        's3:ListMultipartUploadParts',
-        's3:AbortMultipartUpload',
-        's3:CreateBucket',
-        '1s3:PutObject',
-        's3:PutBucketPublicAccessBlock',
-      ],
-      resources: [
-        'arn:aws:s3:::aws-athena-query-results-*',
-      ],
-    }));
-
-    return role;
-  }
-
 }
