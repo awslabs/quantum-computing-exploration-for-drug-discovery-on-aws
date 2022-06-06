@@ -24,6 +24,8 @@ pip3 install jupyter ipykernel
 
 python3 -m ipykernel install --user --name=qcenv
 
+sed -i 's#],#],\n "env": { "S3_BUCKET": "__S3_BUCKET__" },#g' /home/ec2-user/.local/share/jupyter/kernels/qcenv/kernel.json
+
 EOS
 
 exit 0

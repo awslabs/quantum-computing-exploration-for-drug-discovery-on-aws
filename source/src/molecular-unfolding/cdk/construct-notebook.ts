@@ -72,6 +72,8 @@ export class Notebook extends Construct {
 
     let onStartContent = readFileSync(`${__dirname}/resources/onStart.template`, 'utf-8');
 
+    onStartContent = onStartContent.replace('__S3_BUCKET__', this.props.bucket.bucketName);
+
     const base64Encode = (str: string): string => Buffer.from(str, 'binary').toString('base64');
     const onStartContentBase64 = base64Encode(onStartContent);
 
