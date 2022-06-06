@@ -16,7 +16,6 @@ limitations under the License.
 
 
 import {
-  Aspects,
   NestedStack,
   NestedStackProps,
   aws_s3 as s3,
@@ -35,21 +34,16 @@ import {
   MainStack,
 } from './stack-main';
 
-
-import {
-  ChangePolicyName,
-} from './utils/utils';
-
 export interface VisualizationNestStackProps extends NestedStackProps {
   readonly prefix: string;
   readonly stackName: string;
   readonly quicksightUser: string;
-  readonly quickSightRoleName: string;
   readonly bucket: s3.Bucket;
 }
 
 export class VisualizationNestStack extends NestedStack {
   outputDashboardUrl: CfnOutput;
+  outputQuicksightRoleArn: CfnOutput;
   constructor(scope: Construct, id: string, props: VisualizationNestStackProps) {
 
     super(scope, id, props);
@@ -58,16 +52,20 @@ export class VisualizationNestStack extends NestedStack {
 
     new CfnRule(this, 'VisualizationParameterRule', {
       assertions: [{
-        assert: Fn.conditionNot(Fn.conditionOr(
+        assert: Fn.conditionNot(
           Fn.conditionEquals(props.quicksightUser, ''),
-          Fn.conditionEquals(props.quickSightRoleName, ''))),
-        assertDescription: 'Parameter quicksightUser or quickSightRoleName is not set',
+        ),
+        assertDescription: 'Parameter QuickSightUser is not set',
       }],
     });
 
-    const quicksightRole = iam.Role.fromRoleArn(this, 'QuickSightServiceRole', `arn:aws:iam::${this.account}:role/${props.quickSightRoleName}`);
+    const quicksightRole = this.createQuickSightRole(scope);
     props.bucket.grantRead(quicksightRole);
-    Aspects.of(this).add(new ChangePolicyName());
+
+    this.outputQuicksightRoleArn = new CfnOutput(scope, 'outputQuickSightRoleArn', {
+      value: quicksightRole.roleArn,
+      description: 'QuickSight Role Arn',
+    });
 
     // Dashboard //////////////////////////
     const dashboard = new Dashboard(this, 'Dashboard', {
@@ -78,4 +76,88 @@ export class VisualizationNestStack extends NestedStack {
     });
     this.outputDashboardUrl = dashboard.outputDashboardUrl;
   }
+
+  private createQuickSightRole(scope: Construct): iam.Role {
+    const role = new iam.Role(scope, 'qcedd-quicksight-service-role', {
+      assumedBy: new iam.ServicePrincipal('quicksight.amazonaws.com'),
+    });
+    role.addToPolicy(new iam.PolicyStatement({
+      resources: [
+        'athena:BatchGetQueryExecution',
+        'athena:CancelQueryExecution',
+        'athena:GetCatalogs',
+        'athena:GetExecutionEngine',
+        'athena:GetExecutionEngines',
+        'athena:GetNamespace',
+        'athena:GetNamespaces',
+        'athena:GetQueryExecution',
+        'athena:GetQueryExecutions',
+        'athena:GetQueryResults',
+        'athena:GetQueryResultsStream',
+        'athena:GetTable',
+        'athena:GetTables',
+        'athena:ListQueryExecutions',
+        'athena:RunQuery',
+        'athena:StartQueryExecution',
+        'athena:StopQueryExecution',
+        'athena:ListWorkGroups',
+        'athena:ListEngineVersions',
+        'athena:GetWorkGroup',
+        'athena:GetDataCatalog',
+        'athena:GetDatabase',
+        'athena:GetTableMetadata',
+        'athena:ListDataCatalogs',
+        'athena:ListDatabases',
+        'athena:ListTableMetadata',
+      ],
+      actions: [
+        '*',
+      ],
+    }));
+    role.addToPolicy(new iam.PolicyStatement({
+      resources: [
+        'glue:CreateDatabase',
+        'glue:DeleteDatabase',
+        'glue:GetDatabase',
+        'glue:GetDatabases',
+        'glue:UpdateDatabase',
+        'glue:CreateTable',
+        'glue:DeleteTable',
+        'glue:BatchDeleteTable',
+        'glue:UpdateTable',
+        'glue:GetTable',
+        'glue:GetTables',
+        'glue:BatchCreatePartition',
+        'glue:CreatePartition',
+        'glue:DeletePartition',
+        'glue:BatchDeletePartition',
+        'glue:UpdatePartition',
+        'glue:GetPartition',
+        'glue:GetPartitions',
+        'glue:BatchGetPartition',
+      ],
+      actions: [
+        '*',
+      ],
+    }));
+    role.addToPolicy(new iam.PolicyStatement({
+      actions: [
+        's3:GetBucketLocation',
+        's3:GetObject',
+        's3:ListBucket',
+        's3:ListBucketMultipartUploads',
+        's3:ListMultipartUploadParts',
+        's3:AbortMultipartUpload',
+        's3:CreateBucket',
+        '1s3:PutObject',
+        's3:PutBucketPublicAccessBlock',
+      ],
+      resources: [
+        'arn:aws:s3:::aws-athena-query-results-*',
+      ],
+    }));
+
+    return role;
+  }
+
 }

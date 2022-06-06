@@ -86,12 +86,6 @@ export class MainStack extends SolutionStack {
       default: '',
     });
 
-    const quickSightRoleNameParam = new CfnParameter(this, 'QuickSightRoleName', {
-      type: 'String',
-      description: 'QuickSight IAM role name',
-      default: '',
-    });
-
     const conditionDeployNotebook = new CfnCondition(this, 'ConditionDeployNotebook', {
       expression: Fn.conditionEquals(
         deployNotebook.valueAsString, 'yes',
@@ -128,7 +122,6 @@ export class MainStack extends SolutionStack {
             Parameters: [
               deployVisualization.logicalId,
               quickSightUserParam.logicalId,
-              quickSightRoleNameParam.logicalId,
             ],
           },
 
@@ -148,10 +141,6 @@ export class MainStack extends SolutionStack {
 
           [quickSightUserParam.logicalId]: {
             default: 'QuickSight User',
-          },
-
-          [quickSightRoleNameParam.logicalId]: {
-            default: 'QuickSight Role Name',
           },
         },
       },
@@ -235,11 +224,11 @@ export class MainStack extends SolutionStack {
         prefix,
         stackName,
         bucket: s3bucket,
-        quickSightRoleName: quickSightRoleNameParam.valueAsString,
         quicksightUser: quickSightUserParam.valueAsString,
       });
       (dashboard.nestedStackResource as CfnStack).cfnOptions.condition = conditionDeployVisualization;
       this.addOutput('DashboardURL', dashboard.outputDashboardUrl, conditionDeployVisualization);
+      this.addOutput('QuickSightRoleArn', dashboard.outputQuicksightRoleArn, conditionDeployVisualization);
       dashboard.node.addDependency(s3bucket);
     }
     Aspects.of(this).add(new AddCfnNag());
