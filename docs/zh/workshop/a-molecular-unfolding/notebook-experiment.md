@@ -43,9 +43,7 @@
     ![deployment output](../../images/deploy_output_notebook.png)
     图 7: 笔记本链接
 
-4. 打开笔记本文件**source/src/molecular-folding/molecular_unfolding.ipynbn**，并确保笔记本的核为**qcenv**。
-
-5. 浏览整个笔记本。它由四个步骤组成：
+4. 浏览整个笔记本。它由四个步骤组成：
 
     - 第一步：准备数据，为实验准备分子数据
     - 第二步：建立模型，建立分子展开模型
@@ -64,4 +62,4 @@
 
 # 参考
 <div id='wiki-docking'></div>
-- 6.[Wikipedia: Docking (molecular)](https://en.wikipedia.org/wiki/Docking_(molecular))
+- [Wikipedia: Docking (molecular)](https://en.wikipedia.org/wiki/Docking_(molecular))
