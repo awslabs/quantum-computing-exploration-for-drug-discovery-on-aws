@@ -158,10 +158,10 @@ export class RoleUtil {
 
     role.addToPolicy(new iam.PolicyStatement({
       resources: [
-        `arn:aws:ssm:*:${this.props.account}:parameter/qcedd/*`
+        `arn:aws:ssm:*:${this.props.account}:parameter/qcedd/*`,
       ],
       actions: [
-        "ssm:GetParameter"
+        'ssm:GetParameter',
       ],
     }));
     return role;

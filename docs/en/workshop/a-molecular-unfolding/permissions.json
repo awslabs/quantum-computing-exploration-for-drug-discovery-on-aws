@@ -160,6 +160,17 @@
         {
             "Effect": "Allow",
             "Action": [
+                "ssm:GetParameter",
+                "ssm:PutParameter",
+                "ssm:DeleteParameter"
+            ],
+            "Resource": [
+                "arn:aws:ssm:*:*:parameter/qcedd/*"
+            ]
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
                 "events:ListRules",
                 "events:ListEventBuses",
                 "events:DeleteRule",
