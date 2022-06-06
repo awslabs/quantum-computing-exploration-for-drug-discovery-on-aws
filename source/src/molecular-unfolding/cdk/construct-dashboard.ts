@@ -47,11 +47,6 @@ export class Dashboard extends Construct {
     const quicksightRole = this.createQuickSightRole(scope);
     props.bucket.grantRead(quicksightRole);
 
-    this.outputQuicksightRoleArn = new CfnOutput(scope, 'outputQuickSightRoleArn', {
-      value: quicksightRole.roleArn,
-      description: 'QuickSight Role Arn',
-    });
-
     const quicksightUser = `arn:aws:quicksight:us-east-1:${this.props.account}:user/default/${this.props.quicksightUser}`;
 
     const templateArn = 'arn:aws:quicksight:us-east-1:366590864501:template/qc-batch-evaluation-analysis-template-v1';
@@ -273,8 +268,12 @@ export class Dashboard extends Construct {
       value: `https://${this.props.region}.quicksight.aws.amazon.com/sn/dashboards/${qcBatchEvaluationDashboard.dashboardId}`,
       description: 'Quicksight Dashboard URL',
     });
-  }
 
+    this.outputQuicksightRoleArn = new CfnOutput(scope, 'outputQuickSightRoleArn', {
+      value: quicksightRole.roleArn,
+      description: 'QuickSight Role Arn',
+    });
+  }
 
   private createQuickSightRole(scope: Construct): iam.Role {
     const role = new iam.Role(scope, 'qcedd-quicksight-service-role', {
