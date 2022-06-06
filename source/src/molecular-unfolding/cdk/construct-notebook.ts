@@ -118,7 +118,7 @@ export class Notebook extends Construct {
         directInternetAccess: 'Disabled',
       });
     }
-    this.notebookUrl =`https://${notebookInstance.attrNotebookInstanceName}.notebook.${this.props.region}.sagemaker.aws/notebooks/quantum-computing-exploration-for-drug-discovery-on-aws/source/src/molecular-unfolding/molecular_unfolding.ipynb`;
+    this.notebookUrl = `https://${notebookInstance.attrNotebookInstanceName}.notebook.${this.props.region}.sagemaker.aws/notebooks/quantum-computing-exploration-for-drug-discovery-on-aws/source/src/molecular-unfolding/molecular_unfolding.ipynb`;
   }
 
 }
