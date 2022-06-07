@@ -110,7 +110,7 @@ export class RoleUtil {
         's3:ListMultipartUploadParts',
         's3:AbortMultipartUpload',
         's3:CreateBucket',
-        '1s3:PutObject',
+        's3:PutObject',
         's3:PutBucketPublicAccessBlock',
       ],
       resources: [
