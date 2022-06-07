@@ -43,7 +43,6 @@
     Deploy Batch Evaluation | yes | 选择`yes`部署**批量评估**，选择`no`将不会部署该模块。 |
     Deploy Visualization | no |选择`yes`部署**可视化**，选择`no`将不会部署该模块。 |
     QuickSight User | 无 | 输入QuickSight用户名，可从页面[Manage users](https://us-east-1.quicksight.aws.amazon.com/sn/admin?#users)获取。如果您选择了部署**可视化**，此参数是必填的。
-    QuickSight Role Name | 无 | 输入QuickSight服务角色名字，从页面[Security & permissions](https://us-east-1.quicksight.aws.amazon.com/sn/admin?#aws)获取。如果您选择了部署**可视化**，此参数是必填的。
 
 6. 选择**下一步**。
 
@@ -82,148 +81,6 @@
 10. 检查您的邮箱，您将收到一封邮件，点击邮件中*Confirm Subscription*链接，确认订阅。
 
 ## 授予权限（可视化）
-### 创建QuickSight IAM角色
-
-1. 导航至[IAM Policies](https://console.aws.amazon.com/iamv2/home?#/policies)。
-
-2. 从左侧导航栏中选择**策略**，然后选择**创建策略**。该策略将被添加至新创建的IAM角色。
-
-3. 在创建策略页面，点击**JSON**，填写QuickSight策略如下，这是本方案中QuickSight角色所需的最小权限。
-   
-
-        {
-            "Version": "2012-10-17",
-            "Statement": [{
-                    "Effect": "Allow",
-                    "Action": [
-                        "athena:BatchGetQueryExecution",
-                        "athena:CancelQueryExecution",
-                        "athena:GetCatalogs",
-                        "athena:GetExecutionEngine",
-                        "athena:GetExecutionEngines",
-                        "athena:GetNamespace",
-                        "athena:GetNamespaces",
-                        "athena:GetQueryExecution",
-                        "athena:GetQueryExecutions",
-                        "athena:GetQueryResults",
-                        "athena:GetQueryResultsStream",
-                        "athena:GetTable",
-                        "athena:GetTables",
-                        "athena:ListQueryExecutions",
-                        "athena:RunQuery",
-                        "athena:StartQueryExecution",
-                        "athena:StopQueryExecution",
-                        "athena:ListWorkGroups",
-                        "athena:ListEngineVersions",
-                        "athena:GetWorkGroup",
-                        "athena:GetDataCatalog",
-                        "athena:GetDatabase",
-                        "athena:GetTableMetadata",
-                        "athena:ListDataCatalogs",
-                        "athena:ListDatabases",
-                        "athena:ListTableMetadata"
-                    ],
-                    "Resource": [
-                        "*"
-                    ]
-                },
-                {
-                    "Effect": "Allow",
-                    "Action": [
-                        "glue:CreateDatabase",
-                        "glue:DeleteDatabase",
-                        "glue:GetDatabase",
-                        "glue:GetDatabases",
-                        "glue:UpdateDatabase",
-                        "glue:CreateTable",
-                        "glue:DeleteTable",
-                        "glue:BatchDeleteTable",
-                        "glue:UpdateTable",
-                        "glue:GetTable",
-                        "glue:GetTables",
-                        "glue:BatchCreatePartition",
-                        "glue:CreatePartition",
-                        "glue:DeletePartition",
-                        "glue:BatchDeletePartition",
-                        "glue:UpdatePartition",
-                        "glue:GetPartition",
-                        "glue:GetPartitions",
-                        "glue:BatchGetPartition"
-                    ],
-                    "Resource": [
-                        "*"
-                    ]
-                },
-                {
-                    "Effect": "Allow",
-                    "Action": [
-                        "s3:GetBucketLocation",
-                        "s3:GetObject",
-                        "s3:ListBucket",
-                        "s3:ListBucketMultipartUploads",
-                        "s3:ListMultipartUploadParts",
-                        "s3:AbortMultipartUpload",
-                        "s3:CreateBucket",
-                        "s3:PutObject",
-                        "s3:PutBucketPublicAccessBlock"
-                    ],
-                    "Resource": [
-                        "arn:aws:s3:::aws-athena-query-results-*"
-                    ]
-                },
-                {
-                    "Effect": "Allow",
-                    "Action": [
-                        "lakeformation:GetDataAccess",
-                        "iam:List*"
-                    ],
-                    "Resource": [
-                        "*"
-                    ]
-                }
-            ]
-        }
-
-4. 点击**下一步：标签**。
-
-5. 点击**下一步：审核**。
-
-6. 填写策略名称。本示例填入：`qcedd-quicksight-service-role-policy`。
-
-7. 点击**创建策略**。
-
-8. 导航至[IAM Roles](https://console.aws.amazon.com/iamv2/home?#/roles)。
-
-9. 点击**创建角色**。
-
-10. 选择**自定义信任策略**，填写自定义信任策略如下：
-
-        {
-            "Version": "2012-10-17",
-            "Statement": [
-                {
-                    "Effect": "Allow",
-                    "Principal": {
-                        "Service": "quicksight.amazonaws.com"
-                    },
-                    "Action": "sts:AssumeRole"
-                }
-            ]
-        }
-
-
-11. 点击**下一步**。
-
-12. 在**权限策略**搜索框中输入刚刚创建的策略名称：`qcedd-quicksight-service-role-policy`。
-
-13. 选中策略`qcedd-quicksight-service-role-policy`, 点击**下一步**。
-
-14. 填写**角色名称**。本示例填入： `qcedd-quicksight-service-role`。
-
-15. 点击**创建角色**。
-
-16. 记录所创建角色的名字。
-
 ### 注册QuickSight账户
 
 !!! Notice "说明"
@@ -244,12 +101,13 @@
 
 ### 为QuickSight分配创建好的IAM角色
 
-1. 登录到[Amazon QuickSight控制台](https://quicksight.aws.amazon.com/)。
-2. 从区域下拉列表中选择**美国东部（弗吉尼亚北部）区域**。
-3. 选中右上角的账户名称，点击**管理 QuickSight**。
-4. 从左侧导航栏中选择**安全和权限**。
-5. 在**QuickSight access to AWS services**区域中选中**管理**。
-6. 选择**使用现有角色**，在下拉列表中选择刚刚创建的角色。本示例为`qcedd-quicksight-service-role`。
+1. 从CloudFormation输出中获取QuickSight角色，Key为：QuickSightRoleArn。
+2. 登录到[Amazon QuickSight控制台](https://quicksight.aws.amazon.com/)。
+3. 从区域下拉列表中选择**美国东部（弗吉尼亚北部）区域**。
+4. 选中右上角的账户名称，点击**管理 QuickSight**。
+5. 从左侧导航栏中选择**安全和权限**。
+6. 在**QuickSight access to AWS services**区域中选中**管理**。
+7. 选择**使用现有角色**，在下拉列表中选择第一步中的角色。
 
 ### 记录QuickSight用户名
 

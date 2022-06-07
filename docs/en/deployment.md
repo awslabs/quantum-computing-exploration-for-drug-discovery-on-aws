@@ -41,7 +41,6 @@ The user or IAM role to perform the deployment must have at least permissions de
     Deploy Notebook | yes | Choose `yes` to deploy **Notebook**, or `no` to skip it. |
     Deploy Batch Evaluation | yes | Choose `yes` to deploy **Batch Evaluation**, or `no` to skip it. |
     Deploy Visualization | no | Choose `yes` to deploy **Visualization**, or `no` to skip it. |
-    QuickSight Role Name |<Requires input\> | QuickSight Service Role name, which can be obtained from [Security & permissions](https://us-east-1.quicksight.aws.amazon.com/sn/admin?#aws), requires input if choose yes to Deploy Visualization. |
     QuickSight User | <Requires input\> | QuickSight Username, which can be obtained from [Manage users](https://us-east-1.quicksight.aws.amazon.com/sn/admin?#users), requires input if choose yes to Deploy Visualization.                 |
    
 
@@ -82,147 +81,6 @@ Follow below steps to subscribe to SNS notification via email to receive result 
 10. Check your inbox for the email, and select the **Confirm Subscription** link to confirm the subscription.
 
 ## Grant permissions for Visualization
-### Create IAM Role for QuickSight
-
-1. Navigate to [IAM console](https://console.aws.amazon.com/iamv2/home?#/policies).
-
-2. Choose **Policies** from the left navigation pane, then choose **Create Policy**. The policy will be added to the IAM role that is to be created.
-
-3. In the Create policy page, click the **JSON** tab, and enter the QuickSight policy as below. This is the least policy required for QuickSight in this solution. 
-        
-        {
-            "Version": "2012-10-17",
-            "Statement": [{
-                    "Effect": "Allow",
-                    "Action": [
-                        "athena:BatchGetQueryExecution",
-                        "athena:CancelQueryExecution",
-                        "athena:GetCatalogs",
-                        "athena:GetExecutionEngine",
-                        "athena:GetExecutionEngines",
-                        "athena:GetNamespace",
-                        "athena:GetNamespaces",
-                        "athena:GetQueryExecution",
-                        "athena:GetQueryExecutions",
-                        "athena:GetQueryResults",
-                        "athena:GetQueryResultsStream",
-                        "athena:GetTable",
-                        "athena:GetTables",
-                        "athena:ListQueryExecutions",
-                        "athena:RunQuery",
-                        "athena:StartQueryExecution",
-                        "athena:StopQueryExecution",
-                        "athena:ListWorkGroups",
-                        "athena:ListEngineVersions",
-                        "athena:GetWorkGroup",
-                        "athena:GetDataCatalog",
-                        "athena:GetDatabase",
-                        "athena:GetTableMetadata",
-                        "athena:ListDataCatalogs",
-                        "athena:ListDatabases",
-                        "athena:ListTableMetadata"
-                    ],
-                    "Resource": [
-                        "*"
-                    ]
-                },
-                {
-                    "Effect": "Allow",
-                    "Action": [
-                        "glue:CreateDatabase",
-                        "glue:DeleteDatabase",
-                        "glue:GetDatabase",
-                        "glue:GetDatabases",
-                        "glue:UpdateDatabase",
-                        "glue:CreateTable",
-                        "glue:DeleteTable",
-                        "glue:BatchDeleteTable",
-                        "glue:UpdateTable",
-                        "glue:GetTable",
-                        "glue:GetTables",
-                        "glue:BatchCreatePartition",
-                        "glue:CreatePartition",
-                        "glue:DeletePartition",
-                        "glue:BatchDeletePartition",
-                        "glue:UpdatePartition",
-                        "glue:GetPartition",
-                        "glue:GetPartitions",
-                        "glue:BatchGetPartition"
-                    ],
-                    "Resource": [
-                        "*"
-                    ]
-                },
-                {
-                    "Effect": "Allow",
-                    "Action": [
-                        "s3:GetBucketLocation",
-                        "s3:GetObject",
-                        "s3:ListBucket",
-                        "s3:ListBucketMultipartUploads",
-                        "s3:ListMultipartUploadParts",
-                        "s3:AbortMultipartUpload",
-                        "s3:CreateBucket",
-                        "s3:PutObject",
-                        "s3:PutBucketPublicAccessBlock"
-                    ],
-                    "Resource": [
-                        "arn:aws:s3:::aws-athena-query-results-*"
-                    ]
-                },
-                {
-                    "Effect": "Allow",
-                    "Action": [
-                        "lakeformation:GetDataAccess",
-                        "iam:List*"
-                    ],
-                    "Resource": [
-                        "*"
-                    ]
-                }
-            ]
-        }
-
-4. Choose **Next:Tags**.
-
-5. Choose **Next:Review**.
-
-6. Enter the **Name** of the policy. This deployment uses `qcedd-quicksight-service-role-policy` as an example.
-
-7. Choose **Create policy**.
-
-8. Navigate to [IAM Roles](https://console.aws.amazon.com/iamv2/home?#/roles).
-
-9. Choose **Create Role**.
-
-10. Select **Custom trust policy** in the **Select trusted entity** page, and enter the trust policy in **Custom trust policy** as below.
-        
-        {
-            "Version": "2012-10-17",
-            "Statement": [
-                {
-                    "Effect": "Allow",
-                    "Principal": {
-                        "Service": "quicksight.amazonaws.com"
-                    },
-                    "Action": "sts:AssumeRole"
-                }
-            ]
-        }
-
-
-11. Choose **Next**.
-
-12. Enter the policy name created in the above step in the **Permissions policies** search box. 
-
-13. Select the policy, and choose **Next**.
-
-14. Enter the **Role name**. This deployment uses`qcedd-quicksight-service-role` as an example.
-
-15. Choose **Create role**.
-
-16. Record the name of this role.
-
 ### Sign up for QuickSight
 
 !!! notice "Note"
@@ -243,12 +101,13 @@ Follow below steps to subscribe to SNS notification via email to receive result 
 
 ### Assign the Created IAM Role to QuickSight
 
-1. Sign in to Amazon QuickSight console.
-2. Use the Region selector to select the **US East (N.Virginia)** Region.
-3.	Select the account name in the upper right corner, and choose **Manage QuickSight**.
-4.	Choose **Security & permissions** from the left navigation pane.
-5.	In the **QuickSight access to AWS services** area, choose **Manage**.
-6. Choose **Use an existing role**, and select the role created in previous step. As an example, the deployment uses`qcedd-quicksight-service-role`.
+1. Obtain QuickSight role from CloudFormation output, the key is: `QuickSightRoleArn`.
+2. Sign in to Amazon QuickSight console.
+3. Use the Region selector to select the **US East (N.Virginia)** Region.
+4. Select the account name in the upper right corner, and choose **Manage QuickSight**.
+5. Choose **Security & permissions** from the left navigation pane.
+6. In the **QuickSight access to AWS services** area, choose **Manage**.
+7. Choose **Use an existing role**, and select the role in step 1. 
 
 ### Obtain QuickSight Username
 
