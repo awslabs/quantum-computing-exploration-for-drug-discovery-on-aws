@@ -18,8 +18,6 @@ limitations under the License.
 import {
   aws_quicksight as quicksight,
   CfnOutput,
-  aws_s3 as s3,
-  aws_iam as iam,
 } from 'aws-cdk-lib';
 
 import {
@@ -32,20 +30,15 @@ interface DashBoardProps {
   account: string;
   stackName: string;
   quicksightUser: string;
-  bucket: s3.Bucket;
 }
 
 export class Dashboard extends Construct {
   private props: DashBoardProps
   outputDashboardUrl: CfnOutput
-  outputQuicksightRoleArn: CfnOutput
 
   constructor(scope: Construct, id: string, props: DashBoardProps) {
     super(scope, id);
     this.props = props;
-
-    const quicksightRole = this.createQuickSightRole(scope);
-    props.bucket.grantRead(quicksightRole);
 
     const quicksightUser = `arn:aws:quicksight:us-east-1:${this.props.account}:user/default/${this.props.quicksightUser}`;
 
@@ -268,93 +261,5 @@ export class Dashboard extends Construct {
       value: `https://${this.props.region}.quicksight.aws.amazon.com/sn/dashboards/${qcBatchEvaluationDashboard.dashboardId}`,
       description: 'Quicksight Dashboard URL',
     });
-
-    this.outputQuicksightRoleArn = new CfnOutput(scope, 'outputQuickSightRoleArn', {
-      value: quicksightRole.roleArn,
-      description: 'QuickSight Role Arn',
-    });
-  }
-
-  private createQuickSightRole(scope: Construct): iam.Role {
-    const role = new iam.Role(scope, 'qcedd-quicksight-service-role', {
-      assumedBy: new iam.ServicePrincipal('quicksight.amazonaws.com'),
-    });
-    role.addToPolicy(new iam.PolicyStatement({
-      actions: [
-        'athena:BatchGetQueryExecution',
-        'athena:CancelQueryExecution',
-        'athena:GetCatalogs',
-        'athena:GetExecutionEngine',
-        'athena:GetExecutionEngines',
-        'athena:GetNamespace',
-        'athena:GetNamespaces',
-        'athena:GetQueryExecution',
-        'athena:GetQueryExecutions',
-        'athena:GetQueryResults',
-        'athena:GetQueryResultsStream',
-        'athena:GetTable',
-        'athena:GetTables',
-        'athena:ListQueryExecutions',
-        'athena:RunQuery',
-        'athena:StartQueryExecution',
-        'athena:StopQueryExecution',
-        'athena:ListWorkGroups',
-        'athena:ListEngineVersions',
-        'athena:GetWorkGroup',
-        'athena:GetDataCatalog',
-        'athena:GetDatabase',
-        'athena:GetTableMetadata',
-        'athena:ListDataCatalogs',
-        'athena:ListDatabases',
-        'athena:ListTableMetadata',
-      ],
-      resources: [
-        '*',
-      ],
-    }));
-    role.addToPolicy(new iam.PolicyStatement({
-      actions: [
-        'glue:CreateDatabase',
-        'glue:DeleteDatabase',
-        'glue:GetDatabase',
-        'glue:GetDatabases',
-        'glue:UpdateDatabase',
-        'glue:CreateTable',
-        'glue:DeleteTable',
-        'glue:BatchDeleteTable',
-        'glue:UpdateTable',
-        'glue:GetTable',
-        'glue:GetTables',
-        'glue:BatchCreatePartition',
-        'glue:CreatePartition',
-        'glue:DeletePartition',
-        'glue:BatchDeletePartition',
-        'glue:UpdatePartition',
-        'glue:GetPartition',
-        'glue:GetPartitions',
-        'glue:BatchGetPartition',
-      ],
-      resources: [
-        '*',
-      ],
-    }));
-    role.addToPolicy(new iam.PolicyStatement({
-      actions: [
-        's3:GetBucketLocation',
-        's3:GetObject',
-        's3:ListBucket',
-        's3:ListBucketMultipartUploads',
-        's3:ListMultipartUploadParts',
-        's3:AbortMultipartUpload',
-        's3:CreateBucket',
-        '1s3:PutObject',
-        's3:PutBucketPublicAccessBlock',
-      ],
-      resources: [
-        'arn:aws:s3:::aws-athena-query-results-*',
-      ],
-    }));
-
-    return role;
   }
 }

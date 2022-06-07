@@ -46,6 +46,8 @@ import {
   AddCfnNag,
 } from './utils/utils';
 
+import { RoleUtil } from './utils/utils-role';
+
 import setup_vpc_and_sg from './utils/vpc';
 
 export class MainStack extends SolutionStack {
@@ -173,12 +175,17 @@ export class MainStack extends SolutionStack {
       serverAccessLogsBucket: logS3bucket,
       serverAccessLogsPrefix: `accesslogs/${bucketName}/`,
     });
-
     s3bucket.node.addDependency(logS3bucket);
-
     new CfnOutput(this, 'BucketName', {
       value: s3bucket.bucketName,
       description: 'S3 Bucket Name',
+    });
+
+    const quicksightRole = RoleUtil.createQuickSightRole(this);
+    s3bucket.grantRead(quicksightRole);
+    new CfnOutput(this, 'QuickSightRoleArn', {
+      value: quicksightRole.roleArn,
+      description: 'QuickSight Role Arn',
     });
 
     const {
@@ -223,12 +230,10 @@ export class MainStack extends SolutionStack {
       const dashboard = new VisualizationNestStack(this, 'QuicksightDashboard', {
         prefix,
         stackName,
-        bucket: s3bucket,
         quicksightUser: quickSightUserParam.valueAsString,
       });
       (dashboard.nestedStackResource as CfnStack).cfnOptions.condition = conditionDeployVisualization;
       this.addOutput('DashboardURL', dashboard.outputDashboardUrl, conditionDeployVisualization);
-      this.addOutput('QuickSightRoleArn', dashboard.outputQuicksightRoleArn, conditionDeployVisualization);
       dashboard.node.addDependency(s3bucket);
     }
     Aspects.of(this).add(new AddCfnNag());

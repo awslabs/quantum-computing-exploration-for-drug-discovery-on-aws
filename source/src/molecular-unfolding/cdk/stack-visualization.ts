@@ -18,7 +18,6 @@ limitations under the License.
 import {
   NestedStack,
   NestedStackProps,
-  aws_s3 as s3,
   CfnOutput,
   CfnRule,
   Fn,
@@ -37,12 +36,10 @@ export interface VisualizationNestStackProps extends NestedStackProps {
   readonly prefix: string;
   readonly stackName: string;
   readonly quicksightUser: string;
-  readonly bucket: s3.Bucket;
 }
 
 export class VisualizationNestStack extends NestedStack {
   outputDashboardUrl: CfnOutput;
-  outputQuicksightRoleArn: CfnOutput;
   constructor(scope: Construct, id: string, props: VisualizationNestStackProps) {
 
     super(scope, id, props);
@@ -63,10 +60,8 @@ export class VisualizationNestStack extends NestedStack {
       account: this.account,
       region: this.region,
       stackName: props.stackName,
-      bucket: props.bucket,
       quicksightUser: props.quicksightUser,
     });
     this.outputDashboardUrl = dashboard.outputDashboardUrl;
-    this.outputQuicksightRoleArn = dashboard.outputQuicksightRoleArn;
   }
 }

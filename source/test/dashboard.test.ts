@@ -38,7 +38,6 @@ function initializeNestStackTemplate() {
   const nestStack = new VisualizationNestStack(stack, 'dashboard', {
     prefix,
     bucket: s3bucket,
-    quickSightRoleName: 'test_qs_iam_role',
     quicksightUser: 'adminUser',
     stackName: 'nestStack',
   });
