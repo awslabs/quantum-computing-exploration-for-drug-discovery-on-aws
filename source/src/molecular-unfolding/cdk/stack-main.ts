@@ -47,6 +47,8 @@ import {
   AddCfnNag,
 } from './utils/utils';
 
+import { RoleUtil } from './utils/utils-role';
+
 import setup_vpc_and_sg from './utils/vpc';
 
 export class MainStack extends SolutionStack {
@@ -87,12 +89,6 @@ export class MainStack extends SolutionStack {
       default: '',
     });
 
-    const quickSightRoleNameParam = new CfnParameter(this, 'QuickSightRoleName', {
-      type: 'String',
-      description: 'QuickSight IAM role name',
-      default: '',
-    });
-
     const conditionDeployNotebook = new CfnCondition(this, 'ConditionDeployNotebook', {
       expression: Fn.conditionEquals(
         deployNotebook.valueAsString, 'yes',
@@ -129,7 +125,6 @@ export class MainStack extends SolutionStack {
             Parameters: [
               deployVisualization.logicalId,
               quickSightUserParam.logicalId,
-              quickSightRoleNameParam.logicalId,
             ],
           },
 
@@ -149,10 +144,6 @@ export class MainStack extends SolutionStack {
 
           [quickSightUserParam.logicalId]: {
             default: 'QuickSight User',
-          },
-
-          [quickSightRoleNameParam.logicalId]: {
-            default: 'QuickSight Role Name',
           },
         },
       },
@@ -194,10 +185,16 @@ export class MainStack extends SolutionStack {
     });
 
     s3bucket.node.addDependency(logS3bucket);
-
     new CfnOutput(this, 'BucketName', {
       value: s3bucket.bucketName,
       description: 'S3 Bucket Name',
+    });
+
+    const quicksightRole = RoleUtil.createQuickSightRole(this);
+    s3bucket.grantRead(quicksightRole);
+    new CfnOutput(this, 'QuickSightRoleArn', {
+      value: quicksightRole.roleArn,
+      description: 'QuickSight Role Arn',
     });
 
     const {
@@ -242,8 +239,6 @@ export class MainStack extends SolutionStack {
       const dashboard = new VisualizationNestStack(this, 'QuicksightDashboard', {
         prefix,
         stackName,
-        bucket: s3bucket,
-        quickSightRoleName: quickSightRoleNameParam.valueAsString,
         quicksightUser: quickSightUserParam.valueAsString,
       });
       (dashboard.nestedStackResource as CfnStack).cfnOptions.condition = conditionDeployVisualization;
