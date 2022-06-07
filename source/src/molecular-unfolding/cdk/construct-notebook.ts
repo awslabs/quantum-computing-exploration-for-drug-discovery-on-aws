@@ -28,6 +28,7 @@ import {
 import {
   CfnNotebookInstanceLifecycleConfig,
   CfnNotebookInstance,
+  CfnCodeRepository
 } from 'aws-cdk-lib/aws-sagemaker';
 
 
@@ -38,6 +39,9 @@ import {
 import {
   RoleUtil,
 } from './utils/utils-role';
+import {
+  MainStack
+} from './stack-main';
 
 
 export interface Props {
@@ -64,9 +68,17 @@ export class Notebook extends Construct {
 
     this.roleUtil = RoleUtil.newInstance(this, props);
 
-    const githubRepo = 'https://github.com/awslabs/quantum-computing-exploration-for-drug-discovery-on-aws';
+    const repositoryUrl = 'https://github.com/awslabs/quantum-computing-exploration-for-drug-discovery-on-aws';
 
-    const defaultCodeRepository = this.node.tryGetContext('default_code_repository') || githubRepo;
+    const codeRepository = new CfnCodeRepository(scope, 'CodeRepository', {
+      codeRepositoryName: 'quantum-computing-exploration-for-drug-discovery-on-aws',
+      gitConfig: {
+        branch: MainStack.SOLUTION_VERSION,
+        repositoryUrl,
+      }
+    });
+
+    const defaultCodeRepository = this.node.tryGetContext('default_code_repository') || codeRepository.codeRepositoryName;
 
     const notebookRole = this.roleUtil.createNotebookIamRole();
 
@@ -87,37 +99,21 @@ export class Notebook extends Construct {
       enableKeyRotation: true,
     });
 
-    let notebookInstance = null;
-    if (defaultCodeRepository.startsWith('https://')) {
-      notebookInstance = new CfnNotebookInstance(this, 'Notebook', {
-        instanceType: INSTANCE_TYPE,
-        roleArn: notebookRole.roleArn,
-        rootAccess: 'Enabled', // Lifecycle configurations need root access to be able to set up a notebook instance
-        lifecycleConfigName: installBraketSdk.attrNotebookInstanceLifecycleConfigName,
-        volumeSizeInGb: 50,
-        kmsKeyId: qcNotebookKey.keyId,
-        securityGroupIds: [this.props.notebookSg.securityGroupId],
-        subnetId: this.props.vpc.selectSubnets({
-          subnetType: ec2.SubnetType.PRIVATE_WITH_NAT,
-        }).subnetIds[0],
-        directInternetAccess: 'Disabled',
-        defaultCodeRepository: defaultCodeRepository,
-      });
-    } else {
-      notebookInstance = new CfnNotebookInstance(this, 'Notebook', {
-        instanceType: INSTANCE_TYPE,
-        roleArn: notebookRole.roleArn,
-        rootAccess: 'Enabled',
-        lifecycleConfigName: installBraketSdk.attrNotebookInstanceLifecycleConfigName,
-        volumeSizeInGb: 50,
-        kmsKeyId: qcNotebookKey.keyId,
-        securityGroupIds: [this.props.notebookSg.securityGroupId],
-        subnetId: this.props.vpc.selectSubnets({
-          subnetType: ec2.SubnetType.PRIVATE_WITH_NAT,
-        }).subnetIds[0],
-        directInternetAccess: 'Disabled',
-      });
-    }
+    const notebookInstance = new CfnNotebookInstance(this, 'Notebook', {
+      instanceType: INSTANCE_TYPE,
+      roleArn: notebookRole.roleArn,
+      rootAccess: 'Enabled', // Lifecycle configurations need root access to be able to set up a notebook instance
+      lifecycleConfigName: installBraketSdk.attrNotebookInstanceLifecycleConfigName,
+      volumeSizeInGb: 50,
+      kmsKeyId: qcNotebookKey.keyId,
+      securityGroupIds: [this.props.notebookSg.securityGroupId],
+      subnetId: this.props.vpc.selectSubnets({
+        subnetType: ec2.SubnetType.PRIVATE_WITH_NAT,
+      }).subnetIds[0],
+      directInternetAccess: 'Disabled',
+      defaultCodeRepository: defaultCodeRepository,
+    });
+
     this.notebookUrl = `https://${notebookInstance.attrNotebookInstanceName}.notebook.${this.props.region}.sagemaker.aws/notebooks/quantum-computing-exploration-for-drug-discovery-on-aws/source/src/molecular-unfolding/molecular_unfolding.ipynb`;
   }
 
