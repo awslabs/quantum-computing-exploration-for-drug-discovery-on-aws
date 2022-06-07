@@ -17,7 +17,6 @@ limitations under the License.
 import {
   App,
   Stack,
-  aws_s3 as s3,
 } from 'aws-cdk-lib';
 
 import {
