@@ -54,6 +54,8 @@ The user or IAM role to perform the deployment must have at least permissions de
 
 You can view the status of the stack in the AWS CloudFormation Console in the **Status** column. You should receive a **CREATE_COMPLETE** status in approximately 10 minutes.
 
+By default, **Notebook** and **Batch Evaluation** are deployed, if you want to deploy **Visualization**, please record `QuickSightRoleArn` in CloudFormation output and complete **Grant permissions for Visualization** and **Update AWS CloudFormation template** in this chapter.
+
 ## Step 2: (Optional) Subscribe to SNS notification 
 
 Follow below steps to subscribe to SNS notification via email to receive result notifications from AWS Step Functions. You can also subscribe to the notification via text messages.

@@ -54,6 +54,9 @@
 
 您可以在AWS CloudFormation控制台的**状态**列中查看stack的状态。正常情况下，大约10分钟内可以看到状态为**CREATE_COMPLETE**。
 
+默认情况下，只部署**笔记本实验**和**批量评估**，如果您还需部署**可视化**部分，请记录CloudFormation输出中的QuickSightRoleArn，
+并完成本章中的**授予权限（可视化）**和**更新CloudFormation堆栈**部分。
+
 ## 步骤2：（可选）订阅SNS通知
 
 当批量评估执行完成后，如果您想获得Email通知，可以按照下面的步骤订阅SNS通知。您也可以通过短信订阅通知。
