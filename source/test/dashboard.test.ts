@@ -33,11 +33,9 @@ function initializeNestStackTemplate() {
   const app = new App();
   const stack = new Stack(app, 'test');
 
-  const s3bucket = new s3.Bucket(stack, 'amazon-braket-test');
   const prefix = 'test_s3_prefix';
   const nestStack = new VisualizationNestStack(stack, 'dashboard', {
     prefix,
-    bucket: s3bucket,
     quicksightUser: 'adminUser',
     stackName: 'nestStack',
   });
