@@ -231,6 +231,8 @@ else
     export VERSION=$(git describe --tags || echo v0.0.0)
 fi
 
+export SOLUTION_VERSION=$VERSION
+
 #-----------------------------------------------------------------------------------
 # Get reference for all important folders
 #-----------------------------------------------------------------------------------
