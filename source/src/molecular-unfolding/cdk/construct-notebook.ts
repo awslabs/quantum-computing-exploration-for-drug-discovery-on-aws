@@ -35,10 +35,10 @@ import {
   Construct,
 } from 'constructs';
 
+import { MainStack } from './stack-main';
 import {
   RoleUtil,
 } from './utils/utils-role';
-import { MainStack } from './stack-main';
 
 
 export interface Props {
