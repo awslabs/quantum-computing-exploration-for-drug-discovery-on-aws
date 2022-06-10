@@ -117,3 +117,9 @@ chmod +x ./run-all-tests.sh
 
 ```
 ***
+
+## Documents 
+
+- [Github latest page](https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/en/)
+
+- [Solution landing page](https://aws.amazon.com/solutions/implementations/quantum-computing-exploration-for-drug-discovery/)

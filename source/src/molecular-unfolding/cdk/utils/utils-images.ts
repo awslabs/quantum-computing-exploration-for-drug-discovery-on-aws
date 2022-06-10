@@ -114,7 +114,7 @@ export class ECRImageUtil {
 
     const ecrAccount = process.env.SOLUTION_ECR_ACCOUNT || '';
     const repoName = process.env.SOLUTION_ECR_REPO_NAME || '';
-    const version = MainStack.SOLUTION_VERSION
+    const version = MainStack.SOLUTION_VERSION;
     const imagePrefix = process.env.IMAGE_PREFIX || '';
     const tag = `${version}-${imagePrefix}${name}`;
     const region = Stack.of(this.scope).region;
