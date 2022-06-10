@@ -24,6 +24,14 @@ pip3 install jupyter ipykernel
 
 python3 -m ipykernel install --user --name=qcenv
 
+aws s3 cp s3://aws-gcr-solutions/quantum-computing-exploration-for-drug-discovery-on-aws/__VERSION__/code.zip /home/ec2-user/SageMaker/ || true
+
+if [[ -f /home/ec2-user/SageMaker/code.zip ]]; then
+    cd /home/ec2-user/SageMaker/
+    unzip code.zip -d ./
+    rm code.zip
+fi 
+
 EOS
 
 exit 0
