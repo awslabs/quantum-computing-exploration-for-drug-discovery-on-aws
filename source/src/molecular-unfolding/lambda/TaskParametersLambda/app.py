@@ -13,7 +13,7 @@ import logging
 log = logging.getLogger()
 log.setLevel('INFO')
 
-solution_version = os.environ.get('SOLUTION_VERSION', 'v1.0.1')
+solution_version = os.environ.get('SOLUTION_VERSION', 'v1.0.0')
 solution_id = os.environ.get('SOLUTION_ID')
 user_agent_config = {
         'user_agent_extra': f'AwsSolution/{solution_id}/{solution_version}'
