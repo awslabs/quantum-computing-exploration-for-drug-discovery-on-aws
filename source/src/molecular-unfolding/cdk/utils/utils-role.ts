@@ -119,6 +119,17 @@ export class RoleUtil {
 
     role.addToPolicy(new iam.PolicyStatement({
       resources: [
+        'arn:aws:s3:::aws-gcr-solutions/quantum-computing-exploration-for-drug-discovery-on-aws/*',
+        'arn:aws:s3:::solutions-reference/quantum-computing-exploration-for-drug-discovery-on-aws/*',
+        'arn:aws:s3:::solutions-test-reference/quantum-computing-exploration-for-drug-discovery-on-aws/*',
+      ],
+      actions: [
+        's3:GetObject',
+      ],
+    }));
+
+    role.addToPolicy(new iam.PolicyStatement({
+      resources: [
         `arn:aws:s3:::${this.props.bucket.bucketName}`,
       ],
       actions: [
