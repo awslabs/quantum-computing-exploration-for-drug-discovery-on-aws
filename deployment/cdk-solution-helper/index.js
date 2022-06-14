@@ -106,10 +106,11 @@ fs.readdirSync(global_s3_assets).forEach(file => {
   })
 
   notebookInstanceLifecycleConfig.forEach(function (d) {
+    console.log(d)
     const notebookConfig = template.Resources[d];
-    let subBucket = notebookConfig.Properties.OnStart.Content['Fn::Base64']['Fn::Join'][1][1];
-    const fileName = subBucket["Fn::Sub"].split('/')[3];
-    subBucket["Fn::Sub"] = 's3://' + '%%BUCKET_NAME%%-${AWS::Region}' + '/' + fileName
+    const replaceValue = JSON.stringify(notebookConfig.Properties).replace(/s3:\/\/cdk-.*?-\${AWS::AccountId}-\${AWS::Region}\/(.*?\.zip)/g,
+      's3://%%BUCKET_NAME%%-${AWS::Region}/$1');
+    notebookConfig.Properties= JSON.parse(replaceValue);
   })
 
 
