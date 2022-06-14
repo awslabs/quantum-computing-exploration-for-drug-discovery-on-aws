@@ -104,12 +104,11 @@ fs.readdirSync(global_s3_assets).forEach(file => {
   const notebookInstanceLifecycleConfig = Object.keys(resources).filter(function (key) {
     return resources[key].Type === "AWS::SageMaker::NotebookInstanceLifecycleConfig"
   })
-
   notebookInstanceLifecycleConfig.forEach(function (d) {
     console.log(d)
     const notebookConfig = template.Resources[d];
     const replaceValue = JSON.stringify(notebookConfig.Properties).replace(/s3:\/\/cdk-.*?-\${AWS::AccountId}-\${AWS::Region}\/(.*?\.zip)/g,
-      's3://%%BUCKET_NAME%%-${AWS::Region}/$1');
+      's3://%%BUCKET_NAME%%-${AWS::Region}/%%SOLUTION_NAME%%/%%VERSION%%/$1');
     notebookConfig.Properties= JSON.parse(replaceValue);
   })
 
