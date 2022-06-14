@@ -109,7 +109,7 @@ fs.readdirSync(global_s3_assets).forEach(file => {
     const notebookConfig = template.Resources[d];
     let subBucket = notebookConfig.Properties.OnStart.Content['Fn::Base64']['Fn::Join'][1][1];
     const fileName = subBucket["Fn::Sub"].split('/')[3];
-    subBucket["Fn::Sub"] = '%%BUCKET_NAME%%-${AWS::Region}' + "/" + fileName
+    subBucket["Fn::Sub"] = 's3://' + '%%BUCKET_NAME%%-${AWS::Region}' + '/' + fileName
   })
 
 
