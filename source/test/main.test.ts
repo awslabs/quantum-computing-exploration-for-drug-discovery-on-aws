@@ -113,12 +113,35 @@ test('has output - StateMachineURL', () => {
   template.hasOutput('StateMachineURL', {});
 });
 
-test('has 2 nest CloudFormation stacks ', () => {
+test('has output - QuickSightRoleArn', () => {
   const app = new App();
   const stack = new MainStack(app, 'test');
   const template = Template.fromStack(stack);
-  template.hasResource('AWS::CloudFormation::Stack', 2);
+  template.hasOutput('QuickSightRoleArn', {});
 });
+
+test('has 3 nest CloudFormation stacks ', () => {
+  const app = new App();
+  const stack = new MainStack(app, 'test');
+  const template = Template.fromStack(stack);
+  template.hasResource('AWS::CloudFormation::Stack', 3);
+});
+
+test('has Condition ConditionDeployNotebook', () => {
+  const app = new App();
+  const stack = new MainStack(app, 'test');
+  const template = Template.fromStack(stack);
+  const conditionDeployNotebook = template.toJSON().Conditions.ConditionDeployNotebook;
+  expect(conditionDeployNotebook).toEqual({
+    'Fn::Equals': [
+      {
+        Ref: 'DeployNotebook',
+      },
+      'yes',
+    ],
+  });
+});
+
 
 test('has Condition ConditionDeployBatchEvaluation', () => {
   const app = new App();
@@ -149,6 +172,7 @@ test('has Condition ConditionDeployVisualization', () => {
     ],
   });
 });
+
 
 test('SupportedRegionsRule config correctly', () => {
   const app = new App();

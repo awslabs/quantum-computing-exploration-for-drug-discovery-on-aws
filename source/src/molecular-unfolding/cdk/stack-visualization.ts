@@ -16,11 +16,8 @@ limitations under the License.
 
 
 import {
-  Aspects,
   NestedStack,
   NestedStackProps,
-  aws_s3 as s3,
-  aws_iam as iam,
   CfnOutput,
   CfnRule,
   Fn,
@@ -35,17 +32,10 @@ import {
   MainStack,
 } from './stack-main';
 
-
-import {
-  ChangePolicyName,
-} from './utils/utils';
-
 export interface VisualizationNestStackProps extends NestedStackProps {
   readonly prefix: string;
   readonly stackName: string;
   readonly quicksightUser: string;
-  readonly quickSightRoleName: string;
-  readonly bucket: s3.Bucket;
 }
 
 export class VisualizationNestStack extends NestedStack {
@@ -58,16 +48,12 @@ export class VisualizationNestStack extends NestedStack {
 
     new CfnRule(this, 'VisualizationParameterRule', {
       assertions: [{
-        assert: Fn.conditionNot(Fn.conditionOr(
+        assert: Fn.conditionNot(
           Fn.conditionEquals(props.quicksightUser, ''),
-          Fn.conditionEquals(props.quickSightRoleName, ''))),
-        assertDescription: 'Parameter quicksightUser or quickSightRoleName is not set',
+        ),
+        assertDescription: 'Parameter QuickSightUser is not set',
       }],
     });
-
-    const quicksightRole = iam.Role.fromRoleArn(this, 'QuickSightServiceRole', `arn:aws:iam::${this.account}:role/${props.quickSightRoleName}`);
-    props.bucket.grantRead(quicksightRole);
-    Aspects.of(this).add(new ChangePolicyName());
 
     // Dashboard //////////////////////////
     const dashboard = new Dashboard(this, 'Dashboard', {

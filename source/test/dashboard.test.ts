@@ -17,7 +17,6 @@ limitations under the License.
 import {
   App,
   Stack,
-  aws_s3 as s3,
 } from 'aws-cdk-lib';
 
 import {
@@ -33,12 +32,9 @@ function initializeNestStackTemplate() {
   const app = new App();
   const stack = new Stack(app, 'test');
 
-  const s3bucket = new s3.Bucket(stack, 'amazon-braket-test');
   const prefix = 'test_s3_prefix';
   const nestStack = new VisualizationNestStack(stack, 'dashboard', {
     prefix,
-    bucket: s3bucket,
-    quickSightRoleName: 'test_qs_iam_role',
     quicksightUser: 'adminUser',
     stackName: 'nestStack',
   });

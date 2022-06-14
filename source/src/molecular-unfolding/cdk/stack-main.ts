@@ -46,12 +46,14 @@ import {
   AddCfnNag,
 } from './utils/utils';
 
+import { RoleUtil } from './utils/utils-role';
+
 import setup_vpc_and_sg from './utils/vpc';
 
 export class MainStack extends SolutionStack {
   static SOLUTION_ID = 'SO8027'
   static SOLUTION_NAME = 'Quantum Computing Exploration for Drug Discovery on AWS'
-  static SOLUTION_VERSION = process.env.SOLUTION_VERSION || 'v1.0.0'
+  static SOLUTION_VERSION = process.env.SOLUTION_VERSION || 'v1.0.1'
   static DESCRIPTION = `(${MainStack.SOLUTION_ID}) ${MainStack.SOLUTION_NAME} (Version ${MainStack.SOLUTION_VERSION})`;
 
   // constructor
@@ -83,12 +85,6 @@ export class MainStack extends SolutionStack {
     const quickSightUserParam = new CfnParameter(this, 'QuickSightUser', {
       type: 'String',
       description: 'QuickSight User, find user name from https://us-east-1.quicksight.aws.amazon.com/sn/admin',
-      default: '',
-    });
-
-    const quickSightRoleNameParam = new CfnParameter(this, 'QuickSightRoleName', {
-      type: 'String',
-      description: 'QuickSight IAM role name',
       default: '',
     });
 
@@ -128,7 +124,6 @@ export class MainStack extends SolutionStack {
             Parameters: [
               deployVisualization.logicalId,
               quickSightUserParam.logicalId,
-              quickSightRoleNameParam.logicalId,
             ],
           },
 
@@ -148,10 +143,6 @@ export class MainStack extends SolutionStack {
 
           [quickSightUserParam.logicalId]: {
             default: 'QuickSight User',
-          },
-
-          [quickSightRoleNameParam.logicalId]: {
-            default: 'QuickSight Role Name',
           },
         },
       },
@@ -184,12 +175,17 @@ export class MainStack extends SolutionStack {
       serverAccessLogsBucket: logS3bucket,
       serverAccessLogsPrefix: `accesslogs/${bucketName}/`,
     });
-
     s3bucket.node.addDependency(logS3bucket);
-
     new CfnOutput(this, 'BucketName', {
       value: s3bucket.bucketName,
       description: 'S3 Bucket Name',
+    });
+
+    const quicksightRole = RoleUtil.createQuickSightRole(this);
+    s3bucket.grantRead(quicksightRole);
+    new CfnOutput(this, 'QuickSightRoleArn', {
+      value: quicksightRole.roleArn,
+      description: 'QuickSight Role Arn',
     });
 
     const {
@@ -234,8 +230,6 @@ export class MainStack extends SolutionStack {
       const dashboard = new VisualizationNestStack(this, 'QuicksightDashboard', {
         prefix,
         stackName,
-        bucket: s3bucket,
-        quickSightRoleName: quickSightRoleNameParam.valueAsString,
         quicksightUser: quickSightUserParam.valueAsString,
       });
       (dashboard.nestedStackResource as CfnStack).cfnOptions.condition = conditionDeployVisualization;
