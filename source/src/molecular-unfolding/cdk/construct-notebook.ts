@@ -27,7 +27,6 @@ import {
   aws_ec2 as ec2,
   aws_s3_assets as s3_assets,
   Fn,
-  DockerImage,
 } from 'aws-cdk-lib';
 
 import {
