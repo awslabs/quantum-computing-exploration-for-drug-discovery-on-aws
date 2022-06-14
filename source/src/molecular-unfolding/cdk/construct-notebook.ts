@@ -69,18 +69,7 @@ export class Notebook extends Construct {
     const INSTANCE_TYPE = 'ml.c5.xlarge';
 
     const srcCodeAsset = new s3_assets.Asset(this, 'srcCodeAsset', {
-      path: path.join(__dirname, '../../../'),
-      bundling: {
-        image: DockerImage.fromRegistry('alpine'),
-        command: ['sh', '-c', `
-            mkdir  /asset-output/source
-            cp -r /asset-input/src /asset-output/source/
-            cp -r /asset-input/test /asset-output/source/
-            cp /asset-input/*.json /asset-output/source/
-            cp /asset-input/*.sh /asset-output/source/
-            cp /asset-input/*.md /asset-output/source/
-        `],
-      },
+      path: path.join(__dirname, '../../'),
     });
 
     this.roleUtil = RoleUtil.newInstance(this, props);
