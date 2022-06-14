@@ -99,6 +99,20 @@ fs.readdirSync(global_s3_assets).forEach(file => {
     })
   })
 
+
+  // Clean-up NotebookInstanceLifecycleConfig
+  const notebookInstanceLifecycleConfig = Object.keys(resources).filter(function (key) {
+    return resources[key].Type === "AWS::SageMaker::NotebookInstanceLifecycleConfig"
+  })
+
+  notebookInstanceLifecycleConfig.forEach(function (d) {
+    const notebookConfig = template.Resources[d];
+    let subBucket = notebookConfig.Properties.OnStart.Content['Fn::Base64']['Fn::Join'][1][1];
+    const fileName = subBucket["Fn::Sub"].split('/')[3];
+    subBucket["Fn::Sub"] = '%%BUCKET_NAME%%-${AWS::Region}' + "/" + fileName
+  })
+
+
   // For the below code to work with nested templates, the nested template file has to
   // be added as metadata to the construct in the CDK code.
   //
