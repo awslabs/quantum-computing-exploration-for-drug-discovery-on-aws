@@ -24,7 +24,7 @@ pip3 install jupyter ipykernel
 
 python3 -m ipykernel install --user --name=qcenv
 
-aws s3 cp {{&s3_code_path}} /home/ec2-user/SageMaker/code.zip || true
+aws s3 cp {{&s3_code_path}} /home/ec2-user/SageMaker/code.zip
 
 cd /home/ec2-user/SageMaker/
 unzip code.zip -d ./
