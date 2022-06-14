@@ -26,7 +26,6 @@ import {
 import {
   Construct,
 } from 'constructs';
-import { MainStack } from '../stack-main';
 
 export enum ECRRepoNameEnum {
   Batch_Create_Model,
@@ -114,7 +113,7 @@ export class ECRImageUtil {
 
     const ecrAccount = process.env.SOLUTION_ECR_ACCOUNT || '';
     const repoName = process.env.SOLUTION_ECR_REPO_NAME || '';
-    const version = MainStack.SOLUTION_VERSION;
+    const version = process.env.SOLUTION_VERSION || 'v1.0.0';
     const imagePrefix = process.env.IMAGE_PREFIX || '';
     const tag = `${version}-${imagePrefix}${name}`;
     const region = Stack.of(this.scope).region;
