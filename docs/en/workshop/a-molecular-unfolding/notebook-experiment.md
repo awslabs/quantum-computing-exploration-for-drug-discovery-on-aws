@@ -41,7 +41,7 @@ Here we focus on the first phase of MD, ligand expansion, which aims to reduce s
 
     Figure 7: Notebook URL on the stack's Output tab
 
-4. Open the file under the directory **source/src/molecular-folding/molecular_unfolding.ipynb** and choose the kernel **qcenv**.
+4. Open the file under the directory **molecular-folding/molecular_unfolding.ipynb** and choose the kernel **qcenv**.
 
 5. Navigate through the notebook, which consists of four Steps:
 

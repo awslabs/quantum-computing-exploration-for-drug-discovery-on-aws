@@ -18,9 +18,7 @@ This solution is an open-source project under Apache License Version 2.0. You ca
 
 2. Clone the project to your own workspace.
 
-3. Change `githubRepo` path in the source/src/molecular-unfolding/cdk/construct-notebook.ts file to be your Git repository. 
-
-4. Make changes to source code. If you want to make changes for quantum algorithms, you can modify code under this directory **source/src/molecular-unfolding/utility**.
+3. Make changes to source code. If you want to make changes for quantum algorithms, you can modify code under this directory **source/src/molecular-unfolding/utility**.
 
 ## Deploy stack to your AWS account from CDK
 

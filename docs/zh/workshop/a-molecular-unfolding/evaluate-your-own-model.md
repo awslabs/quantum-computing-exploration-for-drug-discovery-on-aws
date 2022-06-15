@@ -20,9 +20,7 @@
 
 2. 将项目克隆到您自己的工作区。
 
-3. 修改文件`source/src/molecular-unfolding/cdk/construct-notebook.ts`中的`githubRepo`路径为您的Git仓库。
-
-4. 修改源代码。如果您想要修改量子算法，可以在目录`source/src/molecular-unfolding/utility`下修改代码。
+3. 修改源代码。如果您想要修改量子算法，可以在目录`source/src/molecular-unfolding/utility`下修改代码。
 
 ### 将堆栈从 CDK 部署到您的 AWS 账户
 

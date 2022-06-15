@@ -43,7 +43,7 @@
     ![deployment output](../../images/deploy_output_notebook.png)
     图 7: 笔记本链接
 
-4. 打开笔记本文件**source/src/molecular-folding/molecular_unfolding.ipynbn**，并确保笔记本的核为**qcenv**。
+4. 打开笔记本文件**molecular-folding/molecular_unfolding.ipynb**，并确保笔记本的核为**qcenv**。
 
 5. 浏览整个笔记本。它由四个步骤组成：
 
