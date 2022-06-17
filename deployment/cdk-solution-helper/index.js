@@ -194,5 +194,8 @@ fs.readdirSync(global_s3_assets).forEach(file => {
 
   // Output modified template file
   const output_template = JSON.stringify(template, null, 2);
+  output_template = output_template.replace(/"Fn::Sub": "cdk-.*?-assets-\${AWS::AccountId}-\${AWS::Region}"/g,
+  '"Fn::Sub": "%%BUCKET_NAME%%-${AWS::Region}"'
+  )
   fs.writeFileSync(`${global_s3_assets}/${file}`, output_template);
 });
