@@ -23,7 +23,9 @@ import {
 
 import {
   Template,
+  Match,
 } from 'aws-cdk-lib/assertions';
+
 
 import {
   NotebookNestStack,
@@ -62,6 +64,30 @@ describe('Notebook', () => {
   test('the notebook has a lifecycle', () => {
     const template = initializeNestStackTemplate();
     template.resourceCountIs('AWS::SageMaker::NotebookInstanceLifecycleConfig', 1);
+  });
+
+  test('NotebookInstanceLifecycleConfig is configured correctly', ()=>{
+    const template = initializeNestStackTemplate();
+    template.hasResourceProperties('AWS::SageMaker::NotebookInstanceLifecycleConfig', {
+      OnStart: [
+        {
+          Content: {
+            'Fn::Base64': {
+              'Fn::Join': [
+                '',
+                [
+                  Match.anyValue(),
+                  {
+                    'Fn::Sub': Match.anyValue(),
+                  },
+                  Match.anyValue(),
+                ],
+              ],
+            },
+          },
+        },
+      ],
+    });
   });
 
 });
