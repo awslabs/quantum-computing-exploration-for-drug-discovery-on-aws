@@ -119,7 +119,6 @@ export class RoleUtil {
 
     role.addToPolicy(new iam.PolicyStatement({
       resources: [
-        'arn:aws:s3:::aws-gcr-solutions/*',
         'arn:aws:s3:::solutions-*/*',
       ],
       actions: [
