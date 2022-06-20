@@ -119,15 +119,6 @@ export class RoleUtil {
 
     role.addToPolicy(new iam.PolicyStatement({
       resources: [
-        'arn:aws:s3:::solutions-*/*',
-      ],
-      actions: [
-        's3:GetObject',
-      ],
-    }));
-
-    role.addToPolicy(new iam.PolicyStatement({
-      resources: [
         `arn:aws:s3:::${this.props.bucket.bucketName}`,
       ],
       actions: [
