@@ -75,7 +75,7 @@ export class Notebook extends Construct {
 
     const notebookRole = this.roleUtil.createNotebookIamRole();
 
-    srcCodeAsset.bucket.grantRead(notebookRole);
+    srcCodeAsset.grantRead(notebookRole);
 
     let onStartContent = readFileSync(`${__dirname}/resources/onStart.template`, 'utf-8');
 
