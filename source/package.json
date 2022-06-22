@@ -52,7 +52,7 @@
   },
   "bundledDependencies": [],
   "license": "Apache-2.0",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "jest": {
     "clearMocks": true,
     "collectCoverage": true,
