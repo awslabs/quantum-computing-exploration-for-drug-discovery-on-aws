@@ -1,6 +1,6 @@
 # 背景信息
 
-截至2022年5月，我们可以看到量子计算技术仍处于早期阶段，我们对其真正影响尚未完全了解。量子计算有多个用例，详情可参考[链接](https://www.forbes.com/sites/chuckbrooks/2021/03/21/the-emerging-paths-of-quantum-computing/?sh=765b2ed6613e)。
+截至2022年6月，我们可以看到量子计算技术仍处于早期阶段，我们对其真正影响尚未完全了解。量子计算有多个用例，详情可参考[链接](https://www.forbes.com/sites/chuckbrooks/2021/03/21/the-emerging-paths-of-quantum-computing/?sh=765b2ed6613e)。
 
 我们仍在使用嘈杂的中尺寸量子计算机（Noisy intermediate-scale quantum computing，NISQ），其领先的量子处理器包含从50个到几百个量子比特。然而，这与容错量子计算机（Fault-tolerant quantum computing, FTQC）存在巨大差距，后者可以在量子计算机上运行强大的算法。
 

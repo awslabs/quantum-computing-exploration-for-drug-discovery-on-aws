@@ -1,4 +1,4 @@
-You are responsible for the cost of AWS services used when running this solution. The actual cost depends on the tasks run and their complexity. As of May 2022, the cost factors mainly consist of five types:
+You are responsible for the cost of AWS services used when running this solution. The actual cost depends on the tasks run and their complexity. As of June 2022, the cost factors mainly consist of five types:
 
  * Notebook
  * Computing 
