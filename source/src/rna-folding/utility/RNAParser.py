@@ -46,8 +46,8 @@ class RNAData():
 
             self._get_actual_stems(self.rna_name)
 
-    def get_data(self, data_path, rna_name):
-        rna_data = self.load(data_path)
+    def get_data(self, rna_name):
+        rna_data = self.load(self.save_path)
         return rna_data.rna_files[rna_name]
         
     def _get_actual_stems(self, rna_name):
@@ -100,19 +100,19 @@ class RNAData():
             self.rna_files[rna_name]['actual_stems'] = stems_actual
 
     def save(self, version, path=None):
-        save_path = None
+        self.save_path = None
         save_name = f"rna-folding_data_{version}.pickle"
 
         if path != None:
-            save_path = os.path.join(path, save_name)
+            self.save_path = os.path.join(path, save_name)
         else:
-            save_path = os.path.join(".", save_name)
+            self.save_path = os.path.join(".", save_name)
 
-        with open(save_path, "wb") as f:
+        with open(self.save_path, "wb") as f:
             pickle.dump(self, f)
         logging.info(f"finish save {save_name}")
 
-        return save_path
+        return self.save_path
 
     @classmethod
     def load(cls, filename):
