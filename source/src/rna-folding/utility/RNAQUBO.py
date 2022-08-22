@@ -162,7 +162,7 @@ class RNAQUBO():
                     if matrix[row][col] != 0:
                         temp_row = row
                         temp_col = col
-                        stem = [row+1,col+1,0]
+                        stem = [row+1,col+1,0,0]
                         length_N = 0
                         length_H = 0
                         while (matrix[temp_row][temp_col] != 0) and (temp_row != temp_col):
@@ -172,6 +172,7 @@ class RNAQUBO():
                             temp_col-=1
                             if length_N >= 3:
                                 stem[2] = int(length_H)
+                                stem[3] = int(length_N)
                                 stems_potential.append(stem.copy())
                         if length_H > mu:
                             mu = length_H
@@ -198,7 +199,7 @@ class RNAQUBO():
         
                 pseudoknot = [i,j,1]
         
-                if (i_a < i_b and i_b < j_a and j_a < j_b) or (i_b < i_a and i_a < j_b and j_b < j_a):
+                if (i_a < i_b and i_b < j_a and j_a < j_b):
             
                     pseudoknot[2] = pseudoknot_penalty
         
@@ -221,11 +222,11 @@ class RNAQUBO():
         
                 overlap = [i, j, 0]
         
-                stem1_cspan1 = set(range(stem1[1]-int(stem1[2])+1, stem1[1]+1))
-                stem2_cspan1 = set(range(stem2[1]-int(stem2[2])+1, stem2[1]+1))
+                stem1_cspan1 = set(range(stem1[1]-int(stem1[3])+1, stem1[1]+1))
+                stem2_cspan1 = set(range(stem2[1]-int(stem2[3])+1, stem2[1]+1))
                 
-                stem1_cspan2 = set(range(stem1[0], stem1[0]+int(stem1[2])))
-                stem2_cspan2 = set(range(stem2[0], stem2[0]+int(stem2[2])))
+                stem1_cspan2 = set(range(stem1[0], stem1[0]+int(stem1[3])))
+                stem2_cspan2 = set(range(stem2[0], stem2[0]+int(stem2[3])))
         
                 if (len(stem1_cspan1 & stem2_cspan1) != 0) or (len(stem1_cspan2 & stem2_cspan2) != 0)  or (len(stem1_cspan1 & stem2_cspan2) != 0) or (len(stem1_cspan2 & stem2_cspan1) != 0):
             
