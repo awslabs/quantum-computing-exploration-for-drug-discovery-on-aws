@@ -78,20 +78,15 @@ class RNAQUBO():
                         stems_p = self._potential_stems(self.rna_data[rna_name]['rna_strand'])
                         pks_p = self._potential_pseudoknots(stems_p[0], pkp_penalty)
                         ols_p = self._potential_overlaps(stems_p[0])
-                        qubo = self._model(stems_p[0], pks_p, ols_p, stems_p[1])
+                        qubo_data = self._model(stems_p[0], pks_p, ols_p, stems_p[1])
+                        qubo = dimod.BinaryQuadraticModel(qubo_data[0], qubo_data[1], vartype = 'BINARY', offset = 0.0)
                         end = time.time()
 
                         self.models[rna_name]['model_qubo']["qc"][model_name] = {}
                         self.models[rna_name]['model_qubo']["qc"][model_name]["qubo"] = qubo
                         self.models[rna_name]['model_qubo']["qc"][model_name]["time"] = end-start
                         self.models[rna_name]['model_qubo']["qc"][model_name]["model_name"] = model_name
-    #                 ris_name = list(
-    #                     self.mol_data.bond_graph.sort_ris_data[str(M)].keys()).copy()
-    #                 valid_rb_name = []
-    #                 for name in ris_name:
-    #                     if len(name.split(',')) == 1:
-    #                         valid_rb_name.append(name)
-    #                 self.model_qubo["qc-"][model_name]["rb_name"] = valid_rb_name
+    #                 
     #                 # # optimize results
     #                 # self.model_qubo["pre-calc"][model_name]["optimizer"] = {}
     #                 # self.model_qubo["pre-calc"][model_name]["optimizer"]["post"] = {}
@@ -117,9 +112,8 @@ class RNAQUBO():
         for value, name in zip(values, names):
             self.models[rna_name]['model_info'][method][name].add(value)
 
-    # def get_model(self, method, model_name):
-
-    #     return self.model_qubo[method][model_name]
+    def get_model(self, rna_name, method, model_name):
+        return self.models[rna_name]['model_qubo'][method][model_name]
 
     def save(self, version, path=None):
 
