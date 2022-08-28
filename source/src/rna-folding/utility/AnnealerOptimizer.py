@@ -75,13 +75,13 @@ class Annealer():
         logging.info("fit() ...")
         start = time.time()
         if self.method == "dwave-sa" or self.method == "neal-sa":
-            response = self.sampler.sample(
-                self.qubo, num_reads=self.param["shots"]).aggregate()
+            # response = self.sampler.sample(
+            #     self.qubo, num_reads=self.param["shots"]).aggregate()
             self.response = self.sampler.sample_qubo(
                 self.qubo, num_reads=self.param["shots"])
         elif self.method == "dwave-qa":
-            response = self.sampler.sample(
-                self.qubo, num_reads=self.param["shots"]).aggregate()
+            # response = self.sampler.sample(
+            #     self.qubo, num_reads=self.param["shots"]).aggregate()
             # actually it's quantum task
             self.response = self.sampler.sample_qubo(
                 self.qubo, shots=self.param["shots"])
