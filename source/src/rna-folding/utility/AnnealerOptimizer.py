@@ -30,7 +30,8 @@ class Annealer():
 
         self.qubo = model["qubo"]
         self.model_info = {}
-        self._update_model_info(model)
+        # self._update_model_info(model)
+        # TODO see if update model is necessary
         self.method = method
         self.param = param
 

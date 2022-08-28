@@ -96,6 +96,7 @@ class RNAQUBO():
 
     def describe_models(self):
 
+        #TODO edit describe models
         # information for model
         for rna_name in self.models:
             for method, info in self.models[rna_name]['model_info'].items():
@@ -117,18 +118,6 @@ class RNAQUBO():
 
     def save(self, version, path=None):
 
-        # for rna_name in self.models:
-        #     save_name = f"{rna_name}_{version}.pickle"
-
-        #     if path != None:
-        #         save_path = os.path.join(path, save_name)
-        #     else:
-        #         save_path = os.path.join(".", save_name)
-
-        #     with open(save_path, "wb") as f:
-        #         pickle.dump(self, f)
-        #         # pickle.dump(self.models[rna_name], f)
-        #     logging.info(f"finish save {save_name}")
         save_path = None
         save_name = f"rna_folding_{version}.pickle"
 
