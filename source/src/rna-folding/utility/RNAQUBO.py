@@ -96,7 +96,6 @@ class RNAQUBO():
 
     def describe_models(self):
 
-        #TODO edit describe models
         # information for model
         for rna_name in self.models:
             for method, info in self.models[rna_name]['model_info'].items():

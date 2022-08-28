@@ -28,9 +28,9 @@ class Annealer():
 
     def __init__(self, model, method, **param):
 
-        self.qubo = model["qubo"]
+        self.qubo = model["qubo"].to_qubo()
         self.model_info = {}
-        # self._update_model_info(model)
+        self._update_model_info(model)
         # TODO see if update model is necessary
         self.method = method
         self.param = param
@@ -66,22 +66,22 @@ class Annealer():
 
     def _update_model_info(self, model):
         self.model_info["model_name"] = model["model_name"]
-        self.model_info["rb_name"] = model["rb_name"]
-        self.model_info["var"] = model["var"]
-        self.model_info["var_rb_map"] = model["var_rb_map"]
-        self.model_info["rb_var_map"] = model["rb_var_map"]
+        # self.model_info["rb_name"] = model["rb_name"]
+        # self.model_info["var"] = model["var"]
+        # self.model_info["var_rb_map"] = model["var_rb_map"]
+        # self.model_info["rb_var_map"] = model["rb_var_map"]
 
     def fit(self):
         logging.info("fit() ...")
         start = time.time()
         if self.method == "dwave-sa" or self.method == "neal-sa":
-            # response = self.sampler.sample(
-            #     self.qubo, num_reads=self.param["shots"]).aggregate()
+            response = self.sampler.sample(
+                self.qubo, num_reads=self.param["shots"]).aggregate()
             self.response = self.sampler.sample_qubo(
                 self.qubo, num_reads=self.param["shots"])
         elif self.method == "dwave-qa":
-            # response = self.sampler.sample(
-            #     self.qubo, num_reads=self.param["shots"]).aggregate()
+            response = self.sampler.sample(
+                self.qubo, num_reads=self.param["shots"]).aggregate()
             # actually it's quantum task
             self.response = self.sampler.sample_qubo(
                 self.qubo, shots=self.param["shots"])
