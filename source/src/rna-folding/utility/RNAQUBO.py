@@ -79,7 +79,8 @@ class RNAQUBO():
                         pks_p = self._potential_pseudoknots(stems_p[0], pkp_penalty)
                         ols_p = self._potential_overlaps(stems_p[0])
                         qubo_data = self._model(stems_p[0], pks_p, ols_p, stems_p[1])
-                        qubo = dimod.BinaryQuadraticModel(qubo_data[0], qubo_data[1], vartype = 'BINARY', offset = 0.0)
+                        qubo_raw = dimod.BinaryQuadraticModel(qubo_data[0], qubo_data[1], vartype = 'BINARY')
+                        qubo = self._manual_qubo(qubo_raw.to_qubo())
                         end = time.time()
 
                         self.models[rna_name]['model_qubo']["qc"][model_name] = {}
@@ -93,6 +94,14 @@ class RNAQUBO():
 
     #                 logging.info(
     #                     f"Construct model for PKP:{pkp_penalty},O:{overlap_penalty},S:{short_penalty} {(end-start)/60} min")
+
+    def _manual_qubo(self, qubo_raw):
+        qubo = defaultdict(float)
+
+        for key, value in qubo_raw[0].items():
+            qubo[key] = value
+
+        return qubo
 
     def describe_models(self):
 

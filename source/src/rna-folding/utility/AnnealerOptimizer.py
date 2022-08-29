@@ -28,7 +28,7 @@ class Annealer():
 
     def __init__(self, model, method, **param):
 
-        self.qubo = model["qubo"].to_qubo()
+        self.qubo = model["qubo"]
         self.model_info = {}
         self._update_model_info(model)
         # TODO see if update model is necessary
