@@ -13,8 +13,7 @@ import datetime
 import logging
 import re
 
-from .MolGeoCalc import update_pts_distance, get_same_direction_set, calc_distance_between_pts
-from .MoleculeParser import MoleculeData
+from .RNAParser import RNAData
 
 import py3Dmol
 import time
@@ -46,13 +45,9 @@ class ResultParser():
         self.atom_pos_data_raw = {}
         self.atom_pos_data_temp = {}
         self.mol_file_name = param["raw_path"]
-        logging.info("MoleculeData.load()")
+        logging.info("Data.load()")
         self.data_path = param["data_path"]
-        self.mol_data = MoleculeData.load(param["data_path"])
-        logging.info("init mol data for final position")
-        self._init_mol_file(self.atom_pos_data)
-        logging.info("init mol data for raw position")
-        self._init_mol_file(self.atom_pos_data_raw)
+        self.rna_data = RNAData.load(param["data_path"])
         # parse model_info
         self.rb_var_map = None
         self.var_rb_map = None
@@ -82,6 +77,12 @@ class ResultParser():
             obj = self._read_result_obj(
                 self.bucket, self.prefix, self.task_id, "results.json")
             self.result = json.loads(obj["Body"].read())
+
+    def parse_results(self):
+        logging.info("parse annealing results")
+        
+
+
 
     def _init_non_contact_atom(self):
         mol_graph = self.mol_data.bond_graph.mol_ug
