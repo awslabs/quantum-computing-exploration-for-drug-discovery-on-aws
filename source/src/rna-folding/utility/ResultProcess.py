@@ -15,16 +15,15 @@ import re
 
 from .RNAParser import RNAData
 
-import py3Dmol
+# import py3Dmol
 import time
-from ipywidgets import interact, fixed, IntSlider
-import ipywidgets
+# from ipywidgets import interact, fixed, IntSlider
+# import ipywidgets
 
 s3_client = boto3.client("s3")
 
 log = logging.getLogger()
 log.setLevel('INFO')
-
 
 class ResultParser():
     def __init__(self, method, **param):
@@ -44,7 +43,7 @@ class ResultParser():
         self.atom_pos_data = {}
         self.atom_pos_data_raw = {}
         self.atom_pos_data_temp = {}
-        self.mol_file_name = param["raw_path"]
+        self.mol_file_name = '/'.join([param["raw_path"],param["data_name"]])
         logging.info("Data.load()")
         self.data_path = param["data_path"]
         self.rna_data = RNAData.load(param["data_path"])
@@ -56,15 +55,15 @@ class ResultParser():
         self.theta_option = None
         self.valid_var_name = []
         self.valid_var_angle = []
-        self._parse_model_info()
-        # initial parameter file
-        self.parameters = {}
-        self._init_parameters()
+        # self._parse_model_info()
+        # # initial parameter file
+        # self.parameters = {}
+        # self._init_parameters()
 
-        # parameters
-        self.physical_check = True
-        if self.physical_check == True:
-            self.non_contact_atom_map = self._init_non_contact_atom()
+        # # parameters
+        # self.physical_check = True
+        # if self.physical_check == True:
+        #     self.non_contact_atom_map = self._init_non_contact_atom()
 
         # keep N recent results
         self.N = 100
@@ -77,6 +76,203 @@ class ResultParser():
             obj = self._read_result_obj(
                 self.bucket, self.prefix, self.task_id, "results.json")
             self.result = json.loads(obj["Body"].read())
+    
+    def generate_optimize_pts(self):
+        logging.info("generate_optimize_pts()")
+        # get best configuration
+        pddf_sample_result = self.raw_result["response"].aggregate(
+        ).to_pandas_dataframe()
+
+        pddf_head_sample = pddf_sample_result.sort_values(
+            by=['energy']).head(self.N)
+
+        evaluate_loop_result = False
+        max_optimize_gain = 1.0
+        chosen_var = None
+        actual_var = None
+        max_tor_list = None
+        max_ris = None
+        max_volume = 0
+
+        for index, row in pddf_head_sample.iterrows():
+            generate_row = self._generate_row_data(row)
+
+            for complete_info in generate_row:
+                print(f"complete info is {complete_info}")
+            
+        #     max_optimize_gain = 1.0
+        #     evaluate_loop_result = False
+        #     for complete_tor_info in generate_row:
+        #         logging.info(f"chosen var {complete_tor_info['chosen_var']}")
+        #         logging.info(f"tor list {complete_tor_info['actual_var']}")
+
+        #         if tuple(complete_tor_info['actual_var']) in self.tried_combination:
+        #             logging.info(f"pass current duplicate var")
+        #             continue
+        #         else:
+        #             self.tried_combination.add(
+        #                 tuple(complete_tor_info['actual_var']))
+        #         optimize_gain, optimize_volume = self._evaluate_one_result(
+        #             complete_tor_info['tor_list'])
+        #         if optimize_gain > max_optimize_gain:
+        #             # update final position for visualization
+        #             self._init_mol_file(self.atom_pos_data)
+        #             self._update_physical_position(
+        #                 complete_tor_info['max_ris'], complete_tor_info['max_tor_list'])
+
+        #             physical_check_result = True
+        #             if self.physical_check == True:
+        #                 logging.info(f"start physical check")
+
+        #                 physical_check_result = self._physical_check_van_der_waals(
+        #                     self.atom_pos_data)
+
+        #                 if physical_check_result == False:
+        #                     evaluate_loop_result = False
+        #                     logging.info(f"physical check not pass!")
+        #                 else:
+        #                     evaluate_loop_result = True
+        #                     max_optimize_gain = optimize_gain
+        #                     max_volume = optimize_volume
+        #                     chosen_var = complete_tor_info['chosen_var']
+        #                     actual_var = complete_tor_info['actual_var']
+        #                     max_tor_list = complete_tor_info['max_tor_list']
+        #                     max_ris = complete_tor_info['max_ris']
+
+        #     if evaluate_loop_result == True:
+        #         break
+
+        # if evaluate_loop_result == False:
+        #     logging.info(
+        #         f"Fail to find optimized shape for {self.N} results, return to original one")
+        #     self.parameters["volume"]["optimize"] = self.parameters["volume"]["initial"]
+        #     self.parameters["volume"]["gain"] = 1.0
+        #     initial_var = set()
+        #     for var_name in self.valid_var_name:
+        #         initial_var.add(f"X_{var_name}_1")
+        #     self.parameters["volume"]["unfolding_results"] = list(initial_var)
+        #     chosen_var = initial_var
+        # else:
+        #     self.parameters["volume"]["optimize"] = max_volume
+        #     self.parameters["volume"]["gain"] = max_optimize_gain
+        #     # update optimized results
+        #     self.parameters["volume"]["unfolding_results"] = list(actual_var)
+        #     #         if True:
+
+        # self.parameters["volume"]["annealing_results"] = list(chosen_var)
+        # self.parameters["volume"]["optimize_info"] = {}
+        # self.parameters["volume"]["optimize_info"]["optimize_state"] = evaluate_loop_result
+        # self.parameters["volume"]["optimize_info"]["result_rank"] = index+1
+
+    # function to generate list of potential stem pairs that form pseudoknots:
+    def potential_pseudoknots(self, stems_potential, pkp):
+
+        pseudoknots_potential = []
+        pseudoknot_penalty = pkp
+
+        for i in range(len(stems_potential)):
+            for j in range(i + 1, len(stems_potential)):
+                
+                stem1 = stems_potential[i]
+                stem2 = stems_potential[j]
+        
+                i_a = stem1[0]
+                j_a = stem1[1]
+                i_b = stem2[0]
+                j_b = stem2[1]
+        
+                pseudoknot = [i,j,1]
+        
+                if (i_a < i_b and i_b < j_a and j_a < j_b) or (i_b < i_a and i_a < j_b and j_b < j_a):
+            
+                    pseudoknot[2] = pseudoknot_penalty
+        
+                pseudoknots_potential.append(pseudoknot)
+                
+        return pseudoknots_potential
+
+    # function to evaluate the energy of the known structure under the model Hamiltonian:
+    def energy(self, stems_actual, pkp):
+        
+        cl = 1
+        cb = 1
+        k = 0
+        
+        pseudoknots_actual = potential_pseudoknots(stems_actual, pkp)
+        cost = 0
+        mu = max(list(map(list, zip(*stems_actual)))[2])
+        
+        for i in range(0, len(stems_actual)):
+            cost += cl*((stems_actual[i][2]**2)-2*mu*stems_actual[i][2]+mu**2)-cb*(stems_actual[i][2]**2)
+            for j in range(i+1, len(stems_actual)):
+                cost -= 2*cb*stems_actual[i][2]*stems_actual[j][2]*pseudoknots_actual[k][2]
+                k += 1
+        
+        return cost
+
+    def _ct2dot(self, ctList, length):
+        """
+        ctList              -- paired-bases: [(3, 8), (4, 7)]
+        length              -- Length of structure
+        
+        Convert ctlist structure to dot-bracket
+        [(3, 8), (4, 7)]  => ..((..))..
+        """
+        dot = ['.']*length
+        if len(ctList) == 0:
+            return "".join(dot)
+        ctList = sorted(ctList, key=lambda x:x[0])
+        ctList = [ it for it in ctList if it[0]<it[1] ]
+        pseudo_duplex = parse_pseudoknot(ctList)
+        for l,r in ctList:
+            dot[l-1] = '('
+            dot[r-1] = ')'
+        dottypes = [ '<>', r'{}', '[]' ]
+        if len(pseudo_duplex)>len(dottypes):
+            print("Warning: too many psudoknot type: %s>%s" % (len(pseudo_duplex),len(dottypes)))
+        for i,duplex in enumerate(pseudo_duplex):
+            for l,r in duplex:
+                dot[l-1] = dottypes[i%3][0]
+                dot[r-1] = dottypes[i%3][1]
+        return "".join(dot)
+    
+    def _generate_base_pair(self, lines, fasta_lines):
+    
+        rna = fasta_lines[1]
+            
+        stems_actual = []
+
+        sip = False                       # stem in progress?
+        sl = 0                            # stem length
+        last_line = [0, 0, 0, 0, 0, 0]    # initiate last line
+
+        base_pair = []
+
+        for i in range(0, len(lines)):
+            line = lines[i].strip().split()
+            # print(line)
+            
+            if (int(line[4]) != 0 and sip == False):
+                sip = True
+                temp = [int(line[0]), int(line[4])]
+                temp_base = [(int(line[0]), int(line[4]))]
+                # print(f"temp is {temp}")
+            if (int(line[4]) != 0 and sip == True and (int(last_line[4])-int(line[4]) == 1)):
+                temp_base.append((int(line[0]), int(line[4])))
+            if (int(line[4]) == 0 and sip == True):
+                sip = False
+                if temp[1] > temp[0]:
+                    stems_actual.append(temp)
+                    base_pair = base_pair + temp_base
+            if ((int(last_line[4])-int(line[4]) != 1) and int(last_line[4]) != 0  and sip == True):
+                if temp[1] > temp[0]:
+                    stems_actual.append(temp)
+                    base_pair = base_pair + temp_base
+                temp = [int(line[0]), int(line[4])]
+                temp_base = [(int(line[0]), int(line[4]))]
+        
+        return base_pair
+
 
     def parse_results(self):
         logging.info("parse annealing results")
@@ -198,7 +394,7 @@ class ResultParser():
 
         return 0
 
-    def generate_optimize_pts(self):
+    def generate_optimize_pts_old(self):
         logging.info("generate_optimize_pts()")
         # get best configuration
         pddf_sample_result = self.raw_result["response"].aggregate(
@@ -307,6 +503,14 @@ class ResultParser():
                                 self.var_rb_map, self.theta_option, True, False)
 
     def _generate_row_data(self, candidate_result):
+        logging.info("generate_optimize_pts model_info={}".format(
+            self.raw_result["model_info"]))
+        logging.info(f"candidate result is {candidate_result}")
+        for j in range(0, len(candidate_result)):
+            if candidate_result[str(j)] == 1:
+                print(f"stem found!")
+
+    def _generate_row_data_old(self, candidate_result):
         M = self.M
         D = self.D
 
