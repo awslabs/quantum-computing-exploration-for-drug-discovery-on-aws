@@ -737,4 +737,23 @@ class ResultParser():
         return [mol_save_name, file_save_name]
 
     def RNAFoldingView(self, data = 'raw'):
-        if data 
+        stems_show = []
+        if data == 'raw':
+            rna_name = self.rna_name
+            stems_p = self.rna_data[rna_name]['potential_stems'][0]
+            stems_a = self.rna_data[self.rna_name]['actual_stems']
+            for stem_a in stems_a:
+                for stem_p in stems_p:
+                    if stem_a == stem_p[:3]:
+                        stems_show.append(stem_p)
+
+        base_pair = []
+
+        for stem in stems_show:
+            stem_len = stem[3]
+            head = stem[0]
+            tail = stem[1]
+            for i in range(stem_len):
+                base_pair.append((head+i,tail-i))
+        
+        logging.info(f"base_pair is {base_pair}")
