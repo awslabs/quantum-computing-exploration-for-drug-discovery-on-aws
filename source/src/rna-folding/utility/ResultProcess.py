@@ -14,6 +14,7 @@ import logging
 import re
 
 from .RNAParser import RNAData
+from .RNAGeoCalc import *
 
 # import py3Dmol
 import time
@@ -37,6 +38,12 @@ class ResultParser():
             self.prefix = param["prefix"]
             self.task_id = param["task_id"]
         self._load_raw_result()
+
+        # parse model_info
+        self.data_name = None
+        self.pkp = None
+        self._parse_model_info()
+
         # result: get by task_id, maintain by braket api
         self.result = None
         # initial mol file
@@ -46,24 +53,11 @@ class ResultParser():
         self.mol_file_name = '/'.join([param["raw_path"],param["data_name"]])
         logging.info("Data.load()")
         self.data_path = param["data_path"]
-        self.rna_data = RNAData.load(param["data_path"])
-        # parse model_info
-        self.rb_var_map = None
-        self.var_rb_map = None
-        self.M = None
-        self.D = None
-        self.theta_option = None
-        self.valid_var_name = []
-        self.valid_var_angle = []
-        # self._parse_model_info()
-        # # initial parameter file
-        # self.parameters = {}
-        # self._init_parameters()
-
-        # # parameters
-        # self.physical_check = True
-        # if self.physical_check == True:
-        #     self.non_contact_atom_map = self._init_non_contact_atom()
+        self.rna_name = param["data_name"]
+        self.rna_data = RNAData.load(param["data_path"]).rna_files
+        # calculate actual energy
+        self.actual_energy = self._energy(self.rna_data.actual_stems, self.pkp)
+        logging.info(f"actual energy is {self.actual_energy}")
 
         # keep N recent results
         self.N = 100
@@ -95,11 +89,10 @@ class ResultParser():
         max_volume = 0
 
         for index, row in pddf_head_sample.iterrows():
+            predicted_energy = row['energy']
             generate_row = self._generate_row_data(row)
 
-            for complete_info in generate_row:
-                print(f"complete info is {complete_info}")
-            
+            logging.info(f"predicted stem {generate_row} with energy {predicted_energy}")
         #     max_optimize_gain = 1.0
         #     evaluate_loop_result = False
         #     for complete_tor_info in generate_row:
@@ -192,7 +185,7 @@ class ResultParser():
         return pseudoknots_potential
 
     # function to evaluate the energy of the known structure under the model Hamiltonian:
-    def energy(self, stems_actual, pkp):
+    def _energy(self, stems_actual, pkp):
         
         cl = 1
         cb = 1
@@ -375,22 +368,12 @@ class ResultParser():
         logging.info("_parse_model_info")
 #         logging.info("_parse_model_info() model_info = {}".format(self.raw_result["model_info"]))
 
-        self.rb_var_map = self.raw_result["model_info"]["rb_var_map"]
-        self.var_rb_map = self.raw_result["model_info"]["var_rb_map"]
-
-        # parse D from model_name
         model_name = self.raw_result["model_info"]["model_name"]
 
-        self.M = int(model_name.split("_")[0])
-        self.D = int(model_name.split("_")[1])
-        self.theta_option = [x * 360/self.D for x in range(self.D)]
+        pure_model_name_list = model_name[:-1].split(model_name[-1])
 
-        for rb in self.raw_result["model_info"]["rb_name"]:
-            var = self.rb_var_map[rb]
-            for d in range(self.D):
-                self.valid_var_angle.append(f'x_{var}_{d+1}')
-            self.valid_var_name.append(f'{var}')
-#         logging.info(f"valid var for this model is {self.valid_var_name}")
+        self.data_name = pure_model_name_list[0]
+        self.pkp = pure_model_name_list[1]
 
         return 0
 
@@ -503,12 +486,15 @@ class ResultParser():
                                 self.var_rb_map, self.theta_option, True, False)
 
     def _generate_row_data(self, candidate_result):
-        logging.info("generate_optimize_pts model_info={}".format(
-            self.raw_result["model_info"]))
-        logging.info(f"candidate result is {candidate_result}")
-        for j in range(0, len(candidate_result)):
+        # logging.info("generate_optimize_pts model_info={}".format(
+        #     self.raw_result["model_info"]))
+        f_stems = []
+        rna_name = self.rna_name
+        stems_p = self.rna_data[rna_name]['potential_stems'][0]
+        for j in range(0, len(stems_p)):
             if candidate_result[str(j)] == 1:
-                print(f"stem found!")
+                f_stems.append(stems_p[j])
+        return f_stems
 
     def _generate_row_data_old(self, candidate_result):
         M = self.M

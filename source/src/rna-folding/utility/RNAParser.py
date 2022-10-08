@@ -44,11 +44,57 @@ class RNAData():
 
             self.rna_files[self.rna_name]['rna_strand'] = rna_strand
 
+            self.rna_files[self.rna_name]['potential_stems']= self._potential_stems(rna_strand)
+
             self._get_actual_stems(self.rna_name)
 
     def get_data(self, rna_name):
         rna_data = self.load(self.save_path)
         return rna_data.rna_files[rna_name]
+
+    # function to read in .fasta file and generate list of potential stems at least 3 base-pairs long:
+    def _potential_stems(self, rna_strand):
+        
+        rna = rna_strand
+        
+        matrix = np.zeros((len(rna),len(rna)))
+
+        for diag in range(0, len(matrix)):
+            for row in range(0, len(matrix)-diag):
+                col = row + diag
+                base1 = rna[row]
+                base2 = rna[col]
+                if row != col:
+                    if ((base1 == ("A" or "a")) and (base2 == ("U" or "u"))) or ((base1 == ("U" or "u")) and (base2 == ("A" or "a"))) or ((base1 == ("G" or "g")) and (base2 == ("U" or "u"))) or ((base1 == ("U" or "u")) and (base2 == ("G" or "g"))):
+                        matrix[row][col] = 2
+                    if ((base1 == ("G" or "g")) and (base2 == ("C" or "c"))) or ((base1 == ("C" or "c")) and (base2 == ("G" or "g"))):
+                        matrix[row][col] = 3
+        stems_potential = []
+        mu = 0
+
+        for row in range(0, len(matrix)):
+            for col in range (row, len(matrix)):
+                if row != col:
+                    if matrix[row][col] != 0:
+                        temp_row = row
+                        temp_col = col
+                        stem = [row+1,col+1,0]
+                        # stem = [row+1,col+1,0,0]
+                        length_N = 0
+                        length_H = 0
+                        while (matrix[temp_row][temp_col] != 0) and (temp_row != temp_col):
+                            length_N+=1
+                            length_H+=matrix[temp_row][temp_col]
+                            temp_row+=1
+                            temp_col-=1
+                            if length_N >= 3:
+                                stem[2] = int(length_H)
+                                # stem[3] = int(length_N)
+                                stems_potential.append(stem.copy())
+                        if length_H > mu:
+                            mu = length_H
+        
+        return [stems_potential, mu, rna, len(rna)]
         
     def _get_actual_stems(self, rna_name):
         if (self.rna_files[rna_name]['ct_file'] == None):
