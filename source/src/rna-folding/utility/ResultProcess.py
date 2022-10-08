@@ -50,13 +50,13 @@ class ResultParser():
         self.atom_pos_data = {}
         self.atom_pos_data_raw = {}
         self.atom_pos_data_temp = {}
-        self.mol_file_name = '/'.join([param["raw_path"],param["data_name"]])
+        self.mol_file_name = '/'.join([param["raw_path"],self.data_name])
         logging.info("Data.load()")
         self.data_path = param["data_path"]
-        self.rna_name = param["data_name"]
+        self.rna_name = self.data_name
         self.rna_data = RNAData.load(param["data_path"]).rna_files
         # calculate actual energy
-        self.actual_energy = self._energy(self.rna_data.actual_stems, self.pkp)
+        self.actual_energy = self._energy(self.rna_data[self.rna_name]['actual_stems'], self.pkp)
         logging.info(f"actual energy is {self.actual_energy}")
 
         # keep N recent results
@@ -736,24 +736,5 @@ class ResultParser():
 
         return [mol_save_name, file_save_name]
 
-    def View3DMol(self, mol, size=(600, 600), style="stick", surface=False, opacity=0.5, type="mol2"):
-        assert style in ('line', 'stick', 'sphere', 'carton')
-        viewer = py3Dmol.view(width=size[0], height=size[1])
-        viewer.addModel(open(mol, 'r').read(), type)
-        viewer.setStyle({style: {}})
-        if surface:
-            viewer.addSurface(py3Dmol.SAS, {'opacity': opacity})
-        viewer.zoomTo()
-        return viewer
-
-    def StyleSelector(self, mol, size, style):
-        return self.View3DMol(mol, size=(size, size), style=style).show()
-
-    def InteractView(self, mol, size):
-        interact(self.StyleSelector,
-                 mol=mol,
-                 size=size,
-                 style=ipywidgets.Dropdown(
-                     options=['line', 'stick', 'sphere'],
-                     value='stick',
-                     description='Style:'))
+    def RNAFoldingView(self, data = 'raw'):
+        if data 
