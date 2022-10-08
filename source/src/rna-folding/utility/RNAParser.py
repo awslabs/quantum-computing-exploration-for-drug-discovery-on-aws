@@ -78,8 +78,8 @@ class RNAData():
                     if matrix[row][col] != 0:
                         temp_row = row
                         temp_col = col
-                        stem = [row+1,col+1,0]
-                        # stem = [row+1,col+1,0,0]
+                        # stem = [row+1,col+1,0]
+                        stem = [row+1,col+1,0,0]
                         length_N = 0
                         length_H = 0
                         while (matrix[temp_row][temp_col] != 0) and (temp_row != temp_col):
@@ -89,7 +89,7 @@ class RNAData():
                             temp_col-=1
                             if length_N >= 3:
                                 stem[2] = int(length_H)
-                                # stem[3] = int(length_N)
+                                stem[3] = int(length_N)
                                 stems_potential.append(stem.copy())
                         if length_H > mu:
                             mu = length_H
