@@ -10,6 +10,7 @@ cdk.out
 .DS_Store
 docs/site/
 .vscode/settings.json
+*.pickle
 
 source/test-reports
 source/coverage
