@@ -228,12 +228,7 @@ class Prepare(object):
             logging.info("All files are generated!")
 
     def _generate_reactions_dictionary(self):
-        """ reactions_dictionary文件的生成由以下代码实现，其中df为分子合成数据库读取预处理后的数据集，
-        包含三列：product、category、reactant，分别表示产物、反应类别和合成物；
-        处理完成的reactions_dictionary文件的数据格式如下：
-        {product1:{category1:[reactant1,reactant1,reactant1...],category2:[reactant1,reactant1,reactant1...]...}}，
-        即嵌套字典+列表的组合形式。
-
+        """
         The generation of the reactions_dictionary is realized by the following code:
         df is the preprocessed data set read from the molecular synthesis database,
         which contains three columns: product, category, reactant,
@@ -257,11 +252,7 @@ class Prepare(object):
         logging.info("reactions_dictionary is saved!")
 
     def _generate_smiles_dictionary(self):
-        """ smiles_dictionary文件用于记录每个分子的分子编码，分子编码采用rdkit库中的摩根指纹编码API来实现，文件的生成由以下代码实现，其中的temp为一个list，保存了数据库中所有
-        分子的SMILES编码，具体代码如下：
-        处理完成的file2文件的数据格式如下：
-        {smiles1:fingerprint1,smiles2:fingerprint2,...}
-
+        """
         The smiles_dictionary is used to record the molecular code of each molecule. The molecular code is implemented by
         the Morgan fingerprint coding API in the rdkit library. The generation of the file is realized by the
         following code:
@@ -294,9 +285,7 @@ class Prepare(object):
         logging.info("smiles_dictionary is saved!")
 
     def _generate_target(self):
-        """ target_product文件用于记录所有需要进行逆合成训练的分子SMILES编码，从数据库中提取，其中保存格式如下：
-        [smiles1,smiles2,...]
-
+        """
         The target_product file is used to record all molecular SMILES codes that need to be trained for retrosynthesis,
         extracted from the database, and saved in the following format:
         [smiles1,smiles2,...] """
@@ -306,9 +295,7 @@ class Prepare(object):
         logging.info("target_product file is saved!")
 
     def _generate_buyalbe(self):
-        """ buyalbe文件用于记录所有可买的最小合成底物分子的SMILES编码，其中保存格式如下：
-        [smiles1,smiles2,...]
-
+        """
         The buyalbe file is used to record the SMILES codes of all the smallest commercially available synthetic
         substrate molecules, file is stored in the following format:
         [smiles1,smiles2,...] """
@@ -325,9 +312,7 @@ class Prepare(object):
         logging.info("buyalbe file is saved!")
 
     def _generate_Deadend(self):
-        """ Deadend文件用于记录所有非可买的最小合成底物分子的SMILES编码，文件保存格式如下：
-        [smiles1,smiles2,...]
-
+        """
         Deadend files are used to record SMILES codes for all non-commercial minimal synthetic substrate molecules.
         File is saved in the following formats:
         [smiles1,smiles2,...] """
@@ -339,9 +324,7 @@ class Prepare(object):
         logging.info("Deadend file is saved!")
 
     def generate_ground_truth(self):
-        """ground_truth文件用于记录所有目标产物分子结果暴力搜索算法计算后，得出的真实最小成本值以及其路径，文件保存格式如下：
-        {smiles1:{'cost':cost1, 'path':[smiles11,smiles12,...]},smiles2:{'cost':cost2, 'path':[smiles21,smiles22,...]},...}
-
+        """
         The ground_truth file is used to record the true least cost value and its path obtained by the brute force
         search algorithm for the molecular results of all target products.
         File is saved in the following formats:

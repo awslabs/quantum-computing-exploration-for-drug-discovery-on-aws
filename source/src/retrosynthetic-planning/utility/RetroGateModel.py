@@ -62,19 +62,19 @@ class CirModel(nn.Module):
             self.weight_shapes = {"weights": (self.n_layers, self.n_qubits)}
 
     def forward(self, x):
-        # #输入合法性检测 使用TN需要保留
+        #
         # if x.ndim == 2:
-        #     #输入的x是 1 X (2**N) 维度的态矢
+        #
         #     assert x.shape[0] == 1 and x.shape[1] == 2**(self.n_qubits)
         #     is_batch = False
         #     x = x.view([2]*self.n_qubits)
         # elif x.ndim == 3:
-        #     #输入的x是 batch_size X 1 X (2**N) 维度的批量态矢
+        #
         #     assert x.shape[1] == 1 and x.shape[2] == 2**(self.n_qubits)
         #     is_batch = True
         #     x = x.view([ x.shape[0] ]+[2]*self.n_qubits)
         # else:
-        #     #输入x格式有问题，发起报错
+        #
         #     raise ValueError("input x dimension error!")
 
         rst = None

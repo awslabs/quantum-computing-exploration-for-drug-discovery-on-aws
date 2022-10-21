@@ -1,10 +1,6 @@
 import numpy as np
 import copy
 
-# reactions_dictionary = np.load('D:\工作\论文\分子逆合成/retrosynthesis\data2/reactions_dictionary.npy', allow_pickle=True).item()
-# target_product = np.load('D:\工作\论文\分子逆合成/retrosynthesis\data2/target_product.npy').tolist()
-# Deadend = np.load('D:\工作\论文\分子逆合成/retrosynthesis\data2/deadend.npy').tolist()
-# buyable = np.load('D:\工作\论文\分子逆合成/retrosynthesis\data2/buyable.npy').tolist()
 
 class Reaction(object):
     def __init__(self, name):
@@ -147,17 +143,3 @@ def expansion(target, input_data_path):
     target.calculate()
     target.pathway()
 
-
-# if __name__ == "__main__":
-#     input_data_path = 'D:\工作\论文\分子逆合成/retrosynthesis\data2/'
-#     target1 = Product('CCCCC(CC)COC(=O)C(C#N)=C(c1ccccc1)c1ccccc1')
-#     expansion(target1, input_data_path)
-#     print(target1.cost)
-#     for i in target1.temp:
-#         print(i)
-#
-#     target1 = Product('COC(Cc1ccc2oc(Cc3nc(-c4ccccc4)oc3C)cc2c1)OC')
-#     expansion(target1, input_data_path)
-#     print(target1.cost)
-#     for i in target1.temp:
-#         print(i)
