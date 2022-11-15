@@ -21,11 +21,12 @@ import {
 } from 'aws-cdk-lib';
 
 export class SolutionStack extends Stack {
+
   private _paramGroup: {
     [grpname: string]: CfnParameter[];
   } = {}
 
-  protected setDescription(description: string) {
+  protected setDescription(description:string) {
     this.templateOptions.description = description;
   }
   protected newParam(id: string, props ? : CfnParameterProps): CfnParameter {

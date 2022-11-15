@@ -24,7 +24,7 @@
     "target": "ES2018"
   },
   "include": [
-    "src/molecular-unfolding/cdk/**/*.ts",
+    "src/*.ts",
     "src/main.ts",
     "src/stack.ts",
     "test/**/*.ts"

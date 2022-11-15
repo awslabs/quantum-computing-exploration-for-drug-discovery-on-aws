@@ -1,0 +1,92 @@
+IAM Statement Changes
+┌───┬───────────────────────────────────────────────────────────────┬────────┬─────────────────────────┬───────────────────────────────────────────────────────────────────┬───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+│   │ Resource                                                      │ Effect │ Action                  │ Principal                                                         │ Condition                                                                                                                             │
+├───┼───────────────────────────────────────────────────────────────┼────────┼─────────────────────────┼───────────────────────────────────────────────────────────────────┼───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ + │ ${AccessLogS3Bucket.Arn}                                      │ Deny   │ s3:*                    │ AWS:*                                                             │ "Bool": {                                                                                                                             │
+│   │ ${AccessLogS3Bucket.Arn}/*                                    │        │                         │                                                                   │   "aws:SecureTransport": "false"                                                                                                      │
+│   │                                                               │        │                         │                                                                   │ }                                                                                                                                     │
+│ + │ ${AccessLogS3Bucket.Arn}                                      │ Allow  │ s3:DeleteObject*        │ AWS:${Custom::S3AutoDeleteObjectsCustomResourceProvider/Role.Arn} │                                                                                                                                       │
+│   │ ${AccessLogS3Bucket.Arn}/*                                    │        │ s3:GetBucket*           │                                                                   │                                                                                                                                       │
+│   │                                                               │        │ s3:List*                │                                                                   │                                                                                                                                       │
+├───┼───────────────────────────────────────────────────────────────┼────────┼─────────────────────────┼───────────────────────────────────────────────────────────────────┼───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ + │ ${Custom::S3AutoDeleteObjectsCustomResourceProvider/Role.Arn} │ Allow  │ sts:AssumeRole          │ Service:lambda.amazonaws.com                                      │                                                                                                                                       │
+├───┼───────────────────────────────────────────────────────────────┼────────┼─────────────────────────┼───────────────────────────────────────────────────────────────────┼───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ + │ ${VPC/logtoCW/IAMRole.Arn}                                    │ Allow  │ sts:AssumeRole          │ Service:vpc-flow-logs.amazonaws.com                               │                                                                                                                                       │
+│ + │ ${VPC/logtoCW/IAMRole.Arn}                                    │ Allow  │ iam:PassRole            │ AWS:${VPC/logtoCW/IAMRole}                                        │                                                                                                                                       │
+├───┼───────────────────────────────────────────────────────────────┼────────┼─────────────────────────┼───────────────────────────────────────────────────────────────────┼───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ + │ ${amazon-braket.Arn}                                          │ Deny   │ s3:*                    │ AWS:*                                                             │ "Bool": {                                                                                                                             │
+│   │ ${amazon-braket.Arn}/*                                        │        │                         │                                                                   │   "aws:SecureTransport": "false"                                                                                                      │
+│   │                                                               │        │                         │                                                                   │ }                                                                                                                                     │
+│ + │ ${amazon-braket.Arn}                                          │ Allow  │ s3:DeleteObject*        │ AWS:${Custom::S3AutoDeleteObjectsCustomResourceProvider/Role.Arn} │                                                                                                                                       │
+│   │ ${amazon-braket.Arn}/*                                        │        │ s3:GetBucket*           │                                                                   │                                                                                                                                       │
+│   │                                                               │        │ s3:List*                │                                                                   │                                                                                                                                       │
+├───┼───────────────────────────────────────────────────────────────┼────────┼─────────────────────────┼───────────────────────────────────────────────────────────────────┼───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ + │ ${qcLogKey.Arn}                                               │ Allow  │ kms:*                   │ AWS:arn:${AWS::Partition}:iam::${AWS::AccountId}:root             │                                                                                                                                       │
+│ + │ ${qcLogKey.Arn}                                               │ Allow  │ kms:Decrypt*            │ Service:logs.${AWS::Region}.${AWS::URLSuffix}                     │ "ArnLike": {                                                                                                                          │
+│   │                                                               │        │ kms:Describe*           │                                                                   │   "kms:EncryptionContext:aws:logs:arn": "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:QCEDDStack-vpcFlowlog" │
+│   │                                                               │        │ kms:Encrypt*            │                                                                   │ }                                                                                                                                     │
+│   │                                                               │        │ kms:GenerateDataKey*    │                                                                   │                                                                                                                                       │
+│   │                                                               │        │ kms:ReEncrypt*          │                                                                   │                                                                                                                                       │
+├───┼───────────────────────────────────────────────────────────────┼────────┼─────────────────────────┼───────────────────────────────────────────────────────────────────┼───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+│ + │ ${vpcFlowlog.Arn}                                             │ Allow  │ logs:CreateLogStream    │ AWS:${VPC/logtoCW/IAMRole}                                        │                                                                                                                                       │
+│   │                                                               │        │ logs:DescribeLogStreams │                                                                   │                                                                                                                                       │
+│   │                                                               │        │ logs:PutLogEvents       │                                                                   │                                                                                                                                       │
+└───┴───────────────────────────────────────────────────────────────┴────────┴─────────────────────────┴───────────────────────────────────────────────────────────────────┴───────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+IAM Policy Changes
+┌───┬───────────────────────────────────────────────────────────┬──────────────────────────────────────────────────────────────────────────────────────────────┐
+│   │ Resource                                                  │ Managed Policy ARN                                                                           │
+├───┼───────────────────────────────────────────────────────────┼──────────────────────────────────────────────────────────────────────────────────────────────┤
+│ + │ ${Custom::S3AutoDeleteObjectsCustomResourceProvider/Role} │ {"Fn::Sub":"arn:${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole"} │
+└───┴───────────────────────────────────────────────────────────┴──────────────────────────────────────────────────────────────────────────────────────────────┘
+Security Group Changes
+┌───┬────────────────────────────────────────────────┬─────┬────────────┬──────────────────┐
+│   │ Group                                          │ Dir │ Protocol   │ Peer             │
+├───┼────────────────────────────────────────────────┼─────┼────────────┼──────────────────┤
+│ + │ ${VPC/AthenaEndpoint/SecurityGroup.GroupId}    │ In  │ TCP 443    │ ${VPC.CidrBlock} │
+│ + │ ${VPC/AthenaEndpoint/SecurityGroup.GroupId}    │ Out │ Everything │ Everyone (IPv4)  │
+├───┼────────────────────────────────────────────────┼─────┼────────────┼──────────────────┤
+│ + │ ${VPC/BraketEndpoint/SecurityGroup.GroupId}    │ In  │ TCP 443    │ ${VPC.CidrBlock} │
+│ + │ ${VPC/BraketEndpoint/SecurityGroup.GroupId}    │ Out │ Everything │ Everyone (IPv4)  │
+├───┼────────────────────────────────────────────────┼─────┼────────────┼──────────────────┤
+│ + │ ${VPC/EcrDockerEndpoint/SecurityGroup.GroupId} │ In  │ TCP 443    │ ${VPC.CidrBlock} │
+│ + │ ${VPC/EcrDockerEndpoint/SecurityGroup.GroupId} │ Out │ Everything │ Everyone (IPv4)  │
+├───┼────────────────────────────────────────────────┼─────┼────────────┼──────────────────┤
+│ + │ ${batchSg.GroupId}                             │ Out │ TCP 443    │ Everyone (IPv4)  │
+│ + │ ${batchSg.GroupId}                             │ Out │ TCP 443    │ Everyone (IPv6)  │
+│ + │ ${batchSg.GroupId}                             │ Out │ TCP 80     │ Everyone (IPv4)  │
+│ + │ ${batchSg.GroupId}                             │ Out │ TCP 80     │ Everyone (IPv6)  │
+├───┼────────────────────────────────────────────────┼─────┼────────────┼──────────────────┤
+│ + │ ${lambdaSg.GroupId}                            │ Out │ TCP 443    │ Everyone (IPv4)  │
+│ + │ ${lambdaSg.GroupId}                            │ Out │ TCP 443    │ Everyone (IPv6)  │
+│ + │ ${lambdaSg.GroupId}                            │ Out │ TCP 80     │ Everyone (IPv4)  │
+│ + │ ${lambdaSg.GroupId}                            │ Out │ TCP 80     │ Everyone (IPv6)  │
+└───┴────────────────────────────────────────────────┴─────┴────────────┴──────────────────┘
+(NOTE: There may be security-related changes not in this list. See https://github.com/aws/aws-cdk/issues/1299)
+
+Do you wish to deploy these changes (y/n)? The push refers to repository [456882501179.dkr.ecr.us-east-1.amazonaws.com/cdk-hnb659fds-container-assets-456882501179-us-east-1]
+14833f1ad477: Preparing
+7b6d87ea5069: Preparing
+e63ecf53dc8d: Preparing
+341a9242cc45: Preparing
+57d3e25f635a: Preparing
+3348aec4f116: Preparing
+300476fd0de7: Preparing
+165b8a60faa9: Preparing
+e0284df1274a: Preparing
+60d48413aa2b: Preparing
+3348aec4f116: Waiting
+300476fd0de7: Waiting
+e0284df1274a: Waiting
+165b8a60faa9: Waiting
+60d48413aa2b: Waiting
+14833f1ad477: Pushed
+341a9242cc45: Pushed
+7b6d87ea5069: Pushed
+165b8a60faa9: Pushed
+57d3e25f635a: Pushed
+300476fd0de7: Pushed
+e0284df1274a: Pushed
+3348aec4f116: Pushed
+60d48413aa2b: Pushed
+e63ecf53dc8d: Pushed
+2d8a8b2aebec53d3474e540f160247983a6ab04daf1fc6af6388109801b39646: digest: sha256:3ddd653b30c03ec45e89d9ae6df9ec36d1c0f03499339529960dc32cf6aee3d9 size: 2418

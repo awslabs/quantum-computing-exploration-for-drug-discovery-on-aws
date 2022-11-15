@@ -12,7 +12,8 @@
   "parserOptions": {
     "ecmaVersion": 2018,
     "sourceType": "module",
-    "project": "./tsconfig.jest.json"
+    "project": "quantum-computing-exploration-for-drug-discovery-on-aws/source/tsconfig.jest.json"
+
   },
   "extends": [
     "plugin:import/typescript"
