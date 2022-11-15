@@ -3,6 +3,7 @@ node_modules
 *.d.ts
 node_modules
 
+
 # CDK asset staging directory
 .cdk.staging
 cdk.out
@@ -12,6 +13,7 @@ docs/site/
 .vscode/settings.json
 *.pickle
 
+source/log
 source/test-reports
 source/coverage
 buildspec.yml
