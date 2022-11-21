@@ -1,0 +1,27 @@
+{
+    "version": "1",
+    "runMode": "CC|QC|ALL",
+    "molFile": "s3://amazon-braket-gcr-qc-sol-common/qc/raw_model/117_ideal.mol2",
+    "modelVersion": "v1",
+    "experimentName": "test",
+    "optParams": {
+        "qa": {
+            "shots": 10000
+        },
+        "sa": {
+            "shots": 10000
+        }
+    },
+
+    "modelParams": {
+        "M": [1, 2, 3, 4, 5],
+        "D": [8]
+    },
+    "devicesArns": [
+        "arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6",
+        "arn:aws:braket:::device/qpu/d-wave/Advantage_system4"
+    ],
+    "ccResources": [
+        [4, 8]
+    ]
+}

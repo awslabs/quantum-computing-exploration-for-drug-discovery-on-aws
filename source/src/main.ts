@@ -25,12 +25,17 @@ import {
 
 import {
   MainStack,
-} from './molecular-unfolding/cdk/stack-main';
+} from './common/stack-main';
 
+import { genTimeStampStr } from './utils/utils';
 
 const app = new App();
 
-new MainStack(app, 'QCEDDStack', {
+// new MainStack(app, 'QCEDDStack', {
+//   synthesizer: newSynthesizer(),
+// });
+
+new MainStack(app, `QCEDDStack-${genTimeStampStr(new Date())}`, {
   synthesizer: newSynthesizer(),
 });
 
