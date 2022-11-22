@@ -6,6 +6,6 @@ COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 COPY utility utility
 
-COPY batch-images/qa-optimizer/process.py .
+COPY image/batch-image/qa-optimizer/process.py .
 
 ENTRYPOINT [ "python", "./process.py" ]
