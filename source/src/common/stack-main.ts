@@ -248,7 +248,7 @@ export class MainStack extends SolutionStack {
       encryption: s3.BucketEncryption.S3_MANAGED,
     });
 
-    const bucketName = `amazon-braket-${stackName}-${this.account}-${this.region}-${genTimeStampStr(new Date)}`;
+    const bucketName = `amazon-braket-${stackName}-${genTimeStampStr(new Date)}`;
     const s3bucket = new s3.Bucket(this, 'amazon-braket', {
       removalPolicy: RemovalPolicy.DESTROY,
       bucketName,
