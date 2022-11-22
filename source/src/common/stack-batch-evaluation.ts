@@ -71,13 +71,13 @@ export class BatchEvaluationNestStack extends NestedStack {
       ),
     });
 
-    props.vpc.addInterfaceEndpoint(`EcrDockerEndpoint-${props.caseName}`, {
-      service: ec2.InterfaceVpcEndpointAwsService.ECR_DOCKER,
-    });
+    // props.vpc.addInterfaceEndpoint(`EcrDockerEndpoint-${props.caseName}`, {
+    //   service: ec2.InterfaceVpcEndpointAwsService.ECR_DOCKER,
+    // });
 
-    props.vpc.addInterfaceEndpoint(`AthenaEndpoint-${props.caseName}`, {
-      service: ec2.InterfaceVpcEndpointAwsService.ATHENA,
-    });
+    // props.vpc.addInterfaceEndpoint(`AthenaEndpoint-${props.caseName}`, {
+    //   service: ec2.InterfaceVpcEndpointAwsService.ATHENA,
+    // });
 
     create_custom_resources(this, {
       vpc: props.vpc,
