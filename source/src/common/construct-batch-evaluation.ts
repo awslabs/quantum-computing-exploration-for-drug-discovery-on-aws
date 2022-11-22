@@ -241,9 +241,7 @@ export class BatchEvaluation extends Construct {
 
   private createCreateModelStep(): tasks.BatchSubmitJob {
     const jobQueue = this.batchUtil.getFargateJobQueue();
-    console.log("batch-casepath"+this.props.casePath);
     const createModelJobDef = this.batchUtil.createCreateModelJobDef(this.props.casePath);
-    // console.log('imagePath:'+this.props.imagePath);
     const createModelStep = new tasks.BatchSubmitJob(this, 'Create Model', {
       jobDefinitionArn: createModelJobDef.jobDefinitionArn,
       jobName: 'createModelTask',

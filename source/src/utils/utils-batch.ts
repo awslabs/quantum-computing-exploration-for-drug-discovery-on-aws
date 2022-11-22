@@ -157,8 +157,6 @@ export class BatchUtil {
     const vcpus = 2;
     const mem = 4;
     const resource = this.getResourceDescription(vcpus, mem);
-    // console.log(image);
-    console.log("image:",image);
     return new batch.JobDefinition(this.scope, 'CreateModelJobDef', {
       platformCapabilities: [batch.PlatformCapabilities.FARGATE],
       container: {
