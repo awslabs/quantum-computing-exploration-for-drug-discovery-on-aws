@@ -333,20 +333,20 @@ export class MainStack extends SolutionStack {
     }
 
 
-    {
-      // visualization //////////////////////////
-      const dashboard = new VisualizationNestStack(this, 'Dashboard', {
-        prefix: prefix,
-        stackName: this.stackName,
-        bucket: s3bucket,
-        quickSightRoleName: quickSightRoleNameParam.valueAsString,
-        quicksightUser: quickSightUserParam.valueAsString,
-      });
-      // (dashboard.nestedStackResource as CfnStack).cfnOptions.condition = conditionDeployMolecularUnfolding;
-      // this.addOutput('DashboardURL', dashboard.outputDashboardUrl, conditionDeployVisualization);
-      this.addOutput('WorkspaceURL', dashboard.outputDashboardUrl);
-      dashboard.node.addDependency(s3bucket);
-    }
+    // {
+    //   // visualization //////////////////////////
+    //   const dashboard = new VisualizationNestStack(this, 'Dashboard', {
+    //     prefix: prefix,
+    //     stackName: this.stackName,
+    //     bucket: s3bucket,
+    //     quickSightRoleName: quickSightRoleNameParam.valueAsString,
+    //     quicksightUser: quickSightUserParam.valueAsString,
+    //   });
+    //   // (dashboard.nestedStackResource as CfnStack).cfnOptions.condition = conditionDeployMolecularUnfolding;
+    //   // this.addOutput('DashboardURL', dashboard.outputDashboardUrl, conditionDeployVisualization);
+    //   this.addOutput('WorkspaceURL', dashboard.outputDashboardUrl);
+    //   dashboard.node.addDependency(s3bucket);
+    // }
 
     // {
     //   // rnaFoldingVisualization //////////////////////////
