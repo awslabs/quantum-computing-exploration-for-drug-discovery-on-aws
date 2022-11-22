@@ -32,9 +32,9 @@ import {
   Construct,
 } from 'constructs';
 
-import {
-  VisualizationNestStack,
-} from '../batch-evaluation/molecular-unfolding/cdk/stack-visualization';
+// import {
+//   VisualizationNestStack,
+// } from '../batch-evaluation/molecular-unfolding/cdk/stack-visualization';
 
 import {
   SolutionStack,
@@ -119,17 +119,17 @@ export class MainStack extends SolutionStack {
     //   allowedValues: ['yes', 'no'],
     // });
 
-    const quickSightUserParam = new CfnParameter(this, 'QuickSightUser', {
-      type: 'String',
-      description: 'QuickSight User, find user name from https://us-east-1.quicksight.aws.amazon.com/sn/admin',
-      default: '',
-    });
+    // const quickSightUserParam = new CfnParameter(this, 'QuickSightUser', {
+    //   type: 'String',
+    //   description: 'QuickSight User, find user name from https://us-east-1.quicksight.aws.amazon.com/sn/admin',
+    //   default: '',
+    // });
 
-    const quickSightRoleNameParam = new CfnParameter(this, 'QuickSightRoleName', {
-      type: 'String',
-      description: 'QuickSight IAM role name',
-      default: '',
-    });
+    // const quickSightRoleNameParam = new CfnParameter(this, 'QuickSightRoleName', {
+    //   type: 'String',
+    //   description: 'QuickSight IAM role name',
+    //   default: '',
+    // });
 
     const conditionDeployMolecularUnfolding = new CfnCondition(this, 'ConditionDeployMolecularUnfolding', {
       expression: Fn.conditionEquals(
