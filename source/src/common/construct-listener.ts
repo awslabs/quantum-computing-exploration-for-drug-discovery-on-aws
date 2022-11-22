@@ -13,8 +13,6 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-
-
 import {
   aws_s3 as s3,
   aws_ec2 as ec2,
@@ -45,7 +43,7 @@ interface Props {
   vpc: ec2.Vpc;
   lambdaSg: ec2.SecurityGroup;
   stackName: string;
-  imagePath: string;
+  casePath: string;
 }
 
 export class EventListener extends Construct {
@@ -58,12 +56,12 @@ export class EventListener extends Construct {
     this.props = props;
     this.images = ECRImageUtil.newInstance(scope);
     this.roleUtil = RoleUtil.newInstance(scope, this.props);
-    this.createEventListener(this.props.vpc, this.props.lambdaSg, this.props.imagePath);
+    this.createEventListener(this.props.vpc, this.props.lambdaSg, this.props.casePath);
   }
 
-  private createEventListener(vpc: ec2.Vpc, lambdaSg: ec2.SecurityGroup, imagePath: string) {
+  private createEventListener(vpc: ec2.Vpc, lambdaSg: ec2.SecurityGroup, casePath: string) {
     const lambdaRole = this.roleUtil.createCallBackLambdaRole('ParseBraketResultLambdaRole');
-    const code = this.images.getECRImage(ECRRepoNameEnum.Lambda_ParseBraketResult, imagePath) as lambda.DockerImageCode;
+    const code = this.images.getECRImage(ECRRepoNameEnum.Lambda_ParseBraketResult, casePath) as lambda.DockerImageCode;
     const parseBraketResultLambda = new lambda.DockerImageFunction(this, 'ParseBraketResultLambda', {
       code,
       memorySize: 2048,

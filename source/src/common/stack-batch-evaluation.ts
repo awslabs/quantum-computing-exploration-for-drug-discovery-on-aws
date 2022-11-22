@@ -51,8 +51,7 @@ export interface BatchEvaluationNestStackProps extends NestedStackProps {
   readonly lambdaSg: ec2.SecurityGroup;
   readonly stackName: string;
   readonly description: string;
-  readonly lambdaPath: string;
-  readonly imagePath: string;
+  readonly casePath: string;
   readonly caseName: string;
 }
 
@@ -98,8 +97,7 @@ export class BatchEvaluationNestStack extends NestedStack {
       batchSg: props.batchSg,
       lambdaSg: props.lambdaSg,
       stackName: props.stackName,
-      lambdaPath: props.lambdaPath,
-      imagePath: props.imagePath,
+      casePath: props.casePath,
     });
 
     this.stateMachineURLOutput = batchEvaluation.stateMachineURLOutput;
@@ -130,7 +128,7 @@ export class BatchEvaluationNestStack extends NestedStack {
       vpc: props.vpc,
       lambdaSg: props.lambdaSg,
       stackName: props.stackName,
-      imagePath: props.imagePath,
+      casePath: props.casePath,
     });
     Aspects.of(this).add(new AddCfnNag());
   }

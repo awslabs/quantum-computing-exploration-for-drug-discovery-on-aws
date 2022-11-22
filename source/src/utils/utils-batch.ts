@@ -151,14 +151,14 @@ export class BatchUtil {
     return this.fargateJobQueue;
   }
 
-  public createCreateModelJobDef(imagePath: string): batch.JobDefinition {
+  public createCreateModelJobDef(casePath: string): batch.JobDefinition {
 
-    const image = this.imageUtil.getECRImage(ECRRepoNameEnum.Batch_Create_Model, imagePath) as ecs.ContainerImage;
+    const image = this.imageUtil.getECRImage(ECRRepoNameEnum.Batch_Create_Model, casePath) as ecs.ContainerImage;
     const vcpus = 2;
     const mem = 4;
     const resource = this.getResourceDescription(vcpus, mem);
     // console.log(image);
-
+    console.log("image:",image);
     return new batch.JobDefinition(this.scope, 'CreateModelJobDef', {
       platformCapabilities: [batch.PlatformCapabilities.FARGATE],
       container: {
@@ -179,9 +179,9 @@ export class BatchUtil {
     });
   }
 
-  public createCCBatchJobDef(defName: string, vcpus: number, mem: number, imagePath: string): batch.JobDefinition {
+  public createCCBatchJobDef(defName: string, vcpus: number, mem: number, casePath: string): batch.JobDefinition {
 
-    const image = this.imageUtil.getECRImage(ECRRepoNameEnum.Batch_Sa_Optimizer, imagePath) as ecs.ContainerImage;
+    const image = this.imageUtil.getECRImage(ECRRepoNameEnum.Batch_Sa_Optimizer, casePath) as ecs.ContainerImage;
     const resource = this.getResourceDescription(vcpus, mem);
 
     return new batch.JobDefinition(this.scope, defName, {
@@ -206,9 +206,9 @@ export class BatchUtil {
 
   }
 
-  public createQCSubmitBatchJobDef(defName: string, imagePath: string): batch.JobDefinition {
+  public createQCSubmitBatchJobDef(defName: string, casePath: string): batch.JobDefinition {
 
-    const image = this.imageUtil.getECRImage(ECRRepoNameEnum.Batch_Qa_Optimizer, imagePath) as ecs.ContainerImage;
+    const image = this.imageUtil.getECRImage(ECRRepoNameEnum.Batch_Qa_Optimizer, casePath) as ecs.ContainerImage;
     const vcpus = 2;
     const mem = 4;
     const resource = this.getResourceDescription(vcpus, mem);

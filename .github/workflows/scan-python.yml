@@ -14,5 +14,5 @@ jobs:
       with:
         version: "1.7.0"
         targets: |
-          source/src/molecular-unfolding/
+          source/src/
         options: "-r -s B301 -ll"

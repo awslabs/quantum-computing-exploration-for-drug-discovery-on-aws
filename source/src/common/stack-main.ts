@@ -59,10 +59,10 @@ export class MainStack extends SolutionStack {
   static DESCRIPTION = `(${AppSetting.SOLUTION_ID}) ${AppSetting.SOLUTION_NAME} (Version ${AppSetting.SOLUTION_VERSION})`;
   static MOLECULAR_UNFOLDING = ' - Molecular Unfolding'
   static RNA_FOLDING = ' - Rna Folding'
-  static MOLECULAR_UNFOLDING_LAMBDA_REL_PATH = '../batch-evaluation/molecular-unfolding/lambda';
-  static MOLECULAR_UNFOLDING_IMAGE_REL_PATH = '../batch-evaluation/molecular-unfolding/image';
-  static RNA_FOLDING_LAMBDA_REL_PATH = '../batch-evaluation/rna-folding/lambda';
-  static RNA_FOLDING_IMAGE_REL_PATH = '../batch-evaluation/rna-folding/image';
+  static MOLECULAR_UNFOLDING_CASE_PATH = '../batch-evaluation/molecular-unfolding';
+  // static MOLECULAR_UNFOLDING_IMAGE_REL_PATH = '../batch-evaluation/molecular-unfolding/image';
+  static RNA_FOLDING_CASE_PATH = '../batch-evaluation/rna-folding';
+  // static RNA_FOLDING_IMAGE_REL_PATH = '../batch-evaluation/rna-folding/image';
 
   // constructor
   constructor(scope: Construct, id: string, props: StackProps = {}) {
@@ -298,8 +298,7 @@ export class MainStack extends SolutionStack {
         lambdaSg,
         stackName: this.stackName,
         description: MainStack.DESCRIPTION,
-        lambdaPath: path.join(__dirname, MainStack.MOLECULAR_UNFOLDING_LAMBDA_REL_PATH),
-        imagePath: path.join(__dirname, MainStack.MOLECULAR_UNFOLDING_IMAGE_REL_PATH),
+        casePath: path.join(__dirname, MainStack.MOLECULAR_UNFOLDING_CASE_PATH),
         caseName: AppSetting.MOLECULAR_UNFOLDING,
       });
       // (batchEvaluation.nestedStackResource as CfnStack).cfnOptions.condition = conditionDeployMolecularUnfolding;
@@ -321,8 +320,7 @@ export class MainStack extends SolutionStack {
         lambdaSg,
         stackName: this.stackName,
         description: MainStack.DESCRIPTION,
-        lambdaPath: path.join(__dirname, MainStack.RNA_FOLDING_LAMBDA_REL_PATH),
-        imagePath: path.join(__dirname, MainStack.RNA_FOLDING_IMAGE_REL_PATH),
+        casePath: path.join(__dirname, MainStack.RNA_FOLDING_CASE_PATH),
         caseName: AppSetting.RNA_FOLDING,
       });
       // (batchEvaluation.nestedStackResource as CfnStack).cfnOptions.condition = conditionDeployMolecularUnfolding;

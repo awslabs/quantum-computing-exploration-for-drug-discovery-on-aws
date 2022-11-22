@@ -33,6 +33,7 @@ import {
 import {
   Construct,
 } from 'constructs';
+import path = require('path');
 
 import {
   grantKmsKeyPerm,
@@ -59,8 +60,7 @@ export interface BatchProps {
   batchSg: ec2.SecurityGroup;
   lambdaSg: ec2.SecurityGroup;
   stackName: string;
-  lambdaPath: string;
-  imagePath: string;
+  casePath: string;
 }
 
 export class BatchEvaluation extends Construct {
@@ -132,15 +132,15 @@ export class BatchEvaluation extends Construct {
       masterKey: snsKey,
     });
 
-    this.taskParamLambda = this.lambdaUtil.createTaskParametersLambda(props.lambdaPath);
-    this.waitForTokenLambda = this.lambdaUtil.createWaitForTokenLambda(props.lambdaPath);
+    this.taskParamLambda = this.lambdaUtil.createTaskParametersLambda(this.genLambdaPath());
+    this.waitForTokenLambda = this.lambdaUtil.createWaitForTokenLambda(this.genLambdaPath());
 
     const checkInputParamsStep = this.createCheckInputStep();
     const createModelStep = this.createCreateModelStep();
     const ccStateMachine = this.createCCStateMachine();
     const qcStateMachine = this.createQCStateMachine();
     const qcAndCCStateMachine = this.createCCAndQCStateMachine(ccStateMachine, qcStateMachine);
-    const aggResultStep = this.createAggResultStep(this.props.lambdaPath);
+    const aggResultStep = this.createAggResultStep(this.genLambdaPath());
     const notifyStep = this.createSNSNotifyStep(topic);
     const postSteps = sfn.Chain.start(aggResultStep).next(notifyStep);
 
@@ -241,7 +241,8 @@ export class BatchEvaluation extends Construct {
 
   private createCreateModelStep(): tasks.BatchSubmitJob {
     const jobQueue = this.batchUtil.getFargateJobQueue();
-    const createModelJobDef = this.batchUtil.createCreateModelJobDef(this.props.imagePath);
+    console.log("batch-casepath"+this.props.casePath);
+    const createModelJobDef = this.batchUtil.createCreateModelJobDef(this.props.casePath);
     // console.log('imagePath:'+this.props.imagePath);
     const createModelStep = new tasks.BatchSubmitJob(this, 'Create Model', {
       jobDefinitionArn: createModelJobDef.jobDefinitionArn,
@@ -257,6 +258,14 @@ export class BatchEvaluation extends Construct {
       },
     });
     return createModelStep;
+  }
+
+  // private genImagePath(): string {
+  //   return path.join(this.props.casePath, '/image');
+  // }
+
+  private genLambdaPath(): string {
+    return path.join(this.props.casePath, "/lambda");
   }
 
   private createCCAndQCStateMachine(ccStateMachine: sfn.StateMachine, qcStateMachine: sfn.StateMachine): sfn.StateMachine {
@@ -367,7 +376,7 @@ export class BatchEvaluation extends Construct {
 
   private createRunOnQCDeviceStateMachine(): sfn.StateMachine {
 
-    const checkQCDeviceLambda = this.lambdaUtil.createCheckQCDeviceLambda(this.props.imagePath);
+    const checkQCDeviceLambda = this.lambdaUtil.createCheckQCDeviceLambda(this.props.casePath);
     const checkQCDeviceStep = new tasks.LambdaInvoke(this, 'Check Device status', {
       lambdaFunction: checkQCDeviceLambda,
       payload: sfn.TaskInput.fromObject({
@@ -450,7 +459,7 @@ export class BatchEvaluation extends Construct {
       outputPath: '$.Payload',
     });
     const ccJobQueue = this.batchUtil.getCcJobQueue();
-    const jobDef = this.batchUtil.createCCBatchJobDef('CCJob_Template', 2, 4, this.props.imagePath);
+    const jobDef = this.batchUtil.createCCBatchJobDef('CCJob_Template', 2, 4, this.props.casePath);
 
     const stateJson = {
       Type: 'Task',
@@ -564,7 +573,7 @@ export class BatchEvaluation extends Construct {
   }
 
   private submitQCTaskAndWaitForTokenStep(): sfn.Chain {
-    const jobDef = this.batchUtil.createQCSubmitBatchJobDef('QCJob_Template', this.props.imagePath);
+    const jobDef = this.batchUtil.createQCSubmitBatchJobDef('QCJob_Template', this.props.casePath);
     const batchQueue = this.batchUtil.getFargateJobQueue();
 
     const submitQCTaskStep = new tasks.BatchSubmitJob(this, 'Submit QC Task', {

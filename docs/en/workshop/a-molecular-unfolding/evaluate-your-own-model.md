@@ -18,16 +18,15 @@ This solution is an open-source project under Apache License Version 2.0. You ca
 
 2. Clone the project to your own workspace.
 
-3. Make changes to source code. If you want to make changes for quantum algorithms, you can modify code under this directory **source/src/molecular-unfolding/utility**.
+3. Make changes to source code. If you want to make changes for quantum algorithms, you can modify code under this directory **source/src/\*/utility**.
 
 ## Deploy stack to your AWS account from CDK
 
-1. Check CloudFormation in your AWS account, and make sure you do not have a stack named `QCEDDStack` in your deployment region.
+1.  Check CloudFormation in your AWS account, and make sure you do not have a stack named `QCEDDStack` in your deployment region.
 
-2. Check your S3 bucket, and make sure no bucket is named `amazon-braket-qceddstack-<your account>-<deployment Region>`.
+2.  Check your S3 bucket, and make sure no bucket is named `amazon-braket-qceddstack-<your account>-<deployment Region>`.
 
-3. Deploy changes to your AWS account from CDK.
-
+3.  Deploy changes to your AWS account from CDK.
 
         cd source
         npm install
@@ -37,16 +36,16 @@ This solution is an open-source project under Apache License Version 2.0. You ca
          --parameters DeployVisualization=yes \
          --parameters QuickSightUser=<your QuickSight user> \
          --parameters QuickSightRoleName=<your QuickSight service role name>
-             
- 
-4. Wait for the deployment to complete. Deployment will take about 10 minutes. 
 
-5. Get output links from CloudFormation output, which include:
+4.  Wait for the deployment to complete. Deployment will take about 10 minutes.
+
+5.  Get output links from CloudFormation output, which include:
+
     - Step Functions URL
     - QuickSight dashboard link
     - Notebook URL
     - S3 bucket name
 
-6. Follow steps in Batch Evaluation to run your own code with appropriate input.
+6.  Follow steps in Batch Evaluation to run your own code with appropriate input.
 
-7. View result through QuickSight dashboard.
+7.  View result through QuickSight dashboard.

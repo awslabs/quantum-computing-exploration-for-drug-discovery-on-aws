@@ -44,7 +44,7 @@ export class ECRImageUtil {
     this.scope = scope;
   }
 
-  public getECRImage(name: ECRRepoNameEnum, imagePath: string): ecs.ContainerImage | lambda.DockerImageCode {
+  public getECRImage(name: ECRRepoNameEnum, casePath: string): ecs.ContainerImage | lambda.DockerImageCode {
 
     const usePreBuildImages = process.env.SOLUTION_PRE_BUILD_IMAGES || false;
 
@@ -56,7 +56,7 @@ export class ECRImageUtil {
         //   path.join(__dirname, '../../'), {
         //     file: 'batch-images/create-model/Dockerfile',
         //   });
-        return ecs.ContainerImage.fromAsset(`${imagePath}/batch-image/create-model`);
+        return ecs.ContainerImage.fromAsset(casePath, { file: '/image/batch-image/create-model/Dockerfile'});
       }
     }
 
@@ -68,7 +68,7 @@ export class ECRImageUtil {
         //   path.join(__dirname, '../../'), {
         //     file: 'batch-images/sa-optimizer/Dockerfile',
         //   });
-        return ecs.ContainerImage.fromAsset(`${imagePath}/batch-image/sa-optimizer`);
+        return ecs.ContainerImage.fromAsset(casePath, { file: '/image/batch-image/sa-optimizer'});
 
       }
     }
@@ -81,7 +81,7 @@ export class ECRImageUtil {
         //   path.join(__dirname, '../../'), {
         //     file: 'batch-images/qa-optimizer/Dockerfile',
         //   });
-        return ecs.ContainerImage.fromAsset(`${imagePath}/batch-image/qa-optimizer`);
+        return ecs.ContainerImage.fromAsset(casePath, { file: '/image/batch-image/qa-optimizer'});
       }
     }
 
@@ -93,7 +93,7 @@ export class ECRImageUtil {
         //   path.join(__dirname, '../../'), {
         //     file: 'lambda/DeviceAvailableCheckLambda/Dockerfile',
         //   });
-        return lambda.DockerImageCode.fromImageAsset(`${imagePath}/lambda-image/device-available-check`);
+        return lambda.DockerImageCode.fromImageAsset(casePath, { file: '/image/lambda-image/device-available-check'});
       }
     }
 
@@ -105,7 +105,7 @@ export class ECRImageUtil {
         //   path.join(__dirname, '../../'), {
         //     file: 'lambda/ParseBraketResultLambda/Dockerfile',
         //   });
-        return lambda.DockerImageCode.fromImageAsset(`${imagePath}/lambda-image/parse-braket-result`);
+        return lambda.DockerImageCode.fromImageAsset(casePath, { file: '/image/lambda-image/parse-braket-result'});
       }
     }
     throw new Error('Cannot find ecr: ' + name);
