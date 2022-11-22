@@ -512,7 +512,7 @@ export class BatchEvaluation extends Construct {
 
     const chain = sfn.Chain.start(parametersLambdaStep).next(parallelCCJobsMap);
 
-    const logGroupName = `${this.props.stackName}-CCStateMachineLogGroup`;
+    const logGroupName = 'CCStateMachineLogGroup';
     grantKmsKeyPerm(this.logKey, logGroupName);
 
     const logGroup = new logs.LogGroup(this, 'CCStateMachineLogGroup', {
