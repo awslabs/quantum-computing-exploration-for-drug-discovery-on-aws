@@ -181,7 +181,6 @@ export class BatchUtil {
 
     const image = this.imageUtil.getECRImage(ECRRepoNameEnum.Batch_Sa_Optimizer, casePath) as ecs.ContainerImage;
     const resource = this.getResourceDescription(vcpus, mem);
-
     return new batch.JobDefinition(this.scope, defName, {
       platformCapabilities: [batch.PlatformCapabilities.EC2],
       container: {
