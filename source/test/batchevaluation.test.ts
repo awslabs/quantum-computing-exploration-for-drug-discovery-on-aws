@@ -13,7 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-
+import * as path from 'path';
 import {
   App,
   Stack,
@@ -52,8 +52,8 @@ function initializeNestStackTemplate() {
     lambdaSg,
     stackName: 'nestStack',
     description: 'des',
-    casePath: 'test',
-    caseName: 'testName',
+    casePath: path.join(__dirname, '../src/batch-evaluation/molecular-unfolding'),
+    caseName: 'molecular-unfolding',
   });
   return Template.fromStack(nestStack);
 }
