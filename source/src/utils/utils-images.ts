@@ -56,7 +56,7 @@ export class ECRImageUtil {
         //   path.join(__dirname, '../../'), {
         //     file: 'batch-images/create-model/Dockerfile',
         //   });
-        return ecs.ContainerImage.fromAsset(casePath, { file: 'image/batch-image/create-model/Dockerfile'});
+        return ecs.ContainerImage.fromAsset(casePath, { file: 'image/batch-image/create-model/Dockerfile' });
       }
     }
 
@@ -68,7 +68,7 @@ export class ECRImageUtil {
         //   path.join(__dirname, '../../'), {
         //     file: 'batch-images/sa-optimizer/Dockerfile',
         //   });
-        return ecs.ContainerImage.fromAsset(casePath, { file: 'image/batch-image/sa-optimizer/Dockerfile'});
+        return ecs.ContainerImage.fromAsset(casePath, { file: 'image/batch-image/sa-optimizer/Dockerfile' });
 
       }
     }
@@ -81,7 +81,7 @@ export class ECRImageUtil {
         //   path.join(__dirname, '../../'), {
         //     file: 'batch-images/qa-optimizer/Dockerfile',
         //   });
-        return ecs.ContainerImage.fromAsset(casePath, { file: 'image/batch-image/qa-optimizer/Dockerfile'});
+        return ecs.ContainerImage.fromAsset(casePath, { file: 'image/batch-image/qa-optimizer/Dockerfile' });
       }
     }
 
@@ -93,7 +93,7 @@ export class ECRImageUtil {
         //   path.join(__dirname, '../../'), {
         //     file: 'lambda/DeviceAvailableCheckLambda/Dockerfile',
         //   });
-        return lambda.DockerImageCode.fromImageAsset(casePath, { file: 'image/lambda-image/device-available-check/Dockerfile'});
+        return lambda.DockerImageCode.fromImageAsset(casePath, { file: 'image/lambda-image/device-available-check/Dockerfile' });
       }
     }
 
@@ -105,7 +105,7 @@ export class ECRImageUtil {
         //   path.join(__dirname, '../../'), {
         //     file: 'lambda/ParseBraketResultLambda/Dockerfile',
         //   });
-        return lambda.DockerImageCode.fromImageAsset(casePath, { file: 'image/lambda-image/parse-braket-result/Dockerfile'});
+        return lambda.DockerImageCode.fromImageAsset(casePath, { file: 'image/lambda-image/parse-braket-result/Dockerfile' });
       }
     }
     throw new Error('Cannot find ecr: ' + name);

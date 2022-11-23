@@ -82,9 +82,9 @@ export class LambdaUtil {
     });
   }
 
-  public createCheckQCDeviceLambda(imagePath: string): lambda.Function {
+  public createCheckQCDeviceLambda(casePath: string): lambda.Function {
     const checkLambdaRole = this.roleUtil.createCheckQCDeviceLambdaRole('DeviceAvailableCheckLambdaRole');
-    const code = this.imageUtil.getECRImage(ECRRepoNameEnum.Lambda_CheckDevice, imagePath) as lambda.DockerImageCode;
+    const code = this.imageUtil.getECRImage(ECRRepoNameEnum.Lambda_CheckDevice, casePath) as lambda.DockerImageCode;
     const vpc = this.props.vpc;
     const lambdaSg = this.props.lambdaSg;
 

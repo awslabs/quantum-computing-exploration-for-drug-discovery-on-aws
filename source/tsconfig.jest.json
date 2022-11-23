@@ -21,12 +21,11 @@
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
     "stripInternal": true,
-    "target": "ES2018"
+    "target": "ES2018",
+    "types": ["jest"]
   },
   "include": [
-    "src/molecular-unfolding/cdk/**/*.ts",
-    "src/main.ts",
-    "src/stack.ts",
+    "src/**/*.ts",
     "test/**/*.ts"
   ],
   "exclude": [

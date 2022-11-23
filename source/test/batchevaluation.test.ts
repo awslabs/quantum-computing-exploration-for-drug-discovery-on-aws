@@ -28,9 +28,9 @@ import {
 
 import {
   BatchEvaluationNestStack,
-} from '../src/molecular-unfolding/cdk/stack-batch-evaluation';
+} from '../src/common/stack-batch-evaluation';
 
-import setup_vpc_and_sg from '../src/molecular-unfolding/cdk/utils/vpc';
+import setup_vpc_and_sg from '../src/utils/vpc';
 
 function initializeNestStackTemplate() {
   const app = new App();
@@ -51,6 +51,9 @@ function initializeNestStackTemplate() {
     batchSg,
     lambdaSg,
     stackName: 'nestStack',
+    description: 'des',
+    casePath: 'test',
+    caseName: 'testName',
   });
   return Template.fromStack(nestStack);
 }

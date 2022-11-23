@@ -29,9 +29,9 @@ import {
 
 import {
   NotebookNestStack,
-} from '../src/molecular-unfolding/cdk/stack-notebook';
+} from '../src/common/stack-notebook';
 
-import setup_vpc_and_sg from '../src/molecular-unfolding/cdk/utils/vpc';
+import setup_vpc_and_sg from '../src/utils/vpc';
 
 
 function initializeNestStackTemplate() {
@@ -51,6 +51,7 @@ function initializeNestStackTemplate() {
     batchSg,
     vpc,
     stackName: 'nestStack',
+    description: 'des',
   });
   return Template.fromStack(nestStack);
 }

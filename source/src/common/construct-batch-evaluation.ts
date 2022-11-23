@@ -13,6 +13,8 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+import * as path from 'path';
+
 import {
   aws_iam as iam,
   aws_lambda as lambda,
@@ -33,7 +35,6 @@ import {
 import {
   Construct,
 } from 'constructs';
-import path = require('path');
 
 import {
   grantKmsKeyPerm,
@@ -258,12 +259,8 @@ export class BatchEvaluation extends Construct {
     return createModelStep;
   }
 
-  // private genImagePath(): string {
-  //   return path.join(this.props.casePath, '/image');
-  // }
-
   private genLambdaPath(): string {
-    return path.join(this.props.casePath, "/lambda");
+    return path.join(this.props.casePath, '/lambda');
   }
 
   private createCCAndQCStateMachine(ccStateMachine: sfn.StateMachine, qcStateMachine: sfn.StateMachine): sfn.StateMachine {
@@ -521,6 +518,16 @@ export class BatchEvaluation extends Construct {
       removalPolicy: RemovalPolicy.DESTROY,
       retention: logs.RetentionDays.THREE_MONTHS,
     });
+
+    // const logGroupName = `${this.props.stackName}-BatchEvaluationStateMachineLogGroup`;
+    // grantKmsKeyPerm(this.logKey, logGroupName);
+
+    // const logGroup = new logs.LogGroup(this, 'BatchEvaluationStateMachineLogGroup', {
+    //   encryptionKey: this.logKey,
+    //   logGroupName,
+    //   removalPolicy: RemovalPolicy.DESTROY,
+    //   retention: logs.RetentionDays.THREE_MONTHS,
+    // });
 
     const ccStateMachine = new sfn.StateMachine(this, 'CCStateMachine', {
       definition: chain,

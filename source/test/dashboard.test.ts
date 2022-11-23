@@ -26,7 +26,7 @@ import {
 
 import {
   VisualizationNestStack,
-} from '../src/molecular-unfolding/cdk/stack-visualization';
+} from '../src/batch-evaluation/molecular-unfolding/cdk/stack-visualization';
 
 
 function initializeNestStackTemplate() {
