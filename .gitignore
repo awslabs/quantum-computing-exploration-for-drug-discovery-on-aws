@@ -18,4 +18,5 @@ buildspec.yml
 deployment
 .pytest_cache
 __pycache__
+.ipynb_checkpoints
 

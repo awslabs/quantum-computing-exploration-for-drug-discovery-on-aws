@@ -6,14 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="fe0cf98e-b3f6-4163-94d4-304e3a4479ed" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/src/retrosynthetic-planning/Deadend.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/src/retrosynthetic-planning/buyable.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/src/retrosynthetic-planning/ground_truth.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/src/retrosynthetic-planning/reactions_dictionary.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/src/retrosynthetic-planning/retrosynthetic_planning.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/source/src/retrosynthetic-planning/retrosynthetic_planning.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/src/retrosynthetic-planning/smiles_dictionary.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/src/retrosynthetic-planning/target_product.npy" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/source/src/retrosynthetic-planning/utility/DataPrepare.py" beforeDir="false" afterPath="$PROJECT_DIR$/source/src/retrosynthetic-planning/utility/DataPrepare.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,7 +47,7 @@
       <updated>1666173298403</updated>
       <workItem from="1669257390258" duration="4336000" />
       <workItem from="1669264823016" duration="702000" />
-      <workItem from="1669268109719" duration="629000" />
+      <workItem from="1669268109719" duration="1348000" />
     </task>
     <servers />
   </component>
