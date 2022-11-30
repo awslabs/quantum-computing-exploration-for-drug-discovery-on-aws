@@ -137,10 +137,13 @@ class Prepare(object):
         df = pd.concat([df1, df2], axis=1, join='inner')
         df = pd.concat([df, df3], axis=1, join='inner')
 
-        for i in range(1, k+1):
-            exec('list{} = {}'.format(i, df['reactant'+str(i)].tolist()))
-
+        # for i in range(1, k+1):
+        #     exec('list{} = {}'.format(i, df['reactant'+str(i)].tolist()))
         names = locals()
+        for i in range(1, k+1):
+            names['list%s' % i] = df['reactant'+str(i)].tolist()
+
+        # names = locals()
         total_list = names.get('list' + str(1))
         for i in range(2, k+1):
             total_list.extend(names.get('list' + str(i)))
@@ -189,10 +192,14 @@ class Prepare(object):
         selected2 = selected.drop_duplicates(['product', 'category'], keep='first', inplace=False)  # 5083
         selected2.to_excel(self.path+"selected2.xlsx", index=False)
 
-        for i in range(1, k+1):
-            exec('listt{} = {}'.format(i, selected2['reactant'+str(i)].tolist()))
+        # for i in range(1, k+1):
+        #     exec('listt{} = {}'.format(i, selected2['reactant'+str(i)].tolist()))
 
         names = locals()
+        for i in range(1, k+1):
+            names['listt%s' % i] = selected2['reactant'+str(i)].tolist()
+
+        # names = locals()
         total_list2 = names.get('listt' + str(1))
         for i in range(2, k+1):
             total_list2.extend(names.get('listt' + str(i)))
