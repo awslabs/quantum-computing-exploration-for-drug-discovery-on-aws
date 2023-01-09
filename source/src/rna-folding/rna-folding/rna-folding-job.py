@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0
 
 ########################################################################################################################
-#   The following class is for different kinds of annealing optimizer
+#   Hybrid job for RNA Folding experiments
 ########################################################################################################################
 
 
@@ -15,8 +15,8 @@ import sys
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
 
-from utility.MoleculeParser import MoleculeData
-from utility.QMUQUBO import QMUQUBO
+from utility.RNAParser import RNAData
+from utility.RNAQUBO import RNAQUBO
 from utility.AnnealerOptimizer import Annealer
 from utility.ResultProcess import ResultParser
 
@@ -48,81 +48,81 @@ def main():
 
     logging.info(f"Loading dataset from: {input_dir}")
 
+    list_files(input_dir)
+
     dir_name = f"{input_dir}/input/"
     dir_list = os.listdir(dir_name)
 
+    complete_results = {}
+    # step 1: prepare data
+    raw_path = dir_name
+    data_path, mol_data = _prepare_data(raw_path, hyperparameters)
     for file_name in dir_list:
-        # step 1: prepare data
-        raw_path = dir_name + file_name
-        data_path, mol_data = _prepare_data(raw_path, hyperparameters)
+        target_name = file_name.split('.')[0]
         # step 2: create model
         model_path = _build_model(data_path, mol_data, hyperparameters)
         # step 3: optimize model
-        task_id = _optimize(model_path, hyperparameters)
+        task_id = _optimize(model_path, target_name, hyperparameters)
         # step 4: post process
         result = _post_process(raw_path, data_path, hyperparameters)
         # print(f"Tree structure: {list_files(input_dir)}")
-        save_job_result(result)
+        logging.info(f"finish experiment for file {target_name}")
+        complete_results[target_name] = result
+
+    save_job_result(complete_results)
 
     logging.info("Saved results. All done.")
 
 def _prepare_data(raw_path, hyperparameters):
-    mol_data = MoleculeData(raw_path, 'qmu')
+    mol_data = RNAData(raw_path)
     
     data_path = mol_data.save("latest")
-    
-    num_rotation_bond = mol_data.bond_graph.rb_num
-    
-    logging.info(f"You have loaded the raw molecule data and saved as {data_path}. \n\
-    This molecule has {num_rotation_bond} rotable bond")
 
     return data_path, mol_data
 
 def _build_model(data_path, mol_data, hyperparameters):
-    # initial the QMUQUBO object
+    # initial the RNAQUBO object
     init_param = {}
-    method = ['pre-calc']
+    method = ["qc"]
 
     for mt in method:
-        if mt == 'pre-calc':
+        if mt == "qc":
             init_param[mt] = {}
-            init_param[mt]['param'] = ['M', 'D', 'A', 'hubo_qubo_val']
+            init_param[mt]["params"] = ["PKP", "S", "O"]
         
     
-    qmu_qubo = QMUQUBO(mol_data, method, **init_param)
+    rna_qubo = RNAQUBO(data_path, method, **init_param)
     # set the parameters for model
     model_param = {}
-    # parameters
-    num_rotation_bond = mol_data.bond_graph.rb_num
 
-    method = 'pre-calc'
+    method = "qc"
     model_param[method] = {}
-    # model_param[method]['M'] = range(1, num_rotation_bond+1)
-    model_param[method]['M'] = [int(hyperparameters['M'])]
-    model_param[method]['D'] = [int(hyperparameters['D'])]
-    model_param[method]['A'] = [300]
-    model_param[method]['hubo_qubo_val'] = [200]
 
-    qmu_qubo.build_model(**model_param)
+    model_param[method]["PKP"] = [float(hyperparameters["PKP"])]
+    model_param[method]["S"] = [int(hyperparameters["S"])]
+    model_param[method]["O"] = [int(float(hyperparameters["O"]))]
+
+    rna_qubo.build_models(**model_param)
     # describe the model parameters
-    model_info = qmu_qubo.describe_model()
+    model_info = rna_qubo.describe_models()
     # save the model
-    model_path = qmu_qubo.save("latest")
+    model_path = rna_qubo.save("latest")
 
     logging.info(f"You have built the QUBO model and saved it as {model_path}")
 
     return model_path
 
-def _optimize(model_path, hyperparameters):
-    qmu_qubo_optimize = QMUQUBO.load(model_path)
-    M = int(hyperparameters['M'])
-    D = int(hyperparameters['D'])
-    A = 300
-    hubo_qubo_val = 200
-    model_name = "{}_{}_{}_{}".format(M, D, A, hubo_qubo_val)
-    method = "pre-calc"
+def _optimize(model_path, target_name, hyperparameters):
+    rna_qubo_optimize = RNAQUBO.load(model_path)
+    PKP = hyperparameters["PKP"]
+    S = hyperparameters["S"]
+    O = hyperparameters["O"]
+    rna_name = target_name
 
-    qubo_model = qmu_qubo_optimize.get_model(method, model_name)
+    model_name = "{}+{}+{}+{}+".format(rna_name, PKP, O, S)
+    method = "qc"
+
+    qubo_model = rna_qubo_optimize.get_model(rna_name, method, model_name)
 
     method = 'neal-sa'
 
@@ -150,9 +150,9 @@ def _post_process(raw_path, data_path, hyperparameters):
     sa_atom_pos_data = sa_process_result.generate_optimize_pts()
     # save unfold file for visualization and parameters for experiment: 1. volume value 2. relative improvement
     timestamp = time.strftime("%Y%m%d-%H")
-    sa_result_filepath, sa_result_json = sa_process_result.save_mol_file(f"{timestamp}")
+    sa_result_json = sa_process_result.save_file(f"{timestamp}")
 
-    logging.info(f"result path is {sa_result_filepath}, and result optimization file path is {sa_result_json}")
+    logging.info(f"result optimization file path is {sa_result_json}")
 
     process_result = {}
     process_result["time"] = local_time
