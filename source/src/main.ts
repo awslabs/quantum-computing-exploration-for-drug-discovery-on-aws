@@ -25,7 +25,7 @@ import {
 
 import {
   MainStack,
-} from './molecular-unfolding/cdk/stack-main';
+} from './cdk/stack-main';
 
 
 const app = new App();
