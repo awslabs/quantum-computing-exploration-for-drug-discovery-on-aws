@@ -68,12 +68,12 @@ export class MainStack extends SolutionStack {
       description: 'The email address of Admin user',
 
       allowedPattern:
-        '^$｜^\\w[-\\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\\.)+[A-Za-z]{2,14}$',
+        '^$|^\\w[-\\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\\.)+[A-Za-z]{2,14}$',
     });
 
     const conditionSnsEmail = new CfnCondition(this, 'ConditionSnsEmail', {
-      expression: Fn.conditionEquals(
-        snsEmail.valueAsString, '',
+      expression: Fn.conditionNot(
+        Fn.conditionEquals(snsEmail.valueAsString, '',)
       ),
     });
 
@@ -140,14 +140,19 @@ export class MainStack extends SolutionStack {
         enableKeyRotation: true,
       });
 
-      snsKey.addToResourcePolicy(new iam.PolicyStatement({
+      (snsKey.node.defaultChild as kms.CfnKey).cfnOptions.condition = conditionSnsEmail;
+
+      const iamPolicyStatement = new iam.PolicyStatement({
         actions: [
           'kms:Decrypt',
           'kms:GenerateDataKey',
         ],
         principals: [new iam.ServicePrincipal('events.amazonaws.com')],
         resources: ['*'],
-      }));
+      });
+
+      // (iamPolicyStatement.node.defaultChild as iam.cfn).cfnOptions.condition = conditionSnsEmail;
+      snsKey.addToResourcePolicy(iamPolicyStatement);
 
       snsKey.addToResourcePolicy(new iam.PolicyStatement({
         actions: [
@@ -180,7 +185,7 @@ export class MainStack extends SolutionStack {
         },
       });
 
-
+      
       (eventRule.node.defaultChild as events.CfnRule).cfnOptions.condition = conditionSnsEmail;
       (topic.node.defaultChild as sns.CfnTopic).cfnOptions.condition = conditionSnsEmail;
       // Create topic and rule only if snsEmail is not empty.
