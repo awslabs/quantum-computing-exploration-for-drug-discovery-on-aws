@@ -27,10 +27,11 @@ import {
   MainStack,
 } from './cdk/stack-main';
 
+import { genTimeStampStr } from './cdk/utils/utils';
 
 const app = new App();
 
-new MainStack(app, 'QCEDDStack', {
+new MainStack(app, `QCEDDStack-${genTimeStampStr(new Date())}`, {
   synthesizer: newSynthesizer(),
 });
 
