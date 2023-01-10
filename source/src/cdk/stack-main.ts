@@ -19,6 +19,7 @@ import {
   aws_events as events,
   aws_events_targets as targets,
   aws_sns as sns,
+  aws_sns_subscriptions as subscriptions,
   aws_kms as kms,
   aws_iam as iam,
   StackProps,
@@ -193,6 +194,7 @@ export class MainStack extends SolutionStack {
       }));
 
       if(conditionSnsEmail){
+        topic.addSubscription(new subscriptions.EmailSubscription(snsEmail.valueAsString));
         new CfnOutput(this, 'SNSTopic', {
           value: topic.topicName,
           description: `SNS Topic Name(${prefix})`,
