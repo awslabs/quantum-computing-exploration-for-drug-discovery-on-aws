@@ -3,10 +3,10 @@
 sudo -u ec2-user -i <<EOS
 python3 --version
 
-mkdir qcenv
-cd qcenv
-python3 -m venv qcenv
-source qcenv/bin/activate
+mkdir qc-hcls
+cd qc-hcls
+python3 -m venv qc-hcls
+source qc-hcls/bin/activate
 
 pip3 install numpy==1.22.2
 pip3 install boto3==1.26.8
@@ -23,7 +23,7 @@ pip3 install setproctitle==1.3.2
 
 pip3 install jupyter ipykernel
 
-python3 -m ipykernel install --user --name=qcenv
+python3 -m ipykernel install --user --name=qc-hcls
 
 aws s3 cp {{&s3_code_path}} /home/ec2-user/SageMaker/code.zip
 

@@ -1,0 +1,31 @@
+{
+    "experiment_name": "molecular-unfolding",
+    "hybrid-jobs-arn": [
+        "arn:aws:braket:us-east-1:002224604296:job/molecular-unfolding-M-1-D-8-ml-m5-large1673318076",
+        "arn:aws:braket:us-east-1:002224604296:job/molecular-unfolding-M-1-D-8-ml-m5-4large1673318092",
+        "arn:aws:braket:us-east-1:002224604296:job/molecular-unfolding-M-2-D-8-ml-m5-large1673318097",
+        "arn:aws:braket:us-east-1:002224604296:job/molecular-unfolding-M-2-D-8-ml-m5-4large1673318102",
+        "arn:aws:braket:us-east-1:002224604296:job/molecular-unfolding-M-3-D-8-ml-m5-large1673318107",
+        "arn:aws:braket:us-east-1:002224604296:job/molecular-unfolding-M-3-D-8-ml-m5-4large1673318250",
+        "arn:aws:braket:us-east-1:002224604296:job/molecular-unfolding-M-4-D-8-ml-m5-large1673318256",
+        "arn:aws:braket:us-east-1:002224604296:job/molecular-unfolding-M-4-D-8-ml-m5-4large1673318262",
+        "arn:aws:braket:us-east-1:002224604296:job/molecular-unfolding-M-5-D-8-ml-m5-large1673318306",
+        "arn:aws:braket:us-east-1:002224604296:job/molecular-unfolding-M-5-D-8-ml-m5-4large1673318313",
+        "arn:aws:braket:us-east-1:002224604296:job/molecular-unfolding-M-6-D-8-ml-m5-large1673318553",
+        "arn:aws:braket:us-east-1:002224604296:job/molecular-unfolding-M-6-D-8-ml-m5-4large1673318562"
+    ],
+    "names": [
+        "molecular-unfolding-M-1-D-8-ml-m5-large1673318076",
+        "molecular-unfolding-M-1-D-8-ml-m5-4large1673318092",
+        "molecular-unfolding-M-2-D-8-ml-m5-large1673318097",
+        "molecular-unfolding-M-2-D-8-ml-m5-4large1673318102",
+        "molecular-unfolding-M-3-D-8-ml-m5-large1673318107",
+        "molecular-unfolding-M-3-D-8-ml-m5-4large1673318250",
+        "molecular-unfolding-M-4-D-8-ml-m5-large1673318256",
+        "molecular-unfolding-M-4-D-8-ml-m5-4large1673318262",
+        "molecular-unfolding-M-5-D-8-ml-m5-large1673318306",
+        "molecular-unfolding-M-5-D-8-ml-m5-4large1673318313",
+        "molecular-unfolding-M-6-D-8-ml-m5-large1673318553",
+        "molecular-unfolding-M-6-D-8-ml-m5-4large1673318562"
+    ]
+}
