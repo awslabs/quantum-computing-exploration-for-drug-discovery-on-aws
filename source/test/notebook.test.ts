@@ -14,54 +14,48 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+import { MainStack } from './../src/cdk/stack-main';
 
 import {
   App,
   Stack,
-  aws_s3 as s3,
+  // aws_s3 as s3,
 } from 'aws-cdk-lib';
 
 import {
   Template,
   Match,
 } from 'aws-cdk-lib/assertions';
+// import { Notebook } from '../src/cdk/construct-notebook';
 
-import setup_vpc_and_sg from '../src/cdk/utils/vpc';
+// import setup_vpc_and_sg from '../src/cdk/utils/vpc';
 
-function initializeNestStackTemplate() {
+function initialize() {
   const app = new App();
   const stack = new Stack(app, 'test');
 
-  const {
-    vpc,
-    batchSg,
-  } = setup_vpc_and_sg(stack);
-
-  const s3bucket = new s3.Bucket(stack, 'amazon-braket-test');
-  const prefix = 'test_s3_prefix';
-  const nestStack = new NotebookNestStack(stack, 'notebook', {
-    prefix,
-    bucket: s3bucket,
-    batchSg,
-    vpc,
-    stackName: 'nestStack',
-  });
-  return Template.fromStack(nestStack);
+  // const s3bucket = new s3.Bucket(stack, 'amazon-braket-test');
+  // const prefix = 'test_s3_prefix';
+  const mainStack = new MainStack(stack, 'notebook');
+  return Template.fromStack(mainStack);
 }
 
 describe('Notebook', () => {
   test('has 1 notebook', () => {
-    const template = initializeNestStackTemplate();
+    const template = initialize
+  ();
     template.resourceCountIs('AWS::SageMaker::NotebookInstance', 1);
   });
 
   test('the notebook has a lifecycle', () => {
-    const template = initializeNestStackTemplate();
+    const template = initialize
+  ();
     template.resourceCountIs('AWS::SageMaker::NotebookInstanceLifecycleConfig', 1);
   });
 
   test('NotebookInstanceLifecycleConfig is configured correctly', ()=>{
-    const template = initializeNestStackTemplate();
+    const template = initialize
+  ();
     template.hasResourceProperties('AWS::SageMaker::NotebookInstanceLifecycleConfig', {
       OnStart: [
         {

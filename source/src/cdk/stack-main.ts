@@ -185,13 +185,19 @@ export class MainStack extends SolutionStack {
         },
       });
 
-      
       (eventRule.node.defaultChild as events.CfnRule).cfnOptions.condition = conditionSnsEmail;
       (topic.node.defaultChild as sns.CfnTopic).cfnOptions.condition = conditionSnsEmail;
       // Create topic and rule only if snsEmail is not empty.
       eventRule.addTarget(new targets.SnsTopic(topic, {
         message: events.RuleTargetInput.fromEventPath('$.detail'),
       }));
+
+      if(conditionSnsEmail){
+        new CfnOutput(this, 'SNSTopic', {
+          value: topic.topicName,
+          description: `SNS Topic Name(${prefix})`,
+        });
+      }
     }
 
     {
@@ -211,7 +217,7 @@ export class MainStack extends SolutionStack {
         stackName,
       });
 
-      this.notebookUrlOutput = new CfnOutput(this, 'NotebookUrl', {
+      this.notebookUrlOutput = new CfnOutput(this, 'NotebookURL', {
         value: notebook.notebookUrl,
         description: 'Notebook URL',
       });
@@ -224,5 +230,4 @@ export class MainStack extends SolutionStack {
 
     Aspects.of(this).add(new AddCfnNag());
   }
-
 }

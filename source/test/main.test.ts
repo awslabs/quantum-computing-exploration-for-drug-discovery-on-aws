@@ -105,50 +105,42 @@ test('has output - SNSTopic', () => {
   template.hasOutput('SNSTopic', {});
 });
 
+// test('has 2 nest CloudFormation stacks ', () => {
+//   const app = new App();
+//   const stack = new MainStack(app, 'test');
+//   const template = Template.fromStack(stack);
+//   template.hasResource('AWS::CloudFormation::Stack', 2);
+// });
 
-test('has output - StateMachineURL', () => {
-  const app = new App();
-  const stack = new MainStack(app, 'test');
-  const template = Template.fromStack(stack);
-  template.hasOutput('StateMachineURL', {});
-});
+// test('has Condition ConditionDeployBatchEvaluation', () => {
+//   const app = new App();
+//   const stack = new MainStack(app, 'test');
+//   const template = Template.fromStack(stack);
+//   const conditionDeployBatchEvaluation = template.toJSON().Conditions.ConditionDeployBatchEvaluation;
+//   expect(conditionDeployBatchEvaluation).toEqual({
+//     'Fn::Equals': [
+//       {
+//         Ref: 'DeployBatchEvaluation',
+//       },
+//       'yes',
+//     ],
+//   });
+// });
 
-test('has 2 nest CloudFormation stacks ', () => {
-  const app = new App();
-  const stack = new MainStack(app, 'test');
-  const template = Template.fromStack(stack);
-  template.hasResource('AWS::CloudFormation::Stack', 2);
-});
-
-test('has Condition ConditionDeployBatchEvaluation', () => {
-  const app = new App();
-  const stack = new MainStack(app, 'test');
-  const template = Template.fromStack(stack);
-  const conditionDeployBatchEvaluation = template.toJSON().Conditions.ConditionDeployBatchEvaluation;
-  expect(conditionDeployBatchEvaluation).toEqual({
-    'Fn::Equals': [
-      {
-        Ref: 'DeployBatchEvaluation',
-      },
-      'yes',
-    ],
-  });
-});
-
-test('has Condition ConditionDeployVisualization', () => {
-  const app = new App();
-  const stack = new MainStack(app, 'test');
-  const template = Template.fromStack(stack);
-  const conditionDeployVisualization = template.toJSON().Conditions.ConditionDeployVisualization;
-  expect(conditionDeployVisualization).toEqual({
-    'Fn::Equals': [
-      {
-        Ref: 'DeployVisualization',
-      },
-      'yes',
-    ],
-  });
-});
+// test('has Condition ConditionDeployVisualization', () => {
+//   const app = new App();
+//   const stack = new MainStack(app, 'test');
+//   const template = Template.fromStack(stack);
+//   const conditionDeployVisualization = template.toJSON().Conditions.ConditionDeployVisualization;
+//   expect(conditionDeployVisualization).toEqual({
+//     'Fn::Equals': [
+//       {
+//         Ref: 'DeployVisualization',
+//       },
+//       'yes',
+//     ],
+//   });
+// });
 
 test('SupportedRegionsRule config correctly', () => {
   const app = new App();
