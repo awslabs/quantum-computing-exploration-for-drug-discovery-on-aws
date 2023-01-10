@@ -24,7 +24,7 @@ import {
 
 import {
   MainStack,
-} from '../src/molecular-unfolding/cdk/stack-main';
+} from '../src/cdk/stack-main';
 import {
   SolutionStack,
 } from '../src/stack';

@@ -26,13 +26,7 @@ import {
   Match,
 } from 'aws-cdk-lib/assertions';
 
-
-import {
-  NotebookNestStack,
-} from '../src/molecular-unfolding/cdk/stack-notebook';
-
-import setup_vpc_and_sg from '../src/molecular-unfolding/cdk/utils/vpc';
-
+import setup_vpc_and_sg from '../src/cdk/utils/vpc';
 
 function initializeNestStackTemplate() {
   const app = new App();

@@ -1,2 +1,0 @@
->bpRNA_CRW_32863|Accession ID:AY870423|Original Source:Gutell Lab CRW (http://www.rna.ccbb.utexas.edu/DAT/3C/SBPI/index.php)
-GCGGGUAUAGUUUAGUGGUAAAA
