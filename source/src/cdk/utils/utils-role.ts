@@ -112,6 +112,7 @@ export class RoleUtil {
         'arn:aws:s3:::amazon-braket-*/*',
       ],
       actions: [
+        's3:CreateBucket',
         's3:PutObject',
         's3:GetObject',
       ],
@@ -131,6 +132,7 @@ export class RoleUtil {
         `arn:aws:s3:::cdk-*`,
       ],
       actions: [
+        's3:CreateBucket',
         's3:GetObject*',
         's3:GetBucket*',
         's3:List*',
