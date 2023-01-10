@@ -128,6 +128,17 @@ export class RoleUtil {
 
     role.addToPolicy(new iam.PolicyStatement({
       resources: [
+        `arn:aws:s3:::cdk-*`,
+      ],
+      actions: [
+        's3:GetObject*',
+        's3:GetBucket*',
+        's3:List*',
+      ],
+    }));
+
+    role.addToPolicy(new iam.PolicyStatement({
+      resources: [
         `arn:aws:ecr:${this.props.region}:${this.props.account}:repository/${this.props.prefix}/*`,
       ],
       actions: [
