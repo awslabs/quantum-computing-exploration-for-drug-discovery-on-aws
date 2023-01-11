@@ -15,7 +15,6 @@ limitations under the License.
 */
 import * as path from 'path';
 import {
-  aws_s3 as s3,
   aws_events as events,
   aws_events_targets as targets,
   aws_sns as sns,
@@ -24,7 +23,6 @@ import {
   aws_iam as iam,
   StackProps,
   Fn,
-  RemovalPolicy,
   CfnOutput,
   Aspects,
   CfnCondition,
@@ -106,30 +104,30 @@ export class MainStack extends SolutionStack {
 
     const prefix = MainStack.SOLUTION_NAME.split(' ').join('-').toLowerCase();
 
-    const logS3bucket = new s3.Bucket(this, 'AccessLogS3Bucket', {
-      removalPolicy: RemovalPolicy.DESTROY,
-      autoDeleteObjects: true,
-      enforceSSL: true,
-      encryption: s3.BucketEncryption.S3_MANAGED,
-    });
+    // const logS3bucket = new s3.Bucket(this, 'AccessLogS3Bucket', {
+    //   removalPolicy: RemovalPolicy.DESTROY,
+    //   autoDeleteObjects: true,
+    //   enforceSSL: true,
+    //   encryption: s3.BucketEncryption.S3_MANAGED,
+    // });
 
-    const bucketName = `amazon-braket-${stackName}-${this.account}-${this.region}`;
-    const s3bucket = new s3.Bucket(this, 'amazon-braket', {
-      removalPolicy: RemovalPolicy.DESTROY,
-      bucketName,
-      autoDeleteObjects: true,
-      enforceSSL: true,
-      encryption: s3.BucketEncryption.S3_MANAGED,
-      serverAccessLogsBucket: logS3bucket,
-      serverAccessLogsPrefix: `accesslogs/${bucketName}/`,
-    });
+    // const bucketName = `amazon-braket-${stackName}-${this.account}-${this.region}`;
+    // const s3bucket = new s3.Bucket(this, 'amazon-braket', {
+    //   removalPolicy: RemovalPolicy.DESTROY,
+    //   bucketName,
+    //   autoDeleteObjects: true,
+    //   enforceSSL: true,
+    //   encryption: s3.BucketEncryption.S3_MANAGED,
+    //   serverAccessLogsBucket: logS3bucket,
+    //   serverAccessLogsPrefix: `accesslogs/${bucketName}/`,
+    // });
 
-    s3bucket.node.addDependency(logS3bucket);
+    // s3bucket.node.addDependency(logS3bucket);
 
-    new CfnOutput(this, 'BucketName', {
-      value: s3bucket.bucketName,
-      description: 'S3 Bucket Name',
-    });
+    // new CfnOutput(this, 'BucketName', {
+    //   value: s3bucket.bucketName,
+    //   description: 'S3 Bucket Name',
+    // });
 
     const {
       vpc,
@@ -212,7 +210,6 @@ export class MainStack extends SolutionStack {
       const notebook = new Notebook(this, 'Notebook', {
         account: this.account,
         region: this.region,
-        bucket: s3bucket,
         prefix,
         vpc,
         notebookSg,
@@ -226,7 +223,7 @@ export class MainStack extends SolutionStack {
       // (notebook.nestedStackResource as CfnStack).cfnOptions.condition = conditionDeployNotebook;
       // this.addOutput('NotebookURL', notebook.notebookUrlOutput);
       // this.addOutput('ECRLink', notebook.notebookUrlOutput);
-      notebook.node.addDependency(s3bucket);
+      // notebook.node.addDependency(s3bucket);
       notebook.node.addDependency(vpc);
     }
 

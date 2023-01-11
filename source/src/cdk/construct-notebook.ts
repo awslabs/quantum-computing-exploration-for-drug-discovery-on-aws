@@ -22,7 +22,6 @@ import {
 import * as path from 'path';
 
 import {
-  aws_s3 as s3,
   aws_kms as kms,
   aws_ec2 as ec2,
   aws_s3_assets as s3_assets,
@@ -48,7 +47,6 @@ import {
 export interface Props {
   region: string;
   account: string;
-  bucket: s3.Bucket;
   prefix: string;
   notebookSg: ec2.SecurityGroup;
   vpc: ec2.Vpc;
