@@ -49,20 +49,6 @@ test('synthesizes the way we expect', () => {
   expect(template).toBeTruthy();
 });
 
-test('has 1 s3 bucket', () => {
-  const app = new App();
-  const stack = new MainStack(app, 'test');
-  const template = Template.fromStack(stack);
-  template.hasResource('AWS::S3::Bucket', 1);
-});
-
-test('s3 bucket can be deleted', () => {
-  const app = new App();
-  const stack = new MainStack(app, 'test');
-  const template = Template.fromStack(stack);
-  template.hasResource('Custom::S3AutoDeleteObjects', 1);
-});
-
 test('has 1 vpc', () => {
   const app = new App();
   const stack = new MainStack(app, 'test');
@@ -82,13 +68,6 @@ test('has 1 flowLog', () => {
   const stack = new MainStack(app, 'test');
   const template = Template.fromStack(stack);
   template.hasResource('AWS::EC2::FlowLog', 1);
-});
-
-test('has output - BucketName', () => {
-  const app = new App();
-  const stack = new MainStack(app, 'test');
-  const template = Template.fromStack(stack);
-  template.hasOutput('BucketName', {});
 });
 
 test('has output - NotebookURL', () => {

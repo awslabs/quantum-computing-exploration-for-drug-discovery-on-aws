@@ -14,8 +14,6 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-import { MainStack } from './../src/cdk/stack-main';
-
 import {
   App,
   Stack,
@@ -28,6 +26,7 @@ import {
 } from 'aws-cdk-lib/assertions';
 // import { Notebook } from '../src/cdk/construct-notebook';
 
+import { MainStack } from './../src/cdk/stack-main';
 // import setup_vpc_and_sg from '../src/cdk/utils/vpc';
 
 function initialize() {
@@ -42,20 +41,17 @@ function initialize() {
 
 describe('Notebook', () => {
   test('has 1 notebook', () => {
-    const template = initialize
-  ();
+    const template = initialize();
     template.resourceCountIs('AWS::SageMaker::NotebookInstance', 1);
   });
 
   test('the notebook has a lifecycle', () => {
-    const template = initialize
-  ();
+    const template = initialize();
     template.resourceCountIs('AWS::SageMaker::NotebookInstanceLifecycleConfig', 1);
   });
 
   test('NotebookInstanceLifecycleConfig is configured correctly', ()=>{
-    const template = initialize
-  ();
+    const template = initialize();
     template.hasResourceProperties('AWS::SageMaker::NotebookInstanceLifecycleConfig', {
       OnStart: [
         {

@@ -127,6 +127,7 @@ export class RoleUtil {
         's3:CreateBucket',
         's3:PutObject',
         's3:GetObject',
+        's3:List*',
       ],
     }));
 
@@ -141,7 +142,7 @@ export class RoleUtil {
 
     role.addToPolicy(new iam.PolicyStatement({
       resources: [
-        `arn:aws:s3:::cdk-*`,
+        'arn:aws:s3:::cdk-*',
       ],
       actions: [
         's3:CreateBucket',

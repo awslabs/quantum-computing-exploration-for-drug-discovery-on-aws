@@ -41,9 +41,8 @@ export class ChangePublicSubnet implements IAspect {
 
 export class AddCfnNag implements IAspect {
   visit(node: IConstruct): void {
-    if (
-      node.node.path.endsWith('/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler') ||
-            node.node.path.endsWith('/EventRuleCustomResourceProvider/framework-onEvent/Resource')
+    if (node.node.path.endsWith('/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler') ||
+        node.node.path.endsWith('/EventRuleCustomResourceProvider/framework-onEvent/Resource')
     ) {
       (node as CfnResource).addMetadata('cfn_nag', {
         rules_to_suppress: [],
@@ -59,17 +58,9 @@ export class AddCfnNag implements IAspect {
           reason: 'some permissions are not resource-level permissions',
         }],
       });
-    } else if (node.node.path.endsWith('/AccessLogS3Bucket/Resource')) {
-      (node as CfnResource).addMetadata('cfn_nag', {
-        rules_to_suppress: [{
-          id: 'W35',
-          reason: 'this is access log bucket',
-        }],
-      });
-    } else if (
-      node.node.path.endsWith('/VPC/EcrDockerEndpoint/SecurityGroup/Resource') ||
-            node.node.path.endsWith('/VPC/AthenaEndpoint/SecurityGroup/Resource') ||
-            node.node.path.endsWith('/VPC/BraketEndpoint/SecurityGroup/Resource')
+    } else if (node.node.path.endsWith('/VPC/EcrDockerEndpoint/SecurityGroup/Resource') ||
+              node.node.path.endsWith('/VPC/AthenaEndpoint/SecurityGroup/Resource') ||
+              node.node.path.endsWith('/VPC/BraketEndpoint/SecurityGroup/Resource')
     ) {
       (node as CfnResource).addMetadata('cfn_nag', {
         rules_to_suppress: [{
