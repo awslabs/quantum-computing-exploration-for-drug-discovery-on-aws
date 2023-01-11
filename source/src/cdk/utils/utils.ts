@@ -109,3 +109,10 @@ export function grantKmsKeyPerm(key: kms.IKey, logGroupName ? : string): void {
     },
   }));
 }
+
+export function genTimeStampStr(date: Date): string {
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1;
+  const day = date.getDate() < 10 ? '0' + (date.getDate()) : date.getDate();
+  return `${year}${month}${day}${date.getHours()}${date.getMinutes()}${date.getSeconds()}`;
+}

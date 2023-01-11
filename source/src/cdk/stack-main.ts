@@ -42,7 +42,7 @@ import {
 import { Notebook } from './construct-notebook';
 
 import {
-  AddCfnNag,
+  AddCfnNag, genTimeStampStr,
 } from './utils/utils';
 
 import setup_vpc_and_sg from './utils/vpc';
@@ -189,7 +189,7 @@ export class MainStack extends SolutionStack {
     //   () => execa(path.join(__dirname, '../default-image/build_and_push.sh'));
     // }
 
-    const bucketName = `amazon-braket-${this.region}-${this.account}`;
+    const bucketName = `amazon-braket-${this.region}-${this.account}-${genTimeStampStr(new Date())}`;
     const s3bucket = new s3.Bucket(this, 'amazon-braket', {
       removalPolicy: RemovalPolicy.DESTROY,
       bucketName,
