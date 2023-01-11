@@ -69,7 +69,7 @@ export class MainStack extends SolutionStack {
       description: 'The email address of Admin user',
 
       allowedPattern:
-        '^$|^\\w[-\\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\\.)+[A-Za-z]{2,14}$',
+        '^(\\w[-\\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\\.)+[A-Za-z]{2,14})?$',
     });
 
     const conditionSnsEmail = new CfnCondition(this, 'ConditionSnsEmail', {
