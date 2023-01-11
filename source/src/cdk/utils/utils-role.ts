@@ -139,17 +139,17 @@ export class RoleUtil {
     //   ],
     // }));
 
-    // role.addToPolicy(new iam.PolicyStatement({
-    //   resources: [
-    //     `arn:aws:s3:::cdk-*`,
-    //   ],
-    //   actions: [
-    //     's3:CreateBucket',
-    //     's3:GetObject*',
-    //     's3:GetBucket*',
-    //     's3:List*',
-    //   ],
-    // }));
+    role.addToPolicy(new iam.PolicyStatement({
+      resources: [
+        `arn:aws:s3:::cdk-*`,
+      ],
+      actions: [
+        's3:CreateBucket',
+        's3:GetObject*',
+        's3:GetBucket*',
+        's3:List*',
+      ],
+    }));
 
     role.addToPolicy(new iam.PolicyStatement({
       resources: [
