@@ -17,7 +17,7 @@ limitations under the License.
 
 import {
   aws_iam as iam,
-  aws_s3 as s3,
+  // aws_s3 as s3,
 } from 'aws-cdk-lib';
 
 import {
@@ -27,7 +27,7 @@ import {
 interface Props {
   region: string;
   account: string;
-  bucket: s3.Bucket;
+  // bucket: s3.Bucket;
   prefix: string;
   stackName: string;
 }
@@ -105,9 +105,21 @@ export class RoleUtil {
       ],
     }));
 
+    // role.addToPolicy(new iam.PolicyStatement({
+    //   resources: [
+    //     `arn:aws:s3:::${this.props.bucket.bucketName}/*`,
+    //     'arn:aws:s3:::braket-*/*',
+    //     'arn:aws:s3:::amazon-braket-*/*',
+    //   ],
+    //   actions: [
+    //     's3:CreateBucket',
+    //     's3:PutObject',
+    //     's3:GetObject',
+    //   ],
+    // }));
+
     role.addToPolicy(new iam.PolicyStatement({
       resources: [
-        `arn:aws:s3:::${this.props.bucket.bucketName}/*`,
         'arn:aws:s3:::braket-*/*',
         'arn:aws:s3:::amazon-braket-*/*',
       ],
@@ -118,26 +130,26 @@ export class RoleUtil {
       ],
     }));
 
-    role.addToPolicy(new iam.PolicyStatement({
-      resources: [
-        `arn:aws:s3:::${this.props.bucket.bucketName}`,
-      ],
-      actions: [
-        's3:ListBucket',
-      ],
-    }));
+    // role.addToPolicy(new iam.PolicyStatement({
+    //   resources: [
+    //     `arn:aws:s3:::${this.props.bucket.bucketName}`,
+    //   ],
+    //   actions: [
+    //     's3:ListBucket',
+    //   ],
+    // }));
 
-    role.addToPolicy(new iam.PolicyStatement({
-      resources: [
-        `arn:aws:s3:::cdk-*`,
-      ],
-      actions: [
-        's3:CreateBucket',
-        's3:GetObject*',
-        's3:GetBucket*',
-        's3:List*',
-      ],
-    }));
+    // role.addToPolicy(new iam.PolicyStatement({
+    //   resources: [
+    //     `arn:aws:s3:::cdk-*`,
+    //   ],
+    //   actions: [
+    //     's3:CreateBucket',
+    //     's3:GetObject*',
+    //     's3:GetBucket*',
+    //     's3:List*',
+    //   ],
+    // }));
 
     role.addToPolicy(new iam.PolicyStatement({
       resources: [
