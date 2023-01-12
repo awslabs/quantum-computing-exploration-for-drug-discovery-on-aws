@@ -31,8 +31,8 @@ cd /home/ec2-user/SageMaker/
 unzip code.zip -d ./
 rm code.zip
 cd code
-touch default-setting.txt
-echo `bucket={{&default_bucket}}` >> default-setting.txt
+echo 'bucket=' >> default-setting.txt
+echo 'bucket={{&default_bucket}}' >> default-setting.txt
 cd ..
 
 EOS
