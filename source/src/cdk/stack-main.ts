@@ -171,13 +171,14 @@ export class MainStack extends SolutionStack {
           "status": "$.detail.status"
         },
       };
+      
+      topic.addSubscription(new subscriptions.EmailSubscription(snsEmail.valueAsString));
 
       // eventRule.addTarget(inputTransformerProperty);
       eventRule.addTarget(new targets.SnsTopic(topic, {
         message: events.RuleTargetInput.fromObject(inputTransformerProperty),
       }));
 
-      topic.addSubscription(new subscriptions.EmailSubscription(snsEmail.valueAsString));
       new CfnOutput(this, 'SNSTopic', {
         value: topic.topicName,
         description: `SNS Topic Name(${prefix})`,

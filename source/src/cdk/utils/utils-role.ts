@@ -68,12 +68,19 @@ export class RoleUtil {
         '*',
       ],
       actions: [
-        'braket:CreateJob',
-        'braket:GetDevice',
-        'braket:SearchDevices',
-        'braket:CreateQuantumTask',
-        'braket:SearchJobs',
-        'braket:SearchQuantumTasks',
+        'braket:CancelJob',
+				'braket:CancelQuantumTask',
+				'braket:CreateJob',
+				'braket:CreateQuantumTask',
+				'braket:GetDevice',
+				'braket:GetJob',
+				'braket:GetQuantumTask',
+				'braket:SearchDevices',
+				'braket:SearchJobs',
+				'braket:SearchQuantumTasks',
+				'braket:ListTagsForResource',
+				'braket:TagResource',
+				'braket:UntagResource'
       ],
     }));
 
@@ -87,6 +94,27 @@ export class RoleUtil {
         's3:PutObject',
         's3:GetObject',
         's3:ListBucket',
+        's3:CreateBucket',
+				's3:PutBucketPublicAccessBlock',
+				's3:PutBucketPolicy'
+      ],
+    }));
+
+    role.addToPolicy(new iam.PolicyStatement({
+      resources: [
+        'arn:aws:iam::*:role/*'
+      ],
+      actions: [
+        'iam:ListRoles'
+      ],
+    }));
+
+    role.addToPolicy(new iam.PolicyStatement({
+      resources: [
+        'arn:aws:iam::*:role/service-role/AmazonBraketJobsExecutionRole*'
+      ],
+      actions: [
+        'iam:PassRole'
       ],
     }));
 
