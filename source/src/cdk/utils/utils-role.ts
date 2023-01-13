@@ -18,6 +18,7 @@ limitations under the License.
 import {
   aws_iam as iam,
 } from 'aws-cdk-lib';
+import { ManagedPolicy } from 'aws-cdk-lib/aws-iam';
 
 import {
   Construct,
@@ -47,6 +48,8 @@ export class RoleUtil {
     const role = new iam.Role(this.scope, 'NotebookRole', {
       assumedBy: new iam.ServicePrincipal('sagemaker.amazonaws.com'),
     });
+
+    role.
 
     role.addToPolicy(new iam.PolicyStatement({
       resources: [
@@ -120,6 +123,9 @@ export class RoleUtil {
         'logs:CreateLogGroup',
       ],
     }));
+
+    role.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AmazonS3ReadOnlyAccess'))
+
     return role;
   }
 }
