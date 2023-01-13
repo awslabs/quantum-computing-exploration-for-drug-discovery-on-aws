@@ -124,7 +124,7 @@ export class RoleUtil {
       ],
     }));
 
-    role.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AmazonS3ReadOnlyAccess'))
+    role.addManagedPolicy(ManagedPolicy.fromAwsManagedPolicyName('AmazonBraketFullAccess'))
 
     return role;
   }
