@@ -10,5 +10,5 @@ def obtain_default_bucket(target: str) -> str:
                 return line.split('=')[1]
 
 
-if __name__ == "__main__":
-    print(obtain_default_bucket('bucketName'))
+# if __name__ == "__main__":
+#     print(obtain_default_bucket('bucketName'))
