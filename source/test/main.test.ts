@@ -130,8 +130,8 @@ test('SupportedRegionsRule config correctly', () => {
   expect(supportedRegions).toEqual(
     [
       {
-        Assert: { 'Fn::Contains': [['us-west-2', 'us-east-1', 'eu-west-2'], { Ref: 'AWS::Region' }] },
-        AssertDescription: 'supported regions are us-west-2, us-east-1, eu-west-2',
+        Assert: { 'Fn::Contains': [['us-west-1', 'us-west-2', 'us-east-1', 'eu-west-2'], { Ref: 'AWS::Region' }] },
+        AssertDescription: 'supported regions are us-west-1, us-west-2, us-east-1, eu-west-2',
       },
     ],
   );

@@ -80,7 +80,7 @@ export class Notebook extends Construct {
 
     const rawOnStartContent = Mustache.render(onStartContent, {
       s3_code_path: srcCodeAsset.s3ObjectUrl,
-      default_bucket: props.bucketName
+      default_bucket: props.bucketName,
     });
 
     const installBraketSdk = new CfnNotebookInstanceLifecycleConfig(this, 'install-braket-sdk', {

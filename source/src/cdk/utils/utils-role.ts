@@ -1,4 +1,3 @@
-import { ManagedPolicy } from 'aws-cdk-lib/aws-iam';
 /*
 Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 
@@ -19,6 +18,8 @@ limitations under the License.
 import {
   aws_iam as iam,
 } from 'aws-cdk-lib';
+
+import { ManagedPolicy } from 'aws-cdk-lib/aws-iam';
 
 import {
   Construct,
@@ -69,18 +70,18 @@ export class RoleUtil {
       ],
       actions: [
         'braket:CancelJob',
-				'braket:CancelQuantumTask',
-				'braket:CreateJob',
-				'braket:CreateQuantumTask',
-				'braket:GetDevice',
-				'braket:GetJob',
-				'braket:GetQuantumTask',
-				'braket:SearchDevices',
-				'braket:SearchJobs',
-				'braket:SearchQuantumTasks',
-				'braket:ListTagsForResource',
-				'braket:TagResource',
-				'braket:UntagResource'
+        'braket:CancelQuantumTask',
+        'braket:CreateJob',
+        'braket:CreateQuantumTask',
+        'braket:GetDevice',
+        'braket:GetJob',
+        'braket:GetQuantumTask',
+        'braket:SearchDevices',
+        'braket:SearchJobs',
+        'braket:SearchQuantumTasks',
+        'braket:ListTagsForResource',
+        'braket:TagResource',
+        'braket:UntagResource',
       ],
     }));
 
@@ -88,33 +89,33 @@ export class RoleUtil {
       resources: [
         'arn:aws:s3:::braket-*/*',
         'arn:aws:s3:::amazon-braket-*/*',
-        "arn:aws:s3:::braketnotebookcdk-**"
+        'arn:aws:s3:::braketnotebookcdk-**',
       ],
       actions: [
         's3:PutObject',
         's3:GetObject',
         's3:ListBucket',
         's3:CreateBucket',
-				's3:PutBucketPublicAccessBlock',
-				's3:PutBucketPolicy'
+        's3:PutBucketPublicAccessBlock',
+        's3:PutBucketPolicy',
       ],
     }));
 
     role.addToPolicy(new iam.PolicyStatement({
       resources: [
-        'arn:aws:iam::*:role/*'
+        'arn:aws:iam::*:role/*',
       ],
       actions: [
-        'iam:ListRoles'
+        'iam:ListRoles',
       ],
     }));
 
     role.addToPolicy(new iam.PolicyStatement({
       resources: [
-        'arn:aws:iam::*:role/service-role/AmazonBraketJobsExecutionRole*'
+        'arn:aws:iam::*:role/service-role/AmazonBraketJobsExecutionRole*',
       ],
       actions: [
-        'iam:PassRole'
+        'iam:PassRole',
       ],
     }));
 
@@ -144,7 +145,7 @@ export class RoleUtil {
       ],
       actions: [
         'logs:CreateLogStream',
-        "logs:DescribeLogStreams",
+        'logs:DescribeLogStreams',
         'logs:PutLogEvents',
         'logs:CreateLogGroup',
       ],

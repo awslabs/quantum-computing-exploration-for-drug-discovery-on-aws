@@ -93,7 +93,7 @@ export class MainStack extends SolutionStack {
       },
     };
 
-    const supportRegions = ['us-east-1', 'us-west-1', 'us-west-2', 'eu-west-2'];
+    const supportRegions = ['us-west-1', 'us-west-2', 'us-east-1', 'eu-west-2'];
     new CfnRule(this, 'SupportedRegionsRule', {
       assertions: [{
         assert: Fn.conditionContains(supportRegions, this.region),
@@ -154,7 +154,7 @@ export class MainStack extends SolutionStack {
       const eventRule = new events.Rule(this, 'eventRule', {
         eventPattern: {
           detail: {
-            status: ["COMPLETED"],
+            status: ['COMPLETED'],
           },
           source: ['aws.braket'],
           detailType: ['Braket Job State Change'],
@@ -165,13 +165,13 @@ export class MainStack extends SolutionStack {
         inputTemplate: 'Reminder: Job 【<job>】 is 【<status>】, StartedTime:【<startedAt>】, FinishedTime:【<endedAt>】',
         // the properties below are optional
         inputPathsMap: {
-          "endedAt": "$.detail.endedAt",
-          "job": "$.detail.jobArn",
-          "startedAt": "$.detail.startedAt",
-          "status": "$.detail.status"
+          endedAt: '$.detail.endedAt',
+          job: '$.detail.jobArn',
+          startedAt: '$.detail.startedAt',
+          status: '$.detail.status',
         },
       };
-      
+
       topic.addSubscription(new subscriptions.EmailSubscription(snsEmail.valueAsString));
 
       // eventRule.addTarget(inputTransformerProperty);
