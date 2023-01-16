@@ -11,5 +11,3 @@ RUN python3 -m pip install dimod==0.10.12 \
                            biopandas==0.4.1 \
                            py3Dmol==1.8.0 \
                            ipywidgets==7.7.0
-                           
-RUN python3 -m pip install git+https://github.com/ViennaRNA/forgi
