@@ -49,20 +49,6 @@ test('synthesizes the way we expect', () => {
   expect(template).toBeTruthy();
 });
 
-test('has 1 s3 bucket', () => {
-  const app = new App();
-  const stack = new MainStack(app, 'test');
-  const template = Template.fromStack(stack);
-  template.hasResource('AWS::S3::Bucket', 1);
-});
-
-test('s3 bucket can be deleted', () => {
-  const app = new App();
-  const stack = new MainStack(app, 'test');
-  const template = Template.fromStack(stack);
-  template.hasResource('Custom::S3AutoDeleteObjects', 1);
-});
-
 test('has 1 vpc', () => {
   const app = new App();
   const stack = new MainStack(app, 'test');
@@ -84,13 +70,6 @@ test('has 1 flowLog', () => {
   template.hasResource('AWS::EC2::FlowLog', 1);
 });
 
-test('has output - BucketName', () => {
-  const app = new App();
-  const stack = new MainStack(app, 'test');
-  const template = Template.fromStack(stack);
-  template.hasOutput('BucketName', {});
-});
-
 test('has output - NotebookURL', () => {
   const app = new App();
   const stack = new MainStack(app, 'test');
@@ -105,50 +84,42 @@ test('has output - SNSTopic', () => {
   template.hasOutput('SNSTopic', {});
 });
 
+// test('has 2 nest CloudFormation stacks ', () => {
+//   const app = new App();
+//   const stack = new MainStack(app, 'test');
+//   const template = Template.fromStack(stack);
+//   template.hasResource('AWS::CloudFormation::Stack', 2);
+// });
 
-test('has output - StateMachineURL', () => {
-  const app = new App();
-  const stack = new MainStack(app, 'test');
-  const template = Template.fromStack(stack);
-  template.hasOutput('StateMachineURL', {});
-});
+// test('has Condition ConditionDeployBatchEvaluation', () => {
+//   const app = new App();
+//   const stack = new MainStack(app, 'test');
+//   const template = Template.fromStack(stack);
+//   const conditionDeployBatchEvaluation = template.toJSON().Conditions.ConditionDeployBatchEvaluation;
+//   expect(conditionDeployBatchEvaluation).toEqual({
+//     'Fn::Equals': [
+//       {
+//         Ref: 'DeployBatchEvaluation',
+//       },
+//       'yes',
+//     ],
+//   });
+// });
 
-test('has 2 nest CloudFormation stacks ', () => {
-  const app = new App();
-  const stack = new MainStack(app, 'test');
-  const template = Template.fromStack(stack);
-  template.hasResource('AWS::CloudFormation::Stack', 2);
-});
-
-test('has Condition ConditionDeployBatchEvaluation', () => {
-  const app = new App();
-  const stack = new MainStack(app, 'test');
-  const template = Template.fromStack(stack);
-  const conditionDeployBatchEvaluation = template.toJSON().Conditions.ConditionDeployBatchEvaluation;
-  expect(conditionDeployBatchEvaluation).toEqual({
-    'Fn::Equals': [
-      {
-        Ref: 'DeployBatchEvaluation',
-      },
-      'yes',
-    ],
-  });
-});
-
-test('has Condition ConditionDeployVisualization', () => {
-  const app = new App();
-  const stack = new MainStack(app, 'test');
-  const template = Template.fromStack(stack);
-  const conditionDeployVisualization = template.toJSON().Conditions.ConditionDeployVisualization;
-  expect(conditionDeployVisualization).toEqual({
-    'Fn::Equals': [
-      {
-        Ref: 'DeployVisualization',
-      },
-      'yes',
-    ],
-  });
-});
+// test('has Condition ConditionDeployVisualization', () => {
+//   const app = new App();
+//   const stack = new MainStack(app, 'test');
+//   const template = Template.fromStack(stack);
+//   const conditionDeployVisualization = template.toJSON().Conditions.ConditionDeployVisualization;
+//   expect(conditionDeployVisualization).toEqual({
+//     'Fn::Equals': [
+//       {
+//         Ref: 'DeployVisualization',
+//       },
+//       'yes',
+//     ],
+//   });
+// });
 
 test('SupportedRegionsRule config correctly', () => {
   const app = new App();

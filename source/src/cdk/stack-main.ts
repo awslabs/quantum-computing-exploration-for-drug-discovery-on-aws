@@ -13,29 +13,28 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-import * as path from 'path';
 import {
-  aws_s3 as s3,
   aws_events as events,
   aws_events_targets as targets,
   aws_sns as sns,
+  aws_s3 as s3,
+  aws_sns_subscriptions as subscriptions,
   aws_kms as kms,
   aws_iam as iam,
   StackProps,
   Fn,
-  RemovalPolicy,
   CfnOutput,
   Aspects,
-  CfnCondition,
   CfnParameter,
   CfnRule,
+  RemovalPolicy,
 } from 'aws-cdk-lib';
 
 import {
   Construct,
 } from 'constructs';
 
-import * as execa from 'execa';
+// import * as execa from 'execa';
 
 import {
   SolutionStack,
@@ -43,7 +42,7 @@ import {
 import { Notebook } from './construct-notebook';
 
 import {
-  AddCfnNag,
+  AddCfnNag, genTimeStampStr,
 } from './utils/utils';
 
 import setup_vpc_and_sg from './utils/vpc';
@@ -66,16 +65,15 @@ export class MainStack extends SolutionStack {
     const snsEmail = new CfnParameter(this, 'snsEmail', {
       type: 'String',
       description: 'The email address of Admin user',
-
       allowedPattern:
-        '^$|^\\w[-\\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\\.)+[A-Za-z]{2,14}$',
+        '^(\\w[-\\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\\.)+[A-Za-z]{2,14})?$',
     });
 
-    const conditionSnsEmail = new CfnCondition(this, 'ConditionSnsEmail', {
-      expression: Fn.conditionNot(
-        Fn.conditionEquals(snsEmail.valueAsString, '',)
-      ),
-    });
+    // const conditionSnsEmail = new CfnCondition(this, 'ConditionSnsEmail', {
+    //   expression: Fn.conditionNot(
+    //     Fn.conditionEquals(snsEmail.valueAsString, ''),
+    //   ),
+    // });
 
     // const scenario = 'Quantum Computing on Medicine';
 
@@ -95,7 +93,7 @@ export class MainStack extends SolutionStack {
       },
     };
 
-    const supportRegions = ['us-west-2', 'us-east-1', 'eu-west-2'];
+    const supportRegions = ['us-east-1', 'us-west-1', 'us-west-2', 'eu-west-2'];
     new CfnRule(this, 'SupportedRegionsRule', {
       assertions: [{
         assert: Fn.conditionContains(supportRegions, this.region),
@@ -104,31 +102,6 @@ export class MainStack extends SolutionStack {
     });
 
     const prefix = MainStack.SOLUTION_NAME.split(' ').join('-').toLowerCase();
-
-    const logS3bucket = new s3.Bucket(this, 'AccessLogS3Bucket', {
-      removalPolicy: RemovalPolicy.DESTROY,
-      autoDeleteObjects: true,
-      enforceSSL: true,
-      encryption: s3.BucketEncryption.S3_MANAGED,
-    });
-
-    const bucketName = `amazon-braket-${stackName}-${this.account}-${this.region}`;
-    const s3bucket = new s3.Bucket(this, 'amazon-braket', {
-      removalPolicy: RemovalPolicy.DESTROY,
-      bucketName,
-      autoDeleteObjects: true,
-      enforceSSL: true,
-      encryption: s3.BucketEncryption.S3_MANAGED,
-      serverAccessLogsBucket: logS3bucket,
-      serverAccessLogsPrefix: `accesslogs/${bucketName}/`,
-    });
-
-    s3bucket.node.addDependency(logS3bucket);
-
-    new CfnOutput(this, 'BucketName', {
-      value: s3bucket.bucketName,
-      description: 'S3 Bucket Name',
-    });
 
     const {
       vpc,
@@ -140,7 +113,7 @@ export class MainStack extends SolutionStack {
         enableKeyRotation: true,
       });
 
-      (snsKey.node.defaultChild as kms.CfnKey).cfnOptions.condition = conditionSnsEmail;
+      // (snsKey.node.defaultChild as kms.CfnKey).cfnOptions.condition = conditionSnsEmail;
 
       const iamPolicyStatement = new iam.PolicyStatement({
         actions: [
@@ -180,49 +153,73 @@ export class MainStack extends SolutionStack {
       // eventBridge
       const eventRule = new events.Rule(this, 'eventRule', {
         eventPattern: {
+          detail: {
+            status: ["COMPLETED"],
+          },
           source: ['aws.braket'],
           detailType: ['Braket Job State Change'],
         },
       });
 
+      const inputTransformerProperty: events.CfnRule.InputTransformerProperty = {
+        inputTemplate: 'Reminder: Job 【<job>】 is 【<status>】, StartedTime:【<startedAt>】, FinishedTime:【<endedAt>】',
+        // the properties below are optional
+        inputPathsMap: {
+          "endedAt": "$.detail.endedAt",
+          "job": "$.detail.jobArn",
+          "startedAt": "$.detail.startedAt",
+          "status": "$.detail.status"
+        },
+      };
       
-      (eventRule.node.defaultChild as events.CfnRule).cfnOptions.condition = conditionSnsEmail;
-      (topic.node.defaultChild as sns.CfnTopic).cfnOptions.condition = conditionSnsEmail;
-      // Create topic and rule only if snsEmail is not empty.
+      topic.addSubscription(new subscriptions.EmailSubscription(snsEmail.valueAsString));
+
+      // eventRule.addTarget(inputTransformerProperty);
       eventRule.addTarget(new targets.SnsTopic(topic, {
-        message: events.RuleTargetInput.fromEventPath('$.detail'),
+        message: events.RuleTargetInput.fromObject(inputTransformerProperty),
       }));
+
+      new CfnOutput(this, 'SNSTopic', {
+        value: topic.topicName,
+        description: `SNS Topic Name(${prefix})`,
+      });
     }
 
-    {
-      // Build default image
-      () => execa(path.join(__dirname, '../default-image/build_and_push.sh'));
-    }
+    // {
+    //   // Build default image
+    //   () => execa(path.join(__dirname, '../default-image/build_and_push.sh'));
+    // }
+
+    const bucketName = `amazon-braket-${this.region}-${this.account}-${genTimeStampStr(new Date())}`;
+    const s3bucket = new s3.Bucket(this, 'amazon-braket', {
+      removalPolicy: RemovalPolicy.DESTROY,
+      bucketName,
+      autoDeleteObjects: true,
+      enforceSSL: true,
+      encryption: s3.BucketEncryption.S3_MANAGED,
+    });
 
     {
       // Notebook //////////////////////////
       const notebook = new Notebook(this, 'Notebook', {
         account: this.account,
         region: this.region,
-        bucket: s3bucket,
         prefix,
         vpc,
         notebookSg,
         stackName,
+        bucketName,
       });
 
-      this.notebookUrlOutput = new CfnOutput(this, 'NotebookUrl', {
+      this.notebookUrlOutput = new CfnOutput(this, 'NotebookURL', {
         value: notebook.notebookUrl,
         description: 'Notebook URL',
       });
-      // (notebook.nestedStackResource as CfnStack).cfnOptions.condition = conditionDeployNotebook;
-      // this.addOutput('NotebookURL', notebook.notebookUrlOutput);
-      // this.addOutput('ECRLink', notebook.notebookUrlOutput);
+
       notebook.node.addDependency(s3bucket);
       notebook.node.addDependency(vpc);
     }
 
     Aspects.of(this).add(new AddCfnNag());
   }
-
 }
