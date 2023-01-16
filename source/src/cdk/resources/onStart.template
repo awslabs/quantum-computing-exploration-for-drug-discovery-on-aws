@@ -32,7 +32,7 @@ unzip code.zip -d ./
 rm code.zip
 
 cd code
-echo 'bucketName={{&default_bucket}}' >> .default-setting
+echo -n 'bucketName={{&default_bucket}}' >> .default-setting
 cd ..
 
 EOS
