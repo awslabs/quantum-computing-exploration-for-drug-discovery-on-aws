@@ -29,6 +29,7 @@ import {
   CfnRule,
   RemovalPolicy,
 } from 'aws-cdk-lib';
+import { EventField } from 'aws-cdk-lib/aws-events';
 
 import {
   Construct,
@@ -68,14 +69,6 @@ export class MainStack extends SolutionStack {
       allowedPattern:
         '^(\\w[-\\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\\.)+[A-Za-z]{2,14})?$',
     });
-
-    // const conditionSnsEmail = new CfnCondition(this, 'ConditionSnsEmail', {
-    //   expression: Fn.conditionNot(
-    //     Fn.conditionEquals(snsEmail.valueAsString, ''),
-    //   ),
-    // });
-
-    // const scenario = 'Quantum Computing on Medicine';
 
     this.templateOptions.metadata = {
       'AWS::CloudFormation::Interface': {
@@ -146,7 +139,6 @@ export class MainStack extends SolutionStack {
       }));
       // SNS Topic
       const topic = new sns.Topic(this, 'SNS Topic', {
-        displayName: 'Quantum Computing Exploration - SNS Topic',
         masterKey: snsKey,
       });
 
@@ -161,22 +153,13 @@ export class MainStack extends SolutionStack {
         },
       });
 
-      const inputTransformerProperty: events.CfnRule.InputTransformerProperty = {
-        inputTemplate: 'Reminder: Job 【<job>】 is 【<status>】, StartedTime:【<startedAt>】, FinishedTime:【<endedAt>】',
-        // the properties below are optional
-        inputPathsMap: {
-          endedAt: '$.detail.endedAt',
-          job: '$.detail.jobArn',
-          startedAt: '$.detail.startedAt',
-          status: '$.detail.status',
-        },
-      };
-
       topic.addSubscription(new subscriptions.EmailSubscription(snsEmail.valueAsString));
 
-      // eventRule.addTarget(inputTransformerProperty);
       eventRule.addTarget(new targets.SnsTopic(topic, {
-        message: events.RuleTargetInput.fromObject(inputTransformerProperty),
+        message: events.RuleTargetInput.fromText(
+          `Reminder: Job 【${EventField.fromPath('$.detail.jobArn')}】 is 【${EventField.fromPath(
+            '$.detail.status')}】, StartedTime:【${EventField.fromPath('$.detail.startedAt')}】, FinishedTime:【${EventField.fromPath('$.detail.endedAt')}】`,
+        ),
       }));
 
       new CfnOutput(this, 'SNSTopic', {
@@ -184,11 +167,6 @@ export class MainStack extends SolutionStack {
         description: `SNS Topic Name(${prefix})`,
       });
     }
-
-    // {
-    //   // Build default image
-    //   () => execa(path.join(__dirname, '../default-image/build_and_push.sh'));
-    // }
 
     const bucketName = `amazon-braket-${this.region}-${this.account}-${genTimeStampStr(new Date())}`;
     const s3bucket = new s3.Bucket(this, 'amazon-braket', {
