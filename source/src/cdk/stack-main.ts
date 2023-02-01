@@ -27,7 +27,6 @@ import {
   Aspects,
   CfnParameter,
   CfnRule,
-  RemovalPolicy,
 } from 'aws-cdk-lib';
 import { EventField } from 'aws-cdk-lib/aws-events';
 
@@ -35,16 +34,12 @@ import {
   Construct,
 } from 'constructs';
 
-// import * as execa from 'execa';
-
 import {
   SolutionStack,
 } from '../stack';
 import { Notebook } from './construct-notebook';
+import { AddCfnNag } from './utils/utils';
 
-import {
-  AddCfnNag, genTimeStampStr,
-} from './utils/utils';
 
 import setup_vpc_and_sg from './utils/vpc';
 
@@ -74,7 +69,7 @@ export class MainStack extends SolutionStack {
       'AWS::CloudFormation::Interface': {
         ParameterGroups: [
           {
-            Label: { default: 'Email for receive notification(Optional)' },
+            Label: { default: 'Email for receive notification' },
             Parameters: [snsEmail.logicalId],
           },
         ],
@@ -106,8 +101,6 @@ export class MainStack extends SolutionStack {
         enableKeyRotation: true,
       });
 
-      // (snsKey.node.defaultChild as kms.CfnKey).cfnOptions.condition = conditionSnsEmail;
-
       const iamPolicyStatement = new iam.PolicyStatement({
         actions: [
           'kms:Decrypt',
@@ -117,7 +110,6 @@ export class MainStack extends SolutionStack {
         resources: ['*'],
       });
 
-      // (iamPolicyStatement.node.defaultChild as iam.cfn).cfnOptions.condition = conditionSnsEmail;
       snsKey.addToResourcePolicy(iamPolicyStatement);
 
       snsKey.addToResourcePolicy(new iam.PolicyStatement({
@@ -157,8 +149,8 @@ export class MainStack extends SolutionStack {
 
       eventRule.addTarget(new targets.SnsTopic(topic, {
         message: events.RuleTargetInput.fromText(
-          `Reminder: Job 【${EventField.fromPath('$.detail.jobArn')}】 is 【${EventField.fromPath(
-            '$.detail.status')}】, StartedTime:【${EventField.fromPath('$.detail.startedAt')}】, FinishedTime:【${EventField.fromPath('$.detail.endedAt')}】`,
+          `Reminder: Job [${EventField.fromPath('$.detail.jobArn')}] is [${EventField.fromPath(
+            '$.detail.status')}], StartedTime:[${EventField.fromPath('$.detail.startedAt')}], FinishedTime:[${EventField.fromPath('$.detail.endedAt')}]`,
         ),
       }));
 
@@ -168,11 +160,7 @@ export class MainStack extends SolutionStack {
       });
     }
 
-    const bucketName = `amazon-braket-${this.region}-${this.account}-${genTimeStampStr(new Date())}`;
     const s3bucket = new s3.Bucket(this, 'amazon-braket', {
-      removalPolicy: RemovalPolicy.DESTROY,
-      bucketName,
-      autoDeleteObjects: true,
       enforceSSL: true,
       encryption: s3.BucketEncryption.S3_MANAGED,
     });
@@ -186,7 +174,6 @@ export class MainStack extends SolutionStack {
         vpc,
         notebookSg,
         stackName,
-        bucketName,
       });
 
       this.notebookUrlOutput = new CfnOutput(this, 'NotebookURL', {

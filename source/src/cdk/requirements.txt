@@ -1,5 +1,4 @@
 numpy==1.22.2
-boto3==1.26.8
 dimod==0.10.12
 networkx==2.7.1
 dwave-ocean-sdk==4.4.0

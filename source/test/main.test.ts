@@ -56,6 +56,20 @@ test('has 1 vpc', () => {
   template.hasResource('AWS::EC2::VPC', 1);
 });
 
+test('has 1 parameter', () => {
+  const app = new App();
+  const stack = new MainStack(app, 'test');
+  const template = Template.fromStack(stack);
+  template.hasParameter('snsEmail', 1);
+});
+
+test('has 1 eventBridge', () => {
+  const app = new App();
+  const stack = new MainStack(app, 'test');
+  const template = Template.fromStack(stack);
+  template.hasResource('AWS::Events::Rule', 1);
+});
+
 test('has 4 subnets', () => {
   const app = new App();
   const stack = new MainStack(app, 'test');
@@ -83,43 +97,6 @@ test('has output - SNSTopic', () => {
   const template = Template.fromStack(stack);
   template.hasOutput('SNSTopic', {});
 });
-
-// test('has 2 nest CloudFormation stacks ', () => {
-//   const app = new App();
-//   const stack = new MainStack(app, 'test');
-//   const template = Template.fromStack(stack);
-//   template.hasResource('AWS::CloudFormation::Stack', 2);
-// });
-
-// test('has Condition ConditionDeployBatchEvaluation', () => {
-//   const app = new App();
-//   const stack = new MainStack(app, 'test');
-//   const template = Template.fromStack(stack);
-//   const conditionDeployBatchEvaluation = template.toJSON().Conditions.ConditionDeployBatchEvaluation;
-//   expect(conditionDeployBatchEvaluation).toEqual({
-//     'Fn::Equals': [
-//       {
-//         Ref: 'DeployBatchEvaluation',
-//       },
-//       'yes',
-//     ],
-//   });
-// });
-
-// test('has Condition ConditionDeployVisualization', () => {
-//   const app = new App();
-//   const stack = new MainStack(app, 'test');
-//   const template = Template.fromStack(stack);
-//   const conditionDeployVisualization = template.toJSON().Conditions.ConditionDeployVisualization;
-//   expect(conditionDeployVisualization).toEqual({
-//     'Fn::Equals': [
-//       {
-//         Ref: 'DeployVisualization',
-//       },
-//       'yes',
-//     ],
-//   });
-// });
 
 test('SupportedRegionsRule config correctly', () => {
   const app = new App();
