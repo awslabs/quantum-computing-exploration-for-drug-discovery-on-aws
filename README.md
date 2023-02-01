@@ -55,6 +55,20 @@ For detailed description of architecture, please refer to the
     <tr>
         <td><span>qbsolv</span></td>
         <td><span><span></td>
+    <tr>
+    <tr>
+        <td rowspan='4'>RNA Folding</td>
+        <td rowspan='4'>QUBO</td>
+        <td><span>single solver</span></td>
+        <td><span>&#10004;</span></td>
+        <td rowspan='4'><a href="http://bprna.cgrb.oregonstate.edu/">bpRNA-1m</a></td>
+        <td ><span><a href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.10100327">RNA folding using quantum computers(2022)</a></span></td>
+    <tr>
+    <tr>
+        <td><span>qbsolv</span></td>
+        <td><span><span></td>
+        <td ><span><a href="https://github.com/XanaduAI/QHack2022/issues/114">QHack 2022 winner</a></span></td>
+    <tr>
 </table>
 
 <div id='more-example'></div>
