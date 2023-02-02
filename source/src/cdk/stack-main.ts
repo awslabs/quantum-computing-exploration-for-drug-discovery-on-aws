@@ -18,7 +18,6 @@ import {
   aws_events_targets as targets,
   aws_sns as sns,
   aws_s3 as s3,
-  aws_sns_subscriptions as subscriptions,
   aws_kms as kms,
   aws_iam as iam,
   StackProps,
@@ -27,6 +26,7 @@ import {
   Aspects,
   CfnParameter,
   CfnRule,
+  CfnCondition,
 } from 'aws-cdk-lib';
 import { EventField } from 'aws-cdk-lib/aws-events';
 
@@ -61,9 +61,18 @@ export class MainStack extends SolutionStack {
     const snsEmail = new CfnParameter(this, 'snsEmail', {
       type: 'String',
       description: 'The email address of Admin user',
-      allowedPattern:
-        '^(\\w[-\\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\\.)+[A-Za-z]{2,14})?$',
+      allowedPattern: '^(\\w[-\\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\\.)+[A-Za-z]{2,14})?$',
     });
+
+    const conditionSnsEmail = new CfnCondition(this, 'ConditionSnsEmail', {
+      expression: Fn.conditionNot(
+        Fn.conditionEquals(snsEmail.valueAsString, ''),
+      ),
+    });
+
+    // const conditionSnsEmail = Fn.conditionNot(
+    //   Fn.conditionEquals(snsEmail.valueAsString, '',)
+    // );
 
     this.templateOptions.metadata = {
       'AWS::CloudFormation::Interface': {
@@ -130,9 +139,11 @@ export class MainStack extends SolutionStack {
         },
       }));
       // SNS Topic
-      const topic = new sns.Topic(this, 'SNS Topic', {
+      const topic = new sns.Topic(this, 'SubscriptionsTopic', {
         masterKey: snsKey,
       });
+
+      const cfnTopic = topic.node.defaultChild as sns.CfnTopic;
 
       // eventBridge
       const eventRule = new events.Rule(this, 'eventRule', {
@@ -145,7 +156,12 @@ export class MainStack extends SolutionStack {
         },
       });
 
-      topic.addSubscription(new subscriptions.EmailSubscription(snsEmail.valueAsString));
+      const subscription = new sns.CfnSubscription(this, 'emailSubcription', {
+        topicArn: cfnTopic.ref,
+        protocol: 'email',
+        endpoint: snsEmail.valueAsString,
+      });
+      subscription.cfnOptions.condition = conditionSnsEmail;
 
       eventRule.addTarget(new targets.SnsTopic(topic, {
         message: events.RuleTargetInput.fromText(
@@ -160,9 +176,16 @@ export class MainStack extends SolutionStack {
       });
     }
 
+    const logS3bucket = new s3.Bucket(this, 'accessLogs', {
+      enforceSSL: true,
+      encryption: s3.BucketEncryption.S3_MANAGED,
+    });
+
     const s3bucket = new s3.Bucket(this, 'amazon-braket', {
       enforceSSL: true,
       encryption: s3.BucketEncryption.S3_MANAGED,
+      serverAccessLogsBucket: logS3bucket,
+      serverAccessLogsPrefix: `accessLogs/${logS3bucket.bucketName}/`,
     });
 
     {
@@ -174,6 +197,7 @@ export class MainStack extends SolutionStack {
         vpc,
         notebookSg,
         stackName,
+        bucketName: s3bucket.bucketName,
       });
 
       this.notebookUrlOutput = new CfnOutput(this, 'NotebookURL', {

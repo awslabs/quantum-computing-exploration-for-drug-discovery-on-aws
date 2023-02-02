@@ -51,6 +51,7 @@ export interface Props {
   notebookSg: ec2.SecurityGroup;
   vpc: ec2.Vpc;
   stackName: string;
+  bucketName: string;
 }
 
 export class Notebook extends Construct {
@@ -79,6 +80,7 @@ export class Notebook extends Construct {
 
     const rawOnStartContent = Mustache.render(onStartContent, {
       s3_code_path: srcCodeAsset.s3ObjectUrl,
+      default_bucket: props.bucketName,
     });
 
     const installBraketSdk = new CfnNotebookInstanceLifecycleConfig(this, 'install-braket-sdk', {

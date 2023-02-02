@@ -65,6 +65,10 @@ describe('Notebook', () => {
                     'Fn::Sub': Match.anyValue(),
                   },
                   Match.anyValue(),
+                  {
+                    'Ref': Match.anyValue(),
+                  },
+                  Match.anyValue(),
                 ],
               ],
             },
