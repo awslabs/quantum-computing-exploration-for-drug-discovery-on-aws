@@ -5,3 +5,5 @@ RulesToSuppress:
     reason: 'Do not need to set reservedConcurrentExecutions for lambda'
   - id: 'W5'
     reason: 'This solution will access external traffic for upgrading'
+  - id: 'W35'
+    reason: 'the check is not necessary because target is used to store accessing log'

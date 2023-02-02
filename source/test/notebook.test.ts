@@ -66,7 +66,7 @@ describe('Notebook', () => {
                   },
                   Match.anyValue(),
                   {
-                    'Ref': Match.anyValue(),
+                    Ref: Match.anyValue(),
                   },
                   Match.anyValue(),
                 ],
