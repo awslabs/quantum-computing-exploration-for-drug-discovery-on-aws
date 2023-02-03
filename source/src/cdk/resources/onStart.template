@@ -11,11 +11,13 @@ source qc-hcls/bin/activate
 pip3 install numpy==1.22.2
 pip3 install boto3==1.26.8
 pip3 install dimod==0.10.12
-pip3 install networkx==2.7.1
-pip3 install dwave-ocean-sdk==4.4.0
+pip3 install dwave-system==1.15.0
+pip3 install dwave-neal==0.5.9
+pip3 install networkx==2.6.3
 pip3 install amazon-braket-sdk==1.31.0
 pip3 install amazon-braket-ocean-plugin==1.0.7
-pip3 install biopandas==0.3.0
+pip3 install Cython==0.29.32
+pip3 install biopandas==0.4.1
 pip3 install py3Dmol==1.8.0
 pip3 install ipywidgets==7.7.0
 pip3 install altair==4.2.0
