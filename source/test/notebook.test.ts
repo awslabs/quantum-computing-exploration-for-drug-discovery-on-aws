@@ -17,24 +17,18 @@ limitations under the License.
 import {
   App,
   Stack,
-  // aws_s3 as s3,
 } from 'aws-cdk-lib';
 
 import {
   Template,
   Match,
 } from 'aws-cdk-lib/assertions';
-// import { Notebook } from '../src/cdk/construct-notebook';
 
 import { MainStack } from './../src/cdk/stack-main';
-// import setup_vpc_and_sg from '../src/cdk/utils/vpc';
 
 function initialize() {
   const app = new App();
   const stack = new Stack(app, 'test');
-
-  // const s3bucket = new s3.Bucket(stack, 'amazon-braket-test');
-  // const prefix = 'test_s3_prefix';
   const mainStack = new MainStack(stack, 'notebook');
   return Template.fromStack(mainStack);
 }
@@ -78,4 +72,13 @@ describe('Notebook', () => {
     });
   });
 
+  test('notebookRule has created', () => {
+    const template = initialize();
+    template.resourceCountIs('AWS::IAM::Role', 2);
+  });
+
+  test('notebook policy has created', () => {
+    const template = initialize();
+    template.resourceCountIs('AWS::IAM::Policy', 2);
+  });
 });
