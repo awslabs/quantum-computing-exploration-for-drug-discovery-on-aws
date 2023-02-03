@@ -185,7 +185,7 @@ export class MainStack extends SolutionStack {
       enforceSSL: true,
       encryption: s3.BucketEncryption.S3_MANAGED,
       serverAccessLogsBucket: logS3bucket,
-      serverAccessLogsPrefix: `accessLogs/${logS3bucket.bucketName}/`,
+      serverAccessLogsPrefix: 'accessLogs/',
     });
 
     {

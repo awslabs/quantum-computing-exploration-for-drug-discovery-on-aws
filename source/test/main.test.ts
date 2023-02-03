@@ -98,6 +98,20 @@ test('has output - SNSTopic', () => {
   template.hasOutput('SNSTopic', {});
 });
 
+test('subscription success - email', () => {
+  const app = new App();
+  const stack = new MainStack(app, 'test');
+  const template = Template.fromStack(stack);
+  template.hasResource('AWS::SNS::Topic', 1);
+});
+
+test('subscription policy created correctly', () => {
+  const app = new App();
+  const stack = new MainStack(app, 'test');
+  const template = Template.fromStack(stack);
+  template.hasResource('AWS::SNS::TopicPolicy', 1);
+});
+
 test('SupportedRegionsRule config correctly', () => {
   const app = new App();
   const stack = new MainStack(app, 'test');
