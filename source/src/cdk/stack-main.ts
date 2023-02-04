@@ -180,9 +180,9 @@ export class MainStack extends SolutionStack {
       enforceSSL: true,
       encryption: s3.BucketEncryption.S3_MANAGED,
     });
-
     const s3bucket = new s3.Bucket(this, 'amazon-braket', {
       enforceSSL: true,
+      bucketName: `amazon-braket-qc-${Fn.select(0, Fn.split('-', Fn.select(2, Fn.split('/', Fn.ref('AWS::StackId')))))}`,
       encryption: s3.BucketEncryption.S3_MANAGED,
       serverAccessLogsBucket: logS3bucket,
       serverAccessLogsPrefix: 'accessLogs/',

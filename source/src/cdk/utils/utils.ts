@@ -41,9 +41,7 @@ export class ChangePublicSubnet implements IAspect {
 
 export class AddCfnNag implements IAspect {
   visit(node: IConstruct): void {
-    if (node.node.path.endsWith('/Custom::S3AutoDeleteObjectsCustomResourceProvider/Handler') ||
-        node.node.path.endsWith('/EventRuleCustomResourceProvider/framework-onEvent/Resource')
-    ) {
+    if (node.node.path.endsWith('/EventRuleCustomResourceProvider/framework-onEvent/Resource')) {
       (node as CfnResource).addMetadata('cfn_nag', {
         rules_to_suppress: [],
       });
