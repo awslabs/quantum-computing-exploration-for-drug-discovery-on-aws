@@ -22,6 +22,7 @@ import {
   Aspects,
   Stack,
   RemovalPolicy,
+  Fn,
 } from 'aws-cdk-lib';
 
 import {
@@ -70,7 +71,7 @@ export default (scope: Construct) => {
   const logKey = new kms.Key(scope, 'qcLogKey', {
     enableKeyRotation: true,
   });
-  const logGroupName = `${Stack.of(logKey).stackName}-vpcFlowlog`;
+  const logGroupName = `${Stack.of(logKey).stackName}-vpcFlowlog-${Fn.select(0, Fn.split('-', Fn.select(2, Fn.split('/', Fn.ref('AWS::StackId')))))}`;
 
   grantKmsKeyPerm(logKey, logGroupName);
 

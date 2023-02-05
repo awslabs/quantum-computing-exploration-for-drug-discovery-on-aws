@@ -70,10 +70,6 @@ export class MainStack extends SolutionStack {
       ),
     });
 
-    // const conditionSnsEmail = Fn.conditionNot(
-    //   Fn.conditionEquals(snsEmail.valueAsString, '',)
-    // );
-
     this.templateOptions.metadata = {
       'AWS::CloudFormation::Interface': {
         ParameterGroups: [
