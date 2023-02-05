@@ -122,7 +122,7 @@ export class RoleUtil {
 
     role.addToPolicy(new iam.PolicyStatement({
       resources: [
-        `arn:aws:ecr:${this.props.region}:${this.props.account}:repository/${this.props.prefix}/*`,
+        `arn:aws:ecr:${this.props.region}:${this.props.account}:repository/*`,
       ],
       actions: [
         'ecr:UploadLayerPart',
