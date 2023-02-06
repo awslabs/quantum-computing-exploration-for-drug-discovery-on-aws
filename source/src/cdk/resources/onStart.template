@@ -3,13 +3,15 @@
 sudo -u ec2-user -i <<EOS
 python3 --version
 
-conda create -y -n conda_qc_hcls python=3.8
+conda create -y -n qc_hcls python=3.8
 
 conda config --add channels bioconda
 
 conda config --set channel_priority strict
 
-conda activate conda_qc_hcls
+conda activate qc_hcls
+
+pip3 install ipykernel
 
 conda install viennarna=2.5.1 -y
 
@@ -31,11 +33,7 @@ pip3 install matplotlib==3.5.3
 
 pip3 install git+https://github.com/ViennaRNA/forgi
 
-pip3 install jupyter ipykernel
-
-python3 -m ipykernel install --user --name=conda_qc_hcls
-
-aws s3 cp s3://cdk-hnb659fds-assets-002224604296-us-east-1/9453568cf447a7fc348e5d85bf48cad5b05ab610ae5d33803c4e2ba5ba6451d8.zip /home/ec2-user/SageMaker/code.zip
+aws s3 cp {{&s3_code_path}} /home/ec2-user/SageMaker/code.zip
 
 cd /home/ec2-user/SageMaker/
 unzip code.zip -d ./
