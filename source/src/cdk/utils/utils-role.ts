@@ -88,6 +88,7 @@ export class RoleUtil {
     role.addToPolicy(new iam.PolicyStatement({
       resources: [
         'arn:aws:s3:::braket-*/*',
+        'arn:aws:s3:::cdk-*/*',
         'arn:aws:s3:::amazon-braket-*/*',
         'arn:aws:s3:::braketnotebookcdk-**',
       ],

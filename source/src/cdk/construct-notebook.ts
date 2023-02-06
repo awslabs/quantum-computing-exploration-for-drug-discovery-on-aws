@@ -39,6 +39,7 @@ import {
 } from 'constructs';
 
 import * as Mustache from 'mustache';
+import { genRandomDigits } from './utils/utils';
 import {
   RoleUtil,
 } from './utils/utils-role';
@@ -105,6 +106,7 @@ export class Notebook extends Construct {
         subnetType: ec2.SubnetType.PRIVATE_WITH_NAT,
       }).subnetIds[0],
       directInternetAccess: 'Disabled',
+      notebookInstanceName: `notebook-qc-${genRandomDigits()}`,
     });
 
     this.notebookUrl = `https://console.aws.amazon.com/sagemaker/home?region=${this.props.region}#/notebook-instances/openNotebook/${notebookInstance.attrNotebookInstanceName}?view=classic`;

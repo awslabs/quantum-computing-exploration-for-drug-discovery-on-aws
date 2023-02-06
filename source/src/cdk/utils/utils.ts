@@ -24,6 +24,7 @@ import {
   Arn,
   ArnFormat,
   IAspect,
+  Fn,
 } from 'aws-cdk-lib';
 
 import {
@@ -106,4 +107,8 @@ export function grantKmsKeyPerm(key: kms.IKey, logGroupName ? : string): void {
       },
     },
   }));
+}
+
+export function genRandomDigits(): string {
+  return `${Fn.select(0, Fn.split('-', Fn.select(2, Fn.split('/', Fn.ref('AWS::StackId')))))}`;
 }

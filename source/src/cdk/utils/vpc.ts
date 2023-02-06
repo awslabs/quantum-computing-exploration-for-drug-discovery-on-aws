@@ -22,7 +22,6 @@ import {
   Aspects,
   Stack,
   RemovalPolicy,
-  Fn,
 } from 'aws-cdk-lib';
 
 import {
@@ -31,6 +30,7 @@ import {
 
 import {
   ChangePublicSubnet,
+  genRandomDigits,
   grantKmsKeyPerm,
 } from './utils';
 
@@ -71,7 +71,7 @@ export default (scope: Construct) => {
   const logKey = new kms.Key(scope, 'qcLogKey', {
     enableKeyRotation: true,
   });
-  const logGroupName = `${Stack.of(logKey).stackName}-vpcFlowlog-${Fn.select(0, Fn.split('-', Fn.select(2, Fn.split('/', Fn.ref('AWS::StackId')))))}`;
+  const logGroupName = `${Stack.of(logKey).stackName}-vpcFlowlog-${genRandomDigits()}`;
 
   grantKmsKeyPerm(logKey, logGroupName);
 
