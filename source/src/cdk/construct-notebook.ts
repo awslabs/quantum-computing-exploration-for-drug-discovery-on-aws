@@ -65,7 +65,7 @@ export class Notebook extends Construct {
   constructor(scope: Construct, id: string, props: Props) {
     super(scope, id);
     this.props = props;
-    const INSTANCE_TYPE = 'ml.c5.xlarge';
+    const INSTANCE_TYPE = 'ml.c5.2xlarge';
 
     const srcCodeAsset = new s3_assets.Asset(this, 'srcCodeAsset', {
       path: path.join(__dirname, '../notebook/'),

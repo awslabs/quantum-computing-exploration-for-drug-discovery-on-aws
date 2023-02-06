@@ -3,10 +3,17 @@
 sudo -u ec2-user -i <<EOS
 python3 --version
 
-mkdir qc-hcls
-cd qc-hcls
-python3 -m venv qc-hcls
-source qc-hcls/bin/activate
+conda create -y -n qc_hcls python=3.8
+
+conda config --add channels bioconda
+
+conda config --set channel_priority strict
+
+conda activate qc_hcls
+
+pip3 install ipykernel
+
+conda install viennarna=2.5.1 -y
 
 pip3 install numpy==1.22.2
 pip3 install boto3==1.26.8
@@ -23,11 +30,8 @@ pip3 install ipywidgets==7.7.0
 pip3 install altair==4.2.0
 pip3 install setproctitle==1.3.2
 pip3 install matplotlib==3.5.3
+
 pip3 install git+https://github.com/ViennaRNA/forgi
-
-pip3 install jupyter ipykernel
-
-python3 -m ipykernel install --user --name=qc-hcls
 
 aws s3 cp {{&s3_code_path}} /home/ec2-user/SageMaker/code.zip
 
@@ -38,6 +42,8 @@ rm code.zip
 cd code
 echo -n 'bucketName={{&default_bucket}}' >> .default-setting
 cd ..
+
+conda deactivate
 
 EOS
 
