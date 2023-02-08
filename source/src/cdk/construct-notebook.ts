@@ -74,9 +74,7 @@ export class Notebook extends Construct {
     this.roleUtil = RoleUtil.newInstance(this, props);
 
     const notebookRole = this.roleUtil.createNotebookIamRole();
-
     srcCodeAsset.grantRead(notebookRole);
-
     let onStartContent = readFileSync(`${__dirname}/resources/onStart.template`, 'utf-8');
 
     const rawOnStartContent = Mustache.render(onStartContent, {

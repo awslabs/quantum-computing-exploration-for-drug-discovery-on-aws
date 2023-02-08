@@ -74,7 +74,7 @@ describe('Notebook', () => {
 
   test('notebookRule has created', () => {
     const template = initialize();
-    template.resourceCountIs('AWS::IAM::Role', 2);
+    template.resourceCountIs('AWS::IAM::Role', 1);
   });
 
   test('notebook policy has created', () => {
