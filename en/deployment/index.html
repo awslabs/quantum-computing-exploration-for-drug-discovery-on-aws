@@ -1037,98 +1037,98 @@
 </li>
 <li>
 <p>In the Create policy page, click the <strong>JSON</strong> tab, and enter the QuickSight policy as below. This is the least policy required for QuickSight in this solution. </p>
-<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="s2">&quot;Version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2012-10-17&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="s2">&quot;Statement&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span><span class="w"></span>
-<span class="w">            </span><span class="s2">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Allow&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">            </span><span class="s2">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;athena:BatchGetQueryExecution&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;athena:CancelQueryExecution&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;athena:GetCatalogs&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;athena:GetExecutionEngine&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;athena:GetExecutionEngines&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;athena:GetNamespace&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;athena:GetNamespaces&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;athena:GetQueryExecution&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;athena:GetQueryExecutions&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;athena:GetQueryResults&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;athena:GetQueryResultsStream&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;athena:GetTable&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;athena:GetTables&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;athena:ListQueryExecutions&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;athena:RunQuery&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;athena:StartQueryExecution&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;athena:StopQueryExecution&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;athena:ListWorkGroups&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;athena:ListEngineVersions&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;athena:GetWorkGroup&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;athena:GetDataCatalog&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;athena:GetDatabase&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;athena:GetTableMetadata&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;athena:ListDataCatalogs&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;athena:ListDatabases&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;athena:ListTableMetadata&quot;</span><span class="w"></span>
-<span class="w">            </span><span class="p">],</span><span class="w"></span>
-<span class="w">            </span><span class="s2">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;*&quot;</span><span class="w"></span>
-<span class="w">            </span><span class="p">]</span><span class="w"></span>
-<span class="w">        </span><span class="p">},</span><span class="w"></span>
-<span class="w">        </span><span class="p">{</span><span class="w"></span>
-<span class="w">            </span><span class="s2">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Allow&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">            </span><span class="s2">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;glue:CreateDatabase&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;glue:DeleteDatabase&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;glue:GetDatabase&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;glue:GetDatabases&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;glue:UpdateDatabase&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;glue:CreateTable&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;glue:DeleteTable&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;glue:BatchDeleteTable&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;glue:UpdateTable&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;glue:GetTable&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;glue:GetTables&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;glue:BatchCreatePartition&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;glue:CreatePartition&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;glue:DeletePartition&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;glue:BatchDeletePartition&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;glue:UpdatePartition&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;glue:GetPartition&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;glue:GetPartitions&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;glue:BatchGetPartition&quot;</span><span class="w"></span>
-<span class="w">            </span><span class="p">],</span><span class="w"></span>
-<span class="w">            </span><span class="s2">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;*&quot;</span><span class="w"></span>
-<span class="w">            </span><span class="p">]</span><span class="w"></span>
-<span class="w">        </span><span class="p">},</span><span class="w"></span>
-<span class="w">        </span><span class="p">{</span><span class="w"></span>
-<span class="w">            </span><span class="s2">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Allow&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">            </span><span class="s2">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;s3:GetBucketLocation&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;s3:GetObject&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;s3:ListBucket&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;s3:ListBucketMultipartUploads&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;s3:ListMultipartUploadParts&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;s3:AbortMultipartUpload&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;s3:CreateBucket&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;s3:PutObject&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;s3:PutBucketPublicAccessBlock&quot;</span><span class="w"></span>
-<span class="w">            </span><span class="p">],</span><span class="w"></span>
-<span class="w">            </span><span class="s2">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;arn:aws:s3:::aws-athena-query-results-*&quot;</span><span class="w"></span>
-<span class="w">            </span><span class="p">]</span><span class="w"></span>
-<span class="w">        </span><span class="p">},</span><span class="w"></span>
-<span class="w">        </span><span class="p">{</span><span class="w"></span>
-<span class="w">            </span><span class="s2">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Allow&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">            </span><span class="s2">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;lakeformation:GetDataAccess&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;iam:List*&quot;</span><span class="w"></span>
-<span class="w">            </span><span class="p">],</span><span class="w"></span>
-<span class="w">            </span><span class="s2">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
-<span class="w">                </span><span class="s2">&quot;*&quot;</span><span class="w"></span>
-<span class="w">            </span><span class="p">]</span><span class="w"></span>
-<span class="w">        </span><span class="p">}</span><span class="w"></span>
-<span class="w">    </span><span class="p">]</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="s2">&quot;Version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;2012-10-17&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;Statement&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span>
+<span class="w">            </span><span class="s2">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                </span><span class="s2">&quot;athena:BatchGetQueryExecution&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;athena:CancelQueryExecution&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;athena:GetCatalogs&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;athena:GetExecutionEngine&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;athena:GetExecutionEngines&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;athena:GetNamespace&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;athena:GetNamespaces&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;athena:GetQueryExecution&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;athena:GetQueryExecutions&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;athena:GetQueryResults&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;athena:GetQueryResultsStream&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;athena:GetTable&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;athena:GetTables&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;athena:ListQueryExecutions&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;athena:RunQuery&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;athena:StartQueryExecution&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;athena:StopQueryExecution&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;athena:ListWorkGroups&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;athena:ListEngineVersions&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;athena:GetWorkGroup&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;athena:GetDataCatalog&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;athena:GetDatabase&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;athena:GetTableMetadata&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;athena:ListDataCatalogs&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;athena:ListDatabases&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;athena:ListTableMetadata&quot;</span>
+<span class="w">            </span><span class="p">],</span>
+<span class="w">            </span><span class="s2">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                </span><span class="s2">&quot;*&quot;</span>
+<span class="w">            </span><span class="p">]</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="s2">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                </span><span class="s2">&quot;glue:CreateDatabase&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;glue:DeleteDatabase&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;glue:GetDatabase&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;glue:GetDatabases&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;glue:UpdateDatabase&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;glue:CreateTable&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;glue:DeleteTable&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;glue:BatchDeleteTable&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;glue:UpdateTable&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;glue:GetTable&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;glue:GetTables&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;glue:BatchCreatePartition&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;glue:CreatePartition&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;glue:DeletePartition&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;glue:BatchDeletePartition&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;glue:UpdatePartition&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;glue:GetPartition&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;glue:GetPartitions&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;glue:BatchGetPartition&quot;</span>
+<span class="w">            </span><span class="p">],</span>
+<span class="w">            </span><span class="s2">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                </span><span class="s2">&quot;*&quot;</span>
+<span class="w">            </span><span class="p">]</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="s2">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                </span><span class="s2">&quot;s3:GetBucketLocation&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;s3:GetObject&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;s3:ListBucket&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;s3:ListBucketMultipartUploads&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;s3:ListMultipartUploadParts&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;s3:AbortMultipartUpload&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;s3:CreateBucket&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;s3:PutObject&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;s3:PutBucketPublicAccessBlock&quot;</span>
+<span class="w">            </span><span class="p">],</span>
+<span class="w">            </span><span class="s2">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                </span><span class="s2">&quot;arn:aws:s3:::aws-athena-query-results-*&quot;</span>
+<span class="w">            </span><span class="p">]</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="p">{</span>
+<span class="w">            </span><span class="s2">&quot;Effect&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;Allow&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="s2">&quot;Action&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                </span><span class="s2">&quot;lakeformation:GetDataAccess&quot;</span><span class="p">,</span>
+<span class="w">                </span><span class="s2">&quot;iam:List*&quot;</span>
+<span class="w">            </span><span class="p">],</span>
+<span class="w">            </span><span class="s2">&quot;Resource&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">                </span><span class="s2">&quot;*&quot;</span>
+<span class="w">            </span><span class="p">]</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="p">}</span>
 </code></pre></div>
 
 </li>

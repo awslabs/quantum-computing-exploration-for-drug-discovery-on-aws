@@ -860,27 +860,27 @@
 <h2 id="_2">输入规范</h2>
 <p>您可以使用json输入自定义评估参数。</p>
 <p>输入模式：</p>
-<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;runMode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;mol2文件&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;modelVersion&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;experimentName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;optParams&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="nt">&quot;qa&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">            </span><span class="nt">&quot;shots&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;int&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="p">},</span><span class="w"></span>
-<span class="w">        </span><span class="nt">&quot;sa&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">            </span><span class="nt">&quot;shots&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;int&quot;</span><span class="w"></span>
-<span class="w">        </span><span class="p">}</span><span class="w"></span>
-<span class="w">    </span><span class="p">},</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;modelParams&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="nt">&quot;M&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;int []&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">        </span><span class="nt">&quot;D&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;int []&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="p">},</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;devicesArns&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string []&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;ccResources&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;[int, int] []&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;runMode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;mol2文件&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;modelVersion&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;experimentName&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;optParams&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;qa&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;shots&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;int&quot;</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;sa&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;shots&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;int&quot;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;modelParams&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;M&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;int []&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;D&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;int []&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;devicesArns&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;string []&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;ccResources&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;[int, int] []&quot;</span><span class="p">,</span>
+<span class="p">}</span>
 </code></pre></div>
 
 <div class="admonition notice">
@@ -910,9 +910,9 @@
 </li>
 <li>
 <p><strong>devicesArns</strong>：QPU设备arn。有效值：</p>
-<div class="codehilite"><pre><span></span><code><span class="n">arn</span><span class="o">:</span><span class="n">aws</span><span class="o">:</span><span class="n">braket</span><span class="o">:::</span><span class="n">device</span><span class="sr">/qpu/d-wave/</span><span class="n">DW_2000Q_6</span><span class="w"></span>
-<span class="n">arn</span><span class="o">:</span><span class="n">aws</span><span class="o">:</span><span class="n">braket</span><span class="o">:::</span><span class="n">device</span><span class="sr">/qpu/d-wave/</span><span class="n">Advantage_system4</span><span class="w"></span>
-<span class="n">arn</span><span class="o">:</span><span class="n">aws</span><span class="o">:</span><span class="n">braket</span><span class="o">:</span><span class="n">us</span><span class="o">-</span><span class="n">west</span><span class="o">-</span><span class="mi">2</span><span class="o">::</span><span class="n">device</span><span class="sr">/qpu/d-wave/</span><span class="n">Advantage_system6</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="n">arn</span><span class="o">:</span><span class="n">aws</span><span class="o">:</span><span class="n">braket</span><span class="o">:::</span><span class="n">device</span><span class="sr">/qpu/d-wave/</span><span class="n">DW_2000Q_6</span>
+<span class="n">arn</span><span class="o">:</span><span class="n">aws</span><span class="o">:</span><span class="n">braket</span><span class="o">:::</span><span class="n">device</span><span class="sr">/qpu/d-wave/</span><span class="n">Advantage_system4</span>
+<span class="n">arn</span><span class="o">:</span><span class="n">aws</span><span class="o">:</span><span class="n">braket</span><span class="o">:</span><span class="n">us</span><span class="o">-</span><span class="n">west</span><span class="o">-</span><span class="mi">2</span><span class="o">::</span><span class="n">device</span><span class="sr">/qpu/d-wave/</span><span class="n">Advantage_system6</span>
 </code></pre></div>
 
 </li>
@@ -921,29 +921,29 @@
 </li>
 </ul>
 <p>使用默认mol2文件的输入示例：</p>
-<div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;runMode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ALL&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;optParams&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="nt">&quot;qa&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">            </span><span class="nt">&quot;shots&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10000</span><span class="w"></span>
-<span class="w">        </span><span class="p">},</span><span class="w"></span>
-<span class="w">        </span><span class="nt">&quot;sa&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">            </span><span class="nt">&quot;shots&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10000</span><span class="w"></span>
-<span class="w">        </span><span class="p">}</span><span class="w"></span>
-<span class="w">    </span><span class="p">},</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;modelParams&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="nt">&quot;M&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">],</span><span class="w"></span>
-<span class="w">        </span><span class="nt">&quot;D&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">8</span><span class="p">]</span><span class="w"></span>
-<span class="w">    </span><span class="p">},</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;devicesArns&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
-<span class="w">        </span><span class="s2">&quot;arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">        </span><span class="s2">&quot;arn:aws:braket:::device/qpu/d-wave/Advantage_system4&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">        </span><span class="s2">&quot;arn:aws:braket:us-west-2::device/qpu/d-wave/Advantage_system6&quot;</span><span class="w"></span>
-<span class="w">    </span><span class="p">],</span><span class="w"></span>
-<span class="w">    </span><span class="nt">&quot;ccResources&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
-<span class="w">        </span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">]</span><span class="w"></span>
-<span class="w">    </span><span class="p">]</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;1&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;runMode&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ALL&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;optParams&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;qa&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;shots&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10000</span>
+<span class="w">        </span><span class="p">},</span>
+<span class="w">        </span><span class="nt">&quot;sa&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nt">&quot;shots&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10000</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;modelParams&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;M&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">],</span>
+<span class="w">        </span><span class="nt">&quot;D&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="mi">8</span><span class="p">]</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;devicesArns&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">&quot;arn:aws:braket:::device/qpu/d-wave/DW_2000Q_6&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;arn:aws:braket:::device/qpu/d-wave/Advantage_system4&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;arn:aws:braket:us-west-2::device/qpu/d-wave/Advantage_system6&quot;</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;ccResources&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">        </span><span class="p">[</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="mi">8</span><span class="p">]</span>
+<span class="w">    </span><span class="p">]</span>
 </code></pre></div>
 
 <p>如果您有mol2文件，可以按照以下步骤批量评估：</p>
