@@ -62,7 +62,7 @@ For detailed description of architecture, please refer to the
         <td><span>single solver</span></td>
         <td><span>&#10004;</span></td>
         <td rowspan='4'><a href="http://bprna.cgrb.oregonstate.edu/">bpRNA-1m</a></td>
-        <td ><span><a href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.10100327">RNA folding using quantum computers(2022)</a></span></td>
+        <td ><span><a href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1010032">RNA folding using quantum computers(2022)</a></span></td>
     <tr>
     <tr>
         <td><span>qbsolv</span></td>
