@@ -14,6 +14,8 @@
     
 5. （可选）输入评估的相关内容。
 
+123
+
      - 如果您不输入任何内容，它将使用默认输入。
      - 如果要自定义批量评估，请参考本节的[输入规范](#input-specification)。
 
@@ -21,7 +23,7 @@
 
 7. 批量评估完成后，从CloudFormation输出中获取仪表板链接，点击链接导航至仪表板，您可以在AWS QuickSight中查看整体的实验结果。
 
-6. 在仪表盘中查看实验结果：
+8. 在仪表盘中查看实验结果：
 
     - Experiments history：显示所有实验的历史信息。您也可以单击每条实验名称，查看每个实验的历史信息。
     - Comparison of end to end time of the quantum solver with classical solver：通过不同模型复杂度（X轴）比较QC和CC任务在不同求解器上端到端执行时间（Y轴）（如果没有选择实验，则计算平均时间）。
