@@ -4,9 +4,9 @@ This solution uses services which may not be currently available in all AWS Regi
 
 As of June 2022, this solution is supported in the following AWS Regions:
 
-| Region ID | Region Name |
-|----------|--------|
-| us-east-1 | US East (N. Virginia)
-| us-west-2 | US West (Oregon)
-| eu-west-2 | Europe (London)
-
+| Region ID | Region Name             |
+| --------- | ----------------------- |
+| us-east-1 | US East (N. Virginia)   |
+| us-west-1 | US West (N. California) |
+| us-west-2 | US West (Oregon)        |
+| eu-west-2 | Europe (London)         |

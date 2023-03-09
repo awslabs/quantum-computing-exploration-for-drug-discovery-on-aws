@@ -1,4 +1,5 @@
-| 日期       | 发布说明 |
-|----------|--------|
-| 2022年5月 | 首次发布版本v1.0.0   |
-| 2022年6月 | 版本v1.0.1 ： 问题修护。请参考GitHub 仓库中的[CHANGELOG.md](https://github.com/awslabs/quantum-computing-exploration-for-drug-discovery-on-aws/blob/main/CHANGELOG.md) |
+| 日期         | 发布说明                                                                                                                                                                 |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| 2022 年 5 月 | 首次发布版本 v1.0.0                                                                                                                                                      |
+| 2022 年 6 月 | 版本 v1.0.1 ： 问题修护。请参考 GitHub 仓库中的[CHANGELOG.md](https://github.com/awslabs/quantum-computing-exploration-for-drug-discovery-on-aws/blob/main/CHANGELOG.md) |
+| 2023 年 4 月 | 架构升级至版本 v1.1.0                                                                                                                                                    |
