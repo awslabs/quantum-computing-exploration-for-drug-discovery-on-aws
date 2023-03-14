@@ -104,11 +104,9 @@ class ProteinStructurePrediction():
         index_min_energy = self.model["model_params"]["index_min_energy"]
 
         if mode == 'local-simulator':
-            log.setLevel('DEBUG')
             [dict_probabilities_matrix, time_statevector] = qfold_qc_model.execute_quantum_metropolis_n(initial_step=initial_step, nW=final_step)
             q_time = time.time() - start_time
-            log.setLevel('INFO')
-            logging.info("<i> QUANTUM METROPOLIS: Time for final steps:", q_time, "seconds (", time_statevector,"seconds statevector)")
+            logging.info(f"QUANTUM METROPOLIS: Time for final steps {q_time} seconds ({time_statevector} seconds statevector)")
 
             for step, probabilities_matrix in dict_probabilities_matrix.items():
 
