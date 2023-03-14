@@ -1,4 +1,4 @@
-## Protein Folding usinv Variational Quantum Eigensolver (VQE)
+## Protein Folding using Variational Quantum Eigensolver (VQE)
 
 Protein folding has been one of the most interesting areas of study since 1960 and is one of the hardest problem to solve in biochemistry. Proteins are made of long chains of amino acids that are present in all living organism. They have varying range of functions from providing physical structures to allow muscles to grow and bend. Protein folds distinctively, and with varying chains of amino acids it becomes more difficult and complex to find protein's stable structure. 
 
