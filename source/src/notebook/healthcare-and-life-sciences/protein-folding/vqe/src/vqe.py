@@ -148,12 +148,18 @@ def convert_xyz(path, export):
     return pdb
     
     
-def run(qubit_op, optimizer, optimizer_params, backend="local"):
-    """Run VQE optimization
+def run(qubit_op, optimizer, optimizer_params, shots, backend="local"):
+    """Run VQE optimization to find lowest energy state
     
     Args:
         qubit_op (primitive_ops):  Hamiltonian for the provided polypeptide chain and interaction
-        optimizer (): 
+        optimizer (str): Optimizer to be used to find minimum energy
+        optimizer_params (Dict[str, Any]): Parameters to pass to optimizer
+        shots (int): Number of shots to execute ansatz
+        backend (str): Whether to run locally or as an Amazon Braket job
+
+    Returns:
+        Dict[str, Any]: Returns a dictionay containing output 
     """
     optimizer_module = importlib.import_module("qiskit.algorithms.optimizers")
     optimizer = getattr(optimizer_module, optimizer)
@@ -173,12 +179,12 @@ def run(qubit_op, optimizer, optimizer_params, backend="local"):
         print(backend_device)
         backend_device = provider.get_backend(backend_device)
     quantum_instance = QuantumInstance(
-        backend_device, shots=10
+        backend_device, shots=shots
     )
 
     vqe = VQE(
         optimizer=optimizer,
-        ansatz=RealAmplitudes(10, reps=2),
+        ansatz=RealAmplitudes(reps=2),
         quantum_instance=quantum_instance,
         callback=store_intermediate_result
     )
@@ -204,10 +210,11 @@ if __name__ == "__main__":
     optimizer = hyperparams["optimizer"]
     optimizer_params = hyperparams["optimizer_params"]
     interaction = hyperparams["interaction"]
+    shots = hyperparams["shots"]
     
     peptide = get_polypeptide(main_chain, side_chains)
     qubit_op, protein_folding_problem = get_hamiltonian(peptide, penalty_params, interaction)
-    result = run(qubit_op, optimizer, optimizer_params, device_arn)
+    result = run(qubit_op, optimizer, optimizer_params, shots, device_arn)
     np.save(output_dir + "/" + "optimal_point.npy", result.optimal_point)
     result = protein_folding_problem.interpret(raw_result=result)
     print(result.protein_shape_file_gen.get_xyz_data())
