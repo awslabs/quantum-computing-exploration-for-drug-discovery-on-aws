@@ -21,8 +21,6 @@ warnings.filterwarnings('ignore')
 
 
 provider = AWSBraketProvider()
-counts = []
-values = []
 
 available_interactions = {
     "RandomInteraction": "qiskit_nature.problems.sampling.protein_folding.interactions.random_interaction",
@@ -101,13 +99,10 @@ def store_intermediate_result(eval_count, parameters, mean, std):
         mean (float): Evaluated mean
         std (float): Evaluated standard deviation
     """
-    counts.append(eval_count)
-    values.append(mean)
     log_metric(
         metric_name="Energy",
         value=mean,
         iteration_number=eval_count
-        
     )
 
 
