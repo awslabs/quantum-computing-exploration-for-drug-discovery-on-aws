@@ -10,9 +10,9 @@ The user or IAM role to perform the deployment must have at least permissions de
 
 ## Prerequisites
 
-⚠️ If bellow steps have already been done, please ignore them.
+⚠️ If bellow steps have already been done, please skip preparation step.
 
-### Enable Amazon Braket service
+## Preparation: Enable Amazon Braket service
 
 1. Log into the AWS Management Console, and go to Amazon Braket console.
    ![braket-console](./images/braket-console.png)

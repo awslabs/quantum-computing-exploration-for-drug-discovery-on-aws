@@ -10,9 +10,9 @@
 
 ## 准备工作
 
-⚠️ 以下功能如果已经开通，请无视。
+⚠️ 以下功能如果已经开通，请忽略「准备工作」。
 
-### 启动 Amazon Braket 服务，并生成执行角色
+## 准备工作：启动 Amazon Braket 服务，并生成执行角色
 
 1. 登录到[AWS 管理控制台](https://console.aws.amazon.com/)，进入 Amazon Braket 控制台。
    ![braket-console](./images/braket-console.png)
