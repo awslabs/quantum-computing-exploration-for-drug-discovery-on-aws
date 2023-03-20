@@ -1,10 +1,8 @@
-You are responsible for the cost of AWS services used when running this solution. The actual cost depends on the tasks run and their complexity. As of June 2022, the cost factors mainly consist of five types:
+You are responsible for the cost of AWS services used when running this solution. The actual cost depends on the tasks run and their complexity. As of May 2023, the cost factors mainly consist of five types:
 
  * Notebook
  * Computing 
  * Storage
- * Analysis
- * Orchestration
 
 ## Example 
 
@@ -30,41 +28,21 @@ This example uses the molecular unfolding function for the prepared sample, whic
         <td>$4.90 per day</td>
     <tr>
     <tr>
-        <td rowspan="9">Computing</td>
-        <td>Amazon Braket</td>
-        <td>D-Wave - DW_2000Q_6</td>
-        <td>4 tasks for different parameters, 10000 shots/task</td>
-        <td>$8.80</td>
+        <td rowspan="6">Computing</td>
+        <td rowspan="6">Amazon Braket Hybrid Jobs</td>
+        <td>ml.m5.large runs and ml.m5.4xlarge (Molecular unfolding)</td>
+        <td>12 jobs for different parameters, ml.m5.large runs for 44 minutes and ml.m5.4xlarge runs for 44 minutes in total</td>
+        <td>$0.76</td>
     <tr>
     <tr>
-        <td>Amazon Braket</td>
-        <td>D-Wave - Advantage_system4.1</td>
-        <td>4 tasks for different parameters, 10000 shots/task</td>
-        <td>$8.80</td>
+        <td>ml.m5.large runs and ml.m5.4xlarge (RNA unfolding)</td>
+        <td>2 jobs for different parameters, ml.m5.large runs for 450 minutes and ml.m5.4xlarge runs for 429 minutes in total</td>
+        <td>$7.46</td>
     <tr>
     <tr>
-        <td>Amazon Braket</td>
         <td>D-Wave - Advantage_system6.1</td>
         <td>4 tasks for different parameters, 10000 shots/task</td>
         <td>$8.80</td>
-    <tr>
-    <tr>
-        <td>Amazon Batch (Fargate) </td>
-        <td>2 VCPU 4G MEM</td>
-        <td>Build model task, 8 minutes (< 20 minutes)</td>
-        <td>$1.02</td>
-    <tr>
-    <tr>
-        <td>Amazon Batch (EC2) </td>
-        <td>4 VCPU 8G MEM</td>
-        <td>4 tasks for different parameters, 25 minutes(< 60 minutes)</td>
-        <td>$0.17</td>
-    <tr>
-    <tr>
-        <td>AWS Lambda </td>
-        <td>-</td>
-        <td>< 100 queries</td>
-        <td>$0</td>
     <tr>
     <tr>
         <td>Storage</td>
@@ -72,26 +50,6 @@ This example uses the molecular unfolding function for the prepared sample, whic
         <td>-</td>
         <td>< 1G</td>
         <td>$0.02</td>
-    <tr>
-    <tr>
-        <td rowspan='4'>Analysis</td>
-        <td>Amazon Athena</td>
-        <td>-</td>
-        <td>< 20 queries, 100M data</td>
-        <td>$0.029</td>
-    <tr>
-    <tr>
-        <td>Amazon QuickSight</td>
-        <td>1 reader</td>
-        <td>long run service</td>
-        <td>$8.00 per month</td>
-    <tr>
-    <tr>
-        <td>Orchestration</td>
-        <td>AWS Step Functions</td>
-        <td>-</td>
-        <td>< 100 transitions</td>
-        <td>$0</td>
     <tr>
     <tr>
         <td rowspan='4'>Network</td>
