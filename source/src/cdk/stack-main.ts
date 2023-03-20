@@ -58,7 +58,7 @@ export class MainStack extends SolutionStack {
     this.setDescription(MainStack.DESCRIPTION);
     const stackName = this.stackName.replace(/[^a-zA-Z0-9_]+/, '').toLocaleLowerCase();
 
-    const snsEmail = new CfnParameter(this, 'SNS email - Optional', {
+    const snsEmail = new CfnParameter(this, 'snsEmail', {
       type: 'String',
       description: 'Email address for SNS subscription about Braket Hybrid job status change',
       allowedPattern: '^(\\w[-\\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\\.)+[A-Za-z]{2,14})?$',
@@ -80,7 +80,7 @@ export class MainStack extends SolutionStack {
         ],
         ParameterLabels: {
           [snsEmail.logicalId]: {
-            default: '',
+            default: 'SNS email - Optional',
           },
         },
       },

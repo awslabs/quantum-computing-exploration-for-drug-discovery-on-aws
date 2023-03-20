@@ -8,17 +8,19 @@ Figure 1: Quantum Computing Exploration for Drug Discovery on AWS architecture
 
 2. The notebook comes with prepared use cases for different problems in drug discovery, such as molecular unfolding.
 
-3. This program uses [Amazon Braket][braket] Hybrid Job for experiments.
+3. The notebook supports connecting to the external network, which is convenient for you to download and install various environments for experiments.
 
-4. When you use it for the first time, you need to package the dependency packages required for the experiment to image and upload the image to [Amazon ECR][ecr]. The solution provides scripts for mirror packaging and uploading ECR.
+4. This program uses [Amazon Braket][braket] Hybrid Job for experiments.
 
-5. Run multiple Hybrid Jobs in one experiment, and trigger the events in [Amazon EventBridge][eventbridge] when the Hybrid Job is completed.
+5. When you use it for the first time, you need to package the dependency packages required for the experiment to image and upload the image to [Amazon ECR][ecr]. The solution provides scripts for mirror packaging and uploading ECR.
 
-6. EventBridge sends a notification to [Amazon SNS][sns], and all subscribers who have subscribed to this topic will receive this notification. This step is optional, and you can specify emails for subscription notifications when deploying the solution.
+6. Run multiple Hybrid Jobs in one experiment, and trigger the events in [Amazon EventBridge][eventbridge] when the Hybrid Job is completed.
 
-7. Experiment results will be stored in Amazon S3.
+7. EventBridge sends a notification to [Amazon SNS][sns], and all subscribers who have subscribed to this topic will receive this notification. This step is optional, and you can specify emails for subscription notifications when deploying the solution.
 
-8. You can return to SageMaker Notebook to run the code to analyze and display the experimental results. In the default result analysis code, a comparison of the results of classical calculation and quantum calculation is provided.
+8. Experiment results will be stored in Amazon S3.
+
+9. You can return to SageMaker Notebook to run the code to analyze and display the experimental results. In the default result analysis code, a comparison of the results of classical calculation and quantum calculation is provided.
 
 [sagemaker]: https://aws.amazon.com/sagemaker/
 [braket]: https://aws.amazon.com/braket/
