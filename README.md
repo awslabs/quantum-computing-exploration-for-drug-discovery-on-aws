@@ -2,40 +2,29 @@
 
 ## Overview
 
-Quantum Computing Exploration for Drug Discovery on AWS (abbrev. QCEDD), an open-sourced solution customers can launch to design and run computational studies in the area of drug discovery, e.g. molecular docking and protein folding. With this solution, customers can design and load new, or existing algorithms, into Jupyter notebooks, then orchestrate the classical and quantum compute resources using AWS Batch and AWS Step Functions. Due to its design, customers are free to scale their classical simulations by launching a performant HPC resource instead of  a single EC2 instance. At the same time customer’s quantum experiments benefit from the growing number of quantum resources available through the Amazon Braket service.
+Quantum Computing Exploration for Drug Discovery on AWS (abbrev. QCEDD), an open-sourced solution customers can launch to design and run computational studies in the area of drug discovery, e.g. molecular docking and protein folding. With this solution, customers can design and load new, or existing algorithms, into Jupyter notebooks, then orchestrate the classical and quantum compute resources using AWS Batch and AWS Step Functions. Due to its design, customers are free to scale their classical simulations by launching a performant HPC resource instead of a single EC2 instance. At the same time customer’s quantum experiments benefit from the growing number of quantum resources available through the Amazon Braket service.
 
 The overall architecture is shown as below:
 
 ![architecture](./docs/en/images/architecture.png)
 
-This solution deploys the Amazon CloudFormation template in your 
+This solution deploys the Amazon CloudFormation template in your
 AWS Cloud account and provides three URLs. One for **Visualization**.
-The others provide user with two approaches to study drug discovery 
+The others provide user with two approaches to study drug discovery
 problems: **Notebook Experiment** and **Batch Evaluation**:
 
-* Notebook Experiment
+- Notebook Experiment
 
-The solution deploys the notebook for user to study different drug discovery 
-problems. 
-These problems will be studied using classical computing or quantum 
+The solution deploys the notebook for user to study different drug discovery
+problems.
+These problems will be studied using classical computing or quantum
 computing.
 
-* Batch Evaluation
-
-The solution provides user the way to evaluate a particular problem based 
-on different computing resources , classical computing or quantum computing. 
-For example, for the problem of molecular unfolding, the performance difference 
-between quantum annealer and simulated annealer can be compared.
-
-* Visualization
-
-The solution provides user the way to visualize the comparing results of 
-batch evaluation (e.g. performance, time)
-
-For detailed description of architecture, please refer to the 
+For detailed description of architecture, please refer to the
 [Architecture Page](https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/en/architecture/)
 
 ## Pre-built Examples for Drug Discovery[<sup>1,</sup>](#more-example)[<sup>2</sup>](#data)
+
 <table border='1' style="text-align: center">
     <tr>
         <td><B>Problem Name</B></td>
@@ -62,7 +51,7 @@ For detailed description of architecture, please refer to the
         <td><span>single solver</span></td>
         <td><span>&#10004;</span></td>
         <td rowspan='4'><a href="http://bprna.cgrb.oregonstate.edu/">bpRNA-1m</a></td>
-        <td ><span><a href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1010032">RNA folding using quantum computers(2022)</a></span></td>
+        <td ><span><a href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.10100327">RNA folding using quantum computers(2022)</a></span></td>
     <tr>
     <tr>
         <td><span>qbsolv</span></td>
@@ -81,10 +70,10 @@ For detailed description of architecture, please refer to the
 Upon successfully cloning the repository into your local development environment, you will see the following file structure in your editor:
 
 ```
-├── CHANGELOG.md                  [Change log file]    
-├── CODE_OF_CONDUCT.md            [Code of conduct file] 
-├── CONTRIBUTING.md               [Contribution guide] 
-├── LICENSE                       [LICENSE for this solution] 
+├── CHANGELOG.md                  [Change log file]
+├── CODE_OF_CONDUCT.md            [Code of conduct file]
+├── CONTRIBUTING.md               [Contribution guide]
+├── LICENSE                       [LICENSE for this solution]
 ├── NOTICE                        [Notice for 3rd-party libraries]
 ├── README.md                     [Read me file]
 ├── docs                          [Solution's document]
@@ -100,21 +89,20 @@ Upon successfully cloning the repository into your local development environment
     ├── package-lock.json
     ├── package.json
     ├── src                       [Solution's source code]
-    │   ├── main.ts
-    │   ├── molecular-unfolding
-    │   │   ├── batch-images      
-    │   │   ├── cdk
-    │   │   ├── lambda
-    │   │   ├── molecular_unfolding.ipynb
-    │   │   ├── molecule-data
-    │   │   ├── requirements.txt
-    │   │   └── utility
+    │   ├── cdk
+    │   ├── notebook
+    │   │   ├── molecular-unfolding
+    │   │   ├── rna-folding
+    │   │   ├── retrosynthetic
+    │   │   ├── medical-image-analysis
+    │   │   └──
     │   └── stack.ts
-    ├── test                      [Solution's unit test code]             
+    ├── test                      [Solution's unit test code]
     ├── tsconfig.jest.json
     ├── tsconfig.json
     └── version.json
 ```
+
 ## Deploy From Source
 
 Refer to [prerequisites and deployment](source/README.md)
@@ -130,9 +118,10 @@ chmod +x ./run-all-tests.sh
 ./run-all-tests.sh
 
 ```
-***
 
-## Documents 
+---
+
+## Documents
 
 - [Github latest page](https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/en/)
 
