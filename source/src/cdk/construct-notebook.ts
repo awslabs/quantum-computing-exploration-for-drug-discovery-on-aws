@@ -49,8 +49,6 @@ export interface Props {
   region: string;
   account: string;
   prefix: string;
-  notebookSg: ec2.SecurityGroup;
-  vpc: ec2.Vpc;
   stackName: string;
   bucketName: string;
 }
@@ -99,11 +97,7 @@ export class Notebook extends Construct {
       lifecycleConfigName: installBraketSdk.attrNotebookInstanceLifecycleConfigName,
       volumeSizeInGb: 50,
       kmsKeyId: qcNotebookKey.keyId,
-      securityGroupIds: [this.props.notebookSg.securityGroupId],
-      subnetId: this.props.vpc.selectSubnets({
-        subnetType: ec2.SubnetType.PRIVATE_WITH_NAT,
-      }).subnetIds[0],
-      directInternetAccess: 'Disabled',
+      directInternetAccess: 'Enabled',
       notebookInstanceName: `amazon-braket-qc-${genRandomDigits()}`,
     });
 
