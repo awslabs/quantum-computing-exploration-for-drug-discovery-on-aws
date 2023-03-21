@@ -4,21 +4,19 @@ Deploying the Quantum Computing Exploration for Drug Discovery on AWS solution w
 
 Figure 1: Quantum Computing Exploration for Drug Discovery on AWS architecture
 
-1. This solution deploy an [Amazon SageMaker Notebook](https://docs.aws.amazon.com/sagemaker/latest/dg/nbi.html) instance, which allows **notebook experimentation** for drug discovery.
+1. This solution deploys a notebook instance to allow [Amazon SageMaker Notebook](https://docs.aws.amazon.com/sagemaker/latest/dg/nbi.html) users to conduct **notebook experiments**. Notebooks come with use cases for different drug discovery problems such as molecule unfolding, RNA folding, protein folding, etc.
 
-2. The notebook comes with prepared use cases for different problems in drug discovery, such as molecular unfolding.
+2. When used for the first time, the system will mirror and upload the dependent packages required for the experiment to [Amazon ECR][ecr].
 
 3. This program uses [Amazon Braket][braket] Hybrid Job for experiments.
 
-4. When you use it for the first time, you need to package the dependency packages required for the experiment to image and upload the image to [Amazon ECR][ecr]. The solution provides scripts for mirror packaging and uploading ECR.
+4. The experimental results will be stored in Amazon S3.
 
 5. Run multiple Hybrid Jobs in one experiment, and trigger the events in [Amazon EventBridge][eventbridge] when the Hybrid Job is completed.
 
 6. EventBridge sends a notification to [Amazon SNS][sns], and all subscribers who have subscribed to this topic will receive this notification. This step is optional, and you can specify emails for subscription notifications when deploying the solution.
 
-7. Experiment results will be stored in Amazon S3.
-
-8. You can return to SageMaker Notebook to run the code to analyze and display the experimental results. In the default result analysis code, a comparison of the results of classical calculation and quantum calculation is provided.
+7. You can return to SageMaker Notebook to run the code to analyze and display the experimental results.
 
 [sagemaker]: https://aws.amazon.com/sagemaker/
 [braket]: https://aws.amazon.com/braket/
