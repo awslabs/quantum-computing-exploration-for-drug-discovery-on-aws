@@ -17,6 +17,13 @@ nav:
   - Workshop: 
     - Background: workshop/background.md
     - Molecular Unfolding: 
+      - Algorithm:
+        - Overview: workshop/a-molecular-unfolding/notebook-experiment.md
+        - Run Algorithm Notebook: workshop/a-molecular-unfolding/molecular-unfolding-algorithm.ipynb
+        - Technical Details: workshop/a-molecular-unfolding/build-model-detail.md
+      - Hybrid Jobs: 
+        - Run Hybrid Job Notebook for Batch Evaluation: workshop/a-molecular-unfolding/molecular-unfolding-hybrid-jobs.ipynb
+    - RNA Folding: 
       - Notebook Experiment:
         - Overview: workshop/a-molecular-unfolding/notebook-experiment.md
         - Prepare Data: workshop/a-molecular-unfolding/prepare-data.ipynb
