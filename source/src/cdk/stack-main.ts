@@ -41,9 +41,6 @@ import { Notebook } from './construct-notebook';
 import { AddCfnNag, genRandomDigits } from './utils/utils';
 
 
-import setup_vpc_and_sg from './utils/vpc';
-
-
 export class MainStack extends SolutionStack {
   static SOLUTION_ID = 'SO8027'
   static SOLUTION_NAME = 'Quantum Computing Exploration'
@@ -60,7 +57,7 @@ export class MainStack extends SolutionStack {
 
     const snsEmail = new CfnParameter(this, 'snsEmail', {
       type: 'String',
-      description: 'Email address for subscription - optional',
+      description: 'Email address for SNS subscription about Braket Hybrid job status change',
       allowedPattern: '^(\\w[-\\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\\.)+[A-Za-z]{2,14})?$',
     });
 
@@ -74,13 +71,13 @@ export class MainStack extends SolutionStack {
       'AWS::CloudFormation::Interface': {
         ParameterGroups: [
           {
-            Label: { default: 'Email for receive notification' },
+            Label: { default: '' },
             Parameters: [snsEmail.logicalId],
           },
         ],
         ParameterLabels: {
           [snsEmail.logicalId]: {
-            default: '',
+            default: 'SNS email - Optional',
           },
         },
       },
@@ -96,10 +93,6 @@ export class MainStack extends SolutionStack {
 
     const prefix = MainStack.SOLUTION_NAME.split(' ').join('-').toLowerCase();
 
-    const {
-      vpc,
-      notebookSg,
-    } = setup_vpc_and_sg(this);
 
     {
       const snsKey = new kms.Key(this, 'SNSKey', {
@@ -190,8 +183,6 @@ export class MainStack extends SolutionStack {
         account: this.account,
         region: this.region,
         prefix,
-        vpc,
-        notebookSg,
         stackName,
         bucketName: s3bucket.bucketName,
       });
@@ -202,7 +193,6 @@ export class MainStack extends SolutionStack {
       });
 
       notebook.node.addDependency(s3bucket);
-      notebook.node.addDependency(vpc);
     }
 
     Aspects.of(this).add(new AddCfnNag());

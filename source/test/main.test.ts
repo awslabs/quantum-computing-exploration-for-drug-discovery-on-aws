@@ -60,7 +60,7 @@ test('has 1 parameter', () => {
   const app = new App();
   const stack = new MainStack(app, 'test');
   const template = Template.fromStack(stack);
-  template.hasParameter('snsEmail', 1);
+  template.hasParameter('SNS email - Optional', 1);
 });
 
 test('has 1 eventBridge', () => {
