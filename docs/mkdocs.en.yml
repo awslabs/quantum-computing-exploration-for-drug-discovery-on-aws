@@ -18,22 +18,46 @@ nav:
     - Background: workshop/background.md
     - Molecular Unfolding: 
       - Algorithm:
-        - Overview: workshop/a-molecular-unfolding/notebook-experiment.md
+        - Overview: workshop/a-molecular-unfolding/molecular-unfolding-background.md
         - Run Algorithm Notebook: workshop/a-molecular-unfolding/molecular-unfolding-algorithm.ipynb
-        - Technical Details: workshop/a-molecular-unfolding/build-model-detail.md
+        - Technical Details: workshop/a-molecular-unfolding/molecular-unfolding-model-details.md
       - Hybrid Jobs: 
         - Run Hybrid Job Notebook for Batch Evaluation: workshop/a-molecular-unfolding/molecular-unfolding-hybrid-jobs.ipynb
     - RNA Folding: 
       - Notebook Experiment:
-        - Overview: workshop/a-molecular-unfolding/notebook-experiment.md
-        - Prepare Data: workshop/a-molecular-unfolding/prepare-data.ipynb
-        - Build Model: workshop/a-molecular-unfolding/build-model.ipynb
-        - Build Model (Technical Details): workshop/a-molecular-unfolding/build-model-detail.md
-        - Optimize Configuration: workshop/a-molecular-unfolding/optimize-config.ipynb
-        - Process Results: workshop/a-molecular-unfolding/post-process.ipynb
-      - Batch Evaluation: 
-        - Run Default Batch Evaluation: workshop/a-molecular-unfolding/batch-evaluation.md
-        - Batch Evaluate Your Own Model: workshop/a-molecular-unfolding/evaluate-your-own-model.md
+        - Overview: workshop/b-rna-folding/rna-folding-background.md
+        - Run Algorithm Notebook: workshop/b-rna-folding/rna-folding-algorithm.ipynb
+        - Technical Details: workshop/b-rna-folding/rna-folding-model-details.md
+      - Hybrid Jobs: 
+        - Run Hybrid Job Notebook for Batch Evaluation: workshop/b-rna-folding/rna-folding-hybrid-jobs.ipynb
+    - Protein Folding-QFold: 
+      - Notebook Experiment:
+        - Overview: workshop/c-protein-folding-qfold/qfold-background.md
+        - Run Algorithm Notebook: workshop/c-protein-folding-qfold/qfold-algorithm.ipynb
+        - Technical Details: workshop/c-protein-folding-qfold/qfold-model-detail.md
+      - Hybrid Jobs: 
+        - Run Hybrid Job Notebook for Batch Evaluation: workshop/c-protein-folding-qfold/qfold-hybrid-jobs.ipynb
+    - Protein Folding-GroverMethod: 
+      - Notebook Experiment:
+        - Overview: workshop/d-protein-folding-grover/protein-folding-grover-method-background.md
+        - Run Algorithm Notebook: workshop/d-protein-folding-grover/protein-folding-grover-method-algorithm.ipynb
+        - Technical Details: workshop/d-protein-folding-grover/protein-folding-grover-method-model-detail.md
+      - Hybrid Jobs: 
+        - Run Hybrid Job Notebook for Batch Evaluation: workshop/d-protein-folding-grover/protein-folding-grover-method-hybrid-jobs.ipynb
+    - Protein Folding-VQE: 
+      - Notebook Experiment:
+        - Overview: workshop/e-protein-folding-vqe/protein-folding-vqe-background.md
+        - Run Algorithm Notebook: workshop/e-protein-folding-vqe/protein-folding-vqe-algorithm.ipynb
+        - Technical Details: workshop/e-protein-folding-vqe/protein-folding-vqe-model-detail.md
+      - Hybrid Jobs: 
+        - Run Hybrid Job Notebook for Batch Evaluation: workshop/e-protein-folding-vqe/protein-folding-vqe-hybrid-jobs.ipynb
+    - Medical Image Processing: 
+      - Notebook Experiment:
+        - Overview: workshop/f-medical-image-processing/medical-image-processing-background.md
+        - Run Algorithm Notebook: workshop/f-medical-image-processing/medical-image-processing-algorithm.ipynb
+        - Technical Details: workshop/f-medical-image-processing/medical-image-processing-model-detail.md
+      - Hybrid Jobs: 
+        - Run Hybrid Job Notebook for Batch Evaluation: workshop/f-medical-image-processing/medical-image-processing-hybrid-jobs.ipynb
   - Additional resources: additional-resources.md
   - Uninstall the solution: uninstall.md
   - Source code: source.md
