@@ -1,31 +1,20 @@
 ## Notebook experimentation
 
-The workshop implements the work from [Quantum Molecular Unfolding](https://arxiv.org/abs/2107.13607), and the [Molecular Unfolding with Quantum Annealing](https://www.youtube.com/watch?v=1NmAXIHAF2Y) video in Amazon Braket.
+The workshop implements the [RNA folding using quantum computers](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1010032) based on the work 
+from [QHack 2022 winner](https://github.com/XanaduAI/QHack2022/issues/114) in Amazon Braket.
 
-## Molecular docking 
+## RNA folding
 
-Molecular Docking (MD) is an important step of the drug discovery process which aims at calculating the preferred position and shape of one molecule to a second when they are bound to each other. This step focuses on computationally simulating the molecular recognition process. It aims to achieve an optimized conformation for both the protein and ligand and relative orientation between protein and ligand such that the free energy of the overall system is minimized. 
+RNA folding refers to the process by which a single-stranded RNA molecule adopts a specific three-dimensional structure through the formation of intramolecular base pairs. This process is crucial for the proper functioning of RNA in a variety of biological processes, such as gene expression, RNA splicing, and protein synthesis.
 
-In this work, the protein or the pocket is considered as a rigid structure, and the ligand is considered as a 
-flexible set of atoms.
 
-![Molecular Docking](../../images/molecule-docking.png)
+![Molecular Docking](../../images/Pre-mRNA-1ysv-tubes.png)
 
-Figure 6: Molecular docking[<sup>6</sup>](#wiki-docking)
+Figure 12: A hairpin loop from a pre-mRNA[<sup>7</sup>](#wiki-rna)
 
-As described in [Quantum Molecular Unfolding](https://arxiv.org/abs/2107.13607), published by Mato et al, there are usually three main phases in MD: 
-
-1. Expansion of the ligand to an unfolded shape, to reduce bias, that is, molecular unfolding (MU). MU includes:
-    * Identification of the rotatable bonds
-    * Internal distance maximization
-    * Removal of tool related bias (for example, SMILES-to-3D)
-2. Initial placement, which includes:
-    * Ligand main fragments decomposition
-    * Ligand initial poses identification
-    * Placement of the ligand into the pocket with rigid roto-translations
-3. Shape refinement, which includes:
-    * Use of the rotatable bonds to modify the ligand shape and to match the protein pocket
-    * Docking score maximization
+In this work, the quantum annealer is leveraged to predict the secondary structure of RNA. 
+To steer the system towards maximizing both the number of base pairs and the average length of the stems, 
+a Hamiltonian is formulated in the Binary Quadratic Model (BQM) format.
 
 ## Quantum molecular unfolding on the AWS Cloud
 
@@ -54,6 +43,6 @@ Here we focus on the first phase of MD, ligand expansion, which aims to reduce s
 
 
 # References
-<div id='wiki-docking'></div>
+<div id='wiki-rna'></div>
 
-- 6.[Wiki: Molecular Docking](https://en.wikipedia.org/wiki/Docking_(molecular))
+- 7.[Wiki: RNA](https://en.wikipedia.org/wiki/RNA)

@@ -41,15 +41,7 @@ Here we focus on the first phase of MD, ligand expansion, which aims to reduce s
 
     Figure 7: Notebook URL on the stack's Output tab
 
-4. Open the file under the directory **molecular-folding/molecular_unfolding.ipynb** and choose the kernel **qcenv**.
-
-5. Navigate through the notebook, which consists of four Steps:
-
-    - Step 1: Prepare data - Prepare molecular data for experiments.
-    - Step 2: Build model - Build model for molecular unfolding.
-    - Step 3: Optimize configuration - Run optimization to find the configuration.
-    - Step 4: Process results - Process the results for evaluation and visualization.
-
+4. Open the file under the directory **healthcare-and-life-science/molecular-folding/molecular_unfolding.ipynb** and choose the kernel **qc_hcls_molecular_unfolding**.
 
 
 
