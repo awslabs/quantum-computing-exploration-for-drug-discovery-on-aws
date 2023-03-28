@@ -32,11 +32,11 @@ nav:
         - Run Hybrid Job Notebook for Batch Evaluation: workshop/b-rna-folding/rna-folding-hybrid-jobs.ipynb
     - Protein Folding-QFold: 
       - Notebook Experiment:
-        - Overview: workshop/c-protein-folding-qfold/qfold-background.md
-        - Run Algorithm Notebook: workshop/c-protein-folding-qfold/qfold-algorithm.ipynb
-        - Technical Details: workshop/c-protein-folding-qfold/qfold-model-detail.md
+        - Overview: workshop/c-protein-folding-qfold/protein-folding-qfold-background.md
+        - Run Algorithm Notebook: workshop/c-protein-folding-qfold/protein-folding-qfold-algorithm.ipynb
+        - Technical Details: workshop/c-protein-folding-qfold/protein-folding-qfold-model-detail.md
       - Hybrid Jobs: 
-        - Run Hybrid Job Notebook for Batch Evaluation: workshop/c-protein-folding-qfold/qfold-hybrid-jobs.ipynb
+        - Run Hybrid Job Notebook for Batch Evaluation: workshop/c-protein-folding-qfold/protein-folding-qfold-hybrid-jobs.ipynb
     - Protein Folding-GroverMethod: 
       - Notebook Experiment:
         - Overview: workshop/d-protein-folding-grover/protein-folding-grover-method-background.md
