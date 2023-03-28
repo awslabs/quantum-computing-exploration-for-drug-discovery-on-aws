@@ -3,17 +3,17 @@ Metadata:
   AWS::CloudFormation::Interface:
     ParameterGroups:
       - Label:
-          default: Email for receive notification
+          default: ""
         Parameters:
           - snsEmail
     ParameterLabels:
       snsEmail:
-        default: ""
+        default: SNS email - Optional
 Parameters:
   snsEmail:
     Type: String
     AllowedPattern: ^(\w[-\w.+]*@([A-Za-z0-9][-A-Za-z0-9]+\.)+[A-Za-z]{2,14})?$
-    Description: Email address for subscription - optional
+    Description: Email address for SNS subscription about Braket Hybrid job status change
   BootstrapVersion:
     Type: AWS::SSM::Parameter::Value<String>
     Default: /cdk-bootstrap/hnb659fds/version
@@ -119,533 +119,6 @@ Rules:
                 - Ref: BootstrapVersion
         AssertDescription: CDK bootstrap stack version 6 required. Please run 'cdk bootstrap' with a recent version of the CDK CLI.
 Resources:
-  VPCB9E5F0B4:
-    Type: AWS::EC2::VPC
-    Properties:
-      CidrBlock: 10.1.0.0/16
-      EnableDnsHostnames: true
-      EnableDnsSupport: true
-      InstanceTenancy: default
-      Tags:
-        - Key: Name
-          Value: QCEDDStack/VPC
-    Metadata:
-      aws:cdk:path: QCEDDStack/VPC/Resource
-  VPCIngressSubnet1Subnet4257CD65:
-    Type: AWS::EC2::Subnet
-    Properties:
-      VpcId:
-        Ref: VPCB9E5F0B4
-      AvailabilityZone:
-        Fn::Select:
-          - 0
-          - Fn::GetAZs: ""
-      CidrBlock: 10.1.0.0/18
-      MapPublicIpOnLaunch: false
-      Tags:
-        - Key: aws-cdk:subnet-name
-          Value: Ingress
-        - Key: aws-cdk:subnet-type
-          Value: Public
-        - Key: Name
-          Value: QCEDDStack/VPC/IngressSubnet1
-    Metadata:
-      aws:cdk:path: QCEDDStack/VPC/IngressSubnet1/Subnet
-  VPCIngressSubnet1RouteTable9BE753A6:
-    Type: AWS::EC2::RouteTable
-    Properties:
-      VpcId:
-        Ref: VPCB9E5F0B4
-      Tags:
-        - Key: Name
-          Value: QCEDDStack/VPC/IngressSubnet1
-    Metadata:
-      aws:cdk:path: QCEDDStack/VPC/IngressSubnet1/RouteTable
-  VPCIngressSubnet1RouteTableAssociationCAFE4089:
-    Type: AWS::EC2::SubnetRouteTableAssociation
-    Properties:
-      RouteTableId:
-        Ref: VPCIngressSubnet1RouteTable9BE753A6
-      SubnetId:
-        Ref: VPCIngressSubnet1Subnet4257CD65
-    Metadata:
-      aws:cdk:path: QCEDDStack/VPC/IngressSubnet1/RouteTableAssociation
-  VPCIngressSubnet1DefaultRouteFE025494:
-    Type: AWS::EC2::Route
-    Properties:
-      RouteTableId:
-        Ref: VPCIngressSubnet1RouteTable9BE753A6
-      DestinationCidrBlock: 0.0.0.0/0
-      GatewayId:
-        Ref: VPCIGWB7E252D3
-    DependsOn:
-      - VPCVPCGW99B986DC
-    Metadata:
-      aws:cdk:path: QCEDDStack/VPC/IngressSubnet1/DefaultRoute
-  VPCIngressSubnet1EIP99406D22:
-    Type: AWS::EC2::EIP
-    Properties:
-      Domain: vpc
-      Tags:
-        - Key: Name
-          Value: QCEDDStack/VPC/IngressSubnet1
-    Metadata:
-      aws:cdk:path: QCEDDStack/VPC/IngressSubnet1/EIP
-  VPCIngressSubnet1NATGatewayEA4AE80E:
-    Type: AWS::EC2::NatGateway
-    Properties:
-      SubnetId:
-        Ref: VPCIngressSubnet1Subnet4257CD65
-      AllocationId:
-        Fn::GetAtt:
-          - VPCIngressSubnet1EIP99406D22
-          - AllocationId
-      Tags:
-        - Key: Name
-          Value: QCEDDStack/VPC/IngressSubnet1
-    Metadata:
-      aws:cdk:path: QCEDDStack/VPC/IngressSubnet1/NATGateway
-  VPCIngressSubnet2SubnetE0EA735B:
-    Type: AWS::EC2::Subnet
-    Properties:
-      VpcId:
-        Ref: VPCB9E5F0B4
-      AvailabilityZone:
-        Fn::Select:
-          - 1
-          - Fn::GetAZs: ""
-      CidrBlock: 10.1.64.0/18
-      MapPublicIpOnLaunch: false
-      Tags:
-        - Key: aws-cdk:subnet-name
-          Value: Ingress
-        - Key: aws-cdk:subnet-type
-          Value: Public
-        - Key: Name
-          Value: QCEDDStack/VPC/IngressSubnet2
-    Metadata:
-      aws:cdk:path: QCEDDStack/VPC/IngressSubnet2/Subnet
-  VPCIngressSubnet2RouteTableDFE1B4BC:
-    Type: AWS::EC2::RouteTable
-    Properties:
-      VpcId:
-        Ref: VPCB9E5F0B4
-      Tags:
-        - Key: Name
-          Value: QCEDDStack/VPC/IngressSubnet2
-    Metadata:
-      aws:cdk:path: QCEDDStack/VPC/IngressSubnet2/RouteTable
-  VPCIngressSubnet2RouteTableAssociationB244DE25:
-    Type: AWS::EC2::SubnetRouteTableAssociation
-    Properties:
-      RouteTableId:
-        Ref: VPCIngressSubnet2RouteTableDFE1B4BC
-      SubnetId:
-        Ref: VPCIngressSubnet2SubnetE0EA735B
-    Metadata:
-      aws:cdk:path: QCEDDStack/VPC/IngressSubnet2/RouteTableAssociation
-  VPCIngressSubnet2DefaultRoute9FF8300E:
-    Type: AWS::EC2::Route
-    Properties:
-      RouteTableId:
-        Ref: VPCIngressSubnet2RouteTableDFE1B4BC
-      DestinationCidrBlock: 0.0.0.0/0
-      GatewayId:
-        Ref: VPCIGWB7E252D3
-    DependsOn:
-      - VPCVPCGW99B986DC
-    Metadata:
-      aws:cdk:path: QCEDDStack/VPC/IngressSubnet2/DefaultRoute
-  VPCIngressSubnet2EIPCE44C233:
-    Type: AWS::EC2::EIP
-    Properties:
-      Domain: vpc
-      Tags:
-        - Key: Name
-          Value: QCEDDStack/VPC/IngressSubnet2
-    Metadata:
-      aws:cdk:path: QCEDDStack/VPC/IngressSubnet2/EIP
-  VPCIngressSubnet2NATGateway68BB4190:
-    Type: AWS::EC2::NatGateway
-    Properties:
-      SubnetId:
-        Ref: VPCIngressSubnet2SubnetE0EA735B
-      AllocationId:
-        Fn::GetAtt:
-          - VPCIngressSubnet2EIPCE44C233
-          - AllocationId
-      Tags:
-        - Key: Name
-          Value: QCEDDStack/VPC/IngressSubnet2
-    Metadata:
-      aws:cdk:path: QCEDDStack/VPC/IngressSubnet2/NATGateway
-  VPCApplicationSubnet1SubnetCE118F80:
-    Type: AWS::EC2::Subnet
-    Properties:
-      VpcId:
-        Ref: VPCB9E5F0B4
-      AvailabilityZone:
-        Fn::Select:
-          - 0
-          - Fn::GetAZs: ""
-      CidrBlock: 10.1.128.0/18
-      MapPublicIpOnLaunch: false
-      Tags:
-        - Key: aws-cdk:subnet-name
-          Value: Application
-        - Key: aws-cdk:subnet-type
-          Value: Private
-        - Key: Name
-          Value: QCEDDStack/VPC/ApplicationSubnet1
-    Metadata:
-      aws:cdk:path: QCEDDStack/VPC/ApplicationSubnet1/Subnet
-  VPCApplicationSubnet1RouteTable5B6CE71A:
-    Type: AWS::EC2::RouteTable
-    Properties:
-      VpcId:
-        Ref: VPCB9E5F0B4
-      Tags:
-        - Key: Name
-          Value: QCEDDStack/VPC/ApplicationSubnet1
-    Metadata:
-      aws:cdk:path: QCEDDStack/VPC/ApplicationSubnet1/RouteTable
-  VPCApplicationSubnet1RouteTableAssociation8DF0EAE5:
-    Type: AWS::EC2::SubnetRouteTableAssociation
-    Properties:
-      RouteTableId:
-        Ref: VPCApplicationSubnet1RouteTable5B6CE71A
-      SubnetId:
-        Ref: VPCApplicationSubnet1SubnetCE118F80
-    Metadata:
-      aws:cdk:path: QCEDDStack/VPC/ApplicationSubnet1/RouteTableAssociation
-  VPCApplicationSubnet1DefaultRouteA4E47D36:
-    Type: AWS::EC2::Route
-    Properties:
-      RouteTableId:
-        Ref: VPCApplicationSubnet1RouteTable5B6CE71A
-      DestinationCidrBlock: 0.0.0.0/0
-      NatGatewayId:
-        Ref: VPCIngressSubnet1NATGatewayEA4AE80E
-    Metadata:
-      aws:cdk:path: QCEDDStack/VPC/ApplicationSubnet1/DefaultRoute
-  VPCApplicationSubnet2Subnet988E96B1:
-    Type: AWS::EC2::Subnet
-    Properties:
-      VpcId:
-        Ref: VPCB9E5F0B4
-      AvailabilityZone:
-        Fn::Select:
-          - 1
-          - Fn::GetAZs: ""
-      CidrBlock: 10.1.192.0/18
-      MapPublicIpOnLaunch: false
-      Tags:
-        - Key: aws-cdk:subnet-name
-          Value: Application
-        - Key: aws-cdk:subnet-type
-          Value: Private
-        - Key: Name
-          Value: QCEDDStack/VPC/ApplicationSubnet2
-    Metadata:
-      aws:cdk:path: QCEDDStack/VPC/ApplicationSubnet2/Subnet
-  VPCApplicationSubnet2RouteTableFDC3EEE6:
-    Type: AWS::EC2::RouteTable
-    Properties:
-      VpcId:
-        Ref: VPCB9E5F0B4
-      Tags:
-        - Key: Name
-          Value: QCEDDStack/VPC/ApplicationSubnet2
-    Metadata:
-      aws:cdk:path: QCEDDStack/VPC/ApplicationSubnet2/RouteTable
-  VPCApplicationSubnet2RouteTableAssociationD84040F3:
-    Type: AWS::EC2::SubnetRouteTableAssociation
-    Properties:
-      RouteTableId:
-        Ref: VPCApplicationSubnet2RouteTableFDC3EEE6
-      SubnetId:
-        Ref: VPCApplicationSubnet2Subnet988E96B1
-    Metadata:
-      aws:cdk:path: QCEDDStack/VPC/ApplicationSubnet2/RouteTableAssociation
-  VPCApplicationSubnet2DefaultRouteC3680A52:
-    Type: AWS::EC2::Route
-    Properties:
-      RouteTableId:
-        Ref: VPCApplicationSubnet2RouteTableFDC3EEE6
-      DestinationCidrBlock: 0.0.0.0/0
-      NatGatewayId:
-        Ref: VPCIngressSubnet2NATGateway68BB4190
-    Metadata:
-      aws:cdk:path: QCEDDStack/VPC/ApplicationSubnet2/DefaultRoute
-  VPCIGWB7E252D3:
-    Type: AWS::EC2::InternetGateway
-    Properties:
-      Tags:
-        - Key: Name
-          Value: QCEDDStack/VPC
-    Metadata:
-      aws:cdk:path: QCEDDStack/VPC/IGW
-  VPCVPCGW99B986DC:
-    Type: AWS::EC2::VPCGatewayAttachment
-    Properties:
-      VpcId:
-        Ref: VPCB9E5F0B4
-      InternetGatewayId:
-        Ref: VPCIGWB7E252D3
-    Metadata:
-      aws:cdk:path: QCEDDStack/VPC/VPCGW
-  VPCS3Endpoint18C9C7CA:
-    Type: AWS::EC2::VPCEndpoint
-    Properties:
-      ServiceName:
-        Fn::Join:
-          - ""
-          - - com.amazonaws.
-            - Ref: AWS::Region
-            - .s3
-      VpcId:
-        Ref: VPCB9E5F0B4
-      RouteTableIds:
-        - Ref: VPCApplicationSubnet1RouteTable5B6CE71A
-        - Ref: VPCApplicationSubnet2RouteTableFDC3EEE6
-        - Ref: VPCIngressSubnet1RouteTable9BE753A6
-        - Ref: VPCIngressSubnet2RouteTableDFE1B4BC
-      VpcEndpointType: Gateway
-    Metadata:
-      aws:cdk:path: QCEDDStack/VPC/S3Endpoint/Resource
-  VPCBraketEndpointSecurityGroup92A02E89:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupDescription: QCEDDStack/VPC/BraketEndpoint/SecurityGroup
-      SecurityGroupEgress:
-        - CidrIp: 0.0.0.0/0
-          Description: Allow all outbound traffic by default
-          IpProtocol: "-1"
-      SecurityGroupIngress:
-        - CidrIp:
-            Fn::GetAtt:
-              - VPCB9E5F0B4
-              - CidrBlock
-          Description:
-            Fn::Join:
-              - ""
-              - - "from "
-                - Fn::GetAtt:
-                    - VPCB9E5F0B4
-                    - CidrBlock
-                - :443
-          FromPort: 443
-          IpProtocol: tcp
-          ToPort: 443
-      Tags:
-        - Key: Name
-          Value: QCEDDStack/VPC
-      VpcId:
-        Ref: VPCB9E5F0B4
-    Metadata:
-      aws:cdk:path: QCEDDStack/VPC/BraketEndpoint/SecurityGroup/Resource
-      cfn_nag:
-        rules_to_suppress:
-          - id: W5
-            reason: generated by CDK
-          - id: W40
-            reason: generated by CDK
-  VPCBraketEndpointFB085AD8:
-    Type: AWS::EC2::VPCEndpoint
-    Properties:
-      ServiceName:
-        Fn::Join:
-          - ""
-          - - com.amazonaws.
-            - Ref: AWS::Region
-            - .braket
-      VpcId:
-        Ref: VPCB9E5F0B4
-      PrivateDnsEnabled: true
-      SecurityGroupIds:
-        - Fn::GetAtt:
-            - VPCBraketEndpointSecurityGroup92A02E89
-            - GroupId
-      SubnetIds:
-        - Ref: VPCApplicationSubnet1SubnetCE118F80
-        - Ref: VPCApplicationSubnet2Subnet988E96B1
-      VpcEndpointType: Interface
-    Metadata:
-      aws:cdk:path: QCEDDStack/VPC/BraketEndpoint/Resource
-  VPClogtoCWIAMRoleCFE2A6E9:
-    Type: AWS::IAM::Role
-    Properties:
-      AssumeRolePolicyDocument:
-        Statement:
-          - Action: sts:AssumeRole
-            Effect: Allow
-            Principal:
-              Service: vpc-flow-logs.amazonaws.com
-        Version: "2012-10-17"
-      Tags:
-        - Key: Name
-          Value: QCEDDStack/VPC
-    Metadata:
-      aws:cdk:path: QCEDDStack/VPC/logtoCW/IAMRole/Resource
-  VPClogtoCWIAMRoleDefaultPolicyF548A5B9:
-    Type: AWS::IAM::Policy
-    Properties:
-      PolicyDocument:
-        Statement:
-          - Action:
-              - logs:CreateLogStream
-              - logs:PutLogEvents
-              - logs:DescribeLogStreams
-            Effect: Allow
-            Resource:
-              Fn::GetAtt:
-                - vpcFlowlog69E65BBD
-                - Arn
-          - Action: iam:PassRole
-            Effect: Allow
-            Resource:
-              Fn::GetAtt:
-                - VPClogtoCWIAMRoleCFE2A6E9
-                - Arn
-        Version: "2012-10-17"
-      PolicyName: VPClogtoCWIAMRoleDefaultPolicyF548A5B9
-      Roles:
-        - Ref: VPClogtoCWIAMRoleCFE2A6E9
-    Metadata:
-      aws:cdk:path: QCEDDStack/VPC/logtoCW/IAMRole/DefaultPolicy/Resource
-  VPClogtoCWFlowLog99C98B79:
-    Type: AWS::EC2::FlowLog
-    Properties:
-      ResourceId:
-        Ref: VPCB9E5F0B4
-      ResourceType: VPC
-      TrafficType: ALL
-      DeliverLogsPermissionArn:
-        Fn::GetAtt:
-          - VPClogtoCWIAMRoleCFE2A6E9
-          - Arn
-      LogDestinationType: cloud-watch-logs
-      LogGroupName:
-        Ref: vpcFlowlog69E65BBD
-      Tags:
-        - Key: Name
-          Value: QCEDDStack/VPC
-    Metadata:
-      aws:cdk:path: QCEDDStack/VPC/logtoCW/FlowLog
-  qcLogKey219D212D:
-    Type: AWS::KMS::Key
-    Properties:
-      KeyPolicy:
-        Statement:
-          - Action: kms:*
-            Effect: Allow
-            Principal:
-              AWS:
-                Fn::Join:
-                  - ""
-                  - - "arn:"
-                    - Ref: AWS::Partition
-                    - ":iam::"
-                    - Ref: AWS::AccountId
-                    - :root
-            Resource: "*"
-          - Action:
-              - kms:Encrypt*
-              - kms:ReEncrypt*
-              - kms:Decrypt*
-              - kms:GenerateDataKey*
-              - kms:Describe*
-            Condition:
-              ArnLike:
-                kms:EncryptionContext:aws:logs:arn:
-                  Fn::Join:
-                    - ""
-                    - - "arn:"
-                      - Ref: AWS::Partition
-                      - ":logs:"
-                      - Ref: AWS::Region
-                      - ":"
-                      - Ref: AWS::AccountId
-                      - :log-group:QCEDDStack-vpcFlowlog-
-                      - Fn::Select:
-                          - 0
-                          - Fn::Split:
-                              - "-"
-                              - Fn::Select:
-                                  - 2
-                                  - Fn::Split:
-                                      - /
-                                      - Ref: AWS::StackId
-            Effect: Allow
-            Principal:
-              Service:
-                Fn::Join:
-                  - ""
-                  - - logs.
-                    - Ref: AWS::Region
-                    - "."
-                    - Ref: AWS::URLSuffix
-            Resource: "*"
-        Version: "2012-10-17"
-      EnableKeyRotation: true
-    UpdateReplacePolicy: Retain
-    DeletionPolicy: Retain
-    Metadata:
-      aws:cdk:path: QCEDDStack/qcLogKey/Resource
-  vpcFlowlog69E65BBD:
-    Type: AWS::Logs::LogGroup
-    Properties:
-      KmsKeyId:
-        Fn::GetAtt:
-          - qcLogKey219D212D
-          - Arn
-      LogGroupName:
-        Fn::Join:
-          - ""
-          - - QCEDDStack-vpcFlowlog-
-            - Fn::Select:
-                - 0
-                - Fn::Split:
-                    - "-"
-                    - Fn::Select:
-                        - 2
-                        - Fn::Split:
-                            - /
-                            - Ref: AWS::StackId
-      RetentionInDays: 90
-    UpdateReplacePolicy: Delete
-    DeletionPolicy: Delete
-    Metadata:
-      aws:cdk:path: QCEDDStack/vpcFlowlog/Resource
-  notebookSgAD7A023D:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupDescription: Security Group for notebook compute environment
-      SecurityGroupEgress:
-        - CidrIp: 0.0.0.0/0
-          Description: from 0.0.0.0/0:443
-          FromPort: 443
-          IpProtocol: tcp
-          ToPort: 443
-        - CidrIpv6: ::/0
-          Description: from ::/0:443
-          FromPort: 443
-          IpProtocol: tcp
-          ToPort: 443
-        - CidrIp: 0.0.0.0/0
-          Description: from 0.0.0.0/0:80
-          FromPort: 80
-          IpProtocol: tcp
-          ToPort: 80
-        - CidrIpv6: ::/0
-          Description: from ::/0:80
-          FromPort: 80
-          IpProtocol: tcp
-          ToPort: 80
-      VpcId:
-        Ref: VPCB9E5F0B4
-    Metadata:
-      aws:cdk:path: QCEDDStack/notebookSg/Resource
   SNSKeyECBE01F8:
     Type: AWS::KMS::Key
     Properties:
@@ -875,35 +348,6 @@ Resources:
     DependsOn:
       - amazonbraketPolicyA997C6D2
       - amazonbraketC6E30921
-      - VPCApplicationSubnet1DefaultRouteA4E47D36
-      - VPCApplicationSubnet1RouteTable5B6CE71A
-      - VPCApplicationSubnet1RouteTableAssociation8DF0EAE5
-      - VPCApplicationSubnet1SubnetCE118F80
-      - VPCApplicationSubnet2DefaultRouteC3680A52
-      - VPCApplicationSubnet2RouteTableFDC3EEE6
-      - VPCApplicationSubnet2RouteTableAssociationD84040F3
-      - VPCApplicationSubnet2Subnet988E96B1
-      - VPCBraketEndpointFB085AD8
-      - VPCBraketEndpointSecurityGroup92A02E89
-      - VPCIGWB7E252D3
-      - VPCIngressSubnet1DefaultRouteFE025494
-      - VPCIngressSubnet1EIP99406D22
-      - VPCIngressSubnet1NATGatewayEA4AE80E
-      - VPCIngressSubnet1RouteTable9BE753A6
-      - VPCIngressSubnet1RouteTableAssociationCAFE4089
-      - VPCIngressSubnet1Subnet4257CD65
-      - VPCIngressSubnet2DefaultRoute9FF8300E
-      - VPCIngressSubnet2EIPCE44C233
-      - VPCIngressSubnet2NATGateway68BB4190
-      - VPCIngressSubnet2RouteTableDFE1B4BC
-      - VPCIngressSubnet2RouteTableAssociationB244DE25
-      - VPCIngressSubnet2SubnetE0EA735B
-      - VPClogtoCWFlowLog99C98B79
-      - VPClogtoCWIAMRoleDefaultPolicyF548A5B9
-      - VPClogtoCWIAMRoleCFE2A6E9
-      - VPCB9E5F0B4
-      - VPCS3Endpoint18C9C7CA
-      - VPCVPCGW99B986DC
     Metadata:
       aws:cdk:path: QCEDDStack/Notebook/NotebookRole/Resource
   NotebookNotebookRoleDefaultPolicy56D3D0E9:
@@ -955,6 +399,7 @@ Resources:
             Effect: Allow
             Resource:
               - arn:aws:s3:::braket-*/*
+              - arn:aws:s3:::cdk-*/*
               - arn:aws:s3:::amazon-braket-*/*
               - arn:aws:s3:::braketnotebookcdk-**
           - Action: iam:ListRoles
@@ -1022,35 +467,6 @@ Resources:
     DependsOn:
       - amazonbraketPolicyA997C6D2
       - amazonbraketC6E30921
-      - VPCApplicationSubnet1DefaultRouteA4E47D36
-      - VPCApplicationSubnet1RouteTable5B6CE71A
-      - VPCApplicationSubnet1RouteTableAssociation8DF0EAE5
-      - VPCApplicationSubnet1SubnetCE118F80
-      - VPCApplicationSubnet2DefaultRouteC3680A52
-      - VPCApplicationSubnet2RouteTableFDC3EEE6
-      - VPCApplicationSubnet2RouteTableAssociationD84040F3
-      - VPCApplicationSubnet2Subnet988E96B1
-      - VPCBraketEndpointFB085AD8
-      - VPCBraketEndpointSecurityGroup92A02E89
-      - VPCIGWB7E252D3
-      - VPCIngressSubnet1DefaultRouteFE025494
-      - VPCIngressSubnet1EIP99406D22
-      - VPCIngressSubnet1NATGatewayEA4AE80E
-      - VPCIngressSubnet1RouteTable9BE753A6
-      - VPCIngressSubnet1RouteTableAssociationCAFE4089
-      - VPCIngressSubnet1Subnet4257CD65
-      - VPCIngressSubnet2DefaultRoute9FF8300E
-      - VPCIngressSubnet2EIPCE44C233
-      - VPCIngressSubnet2NATGateway68BB4190
-      - VPCIngressSubnet2RouteTableDFE1B4BC
-      - VPCIngressSubnet2RouteTableAssociationB244DE25
-      - VPCIngressSubnet2SubnetE0EA735B
-      - VPClogtoCWFlowLog99C98B79
-      - VPClogtoCWIAMRoleDefaultPolicyF548A5B9
-      - VPClogtoCWIAMRoleCFE2A6E9
-      - VPCB9E5F0B4
-      - VPCS3Endpoint18C9C7CA
-      - VPCVPCGW99B986DC
     Metadata:
       aws:cdk:path: QCEDDStack/Notebook/NotebookRole/DefaultPolicy/Resource
       cfn_nag:
@@ -1071,17 +487,15 @@ Resources:
                     sudo -u ec2-user -i <<EOS
                     python3 --version
 
-                    conda create -y -n qc_hcls python=3.8
+                    conda create -y -n qc_hcls_molecular_unfolding python=3.8
 
                     conda config --add channels bioconda
 
                     conda config --set channel_priority strict
 
-                    conda activate qc_hcls
+                    conda activate qc_hcls_molecular_unfolding
 
                     pip3 install ipykernel
-
-                    conda install viennarna=2.5.1 -y
 
                     pip3 install numpy==1.22.2
                     pip3 install boto3==1.26.8
@@ -1099,10 +513,66 @@ Resources:
                     pip3 install setproctitle==1.3.2
                     pip3 install matplotlib==3.5.3
 
+
+                    conda create -y -n qc_hcls_rna_folding python=3.8
+
+                    conda config --add channels bioconda
+
+                    conda config --set channel_priority strict
+
+                    conda activate qc_hcls_rna_folding
+
+                    pip3 install ipykernel
+
+                    conda install viennarna=2.5.1 -y
+
+                    pip3 install numpy==1.22.2
+                    pip3 install boto3==1.26.8
+                    pip3 install dimod==0.10.12
+                    pip3 install dwave-system==1.15.0
+                    pip3 install dwave-neal==0.5.9
+                    pip3 install networkx==2.6.3
+                    pip3 install amazon-braket-sdk==1.31.0
+                    pip3 install amazon-braket-ocean-plugin==1.0.7
+                    pip3 install Cython==0.29.32
+                    pip3 install py3Dmol==1.8.0
+                    pip3 install ipywidgets==7.7.0
+                    pip3 install altair==4.2.0
+                    pip3 install setproctitle==1.3.2
+                    pip3 install matplotlib==3.5.3
+
                     pip3 install git+https://github.com/ViennaRNA/forgi
 
+                    conda create -y -n qc_hcls_protein_folding python=3.7.2
+
+                    conda config --add channels bioconda
+
+                    conda config --set channel_priority strict
+
+                    conda activate qc_hcls_protein_folding
+
+                    pip3 install ipykernel
+
+                    pip3 install numpy==1.19.5
+                    pip3 install boto3==1.23.10
+                    pip3 install amazon-braket-sdk==1.35.5
+                    pip3 install biopandas==0.4.1
+                    pip3 install altair==4.2.0
+                    pip3 install setproctitle==1.3.2
+                    pip3 install scipy==1.5.4
+                    pip3 install tensorflow==1.15.0
+                    pip3 install Keras==2.0.8
+                    pip3 install qiskit==0.34.2
+                    pip3 install qiskit-aer==0.10.3
+                    pip3 install qiskit-aqua==0.9.5
+                    pip3 install qiskit-ibmq-provider==0.18.3
+                    pip3 install qiskit-ignis==0.7.0
+                    pip3 install qiskit-terra==0.19.2
+                    pip3 install matplotlib==3.3.4
+                    pip3 install bokeh==2.3.3
+
                     aws s3 cp 
-                  - Fn::Sub: s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/0d12300d2b022953872ef7381d66d79a8a5e88f00ccb071f009967c2b6ae81f8.zip
+                  - Fn::Sub: s3://cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}/eb676657ca0813170106c99e904fad65dbca77725928bddbc1e291d98bf599de.zip
                   - |-2
                      /home/ec2-user/SageMaker/code.zip
 
@@ -1125,35 +595,6 @@ Resources:
     DependsOn:
       - amazonbraketPolicyA997C6D2
       - amazonbraketC6E30921
-      - VPCApplicationSubnet1DefaultRouteA4E47D36
-      - VPCApplicationSubnet1RouteTable5B6CE71A
-      - VPCApplicationSubnet1RouteTableAssociation8DF0EAE5
-      - VPCApplicationSubnet1SubnetCE118F80
-      - VPCApplicationSubnet2DefaultRouteC3680A52
-      - VPCApplicationSubnet2RouteTableFDC3EEE6
-      - VPCApplicationSubnet2RouteTableAssociationD84040F3
-      - VPCApplicationSubnet2Subnet988E96B1
-      - VPCBraketEndpointFB085AD8
-      - VPCBraketEndpointSecurityGroup92A02E89
-      - VPCIGWB7E252D3
-      - VPCIngressSubnet1DefaultRouteFE025494
-      - VPCIngressSubnet1EIP99406D22
-      - VPCIngressSubnet1NATGatewayEA4AE80E
-      - VPCIngressSubnet1RouteTable9BE753A6
-      - VPCIngressSubnet1RouteTableAssociationCAFE4089
-      - VPCIngressSubnet1Subnet4257CD65
-      - VPCIngressSubnet2DefaultRoute9FF8300E
-      - VPCIngressSubnet2EIPCE44C233
-      - VPCIngressSubnet2NATGateway68BB4190
-      - VPCIngressSubnet2RouteTableDFE1B4BC
-      - VPCIngressSubnet2RouteTableAssociationB244DE25
-      - VPCIngressSubnet2SubnetE0EA735B
-      - VPClogtoCWFlowLog99C98B79
-      - VPClogtoCWIAMRoleDefaultPolicyF548A5B9
-      - VPClogtoCWIAMRoleCFE2A6E9
-      - VPCB9E5F0B4
-      - VPCS3Endpoint18C9C7CA
-      - VPCVPCGW99B986DC
     Metadata:
       aws:cdk:path: QCEDDStack/Notebook/install-braket-sdk
   NotebookqcNotebookKeyB1F817BA:
@@ -1178,35 +619,6 @@ Resources:
     DependsOn:
       - amazonbraketPolicyA997C6D2
       - amazonbraketC6E30921
-      - VPCApplicationSubnet1DefaultRouteA4E47D36
-      - VPCApplicationSubnet1RouteTable5B6CE71A
-      - VPCApplicationSubnet1RouteTableAssociation8DF0EAE5
-      - VPCApplicationSubnet1SubnetCE118F80
-      - VPCApplicationSubnet2DefaultRouteC3680A52
-      - VPCApplicationSubnet2RouteTableFDC3EEE6
-      - VPCApplicationSubnet2RouteTableAssociationD84040F3
-      - VPCApplicationSubnet2Subnet988E96B1
-      - VPCBraketEndpointFB085AD8
-      - VPCBraketEndpointSecurityGroup92A02E89
-      - VPCIGWB7E252D3
-      - VPCIngressSubnet1DefaultRouteFE025494
-      - VPCIngressSubnet1EIP99406D22
-      - VPCIngressSubnet1NATGatewayEA4AE80E
-      - VPCIngressSubnet1RouteTable9BE753A6
-      - VPCIngressSubnet1RouteTableAssociationCAFE4089
-      - VPCIngressSubnet1Subnet4257CD65
-      - VPCIngressSubnet2DefaultRoute9FF8300E
-      - VPCIngressSubnet2EIPCE44C233
-      - VPCIngressSubnet2NATGateway68BB4190
-      - VPCIngressSubnet2RouteTableDFE1B4BC
-      - VPCIngressSubnet2RouteTableAssociationB244DE25
-      - VPCIngressSubnet2SubnetE0EA735B
-      - VPClogtoCWFlowLog99C98B79
-      - VPClogtoCWIAMRoleDefaultPolicyF548A5B9
-      - VPClogtoCWIAMRoleCFE2A6E9
-      - VPCB9E5F0B4
-      - VPCS3Endpoint18C9C7CA
-      - VPCVPCGW99B986DC
     UpdateReplacePolicy: Retain
     DeletionPolicy: Retain
     Metadata:
@@ -1219,59 +631,37 @@ Resources:
         Fn::GetAtt:
           - NotebookNotebookRole192DAF6F
           - Arn
-      DirectInternetAccess: Disabled
+      DirectInternetAccess: Enabled
       KmsKeyId:
         Ref: NotebookqcNotebookKeyB1F817BA
       LifecycleConfigName:
         Fn::GetAtt:
           - Notebookinstallbraketsdk651BC8FB
           - NotebookInstanceLifecycleConfigName
+      NotebookInstanceName:
+        Fn::Join:
+          - ""
+          - - amazon-braket-qc-
+            - Fn::Select:
+                - 0
+                - Fn::Split:
+                    - "-"
+                    - Fn::Select:
+                        - 2
+                        - Fn::Split:
+                            - /
+                            - Ref: AWS::StackId
       RootAccess: Enabled
-      SecurityGroupIds:
-        - Fn::GetAtt:
-            - notebookSgAD7A023D
-            - GroupId
-      SubnetId:
-        Ref: VPCApplicationSubnet1SubnetCE118F80
       VolumeSizeInGB: 50
     DependsOn:
       - amazonbraketPolicyA997C6D2
       - amazonbraketC6E30921
-      - VPCApplicationSubnet1DefaultRouteA4E47D36
-      - VPCApplicationSubnet1RouteTable5B6CE71A
-      - VPCApplicationSubnet1RouteTableAssociation8DF0EAE5
-      - VPCApplicationSubnet1SubnetCE118F80
-      - VPCApplicationSubnet2DefaultRouteC3680A52
-      - VPCApplicationSubnet2RouteTableFDC3EEE6
-      - VPCApplicationSubnet2RouteTableAssociationD84040F3
-      - VPCApplicationSubnet2Subnet988E96B1
-      - VPCBraketEndpointFB085AD8
-      - VPCBraketEndpointSecurityGroup92A02E89
-      - VPCIGWB7E252D3
-      - VPCIngressSubnet1DefaultRouteFE025494
-      - VPCIngressSubnet1EIP99406D22
-      - VPCIngressSubnet1NATGatewayEA4AE80E
-      - VPCIngressSubnet1RouteTable9BE753A6
-      - VPCIngressSubnet1RouteTableAssociationCAFE4089
-      - VPCIngressSubnet1Subnet4257CD65
-      - VPCIngressSubnet2DefaultRoute9FF8300E
-      - VPCIngressSubnet2EIPCE44C233
-      - VPCIngressSubnet2NATGateway68BB4190
-      - VPCIngressSubnet2RouteTableDFE1B4BC
-      - VPCIngressSubnet2RouteTableAssociationB244DE25
-      - VPCIngressSubnet2SubnetE0EA735B
-      - VPClogtoCWFlowLog99C98B79
-      - VPClogtoCWIAMRoleDefaultPolicyF548A5B9
-      - VPClogtoCWIAMRoleCFE2A6E9
-      - VPCB9E5F0B4
-      - VPCS3Endpoint18C9C7CA
-      - VPCVPCGW99B986DC
     Metadata:
       aws:cdk:path: QCEDDStack/Notebook/Notebook
   CDKMetadata:
     Type: AWS::CDK::Metadata
     Properties:
-      Analytics: v2:deflate64:H4sIAAAAAAAA/11S207DMAz9Ft6zAIUfGBOgiQmqbuIVpZk3TNu4ymXTVPXfcdJuhb3E55zYJ46TTGZ38u5GHd1Mb6tZjaXs1l7pSix2JldWNeDBRrIgs0WPZCIpQg2Ci7460JnsPlsd1c98IfJQ1qjXoTTgozahgoKHjSq58qJP2tw50qguB8SNCJ6XeQzvyr8qD0d1ErnFA8PJeGm4RcbnhKGTkc093+a7AePFqHCzz2bbEho/pl5octopDX9z1qCDRX96tRTa1Po/4aWm44r2cWOEvUDVyK6g4aYp5sRTSa0NqBdV42T3Bknj0Iua9qxw/eWgM+6FM7y1oRbTnAeQ1sn3ivJ4nLbYxoH2Ag48ALZI7za+H7s+yO4p6GoY44iGMBn94wN5Ui5VfynngG3nMQin9tCoCqzs4oORh5KoWhrnldGwwh3ok66B/9EO07iuU/peFOAoWJ16/Ai+DV4kc/6SezSp6pzSC0NbkD/u9nD/KLN7md38OMSZDcZjA7IY4i/TYl4L4QIAAA==
+      Analytics: v2:deflate64:H4sIAAAAAAAA/22QwW6DMBBEvyV34yakP9DkVLVqI9J7ZMyCNgYbee1UCPHvXQMqqtSLZ+dpd0ZyLvO93O/UN2W6MlmLpRyvQWkjzrW9KK86COCTOTtbYUBnkyliC4KPbqPpSI5vMCTKMgmyDL5cjzqhZZjfi2tRD79ws9dYkvbYp/BJwANs4Ii5Yq3i1KMcT1EbCImt0yJb0B+/mJOi+fqmiIBjX5IIVB0XuLUg6RayTHyjGuiUAS9Hph8uQOmcebUUlNXwjjXoQbfA31JjI/5ZmaZEP2PoYxBzL39sg3ZeLoBc9LwkrKtA3unpcXiW+UEed3dCzHy0ATuQxaI/ms6u5qcBAAA=
     Metadata:
       aws:cdk:path: QCEDDStack/CDKMetadata/Default
     Condition: CDKMetadataAvailable
