@@ -1,0 +1,3 @@
+qiskit-nature
+qiskit-braket-provider
+pdbparser
