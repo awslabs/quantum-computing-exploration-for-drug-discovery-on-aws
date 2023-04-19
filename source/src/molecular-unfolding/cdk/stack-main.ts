@@ -185,8 +185,6 @@ export class MainStack extends SolutionStack {
       serverAccessLogsPrefix: `accesslogs/${bucketName}/`,
     });
 
-    s3bucket.node.addDependency(logS3bucket);
-
     new CfnOutput(this, 'BucketName', {
       value: s3bucket.bucketName,
       description: 'S3 Bucket Name',
