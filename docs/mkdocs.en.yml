@@ -28,7 +28,7 @@ nav:
       - Overview: workshop/c-1-protein-folding-qrw/protein-folding-qrw-background.md
       - Notebook: workshop/c-1-protein-folding-qrw/protein-folding-qrw.ipynb
       - Technical Details: workshop/c-1-protein-folding-qrw/protein-folding-qrw-details.md
-    - Protein Folding - Grover Search: 
+    - Protein Folding - Grover's Search: 
       - Overview: workshop/c-2-protein-folding-gs/protein-folding-gs-background.md
       - Notebook: workshop/c-2-protein-folding-gs/protein-folding-gs.ipynb
       - Technical Details: workshop/c-2-protein-folding-gs/protein-folding-gs-details.md
