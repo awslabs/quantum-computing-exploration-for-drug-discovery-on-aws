@@ -1,0 +1,3 @@
+>bpRNA_CRW_32863
+GCGGGUAUAGUUUAGUGGUAAAA
+..........(((.......)))
