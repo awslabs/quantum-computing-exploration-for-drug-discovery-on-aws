@@ -8,7 +8,7 @@ The workshop implements the [QFold: quantum walk and deep learning to solve prot
 RNA folding refers to the process by which a single-stranded RNA molecule adopts a specific three-dimensional structure through the formation of intramolecular base pairs. This process is crucial for the proper functioning of RNA in a variety of biological processes, such as gene expression, RNA splicing, and protein synthesis.
 
 
-![RNA](../../images/Pre-mRNA-1ysv-tubes.png)
+![RNA](../../images/molecule-docking.png)
 
 Figure 12: A hairpin loop from a pre-mRNA[<sup>7</sup>](#wiki-rna)
 

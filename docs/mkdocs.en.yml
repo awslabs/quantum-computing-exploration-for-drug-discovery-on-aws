@@ -26,8 +26,8 @@ nav:
       - Technical Details: workshop/b-1-rna-folding-qubo/rna-folding-qubo-details.md
     - Protein Folding - Quantum Random Walk: 
       - Overview: workshop/c-1-protein-folding-qrw/protein-folding-qrw-background.md
-      - Notebook: workshop/c-1-protein-folding-qrw/protein-foling-qwr.ipynb
-      - Technical Details: workshop/c-1-protein-folding-qrw/protein-folding-qwr-details.md
+      - Notebook: workshop/c-1-protein-folding-qrw/protein-folding-qrw.ipynb
+      - Technical Details: workshop/c-1-protein-folding-qrw/protein-folding-qrw-details.md
     - Protein Folding - Grover Search: 
       - Overview: workshop/c-2-protein-folding-gs/protein-folding-gs-background.md
       - Notebook: workshop/c-2-protein-folding-gs/protein-folding-gs.ipynb
