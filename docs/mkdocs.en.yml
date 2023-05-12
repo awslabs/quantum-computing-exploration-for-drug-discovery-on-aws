@@ -16,48 +16,34 @@ nav:
   - Automated Deployment: deployment.md
   - Workshop: 
     - Background: workshop/background.md
-    - Molecular Unfolding: 
-      - Algorithm:
-        - Overview: workshop/a-molecular-unfolding/molecular-unfolding-background.md
-        - Run Algorithm Notebook: workshop/a-molecular-unfolding/molecular-unfolding-algorithm.ipynb
-        - Technical Details: workshop/a-molecular-unfolding/molecular-unfolding-model-details.md
-      - Hybrid Jobs: 
-        - Run Hybrid Job Notebook for Batch Evaluation: workshop/a-molecular-unfolding/molecular-unfolding-hybrid-jobs.ipynb
-    - RNA Folding: 
-      - Notebook Experiment:
-        - Overview: workshop/b-rna-folding/rna-folding-background.md
-        - Run Algorithm Notebook: workshop/b-rna-folding/rna-folding-algorithm.ipynb
-        - Technical Details: workshop/b-rna-folding/rna-folding-model-details.md
-      - Hybrid Jobs: 
-        - Run Hybrid Job Notebook for Batch Evaluation: workshop/b-rna-folding/rna-folding-hybrid-jobs.ipynb
-    - Protein Folding-QFold: 
-      - Notebook Experiment:
-        - Overview: workshop/c-protein-folding-qfold/qfold-background.md
-        - Run Algorithm Notebook: workshop/c-protein-folding-qfold/qfold-algorithm.ipynb
-        - Technical Details: workshop/c-protein-folding-qfold/qfold-model-detail.md
-      - Hybrid Jobs: 
-        - Run Hybrid Job Notebook for Batch Evaluation: workshop/c-protein-folding-qfold/qfold-hybrid-jobs.ipynb
-    - Protein Folding-GroverMethod: 
-      - Notebook Experiment:
-        - Overview: workshop/d-protein-folding-grover/protein-folding-grover-method-background.md
-        - Run Algorithm Notebook: workshop/d-protein-folding-grover/protein-folding-grover-method-algorithm.ipynb
-        - Technical Details: workshop/d-protein-folding-grover/protein-folding-grover-method-model-detail.md
-      - Hybrid Jobs: 
-        - Run Hybrid Job Notebook for Batch Evaluation: workshop/d-protein-folding-grover/protein-folding-grover-method-hybrid-jobs.ipynb
-    - Protein Folding-VQE: 
-      - Notebook Experiment:
-        - Overview: workshop/e-protein-folding-vqe/protein-folding-vqe-background.md
-        - Run Algorithm Notebook: workshop/e-protein-folding-vqe/protein-folding-vqe-algorithm.ipynb
-        - Technical Details: workshop/e-protein-folding-vqe/protein-folding-vqe-model-detail.md
-      - Hybrid Jobs: 
-        - Run Hybrid Job Notebook for Batch Evaluation: workshop/e-protein-folding-vqe/protein-folding-vqe-hybrid-jobs.ipynb
-    - Medical Image Processing: 
-      - Notebook Experiment:
-        - Overview: workshop/f-medical-image-processing/medical-image-processing-background.md
-        - Run Algorithm Notebook: workshop/f-medical-image-processing/medical-image-processing-algorithm.ipynb
-        - Technical Details: workshop/f-medical-image-processing/medical-image-processing-model-detail.md
-      - Hybrid Jobs: 
-        - Run Hybrid Job Notebook for Batch Evaluation: workshop/f-medical-image-processing/medical-image-processing-hybrid-jobs.ipynb
+    - Molecular Unfolding - Quadratic Unconstrained Binary Optimization: 
+      - Overview: workshop/a-1-molecular-unfolding-qubo/molecular-unfolding-qubo-background.md
+      - Notebook: workshop/a-1-molecular-unfolding-qubo/molecular-unfolding-qubo.ipynb
+      - Technical Details: workshop/a-1-molecular-unfolding-qubo/molecular-unfolding-qubo-details.md
+    - RNA Folding - Quadratic Unconstrained Binary Optimization: 
+      - Overview: workshop/b-1-rna-folding-qubo/rna-folding-qubo-background.md
+      - Notebook: workshop/b-1-rna-folding-qubo/rna-folding-qubo.ipynb
+      - Technical Details: workshop/b-1-rna-folding-qubo/rna-folding-qubo-details.md
+    - Protein Folding - Quantum Random Walk: 
+      - Overview: workshop/c-1-protein-folding-qrw/protein-folding-qrw-background.md
+      - Notebook: workshop/c-1-protein-folding-qrw/protein-folding-qrw.ipynb
+      - Technical Details: workshop/c-1-protein-folding-qrw/protein-folding-qrw-details.md
+    - Protein Folding - Grover Search: 
+      - Overview: workshop/c-2-protein-folding-gs/protein-folding-gs-background.md
+      - Notebook: workshop/c-2-protein-folding-gs/protein-folding-gs.ipynb
+      - Technical Details: workshop/c-2-protein-folding-gs/protein-folding-gs-details.md
+    - Protein Folding - Variational Quantum Eigensolver: 
+      - Overview: workshop/c-3-protein-folding-vqe/protein-folding-vqe-background.md
+      - Notebook: workshop/c-3-protein-folding-vqe/protein-folding-vqe.ipynb
+      - Technical Details: workshop/c-3-protein-folding-vqe/protein-folding-vqe-details.md
+    - Retrosynthetic Planning - Quantum Reinforcement Learning: 
+      - Overview: workshop/d-1-retrosynthetic-planning-qrl/retrosynthetic-planning-qrl-background.md
+      - Notebook: workshop/d-1-retrosynthetic-planning-qrl/retrosynthetic-planning-qrl.ipynb
+      - Technical Details: workshop/d-1-retrosynthetic-planning-qrl/retrosynthetic-planning-qrl-details.md
+    - Medical Image Processing - Quantum Neutral Network: 
+      - Overview: workshop/e-1-medical-image-processing-qnn/medical-image-processing-qnn-background.md
+      - Notebook: workshop/e-1-medical-image-processing-qnn/medical-image-processing-qnn.ipynb
+      - Technical Details: workshop/e-1-medical-image-processing-qnn/medical-image-processing-qnn-details.md
   - Additional resources: additional-resources.md
   - Uninstall the solution: uninstall.md
   - Source code: source.md

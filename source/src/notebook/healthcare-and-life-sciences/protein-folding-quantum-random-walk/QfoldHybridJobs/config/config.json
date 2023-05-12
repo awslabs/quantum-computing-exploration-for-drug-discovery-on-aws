@@ -1,0 +1,60 @@
+{
+
+    "maximum_aminoacid_length": 200,
+    "window_size": 5,
+    "model_path": "./models/",
+    "initialization_option": "minifold",
+    "epochs": 3,
+    "batch_size": 16,
+    
+    "psi4_path": "/home/ubuntu/psi4conda/bin/psi4",
+    "energy_method": "mp2",
+    "basis": "6-31g",
+    "input_filename_energy_psi4": "inputRotations",
+    "output_filename_energy_psi4": "outputRotations",
+    "precalculated_energies_path": "/precalculated_energies/",
+    "methods_initialization": [
+        "minifold",
+        "random",
+        "original"
+    ],
+
+    "initial_step": 2,
+    "final_step": 10,
+    "path_tts_plot": "./results_1000/",
+    "ancilla_bits": 7,
+    "number_iterations": 500,
+    "beta": 1000,
+    "beta_type": "fixed",
+    "alpha": 0.9,
+    "kappa": 1,
+    "annealing_schedule": "geometric",
+    "oracle_option":"qfold_oracle",
+    
+    "path_qiskit_token": "./config/qiskit_API_token.json",
+    "device_ibm_q": "ibmq_casablanca",
+    "hub": "ibm-q-research",
+    "group": "Pablo-Antonio-Mo",
+    "project": "main",
+    "ibmq_shots": 8192,
+    "betas": [ 0.1, 1],
+    "w_real_mode": 20,
+    "number_repetitions_real_mode": 1,
+
+    "precision_solution": 0.9,
+    "default_value_tts": 99999,
+    
+    "n_threads_pool": 1,    
+    
+    "number_repetitions_ibmq": 1,
+    "number_repetitions_ibmq_zero_beta": 2, 
+
+    "color_quantum_minifold": "red",
+    "color_classical_minifold": "blue",
+    "color_quantum_random": "yellow",
+    "color_classical_random": "cyan",
+
+    "quantum_simulation_activated": 1,
+    "classical_simulation_activated": 1
+    
+}
