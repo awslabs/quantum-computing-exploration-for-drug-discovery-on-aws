@@ -13,6 +13,7 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
+import { join } from 'path';
 import {
   aws_events as events,
   aws_events_targets as targets,
@@ -21,6 +22,7 @@ import {
   aws_kms as kms,
   aws_iam as iam,
   aws_lambda as lambda,
+  Duration,
   StackProps,
   Fn,
   CfnOutput,
@@ -29,6 +31,8 @@ import {
   CfnRule,
   CfnCondition,
 } from 'aws-cdk-lib';
+
+// import * as cdk from 'aws-cdk-lib';
 // import { EventField } from 'aws-cdk-lib/aws-events';
 
 import {
@@ -40,8 +44,7 @@ import {
 } from '../stack';
 import { Notebook } from './construct-notebook';
 import { AddCfnNag, genRandomDigits } from './utils/utils';
-import * as path from 'path';
-import * as cdk from 'aws-cdk-lib';
+
 
 
 export class MainStack extends SolutionStack {
@@ -160,38 +163,30 @@ export class MainStack extends SolutionStack {
         runtime: lambda.Runtime.PYTHON_3_9,
         functionName: 'checkHybridExperimentStatus',
         handler: 'checkHybridExperimentStatus.lambda_handler',
-        code: lambda.Code.fromAsset(path.join(__dirname, './lambda')),
-        timeout: cdk.Duration.seconds(120),
+        code: lambda.Code.fromAsset(join(__dirname, './lambda')),
+        timeout: Duration.seconds(120),
         environment: {
-          topic_arn: topic.topicArn
-        }
+          topic_arn: topic.topicArn,
+        },
       });
-      
-      fn.addToRolePolicy(
-          new iam.PolicyStatement({
-            actions: ['sns:Publish'],
-            effect: iam.Effect.ALLOW,
-            resources: [ topic.topicArn ]
-          })
-        );
-        
-      fn.addToRolePolicy(
-          new iam.PolicyStatement({
-            actions: ['braket:GetJob','braket:SearchJobs'],
-            effect: iam.Effect.ALLOW,
-            resources: [ '*' ]
-          })
-        );
 
-      eventRule.addTarget( new targets.LambdaFunction(fn))
-      
-      // eventRule.addTarget(new targets.SnsTopic(topic, {
-      //   message: events.RuleTargetInput.fromText(
-      //     `Reminder: Job [${EventField.fromPath('$.detail.jobArn')}] is [${EventField.fromPath(
-      //       '$.detail.status')}], StartedTime:[${EventField.fromPath('$.detail.startedAt')}], FinishedTime:[${EventField.fromPath('$.detail.endedAt')}]`,
-      //   ),
-      // }));
-      
+      fn.addToRolePolicy(
+        new iam.PolicyStatement({
+          actions: ['sns:Publish'],
+          effect: iam.Effect.ALLOW,
+          resources: [topic.topicArn],
+        }),
+      );
+
+      fn.addToRolePolicy(
+        new iam.PolicyStatement({
+          actions: ['braket:GetJob', 'braket:SearchJobs'],
+          effect: iam.Effect.ALLOW,
+          resources: ['*'],
+        }),
+      );
+
+      eventRule.addTarget(new targets.LambdaFunction(fn));
       new CfnOutput(this, 'SNSTopic', {
         value: topic.topicName,
         description: `SNS Topic Name(${prefix})`,
