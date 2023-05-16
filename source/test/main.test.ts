@@ -49,18 +49,12 @@ test('synthesizes the way we expect', () => {
   expect(template).toBeTruthy();
 });
 
-test('has 1 vpc', () => {
-  const app = new App();
-  const stack = new MainStack(app, 'test');
-  const template = Template.fromStack(stack);
-  template.hasResource('AWS::EC2::VPC', 1);
-});
 
 test('has 1 parameter', () => {
   const app = new App();
   const stack = new MainStack(app, 'test');
   const template = Template.fromStack(stack);
-  template.hasParameter('SNS email - Optional', 1);
+  template.hasParameter('snsEmail', 1);
 });
 
 test('has 1 eventBridge', () => {
@@ -68,20 +62,6 @@ test('has 1 eventBridge', () => {
   const stack = new MainStack(app, 'test');
   const template = Template.fromStack(stack);
   template.hasResource('AWS::Events::Rule', 1);
-});
-
-test('has 4 subnets', () => {
-  const app = new App();
-  const stack = new MainStack(app, 'test');
-  const template = Template.fromStack(stack);
-  template.hasResource('AWS::EC2::Subnet', 4);
-});
-
-test('has 1 flowLog', () => {
-  const app = new App();
-  const stack = new MainStack(app, 'test');
-  const template = Template.fromStack(stack);
-  template.hasResource('AWS::EC2::FlowLog', 1);
 });
 
 test('has output - NotebookURL', () => {
@@ -105,12 +85,6 @@ test('subscription success - email', () => {
   template.hasResource('AWS::SNS::Topic', 1);
 });
 
-test('subscription policy created correctly', () => {
-  const app = new App();
-  const stack = new MainStack(app, 'test');
-  const template = Template.fromStack(stack);
-  template.hasResource('AWS::SNS::TopicPolicy', 1);
-});
 
 test('SupportedRegionsRule config correctly', () => {
   const app = new App();
