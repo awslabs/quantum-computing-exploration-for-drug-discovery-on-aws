@@ -31,7 +31,7 @@ class Model(nn.Module):
 
 class CirModel(nn.Module):
 
-    def __init__(self, n_qubits, device='local', framework='dq', shots=1000, gain=2 ** 0.5, use_wscale=True, lrmul=1):
+    def __init__(self, n_qubits, device='local', framework='dq', shots=1000, layers=1, gain=2 ** 0.5, use_wscale=True, lrmul=1):
         super().__init__()
 
         self.device = device
@@ -48,7 +48,7 @@ class CirModel(nn.Module):
             self.w_mul = lrmul
 
         self.n_qubits = n_qubits
-        self.n_layers = 1
+        self.n_layers = layers
 
         # # weights for old implementation
         # self.weights = nn.Parameter(nn.init.uniform_(torch.empty(6 * self.n_qubits), a=0.0, b=2 * np.pi) * init_std)
@@ -172,7 +172,9 @@ class CirModel(nn.Module):
         # weights = self.weights
         # print(f"inputs size is {inputs.size()} and weights size is {weights.size()}")
         qml.AmplitudeEmbedding(inputs, wires=range(self.n_qubits), pad_with=0, normalize=True)
-        qml.BasicEntanglerLayers(weights, wires=range(self.n_qubits), rotation=qml.RY)
+        for i in range(self.n_layers):
+            tempweight = weights[i].reshape(1, -1)
+            qml.BasicEntanglerLayers(tempweight, wires=range(self.n_qubits), rotation=qml.RY)
         # qml.BasicEntanglerLayers(weights, wires=range(n_qubits), rotation=qml.RZ)
         # qml.BasicEntanglerLayers(weights, wires=range(n_qubits), rotation=qml.RY)
         return qml.expval(qml.PauliZ(wires=0))
@@ -246,28 +248,29 @@ class RetroRLModel:
             for device in model_param["device"]:
                 for framework in model_param["framework"]:
                     for shots in model_param["shots"]:
-                        model_name = f"{n_qubits}_{device}_{framework}_{shots}"
-                        # check availability
-                        if model_name in self.model["retro-qrl"].keys():
+                        for layers in model_param["layers"]:
+                            model_name = f"{n_qubits}_{device}_{framework}_{shots}_{layers}"
+                            # check availability
+                            if model_name in self.model["retro-qrl"].keys():
+                                logging.info(
+                                    f"duplicate model !! pass !! n_qubits {n_qubits}, device {device}, framework {framework}, shots {shots}, layers {layers}")
+                                continue
+                            else:
+                                self._update_model_info([n_qubits, device, framework, shots, layers], ["n_qubits", "device", "framework", "shots", "layers"], "retro-qrl")
+
+                            start = time.time()
+
+                            NN_model = CirModel(n_qubits, device, framework, shots, layers)
+
+                            end = time.time()
+
+                            self.model["retro-qrl"][model_name] = {}
+                            self.model["retro-qrl"][model_name]["model_name"]= model_name
+                            self.model["retro-qrl"][model_name]["version"]= str(int(time.time()))
+                            self.model["retro-qrl"][model_name]["nn_model"] = NN_model
+
                             logging.info(
-                                f"duplicate model !! pass !! n_qubits {n_qubits}, device {device}, framework {framework}, shots {shots}")
-                            continue
-                        else:
-                            self._update_model_info([n_qubits, device, framework, shots], ["n_qubits", "device", "framework", "shots"], "retro-qrl")
-
-                        start = time.time()
-
-                        NN_model = CirModel(n_qubits, device, framework, shots)
-
-                        end = time.time()
-
-                        self.model["retro-qrl"][model_name] = {}
-                        self.model["retro-qrl"][model_name]["model_name"]= model_name
-                        self.model["retro-qrl"][model_name]["version"]= str(int(time.time()))
-                        self.model["retro-qrl"][model_name]["nn_model"] = NN_model
-
-                        logging.info(
-                            f"Construct model for n_qubits:{n_qubits},device:{device},framework:{framework} {(end-start)/60} min")
+                                f"Construct model for n_qubits:{n_qubits},device:{device},framework:{framework},layers:{layers} {(end-start)/60} min")
 
     def _update_model_info(self, values, names, method):
         for value, name in zip(values, names):
