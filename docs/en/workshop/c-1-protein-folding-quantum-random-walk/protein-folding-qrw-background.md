@@ -1,7 +1,7 @@
 ## Notebook experimentation
 
 The workshop implements the [QFold: quantum walk and deep learning to solve protein folding](https://iopscience.iop.org/article/10.1088/2058-9565/ac4f2f) in
- Amazon Braket. This is mainly contributed by [Roberto Campos](https://github.com/roberCO) based on hist [implementation](https://iopscience.iop.org/article/10.1088/2058-9565/ac4f2f)
+ Amazon Braket. This is mainly contributed by [Roberto Campos](https://github.com/roberCO) based on his [implementation](https://iopscience.iop.org/article/10.1088/2058-9565/ac4f2f)
 
 ## RNA folding
 
