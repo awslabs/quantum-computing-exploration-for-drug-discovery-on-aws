@@ -46,7 +46,6 @@ import { Notebook } from './construct-notebook';
 import { AddCfnNag, genRandomDigits } from './utils/utils';
 
 
-
 export class MainStack extends SolutionStack {
   static SOLUTION_ID = 'SO8027'
   static SOLUTION_NAME = 'Quantum Computing Exploration'
@@ -144,7 +143,7 @@ export class MainStack extends SolutionStack {
       const eventRule = new events.Rule(this, 'eventRule', {
         eventPattern: {
           detail: {
-            status: ['COMPLETED','FAILED'],
+            status: ['COMPLETED', 'FAILED'],
           },
           source: ['aws.braket'],
           detailType: ['Braket Job State Change'],
