@@ -1,6 +1,6 @@
 ## Notebook experimentation
 
-The workshop implements the medical image analysis using quantum convolutional neural networks (QCNNs).
+This notebook implements the medical image analysis using quantum convolutional neural networks (QCNNs).
 
 ## Medical image analysis using QCNNs
 
@@ -11,7 +11,7 @@ Medical imaging seeks to reveal internal structures hidden by the skin and bones
 
 ![MedicalImage](../../images/ct-image.png)
 
-Figure 12: One frame of a CT scan of the chest[<sup>12</sup>](#wiki-medical-image)
+Figure 20: One frame of a CT scan of the chest[<sup>12</sup>](#wiki-medical-image)
 
 QCNNs use quantum circuits to perform convolution and pooling operations on medical images, 
 which are represented as quantum states. These circuits are designed to take 
@@ -27,9 +27,10 @@ QCNNs can also be used to perform other tasks, such as image segmentation and fe
 
     ![deployment output](../../images/deploy_output_notebook.png)
 
-    Figure 13: Notebook URL on the stack's Output tab
+    Figure 21: Notebook URL on the stack's Output tab
 
-4. Open the file under the directory **healthcare-and-life-science/e-1-medical-image-quantum-convelutional-neural-networks/medical-image-qcnn.ipynb** 
+4. Open
+**healthcare-and-life-science/e-1-medical-image-quantum-convelutional-neural-networks/medical-image-qcnn.ipynb** 
 and choose the kernel **qc_hcls_medical_image_qcnn**.
 
 # References

@@ -6,7 +6,7 @@ learning.
 This is mainly contributed by [Xiangyu Li](https://github.com/lxy-z) inspired by the publication  
 [Learning Retrosynthetic Planning through Simulated Experience](https://pubs.acs.org/doi/10.1021/acscentsci.9b00055).
 
-## Retrosynthetic Planning
+## Retrosynthetic planning using quantum reinforcement learning
 
 Retrosynthetic planning is a strategy for designing efficient synthetic routes for the preparation of complex organic molecules. It involves breaking down a target molecule into simpler precursor molecules, and then identifying the synthetic pathways that can be used to synthesize those precursors. It is an essential strategy 
 for designing efficient synthetic routes 
@@ -14,7 +14,7 @@ for complex organic molecules.
 
 ![Retro](../../images/retro-planning.png)
 
-Figure 12: A retrosynthetic analysis example[<sup>12</sup>](#wiki-retro)
+Figure 18: A retrosynthetic analysis example[<sup>12</sup>](#wiki-retro)
 
 The
 quantum reinforcement learning for 
@@ -35,7 +35,8 @@ target molecule from a set of starting materials. The algorithm can learn from a
 
     Figure 13: Notebook URL on the stack's Output tab
 
-4. Open the file under the directory **healthcare-and-life-science/d-1-retrosynthetic-planning-quantum-reinforcement-learning/retrosynthetic-planning-qrl.ipynb** and choose the kernel **qc_hcls_retrosynthetic_planning_qrl**.
+4. Open
+**healthcare-and-life-science/d-1-retrosynthetic-planning-quantum-reinforcement-learning/retrosynthetic-planning-qrl.ipynb** and choose the kernel **qc_hcls_retrosynthetic_planning_qrl**.
 
 # References
 <div id='wiki-retro'></div>

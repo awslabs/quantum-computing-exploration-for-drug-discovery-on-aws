@@ -40,9 +40,9 @@ nav:
       - Overview: workshop/d-1-retrosynthetic-planning-quantum-reinforcement-learning/retrosynthetic-planning-qrl-background.md
       - Notebook: workshop/d-1-retrosynthetic-planning-quantum-reinforcement-learning/retrosynthetic-planning-qrl.ipynb
       # - Technical Details: workshop/d-1-retrosynthetic-planning-quantum-reinforcement-learning/retrosynthetic-planning-qrl-details.md
-    - Medical Image - Quantum Neutral Network: 
-      - Overview: workshop/e-1-medical-image-qnn/medical-image-qnn-background.md
-      - Notebook: workshop/e-1-medical-image-qnn/medical-image-qnn.ipynb
+    - Medical Image - Quantum Convolutional Neutral Networks: 
+      - Overview: workshop/e-1-medical-image-quantum-convolutional-neural-networks/medical-image-qcnn-background.md
+      - Notebook: workshop/e-1-medical-image-quantum-convolutional-neural-networks/medical-image-qcnn.ipynb
       # - Technical Details: workshop/e-1-medical-image-qnn/medical-image-qnn-details.md
   - Additional resources: additional-resources.md
   - Uninstall the solution: uninstall.md

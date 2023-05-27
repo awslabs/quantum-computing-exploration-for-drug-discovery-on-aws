@@ -39,7 +39,8 @@ Here we focus on the first phase of MD, ligand expansion, which aims to reduce s
 
     Figure 7: Notebook URL on the stack's Output tab
 
-4. Open the file under the directory **healthcare-and-life-sciences/a-1-molecular-unfolding-quadratic-unconstrained-binary-optimization/molecular-unfolding-qubo.ipynb** and choose the kernel **qc_hcls_molecular_unfolding_qubo**.
+4. Open
+**healthcare-and-life-sciences/a-1-molecular-unfolding-quadratic-unconstrained-binary-optimization/molecular-unfolding-qubo.ipynb** and choose the kernel **qc_hcls_molecular_unfolding_qubo**.
 
 
 

@@ -13,13 +13,6 @@ During protein folding, the linear chain of amino acids folds into a unique thre
 
 Figure 16: Protein before and after folding[<sup>10</sup>](#wiki-protein)
 
-In this work, a fast quantum algorithm based on 
-Grover's search is proposed. The protein structure
-prediction problem is studied in 
-three-dimensional hydrophobic-hydrophilic model on body-centered cubic lattice. 
-The results show the quadratic speedup 
-over its classical counterparts.
-
 VQE is a quantum algorithm that can be used 
 to simulate the behavior of molecules, 
 including proteins. VQE works by approximating 
@@ -43,7 +36,7 @@ which maps the protein structure onto a set of qubits that can be manipulated by
 
     Figure 17: Notebook URL on the stack's Output tab
 
-4. Open the file under the directory **qc_hcls_rna_folding_qubo**.
+4. Open
 **healthcare-and-life-sciences/c-3-protein-folding-variational-quantum-eigensolver/protein-folding-vqe.ipynb** and choose the kernel
 **qc_hcls_protein_folding_vqe**.
 

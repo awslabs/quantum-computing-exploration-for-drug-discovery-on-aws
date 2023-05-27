@@ -1,6 +1,6 @@
 ## Notebook experimentation
 
-This notebook implements the work from [RNA Folding Using Quantum Computers](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1010032) inspired by the work from [QHack 2022 Winner](https://github.com/XanaduAI/QHack2022/issues/114) video in Amazon Braket.
+This notebook implements the work from [RNA Folding Using Quantum Computers](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1010032) inspired by the work from [QHack 2022 Winner](https://github.com/XanaduAI/QHack2022/issues/114). 
 
 ## RNA folding
 
@@ -25,7 +25,8 @@ a Hamiltonian is formulated in the Binary Quadratic Model (BQM) format.
 
     Figure 9: Notebook URL on the stack's Output tab
 
-4. Open the file under the directory **healthcare-and-life-sciences/b-1-rna-folding-quadratic-unconstrained-binary-optimization/rna-folding-qubo.ipynb** and choose the kernel **qc_hcls_rna_folding_qubo**.
+4. Open
+**healthcare-and-life-sciences/b-1-rna-folding-quadratic-unconstrained-binary-optimization/rna-folding-qubo.ipynb** and choose the kernel **qc_hcls_rna_folding_qubo**.
 
 
 # References

@@ -33,7 +33,7 @@ Figure 11: Scheme of the QFold algorithm[<sup>9</sup>](#qfold)
 
     Figure 12: Notebook URL on the stack's Output tab
 
-4. Open the file under the directory **qc_hcls_rna_folding_qubo**.
+4. Open
 **healthcare-and-life-sciences/c-1-protein-folding-quantum-random-walk/protein-folding-qrw.ipynb** and choose the kernel
 **qc_hcls_protein_folding_qrw**.
 

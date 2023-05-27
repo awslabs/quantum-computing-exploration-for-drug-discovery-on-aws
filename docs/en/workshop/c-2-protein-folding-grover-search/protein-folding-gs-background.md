@@ -2,8 +2,7 @@
 
 This notebook implements the [Quantum Speedup for Protein Structure Prediction](https://ieeexplore.ieee.org/document/9374469)
 in
- Amazon Braket. This is mainly contributed by [Roberto Campos](https://github.com/roberCO) 
- and [Renata Wong](https://scholar.google.com/citations?user=XVFoBw4AAAAJ&hl=en) and [Weng-Long Chang](https://ieeexplore.ieee.org/author/37273919400).
+Amazon Braket. This is mainly contributed by [Renata Wong](https://scholar.google.com/citations?user=XVFoBw4AAAAJ&hl=en) and [Weng-Long Chang](https://ieeexplore.ieee.org/author/37273919400).
 
 ## Protein folding using Grover's search
 
@@ -45,7 +44,7 @@ classical algorithms, which require O(N) time to search an unsorted database.
 
     Figure 15: Notebook URL on the stack's Output tab
 
-4. Open the file under the directory **qc_hcls_rna_folding_qubo**.
+4. Open
 **healthcare-and-life-sciences/c-2-protein-folding-grover-search/protein-folding-gs.ipynb** and choose the kernel
 **qc_hcls_protein_folding_gs**.
 

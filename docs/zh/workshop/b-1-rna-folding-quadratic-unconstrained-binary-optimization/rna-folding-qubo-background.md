@@ -1,59 +1,38 @@
-## Notebook experimentation
+## 笔记本实验
 
-The workshop implements the work from [Quantum Molecular Unfolding](https://arxiv.org/abs/2107.13607), and the [Molecular Unfolding with Quantum Annealing](https://www.youtube.com/watch?v=1NmAXIHAF2Y) video in Amazon Braket.
+This notebook implements the work from [RNA Folding Using Quantum Computers](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1010032) inspired by the work from [QHack 2022 Winner](https://github.com/XanaduAI/QHack2022/issues/114).
 
-## Molecular docking 
+本笔记本实现了 [使用量子计算机进行 RNA 折叠](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1010032) 的工作，灵感来自 [QHack 2022 Winner](https://journals.plos.org/ploscompbiol/article? //github.com/XanaduAI/QHack2022/issues/114）。
 
-Molecular Docking (MD) is an important step of the drug discovery process which aims at calculating the preferred position and shape of one molecule to a second when they are bound to each other. This step focuses on computationally simulating the molecular recognition process. It aims to achieve an optimized conformation for both the protein and ligand and relative orientation between protein and ligand such that the free energy of the overall system is minimized. 
+## RNA折叠
 
-In this work, the protein or the pocket is considered as a rigid structure, and the ligand is considered as a 
-flexible set of atoms.
+RNA折叠是指单链RNA分子通过形成分子内碱基对而采用特定的三维结构的过程。这个过程对于RNA在各种生物过程中的正常功能至关重要，例如基因表达、RNA剪接和蛋白质合成。
 
-![Molecular Docking](../../images/molecule-docking.png)
+![RNA](../../images/pre-mRNA.png)
 
-Figure 6: Molecular docking[<sup>6</sup>](#wiki-docking)
+图8: 来自pre-mRNA的发夹环[<sup>7</sup>](#wiki-rna)
 
-As described in [Quantum Molecular Unfolding](https://arxiv.org/abs/2107.13607), published by Mato et al, there are usually three main phases in MD: 
+在这项工作中，量子退火被用来预测 RNA 的二级结构。
+为了引导系统最大化碱基对的数量和茎的平均长度，
+哈密​​顿量以二元二次模型 (BQM) 格式制定。
 
-1. Expansion of the ligand to an unfolded shape, to reduce bias, that is, molecular unfolding (MU). MU includes:
-    * Identification of the rotatable bonds
-    * Internal distance maximization
-    * Removal of tool related bias (for example, SMILES-to-3D)
-2. Initial placement, which includes:
-    * Ligand main fragments decomposition
-    * Ligand initial poses identification
-    * Placement of the ligand into the pocket with rigid roto-translations
-3. Shape refinement, which includes:
-    * Use of the rotatable bonds to modify the ligand shape and to match the protein pocket
-    * Docking score maximization
+## 笔记本概览
 
-## Quantum molecular unfolding on the AWS Cloud
+1. 登录 [AWS CloudFormation 控制台](https://console.aws.amazon.com/cloudformation/home?)。
+2. 在 **Stacks** 页面上，选择解决方案的根堆栈。
+3. 选择 **Outputs** 选项卡并打开笔记本的链接。
 
-Here we focus on the first phase of MD, ligand expansion, which aims to reduce shape bias that may affect the final quality of docking.  In this solution we use the quantum annealing approach to molecular unfolding (MU) as published by Mato et al. Our solution uses AWS Services to execute this problem on quantum computing hardware, available through AWS Braket. The solution also allows the problem to be run on classic computing hardware, on AWS, for comparison.
+    ![部署输出](../../images/deploy_output_notebook.png)
 
-## Notebook overview
+    图 7：堆栈输出选项卡上的笔记本 URL
 
-1. Sign in to the [AWS CloudFormation console](https://console.aws.amazon.com/cloudformation/home?). 
-2. On the **Stacks** page, select the solution’s root stack. 
-3. Choose the **Outputs** tab and open the link for your notebook.
+4. 打开**healthcare-and-life-sciences/a-1-molecular-unfolding-quadratic-unconstrained-binary-optimization/molecular-unfolding-qubo.ipynb**目录下的文件，选择内核**qc_hcls_molecular_unfolding_qubo**。
 
-    ![deployment output](../../images/deploy_output_notebook.png)
+4. 打开
+**healthcare-and-life-sciences/b-1-rna-folding-quadratic-unconstrained-binary-optimization/rna-folding-qubo.ipynb**并选择内核
+**qc_hcls_rna_folding_qubo**。
 
-    Figure 7: Notebook URL on the stack's Output tab
+# 参考
+<div id='wiki-rna'></div>
 
-4. Open the file under the directory **molecular-folding/molecular_unfolding.ipynb** and choose the kernel **qcenv**.
-
-5. Navigate through the notebook, which consists of four Steps:
-
-    - Step 1: Prepare data - Prepare molecular data for experiments.
-    - Step 2: Build model - Build model for molecular unfolding.
-    - Step 3: Optimize configuration - Run optimization to find the configuration.
-    - Step 4: Process results - Process the results for evaluation and visualization.
-
-
-
-
-# References
-<div id='wiki-docking'></div>
-
-- 6.[Wiki: Molecular Docking](https://en.wikipedia.org/wiki/Docking_(molecular))
+- 7.[Wiki: RNA](https://en.wikipedia.org/wiki/RNA)
