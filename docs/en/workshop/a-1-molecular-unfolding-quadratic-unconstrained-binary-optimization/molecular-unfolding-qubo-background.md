@@ -1,6 +1,6 @@
 ## Notebook experimentation
 
-The workshop implements the work from [Quantum Molecular Unfolding](https://arxiv.org/abs/2107.13607), and the [Molecular Unfolding with Quantum Annealing](https://www.youtube.com/watch?v=1NmAXIHAF2Y) video in Amazon Braket.
+This notebook implements the work from [Quantum Molecular Unfolding](https://arxiv.org/abs/2107.13607), and the [Molecular Unfolding with Quantum Annealing](https://www.youtube.com/watch?v=1NmAXIHAF2Y) video in Amazon Braket.
 
 ## Molecular docking 
 
@@ -27,9 +27,7 @@ As described in [Quantum Molecular Unfolding](https://arxiv.org/abs/2107.13607),
     * Use of the rotatable bonds to modify the ligand shape and to match the protein pocket
     * Docking score maximization
 
-## Quantum molecular unfolding on the AWS Cloud
-
-Here we focus on the first phase of MD, ligand expansion, which aims to reduce shape bias that may affect the final quality of docking.  In this solution we use the quantum annealing approach to molecular unfolding (MU) as published by Mato et al. Our solution uses AWS Services to execute this problem on quantum computing hardware, available through AWS Braket. The solution also allows the problem to be run on classic computing hardware, on AWS, for comparison.
+Here we focus on the first phase of MD, ligand expansion, which aims to reduce shape bias that may affect the final quality of docking.  In this solution we use the quantum annealing approach to molecular unfolding (MU) as published by Mato et al.
 
 ## Notebook overview
 
@@ -41,15 +39,7 @@ Here we focus on the first phase of MD, ligand expansion, which aims to reduce s
 
     Figure 7: Notebook URL on the stack's Output tab
 
-4. Open the file under the directory **molecular-folding/molecular_unfolding.ipynb** and choose the kernel **qcenv**.
-
-5. Navigate through the notebook, which consists of four Steps:
-
-    - Step 1: Prepare data - Prepare molecular data for experiments.
-    - Step 2: Build model - Build model for molecular unfolding.
-    - Step 3: Optimize configuration - Run optimization to find the configuration.
-    - Step 4: Process results - Process the results for evaluation and visualization.
-
+4. Open the file under the directory **healthcare-and-life-sciences/a-1-molecular-unfolding-quadratic-unconstrained-binary-optimization/molecular-unfolding-qubo.ipynb** and choose the kernel **qc_hcls_molecular_unfolding_qubo**.
 
 
 
