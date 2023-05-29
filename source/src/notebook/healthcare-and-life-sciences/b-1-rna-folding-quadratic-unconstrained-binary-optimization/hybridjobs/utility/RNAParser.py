@@ -6,8 +6,6 @@
 ########################################################################################################################
 
 
-from biopandas.mol2 import PandasMol2
-import pandas as pd
 import numpy as np
 import re
 
