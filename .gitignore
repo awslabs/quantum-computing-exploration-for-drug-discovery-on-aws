@@ -25,4 +25,4 @@ nohup.out
 
 # json
 molecular-unfolding-hybrid-jobs.json
-source/src/notebook/healthcare-and-life-sciences/rna-folding-qubo/*.json
+source/src/notebook/healthcare-and-life-sciences/**/*.json
