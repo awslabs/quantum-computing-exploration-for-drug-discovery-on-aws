@@ -1,26 +1,30 @@
 ## Notebook experimentation
 
-The workshop implements the [QFold: quantum walk and deep learning to solve protein folding](https://iopscience.iop.org/article/10.1088/2058-9565/ac4f2f) in
- Amazon Braket. This is mainly contributed by [Roberto Campos](https://github.com/roberCO) based on hist [implementation](https://iopscience.iop.org/article/10.1088/2058-9565/ac4f2f)
+This notebook implements the protein folding
+using varionational quantum eigensolver (vqe).
 
-## RNA folding
+## Protein folding using VQE
 
-RNA folding refers to the process by which a single-stranded RNA molecule adopts a specific three-dimensional structure through the formation of intramolecular base pairs. This process is crucial for the proper functioning of RNA in a variety of biological processes, such as gene expression, RNA splicing, and protein synthesis.
+Protein folding is the process by which a protein molecule assumes its three-dimensional shape, which is essential for its proper function. Proteins are made up of a linear chain of amino acids, and their final structure is determined by the sequence of amino acids and the interactions between them.
 
+During protein folding, the linear chain of amino acids folds into a unique three-dimensional structure, which is stabilized by various types of interactions, such as hydrogen bonds, electrostatic forces, and van der Waals forces. The process of protein folding is highly complex and involves multiple stages, including the formation of secondary structures, such as alpha-helices and beta-sheets, and the packing of these structures into a final three-dimensional shape.
 
-![RNA](../../images/molecule-docking.png)
+![Protein](../../images/protein-folding.png)
 
-Figure 12: A hairpin loop from a pre-mRNA[<sup>7</sup>](#wiki-rna)
+Figure 16: Protein before and after folding[<sup>10</sup>](#wiki-protein)
 
-In this work, the quantum annealer is leveraged to predict the secondary structure of RNA. 
-To steer the system towards maximizing both the number of base pairs and the average length of the stems, 
-a Hamiltonian is formulated in the Binary Quadratic Model (BQM) format.
+VQE is a quantum algorithm that can be used 
+to simulate the behavior of molecules, 
+including proteins. VQE works by approximating 
+the ground state energy of a molecule using 
+a quantum computer, which can be used to 
+predict the properties of the molecule.
 
-## Quantum RNA folding on the AWS Cloud
-
-In this solution we use the quantum annealing approach to RNA folding as published by Dillion M.Fox et al. This implementation is also inspired by the work from 
-winner in QHack 2022. Our solution uses AWS Services to execute this problem on quantum computing hardware, available through AWS Braket. 
-The solution also allows the problem to be run on classic computing hardware, on AWS, for comparison.
+To use VQE for protein folding, one would 
+first need to encode the protein structure into a format that can be represented as a 
+quantum state. This can be done using a 
+technique called the qubitization method, 
+which maps the protein structure onto a set of qubits that can be manipulated by the quantum computer.
 
 ## Notebook overview
 
@@ -30,14 +34,13 @@ The solution also allows the problem to be run on classic computing hardware, on
 
     ![deployment output](../../images/deploy_output_notebook.png)
 
-    Figure 13: Notebook URL on the stack's Output tab
+    Figure 17: Notebook URL on the stack's Output tab
 
-4. Open the file under the directory **healthcare-and-life-science/rna-folding/rna-folding-algorithm.ipynb** and choose the kernel **qc_hcls_rna_folding**.
-
-
-
+4. Open
+**healthcare-and-life-sciences/c-3-protein-folding-variational-quantum-eigensolver/protein-folding-vqe.ipynb** and choose the kernel
+**qc_hcls_protein_folding_vqe**.
 
 # References
-<div id='wiki-rna'></div>
+<div id='wiki-protein'></div>
 
-- 7.[Wiki: RNA](https://en.wikipedia.org/wiki/RNA)
+- 10.[Wiki: Protein](https://en.wikipedia.org/wiki/Protein_folding)

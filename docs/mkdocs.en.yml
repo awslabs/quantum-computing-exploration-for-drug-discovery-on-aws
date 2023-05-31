@@ -19,31 +19,31 @@ nav:
     - Molecular Unfolding - Quadratic Unconstrained Binary Optimization: 
       - Overview: workshop/a-1-molecular-unfolding-quadratic-unconstrained-binary-optimization/molecular-unfolding-qubo-background.md
       - Notebook: workshop/a-1-molecular-unfolding-quadratic-unconstrained-binary-optimization/molecular-unfolding-qubo.ipynb
-      - Technical Details: workshop/a-1-molecular-unfolding-quadratic-unconstrained-binary-optimization/molecular-unfolding-qubo-details.md
+      # - Technical Details: workshop/a-1-molecular-unfolding-quadratic-unconstrained-binary-optimization/molecular-unfolding-qubo-details.md
     - RNA Folding - Quadratic Unconstrained Binary Optimization: 
       - Overview: workshop/b-1-rna-folding-quadratic-unconstrained-binary-optimization/rna-folding-qubo-background.md
       - Notebook: workshop/b-1-rna-folding-quadratic-unconstrained-binary-optimization/rna-folding-qubo.ipynb
-      - Technical Details: workshop/b-1-rna-folding-quadratic-unconstrained-binary-optimization/rna-folding-qubo-details.md
+      # - Technical Details: workshop/b-1-rna-folding-quadratic-unconstrained-binary-optimization/rna-folding-qubo-details.md
     - Protein Folding - Quantum Random Walk: 
       - Overview: workshop/c-1-protein-folding-quantum-random-walk/protein-folding-qrw-background.md
       - Notebook: workshop/c-1-protein-folding-quantum-random-walk/protein-folding-qrw.ipynb
-      - Technical Details: workshop/c-1-protein-folding-quantum-random-walk/protein-folding-qrw-details.md
+      # - Technical Details: workshop/c-1-protein-folding-quantum-random-walk/protein-folding-qrw-details.md
     - Protein Folding - Grover's Search: 
       - Overview: workshop/c-2-protein-folding-grover-search/protein-folding-gs-background.md
       - Notebook: workshop/c-2-protein-folding-grover-search/protein-folding-gs.ipynb
-      - Technical Details: workshop/c-2-protein-folding-grover-search/protein-folding-gs-details.md
+      # - Technical Details: workshop/c-2-protein-folding-grover-search/protein-folding-gs-details.md
     - Protein Folding - Variational Quantum Eigensolver: 
       - Overview: workshop/c-3-protein-folding-variational-quantum-eigensolver/protein-folding-vqe-background.md
       - Notebook: workshop/c-3-protein-folding-variational-quantum-eigensolver/protein-folding-vqe.ipynb
-      - Technical Details: workshop/c-3-protein-folding-variational-quantum-eigensolver/protein-folding-vqe-details.md
+      # - Technical Details: workshop/c-3-protein-folding-variational-quantum-eigensolver/protein-folding-vqe-details.md
     - Retrosynthetic Planning - Quantum Reinforcement Learning: 
       - Overview: workshop/d-1-retrosynthetic-planning-quantum-reinforcement-learning/retrosynthetic-planning-qrl-background.md
       - Notebook: workshop/d-1-retrosynthetic-planning-quantum-reinforcement-learning/retrosynthetic-planning-qrl.ipynb
-      - Technical Details: workshop/d-1-retrosynthetic-planning-quantum-reinforcement-learning/retrosynthetic-planning-qrl-details.md
-    - Medical Image - Quantum Neutral Network: 
-      - Overview: workshop/e-1-medical-image-qnn/medical-image-qnn-background.md
-      - Notebook: workshop/e-1-medical-image-qnn/medical-image-qnn.ipynb
-      - Technical Details: workshop/e-1-medical-image-qnn/medical-image-qnn-details.md
+      # - Technical Details: workshop/d-1-retrosynthetic-planning-quantum-reinforcement-learning/retrosynthetic-planning-qrl-details.md
+    - Medical Image - Quantum Convolutional Neutral Networks: 
+      - Overview: workshop/e-1-medical-image-quantum-convolutional-neural-networks/medical-image-qcnn-background.md
+      - Notebook: workshop/e-1-medical-image-quantum-convolutional-neural-networks/medical-image-qcnn.ipynb
+      # - Technical Details: workshop/e-1-medical-image-qnn/medical-image-qnn-details.md
   - Additional resources: additional-resources.md
   - Uninstall the solution: uninstall.md
   - Source code: source.md

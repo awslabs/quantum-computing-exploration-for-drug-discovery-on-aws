@@ -1,26 +1,29 @@
 ## Notebook experimentation
 
-The workshop implements the [QFold: quantum walk and deep learning to solve protein folding](https://iopscience.iop.org/article/10.1088/2058-9565/ac4f2f) in
- Amazon Braket. This is mainly contributed by [Roberto Campos](https://github.com/roberCO) based on hist [implementation](https://iopscience.iop.org/article/10.1088/2058-9565/ac4f2f)
+This notebook implements the retrosynthetic 
+planning using quantum reinforcement 
+learning. 
+This is mainly contributed by [Xiangyu Li](https://github.com/lxy-z) inspired by the publication  
+[Learning Retrosynthetic Planning through Simulated Experience](https://pubs.acs.org/doi/10.1021/acscentsci.9b00055).
 
-## RNA folding
+## Retrosynthetic planning using quantum reinforcement learning
 
-RNA folding refers to the process by which a single-stranded RNA molecule adopts a specific three-dimensional structure through the formation of intramolecular base pairs. This process is crucial for the proper functioning of RNA in a variety of biological processes, such as gene expression, RNA splicing, and protein synthesis.
+Retrosynthetic planning is a strategy for designing efficient synthetic routes for the preparation of complex organic molecules. It involves breaking down a target molecule into simpler precursor molecules, and then identifying the synthetic pathways that can be used to synthesize those precursors. It is an essential strategy 
+for designing efficient synthetic routes 
+for complex organic molecules. 
 
+![Retro](../../images/retro-planning.png)
 
-![RNA](../../images/molecule-docking.png)
+Figure 18: A retrosynthetic analysis example[<sup>12</sup>](#wiki-retro)
 
-Figure 12: A hairpin loop from a pre-mRNA[<sup>7</sup>](#wiki-rna)
-
-In this work, the quantum annealer is leveraged to predict the secondary structure of RNA. 
-To steer the system towards maximizing both the number of base pairs and the average length of the stems, 
-a Hamiltonian is formulated in the Binary Quadratic Model (BQM) format.
-
-## Quantum RNA folding on the AWS Cloud
-
-In this solution we use the quantum annealing approach to RNA folding as published by Dillion M.Fox et al. This implementation is also inspired by the work from 
-winner in QHack 2022. Our solution uses AWS Services to execute this problem on quantum computing hardware, available through AWS Braket. 
-The solution also allows the problem to be run on classic computing hardware, on AWS, for comparison.
+The
+quantum reinforcement learning for 
+retrosynthetic planning involves 
+encoding the target molecule and the 
+available synthetic transformations as quantum states. 
+The quantum reinforcement learning algorithm can then use these states to 
+learn the optimal sequence of synthetic transformations to reach the 
+target molecule from a set of starting materials. The algorithm can learn from a database of known reactions, as well as from trial and error in a virtual environment, to optimize the synthesis process.
 
 ## Notebook overview
 
@@ -32,12 +35,10 @@ The solution also allows the problem to be run on classic computing hardware, on
 
     Figure 13: Notebook URL on the stack's Output tab
 
-4. Open the file under the directory **healthcare-and-life-science/rna-folding/rna-folding-algorithm.ipynb** and choose the kernel **qc_hcls_rna_folding**.
-
-
-
+4. Open
+**healthcare-and-life-science/d-1-retrosynthetic-planning-quantum-reinforcement-learning/retrosynthetic-planning-qrl.ipynb** and choose the kernel **qc_hcls_retrosynthetic_planning_qrl**.
 
 # References
-<div id='wiki-rna'></div>
+<div id='wiki-retro'></div>
 
-- 7.[Wiki: RNA](https://en.wikipedia.org/wiki/RNA)
+- 12.[Learning Retrosynthetic Planning through Simulated Experience](https://pubs.acs.org/doi/10.1021/acscentsci.9b00055).

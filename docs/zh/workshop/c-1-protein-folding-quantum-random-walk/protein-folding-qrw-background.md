@@ -1,43 +1,46 @@
-## Notebook experimentation
+## 笔记本实验
 
-The workshop implements the [QFold: quantum walk and deep learning to solve protein folding](https://iopscience.iop.org/article/10.1088/2058-9565/ac4f2f) in
- Amazon Braket. This is mainly contributed by [Roberto Campos](https://github.com/roberCO) based on hist [implementation](https://iopscience.iop.org/article/10.1088/2058-9565/ac4f2f)
+本笔记本基于Amazon Braket实现了
+[QFold：quantum walk and deep learning to solve protein folding](https://iopscience.iop.org/article/10.1088/2058-9565/ac4f2f)。这主要是由 [Roberto Campos](https://github.com/roberCO) 基于他的 [implementation](https://iopscience.iop.org/article/10.1088/2058-9565/ac4f2f) 贡献的。
 
-## RNA folding
+## 使用量子游走的蛋白质折叠
 
-RNA folding refers to the process by which a single-stranded RNA molecule adopts a specific three-dimensional structure through the formation of intramolecular base pairs. This process is crucial for the proper functioning of RNA in a variety of biological processes, such as gene expression, RNA splicing, and protein synthesis.
+蛋白质折叠是蛋白质分子呈现其三维形状的过程，
+这对其正常功能至关重要。
+蛋白质由氨基酸的线性链组成，
+它们的最终结构由氨基酸的序列和它们之间的相互作用决定。
 
+在蛋白质折叠过程中，线性氨基酸链折叠成独特的三维结构，通过各种类型的相互作用（例如氢键、静电力和范德华力）来稳定该结构。蛋白质折叠的过程非常复杂，涉及多个阶段，包括二级结构的形成，例如 alpha 螺旋和 beta 折叠，以及将这些结构包装成最终的三维形状。
 
-![RNA](../../images/molecule-docking.png)
+![Protein](../../images/protein-folding.png)
 
-Figure 12: A hairpin loop from a pre-mRNA[<sup>7</sup>](#wiki-rna)
+图10: 折叠前后的蛋白质[<sup>8</sup>](#wiki-protein)
 
-In this work, the quantum annealer is leveraged to predict the secondary structure of RNA. 
-To steer the system towards maximizing both the number of base pairs and the average length of the stems, 
-a Hamiltonian is formulated in the Binary Quadratic Model (BQM) format.
+在这项工作中，量子行走被应用
+到 Metropolis 算法，以预测蛋白质如何在 3D 中折叠。
+量子行走是经典随机行走的量子模拟。与经典的随机游走不同，游走者占据确定的状态，随机性是由于状态之间的随机转换而产生的，在量子游走中，随机性是通过以下方式产生的：(1) 状态的量子叠加，(2) 非随机、可逆的单一演化(3) 状态测量引起的波函数坍缩。这在原始论文中被命名为 Qfold。
 
-## Quantum RNA folding on the AWS Cloud
+![Qfold](../../images/qfold.png)
 
-In this solution we use the quantum annealing approach to RNA folding as published by Dillion M.Fox et al. This implementation is also inspired by the work from 
-winner in QHack 2022. Our solution uses AWS Services to execute this problem on quantum computing hardware, available through AWS Braket. 
-The solution also allows the problem to be run on classic computing hardware, on AWS, for comparison.
-
-## Notebook overview
-
-1. Sign in to the [AWS CloudFormation console](https://console.aws.amazon.com/cloudformation/home?). 
-2. On the **Stacks** page, select the solution’s root stack. 
-3. Choose the **Outputs** tab and open the link for your notebook.
-
-    ![deployment output](../../images/deploy_output_notebook.png)
-
-    Figure 13: Notebook URL on the stack's Output tab
-
-4. Open the file under the directory **healthcare-and-life-science/rna-folding/rna-folding-algorithm.ipynb** and choose the kernel **qc_hcls_rna_folding**.
+图11: QFold算法方案[<sup>9</sup>](#qfold)
 
 
+## 笔记本概览
 
+1. 登录 [AWS CloudFormation 控制台](https://console.aws.amazon.com/cloudformation/home?)。
+2. 在 **Stacks** 页面上，选择解决方案的根堆栈。
+3. 选择 **Outputs** 选项卡并打开笔记本的链接。
 
-# References
-<div id='wiki-rna'></div>
+    ![部署输出](../../images/deploy_output_notebook.png)
 
-- 7.[Wiki: RNA](https://en.wikipedia.org/wiki/RNA)
+    图 12：堆栈输出选项卡上的笔记本 URL
+
+4. 打开**healthcare-and-life-sciences/c-1-protein-folding-quantum-random-walk/protein-folding-qrw.ipynb**并选择内核
+**qc_hcls_protein_folding_qrw**。
+
+# 参考
+<div id='wiki-protein'></div>
+
+- 8.[Wiki: Protein](https://en.wikipedia.org/wiki/Protein_folding)
+
+- 9.[QFold: Quantum Walks and Deep Learning to Solve Protein Folding](https://iopscience.iop.org/article/10.1088/2058-9565/ac4f2f)
