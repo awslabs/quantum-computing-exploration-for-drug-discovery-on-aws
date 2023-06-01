@@ -29,7 +29,6 @@ pip3 install altair==4.2.0
 pip3 install setproctitle==1.3.2
 pip3 install matplotlib==3.5.3
 
-
 conda create -y -n qc_hcls_rna_folding_qubo python=3.8
 
 conda config --add channels bioconda
@@ -59,116 +58,7 @@ pip3 install matplotlib==3.5.3
 
 pip3 install git+https://github.com/ViennaRNA/forgi
 
-conda create -y -n qc_hcls_protein_folding_qrw python=3.7.2
-
-conda config --add channels bioconda
-
-conda config --set channel_priority strict
-
-conda activate qc_hcls_protein_folding_qrw
-
-pip3 install ipykernel
-
-pip3 install numpy==1.19.5
-pip3 install boto3==1.23.10
-pip3 install amazon-braket-sdk==1.35.5
-pip3 install biopandas==0.4.1
-pip3 install altair==4.2.0
-pip3 install setproctitle==1.3.2
-pip3 install scipy==1.5.4
-pip3 install tensorflow==1.15.0
-pip3 install Keras==2.0.8
-pip3 install qiskit==0.34.2
-pip3 install qiskit-aer==0.10.3
-pip3 install qiskit-aqua==0.9.5
-pip3 install qiskit-ibmq-provider==0.18.3
-pip3 install qiskit-ignis==0.7.0
-pip3 install qiskit-terra==0.19.2
-pip3 install matplotlib==3.3.4
-pip3 install bokeh==2.3.3
-
-conda create -y -n qc_hcls_protein_folding_gs python=3.7.2
-
-conda config --add channels bioconda
-
-conda config --set channel_priority strict
-
-conda activate qc_hcls_protein_folding_gs
-
-pip3 install ipykernel
-
-pip3 install numpy==1.19.5
-pip3 install boto3==1.23.10
-pip3 install amazon-braket-sdk==1.35.5
-pip3 install biopandas==0.4.1
-pip3 install altair==4.2.0
-pip3 install setproctitle==1.3.2
-pip3 install scipy==1.5.4
-pip3 install tensorflow==1.15.0
-pip3 install Keras==2.0.8
-pip3 install qiskit==0.34.2
-pip3 install qiskit-aer==0.10.3
-pip3 install qiskit-aqua==0.9.5
-pip3 install qiskit-ibmq-provider==0.18.3
-pip3 install qiskit-ignis==0.7.0
-pip3 install qiskit-terra==0.19.2
-pip3 install matplotlib==3.3.4
-pip3 install bokeh==2.3.3
-
-conda create -y -n qc_hcls_protein_folding_vqe python=3.7.2
-
-conda config --add channels bioconda
-
-conda config --set channel_priority strict
-
-conda activate qc_hcls_protein_folding_vqe
-
-pip3 install ipykernel
-
-pip3 install numpy==1.19.5
-pip3 install boto3==1.23.10
-pip3 install amazon-braket-sdk==1.35.5
-pip3 install biopandas==0.4.1
-pip3 install altair==4.2.0
-pip3 install setproctitle==1.3.2
-pip3 install scipy==1.5.4
-pip3 install tensorflow==1.15.0
-pip3 install Keras==2.0.8
-pip3 install qiskit==0.34.2
-pip3 install qiskit-aer==0.10.3
-pip3 install qiskit-aqua==0.9.5
-pip3 install qiskit-ibmq-provider==0.18.3
-pip3 install qiskit-ignis==0.7.0
-pip3 install qiskit-terra==0.19.2
-pip3 install matplotlib==3.3.4
-pip3 install bokeh==2.3.3
-
-conda create -y -n qc_hcls_retrosynthetic_planning_qrl python=3.9.16
-
-conda activate qc_hcls_retrosynthetic_planning_qrl
-
-pip3 install ipykernel==6.23.1
-
-pip3 install pennylane==0.30.0
-pip3 install torch==2.0.1
-pip3 install amazon-braket-sdk==1.38.1
-
-pip3 install boto3==1.23.10
-pip3 install amazon-braket-sdk==1.35.5
-pip3 install biopandas==0.4.1
-pip3 install altair==4.2.0
-pip3 install setproctitle==1.3.2
-pip3 install scipy==1.5.4
-pip3 install tensorflow==1.15.0
-pip3 install Keras==2.0.8
-pip3 install qiskit==0.34.2
-pip3 install qiskit-aer==0.10.3
-pip3 install qiskit-aqua==0.9.5
-pip3 install qiskit-ibmq-provider==0.18.3
-pip3 install qiskit-ignis==0.7.0
-pip3 install qiskit-terra==0.19.2
-pip3 install matplotlib==3.3.4
-pip3 install bokeh==2.3.3
+conda create -y -n qc_hcls_python37 python=3.7.2
 
 aws s3 cp {{&s3_code_path}} /home/ec2-user/SageMaker/code.zip
 

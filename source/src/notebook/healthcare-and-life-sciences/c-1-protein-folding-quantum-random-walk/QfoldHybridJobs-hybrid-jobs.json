@@ -1,23 +1,23 @@
 {
-    "experiment_name": "QfoldHybridJobs",
+    "experiment_name": "protein-folding-qrw",
     "hybrid-jobs-arn": [
-        "arn:aws:braket:us-east-1:002224604296:job/q-m-l-ml-m5-large-1679454022",
-        "arn:aws:braket:us-east-1:002224604296:job/q-m-l-ml-m5-4large-1679454037",
-        "arn:aws:braket:us-east-1:002224604296:job/q-r-l-ml-m5-large-1679454044",
-        "arn:aws:braket:us-east-1:002224604296:job/q-r-l-ml-m5-4large-1679454050",
-        "arn:aws:braket:us-east-1:002224604296:job/q-m-l-ml-m5-large-1679454236",
-        "arn:aws:braket:us-east-1:002224604296:job/q-m-l-ml-m5-4large-1679454268",
-        "arn:aws:braket:us-east-1:002224604296:job/q-r-l-ml-m5-large-1679454314",
-        "arn:aws:braket:us-east-1:002224604296:job/q-r-l-ml-m5-4large-1679454322"
+        "arn:aws:braket:us-east-1:002224604296:job/q-m-l-ml-m5-large-1685443519",
+        "arn:aws:braket:us-east-1:002224604296:job/q-m-l-ml-m5-4large-1685443528",
+        "arn:aws:braket:us-east-1:002224604296:job/q-r-l-ml-m5-large-1685443537",
+        "arn:aws:braket:us-east-1:002224604296:job/q-r-l-ml-m5-4large-1685443545",
+        "arn:aws:braket:us-east-1:002224604296:job/q-m-l-ml-m5-large-1685443728",
+        "arn:aws:braket:us-east-1:002224604296:job/q-m-l-ml-m5-4large-1685443737",
+        "arn:aws:braket:us-east-1:002224604296:job/q-r-l-ml-m5-large-1685443775",
+        "arn:aws:braket:us-east-1:002224604296:job/q-r-l-ml-m5-4large-1685443794"
     ],
     "names": [
-        "q-m-l-ml-m5-large-1679454022",
-        "q-m-l-ml-m5-4large-1679454037",
-        "q-r-l-ml-m5-large-1679454044",
-        "q-r-l-ml-m5-4large-1679454050",
-        "q-m-l-ml-m5-large-1679454236",
-        "q-m-l-ml-m5-4large-1679454268",
-        "q-r-l-ml-m5-large-1679454314",
-        "q-r-l-ml-m5-4large-1679454322"
+        "q-m-l-ml-m5-large-1685443519",
+        "q-m-l-ml-m5-4large-1685443528",
+        "q-r-l-ml-m5-large-1685443537",
+        "q-r-l-ml-m5-4large-1685443545",
+        "q-m-l-ml-m5-large-1685443728",
+        "q-m-l-ml-m5-4large-1685443737",
+        "q-r-l-ml-m5-large-1685443775",
+        "q-r-l-ml-m5-4large-1685443794"
     ]
 }

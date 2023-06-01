@@ -15,4 +15,4 @@ RUN python3 -m pip install numpy==1.19.5 \
                             matplotlib==3.3.4 \
                             bokeh==2.3.3
 
-COPY QfoldHybridJobs/psi4 /home/ubuntu/psi4conda/bin/psi4
+COPY hybridjobs/psi4 /home/ubuntu/psi4conda/bin/psi4
