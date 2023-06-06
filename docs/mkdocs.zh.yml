@@ -27,14 +27,14 @@ nav:
       - 概览: workshop/c-1-protein-folding-quantum-random-walk/protein-folding-qrw-background.md
       - 笔记本: workshop/c-1-protein-folding-quantum-random-walk/protein-folding-qrw.ipynb
       # - 技术细节: workshop/c-1-protein-folding-quantum-random-walk/protein-folding-qrw-details.md
-    - 蛋白质折叠 - Grover搜索算法: 
-      - 概览: workshop/c-2-protein-folding-grover-search/protein-folding-gs-background.md
-      - 笔记本: workshop/c-2-protein-folding-grover-search/protein-folding-gs.ipynb
-      # - 技术细节: workshop/c-2-protein-folding-grover-search/protein-folding-gs-details.md
     - 蛋白质折叠 - 变分量子本征求解器: 
-      - 概览: workshop/c-3-protein-folding-variational-quantum-eigensolver/protein-folding-vqe-background.md
-      - 笔记本: workshop/c-3-protein-folding-variational-quantum-eigensolver/protein-folding-vqe.ipynb
+      - 概览: workshop/c-2-protein-folding-variational-quantum-eigensolver/protein-folding-vqe-background.md
+      - 笔记本: workshop/c-2-protein-folding-variational-quantum-eigensolver/protein-folding-vqe.ipynb
       # - 技术细节: workshop/c-3-protein-folding-variational-quantum-eigensolver/protein-folding-vqe-details.md
+    - 蛋白质折叠 - Grover搜索算法: 
+      - 概览: workshop/c-3-protein-folding-grover-search/protein-folding-gs-background.md
+      - 笔记本: workshop/c-3-protein-folding-grover-search/protein-folding-gs.ipynb
+      # - 技术细节: workshop/c-2-protein-folding-grover-search/protein-folding-gs-details.md
     - 分子逆合成 - 量子强化学习: 
       - 概览: workshop/d-1-retrosynthetic-planning-quantum-reinforcement-learning/retrosynthetic-planning-qrl-background.md
       - 笔记本: workshop/d-1-retrosynthetic-planning-quantum-reinforcement-learning/retrosynthetic-planning-qrl.ipynb

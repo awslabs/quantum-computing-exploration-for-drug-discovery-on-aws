@@ -60,6 +60,16 @@ pip3 install git+https://github.com/ViennaRNA/forgi
 
 conda create -y -n qc_hcls_python37 python=3.7.2
 
+conda activate qc_hcls_python37
+
+pip3 install ipykernel
+
+conda create -y -n qc_hcls_python38 python=3.8
+
+conda activate qc_hcls_python38
+
+pip3 install ipykernel
+
 aws s3 cp {{&s3_code_path}} /home/ec2-user/SageMaker/code.zip
 
 cd /home/ec2-user/SageMaker/
