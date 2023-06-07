@@ -92,6 +92,7 @@ agent_param["model_path"] = model_path
 
 retro_rl_agent = RetroRLAgent(retro_model, method, **agent_param)
 
+# retro_rl_agent.game(path=input_data_path)
 retro_rl_agent.game(path=input_data_path)
 
 #

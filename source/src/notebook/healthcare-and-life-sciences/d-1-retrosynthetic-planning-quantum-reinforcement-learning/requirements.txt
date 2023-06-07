@@ -1,0 +1,5 @@
+amazon-braket-sdk==1.38.1
+pandas==1.1.5
+rdkit==2023.3.1
+tqdm==4.65.0
+altair==5.0.1

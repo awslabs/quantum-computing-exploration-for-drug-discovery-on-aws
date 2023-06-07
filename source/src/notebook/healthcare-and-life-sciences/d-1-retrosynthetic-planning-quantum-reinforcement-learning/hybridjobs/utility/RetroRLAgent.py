@@ -148,7 +148,7 @@ class RetroRLAgent:
                     job_name="retrorl-job-" + device_name + "-" + interface + "-" + str(int(time.time())),
                     image_uri=image_uri,
                     # Relative to the source_module
-                    entry_point="retrorl.retrorl_algorithm_script",
+                    entry_point="hybridjobs.retrorl_algorithm_script",
                     # general parameters
                     hyperparameters=hyperparameters,
                     input_data=input_data,
@@ -168,7 +168,7 @@ class RetroRLAgent:
                         job_name="retrorl-job-" + device_name + "-" + interface + "-" + str(int(time.time())),
                         image_uri=image_uri,
                         # Relative to the source_module
-                        entry_point="retrorl.retrorl_algorithm_script",
+                        entry_point="hybridjobs.retrorl_algorithm_script",
                         copy_checkpoints_from_job=None,
                         # general parameters
                         hyperparameters=hyperparameters,
@@ -184,7 +184,7 @@ class RetroRLAgent:
                         job_name="retrorl-job-" + device_name + "-" + interface + "-" + str(int(time.time())),
                         image_uri=image_uri,
                         # Relative to the source_module
-                        entry_point="retrorl.retrorl_algorithm_script",
+                        entry_point="hybridjobs.retrorl_algorithm_script",
                         copy_checkpoints_from_job=None,
                         # general parameters
                         hyperparameters=hyperparameters,
@@ -491,7 +491,8 @@ class RetroRLAgent:
 
     def smiles2url(self, name):
         input_data_path = self.param['data_path']
-        smiles_map = np.load(f'{input_data_path}/smiles/smiles_map.npy', allow_pickle=True).item()
+        # smiles_map = np.load(f'{input_data_path}/smiles/smiles_map.npy', allow_pickle=True).item()
+        smiles_map = np.load(f'{input_data_path}/smiles_map.npy', allow_pickle=True).item()
         index = smiles_map[name]
         url = "https://web-demo-test2.s3.us-west-2.amazonaws.com/data/smiles/" + str(index) + ".svg"
 
