@@ -13,7 +13,6 @@ from braket.jobs.local.local_job import LocalQuantumJob
 from braket.aws import AwsQuantumJob
 from braket.jobs.image_uris import Framework, retrieve_image
 from braket.jobs.config import InstanceConfig
-import boto3
 
 import math
 import logging
@@ -195,9 +194,8 @@ class RetroRLAgent:
 
             self.job = job
 
-    def game(self, path):
-        self.is_model = False
-        for episode in range(1, 101):
+    def game(self):
+        for episode in range(1, 301):
             print('episode', episode)
             episodecost = 0
             for name in self.file3:
@@ -225,17 +223,12 @@ class RetroRLAgent:
                 avc = float(episodecost) / len(self.file3)
             self.avtocost.append(avc)
             self.merge()
-            if episode % 20 == 0:
+            if episode % 30 == 0:
                 self.updates += 1
                 self.is_model = True
                 print(f"epsiode {episode} training...")
-                self.train(self.file1, self.file2, path=path)
-                save_path, save_name = self.save("latest", path=path)
-                AWS_REGION = "us-west-1"
-                S3_BUCKET_NAME = "amazon-braket-us-west-1-493904798517"
-                s3_client = boto3.client("s3", region_name=AWS_REGION)
-                s3_client.upload_file(save_path, S3_BUCKET_NAME, f'data/{save_name}')
-            if episode % 30 == 0:
+                self.train(self.file1, self.file2)
+            if episode % 100 == 0:
                 if self.epsilon - 0.05 > 0:
                     self.epsilon -= 0.03
                 else:
@@ -365,8 +358,8 @@ class RetroRLAgent:
     def merge(self):
         self.cost1.update(self.cost2)
 
-    def train(self, file1, file2, path):
-        for epoch in range(20):
+    def train(self, file1, file2):
+        for epoch in range(50):
             start = time.time()
             y = []
             x = []
@@ -424,11 +417,6 @@ class RetroRLAgent:
             self.opt.step()
             end = time.time()
             print(f'finish epoch {epoch} for {(end - start) / 60} minutes')
-            save_path, save_name = self.save("latest", path=path)
-            AWS_REGION = "us-west-1"
-            S3_BUCKET_NAME = "amazon-braket-us-west-1-493904798517"
-            s3_client = boto3.client("s3", region_name=AWS_REGION)
-            s3_client.upload_file(save_path, S3_BUCKET_NAME, f'data/{save_name}')
 
     def add_child2(self, index, m):
         self.layer2[self.depth + 1][index] = m
