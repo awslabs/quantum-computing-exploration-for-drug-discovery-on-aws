@@ -9,24 +9,11 @@ RNA folding refers to the process by which a single-stranded RNA molecule adopts
 
 ![RNA](../../images/pre-mRNA.png)
 
-Figure 8: A hairpin loop from a pre-mRNA[<sup>7</sup>](#wiki-rna)
+Figure 7: A hairpin loop from a pre-mRNA[<sup>7</sup>](#wiki-rna)
 
 In this work, the quantum annealer is leveraged to predict the secondary structure of RNA. 
 To steer the system towards maximizing both the number of base pairs and the average length of the stems, 
-a Hamiltonian is formulated in the Binary Quadratic Model (BQM) format.
-
-## Notebook overview
-
-1. Sign in to the [AWS CloudFormation console](https://console.aws.amazon.com/cloudformation/home?). 
-2. On the **Stacks** page, select the solution’s root stack. 
-3. Choose the **Outputs** tab and open the link for your notebook.
-
-    ![deployment output](../../images/deploy_output_notebook.png)
-
-    Figure 9: Notebook URL on the stack's Output tab
-
-4. Open
-**healthcare-and-life-sciences/b-1-rna-folding-quadratic-unconstrained-binary-optimization/rna-folding-qubo.ipynb** and choose the kernel **qc_hcls_rna_folding_qubo**.
+a Hamiltonian is formulated in the Binary Quadratic Model (BQM) format. Please go to **healthcare-and-life-sciences/b-1-rna-folding-quadratic-unconstrained-binary-optimization/rna-folding-qubo.ipynb** for more details.
 
 
 # References

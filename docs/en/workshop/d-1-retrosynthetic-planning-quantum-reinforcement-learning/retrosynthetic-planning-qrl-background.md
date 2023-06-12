@@ -14,7 +14,7 @@ for complex organic molecules.
 
 ![Retro](../../images/retro-planning.png)
 
-Figure 18: A retrosynthetic analysis example[<sup>12</sup>](#wiki-retro)
+Figure 13: A retrosynthetic analysis example[<sup>12</sup>](#wiki-retro)
 
 The
 quantum reinforcement learning for 
@@ -23,22 +23,9 @@ encoding the target molecule and the
 available synthetic transformations as quantum states. 
 The quantum reinforcement learning algorithm can then use these states to 
 learn the optimal sequence of synthetic transformations to reach the 
-target molecule from a set of starting materials. The algorithm can learn from a database of known reactions, as well as from trial and error in a virtual environment, to optimize the synthesis process.
-
-## Notebook overview
-
-1. Sign in to the [AWS CloudFormation console](https://console.aws.amazon.com/cloudformation/home?). 
-2. On the **Stacks** page, select the solution’s root stack. 
-3. Choose the **Outputs** tab and open the link for your notebook.
-
-    ![deployment output](../../images/deploy_output_notebook.png)
-
-    Figure 13: Notebook URL on the stack's Output tab
-
-4. Open
-**healthcare-and-life-science/d-1-retrosynthetic-planning-quantum-reinforcement-learning/retrosynthetic-planning-qrl.ipynb** and choose the kernel **qc_hcls_retrosynthetic_planning_qrl**.
+target molecule from a set of starting materials. The algorithm can learn from a database of known reactions, as well as from trial and error in a virtual environment, to optimize the synthesis process. Please go to **healthcare-and-life-science/d-1-retrosynthetic-planning-quantum-reinforcement-learning/retrosynthetic-planning-qrl.ipynb** for more details.
 
 # References
 <div id='wiki-retro'></div>
 
-- 12.[Learning Retrosynthetic Planning through Simulated Experience](https://pubs.acs.org/doi/10.1021/acscentsci.9b00055).
+- 13.[Learning Retrosynthetic Planning through Simulated Experience](https://pubs.acs.org/doi/10.1021/acscentsci.9b00055).

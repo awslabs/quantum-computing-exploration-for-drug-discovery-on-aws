@@ -31,19 +31,7 @@
     * 使用可旋转键修改配体形状并匹配蛋白质口袋
     * 对接分数最大化
 
-在这里，我们专注于 MD 的第一阶段，即配体扩展，其目的是减少可能影响最终对接质量的形状偏差。在此解决方案中，我们使用 Mato 等人发表的量子退火方法进行分子展开 (MU)。
-
-## 笔记本概览
-
-1. 登录 [AWS CloudFormation 控制台](https://console.aws.amazon.com/cloudformation/home?)。
-2. 在 **Stacks** 页面上，选择解决方案的根堆栈。
-3. 选择 **Outputs** 选项卡并打开笔记本的链接。
-
-    ![部署输出](../../images/deploy_output_notebook.png)
-
-    图 7：堆栈输出选项卡上的笔记本 URL
-
-4. 打开**healthcare-and-life-sciences/a-1-molecular-unfolding-quadratic-unconstrained-binary-optimization/molecular-unfolding-qubo.ipynb**并选择内核**qc_hcls_molecular_unfolding_qubo**。
+在这里，我们专注于 MD 的第一阶段，即配体扩展，其目的是减少可能影响最终对接质量的形状偏差。在此解决方案中，我们使用 Mato 等人发表的量子退火方法进行分子展开 (MU)。请到**healthcare-and-life-sciences/a-1-molecular-unfolding-quadratic-unconstrained-binary-optimization/molecular-unfolding-qubo.ipynb**查看细节。
 
 
 # 参考

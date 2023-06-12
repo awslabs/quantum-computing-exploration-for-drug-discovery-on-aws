@@ -11,7 +11,7 @@ During protein folding, the linear chain of amino acids folds into a unique thre
 
 ![Protein](../../images/protein-folding.png)
 
-Figure 10: Protein before and after folding[<sup>8</sup>](#wiki-protein)
+Figure 8: Protein before and after folding[<sup>8</sup>](#wiki-protein)
 
 In this work, the quantum walks are applied 
 to a Metropolis algorithm in order to predict how proteins fold in 3D.
@@ -19,23 +19,9 @@ Quantum walks are quantum analogues of classical random walks. In contrast to th
 
 ![Qfold](../../images/qfold.png)
 
-Figure 11: Scheme of the QFold algorithm[<sup>9</sup>](#qfold)
+Figure 9: Scheme of the QFold algorithm[<sup>9</sup>](#qfold)
 
-
-
-## Notebook overview
-
-1. Sign in to the [AWS CloudFormation console](https://console.aws.amazon.com/cloudformation/home?). 
-2. On the **Stacks** page, select the solution’s root stack. 
-3. Choose the **Outputs** tab and open the link for your notebook.
-
-    ![deployment output](../../images/deploy_output_notebook.png)
-
-    Figure 12: Notebook URL on the stack's Output tab
-
-4. Open
-**healthcare-and-life-sciences/c-1-protein-folding-quantum-random-walk/protein-folding-qrw.ipynb** and choose the kernel
-**qc_hcls_protein_folding_qrw**.
+Please go to **healthcare-and-life-sciences/c-1-protein-folding-quantum-random-walk/protein-folding-qrw.ipynb** for more details.
 
 # References
 <div id='wiki-protein'></div>

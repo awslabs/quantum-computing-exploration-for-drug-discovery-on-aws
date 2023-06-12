@@ -13,7 +13,7 @@
 
 ![Protein](../../images/protein-folding.png)
 
-图13: 折叠前后的蛋白质[<sup>8</sup>](#wiki-protein)
+图11: 折叠前后的蛋白质[<sup>8</sup>](#wiki-protein)
 
 在这项工作中，基于快速量子算法
 建议使用 Grover 搜索。蛋白质结构
@@ -24,31 +24,17 @@
 
 ![bcc](../../images/bcc.png)
 
-图14: 体心立方晶格[<sup>11</sup>]
+图12: 体心立方晶格[<sup>11</sup>]
 
 Grover 算法是一种量子算法，它
 可用于搜索未分类的数据库
 O(sqrt(N)) 时间内的 N 项。这是一个
 显着加速相比
-经典算法，需要 O(N) 时间来搜索未排序的数据库。
-
-## 笔记本概览
-
-1. 登录 [AWS CloudFormation 控制台](https://console.aws.amazon.com/cloudformation/home?)。
-2. 在 **Stacks** 页面上，选择解决方案的根堆栈。
-3. 选择 **Outputs** 选项卡并打开笔记本的链接。
-
-    ![部署输出](../../images/deploy_output_notebook.png)
-
-    图 15：堆栈输出选项卡上的笔记本 URL
-
-4. 打开
-**healthcare-and-life-sciences/c-2-protein-folding-grover-search/protein-folding-gs.ipynb**并选择内核
-**qc_hcls_protein_folding_gs**。
+经典算法，需要 O(N) 时间来搜索未排序的数据库。请到**healthcare-and-life-sciences/c-3-protein-folding-grover-search/protein-folding-gs.ipynb**查看细节。
 
 # 参考
 <div id='wiki-protein'></div>
 
-- 10.[Wiki: Protein](https://en.wikipedia.org/wiki/Protein_folding)
+- 11.[Wiki: Protein](https://en.wikipedia.org/wiki/Protein_folding)
 
-- 11.[QFold: Quantum Walks and Deep Learning to Solve Protein Folding](https://iopscience.iop.org/article/10.1088/2058-9565/ac4f2f)
+- 12.[QFold: Quantum Walks and Deep Learning to Solve Protein Folding](https://iopscience.iop.org/article/10.1088/2058-9565/ac4f2f)
