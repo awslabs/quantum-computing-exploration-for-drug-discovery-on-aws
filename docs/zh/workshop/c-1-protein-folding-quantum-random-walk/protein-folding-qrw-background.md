@@ -24,19 +24,7 @@
 
 图11: QFold算法方案[<sup>9</sup>](#qfold)
 
-
-## 笔记本概览
-
-1. 登录 [AWS CloudFormation 控制台](https://console.aws.amazon.com/cloudformation/home?)。
-2. 在 **Stacks** 页面上，选择解决方案的根堆栈。
-3. 选择 **Outputs** 选项卡并打开笔记本的链接。
-
-    ![部署输出](../../images/deploy_output_notebook.png)
-
-    图 12：堆栈输出选项卡上的笔记本 URL
-
-4. 打开**healthcare-and-life-sciences/c-1-protein-folding-quantum-random-walk/protein-folding-qrw.ipynb**并选择内核
-**qc_hcls_protein_folding_qrw**。
+请到**healthcare-and-life-sciences/c-1-protein-folding-quantum-random-walk/protein-folding-qrw.ipynb**查看细节。
 
 # 参考
 <div id='wiki-protein'></div>

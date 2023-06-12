@@ -14,23 +14,7 @@ RNA折叠是指单链RNA分子通过形成分子内碱基对而采用特定的�
 
 在这项工作中，量子退火被用来预测 RNA 的二级结构。
 为了引导系统最大化碱基对的数量和茎的平均长度，
-哈密​​顿量以二元二次模型 (BQM) 格式制定。
-
-## 笔记本概览
-
-1. 登录 [AWS CloudFormation 控制台](https://console.aws.amazon.com/cloudformation/home?)。
-2. 在 **Stacks** 页面上，选择解决方案的根堆栈。
-3. 选择 **Outputs** 选项卡并打开笔记本的链接。
-
-    ![部署输出](../../images/deploy_output_notebook.png)
-
-    图 7：堆栈输出选项卡上的笔记本 URL
-
-4. 打开**healthcare-and-life-sciences/a-1-molecular-unfolding-quadratic-unconstrained-binary-optimization/molecular-unfolding-qubo.ipynb**目录下的文件，选择内核**qc_hcls_molecular_unfolding_qubo**。
-
-4. 打开
-**healthcare-and-life-sciences/b-1-rna-folding-quadratic-unconstrained-binary-optimization/rna-folding-qubo.ipynb**并选择内核
-**qc_hcls_rna_folding_qubo**。
+哈密​​顿量以二元二次模型 (BQM) 格式制定。请到**healthcare-and-life-sciences/a-1-molecular-unfolding-quadratic-unconstrained-binary-optimization/molecular-unfolding-qubo.ipynb**查看细节。
 
 # 参考
 <div id='wiki-rna'></div>

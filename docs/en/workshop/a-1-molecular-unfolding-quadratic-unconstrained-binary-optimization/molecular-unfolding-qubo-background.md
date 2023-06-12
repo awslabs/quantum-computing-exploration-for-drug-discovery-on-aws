@@ -27,20 +27,7 @@ As described in [Quantum Molecular Unfolding](https://arxiv.org/abs/2107.13607),
     * Use of the rotatable bonds to modify the ligand shape and to match the protein pocket
     * Docking score maximization
 
-Here we focus on the first phase of MD, ligand expansion, which aims to reduce shape bias that may affect the final quality of docking.  In this solution we use the quantum annealing approach to molecular unfolding (MU) as published by Mato et al.
-
-## Notebook overview
-
-1. Sign in to the [AWS CloudFormation console](https://console.aws.amazon.com/cloudformation/home?). 
-2. On the **Stacks** page, select the solution’s root stack. 
-3. Choose the **Outputs** tab and open the link for your notebook.
-
-    ![deployment output](../../images/deploy_output_notebook.png)
-
-    Figure 7: Notebook URL on the stack's Output tab
-
-4. Open
-**healthcare-and-life-sciences/a-1-molecular-unfolding-quadratic-unconstrained-binary-optimization/molecular-unfolding-qubo.ipynb** and choose the kernel **qc_hcls_molecular_unfolding_qubo**.
+Here we focus on the first phase of MD, ligand expansion, which aims to reduce shape bias that may affect the final quality of docking.  In this solution we use the quantum annealing approach to molecular unfolding (MU) as published by Mato et al. Please go to **healthcare-and-life-sciences/a-1-molecular-unfolding-quadratic-unconstrained-binary-optimization/molecular-unfolding-qubo.ipynb** for more details.
 
 
 

@@ -24,21 +24,7 @@ To use VQE for protein folding, one would
 first need to encode the protein structure into a format that can be represented as a 
 quantum state. This can be done using a 
 technique called the qubitization method, 
-which maps the protein structure onto a set of qubits that can be manipulated by the quantum computer.
-
-## Notebook overview
-
-1. Sign in to the [AWS CloudFormation console](https://console.aws.amazon.com/cloudformation/home?). 
-2. On the **Stacks** page, select the solution’s root stack. 
-3. Choose the **Outputs** tab and open the link for your notebook.
-
-    ![deployment output](../../images/deploy_output_notebook.png)
-
-    Figure 17: Notebook URL on the stack's Output tab
-
-4. Open
-**healthcare-and-life-sciences/c-3-protein-folding-variational-quantum-eigensolver/protein-folding-vqe.ipynb** and choose the kernel
-**qc_hcls_protein_folding_vqe**.
+which maps the protein structure onto a set of qubits that can be manipulated by the quantum computer. Please go to **healthcare-and-life-sciences/c-2-protein-folding-variational-quantum-eigensolver/protein-folding-vqe.ipynb** for more details.
 
 # References
 <div id='wiki-protein'></div>

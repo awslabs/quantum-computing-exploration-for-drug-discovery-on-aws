@@ -30,23 +30,7 @@ Grover's algorithm is a quantum algorithm that
 can be used to search an unsorted database of 
 N items in O(sqrt(N)) time. This is a 
 significant speedup compared to 
-classical algorithms, which require O(N) time to search an unsorted database.
-
-
-
-## Notebook overview
-
-1. Sign in to the [AWS CloudFormation console](https://console.aws.amazon.com/cloudformation/home?). 
-2. On the **Stacks** page, select the solution’s root stack. 
-3. Choose the **Outputs** tab and open the link for your notebook.
-
-    ![deployment output](../../images/deploy_output_notebook.png)
-
-    Figure 15: Notebook URL on the stack's Output tab
-
-4. Open
-**healthcare-and-life-sciences/c-2-protein-folding-grover-search/protein-folding-gs.ipynb** and choose the kernel
-**qc_hcls_protein_folding_gs**.
+classical algorithms, which require O(N) time to search an unsorted database. Please go to **healthcare-and-life-sciences/c-3-protein-folding-grover-search/protein-folding-gs.ipynb** for more details.
 
 # References
 <div id='wiki-protein'></div>
