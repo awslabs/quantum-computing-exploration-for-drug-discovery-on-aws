@@ -14,9 +14,11 @@
 
 5. 一次实验运行多个 Hybrid Job，在 Hybrid Job 完成触发[Amazon EventBridge][eventbridge]中的事件。
 
-6. EventBridge 向[Amazon SNS][sns]发送一个通知，所有订阅了该主题的订阅者会收到此通知。此步骤为可选项，您可以在部署方案时指定订阅通知的邮件。
+6. Amazon EventBridge 触发的事件将被发送到 Lambda 进行分析和汇总。
 
-7. 您可以回到 SageMaker Notebook 中运行代码，来对实验结果进行分析及展示。默认的结果分析代码中，提供了经典计算和量子计算的结果对比。
+7. Lambda 向[Amazon SNS][sns] 发送分析报告，所有订阅该主题的订阅者都会通过电子邮件收到此报告。 此步骤是可选的，您可以在部署解决方案时指定用于订阅通知的电子邮件。
+
+8. 您可以回到 SageMaker Notebook 中运行代码，来对实验结果进行分析及展示。默认的结果分析代码中，提供了经典计算和量子计算的结果对比。
 
 [sagemaker]: https://aws.amazon.com/sagemaker/
 [braket]: https://aws.amazon.com/braket/
