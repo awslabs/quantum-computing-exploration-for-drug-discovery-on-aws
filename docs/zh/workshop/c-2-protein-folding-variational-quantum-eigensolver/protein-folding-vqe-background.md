@@ -14,7 +14,7 @@
 
 ![Protein](../../images/protein-folding.png)
 
-图16: 折叠前后的蛋白质[<sup>8</sup>](#wiki-protein)
+图10: 折叠前后的蛋白质[<sup>8</sup>](#wiki-protein)
 
 VQE是一种可以使用的量子算法
 模拟分子的行为，

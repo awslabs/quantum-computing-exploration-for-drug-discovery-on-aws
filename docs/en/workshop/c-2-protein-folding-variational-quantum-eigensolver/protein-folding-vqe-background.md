@@ -11,7 +11,7 @@ During protein folding, the linear chain of amino acids folds into a unique thre
 
 ![Protein](../../images/protein-folding.png)
 
-Figure 16: Protein before and after folding[<sup>10</sup>](#wiki-protein)
+Figure 10: Protein before and after folding[<sup>10</sup>](#wiki-protein)
 
 VQE is a quantum algorithm that can be used 
 to simulate the behavior of molecules, 

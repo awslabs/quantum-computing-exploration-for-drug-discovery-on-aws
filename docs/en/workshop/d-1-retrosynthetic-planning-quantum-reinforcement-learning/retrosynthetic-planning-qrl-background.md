@@ -14,7 +14,7 @@ for complex organic molecules.
 
 ![Retro](../../images/retro-planning.png)
 
-Figure 18: A retrosynthetic analysis example[<sup>12</sup>](#wiki-retro)
+Figure 13: A retrosynthetic analysis example[<sup>12</sup>](#wiki-retro)
 
 The
 quantum reinforcement learning for 
@@ -28,4 +28,4 @@ target molecule from a set of starting materials. The algorithm can learn from a
 # References
 <div id='wiki-retro'></div>
 
-- 12.[Learning Retrosynthetic Planning through Simulated Experience](https://pubs.acs.org/doi/10.1021/acscentsci.9b00055).
+- 13.[Learning Retrosynthetic Planning through Simulated Experience](https://pubs.acs.org/doi/10.1021/acscentsci.9b00055).

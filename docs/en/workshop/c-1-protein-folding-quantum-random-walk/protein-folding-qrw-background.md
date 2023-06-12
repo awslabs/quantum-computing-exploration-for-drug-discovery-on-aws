@@ -11,7 +11,7 @@ During protein folding, the linear chain of amino acids folds into a unique thre
 
 ![Protein](../../images/protein-folding.png)
 
-Figure 10: Protein before and after folding[<sup>8</sup>](#wiki-protein)
+Figure 8: Protein before and after folding[<sup>8</sup>](#wiki-protein)
 
 In this work, the quantum walks are applied 
 to a Metropolis algorithm in order to predict how proteins fold in 3D.
@@ -19,7 +19,7 @@ Quantum walks are quantum analogues of classical random walks. In contrast to th
 
 ![Qfold](../../images/qfold.png)
 
-Figure 11: Scheme of the QFold algorithm[<sup>9</sup>](#qfold)
+Figure 9: Scheme of the QFold algorithm[<sup>9</sup>](#qfold)
 
 Please go to **healthcare-and-life-sciences/c-1-protein-folding-quantum-random-walk/protein-folding-qrw.ipynb** for more details.
 

@@ -12,7 +12,7 @@
 
 ![Retro](../../images/retro-planning.png)
 
-图18: 逆合成分析示例[<sup>12</sup>](#wiki-retro)
+图13: 逆合成分析示例[<sup>12</sup>](#wiki-retro)
 
 这
 量子强化学习
@@ -26,4 +26,4 @@
 # 参考
 <div id='wiki-retro'></div>
 
-- 12.[Learning Retrosynthetic Planning through Simulated Experience](https://pubs.acs.org/doi/10.1021/acscentsci.9b00055).
+- 13.[Learning Retrosynthetic Planning through Simulated Experience](https://pubs.acs.org/doi/10.1021/acscentsci.9b00055).

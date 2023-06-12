@@ -9,7 +9,7 @@ RNA folding refers to the process by which a single-stranded RNA molecule adopts
 
 ![RNA](../../images/pre-mRNA.png)
 
-Figure 8: A hairpin loop from a pre-mRNA[<sup>7</sup>](#wiki-rna)
+Figure 7: A hairpin loop from a pre-mRNA[<sup>7</sup>](#wiki-rna)
 
 In this work, the quantum annealer is leveraged to predict the secondary structure of RNA. 
 To steer the system towards maximizing both the number of base pairs and the average length of the stems, 

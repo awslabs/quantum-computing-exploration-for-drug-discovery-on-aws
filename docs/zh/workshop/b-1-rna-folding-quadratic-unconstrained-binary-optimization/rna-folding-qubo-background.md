@@ -10,7 +10,7 @@ RNA折叠是指单链RNA分子通过形成分子内碱基对而采用特定的�
 
 ![RNA](../../images/pre-mRNA.png)
 
-图8: 来自pre-mRNA的发夹环[<sup>7</sup>](#wiki-rna)
+图7: 来自pre-mRNA的发夹环[<sup>7</sup>](#wiki-rna)
 
 在这项工作中，量子退火被用来预测 RNA 的二级结构。
 为了引导系统最大化碱基对的数量和茎的平均长度，

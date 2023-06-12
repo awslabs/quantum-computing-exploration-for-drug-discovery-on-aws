@@ -14,7 +14,7 @@
 
 ![Protein](../../images/protein-folding.png)
 
-图10: 折叠前后的蛋白质[<sup>8</sup>](#wiki-protein)
+图8: 折叠前后的蛋白质[<sup>8</sup>](#wiki-protein)
 
 在这项工作中，量子行走被应用
 到 Metropolis 算法，以预测蛋白质如何在 3D 中折叠。
@@ -22,7 +22,7 @@
 
 ![Qfold](../../images/qfold.png)
 
-图11: QFold算法方案[<sup>9</sup>](#qfold)
+图9: QFold算法方案[<sup>9</sup>](#qfold)
 
 请到**healthcare-and-life-sciences/c-1-protein-folding-quantum-random-walk/protein-folding-qrw.ipynb**查看细节。
 
