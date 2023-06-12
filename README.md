@@ -9,14 +9,8 @@ The overall architecture is shown as below:
 ![architecture](./docs/en/images/architecture.png)
 
 This solution deploys the Amazon CloudFormation template in your
-AWS Cloud account and provides three URLs. One for **Visualization**.
-The others provide user with two approaches to study drug discovery
-problems: **Notebook Experiment** and **Batch Evaluation**:
+AWS Cloud account and provides the URL for Notebook Experiment about drug discovery problems.
 
-- Notebook Experiment
-
-The solution deploys the notebook for user to study different drug discovery
-problems.
 These problems will be studied using classical computing or quantum
 computing.
 
@@ -28,42 +22,50 @@ For detailed description of architecture, please refer to the
 <table border='1' style="text-align: center">
     <tr>
         <td><B>Problem Name</B></td>
-        <td><B>Methods</td>
-        <td colspan='2'><B>Function</td>
-        <td><B>Dataset</td>
+        <td><B>Method</td>
         <td><B>Reference</td>
+    </tr>
     <tr>
+        <td>Molecular Unfolding </td>
+        <td>QUBO</td>
+        <td><a href="https://arxiv.org/abs/2107.13607">Quantum Molecular Unfolding(2021)</a></td>
+    </tr>
     <tr>
-        <td rowspan='4'>Molecular Unfolding </td>
-        <td rowspan='4'>QUBO</td>
-        <td><span>single solver</span></td>
-        <td><span>&#10004;</span></td>
-        <td rowspan='4'><a href="https://www.rcsb.org/ligand/117">117 mol2</a></td>
-        <td rowspan='4'><a href="https://arxiv.org/abs/2107.13607">Quantum Molecular Unfolding(2021)</a></td>
-    <tr>
-    <tr>
-        <td><span>qbsolv</span></td>
-        <td><span><span></td>
-    <tr>
-    <tr>
-        <td rowspan='4'>RNA Folding</td>
-        <td rowspan='4'>QUBO</td>
-        <td><span>single solver</span></td>
-        <td><span>&#10004;</span></td>
-        <td rowspan='4'><a href="http://bprna.cgrb.oregonstate.edu/">bpRNA-1m</a></td>
+        <td rowspan='2'>RNA folding</td>
+        <td rowspan='2'>QUBO</td>
         <td ><span><a href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1010032">RNA folding using quantum computers(2022)</a></span></td>
+    </tr>
     <tr>
-    <tr>
-        <td><span>qbsolv</span></td>
-        <td><span><span></td>
         <td ><span><a href="https://github.com/XanaduAI/QHack2022/issues/114">QHack 2022 winner</a></span></td>
+    </tr>
     <tr>
+        <td rowspan='5'>Protein folding</td>
+        <td rowspan='2'>Quantum Walk</td>
+        <td ><span><a href="https://iopscience.iop.org/article/10.1088/2058-9565/ac4f2f">QFold: quantum walk and deep learning to solve protein folding(2022)</a></span></td>
+    </tr>
+    <tr>
+        <td ><span><a href="https://github.com/roberCO/QFold">Roberto Campos's Implementation</a></span></td>
+    </tr>
+    <tr>
+        <td>VQE</td>
+        <td >--</td>
+    </tr>
+    <tr>
+        <td rowspan='2'>Grover's Algorithm</td>
+        <td ><span><a href="https://ieeexplore.ieee.org/document/9374469">Quantum Speedup for Protein Structure Prediction(2022)</a></span></td>
+    </tr>
+    <tr>
+        <td ><span><a href="https://github.com/renatawong/quantum-protein-structure-prediction">Roberto Campos's Implementation</a></span></td>
+    </tr>
+    <tr>
+        <td >Retrosynthetic Planning</td>
+        <td >Quantum Reinforcement Learning</td>
+        <td ><span><a href="https://pubs.acs.org/doi/10.1021/acscentsci.9b00055">Learning Retrosynthetic Planning through Simulated Experience(2019)</a></span></td>
+    </tr>
 </table>
 
 <div id='more-example'></div>
 1.More examples to be added with continuous update
-<div id='data'></div>
-2.All the data in the solution follow the CC0 License
 
 ## File Structure
 
@@ -91,11 +93,13 @@ Upon successfully cloning the repository into your local development environment
     ├── src                       [Solution's source code]
     │   ├── cdk
     │   ├── notebook
-    │   │   ├── molecular-unfolding
-    │   │   ├── rna-folding
-    │   │   ├── retrosynthetic
-    │   │   ├── medical-image-analysis
-    │   │   └──
+    │   │   └── healthcare-and-life-sciences
+    │   │       ├── a-1-molecular-unfolding-quadratic-unconstrained-binary-optimization
+    │   │       ├── b-1-folding-quadratic-unconstrained-binary-optimization
+    │   │       ├── c-1-rna-folding-quadratic-unconstrained-binary-optimization
+    │   │       ├── c-2-protein-folding-variational-quantum-eigensolver
+    │   │       ├── c-3-protein-folding-grover-search
+    │   │       └── d-1-retrosynthetic-planning-quantum-reinforcement-learning 
     │   └── stack.ts
     ├── test                      [Solution's unit test code]
     ├── tsconfig.jest.json
