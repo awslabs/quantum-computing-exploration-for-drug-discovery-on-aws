@@ -1,9 +1,9 @@
-You are responsible for the cost of AWS services used when running this solution. The actual cost depends on the tasks run and their complexity. As of May 2023, the cost factors mainly consist of five types:
+You are responsible for the cost of AWS services used when running this solution. The actual cost depends on the tasks run and their complexity. As of June 2023, the cost factors mainly consist of five types:
 
- * Amazon Sagemaker Notebook
- * Amazon S3
- * Amazon Elastic Container Registry
- * Amazon Braket Hybrid Jobs
+- Amazon Sagemaker Notebook
+- Amazon S3
+- Amazon Elastic Container Registry
+- Amazon Braket Hybrid Jobs
 
 If the customer only uses the notebook to explore the algorithm, the cost factors mainly involve the notebook and the computing from Amazon Braket task. If the customer evaluates different use cases with different parameters, the cost factors mainly involve the computing from Amazon Braket Hybrid Jobs.
 
