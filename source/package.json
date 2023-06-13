@@ -82,6 +82,5 @@
         "tsconfig": "tsconfig.jest.json"
       }
     }
-  },
-  "bundleDependencies": []
+  }
 }
