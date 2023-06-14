@@ -24,7 +24,7 @@
 
 图9: QFold算法方案[<sup>9</sup>](#qfold)
 
-请到**healthcare-and-life-sciences/c-1-protein-folding-quantum-random-walk/protein-folding-qrw.ipynb**查看细节。
+部署完成后，请到**healthcare-and-life-sciences/c-1-protein-folding-quantum-random-walk/protein-folding-qrw.ipynb**查看细节。
 
 # 参考
 <div id='wiki-protein'></div>

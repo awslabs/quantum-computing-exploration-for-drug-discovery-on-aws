@@ -12,7 +12,7 @@ During protein folding, the linear chain of amino acids folds into a unique thre
 
 ![Protein](../../images/protein-folding.png)
 
-Figure 11: Protein before and after folding[<sup>10</sup>](#wiki-protein)
+Figure 11: Protein before and after folding[<sup>11</sup>](#wiki-protein)
 
 In this work, a fast quantum algorithm based on 
 Grover's search is proposed. The protein structure
@@ -23,14 +23,16 @@ over its classical counterparts.
 
 ![bcc](../../images/bcc.png)
 
-Figure 12: Body-centered cubic lattice[<sup>11</sup>]
+Figure 12: Body-centered cubic lattice[<sup>12</sup>]
 
 
 Grover's algorithm is a quantum algorithm that 
 can be used to search an unsorted database of 
 N items in O(sqrt(N)) time. This is a 
 significant speedup compared to 
-classical algorithms, which require O(N) time to search an unsorted database. Please go to **healthcare-and-life-sciences/c-3-protein-folding-grover-search/protein-folding-gs.ipynb** for more details.
+classical algorithms, which require O(N) time to search an unsorted database. 
+
+After deploymengt, you can go to **healthcare-and-life-sciences/c-3-protein-folding-grover-search/protein-folding-gs.ipynb** for more details.
 
 # References
 <div id='wiki-protein'></div>

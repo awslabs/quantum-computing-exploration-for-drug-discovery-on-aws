@@ -21,7 +21,7 @@ Quantum walks are quantum analogues of classical random walks. In contrast to th
 
 Figure 9: Scheme of the QFold algorithm[<sup>9</sup>](#qfold)
 
-Please go to **healthcare-and-life-sciences/c-1-protein-folding-quantum-random-walk/protein-folding-qrw.ipynb** for more details.
+After deploymengt, you can go to **healthcare-and-life-sciences/c-1-protein-folding-quantum-random-walk/protein-folding-qrw.ipynb** for more details.
 
 # References
 <div id='wiki-protein'></div>
