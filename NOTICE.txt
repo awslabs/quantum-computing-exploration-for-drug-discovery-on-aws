@@ -31,8 +31,11 @@ dimod under the Apache Software License (Apache 2.0)
 networkx under the BSD License
 dwave-ocean-sdk under the Apache Software License (Apache 2.0)
 biopandas under the BSD License (BSD 3-Clause)
-dwave-ocean-sdk under the Apache Software License (Apache 2.0)
 amazon-braket-sdk under the Apache Software License (Apache License 2.0)
 amazon-braket-ocean-plugin under the Apache Software License (Apache License 2.0)
 py3Dmol under the MIT License (MIT)
 ipywidgets under the BSD License (BSD)
+boto3 under the Apache Software License (Apache 2.0)
+Cython under the Apache Software License (Apache 2.0)
+altair under the BSD License (BSD)
+setproctitle under the GPL-3.0 License
