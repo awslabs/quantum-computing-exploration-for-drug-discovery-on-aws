@@ -2,20 +2,17 @@
 
 ## Overview
 
-Quantum Computing Exploration for Drug Discovery on AWS (abbrev. QCEDD), an open-sourced solution customers can launch to design and run computational studies in the area of drug discovery, e.g. molecular docking and protein folding. With this solution, customers can design and load new, or existing algorithms, into Jupyter notebooks, then orchestrate the classical and quantum compute resources using AWS Batch and AWS Step Functions. Due to its design, customers are free to scale their classical simulations by launching a performant HPC resource instead of a single EC2 instance. At the same time customer’s quantum experiments benefit from the growing number of quantum resources available through the Amazon Braket service.
+Quantum Computing Exploration for Drug Discovery on AWS is an open-source solution that allows researchers and quantum computing advocates to design and run computational studies in the field of drug discovery. With this solution, you can access quantum computers via the Amazon Braket service. The Amazon Braket Hybrid Job feature allows you to use classical computing and quantum computing resources to evaluate experiment values such as cost, time, and performance. The solution comes with built-in sample code for certain drug discovery problems, such as molecular docking, protein folding, RNA folding, and retrosynthetic planning, to help you get started with quantum computing in the field.
 
 The overall architecture is shown as below:
 
 ![architecture](./docs/en/images/architecture.png)
 
-This solution deploys the Amazon CloudFormation template in your
-AWS Cloud account and provides the URL for Notebook Experiment about drug discovery problems.
-
-These problems will be studied using classical computing or quantum
-computing.
-
 For detailed description of architecture, please refer to the
 [Architecture Page](https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/en/architecture/)
+
+This solution deploys the Amazon CloudFormation template in your
+AWS Cloud account and provides the URL for Notebook Experiment about drug discovery problems. 
 
 ## Pre-built Examples for Drug Discovery[<sup>1,</sup>](#more-example)[<sup>2</sup>](#data)
 
