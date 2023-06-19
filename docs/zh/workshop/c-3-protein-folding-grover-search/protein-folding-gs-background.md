@@ -13,7 +13,7 @@
 
 ![Protein](../../images/protein-folding.png)
 
-图11: 折叠前后的蛋白质[<sup>11</sup>](#wiki-protein)
+图11: 折叠前后的蛋白质[<sup>8</sup>](#wiki-protein)
 
 在这项工作中，基于快速量子算法
 建议使用 Grover 搜索。蛋白质结构
@@ -24,12 +24,13 @@
 
 ![bcc](../../images/bcc.png)
 
-图12: 体心立方晶格[<sup>12</sup>]
+图12: 体心立方晶格[<sup>11</sup>]
 
 Grover 算法是一种量子算法，它
-可用于搜索未分类的数据库。
-
-部署完成后，请到**healthcare-and-life-sciences/c-3-protein-folding-grover-search/protein-folding-gs.ipynb**查看细节。
+可用于搜索未分类的数据库
+O(sqrt(N)) 时间内的 N 项。这是一个
+显着加速相比
+经典算法，需要 O(N) 时间来搜索未排序的数据库。请到**healthcare-and-life-sciences/c-3-protein-folding-grover-search/protein-folding-gs.ipynb**查看细节。
 
 # 参考
 <div id='wiki-protein'></div>

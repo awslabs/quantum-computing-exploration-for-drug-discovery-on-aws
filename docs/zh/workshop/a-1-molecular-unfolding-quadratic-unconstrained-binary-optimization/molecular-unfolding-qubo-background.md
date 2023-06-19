@@ -31,9 +31,7 @@
     * 使用可旋转键修改配体形状并匹配蛋白质口袋
     * 对接分数最大化
 
-在这里，我们专注于 MD 的第一阶段，即配体扩展，其目的是减少可能影响最终对接质量的形状偏差。在此解决方案中，我们使用 Mato 等人发表的量子退火方法进行分子展开 (MU)。
-
-部署完成后，请到**healthcare-and-life-sciences/a-1-molecular-unfolding-quadratic-unconstrained-binary-optimization/molecular-unfolding-qubo.ipynb**查看细节。
+在这里，我们专注于 MD 的第一阶段，即配体扩展，其目的是减少可能影响最终对接质量的形状偏差。在此解决方案中，我们使用 Mato 等人发表的量子退火方法进行分子展开 (MU)。请到**healthcare-and-life-sciences/a-1-molecular-unfolding-quadratic-unconstrained-binary-optimization/molecular-unfolding-qubo.ipynb**查看细节。
 
 
 # 参考

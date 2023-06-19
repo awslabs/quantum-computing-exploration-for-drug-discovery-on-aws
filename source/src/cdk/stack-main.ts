@@ -30,35 +30,32 @@ import {
   CfnParameter,
   CfnRule,
   CfnCondition,
+  Stack,
 } from 'aws-cdk-lib';
-
-// import * as cdk from 'aws-cdk-lib';
-// import { EventField } from 'aws-cdk-lib/aws-events';
 
 import {
   Construct,
 } from 'constructs';
 
-import {
-  SolutionStack,
-} from '../stack';
 import { Notebook } from './construct-notebook';
 import { AddCfnNag, genRandomDigits } from './utils/utils';
 
 
-export class MainStack extends SolutionStack {
+export class MainStack extends Stack {
   static SOLUTION_ID = 'SO8027'
   static SOLUTION_NAME = 'Quantum Computing Exploration'
-  static SOLUTION_VERSION = process.env.SOLUTION_VERSION || 'v1.1.0'
-  static DESCRIPTION = `(${MainStack.SOLUTION_ID}) ${MainStack.SOLUTION_NAME} (Version ${MainStack.SOLUTION_VERSION})`;
+  static SOLUTION_VERSION = 'v1.1.0'
+  static DESCRIPTION = `(${MainStack.SOLUTION_ID}) ${MainStack.SOLUTION_NAME} Version ${MainStack.SOLUTION_VERSION}`;
   notebookUrlOutput: CfnOutput;
+  snsOutPut: CfnOutput;
+  cfnRule: CfnRule;
 
   // constructor
   constructor(scope: Construct, id: string, props: StackProps = {}) {
 
     super(scope, id, props);
-    this.setDescription(MainStack.DESCRIPTION);
-    const stackName = this.stackName.replace(/[^a-zA-Z0-9_]+/, '').toLocaleLowerCase();
+    this.templateOptions.description = MainStack.DESCRIPTION
+    const stackName = this.stackName.replace(/\W+/, '').toLocaleLowerCase();
 
     const snsEmail = new CfnParameter(this, 'snsEmail', {
       type: 'String',
@@ -89,7 +86,7 @@ export class MainStack extends SolutionStack {
     };
 
     const supportRegions = ['us-west-1', 'us-west-2', 'us-east-1', 'eu-west-2'];
-    new CfnRule(this, 'SupportedRegionsRule', {
+    this.cfnRule = new CfnRule(this, 'SupportedRegionsRule', {
       assertions: [{
         assert: Fn.conditionContains(supportRegions, this.region),
         assertDescription: 'supported regions are ' + supportRegions.join(', '),
@@ -160,7 +157,7 @@ export class MainStack extends SolutionStack {
       // Lambda function
       const fn = new lambda.Function(this, 'checkHybridExperimentStatus', {
         runtime: lambda.Runtime.PYTHON_3_9,
-        functionName: 'checkHybridExperimentStatus',
+        functionName: `checkHybridExperimentStatus-${genRandomDigits()}`,
         handler: 'checkHybridExperimentStatus.lambda_handler',
         code: lambda.Code.fromAsset(join(__dirname, './lambda')),
         timeout: Duration.seconds(120),
@@ -186,7 +183,7 @@ export class MainStack extends SolutionStack {
       );
 
       eventRule.addTarget(new targets.LambdaFunction(fn));
-      new CfnOutput(this, 'SNSTopic', {
+      this.snsOutPut = new CfnOutput(this, 'SNSTopic', {
         value: topic.topicName,
         description: `SNS Topic Name(${prefix})`,
       });

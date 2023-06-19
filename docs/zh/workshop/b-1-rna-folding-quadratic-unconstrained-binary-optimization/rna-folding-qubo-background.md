@@ -1,6 +1,8 @@
 ## 笔记本实验
 
-本笔记本实现了 [使用量子计算机进行 RNA 折叠](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1010032) 的工作，灵感来自 [QHack 2022 Winner](https://github.com/XanaduAI/QHack2022/issues/114)。
+This notebook implements the work from [RNA Folding Using Quantum Computers](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1010032) inspired by the work from [QHack 2022 Winner](https://github.com/XanaduAI/QHack2022/issues/114).
+
+本笔记本实现了 [使用量子计算机进行 RNA 折叠](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1010032) 的工作，灵感来自 [QHack 2022 Winner](https://journals.plos.org/ploscompbiol/article? //github.com/XanaduAI/QHack2022/issues/114）。
 
 ## RNA折叠
 

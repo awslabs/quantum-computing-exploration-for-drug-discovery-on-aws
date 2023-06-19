@@ -84,7 +84,7 @@ networkx==2.6.3
 notebook==6.4.10
 notebook_shim==0.2.2
 ntlm-auth==1.5.0
-numpy==1.19.5
+numpy==1.22.3
 openpulse==0.4.1
 openqasm3==0.4.0
 opt-einsum==3.3.0

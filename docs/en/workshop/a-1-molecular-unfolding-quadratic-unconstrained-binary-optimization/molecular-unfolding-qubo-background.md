@@ -27,9 +27,7 @@ As described in [Quantum Molecular Unfolding](https://arxiv.org/abs/2107.13607),
     * Use of the rotatable bonds to modify the ligand shape and to match the protein pocket
     * Docking score maximization
 
-Here we focus on the first phase of MD, ligand expansion, which aims to reduce shape bias that may affect the final quality of docking.  In this solution we use the quantum annealing approach to molecular unfolding (MU) as published by Mato et al.
-
-After deploymengt, you can go to **healthcare-and-life-sciences/a-1-molecular-unfolding-quadratic-unconstrained-binary-optimization/molecular-unfolding-qubo.ipynb** for more details.
+Here we focus on the first phase of MD, ligand expansion, which aims to reduce shape bias that may affect the final quality of docking.  In this solution we use the quantum annealing approach to molecular unfolding (MU) as published by Mato et al. Please go to **healthcare-and-life-sciences/a-1-molecular-unfolding-quadratic-unconstrained-binary-optimization/molecular-unfolding-qubo.ipynb** for more details.
 
 
 

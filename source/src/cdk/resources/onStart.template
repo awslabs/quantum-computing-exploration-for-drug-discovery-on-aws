@@ -13,7 +13,7 @@ conda activate qc_hcls_molecular_unfolding_qubo
 
 pip3 install ipykernel
 
-pip3 install numpy==1.22.2
+pip3 install numpy==1.22.3
 pip3 install boto3==1.26.8
 pip3 install dimod==0.10.12
 pip3 install dwave-system==1.15.0
@@ -41,7 +41,7 @@ pip3 install ipykernel
 
 conda install viennarna=2.5.1 -y
 
-pip3 install numpy==1.22.2
+pip3 install numpy==1.22.3
 pip3 install boto3==1.26.8
 pip3 install dimod==0.10.12
 pip3 install dwave-system==1.15.0

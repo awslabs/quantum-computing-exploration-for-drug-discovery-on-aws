@@ -25,20 +25,10 @@ import {
 import {
   MainStack,
 } from '../src/cdk/stack-main';
-import {
-  SolutionStack,
-} from '../src/stack';
-
-
-test('can create base stack', () => {
-  const app = new App();
-  const stack = new SolutionStack(app, 'test');
-  Template.fromStack(stack);
-});
 
 test('can create MainStack', () => {
   const app = new App();
-  const stack = new MainStack(app, 'test');
+  const stack = new MainStack(app, 'test', {});
   expect(stack).not.toBeNull();
 });
 

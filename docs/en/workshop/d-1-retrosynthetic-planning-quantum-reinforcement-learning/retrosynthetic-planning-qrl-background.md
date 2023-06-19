@@ -14,7 +14,7 @@ for complex organic molecules.
 
 ![Retro](../../images/retro-planning.png)
 
-Figure 13: A retrosynthetic analysis example[<sup>13</sup>](#wiki-retro)
+Figure 13: A retrosynthetic analysis example[<sup>12</sup>](#wiki-retro)
 
 The
 quantum reinforcement learning for 
@@ -23,9 +23,7 @@ encoding the target molecule and the
 available synthetic transformations as quantum states. 
 The quantum reinforcement learning algorithm can then use these states to 
 learn the optimal sequence of synthetic transformations to reach the 
-target molecule from a set of starting materials. The algorithm can learn from a database of known reactions, as well as from trial and error in a virtual environment, to optimize the synthesis process. 
-
-After deploymengt, you can go to **healthcare-and-life-science/d-1-retrosynthetic-planning-quantum-reinforcement-learning/retrosynthetic-planning-qrl.ipynb** for more details.
+target molecule from a set of starting materials. The algorithm can learn from a database of known reactions, as well as from trial and error in a virtual environment, to optimize the synthesis process. Please go to **healthcare-and-life-science/d-1-retrosynthetic-planning-quantum-reinforcement-learning/retrosynthetic-planning-qrl.ipynb** for more details.
 
 # References
 <div id='wiki-retro'></div>
