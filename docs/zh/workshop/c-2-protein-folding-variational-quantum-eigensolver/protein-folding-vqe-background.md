@@ -27,7 +27,9 @@ VQE是一种可以使用的量子算法
 首先需要将蛋白质结构编码成一种格式，可以表示为
 量子态。这可以使用
 称为量子位化方法的技术，
-它将蛋白质结构映射到一组可以由量子计算机操纵的量子位上。请到**healthcare-and-life-sciences/c-2-protein-folding-variational-quantum-eigensolver/protein-folding-vqe.ipynb**查看细节。
+它将蛋白质结构映射到一组可以由量子计算机操纵的量子位上。
+
+部署完成后，您可以在**堆栈**页面选择解决方案的根堆栈，选择**输出（Outputs）**，打开笔记本的链接。请到**healthcare-and-life-sciences/c-2-protein-folding-variational-quantum-eigensolver/protein-folding-vqe.ipynb**查看细节。
 
 # 参考
 <div id='wiki-protein'></div>

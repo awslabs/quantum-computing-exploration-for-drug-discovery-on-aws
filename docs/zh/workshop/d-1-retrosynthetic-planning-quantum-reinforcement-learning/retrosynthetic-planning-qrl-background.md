@@ -21,7 +21,9 @@
 可用的合成变换作为量子态。
 然后量子强化学习算法可以使用这些状态来
 学习合成变换的最佳序列以达到
-从一组起始材料中提取目标分子。该算法可以从已知反应的数据库中学习，也可以从虚拟环境中的反复试验中学习，以优化合成过程。请到**healthcare-and-life-science/d-1-retrosynthetic-planning-quantum-reinforcement-learning/retrosynthetic-planning-qrl.ipynb**查看细节。
+从一组起始材料中提取目标分子。该算法可以从已知反应的数据库中学习，也可以从虚拟环境中的反复试验中学习，以优化合成过程。
+
+部署完成后，您可以在**堆栈**页面选择解决方案的根堆栈，选择**输出（Outputs）**，打开笔记本的链接。请到**healthcare-and-life-science/d-1-retrosynthetic-planning-quantum-reinforcement-learning/retrosynthetic-planning-qrl.ipynb**查看细节。
 
 # 参考
 <div id='wiki-retro'></div>

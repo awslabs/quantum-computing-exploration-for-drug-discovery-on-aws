@@ -1,4 +1,4 @@
-Quantum Computing Exploration for Drug Discovery on AWS (QCEDD) helps you study drug discovery problems using quantum computing (Amazon Braket), such as molecular docking and protein folding. Use [Amazon Braket][braket] to call quantum computing resources for experiments, and support user-customized algorithms to adapt to research findings in more scenarios.
+Quantum Computing Exploration for Drug Discovery on AWS (QCEDD) helps you study drug discovery problems using quantum computing (Amazon Braket), such as molecular docking and protein folding. You can use [Amazon Braket][braket] to call quantum computing resources for experiments, and support user-customized algorithms to adapt to research findings in more scenarios.
 
 This solution includes the following features:
 
@@ -6,7 +6,7 @@ This solution includes the following features:
 - A fully managed Jupyter Notebook, which can be used to design and debug drug discovery algorithms.
 - Ability to customize algorithms for other drug discovery problems and reuse them.
 
-This implementation guide includes a [workshop](workshop/background.md) for you to walk through the solution. The workshop takes molecular unfolding algorithm from Mato, Kevin, et al.[<sup>1</sup>](#original-author) as an example to illustrate the background information, how to build a model, optimize its configuration, and batch evaluate the experiment results.
+This implementation guide includes a [workshop](workshop/background.md) with a series of notebook experimentation. For example, the workshop introduces the molecular unfolding algorithm from Mato, Kevin, et al.[<sup>1</sup>](#original-author) to illustrate the background information, how to build a model, optimize its configuration, and batch evaluate the experiment results.
 
 This implementation guide describes architectural considerations and configuration steps for deploying the Quantum Computing Exploration for Drug Discovery on AWS in the Amazon Web Services (AWS) cloud. It includes links to [CloudFormation][cloudformation] templates that
 launches and configures the AWS services required to deploy this solution using AWS best practices for security and availability.

@@ -30,7 +30,9 @@ Grover 算法是一种量子算法，它
 可用于搜索未分类的数据库
 O(sqrt(N)) 时间内的 N 项。这是一个
 显着加速相比
-经典算法，需要 O(N) 时间来搜索未排序的数据库。请到**healthcare-and-life-sciences/c-3-protein-folding-grover-search/protein-folding-gs.ipynb**查看细节。
+经典算法，需要 O(N) 时间来搜索未排序的数据库。
+
+部署完成后，您可以在**堆栈**页面选择解决方案的根堆栈，选择**输出（Outputs）**，打开笔记本的链接。请到**healthcare-and-life-sciences/c-3-protein-folding-grover-search/protein-folding-gs.ipynb**查看细节。
 
 # 参考
 <div id='wiki-protein'></div>

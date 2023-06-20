@@ -13,7 +13,9 @@ Figure 7: A hairpin loop from a pre-mRNA[<sup>7</sup>](#wiki-rna)
 
 In this work, the quantum annealer is leveraged to predict the secondary structure of RNA. 
 To steer the system towards maximizing both the number of base pairs and the average length of the stems, 
-a Hamiltonian is formulated in the Binary Quadratic Model (BQM) format. Please go to **healthcare-and-life-sciences/b-1-rna-folding-quadratic-unconstrained-binary-optimization/rna-folding-qubo.ipynb** for more details.
+a Hamiltonian is formulated in the Binary Quadratic Model (BQM) format. 
+
+After deployment, you can go to select the solution’s root stack on the Stacks page, choose the Outputs tab, and open the link for your notebook. See the file **healthcare-and-life-sciences/b-1-rna-folding-quadratic-unconstrained-binary-optimization/rna-folding-qubo.ipynb** for more details.
 
 
 # References

@@ -10,15 +10,15 @@ Figure 1: Quantum Computing Exploration for Drug Discovery on AWS architecture
 
 3. This program uses [Amazon Braket][braket] Hybrid Job for experiments.
 
-4. The experimental results will be stored in Amazon S3.
+4. The experiment results are stored in Amazon S3.
 
-5. Run multiple Hybrid Jobs in one experiment, and trigger the events in [Amazon EventBridge][eventbridge] when the Hybrid Job is completed.
+5. Run multiple Hybrid Jobs in one experiment, and initiate the events in [Amazon EventBridge][eventbridge] when the Hybrid Job is completed.
 
-6. Events triggered by Amazon EventBridge will be sent to Lambda for analysis and summary.
+6. Events initiated by Amazon EventBridge will be sent to Lambda for analysis and summary.
 
 7. Lambda sends a analysis report to [Amazon SNS][sns], and all subscribers who have subscribed to this topic will receive this report by email. This step is optional, and you can specify emails for subscription notifications when deploying the solution.
 
-8. You can return to SageMaker Notebook to run the code to analyze and display the experimental results.
+8. Return to SageMaker Notebook to run the code to analyze and display the experiment results.
 
 [sagemaker]: https://aws.amazon.com/sagemaker/
 [braket]: https://aws.amazon.com/braket/

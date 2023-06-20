@@ -6,24 +6,24 @@ Before you launch the solution, review the architecture, supported regions, and 
 
     Before deploying this solution, we recommend you [create a billing alarm to monitor your estimated AWS charges](https://docs.aws.amazon.com/AmazonCloudWatch/latest/monitoring/monitor_estimated_charges_with_cloudwatch.html).
 
-The user or IAM role to perform the deployment must have at least permissions defined in [this file](https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/en/workshop/a-molecular-unfolding/permissions.json). If you use the permissions defined in this file to deploy this solution, your CloudFormation stack name should start with `QCEDD`, for example, `QCEDDStack`.
+The user or IAM role to perform the deployment must have at least permissions defined in the [permissions.json](https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/en/workshop/a-molecular-unfolding/permissions.json) file. If you use the permissions defined in this file to deploy this solution, your CloudFormation stack name should start with `QCEDD`, for example, `QCEDDStack`.
 
 ## Prerequisites
 
-⚠️ If bellow steps have already been done, please skip preparation step.
+If bellow steps have already been done, please skip this section.
 
 ## Preparation: Enable Amazon Braket service
 
 1. Log into the AWS Management Console, and go to Amazon Braket console.
    ![braket-console](./images/braket-console.png)
 
-2. Click on the left menu **Permissions and Settings**, select the tab **General**, click the button **Accept and Enable**
+2. Choose **Permissions and Settings** in the left navigation pane, then choose the **General** tab, and choose **Accept and Enable**
    ![third-party](./images/third-party.png)
 
-3. Switch to the tab page **Execution Roles**, click the **Create Service-linked Role** button to create service-linked role.
+3. Choose the **Execution Roles** tab, and choose **Create Service-linked Role** to create service-linked role.
    ![service-linked](./images/service-linked.png)
 
-4. Click the **Verify Existing Roles** button to create jobs execution role
+4. Choose **Verify Existing Roles** to create jobs execution role.
    ![execution-rule](./images/execution-rule.png)
 
 ## Step 1: Launch the AWS CloudFormation template into your AWS account
@@ -86,7 +86,9 @@ Follow below steps to subscribe to SNS notification via email to receive result 
 
 If needed, you can update the AWS CloudFormation stack to change the deployment settings.
 
-!!! Important If the content of the notebook algorithm changed, please delete the original CloudFormation and create a new CloudFormation. Updating the CloudFormation will not make your algorithm changes take effect.
+!!! Important "Important"
+
+      If the content of the notebook algorithm changed, please delete the original CloudFormation and create a new CloudFormation. Updating the CloudFormation will not make your algorithm changes take effect.
 
 1. Sign in to the [AWS CloudFormation console](https://console.aws.amazon.com/cloudformation/).
 
@@ -96,7 +98,7 @@ If needed, you can update the AWS CloudFormation stack to change the deployment 
 
 4. Select **Use current template**, and choose **Next**.
 
-5. Update the parameters as needed, and choose **Next**. For example, if you have chosen `no` for Deploy Visualization, you may change it to `yes`.
+5. Update the parameters as needed, and choose **Next**. 
 
 6. On the **Configure stack options** page, choose **Next**.
 

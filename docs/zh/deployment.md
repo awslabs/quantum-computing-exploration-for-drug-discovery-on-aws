@@ -10,7 +10,7 @@
 
 ## 准备工作
 
-⚠️ 以下功能如果已经开通，请忽略「准备工作」。
+以下功能如果已经开通，请忽略「准备工作」。
 
 ## 准备工作：启动 Amazon Braket 服务，并生成执行角色
 
@@ -85,7 +85,9 @@
 
 部署完成后，您可以通过更新 CloudFormation 堆栈来修改配置。
 
-!!! Important 如果是 notebook 算法内容发生变更，请删除原来 CloudFormation，并创建新的 CloudFormation，更新 CloudFormation 不能让您的算法变更生效
+!!! Important "重要提示"
+
+   如果是 notebook 算法内容发生变更，请删除原来 CloudFormation，并创建新的 CloudFormation，更新 CloudFormation 不能让您的算法变更生效。
 
 1. 登录[AWS CloudFormation](https://console.aws.amazon.com/cloudformation/)管理控制台。
 
@@ -95,7 +97,7 @@
 
 4. 选择**使用当前模版**，选择**下一步**。
 
-5. 根据需要更改对应的参数，然后选择**下一步**。例如，如果您从前为**部署可视化**选择`no`，现在可更改为`yes`。
+5. 根据需要更改对应的参数，然后选择**下一步**。
 
 6. 在**配置堆栈选项**页面上，保留默认值并选择**下一步**。
 

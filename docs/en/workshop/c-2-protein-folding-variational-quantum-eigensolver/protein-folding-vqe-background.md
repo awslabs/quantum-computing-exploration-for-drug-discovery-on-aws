@@ -24,7 +24,9 @@ To use VQE for protein folding, one would
 first need to encode the protein structure into a format that can be represented as a 
 quantum state. This can be done using a 
 technique called the qubitization method, 
-which maps the protein structure onto a set of qubits that can be manipulated by the quantum computer. Please go to **healthcare-and-life-sciences/c-2-protein-folding-variational-quantum-eigensolver/protein-folding-vqe.ipynb** for more details.
+which maps the protein structure onto a set of qubits that can be manipulated by the quantum computer. 
+
+After deployment, you can go to select the solution’s root stack on the Stacks page, choose the Outputs tab, and open the link for your notebook. See the file **healthcare-and-life-sciences/c-2-protein-folding-variational-quantum-eigensolver/protein-folding-vqe.ipynb** for more details.
 
 # References
 <div id='wiki-protein'></div>

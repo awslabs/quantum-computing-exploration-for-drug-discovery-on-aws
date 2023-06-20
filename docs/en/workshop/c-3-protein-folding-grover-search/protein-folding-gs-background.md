@@ -30,7 +30,9 @@ Grover's algorithm is a quantum algorithm that
 can be used to search an unsorted database of 
 N items in O(sqrt(N)) time. This is a 
 significant speedup compared to 
-classical algorithms, which require O(N) time to search an unsorted database. Please go to **healthcare-and-life-sciences/c-3-protein-folding-grover-search/protein-folding-gs.ipynb** for more details.
+classical algorithms, which require O(N) time to search an unsorted database. 
+
+After deployment, you can go to select the solution’s root stack on the Stacks page, choose the Outputs tab, and open the link for your notebook. See the file **healthcare-and-life-sciences/c-3-protein-folding-grover-search/protein-folding-gs.ipynb** for more details.
 
 # References
 <div id='wiki-protein'></div>
