@@ -41,10 +41,10 @@
     "typescript": "^5.1.3"
   },
   "dependencies": {
-    "@aws-cdk/aws-batch-alpha": "^2.84.0-alpha.0",
+    "@aws-cdk/aws-batch-alpha": "2.84.0-alpha.0",
     "@aws-sdk/client-cloudformation": "^3.352.0",
-    "aws-cdk": "^2.84.0",
-    "aws-cdk-lib": "^2.84.0",
+    "aws-cdk": "2.84.0",
+    "aws-cdk-lib": "2.84.0",
     "cdk-bootstrapless-synthesizer": "^2.3.2",
     "constructs": "^10.2.52",
     "mustache": "^4.2.0",
@@ -53,7 +53,7 @@
   },
   "bundledDependencies": [],
   "license": "Apache-2.0",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "jest": {
     "clearMocks": true,
     "collectCoverage": true,
