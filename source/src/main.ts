@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 import {
-  App, Aspects
+  App, Aspects,
 } from 'aws-cdk-lib';
 
 
@@ -24,10 +24,12 @@ import {
 } from 'cdk-bootstrapless-synthesizer';
 
 import {
+  AwsSolutionsChecks, NagSuppressions,
+} from 'cdk-nag';
+
+import {
   MainStack,
 } from './cdk/stack-main';
-
-import { AwsSolutionsChecks, NagSuppressions } from 'cdk-nag';
 
 
 const app = new App();
@@ -40,7 +42,7 @@ NagSuppressions.addStackSuppressions(new MainStack(app, 'QCEDDStack', {
   { id: 'AwsSolutions-L1', reason: 'The custom resource runtime version is not latest' },
   { id: 'AwsSolutions-SM1', reason: 'The latest version is no need to use VPC' },
   { id: 'AwsSolutions-SM3', reason: 'The custom resource need to access directly' },
-], true)
+], true);
 
 Aspects.of(app).add(new AwsSolutionsChecks());
 

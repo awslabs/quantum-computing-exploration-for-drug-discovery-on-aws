@@ -42,9 +42,9 @@ import { AddCfnNag, genRandomDigits } from './utils/utils';
 
 
 export class MainStack extends Stack {
-  static SOLUTION_ID = 'SO8027'
-  static SOLUTION_NAME = 'quantum-computing-exploration-for-drug-discovery-on-aws'
-  static SOLUTION_VERSION = 'v1.1.0'
+  static SOLUTION_ID = 'SO8027';
+  static SOLUTION_NAME = 'quantum-computing-exploration-for-drug-discovery-on-aws';
+  static SOLUTION_VERSION = 'v1.1.0';
   static DESCRIPTION = `(${MainStack.SOLUTION_ID}) ${MainStack.SOLUTION_NAME} Version ${MainStack.SOLUTION_VERSION}`;
   notebookUrlOutput: CfnOutput;
   snsOutPut: CfnOutput;
@@ -54,7 +54,7 @@ export class MainStack extends Stack {
   constructor(scope: Construct, id: string, props: StackProps = {}) {
 
     super(scope, id, props);
-    this.templateOptions.description = MainStack.DESCRIPTION
+    this.templateOptions.description = MainStack.DESCRIPTION;
     const stackName = this.stackName.replace(/\W+/, '').toLocaleLowerCase();
 
     const snsEmail = new CfnParameter(this, 'snsEmail', {

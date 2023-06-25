@@ -33,13 +33,13 @@ export class AddCfnNag implements IAspect {
         node.node.path.endsWith('/CreateEventRuleFuncRole/DefaultPolicy/Resource') ||
         node.node.path.endsWith('/checkHybridExperimentStatus/ServiceRole/DefaultPolicy/Resource')
     ) {
-      addCFNNagMetadata(node, 'W12','some permissions are not resource-level permissions')
+      addCFNNagMetadata(node, 'W12', 'some permissions are not resource-level permissions');
     } else if (node.node.path.endsWith('/SNSKey/Resource')) {
-      addCFNNagMetadata(node, 'F76','Key for SNS, add constraint in conditions')
-    } else if(node.node.path.endsWith('/checkHybridExperimentStatus/Resource')) {
-      addCFNNagMetadata(node, 'W89','The version to be released does not need to have a VPC')
-    } else if(node.node.path.endsWith('/accessLogs/Resource')) {
-      addCFNNagMetadata(node, 'W35','This resource does not need to have accessLogs')
+      addCFNNagMetadata(node, 'F76', 'Key for SNS, add constraint in conditions');
+    } else if (node.node.path.endsWith('/checkHybridExperimentStatus/Resource')) {
+      addCFNNagMetadata(node, 'W89', 'The version to be released does not need to have a VPC');
+    } else if (node.node.path.endsWith('/accessLogs/Resource')) {
+      addCFNNagMetadata(node, 'W35', 'This resource does not need to have accessLogs');
     }
   }
 }
@@ -48,8 +48,8 @@ export function genRandomDigits(): string {
   return `${Fn.select(0, Fn.split('-', Fn.select(2, Fn.split('/', Fn.ref('AWS::StackId')))))}`;
 }
 
-function addCFNNagMetadata(node: IConstruct, id: string, reason: string){
+function addCFNNagMetadata(node: IConstruct, id: string, reason: string) {
   (node as CfnResource).addMetadata('cfn_nag', {
-    rules_to_suppress: [{id, reason}],
+    rules_to_suppress: [{ id, reason }],
   });
 }

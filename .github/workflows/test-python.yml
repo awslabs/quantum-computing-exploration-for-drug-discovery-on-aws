@@ -19,7 +19,6 @@ jobs:
       - name: Install dependencies
         run: |
           cd source/src/cdk
-          pip3 install -r requirements.txt
           pip3 install -U pytest
           pip3 install moto==3.0.5
 

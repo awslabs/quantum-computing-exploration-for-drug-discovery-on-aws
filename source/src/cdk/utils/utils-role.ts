@@ -38,8 +38,8 @@ export class RoleUtil {
     return new this(scope, props);
   }
 
-  private props: Props
-  private scope: Construct
+  private props: Props;
+  private scope: Construct;
   private constructor(scope: Construct, props: Props) {
     this.props = props;
     this.scope = scope;
