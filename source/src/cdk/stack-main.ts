@@ -44,7 +44,7 @@ import { AddCfnNag, genRandomDigits } from './utils/utils';
 export class MainStack extends Stack {
   static SOLUTION_ID = 'SO8027';
   static SOLUTION_NAME = 'quantum-computing-exploration-for-drug-discovery-on-aws';
-  static SOLUTION_VERSION = 'v1.1.0';
+  static SOLUTION_VERSION = '1.1.0';
   static DESCRIPTION = `(${MainStack.SOLUTION_ID}) ${MainStack.SOLUTION_NAME} Version ${MainStack.SOLUTION_VERSION}`;
   notebookUrlOutput: CfnOutput;
   snsOutPut: CfnOutput;

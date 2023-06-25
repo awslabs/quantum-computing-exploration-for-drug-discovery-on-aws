@@ -5,6 +5,10 @@
     "type": "git",
     "url": "https://github.com/awslabs/quantum-computing-exploration-for-drug-discovery-on-aws.git"
   },
+  "author": {
+    "name": "Amazon Web Services",
+    "url": "https://aws.amazon.com/solutions"
+  },
   "scripts": {
     "test": "rm -fr lib && npm run test:compile && jest --passWithNoTests --all --updateSnapshot && eslint",
     "build": "npx cdk synth",
@@ -41,15 +45,16 @@
     "typescript": "^5.1.3"
   },
   "dependencies": {
-    "@aws-cdk/aws-batch-alpha": "2.84.0-alpha.0",
+    "@aws-cdk/aws-batch-alpha": "2.85.0-alpha.0",
     "@aws-sdk/client-cloudformation": "^3.352.0",
-    "aws-cdk": "2.84.0",
-    "aws-cdk-lib": "2.84.0",
+    "aws-cdk": "2.85.0",
+    "aws-cdk-lib": "2.85.0",
     "cdk-bootstrapless-synthesizer": "^2.3.2",
     "constructs": "^10.2.52",
     "mustache": "^4.2.0",
     "source-map-support": "^0.5.16",
-    "cdk-nag": "^2.27.38"
+    "cdk-nag": "^2.27.38",
+    "semver":"7.5.3"
   },
   "bundledDependencies": [],
   "license": "Apache-2.0",
