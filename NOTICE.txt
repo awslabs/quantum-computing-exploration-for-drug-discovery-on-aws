@@ -1,5 +1,11 @@
 Quantum Computing Exploration for Drug Discovery on AWS
+
 Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+Licensed under the Apache License Version 2.0 (the "License"). You may not use this file except
+in compliance with the License. A copy of the License is located at http://www.apache.org/licenses/
+or in the "license" file accompanying this file. This file is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, express or implied. See the License for the
+specific language governing permissions and limitations under the License.
 
 **********************
 THIRD PARTY COMPONENTS
@@ -25,14 +31,22 @@ typescript under the Apache License 2.0
 ts-jest under the Massachusetts Institute of Technology (MIT) license
 ts-node under the Massachusetts Institute of Technology (MIT) license
 jest under the Massachusetts Institute of Technology (MIT) license
+mustache under the Massachusetts Institute of Technology (MIT) license
+
 
 numpy under the BSD License (BSD)
 dimod under the Apache Software License (Apache 2.0)
 networkx under the BSD License
 dwave-ocean-sdk under the Apache Software License (Apache 2.0)
 biopandas under the BSD License (BSD 3-Clause)
-dwave-ocean-sdk under the Apache Software License (Apache 2.0)
 amazon-braket-sdk under the Apache Software License (Apache License 2.0)
 amazon-braket-ocean-plugin under the Apache Software License (Apache License 2.0)
 py3Dmol under the MIT License (MIT)
 ipywidgets under the BSD License (BSD)
+boto3 under the Apache Software License (Apache 2.0)
+Cython under the Apache Software License (Apache 2.0)
+altair under the BSD License (BSD)
+setproctitle under the GPL-3.0 License
+source-map-support under the MIT license
+cdk-nag under the Apache-2.0 License
+fs under the ISC License

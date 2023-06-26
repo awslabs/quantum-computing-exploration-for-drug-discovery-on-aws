@@ -15,13 +15,17 @@ limitations under the License.
 */
 
 import {
-  App,
+  App, Aspects,
 } from 'aws-cdk-lib';
 
 
 import {
-  BootstraplessStackSynthesizer,
+  BootstraplessStackSynthesizer, CompositeECRRepositoryAspect,
 } from 'cdk-bootstrapless-synthesizer';
+
+import {
+  AwsSolutionsChecks, NagSuppressions,
+} from 'cdk-nag';
 
 import {
   MainStack,
@@ -30,9 +34,21 @@ import {
 
 const app = new App();
 
-new MainStack(app, 'QCEDDStack', {
+NagSuppressions.addStackSuppressions(new MainStack(app, 'QCEDDStack', {
   synthesizer: newSynthesizer(),
-});
+}), [
+  { id: 'AwsSolutions-IAM4', reason: 'these policies is used by CDK Customer Resource lambda' },
+  { id: 'AwsSolutions-IAM5', reason: 'Some roles and policies need to get dynamic resources' },
+  { id: 'AwsSolutions-L1', reason: 'The custom resource runtime version is not latest' },
+  { id: 'AwsSolutions-SM1', reason: 'The latest version is no need to use VPC' },
+  { id: 'AwsSolutions-SM3', reason: 'The custom resource need to access directly' },
+], true);
+
+Aspects.of(app).add(new AwsSolutionsChecks());
+
+if (process.env.USE_BSS) {
+  Aspects.of(app).add(new CompositeECRRepositoryAspect());
+}
 
 app.synth();
 

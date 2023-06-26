@@ -2,89 +2,77 @@
 
 ## Overview
 
-Quantum Computing Exploration for Drug Discovery on AWS (abbrev. QCEDD), an open-sourced solution customers can launch to design and run computational studies in the area of drug discovery, e.g. molecular docking and protein folding. With this solution, customers can design and load new, or existing algorithms, into Jupyter notebooks, then orchestrate the classical and quantum compute resources using AWS Batch and AWS Step Functions. Due to its design, customers are free to scale their classical simulations by launching a performant HPC resource instead of  a single EC2 instance. At the same time customer’s quantum experiments benefit from the growing number of quantum resources available through the Amazon Braket service.
+Quantum Computing Exploration for Drug Discovery on AWS is an open-source solution that allows researchers and quantum computing advocates to design and run computational studies in the field of drug discovery. With this solution, you can access quantum computers via the Amazon Braket service. The Amazon Braket Hybrid Job feature allows you to use classical computing and quantum computing resources to evaluate experiment values such as cost, time, and performance. The solution comes with built-in sample code for certain drug discovery problems, such as molecular docking, protein folding, RNA folding, and retrosynthetic planning, to help you get started with quantum computing in the field.
 
 The overall architecture is shown as below:
 
 ![architecture](./docs/en/images/architecture.png)
 
-This solution deploys the Amazon CloudFormation template in your 
-AWS Cloud account and provides three URLs. One for **Visualization**.
-The others provide user with two approaches to study drug discovery 
-problems: **Notebook Experiment** and **Batch Evaluation**:
-
-* Notebook Experiment
-
-The solution deploys the notebook for user to study different drug discovery 
-problems. 
-These problems will be studied using classical computing or quantum 
-computing.
-
-* Batch Evaluation
-
-The solution provides user the way to evaluate a particular problem based 
-on different computing resources , classical computing or quantum computing. 
-For example, for the problem of molecular unfolding, the performance difference 
-between quantum annealer and simulated annealer can be compared.
-
-* Visualization
-
-The solution provides user the way to visualize the comparing results of 
-batch evaluation (e.g. performance, time)
-
-For detailed description of architecture, please refer to the 
+For detailed description of architecture, please refer to the
 [Architecture Page](https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/en/architecture/)
 
+This solution deploys the Amazon CloudFormation template in your
+AWS Cloud account and provides the URL for Notebook Experiment about drug discovery problems. 
+
 ## Pre-built Examples for Drug Discovery[<sup>1,</sup>](#more-example)[<sup>2</sup>](#data)
+
 <table border='1' style="text-align: center">
     <tr>
         <td><B>Problem Name</B></td>
-        <td><B>Methods</td>
-        <td colspan='2'><B>Function</td>
-        <td><B>Dataset</td>
+        <td><B>Method</td>
         <td><B>Reference</td>
+    </tr>
     <tr>
+        <td>Molecular Unfolding </td>
+        <td>QUBO</td>
+        <td><a href="https://arxiv.org/abs/2107.13607">Quantum Molecular Unfolding(2021)</a></td>
+    </tr>
     <tr>
-        <td rowspan='4'>Molecular Unfolding </td>
-        <td rowspan='4'>QUBO</td>
-        <td><span>single solver</span></td>
-        <td><span>&#10004;</span></td>
-        <td rowspan='4'><a href="https://www.rcsb.org/ligand/117">117 mol2</a></td>
-        <td rowspan='4'><a href="https://arxiv.org/abs/2107.13607">Quantum Molecular Unfolding(2021)</a></td>
-    <tr>
-    <tr>
-        <td><span>qbsolv</span></td>
-        <td><span><span></td>
-    <tr>
-    <tr>
-        <td rowspan='4'>RNA Folding</td>
-        <td rowspan='4'>QUBO</td>
-        <td><span>single solver</span></td>
-        <td><span>&#10004;</span></td>
-        <td rowspan='4'><a href="http://bprna.cgrb.oregonstate.edu/">bpRNA-1m</a></td>
+        <td rowspan='2'>RNA folding</td>
+        <td rowspan='2'>QUBO</td>
         <td ><span><a href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1010032">RNA folding using quantum computers(2022)</a></span></td>
+    </tr>
     <tr>
-    <tr>
-        <td><span>qbsolv</span></td>
-        <td><span><span></td>
         <td ><span><a href="https://github.com/XanaduAI/QHack2022/issues/114">QHack 2022 winner</a></span></td>
+    </tr>
     <tr>
+        <td rowspan='5'>Protein folding</td>
+        <td rowspan='2'>Quantum Walk</td>
+        <td ><span><a href="https://iopscience.iop.org/article/10.1088/2058-9565/ac4f2f">QFold: quantum walk and deep learning to solve protein folding(2022)</a></span></td>
+    </tr>
+    <tr>
+        <td ><span><a href="https://github.com/roberCO/QFold">Roberto Campos's Implementation</a></span></td>
+    </tr>
+    <tr>
+        <td>VQE</td>
+        <td >--</td>
+    </tr>
+    <tr>
+        <td rowspan='2'>Grover's Algorithm</td>
+        <td ><span><a href="https://ieeexplore.ieee.org/document/9374469">Quantum Speedup for Protein Structure Prediction(2022)</a></span></td>
+    </tr>
+    <tr>
+        <td ><span><a href="https://github.com/renatawong/quantum-protein-structure-prediction">Roberto Campos's Implementation</a></span></td>
+    </tr>
+    <tr>
+        <td >Retrosynthetic Planning</td>
+        <td >Quantum Reinforcement Learning</td>
+        <td ><span><a href="https://pubs.acs.org/doi/10.1021/acscentsci.9b00055">Learning Retrosynthetic Planning through Simulated Experience(2019)</a></span></td>
+    </tr>
 </table>
 
 <div id='more-example'></div>
 1.More examples to be added with continuous update
-<div id='data'></div>
-2.All the data in the solution follow the CC0 License
 
 ## File Structure
 
 Upon successfully cloning the repository into your local development environment, you will see the following file structure in your editor:
 
 ```
-├── CHANGELOG.md                  [Change log file]    
-├── CODE_OF_CONDUCT.md            [Code of conduct file] 
-├── CONTRIBUTING.md               [Contribution guide] 
-├── LICENSE                       [LICENSE for this solution] 
+├── CHANGELOG.md                  [Change log file]
+├── CODE_OF_CONDUCT.md            [Code of conduct file]
+├── CONTRIBUTING.md               [Contribution guide]
+├── LICENSE                       [LICENSE for this solution]
 ├── NOTICE                        [Notice for 3rd-party libraries]
 ├── README.md                     [Read me file]
 ├── docs                          [Solution's document]
@@ -100,21 +88,22 @@ Upon successfully cloning the repository into your local development environment
     ├── package-lock.json
     ├── package.json
     ├── src                       [Solution's source code]
-    │   ├── main.ts
-    │   ├── molecular-unfolding
-    │   │   ├── batch-images      
-    │   │   ├── cdk
-    │   │   ├── lambda
-    │   │   ├── molecular_unfolding.ipynb
-    │   │   ├── molecule-data
-    │   │   ├── requirements.txt
-    │   │   └── utility
+    │   ├── cdk
+    │   ├── notebook
+    │   │   └── healthcare-and-life-sciences
+    │   │       ├── a-1-molecular-unfolding-quadratic-unconstrained-binary-optimization
+    │   │       ├── b-1-folding-quadratic-unconstrained-binary-optimization
+    │   │       ├── c-1-rna-folding-quadratic-unconstrained-binary-optimization
+    │   │       ├── c-2-protein-folding-variational-quantum-eigensolver
+    │   │       ├── c-3-protein-folding-grover-search
+    │   │       └── d-1-retrosynthetic-planning-quantum-reinforcement-learning 
     │   └── stack.ts
-    ├── test                      [Solution's unit test code]             
+    ├── test                      [Solution's unit test code]
     ├── tsconfig.jest.json
     ├── tsconfig.json
     └── version.json
 ```
+
 ## Deploy From Source
 
 Refer to [prerequisites and deployment](source/README.md)
@@ -130,9 +119,10 @@ chmod +x ./run-all-tests.sh
 ./run-all-tests.sh
 
 ```
-***
 
-## Documents 
+---
+
+## Documents
 
 - [Github latest page](https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/en/)
 

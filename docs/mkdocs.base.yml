@@ -24,6 +24,4 @@ extra:
       link: /quantum-computing-exploration-for-drug-discovery-on-aws/zh/
       lang: zh
   cf_template:
-      url: https://solutions-reference.s3.amazonaws.com/quantum-computing-exploration-for-drug-discovery-on-aws/latest/QCEDDStack.template
-        
-
+      url: https://solutions-reference.s3.amazonaws.com/quantum-computing-exploration-for-drug-discovery-on-aws/v1.1.0/QCEDDStack.template

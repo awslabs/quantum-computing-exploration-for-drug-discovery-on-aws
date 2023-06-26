@@ -1,0 +1,18 @@
+FROM 292282985366.dkr.ecr.us-west-2.amazonaws.com/amazon-braket-base-jobs:1.0-cpu-py37-ubuntu18.04
+
+RUN python3 -m pip install --upgrade pip
+
+RUN python3 -m pip install numpy==1.22.3 \
+    scipy==1.5.4 \
+    tensorflow==1.15.0 \
+    Keras==2.0.8 \
+    qiskit==0.34.2 \
+    qiskit-aer==0.10.3 \
+    qiskit-aqua==0.9.5 \
+    qiskit-ibmq-provider==0.18.3 \
+    qiskit-ignis==0.7.0 \
+    qiskit-terra==0.19.2 \
+    matplotlib==3.3.4 \
+    bokeh==2.3.3
+
+COPY hybridjobs/psi4 /home/ubuntu/psi4conda/bin/psi4

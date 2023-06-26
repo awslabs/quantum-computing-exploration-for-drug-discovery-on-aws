@@ -21,3 +21,8 @@ __pycache__
 .ipynb_checkpoints
 .idea
 
+nohup.out
+
+# json
+molecular-unfolding-hybrid-jobs.json
+source/src/notebook/healthcare-and-life-sciences/**/*.json

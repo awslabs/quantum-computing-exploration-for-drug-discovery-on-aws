@@ -1,10 +1,9 @@
 ---
 name: Bug report
 about: Create a report to help us improve
-title: ''
+title: ""
 labels: bug
-assignees: ''
-
+assignees: ""
 ---
 
 **Describe the bug**
@@ -17,9 +16,10 @@ Steps to reproduce the behavior.
 A clear and concise description of what you expected to happen.
 
 **Please complete the following information about the solution:**
-- [ ] Version: [e.g. v1.0.0]
 
-To get the version of the solution, you can look at the description of the created CloudFormation stack. For example, "_(SO8027) Quantum Computing Exploration for Drug Discovery on AWS (Version **v1.0.0**)_". 
+- [ ] Version: [e.g. v1.1.0]
+
+To get the version of the solution, you can look at the description of the created CloudFormation stack. For example, "_(SO8027) Quantum Computing Exploration for Drug Discovery on AWS (Version **v1.1.0**)_".
 
 - [ ] Region: [e.g. us-west-2]
 - [ ] Was the solution modified from the version published on this repository?

@@ -1,6 +1,6 @@
-要卸载量子计算探索之药物发现方案，请删除CloudFormation堆栈。
+要卸载量子计算探索之药物发现方案，请删除 CloudFormation 堆栈。
 
-您可以使用亚马逊云科技管理控制台或CLI删除CloudFormation堆栈。
+您可以使用亚马逊云科技管理控制台或 CLI 删除 CloudFormation 堆栈。
 
 ## 使用亚马逊云科技管理控制台删除堆栈
 
@@ -8,36 +8,14 @@
 2. 在**堆栈**页面上，选择此方案的安装堆栈。
 3. 选择**删除**。
 
-## 使用CLI删除堆栈
+## 使用 CLI 删除堆栈
 
-1. 确定命令行在您的环境中是否可用。有关安装说明，请参阅CLI用户指南中的[CLI是什么][aws-cli]。
-2. 确认CLI可用后，请运行以下命令:
+1. 确定命令行在您的环境中是否可用。有关安装说明，请参阅 CLI 用户指南中的[CLI 是什么][aws-cli]。
+2. 确认 CLI 可用后，请运行以下命令:
 
-    ```bash
-    aws cloudformation delete-stack --stack-name <installation-stack-name>
-    ```
-
-## 删除QuickSight账户（可选）
-
-1. 导航至[QuickSight](https://us-east-1.quicksight.aws.amazon.com/sn/admin)页面。
-2. 选择**账户设置**。
-3. 选择**删除账户**。
-
-    !!! Caution "注意"
-
-        删除QuickSight账户时，所有控制面板、分析和其他相关数据也将被删除。
-
-4.  输入*确认*删除账户。  
-
-## 删除QuickSight角色（可选）
-
-1. 导航至[IAM Role](https://console.aws.amazon.com/iamv2/home#/roles)AWS控制台。
-
-2. 搜索角色名称。例如，`qcedd-quicksight-service-role`。
-
-3. 选中勾选框。
-
-4. 点击**删除**。
+   ```bash
+   aws cloudformation delete-stack --stack-name <installation-stack-name>
+   ```
 
 [cloudformation-console]: https://console.aws.amazon.com/cloudformation/home
 [aws-cli]: https://docs.aws.amazon.com/cli/latest/userguide/cli-chap-welcome.html

@@ -15,21 +15,35 @@ nav:
   - 部署解决方案: deployment.md
   - 动手实验: 
     - 背景: workshop/background.md
-    - 分子展开: 
-      - 笔记本实验:
-        - 概览: workshop/a-molecular-unfolding/notebook-experiment.md
-        - 准备数据: workshop/a-molecular-unfolding/prepare-data.ipynb
-        - 建立模型: workshop/a-molecular-unfolding/build-model.ipynb
-        - 建立模型（技术细节）: workshop/a-molecular-unfolding/build-model-detail.md
-        - 优化构型: workshop/a-molecular-unfolding/optimize-config.ipynb
-        - 处理结果: workshop/a-molecular-unfolding/post-process.ipynb
-      - 批量评估: 
-        - 批量评估默认模型: workshop/a-molecular-unfolding/batch-evaluation.md
-        - 批量评估自定义模型: workshop/a-molecular-unfolding/evaluate-your-own-model.md
+    - 分子展开 - 二次无约束二值优化: 
+      - 概览: workshop/a-1-molecular-unfolding-quadratic-unconstrained-binary-optimization/molecular-unfolding-qubo-background.md
+      - 笔记本: workshop/a-1-molecular-unfolding-quadratic-unconstrained-binary-optimization/molecular-unfolding-qubo.ipynb
+      # - 技术细节: workshop/a-1-molecular-unfolding-quadratic-unconstrained-binary-optimization/molecular-unfolding-qubo-details.md
+    - RNA折叠 - 二次无约束二值优化: 
+      - 概览: workshop/b-1-rna-folding-quadratic-unconstrained-binary-optimization/rna-folding-qubo-background.md
+      - 笔记本: workshop/b-1-rna-folding-quadratic-unconstrained-binary-optimization/rna-folding-qubo.ipynb
+      # - 技术细节: workshop/b-1-rna-folding-quadratic-unconstrained-binary-optimization/rna-folding-qubo-details.md
+    - 蛋白质折叠 - 量子随机游走: 
+      - 概览: workshop/c-1-protein-folding-quantum-random-walk/protein-folding-qrw-background.md
+      - 笔记本: workshop/c-1-protein-folding-quantum-random-walk/protein-folding-qrw.ipynb
+      # - 技术细节: workshop/c-1-protein-folding-quantum-random-walk/protein-folding-qrw-details.md
+    - 蛋白质折叠 - 变分量子本征求解器: 
+      - 概览: workshop/c-2-protein-folding-variational-quantum-eigensolver/protein-folding-vqe-background.md
+      - 笔记本: workshop/c-2-protein-folding-variational-quantum-eigensolver/protein-folding-vqe.ipynb
+      # - 技术细节: workshop/c-3-protein-folding-variational-quantum-eigensolver/protein-folding-vqe-details.md
+    - 蛋白质折叠 - Grover搜索算法: 
+      - 概览: workshop/c-3-protein-folding-grover-search/protein-folding-gs-background.md
+      - 笔记本: workshop/c-3-protein-folding-grover-search/protein-folding-gs.ipynb
+      # - 技术细节: workshop/c-2-protein-folding-grover-search/protein-folding-gs-details.md
+    - 分子逆合成 - 量子强化学习: 
+      - 概览: workshop/d-1-retrosynthetic-planning-quantum-reinforcement-learning/retrosynthetic-planning-qrl-background.md
+      - 笔记本: workshop/d-1-retrosynthetic-planning-quantum-reinforcement-learning/retrosynthetic-planning-qrl.ipynb
+      # - 技术细节: workshop/d-1-retrosynthetic-planning-quantum-reinforcement-learning/retrosynthetic-planning-qrl-details.md
   - 更多资源: additional-resources.md
   - 卸载解决方案: uninstall.md
   - 源代码: source.md
   - 版本发布说明: revisions.md
+  - 公告: notices.md
 markdown_extensions:
   - admonition
   - codehilite
