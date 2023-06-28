@@ -72,7 +72,7 @@ matplotlib==3.3.4
 matplotlib-inline==0.1.6
 mistune==0.8.4
 more-itertools==8.14.0
-mpmath==1.2.1
+mpmath==1.3.0
 multitasking==0.0.11
 mypy-extensions==1.0.0
 nbclassic==0.3.5
