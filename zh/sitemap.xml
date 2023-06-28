@@ -2,127 +2,127 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/</loc>
-         <lastmod>2023-06-26</lastmod>
+         <lastmod>2023-06-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/additional-resources/</loc>
-         <lastmod>2023-06-26</lastmod>
+         <lastmod>2023-06-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/architecture/</loc>
-         <lastmod>2023-06-26</lastmod>
+         <lastmod>2023-06-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/cost/</loc>
-         <lastmod>2023-06-26</lastmod>
+         <lastmod>2023-06-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/deployment/</loc>
-         <lastmod>2023-06-26</lastmod>
+         <lastmod>2023-06-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/notices/</loc>
-         <lastmod>2023-06-26</lastmod>
+         <lastmod>2023-06-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/regions/</loc>
-         <lastmod>2023-06-26</lastmod>
+         <lastmod>2023-06-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/revisions/</loc>
-         <lastmod>2023-06-26</lastmod>
+         <lastmod>2023-06-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/security/</loc>
-         <lastmod>2023-06-26</lastmod>
+         <lastmod>2023-06-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/source/</loc>
-         <lastmod>2023-06-26</lastmod>
+         <lastmod>2023-06-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/template/</loc>
-         <lastmod>2023-06-26</lastmod>
+         <lastmod>2023-06-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/uninstall/</loc>
-         <lastmod>2023-06-26</lastmod>
+         <lastmod>2023-06-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/workshop/background/</loc>
-         <lastmod>2023-06-26</lastmod>
+         <lastmod>2023-06-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/workshop/a-1-molecular-unfolding-quadratic-unconstrained-binary-optimization/molecular-unfolding-qubo-background/</loc>
-         <lastmod>2023-06-26</lastmod>
+         <lastmod>2023-06-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/workshop/a-1-molecular-unfolding-quadratic-unconstrained-binary-optimization/molecular-unfolding-qubo/</loc>
-         <lastmod>2023-06-26</lastmod>
+         <lastmod>2023-06-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/workshop/b-1-rna-folding-quadratic-unconstrained-binary-optimization/rna-folding-qubo-background/</loc>
-         <lastmod>2023-06-26</lastmod>
+         <lastmod>2023-06-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/workshop/b-1-rna-folding-quadratic-unconstrained-binary-optimization/rna-folding-qubo/</loc>
-         <lastmod>2023-06-26</lastmod>
+         <lastmod>2023-06-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/workshop/c-1-protein-folding-quantum-random-walk/protein-folding-qrw-background/</loc>
-         <lastmod>2023-06-26</lastmod>
+         <lastmod>2023-06-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/workshop/c-1-protein-folding-quantum-random-walk/protein-folding-qrw/</loc>
-         <lastmod>2023-06-26</lastmod>
+         <lastmod>2023-06-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/workshop/c-2-protein-folding-variational-quantum-eigensolver/protein-folding-vqe-background/</loc>
-         <lastmod>2023-06-26</lastmod>
+         <lastmod>2023-06-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/workshop/c-2-protein-folding-variational-quantum-eigensolver/protein-folding-vqe/</loc>
-         <lastmod>2023-06-26</lastmod>
+         <lastmod>2023-06-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/workshop/c-3-protein-folding-grover-search/protein-folding-gs-background/</loc>
-         <lastmod>2023-06-26</lastmod>
+         <lastmod>2023-06-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/workshop/c-3-protein-folding-grover-search/protein-folding-gs/</loc>
-         <lastmod>2023-06-26</lastmod>
+         <lastmod>2023-06-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/workshop/d-1-retrosynthetic-planning-quantum-reinforcement-learning/retrosynthetic-planning-qrl-background/</loc>
-         <lastmod>2023-06-26</lastmod>
+         <lastmod>2023-06-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/workshop/d-1-retrosynthetic-planning-quantum-reinforcement-learning/retrosynthetic-planning-qrl/</loc>
-         <lastmod>2023-06-26</lastmod>
+         <lastmod>2023-06-28</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>
