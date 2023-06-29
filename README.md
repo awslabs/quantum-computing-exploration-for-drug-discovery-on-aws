@@ -52,7 +52,7 @@ AWS Cloud account and provides the URL for Notebook Experiment about drug discov
         <td ><span><a href="https://ieeexplore.ieee.org/document/9374469">Quantum Speedup for Protein Structure Prediction(2022)</a></span></td>
     </tr>
     <tr>
-        <td ><span><a href="https://github.com/renatawong/quantum-protein-structure-prediction">Roberto Campos's Implementation</a></span></td>
+        <td ><span><a href="https://github.com/renatawong/quantum-protein-structure-prediction">Renata Wong's Implementation</a></span></td>
     </tr>
     <tr>
         <td >Retrosynthetic Planning</td>
