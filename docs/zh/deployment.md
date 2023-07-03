@@ -6,7 +6,7 @@
 
     建议您在部署此解决方案之前[创建账单告警](https://docs.aws.amazon.com/zh_cn/AmazonCloudWatch/latest/monitoring/monitor_estimated_charges_with_cloudwatch.html)以监控AWS估算费用。
 
-部署本方案需要具有最小的[IAM 权限](https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/en/workshop/a-molecular-unfolding/permissions.json)。如果您使用定义在此文件中的权限部署本方案，您的 CloudFormation 堆栈的名字将以 `QCEDD`开头， 例如：`QCEDDStack`。
+部署本方案需要具有最小的[IAM 权限](https://awslabs.github.io/quantum-computing-exploration-for-drug-discovery-on-aws/docs/zh/workshop/permissions.json)。如果您使用定义在此文件中的权限部署本方案，您的 CloudFormation 堆栈的名字将以 `QCEDD`开头， 例如：`QCEDDStack`。
 
 ## 准备工作
 
@@ -87,7 +87,7 @@
 
 !!! Important "重要提示"
 
-   如果是 notebook 算法内容发生变更，请删除原来 CloudFormation，并创建新的 CloudFormation，更新 CloudFormation 不能让您的算法变更生效。
+如果是 notebook 算法内容发生变更，请删除原来 CloudFormation，并创建新的 CloudFormation，更新 CloudFormation 不能让您的算法变更生效。
 
 1. 登录[AWS CloudFormation](https://console.aws.amazon.com/cloudformation/)管理控制台。
 
