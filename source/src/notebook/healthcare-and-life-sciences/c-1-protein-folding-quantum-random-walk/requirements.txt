@@ -108,7 +108,7 @@ ptyprocess==0.7.0
 pyasn1==0.4.8
 pycparser==2.21
 pydantic==1.10.2
-Pygments==2.14.0
+Pygments==2.15.0
 pyparsing==3.0.9
 pyrsistent==0.18.0
 python-constraint==1.4.0
