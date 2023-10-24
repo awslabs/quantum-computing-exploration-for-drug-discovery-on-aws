@@ -147,7 +147,7 @@ testpath==0.6.0
 threadpoolctl==3.1.0
 tinycss2==1.2.1
 toolz==0.12.0
-tornado==6.3.2
+tornado==6.3.3
 traitlets==4.3.3
 tweedledum==1.1.1
 typing_extensions==4.1.1
