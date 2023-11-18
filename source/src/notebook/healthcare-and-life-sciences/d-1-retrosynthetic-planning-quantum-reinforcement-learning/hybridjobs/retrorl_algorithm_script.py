@@ -7,6 +7,7 @@ import torch.nn.functional as F
 # from deepquantum.gates.qcircuit import Circuit as dqCircuit
 from braket.circuits import Circuit as bkCircuit
 from braket.tracking import Tracker
+from braket.jobs import save_job_checkpoint
 # import deepquantum.gates.qoperator as op
 import boto3
 
@@ -28,7 +29,6 @@ sys.path.append(file_dir)
 
 from utility.RetroGateModel import RetroRLModel
 from utility.RetroRLAgent import RetroRLAgent
-print('here')
 t = Tracker().start()
 
 input_dir = os.environ["AMZN_BRAKET_INPUT_DIR"]
@@ -60,14 +60,12 @@ train_mode = hyperparams["train_mode"]
 list = []
 
 # dirs=directories
-print(input_dir)
-print(device_arn)
-print(os.environ.keys())
-print(file_dir)
-for (root, dirs, file) in os.walk(input_dir):
-    print(f'root {root} dirs {dirs} file {file}')
+# print(input_dir)
+# print(device_arn)
+# print(file_dir)
+# for (root, dirs, file) in os.walk(input_dir):
+#     print(f'root {root} dirs {dirs} file {file}')
 
-input_data_path = f'{input_dir}/input'
 # file1 = np.load(f'{input_data_path}/reactions_dictionary.npy', allow_pickle=True).item()
 # file2 = np.load(f'{input_data_path}/smiles_dictionary.npy', allow_pickle=True).item()
 # file3 = np.load(f'{input_data_path}/target_product.npy').tolist()
@@ -79,7 +77,20 @@ if "copy_checkpoints_from_job" in hyperparams:
 else:
     copy_checkpoints_from_job = None
 
-retro_rl_model = RetroRLModel.load(f'{input_data_path}/{model_path}')
+try:
+    input_data_path = f'{input_dir}/input'
+    retro_rl_model = RetroRLModel.load(f'{input_data_path}/{model_path}')
+except Exception as e1:
+    try:
+        # Second solution
+        input_data_path = f'{input_dir}/data'
+        retro_rl_model = RetroRLModel.load(f'{input_data_path}/{model_path}')
+    except Exception as e2:
+        # Handle both solutions failing
+        print(f"Can't find data in {input_dir}/input or {input_dir}/data!!!")
+else:
+    # Code to execute when the first solution succeeds
+    print(f"Found data in {input_data_path}!!")
 
 retro_model = retro_rl_model.get_model(method, model_name)
 
@@ -93,18 +104,33 @@ agent_param["model_path"] = model_path
 retro_rl_agent = RetroRLAgent(retro_model, method, **agent_param)
 
 # retro_rl_agent.game(path=input_data_path)
-retro_rl_agent.game(path=input_data_path)
+retro_rl_agent.game()
 
 #
 save_path, save_name = retro_rl_agent.save("latest", path=input_data_path)
-if retro_rl_agent.name.split('_')[1] == 'aspen-m2':
-    AWS_REGION = "us-west-1"
-    S3_BUCKET_NAME = "amazon-braket-us-west-1-493904798517"
-    s3_client = boto3.client("s3", region_name=AWS_REGION)
-    s3_client.upload_file(save_path, S3_BUCKET_NAME, f'data/{save_name}')
-else:
-    AWS_REGION = "us-west-1"
-    S3_BUCKET_NAME = "amazon-braket-us-west-1-493904798517"
-    s3_client = boto3.client("s3", region_name=AWS_REGION)
-    s3_client.upload_file(save_path, S3_BUCKET_NAME, f'data/{save_name}')
+s3 = os.environ["AMZN_BRAKET_OUT_S3_BUCKET"]
+result_path = os.environ["AMZN_BRAKET_JOB_RESULTS_S3_PATH"]
+
+os.system(f"ls -R {save_path}")
+
+os.system(f"aws s3 cp {save_path} s3://{s3}/{result_path}")
+# AWS_REGION = "us-west-1"
+# S3_BUCKET_NAME = "amazon-braket-us-west-1-493904798517"
+# s3_client = boto3.client("s3", region_name=AWS_REGION)
+# s3_client.upload_file(save_path, S3_BUCKET_NAME, f'data/{save_name}')
+# job_name = os.environ["AMZN_BRAKET_JOB_NAME"]
+# save_job_checkpoint(
+#     checkpoint_data={"data": f"data for checkpoint from {job_name}"},
+#     checkpoint_file_suffix="checkpoint-1",
+#     )
+# if retro_rl_agent.name.split('_')[1] == 'aspen-m2':
+#     AWS_REGION = "us-west-1"
+#     S3_BUCKET_NAME = "amazon-braket-us-west-1-493904798517"
+#     s3_client = boto3.client("s3", region_name=AWS_REGION)
+#     s3_client.upload_file(save_path, S3_BUCKET_NAME, f'data/{save_name}')
+# else:
+#     AWS_REGION = "us-west-1"
+#     S3_BUCKET_NAME = "amazon-braket-us-west-1-493904798517"
+#     s3_client = boto3.client("s3", region_name=AWS_REGION)
+#     s3_client.upload_file(save_path, S3_BUCKET_NAME, f'data/{save_name}')
 

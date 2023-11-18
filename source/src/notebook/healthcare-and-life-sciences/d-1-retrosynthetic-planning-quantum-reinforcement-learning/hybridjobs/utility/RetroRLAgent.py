@@ -24,6 +24,8 @@ import os
 log = logging.getLogger()
 log.setLevel('INFO')
 
+__dir__ = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(__dir__)
 
 class RetroRLAgent:
     def __init__(self, model, method, **param):
@@ -92,9 +94,9 @@ class RetroRLAgent:
         model_name = self.name
         train_mode = self.param["train_mode"]
 
-        if self.method == 'retro-rl':
-            self.game()
-            return
+        # if self.method == 'retro-rl':
+        #     self.game()
+        #     return
 
         if train_mode == 'local-instance':
             self.game()
@@ -102,14 +104,20 @@ class RetroRLAgent:
             device = None
             if device_name == 'sv1':
                 device = "arn:aws:braket:::device/quantum-simulator/amazon/sv1"
-            elif device_name == 'aspen-m2':
-                device = "arn:aws:braket:us-west-1::device/qpu/rigetti/Aspen-M-2"
+            elif device_name == 'aspen-m-3':
+                device = "arn:aws:braket:us-west-1::device/qpu/rigetti/Aspen-M-3",
             elif device_name == 'local':
                 device = "arn:aws:braket:::device/quantum-simulator/amazon/sv1"
+            elif device_name == 'aria-2':
+                device ="arn:aws:braket:us-east-1::device/qpu/ionq/Aria-2"
+            else:
+                device = "arn:aws:braket:::device/quantum-simulator/amazon/sv1"
+
             print(f"Going to run {device_name} mode")
 
             input_data = {}
             input_data['data'] = self.param['data_path']
+            s3_data_path = self.param['s3_data_path']
 
             region = AwsSession().region
             image_uri = retrieve_image(Framework.PL_PYTORCH, region)
@@ -142,7 +150,7 @@ class RetroRLAgent:
             if train_mode == "local-job":
                 job = LocalQuantumJob.create(
                     device=device,
-                    source_module="retrorl",
+                    source_module="hybridjobs",
                     # Any unique name works. Note 50-character limit in job name
                     # (comment out to use default naming)
                     job_name="retrorl-job-" + device_name + "-" + interface + "-" + str(int(time.time())),
@@ -154,7 +162,7 @@ class RetroRLAgent:
                     input_data=input_data,
                 )
             elif train_mode == "hybrid-job":
-                if device_name == 'aspen-m2':
+                if device_name == 'aspen-m-3' or device_name == 'aria-2':
                     t = datetime.datetime.utcfromtimestamp(time.time())
                     # print(t)
                     if t.hour == 5 or t.hour == 17:
@@ -162,9 +170,7 @@ class RetroRLAgent:
                             time.sleep(900)
                     job = AwsQuantumJob.create(
                         device=device,
-                        source_module="retrorl",
-                        # Any unique name works. Note 50-character limit in job name
-                        # (comment out to use default naming)
+                        source_module="hybridjobs",
                         job_name="retrorl-job-" + device_name + "-" + interface + "-" + str(int(time.time())),
                         image_uri=image_uri,
                         # Relative to the source_module
@@ -172,15 +178,13 @@ class RetroRLAgent:
                         copy_checkpoints_from_job=None,
                         # general parameters
                         hyperparameters=hyperparameters,
-                        input_data='s3://amazon-braket-us-west-1-493904798517/data',
+                        input_data=s3_data_path,
                         wait_until_complete=False,
                     )
                 else:
                     job = AwsQuantumJob.create(
                         device=device,
-                        source_module="retrorl",
-                        # Any unique name works. Note 50-character limit in job name
-                        # (comment out to use default naming)
+                        source_module="hybridjobs",
                         job_name="retrorl-job-" + device_name + "-" + interface + "-" + str(int(time.time())),
                         image_uri=image_uri,
                         # Relative to the source_module
@@ -188,14 +192,15 @@ class RetroRLAgent:
                         copy_checkpoints_from_job=None,
                         # general parameters
                         hyperparameters=hyperparameters,
-                        input_data='s3://amazon-braket-us-west-1-493904798517/data',
+                        input_data=s3_data_path,
                         wait_until_complete=False,
                     )
 
             self.job = job
 
     def game(self):
-        for episode in range(1, 301):
+        # for episode in range(1, 301):
+        for episode in range(1, 2):
             print('episode', episode)
             episodecost = 0
             for name in self.file3:
@@ -444,8 +449,8 @@ class RetroRLAgent:
         self.depth = 0
         data = self.DataS(name)
         data.add_img()
-        url = self.smiles2url(name)
-        data.data["img"] = url
+        # url = self.smiles2url(name)
+        # data.data["img"] = url
         data.add_child()
         self.expansion1(name, data.data)
         self.data = data.data
@@ -480,8 +485,8 @@ class RetroRLAgent:
         rm, minv, r = self.choosereaction(name, self.file1, self.file2, self.deadend, self.buyable)
         tempm = self.DataS(name)
         tempm.add_img()
-        url = self.smiles2url(name)
-        tempm.data["img"] = url
+        # url = self.smiles2url(name)
+        # tempm.data["img"] = url
         if rm:
             if self.depth < 9:
                 tempm.add_child()
@@ -489,16 +494,30 @@ class RetroRLAgent:
         if rm:
             self.expansion1(name, data["children"][data["children"].index(copy.deepcopy(tempm.data))])
 
-    def smiles2url(self, name):
-        input_data_path = self.param['data_path']
-        # smiles_map = np.load(f'{input_data_path}/smiles/smiles_map.npy', allow_pickle=True).item()
-        smiles_map = np.load(f'{input_data_path}/smiles_map.npy', allow_pickle=True).item()
-        index = smiles_map[name]
-        url = "https://web-demo-test2.s3.us-west-2.amazonaws.com/data/smiles/" + str(index) + ".svg"
+    # def smiles2url(self, name):
+    #     input_data_path = self.param['data_path']
+    #     # smiles_map = np.load(f'{input_data_path}/smiles/smiles_map.npy', allow_pickle=True).item()
+    #     smiles_map = np.load(f'{input_data_path}/smiles_map.npy', allow_pickle=True).item()
+    #     index = smiles_map[name]
+    #     url = "https://web-demo-test2.s3.us-west-2.amazonaws.com/data/smiles/" + str(index) + ".svg"
 
-        return url
+    #     return url
 
     def save(self, version, path=None):
+        save_path = None
+        save_name = f"{self.name}_agent_{version}.pickle"
+
+        if path != None:
+            save_path = os.path.join(path, save_name)
+        else:
+            save_path = os.path.join(".", save_name)
+
+        with open(save_path, "wb") as f:
+            pickle.dump(self, f)
+        logging.info(f"finish save {save_name}")
+        return save_path, save_name
+
+    def save_nn(self, version, path=None):
         save_path = None
         save_name = f"{self.name}_{version}"
 
@@ -513,10 +532,15 @@ class RetroRLAgent:
         logging.info(f"finish save agent{save_name}")
         return save_path, save_name
 
-    def load(self, filename):
+    def load_nn(self, filename):
         # with open(filename, "rb") as f:
         #     return pickle.load(f)  # nosec
         self.NN.load_state_dict(torch.load(filename))
+
+    @classmethod
+    def load(cls, filename):
+        with open(filename, "rb") as f:
+            return pickle.load(f)  # nosec
 
     def get_parameter_num(self):
         total_trainable_params = sum(

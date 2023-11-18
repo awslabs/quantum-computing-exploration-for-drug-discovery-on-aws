@@ -6,7 +6,8 @@ import rdkit.Chem as Chem
 from rdkit.Chem import AllChem
 from tqdm import tqdm
 import os.path
-from utility.BruteForceSearch import expansion, Product, Reaction
+# from utility.BruteForceSearch import expansion, Product, Reaction
+from .BruteForceSearch import expansion, Product, Reaction
 
 import logging
 log = logging.getLogger()

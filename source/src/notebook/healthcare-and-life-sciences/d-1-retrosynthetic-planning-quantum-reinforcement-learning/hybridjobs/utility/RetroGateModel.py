@@ -159,9 +159,14 @@ class CirModel(nn.Module):
             device_arn="arn:aws:braket:::device/quantum-simulator/amazon/sv1", 
             shots=self.shots,
             wires=self.n_qubits)
-        elif self.device == 'aspen-m2':
+        elif self.device == 'aspen-m-3':
             dev = qml.device("braket.aws.qubit", 
-            device_arn="arn:aws:braket:us-west-1::device/qpu/rigetti/Aspen-M-2",
+            device_arn="arn:aws:braket:us-west-1::device/qpu/rigetti/Aspen-M-3",
+            shots=self.shots,
+            wires=self.n_qubits)
+        elif self.device == 'aria-2':
+            dev = qml.device("braket.aws.qubit", 
+            device_arn="arn:aws:braket:us-east-1::device/qpu/ionq/Aria-2",
             shots=self.shots,
             wires=self.n_qubits)
 
