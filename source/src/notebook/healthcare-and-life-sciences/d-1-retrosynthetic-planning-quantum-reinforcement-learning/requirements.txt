@@ -5,3 +5,4 @@ rdkit==2023.9.1
 tqdm==4.66.1
 altair==5.1.2
 pennylane==0.33.0
+amazon-braket-pennylane-plugin==1.23.0
