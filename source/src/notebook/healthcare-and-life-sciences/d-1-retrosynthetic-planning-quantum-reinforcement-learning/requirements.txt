@@ -1,5 +1,8 @@
-amazon-braket-sdk==1.38.1
-pandas==1.1.5
-rdkit==2023.3.1
-tqdm==4.65.0
-altair==5.0.1
+torch==2.1.0
+amazon-braket-sdk==1.61.0
+pandas==2.1.2
+rdkit==2023.9.1
+tqdm==4.66.1
+altair==5.1.2
+pennylane==0.33.0
+amazon-braket-pennylane-plugin==1.23.0
