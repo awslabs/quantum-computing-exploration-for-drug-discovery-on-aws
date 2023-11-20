@@ -144,7 +144,11 @@ retro_rl_agent.game(episodes)
 save_path, save_name = retro_rl_agent.save(path=input_data_path)
 s3 = os.environ["AMZN_BRAKET_OUT_S3_BUCKET"]
 
-os.system(f"aws s3 cp {save_path} s3://{s3}/data/{save_name}")
+s3_client = boto3.client("s3")
+
+s3_client.upload_file(save_path, s3, f"data/{save_name}")
+
+# os.system(f"aws s3 cp {save_path} s3://{s3}/data/{save_name}")
 # AWS_REGION = "us-west-1"
 # S3_BUCKET_NAME = "amazon-braket-us-west-1-493904798517"
 # s3_client = boto3.client("s3", region_name=AWS_REGION)
