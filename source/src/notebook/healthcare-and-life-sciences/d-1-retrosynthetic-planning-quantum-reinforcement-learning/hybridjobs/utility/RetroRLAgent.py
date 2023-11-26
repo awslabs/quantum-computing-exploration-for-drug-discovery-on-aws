@@ -2,17 +2,20 @@ import numpy as np
 import random
 import sys
 import copy
+from .RetroGateModel import RetroRLModel
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 # from deepquantum.gates.qcircuit import Circuit as dqCircuit
+
 from braket.circuits import Circuit as bkCircuit
 # import deepquantum.gates.qoperator as op
 from braket.aws import AwsQuantumJob, AwsSession
 from braket.jobs.local.local_job import LocalQuantumJob
 from braket.aws import AwsQuantumJob
 from braket.jobs.image_uris import Framework, retrieve_image
-from braket.jobs.config import InstanceConfig
+from braket.jobs.config import OutputDataConfig
 
 import math
 import logging
@@ -24,46 +27,118 @@ import os
 log = logging.getLogger()
 log.setLevel('INFO')
 
+__dir__ = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(__dir__)
+
+# init_param = {}
+# method = ['retro-rl', 'retro-qrl']
+
+# for mt in method:
+#     if mt == 'retro-rl':
+#         init_param[mt] = {}
+#         init_param[mt]['param'] = ['inputsize', 'middlesize', 'outputsize']
+#     elif mt == 'retro-qrl':
+#         init_param[mt] = {}
+#         init_param[mt]['param'] = ['n_qubits', 'device', 'framework', 'shots', 'layers']
+    
+# retro_rl_model = RetroRLModel(data=None, method=method, **init_param)
 
 class RetroRLAgent:
-    def __init__(self, model, method, **param):
-        self.param = param
-        self.train_mode = param["train_mode"]
-        self.name = param["model_name"]
-        self.model_path = param["model_path"]
-        self.model_name = param["model_name"]
-        self.method = method
-        # load data
-        logging.info("load data...")
-        self._load_data()
-        logging.info(f"model is {model}")
-
-        self.job = None
-
-        if method == 'retro-qrl' or method == 'retro-rl':
-            self.depth = 1
-            self.maxdepth = 10
+    def __init__(self, build_model=False, method=None, load_path=None, agent_name=None, **param):
+        self.model_name = param['model_name']
+        init_method = list(param["init_param"].keys())
+        init_param = param["init_param"]
+        retro_rl_model = RetroRLModel(data=None, method=init_method, **init_param)
+        if load_path != None:
+            print(f"try to load agent from {load_path} for pathway function...")
+            logging.info("load data...")
             self.cost1 = {}
             self.cost2 = {}
-            self.is_model = False
-            self.layer = {1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: [], 9: [], 10: []}
-            self.layer2 = {1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {}, 8: {}, 9: {}, 10: {}}
-            self.data = None
-            self.updates = 0
-            self.epsilon = 0.2
-            self.loss_fn = torch.nn.MSELoss()
+            self.method = method
+            self._load_data(input_data_path=load_path)
+            # self.NN = model['nn_model']
+            model_param={}
+            method = 'retro-qrl'
+            model_param[method] = {}
+            model_param[method]['n_qubits'] = [8]
+            model_param[method]['device'] = ['local']
+            model_param[method]['framework'] = ['pennylane']
+            model_param[method]['shots'] = [100]
+            model_param[method]['layers'] = [1]
 
-            if model != None:
-                self.name = model['model_name']
-                self.NN = model['nn_model']
-                self.opt = torch.optim.SGD(self.NN.parameters(), lr=0.001 / (1 + 2 * math.sqrt(self.updates)))
+            retro_rl_model.build_model(**model_param)
+            self.NN = retro_rl_model.get_model(method,self.model_name)['nn_model']
+            self.NN.load_state_dict(torch.load(f"{load_path}/{agent_name}"))
+            self.NN.eval()
+        else:
+            print(f"iinitial a new agent...")
+            self.param = param
+            self.train_mode = param["train_mode"]
+            # self.model_path = param["model_path"]
+            self.model_name = param["model_name"]
+            self.episodes = param["episodes"]
+            self.method = method
+            # load data
+            logging.info("load data...")
+            self._load_data()
+            logging.info(f"build_model is {build_model}")
 
-            self.tocost = {}
-            self.avtocost = []
-            self.lossv = []
+            self.job = None
+            self.s3_save_path = None
+            # try to update s3_path
+            from datetime import datetime
 
-    def _load_data(self):
-        input_data_path = self.param['data_path']
+            currentDay = datetime.now().day
+            currentMonth = datetime.now().month
+            currentYear = datetime.now().year
+
+            current_time = f"{currentYear}{currentMonth}{currentDay}"
+            self.save_name = f"{self.model_name}_agent_{current_time}.pt"
+            try:
+                s3_data_path = self.param['s3_data_path']
+                self.s3_save_path = f"{s3_data_path}/{self.save_name}"
+            except:
+                self.s3_save_path = None
+
+            if method == 'retro-qrl' or method == 'retro-rl':
+                self.depth = 1
+                self.maxdepth = 10
+                self.cost1 = {}
+                self.cost2 = {}
+                self.is_model = False
+                self.layer = {1: [], 2: [], 3: [], 4: [], 5: [], 6: [], 7: [], 8: [], 9: [], 10: []}
+                self.layer2 = {1: {}, 2: {}, 3: {}, 4: {}, 5: {}, 6: {}, 7: {}, 8: {}, 9: {}, 10: {}}
+                self.data = None
+                self.updates = 0
+                self.epsilon = 0.2
+                self.loss_fn = torch.nn.MSELoss()
+
+                if build_model != False:
+                    # self.name = model['model_name']
+                    # self.NN = model['nn_model']
+                    model_param={}
+                    method = 'retro-qrl'
+                    # model_param[method] = {}
+                    # model_param[method]['n_qubits'] = [8]
+                    # model_param[method]['device'] = ['local']
+                    # model_param[method]['framework'] = ['pennylane']
+                    # model_param[method]['shots'] = [100]
+                    # model_param[method]['layers'] = [1]
+
+                    model_param = param["model_param"]
+
+                    print(f"model_param is {model_param}")
+                    retro_rl_model.build_model(**model_param)
+                    self.NN = retro_rl_model.get_model(method,self.model_name)['nn_model']
+                    self.opt = torch.optim.SGD(self.NN.parameters(), lr=0.001 / (1 + 2 * math.sqrt(self.updates)))
+
+                self.tocost = {}
+                self.avtocost = []
+                self.lossv = []
+
+    def _load_data(self, input_data_path=None):
+        if input_data_path == None:
+            input_data_path = self.param['data_path']
         self.file1 = np.load(f'{input_data_path}/reactions_dictionary.npy', allow_pickle=True).item()
         self.file2 = np.load(f'{input_data_path}/smiles_dictionary.npy', allow_pickle=True).item()
         self.file3 = np.load(f'{input_data_path}/target_product.npy').tolist()
@@ -88,28 +163,34 @@ class RetroRLAgent:
         self.job = AwsQuantumJob(arn)
 
     def game_job(self):
-        device_name = self.name.split('_')[1]
-        model_name = self.name
+        device_name = self.model_name.split('_')[1]
+        # model_name = self.name
         train_mode = self.param["train_mode"]
 
-        if self.method == 'retro-rl':
-            self.game()
-            return
+        # if self.method == 'retro-rl':
+        #     self.game()
+        #     return
 
         if train_mode == 'local-instance':
-            self.game()
+            self.game(self.episodes)
         else:
             device = None
             if device_name == 'sv1':
                 device = "arn:aws:braket:::device/quantum-simulator/amazon/sv1"
-            elif device_name == 'aspen-m2':
-                device = "arn:aws:braket:us-west-1::device/qpu/rigetti/Aspen-M-2"
+            elif device_name == 'aspen-m-3':
+                device = "arn:aws:braket:us-west-1::device/qpu/rigetti/Aspen-M-3",
             elif device_name == 'local':
                 device = "arn:aws:braket:::device/quantum-simulator/amazon/sv1"
+            elif device_name == 'aria-2':
+                device ="arn:aws:braket:us-east-1::device/qpu/ionq/Aria-2"
+            else:
+                device = "arn:aws:braket:::device/quantum-simulator/amazon/sv1"
+
             print(f"Going to run {device_name} mode")
 
             input_data = {}
             input_data['data'] = self.param['data_path']
+            s3_data_path = self.param['s3_data_path']
 
             region = AwsSession().region
             image_uri = retrieve_image(Framework.PL_PYTORCH, region)
@@ -120,7 +201,7 @@ class RetroRLAgent:
                 hyperparameters = {
                     "method": self.method,
                     "model_name": self.model_name,
-                    "model_path": self.model_path.split('/')[-1],
+                    # "model_path": self.model_path.split('/')[-1],
                     # Number of tasks per iteration = 2 * (num_nodes + num_edges) * p + 1
                     "p": "2",
                     # Maximum number of simultaneous tasks allowed
@@ -130,9 +211,11 @@ class RetroRLAgent:
                     # Step size / learning rate for gradient descent
                     "stepsize": "0.1",
                     # Shots for each circuit execution
-                    "shots": "1000",
+                    "shots": self.model_name.split("_")[3],
                     "interface": interface,
                     "train_mode": train_mode,
+                    # Parameters for reinforcement learning
+                    "episodes": self.episodes,
                 }
                 return hyperparameters
 
@@ -142,7 +225,7 @@ class RetroRLAgent:
             if train_mode == "local-job":
                 job = LocalQuantumJob.create(
                     device=device,
-                    source_module="retrorl",
+                    source_module="hybridjobs",
                     # Any unique name works. Note 50-character limit in job name
                     # (comment out to use default naming)
                     job_name="retrorl-job-" + device_name + "-" + interface + "-" + str(int(time.time())),
@@ -152,9 +235,10 @@ class RetroRLAgent:
                     # general parameters
                     hyperparameters=hyperparameters,
                     input_data=input_data,
+                    output_data_config=OutputDataConfig(s3_data_path),
                 )
             elif train_mode == "hybrid-job":
-                if device_name == 'aspen-m2':
+                if device_name == 'aspen-m-3' or device_name == 'aria-2':
                     t = datetime.datetime.utcfromtimestamp(time.time())
                     # print(t)
                     if t.hour == 5 or t.hour == 17:
@@ -162,9 +246,7 @@ class RetroRLAgent:
                             time.sleep(900)
                     job = AwsQuantumJob.create(
                         device=device,
-                        source_module="retrorl",
-                        # Any unique name works. Note 50-character limit in job name
-                        # (comment out to use default naming)
+                        source_module="hybridjobs",
                         job_name="retrorl-job-" + device_name + "-" + interface + "-" + str(int(time.time())),
                         image_uri=image_uri,
                         # Relative to the source_module
@@ -172,15 +254,13 @@ class RetroRLAgent:
                         copy_checkpoints_from_job=None,
                         # general parameters
                         hyperparameters=hyperparameters,
-                        input_data='s3://amazon-braket-us-west-1-493904798517/data',
+                        input_data=s3_data_path,
                         wait_until_complete=False,
                     )
                 else:
                     job = AwsQuantumJob.create(
                         device=device,
-                        source_module="retrorl",
-                        # Any unique name works. Note 50-character limit in job name
-                        # (comment out to use default naming)
+                        source_module="hybridjobs",
                         job_name="retrorl-job-" + device_name + "-" + interface + "-" + str(int(time.time())),
                         image_uri=image_uri,
                         # Relative to the source_module
@@ -188,14 +268,15 @@ class RetroRLAgent:
                         copy_checkpoints_from_job=None,
                         # general parameters
                         hyperparameters=hyperparameters,
-                        input_data='s3://amazon-braket-us-west-1-493904798517/data',
+                        input_data=s3_data_path,
                         wait_until_complete=False,
                     )
 
             self.job = job
 
-    def game(self):
-        for episode in range(1, 301):
+    def game(self, episodes):
+        # for episode in range(1, 301):
+        for episode in range(1, episodes):
             print('episode', episode)
             episodecost = 0
             for name in self.file3:
@@ -223,7 +304,8 @@ class RetroRLAgent:
                 avc = float(episodecost) / len(self.file3)
             self.avtocost.append(avc)
             self.merge()
-            if episode % 30 == 0:
+            # if episode % 30 == 0:
+            if episode % 1 == 0:
                 self.updates += 1
                 self.is_model = True
                 print(f"epsiode {episode} training...")
@@ -359,7 +441,8 @@ class RetroRLAgent:
         self.cost1.update(self.cost2)
 
     def train(self, file1, file2):
-        for epoch in range(50):
+        # for epoch in range(50):
+        for epoch in range(2):
             start = time.time()
             y = []
             x = []
@@ -403,17 +486,24 @@ class RetroRLAgent:
             #
             else:
                 output = self.NN.forward(x)
+            # print(f"before calculate loss, with input x {x} with size {x.size()}")
+            # print(f"before calculate loss, with label y {y} with size {y.size()}")
+            # print(f"before calculate loss, with output {output} with size {output.size()}")
             loss = self.loss_fn(output, y)
-            # print(y)
-            # print(output)
-            # print(loss)
-            # print(self.NN.weights.dtype)
-            if self.method == 'retro-qrl':
-                for i in self.NN.parameters():
-                    print(i)
+            # print(f"y is {y}")
+            # print(f"output is {output}")
+            # print(f"loss is {loss}")
+            # print(f"self.NN.weights.dtype is {self.NN.weights.dtype}")
+            # if self.method == 'retro-qrl':
+            #     for i in self.NN.parameters():
+            #         print(i)
+            # print(f"append loss data")
             self.lossv.append(loss.data)
+            # print(f"zere grad for opt")
             self.opt.zero_grad()
+            # print(f"loss backward")
             loss.backward()
+            # print(f"opt step")
             self.opt.step()
             end = time.time()
             print(f'finish epoch {epoch} for {(end - start) / 60} minutes')
@@ -444,8 +534,8 @@ class RetroRLAgent:
         self.depth = 0
         data = self.DataS(name)
         data.add_img()
-        url = self.smiles2url(name)
-        data.data["img"] = url
+        # url = self.smiles2url(name)
+        # data.data["img"] = url
         data.add_child()
         self.expansion1(name, data.data)
         self.data = data.data
@@ -480,8 +570,8 @@ class RetroRLAgent:
         rm, minv, r = self.choosereaction(name, self.file1, self.file2, self.deadend, self.buyable)
         tempm = self.DataS(name)
         tempm.add_img()
-        url = self.smiles2url(name)
-        tempm.data["img"] = url
+        # url = self.smiles2url(name)
+        # tempm.data["img"] = url
         if rm:
             if self.depth < 9:
                 tempm.add_child()
@@ -489,18 +579,39 @@ class RetroRLAgent:
         if rm:
             self.expansion1(name, data["children"][data["children"].index(copy.deepcopy(tempm.data))])
 
-    def smiles2url(self, name):
-        input_data_path = self.param['data_path']
-        # smiles_map = np.load(f'{input_data_path}/smiles/smiles_map.npy', allow_pickle=True).item()
-        smiles_map = np.load(f'{input_data_path}/smiles_map.npy', allow_pickle=True).item()
-        index = smiles_map[name]
-        url = "https://web-demo-test2.s3.us-west-2.amazonaws.com/data/smiles/" + str(index) + ".svg"
+    # def smiles2url(self, name):
+    #     input_data_path = self.param['data_path']
+    #     # smiles_map = np.load(f'{input_data_path}/smiles/smiles_map.npy', allow_pickle=True).item()
+    #     smiles_map = np.load(f'{input_data_path}/smiles_map.npy', allow_pickle=True).item()
+    #     index = smiles_map[name]
+    #     url = "https://web-demo-test2.s3.us-west-2.amazonaws.com/data/smiles/" + str(index) + ".svg"
 
-        return url
+    #     return url
 
-    def save(self, version, path=None):
+    def save(self, path=None):
         save_path = None
-        save_name = f"{self.name}_{version}"
+        save_name = self.save_name
+
+        if path != None:
+            save_path = os.path.join(path, save_name)
+        else:
+            save_path = os.path.join(".", save_name)
+
+
+        logging.info(f"{self.s3_save_path}")
+
+        # with open(save_path, "wb") as f:
+        #     pickle.dump(self, f)
+
+        torch.save(self.NN.state_dict(), save_path)
+
+        logging.info(f"finish save {save_name}")
+
+        return save_path, save_name
+
+    def save_nn(self, version, path=None):
+        save_path = None
+        save_name = f"{self.model_name}_{version}"
 
         if path != None:
             save_path = os.path.join(path, save_name)
@@ -513,10 +624,19 @@ class RetroRLAgent:
         logging.info(f"finish save agent{save_name}")
         return save_path, save_name
 
-    def load(self, filename):
+    def load_nn(self, filename):
         # with open(filename, "rb") as f:
         #     return pickle.load(f)  # nosec
         self.NN.load_state_dict(torch.load(filename))
+
+    # @classmethod
+    # def load(cls, filename):
+    #     # initialize for pathway: inference function
+    #     self._load_data(load_path)
+    #         self.cost1 = {}
+    #         self.cost2 = {}
+    #     self.cost
+    #     return RetroRLAgent(load_path)
 
     def get_parameter_num(self):
         total_trainable_params = sum(

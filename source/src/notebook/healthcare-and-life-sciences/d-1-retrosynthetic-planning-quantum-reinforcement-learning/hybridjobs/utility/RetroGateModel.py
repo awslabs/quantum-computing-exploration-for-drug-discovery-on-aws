@@ -60,6 +60,11 @@ class CirModel(nn.Module):
             self.weights = nn.Parameter(nn.init.uniform_(torch.empty((self.n_layers, self.n_qubits), dtype=torch.float64), a=0.0, b=2 * np.pi) * init_std)
             # ②
             self.weight_shapes = {"weights": (self.n_layers, self.n_qubits)}
+            self.dev, _ = self._pl_def()
+            self.my_qnode = qml.QNode(self.qlcircuit, self.dev)
+            self.pl_layer = qml.qnn.TorchLayer(self.my_qnode, self.weight_shapes)
+            self.pl_layer.weights = self.weights
+            self.pl_layer.qnode_weights['weights'] = self.weights
 
     def forward(self, x):
         #
@@ -101,11 +106,11 @@ class CirModel(nn.Module):
             # rst = rst.squeeze(-1)
             raise ValueError(f"device {self.device} for framework {self.framework} not implemented yet!")
         elif self.framework == 'pennylane':
-            self.dev, _ = self._pl_def()
-            self.my_qnode = qml.QNode(self.qlcircuit, self.dev)
-            self.pl_layer = qml.qnn.TorchLayer(self.my_qnode, self.weight_shapes)
-            self.pl_layer.weights = self.weights
-            self.pl_layer.qnode_weights['weights'] = self.weights
+            # self.dev, _ = self._pl_def()
+            # self.my_qnode = qml.QNode(self.qlcircuit, self.dev)
+            # self.pl_layer = qml.qnn.TorchLayer(self.my_qnode, self.weight_shapes)
+            # self.pl_layer.weights = self.weights
+            # self.pl_layer.qnode_weights['weights'] = self.weights
             rst = self.pl_layer(x)
             #
 
@@ -113,6 +118,7 @@ class CirModel(nn.Module):
             # self.pl_layer = qml.QNode(self.qlcircuit, dev, interface='torch')
             # rst = self.pl_layer(x, self.weights)
             # #
+            return rst
 
         elif self.device == 'local' and self.framework == 'aws-braket':
             cir = bkCircuit()
@@ -153,15 +159,21 @@ class CirModel(nn.Module):
     def _pl_def(self):
         optimizer = None
         if self.device == 'local':
-            dev = qml.device("braket.local.qubit", wires=self.n_qubits)
+            # dev = qml.device("braket.local.qubit", wires=self.n_qubits)
+            dev = qml.device("lightning.qubit", wires=self.n_qubits)
         elif self.device == 'sv1':
             dev = qml.device("braket.aws.qubit", 
             device_arn="arn:aws:braket:::device/quantum-simulator/amazon/sv1", 
             shots=self.shots,
             wires=self.n_qubits)
-        elif self.device == 'aspen-m2':
+        elif self.device == 'aspen-m-3':
             dev = qml.device("braket.aws.qubit", 
-            device_arn="arn:aws:braket:us-west-1::device/qpu/rigetti/Aspen-M-2",
+            device_arn="arn:aws:braket:us-west-1::device/qpu/rigetti/Aspen-M-3",
+            shots=self.shots,
+            wires=self.n_qubits)
+        elif self.device == 'aria-2':
+            dev = qml.device("braket.aws.qubit", 
+            device_arn="arn:aws:braket:us-east-1::device/qpu/ionq/Aria-2",
             shots=self.shots,
             wires=self.n_qubits)
 

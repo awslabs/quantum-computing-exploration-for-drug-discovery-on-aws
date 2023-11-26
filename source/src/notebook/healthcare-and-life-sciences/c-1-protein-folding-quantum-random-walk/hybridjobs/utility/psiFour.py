@@ -6,7 +6,6 @@ import json
 class PsiFour():
 
     def __init__(self, psi4_path, input_filename, output_filename, precalculated_energies_path, energy_method, n_threads, basis):
-
         self.psi4_path = psi4_path
         self.input_filename = input_filename
         self.output_filename = output_filename
