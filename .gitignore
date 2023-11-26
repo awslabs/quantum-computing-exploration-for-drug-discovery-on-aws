@@ -3,6 +3,11 @@ node_modules
 *.d.ts
 node_modules
 
+# Dataset
+data/
+datasmiles/
+retrosynthetic-planning-dataset/
+
 # CDK asset staging directory
 .cdk.staging
 cdk.out
