@@ -104,7 +104,7 @@ class RetroRLAgent:
                     # self.name = model['model_name']
                     # self.NN = model['nn_model']
                     model_param={}
-                    method = 'retro-qrl'
+                    # method = 'retro-qrl'
                     # model_param[method] = {}
                     # model_param[method]['n_qubits'] = [8]
                     # model_param[method]['device'] = ['local']
