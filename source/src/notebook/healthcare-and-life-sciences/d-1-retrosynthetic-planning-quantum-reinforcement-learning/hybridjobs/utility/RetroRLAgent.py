@@ -30,19 +30,6 @@ log.setLevel('INFO')
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
 
-# init_param = {}
-# method = ['retro-rl', 'retro-qrl']
-
-# for mt in method:
-#     if mt == 'retro-rl':
-#         init_param[mt] = {}
-#         init_param[mt]['param'] = ['inputsize', 'middlesize', 'outputsize']
-#     elif mt == 'retro-qrl':
-#         init_param[mt] = {}
-#         init_param[mt]['param'] = ['n_qubits', 'device', 'framework', 'shots', 'layers']
-    
-# retro_rl_model = RetroRLModel(data=None, method=method, **init_param)
-
 class RetroRLAgent:
     def __init__(self, build_model=False, method=None, load_path=None, agent_name=None, **param):
         self.model_name = param['model_name']
@@ -71,7 +58,7 @@ class RetroRLAgent:
             self.NN.load_state_dict(torch.load(f"{load_path}/{agent_name}"))
             self.NN.eval()
         else:
-            print(f"iinitial a new agent...")
+            print(f"initial a new agent...")
             self.param = param
             self.train_mode = param["train_mode"]
             # self.model_path = param["model_path"]
@@ -211,7 +198,7 @@ class RetroRLAgent:
                     # Step size / learning rate for gradient descent
                     "stepsize": "0.1",
                     # Shots for each circuit execution
-                    "shots": "1000",
+                    "shots": self.model_name.split("_")[3],
                     "interface": interface,
                     "train_mode": train_mode,
                     # Parameters for reinforcement learning
