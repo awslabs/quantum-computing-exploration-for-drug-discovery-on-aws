@@ -572,7 +572,6 @@ class RetroRLAgent:
     #     smiles_map = np.load(f'{input_data_path}/smiles_map.npy', allow_pickle=True).item()
     #     index = smiles_map[name]
     #     url = "https://web-demo-test2.s3.us-west-2.amazonaws.com/data/smiles/" + str(index) + ".svg"
-
     #     return url
 
     def save(self, path=None):
