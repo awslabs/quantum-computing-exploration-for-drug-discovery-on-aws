@@ -31,7 +31,7 @@ class Model(nn.Module):
 
 class CirModel(nn.Module):
 
-    def __init__(self, n_qubits, device='local', framework='dq', shots=1000, layers=1, gain=2 ** 0.5, use_wscale=True, lrmul=1):
+    def __init__(self, n_qubits, device='local', framework='dq', shots=100, layers=1, gain=2 ** 0.5, use_wscale=True, lrmul=1):
         super().__init__()
 
         self.device = device
@@ -223,6 +223,7 @@ class RetroRLModel:
             model_param = config
             if method == "retro-rl":
                 self._build_retrorl_model(**model_param)
+                # self.NN = Model(inputsize, middlesize, outputsize)
             elif method == "retro-qrl":
                 self._build_retroqrl_model(**model_param)
 
