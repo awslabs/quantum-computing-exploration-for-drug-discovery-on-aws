@@ -31,3 +31,6 @@ nohup.out
 # json
 molecular-unfolding-hybrid-jobs.json
 source/src/notebook/healthcare-and-life-sciences/**/*.json
+
+# Python
+source/src/notebook/healthcare-and-life-sciences/d-1-retrosynthetic-planning-quantum-reinforcement-learning/hybridjobs/retrorl_algorithm_script.py
