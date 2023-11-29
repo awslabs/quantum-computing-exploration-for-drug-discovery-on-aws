@@ -80,7 +80,7 @@ else:
 
 try:
     input_data_path = f'{input_dir}/input'
-    os.system(f"ls -alh {input_data_path}")
+    # os.system(f"ls -alh {input_data_path}")
     # retro_rl_model = RetroRLModel.load(f'{input_data_path}/{model_path}')
 except Exception as e1:
     print(f"error e1 {e1}")
