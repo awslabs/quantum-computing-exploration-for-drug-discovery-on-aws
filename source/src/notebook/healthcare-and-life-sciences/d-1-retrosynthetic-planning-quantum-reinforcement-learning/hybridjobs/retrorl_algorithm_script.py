@@ -87,7 +87,7 @@ except Exception as e1:
     try:
         # Second solution
         input_data_path = f'{input_dir}/data'
-        os.system(f"ls -alh {input_data_path}")
+        # os.system(f"ls -alh {input_data_path}")
         # retro_rl_model = RetroRLModel.load(f'{input_data_path}/{model_path}')
     except Exception as e2:
         print(f"error e1 {e1}")
@@ -95,7 +95,7 @@ except Exception as e1:
         try:
             # Second solution
             input_data_path = f'/opt/ml/input/data/input'
-            os.system(f"ls -alh {input_data_path}")
+            # os.system(f"ls -alh {input_data_path}")
             # retro_rl_model = RetroRLModel.load(f'{input_data_path}/{model_path}')
         except Exception as e3:
             # Handle both solutions failing
