@@ -205,7 +205,7 @@ if __name__ == "__main__":
     optimizer = hyperparams["optimizer"]
     optimizer_params = hyperparams["optimizer_params"]
     interaction = hyperparams["interaction"]
-    shots = hyperparams["shots"]
+    shots = int(hyperparams["shots"])
     
     peptide = get_polypeptide(main_chain, side_chains)
     qubit_op, protein_folding_problem = get_hamiltonian(peptide, penalty_params, interaction)

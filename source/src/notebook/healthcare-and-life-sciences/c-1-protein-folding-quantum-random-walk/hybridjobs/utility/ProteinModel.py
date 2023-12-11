@@ -59,7 +59,11 @@ class ProteinModel():
 
         config_variables = self.tools.get_config_variables()
 
+        # if config_variables['precalculated_energies_path'].startswith('/'):
+        #     config_variables['precalculated_energies_path'] = config_variables['precalculated_energies_path'][1:]
         precalculated_energies_path = self.data_path + config_variables['precalculated_energies_path']
+        # precalculated_energies_path = self.data_path
+        
         angleInitializer = initializer.Initializer(
             psi4_path = config_variables['psi4_path'],
             input_file_energies_psi4 = config_variables['input_filename_energy_psi4'], 

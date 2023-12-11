@@ -42,10 +42,18 @@ def get_quantum_device(device_name):
         print(f"fail to get {device_name}: {e}, use sv1 instead")
     return device_arn
 
-def upload_data(dir_name, aws_session=AwsSession()):
+def upload_data(dir_name, suffix_check, aws_session=AwsSession()):
     stream_s3_uri = aws_session.construct_s3_uri(obtain_default_bucket("bucketName"), dir_name)
     return_path = None
     
+    # add for path fix
+    def _remove_last_segment(input_string):
+        segments = input_string.split('/')
+        segments.pop()
+        result = '/'.join(segments)
+        return result
+    
+    # add suffix_check param
     def _check_upload(file_name, check_list):
         file_end = file_name.split('.')[-1]
         if file_end in check_list:
@@ -55,12 +63,14 @@ def upload_data(dir_name, aws_session=AwsSession()):
     if os.path.isdir(dir_name):
         dir_list = os.listdir(dir_name)
         for file_name in dir_list:
-            _check_upload(os.path.join(dir_name,file_name), ['mol2'])
+            _check_upload(os.path.join(dir_name,file_name), suffix_check)
         return_path = stream_s3_uri
     else:
-        _check_upload(file_name, ['mol2'])
+        _check_upload(file_name, suffix_check)
         single_file_name = file_name.split('/')[-1]
         return_path = f"{stream_s3_uri}/{single_file_name}"
+    
+    return_path = _remove_last_segment(return_path)
         
     return return_path
 
