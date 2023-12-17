@@ -29,6 +29,8 @@ log.setLevel('INFO')
 
 __dir__ = os.path.dirname(os.path.abspath(__file__))
 sys.path.append(__dir__)
+<<<<<<< HEAD
+=======
 
 # init_param = {}
 # method = ['retro-rl', 'retro-qrl']
@@ -42,6 +44,7 @@ sys.path.append(__dir__)
 #         init_param[mt]['param'] = ['n_qubits', 'device', 'framework', 'shots', 'layers']
     
 # retro_rl_model = RetroRLModel(data=None, method=method, **init_param)
+>>>>>>> main
 
 class RetroRLAgent:
     def __init__(self, build_model=False, method=None, load_path=None, agent_name=None, **param):
@@ -71,7 +74,11 @@ class RetroRLAgent:
             self.NN.load_state_dict(torch.load(f"{load_path}/{agent_name}"))
             self.NN.eval()
         else:
+<<<<<<< HEAD
+            print(f"initial a new agent...")
+=======
             print(f"iinitial a new agent...")
+>>>>>>> main
             self.param = param
             self.train_mode = param["train_mode"]
             # self.model_path = param["model_path"]
@@ -117,7 +124,11 @@ class RetroRLAgent:
                     # self.name = model['model_name']
                     # self.NN = model['nn_model']
                     model_param={}
+<<<<<<< HEAD
+                    # method = 'retro-qrl'
+=======
                     method = 'retro-qrl'
+>>>>>>> main
                     # model_param[method] = {}
                     # model_param[method]['n_qubits'] = [8]
                     # model_param[method]['device'] = ['local']
@@ -167,9 +178,15 @@ class RetroRLAgent:
         # model_name = self.name
         train_mode = self.param["train_mode"]
 
+<<<<<<< HEAD
+        if self.method == 'retro-rl':
+            self.game(self.episodes)
+            return
+=======
         # if self.method == 'retro-rl':
         #     self.game()
         #     return
+>>>>>>> main
 
         if train_mode == 'local-instance':
             self.game(self.episodes)
@@ -211,7 +228,7 @@ class RetroRLAgent:
                     # Step size / learning rate for gradient descent
                     "stepsize": "0.1",
                     # Shots for each circuit execution
-                    "shots": "1000",
+                    "shots": self.model_name.split("_")[3],
                     "interface": interface,
                     "train_mode": train_mode,
                     # Parameters for reinforcement learning
@@ -585,6 +602,33 @@ class RetroRLAgent:
     #     smiles_map = np.load(f'{input_data_path}/smiles_map.npy', allow_pickle=True).item()
     #     index = smiles_map[name]
     #     url = "https://web-demo-test2.s3.us-west-2.amazonaws.com/data/smiles/" + str(index) + ".svg"
+<<<<<<< HEAD
+    #     return url
+
+    def save(self, path=None):
+        save_path = None
+        save_name = self.save_name
+
+        if path != None:
+            save_path = os.path.join(path, save_name)
+        else:
+            save_path = os.path.join(".", save_name)
+
+
+        logging.info(f"{self.s3_save_path}")
+
+        # with open(save_path, "wb") as f:
+        #     pickle.dump(self, f)
+
+        torch.save(self.NN.state_dict(), save_path)
+
+        logging.info(f"finish save {save_name}")
+
+        return save_path, save_name
+
+    def save_nn(self, version, path=None):
+        save_path = None
+=======
 
     #     return url
 
@@ -611,6 +655,7 @@ class RetroRLAgent:
 
     def save_nn(self, version, path=None):
         save_path = None
+>>>>>>> main
         save_name = f"{self.model_name}_{version}"
 
         if path != None:

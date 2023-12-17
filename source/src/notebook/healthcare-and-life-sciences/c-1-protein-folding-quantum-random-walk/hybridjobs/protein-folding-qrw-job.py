@@ -66,7 +66,7 @@ def main():
         result = _optimize(model_path, target_name, hyperparameters)
         # # step 4: post process
         # result = _post_process(raw_path, data_path, hyperparameters)
-        # # print(f"Tree structure: {list_files(input_dir)}")
+        # print(f"Tree structure: {list_files(input_dir)}")
         logging.info(f"finish experiment for file {target_name}")
         complete_results[target_name] = result
 
@@ -75,10 +75,7 @@ def main():
     logging.info("Saved results. All done.")
 
 def _prepare_data(raw_path, hyperparameters):
-    # TODO
-
     data_path = "protein-folding-data"
-
     return data_path
 
 def _build_model(data_path, hyperparameters):

@@ -55,12 +55,15 @@ jmespath==0.10.0
 joblib==1.2.0
 json5==0.9.11
 jsonschema==3.2.0
+<<<<<<< HEAD
+=======
 jupyter-client==7.1.2
 jupyter-core==4.9.2
 jupyter-server==2.11.2
 jupyterlab==3.2.9
 jupyterlab-pygments==0.1.2
 jupyterlab-server==2.10.3
+>>>>>>> main
 Keras==2.0.8
 Keras-Applications==1.0.8
 Keras-Preprocessing==1.1.2
@@ -84,7 +87,6 @@ networkx==2.6.3
 notebook==6.4.10
 notebook_shim==0.2.2
 ntlm-auth==1.5.0
-numpy==1.22.3
 openpulse==0.4.1
 openqasm3==0.4.0
 opt-einsum==3.3.0
@@ -96,7 +98,6 @@ parso==0.7.1
 pbr==5.11.1
 pexpect==4.8.0
 pickleshare==0.7.5
-Pillow==10.0.1
 pip==23.3
 pkgutil_resolve_name==1.3.10
 ply==3.11
@@ -128,7 +129,6 @@ requests-ntlm==1.1.0
 retworkx==0.11.0
 s3transfer==0.5.2
 scikit-learn==0.24.2
-scipy==1.10.0
 Send2Trash==1.8.0
 setproctitle==1.3.2
 setuptools==67.6.0
@@ -139,7 +139,6 @@ stevedore==3.5.2
 symengine==0.8.1
 sympy==1.9
 tensorboard==1.15.0
-tensorflow==2.11.1
 tensorflow-estimator==1.15.1
 termcolor==1.1.0
 terminado==0.12.1
@@ -147,7 +146,6 @@ testpath==0.6.0
 threadpoolctl==3.1.0
 tinycss2==1.2.1
 toolz==0.12.0
-tornado==6.3.3
 traitlets==4.3.3
 tweedledum==1.1.1
 typing_extensions==4.1.1
@@ -155,7 +153,6 @@ urllib3==1.26.18
 wcwidth==0.2.6
 webencodings==0.5.1
 websocket-client==1.3.1
-Werkzeug==3.0.1
 wheel==0.38.4
 wrapt==1.14.1
 yfinance==0.1.87
