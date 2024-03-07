@@ -80,7 +80,6 @@ else:
 
 try:
     input_data_path = f'{input_dir}/input'
-<<<<<<< HEAD
     # os.system(f"ls -alh {input_data_path}")
     # retro_rl_model = RetroRLModel.load(f'{input_data_path}/{model_path}')
 except Exception as e1:
@@ -104,19 +103,6 @@ except Exception as e1:
             print(f"error e2 {e2}")
             print(f"error e3 {e3}")
             print(f"Can't find data in {input_dir}/input or {input_dir}/data or {input_data_path}!!!")
-=======
-    os.system.run(f"ls -alh {input_data_path}")
-    # retro_rl_model = RetroRLModel.load(f'{input_data_path}/{model_path}')
-except Exception as e1:
-    try:
-        # Second solution
-        input_data_path = f'{input_dir}/data'
-        os.system.run(f"ls -alh {input_data_path}")
-        # retro_rl_model = RetroRLModel.load(f'{input_data_path}/{model_path}')
-    except Exception as e2:
-        # Handle both solutions failing
-        print(f"Can't find data in {input_dir}/input or {input_dir}/data!!!")
->>>>>>> main
 else:
     # Code to execute when the first solution succeeds
     print(f"Found data in {input_data_path}!!")
