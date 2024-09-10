@@ -21,7 +21,7 @@ boltons==23.0.0
 boto3==1.23.10
 botocore==1.26.10
 cached-property==1.5.2
-certifi==2023.7.22
+certifi==2024.7.4
 cffi==1.15.1
 charset-normalizer==2.0.12
 contextvars==2.4
@@ -61,7 +61,7 @@ jupyter-server==2.11.2
 jupyterlab==3.2.9
 jupyterlab-pygments==0.1.2
 jupyterlab-server==2.10.3
-Keras==2.0.8
+Keras==2.13.1
 Keras-Applications==1.0.8
 Keras-Preprocessing==1.1.2
 kiwisolver==1.3.1
