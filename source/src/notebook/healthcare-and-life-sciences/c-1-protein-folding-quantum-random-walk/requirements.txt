@@ -21,7 +21,7 @@ boltons==23.0.0
 boto3==1.23.10
 botocore==1.26.10
 cached-property==1.5.2
-certifi==2023.7.22
+certifi==2024.7.4
 cffi==1.15.1
 charset-normalizer==2.0.12
 contextvars==2.4
