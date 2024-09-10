@@ -21,6 +21,7 @@ jobs:
 
       - name: Install dependencies
         run: |
+          python3 -m pip install lxml_html_clean
           python3 -m pip install mkdocs==1.2.3            # install mkdocs 
           python3 -m pip install mkdocs-material==8.1.8   # install material theme
           python3 -m pip install mkdocs-jupyter==0.20.0    # install plugin for jupyter notebook
