@@ -2248,13 +2248,13 @@ Successfully installed certifi-2022.12.7 debugpy-1.6.6 jupyter-core-4.9.2 psutil
                 </div>
             </clipboard-copy>
         </div>
-            <div class="highlight-ipynb hl-python"><pre><span></span><span class="kn">import</span> <span class="nn">sys</span>
+            <div class="highlight-ipynb hl-python"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
 <span class="n">sys</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;./hybridjobs/utility&quot;</span><span class="p">)</span>
 
-<span class="kn">from</span> <span class="nn">hybridjobs.utility.ProteinParser</span> <span class="kn">import</span> <span class="n">ProteinData</span>
-<span class="kn">from</span> <span class="nn">hybridjobs.utility.ProteinModel</span> <span class="kn">import</span> <span class="n">ProteinModel</span>
-<span class="kn">from</span> <span class="nn">hybridjobs.utility.ProteinStructurePrediction</span> <span class="kn">import</span> <span class="n">ProteinStructurePrediction</span>
-<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">hybridjobs.utility.ProteinParser</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProteinData</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">hybridjobs.utility.ProteinModel</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProteinModel</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">hybridjobs.utility.ProteinStructurePrediction</span><span class="w"> </span><span class="kn">import</span> <span class="n">ProteinStructurePrediction</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 
 <span class="n">timestamp</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">-%H&quot;</span><span class="p">)</span>
 </pre></div>
@@ -3054,7 +3054,7 @@ INFO:root:finish save tts_results_glycylglycine_3_GG+random_1000_qfold-qc.json
             </clipboard-copy>
         </div>
             <div class="highlight-ipynb hl-python"><pre><span></span><span class="c1"># The time for final steps can be compared among these two methods</span>
-<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
 
 <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;tts_results_glycylglycine_3_GG+random_1000_qfold-cc.json&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="n">qfold_cc_results</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
@@ -3152,19 +3152,19 @@ print(f"The min tts for classical method is {qfold_cc_min_tts}, for quantum meth
                 </div>
             </clipboard-copy>
         </div>
-            <div class="highlight-ipynb hl-python"><pre><span></span><span class="kn">from</span> <span class="nn">braket.aws</span> <span class="kn">import</span> <span class="n">AwsDevice</span>
-<span class="kn">from</span> <span class="nn">braket.aws</span> <span class="kn">import</span> <span class="n">AwsQuantumJob</span><span class="p">,</span> <span class="n">AwsSession</span>
-<span class="kn">from</span> <span class="nn">braket.jobs.config</span> <span class="kn">import</span> <span class="n">InstanceConfig</span>
-<span class="kn">from</span> <span class="nn">hybridjobs.utility.HybridJobHelpers</span> <span class="kn">import</span> <span class="o">*</span>
+            <div class="highlight-ipynb hl-python"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">braket.aws</span><span class="w"> </span><span class="kn">import</span> <span class="n">AwsDevice</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">braket.aws</span><span class="w"> </span><span class="kn">import</span> <span class="n">AwsQuantumJob</span><span class="p">,</span> <span class="n">AwsSession</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">braket.jobs.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">InstanceConfig</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">hybridjobs.utility.HybridJobHelpers</span><span class="w"> </span><span class="kn">import</span> <span class="o">*</span>
 
-<span class="kn">import</span> <span class="nn">boto3</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">boto3</span>
 
-<span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">json</span>
-<span class="kn">import</span> <span class="nn">time</span>
-<span class="kn">import</span> <span class="nn">altair</span> <span class="k">as</span> <span class="nn">alt</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">altair</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">alt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 </pre></div>
 <div id="cell-14" class="clipboard-copy-txt">from braket.aws import AwsDevice
 from braket.aws import AwsQuantumJob, AwsSession
@@ -3579,11 +3579,11 @@ finish.</p>
             <div class="highlight-ipynb hl-python"><pre><span></span><span class="c1"># Long runnning cell due to Burst rate of CreateJob requests &lt; 5 RPS</span>
 <span class="c1"># sudo apt-get install python-prctl at first</span>
 <span class="c1"># https://stackoverflow.com/questions/34361035/python-thread-name-doesnt-show-up-on-ps-or-htop</span>
-<span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Thread</span>
-<span class="kn">import</span> <span class="nn">threading</span>
-<span class="kn">import</span> <span class="nn">setproctitle</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">threading</span><span class="w"> </span><span class="kn">import</span> <span class="n">Thread</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">threading</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">setproctitle</span>
 
-<span class="k">def</span> <span class="nf">launch_hybrid_jobs</span><span class="p">(</span><span class="n">hybrid_job_params</span><span class="o">=</span><span class="n">hybrid_job_params</span><span class="p">,</span> <span class="n">hybrid_jobs_json</span><span class="o">=</span><span class="n">hybrid_jobs_json</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">launch_hybrid_jobs</span><span class="p">(</span><span class="n">hybrid_job_params</span><span class="o">=</span><span class="n">hybrid_job_params</span><span class="p">,</span> <span class="n">hybrid_jobs_json</span><span class="o">=</span><span class="n">hybrid_jobs_json</span><span class="p">):</span>
     <span class="n">setproctitle</span><span class="o">.</span><span class="n">setproctitle</span><span class="p">(</span><span class="n">threading</span><span class="o">.</span><span class="n">current_thread</span><span class="p">()</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
     <span class="c1"># parse evaluation parameters and trigger hybrid jobs:</span>
     <span class="n">jobs</span> <span class="o">=</span> <span class="p">[]</span>

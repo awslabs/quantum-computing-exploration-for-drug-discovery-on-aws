@@ -2123,9 +2123,9 @@ num_solutions and j.
                 </div>
             </clipboard-copy>
         </div>
-            <div class="highlight-ipynb hl-python"><pre><span></span><span class="kn">from</span> <span class="nn">qiskit</span> <span class="kn">import</span> <span class="n">QuantumCircuit</span><span class="p">,</span> <span class="n">QuantumRegister</span><span class="p">,</span> <span class="n">ClassicalRegister</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">math</span>
+            <div class="highlight-ipynb hl-python"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">qiskit</span><span class="w"> </span><span class="kn">import</span> <span class="n">QuantumCircuit</span><span class="p">,</span> <span class="n">QuantumRegister</span><span class="p">,</span> <span class="n">ClassicalRegister</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">math</span>
 
 <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">Taking in user input of the amino acid sequence.</span>
@@ -2986,7 +2986,7 @@ subinst_rca = rca.to_instruction()</div>
 <span class="n">num_iter</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">math</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">length</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">num_solutions</span><span class="p">)))</span><span class="o">/</span><span class="mi">4</span><span class="p">))</span>    <span class="c1"># Number of iterations </span>
 
 
-<span class="k">def</span> <span class="nf">calculate_neighbour</span><span class="p">(</span><span class="n">register</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">calculate_neighbour</span><span class="p">(</span><span class="n">register</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
     
     <span class="n">arglist</span> <span class="o">=</span> <span class="p">[]</span>
     
@@ -3009,7 +3009,7 @@ subinst_rca = rca.to_instruction()</div>
     
     
     
-<span class="k">def</span> <span class="nf">update_coordinates</span><span class="p">(</span><span class="n">register_1</span><span class="p">,</span> <span class="n">register_2</span><span class="p">):</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">update_coordinates</span><span class="p">(</span><span class="n">register_1</span><span class="p">,</span> <span class="n">register_2</span><span class="p">):</span>
     
     <span class="n">arglist</span> <span class="o">=</span> <span class="p">[]</span>
         
@@ -4526,7 +4526,7 @@ for grover_iteration in range(num_iter):
 
 <span class="n">qc</span><span class="o">.</span><span class="n">measure</span><span class="p">(</span><span class="n">conformations</span><span class="p">,</span> <span class="n">output</span><span class="p">)</span>
 
-<span class="kn">from</span> <span class="nn">qiskit</span> <span class="kn">import</span> <span class="n">Aer</span><span class="p">,</span> <span class="n">execute</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">qiskit</span><span class="w"> </span><span class="kn">import</span> <span class="n">Aer</span><span class="p">,</span> <span class="n">execute</span>
 <span class="n">simulator</span> <span class="o">=</span> <span class="n">Aer</span><span class="o">.</span><span class="n">get_backend</span><span class="p">(</span><span class="s1">&#39;qasm_simulator&#39;</span><span class="p">)</span>
 <span class="n">result</span> <span class="o">=</span> <span class="n">execute</span><span class="p">(</span><span class="n">qc</span><span class="p">,</span> <span class="n">backend</span> <span class="o">=</span> <span class="n">simulator</span><span class="p">,</span> <span class="n">shots</span> <span class="o">=</span> <span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">result</span><span class="p">()</span>
 <span class="n">counts</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get_counts</span><span class="p">()</span>
