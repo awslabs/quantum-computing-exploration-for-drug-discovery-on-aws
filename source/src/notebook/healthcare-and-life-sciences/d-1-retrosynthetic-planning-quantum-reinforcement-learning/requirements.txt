@@ -1,4 +1,4 @@
-torch==2.2.0
+torch==2.6.0
 amazon-braket-sdk==1.61.0
 pandas==2.1.2
 rdkit==2023.9.1
