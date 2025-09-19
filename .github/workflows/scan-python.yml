@@ -9,8 +9,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
+    - name: Install pbr (required for Bandit)
+      run: pip install pbr
+
     - name: Run bandit
-      uses: tj-actions/bandit@v4.1
+      uses: tj-actions/bandit@v5
       with:
         version: "1.7.0"
         targets: |
