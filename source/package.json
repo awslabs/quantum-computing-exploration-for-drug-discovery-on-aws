@@ -46,7 +46,7 @@
   },
   "dependencies": {
     "@aws-cdk/aws-batch-alpha": "2.85.0-alpha.0",
-    "@aws-sdk/client-cloudformation": "^3.645.0",
+    "@aws-sdk/client-cloudformation": "^3.965.0",
     "aws-cdk": "2.85.0",
     "aws-cdk-lib": "2.85.0",
     "cdk-bootstrapless-synthesizer": "^2.3.2",
