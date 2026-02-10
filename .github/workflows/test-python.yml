@@ -2,6 +2,8 @@ name: pyTest for Python code
 'on':
   pull_request: {}
   workflow_dispatch: {}
+permissions:
+  contents: read
 jobs:
   py-test:
     runs-on: ubuntu-latest
