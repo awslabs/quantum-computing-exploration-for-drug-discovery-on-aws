@@ -3,6 +3,9 @@ name: "Bandit Check for Python code"
 on:
   pull_request: {}
 
+permissions:
+  contents: read
+
 jobs:
   bandit:
     runs-on: ubuntu-latest

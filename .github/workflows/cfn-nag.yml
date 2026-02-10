@@ -2,6 +2,8 @@ name: Cfn-nag check
 'on':
   pull_request: {}
   workflow_dispatch: {}
+permissions:
+  contents: read
 jobs:
   cfn-nag:
     runs-on: ubuntu-latest

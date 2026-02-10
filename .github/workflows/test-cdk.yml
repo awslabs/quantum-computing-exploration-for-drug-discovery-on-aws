@@ -2,6 +2,8 @@ name: Infra Build & Test
 'on':
   pull_request: {}
   workflow_dispatch: {}
+permissions:
+  contents: read
 jobs:
   build:
     runs-on: ubuntu-latest
