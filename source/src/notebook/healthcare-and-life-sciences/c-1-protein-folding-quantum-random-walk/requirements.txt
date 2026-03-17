@@ -102,7 +102,7 @@ prompt-toolkit==3.0.36
 protobuf==6.33.5
 psutil==5.9.4
 ptyprocess==0.7.0
-pyasn1==0.4.8
+pyasn1==0.6.3
 pycparser==2.21
 pydantic==1.10.13
 Pygments==2.15.0
