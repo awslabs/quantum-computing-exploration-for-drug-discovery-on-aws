@@ -15,7 +15,7 @@ Babel==2.11.0
 backcall==0.2.0
 backoff==2.2.1
 beautifulsoup4==4.11.2
-bleach==4.1.0
+bleach==6.4.0
 bokeh==3.8.2
 boltons==23.0.0
 boto3==1.23.10
