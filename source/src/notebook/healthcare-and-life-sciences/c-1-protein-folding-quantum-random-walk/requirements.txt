@@ -2,7 +2,7 @@ absl-py==1.4.0
 altair==4.2.2
 amazon-braket-default-simulator==1.11.5.post0
 amazon-braket-schemas==1.14.1.post0
-amazon-braket-sdk==1.35.5
+amazon-braket-sdk==1.117.0
 antlr4-python3-runtime==4.9.2
 anyio==3.6.2
 appdirs==1.4.4
