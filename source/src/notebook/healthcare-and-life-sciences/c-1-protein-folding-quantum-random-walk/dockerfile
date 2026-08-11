@@ -8,10 +8,6 @@ RUN python3 -m pip install numpy==1.22 \
     Keras==2.13.1 \
     qiskit==0.34.2 \
     qiskit-aer==0.10.3 \
-    qiskit-aqua==0.9.5 \
-    qiskit-ibmq-provider==0.18.3 \
-    qiskit-ignis==0.7.0 \
-    qiskit-terra==0.19.2 \
     matplotlib==3.3.4 \
     bokeh==2.3.3
 
