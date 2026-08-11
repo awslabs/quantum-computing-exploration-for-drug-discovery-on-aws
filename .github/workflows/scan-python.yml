@@ -10,13 +10,13 @@ jobs:
   bandit:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
 
     - name: Install pbr (required for Bandit)
       run: pip install pbr
 
     - name: Run bandit
-      uses: tj-actions/bandit@v5
+      uses: tj-actions/bandit@0aed5b3da320e0f26781e5aecbbfc1d268ff07e2 # v5.5
       with:
         version: "1.7.0"
         targets: |

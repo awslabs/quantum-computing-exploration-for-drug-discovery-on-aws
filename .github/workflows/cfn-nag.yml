@@ -26,7 +26,7 @@ jobs:
         run: |
           cd source/
           npx cdk synth --json --output cdk.out -q
-      - uses: stelligent/cfn_nag@master
+      - uses: stelligent/cfn_nag@97717cb8d6cf9659d9c51d269b00fb24427bef18 # v0.8.10
         with:
           input_path: source/cdk.out/
           extra_args: >-
