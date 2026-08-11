@@ -115,8 +115,14 @@ class ProteinStructurePrediction():
                 q_accumulated_tts.append(q_tts)     
                 if q_tts < min_q_tts['value'] or min_q_tts['value'] == -1: min_q_tts.update(dict(value=q_tts, step=step))
 
-        elif mode == 'experiment': 
-            [experiment_result_matrix, time_statevector, execution_stats, measures_dict] = qfold_qc_model.execute_real_hardware(nWs = 2)
+        elif mode == 'experiment':
+            raise NotImplementedError(
+                "The 'experiment' mode (running against real IBM Quantum hardware via qiskit-ibmq-provider) "
+                "has been removed because qiskit-ibmq-provider is retired and depended on qiskit-terra, "
+                "which has an unpatched arbitrary code execution vulnerability (GHSA-6m2c-76ff-6vrf). "
+                "Use 'local-simulator' mode, or port this path to qiskit_ibm_runtime if real-hardware "
+                "execution is needed again."
+            )
         else:
             print(f"<*> ERROR!! Quantum execution mode not recognized. The mode selected is {mode} ")
 

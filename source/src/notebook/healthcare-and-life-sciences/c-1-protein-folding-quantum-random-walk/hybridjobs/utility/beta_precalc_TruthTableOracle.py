@@ -1,4 +1,3 @@
-from qiskit.aqua.components.oracles import TruthTableOracle
 from qiskit.circuit import QuantumRegister, QuantumCircuit
 from collections import OrderedDict
 
@@ -27,13 +26,8 @@ class Beta_precalc_TruthTableOracle():
 
         if oracle_option == 'qfold_oracle':
             oracle_circuit = self.generate_qfold_oracle(angles)
-
-        elif oracle_option == 'truthtable_oracle':
-            truth_table_oracle = self.Precalc_TruthTableOracle(angles, optimization, mct_mode, self.out_bits)
-
-            # Construct an instruction for the oracle
-            truth_table_oracle.construct_circuit()
-            oracle_circuit = truth_table_oracle.circuit
+        else:
+            raise ValueError(f"<*> ERROR: oracle_option '{oracle_option}' is not supported. Only 'qfold_oracle' is available.")
 
         #print(oracle_circuit)
         return oracle_circuit.to_instruction()
@@ -101,36 +95,3 @@ class Beta_precalc_TruthTableOracle():
                     oracle_circuit.x(oracle_key[key_bit_index])
 
         return oracle_circuit
-
-    class Precalc_TruthTableOracle(TruthTableOracle):
-
-        def __init__(self, angles, optimization, mct_mode, out_bits):
-
-            self.out_bits = out_bits
-
-            # Calculate the bitmap using the dictionary of deltas
-            self.bitmap = self.calculate_bitmap(angles)
-            super().__init__(self.bitmap, optimization, mct_mode)
-
-        def calculate_bitmap(self, angles):
-            new_bitmap = []
-
-            # Order angles by key
-            angles = OrderedDict(sorted(angles.items()))
-
-            # Printout
-            '''
-            for i in range(2**self.out_bits):
-                st = np.binary_repr(i, width = self.out_bits)
-                print(st, 'appears', list(angles.values()).count(st), 'times in the angles dictionary')
-            '''
-
-            # Encoding the new bitmap
-            new_bitmap = []
-            for o in range(self.out_bits-1,-1,-1):
-                string = ''
-                for key in angles.keys():
-                    string += str(angles[key])[o]
-                new_bitmap += [string]
-
-            return new_bitmap

@@ -11,11 +11,11 @@ jobs:
       CI: 'true'
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           ref: '${{ github.event.pull_request.head.ref }}'
           repository: '${{ github.event.pull_request.head.repo.full_name }}'
-      - uses: actions/setup-python@v2
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.8'
       - name: Install dependencies
